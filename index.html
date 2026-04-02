@@ -3,300 +3,438 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Piotr Lichwała (Vibrosław) — Audiovisual Projects</title>
   <meta name="description" content="Official website of Piotr Lichwała (Vibrosław) — audiovisual projects at the intersection of history, memory, and responsibility." />
-  <meta name="theme-color" content="#0b0b0b" />
+  <meta name="theme-color" content="#090909" />
+
+  <meta property="og:title" content="Piotr Lichwała (Vibrosław) — Audiovisual Projects" />
+  <meta property="og:description" content="Official website of Piotr Lichwała (Vibrosław) — audiovisual projects at the intersection of history, memory, and responsibility." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piotrlichwala.com/" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0b0b0b;
-      --bg2:#121212;
-      --line:rgba(255,255,255,.1);
-      --text:#ece7df;
-      --muted:rgba(236,231,223,.72);
-      --soft:rgba(236,231,223,.52);
+      --bg:#090909;
+      --bg-soft:#0f0f10;
+      --bg-soft-2:#141414;
+      --panel:rgba(255,255,255,0.035);
+      --panel-strong:rgba(255,255,255,0.055);
+      --line:rgba(255,255,255,0.08);
+      --line-strong:rgba(255,255,255,0.14);
+
+      --text:#f0e9df;
+      --muted:rgba(240,233,223,0.72);
+      --soft:rgba(240,233,223,0.52);
+
       --accent:#c9b28f;
-      --card:rgba(255,255,255,.03);
-      --max:1200px;
-      --radius:22px;
-      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --accent-soft:rgba(201,178,143,0.16);
+
+      --shadow:0 30px 80px rgba(0,0,0,0.35);
+      --radius-xl:30px;
+      --radius-lg:24px;
+      --radius-md:18px;
+
+      --max:1280px;
+      --nav-h:78px;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      background:
-        radial-gradient(circle at top, rgba(201,178,143,.08), transparent 30%),
-        linear-gradient(180deg, #0a0a0a 0%, #0d0d0d 100%);
       color:var(--text);
       font-family:"Inter",sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(201,178,143,0.08), transparent 28%),
+        linear-gradient(180deg, #080808 0%, #0b0b0b 32%, #0d0d0d 100%);
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
+      overflow-x:hidden;
     }
 
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,0.015), rgba(255,255,255,0.015)),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.012) 0px,
+          rgba(255,255,255,0.012) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      opacity:.12;
+      mix-blend-mode:soft-light;
+      z-index:0;
+    }
 
-    .wrap{width:min(var(--max), calc(100% - 32px)); margin:0 auto}
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img, video{
+      display:block;
+      max-width:100%;
+    }
+
+    .wrap{
+      width:min(var(--max), calc(100% - 32px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
 
     .nav{
       position:sticky;
       top:0;
-      z-index:50;
-      backdrop-filter: blur(12px);
-      background:rgba(11,11,11,.75);
-      border-bottom:1px solid var(--line);
+      z-index:100;
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      background:rgba(9,9,9,0.72);
+      border-bottom:1px solid rgba(255,255,255,0.06);
     }
+
     .nav-inner{
+      min-height:var(--nav-h);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      min-height:72px;
-      gap:16px;
+      gap:20px;
     }
+
     .brand{
       display:flex;
       flex-direction:column;
-      gap:2px;
+      gap:3px;
+      min-width:0;
     }
-    .brand-main{
+
+    .brand-name{
       font-family:"Cormorant Garamond",serif;
-      font-size:1.5rem;
-      letter-spacing:.02em;
+      font-weight:600;
+      font-size:1.65rem;
       line-height:1;
+      letter-spacing:.02em;
     }
+
     .brand-sub{
       font-size:.76rem;
+      line-height:1.2;
       color:var(--soft);
-      letter-spacing:.08em;
       text-transform:uppercase;
+      letter-spacing:.16em;
+      white-space:nowrap;
     }
 
     .nav-links{
       display:flex;
+      align-items:center;
       gap:18px;
       flex-wrap:wrap;
-      font-size:.95rem;
+    }
+
+    .nav-links a{
       color:var(--muted);
+      font-size:.94rem;
+      transition:opacity .25s ease, color .25s ease;
+    }
+
+    .nav-links a:hover{
+      color:var(--text);
+    }
+
+    .lang-link{
+      padding:10px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,0.02);
+      color:var(--text) !important;
     }
 
     .hero{
-      min-height:calc(100vh - 72px);
-      display:grid;
+      position:relative;
+      min-height:calc(100vh - var(--nav-h));
+      display:flex;
       align-items:center;
-      padding:72px 0 56px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:28px;
-      align-items:stretch;
+      overflow:hidden;
     }
 
-    .hero-copy,
-    .hero-visual{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+    }
+
+    .hero-image{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(8,8,8,0.34) 0%, rgba(8,8,8,0.52) 42%, rgba(8,8,8,0.82) 100%),
+        radial-gradient(circle at 70% 30%, rgba(201,178,143,0.16), transparent 30%),
+        url('https://images.unsplash.com/photo-1514302240736-b1fee5985889?auto=format&fit=crop&w=1800&q=80') center center / cover no-repeat;
+      transform:scale(1.04);
+      filter:saturate(.72) contrast(1.02) brightness(.68);
+    }
+
+    .hero-fade{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(8,8,8,0.84) 0%, rgba(8,8,8,0.54) 42%, rgba(8,8,8,0.24) 100%),
+        linear-gradient(180deg, rgba(8,8,8,0.12) 0%, rgba(8,8,8,0.48) 60%, rgba(8,8,8,0.92) 100%);
+    }
+
+    .hero-grid{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:minmax(0, 760px) 1fr;
+      gap:24px;
+      align-items:end;
+      width:100%;
+      padding:92px 0 72px;
     }
 
     .hero-copy{
-      padding:42px 28px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
+      max-width:760px;
     }
 
     .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:20px;
       color:var(--accent);
       text-transform:uppercase;
-      letter-spacing:.16em;
+      letter-spacing:.18em;
       font-size:.74rem;
-      margin-bottom:16px;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:38px;
+      height:1px;
+      background:rgba(201,178,143,0.6);
     }
 
     h1{
-      margin:0 0 14px;
+      margin:0 0 18px;
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.5rem, 7vw, 5.2rem);
-      line-height:.95;
       font-weight:600;
+      font-size:clamp(3.4rem, 8vw, 6.2rem);
+      line-height:.9;
+      letter-spacing:-0.02em;
+      max-width:10.5ch;
     }
 
     .hero-lead{
-      font-size:1.05rem;
-      line-height:1.75;
+      margin:0;
+      max-width:58ch;
+      font-size:1.06rem;
+      line-height:1.9;
       color:var(--muted);
-      max-width:56ch;
-      margin:0 0 20px;
     }
 
-    .manifest-line{
+    .hero-statement{
+      margin-top:26px;
+      max-width:19ch;
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.35rem, 3vw, 2rem);
-      line-height:1.2;
-      margin:6px 0 0;
+      font-size:clamp(1.45rem, 2.6vw, 2.15rem);
+      line-height:1.12;
       color:var(--text);
     }
 
     .cta-row{
+      margin-top:32px;
       display:flex;
-      gap:12px;
+      gap:14px;
       flex-wrap:wrap;
-      margin-top:28px;
     }
 
     .btn{
+      min-height:50px;
+      padding:0 20px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:48px;
-      padding:0 18px;
       border-radius:999px;
       border:1px solid var(--line);
-      transition:.25s ease;
       font-size:.96rem;
+      transition:transform .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
+      will-change:transform;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
     }
 
     .btn-primary{
       background:var(--text);
-      color:#0b0b0b;
+      color:#0a0a0a;
       border-color:transparent;
     }
 
-    .btn-primary:hover{
-      transform:translateY(-1px);
-      opacity:.95;
-    }
-
     .btn-secondary{
+      background:rgba(255,255,255,0.03);
       color:var(--text);
-      background:transparent;
     }
 
     .btn-secondary:hover{
-      background:rgba(255,255,255,.05);
+      background:rgba(255,255,255,0.08);
+      border-color:var(--line-strong);
     }
 
-    .hero-visual{
-      position:relative;
-      overflow:hidden;
-      min-height:420px;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.58)),
-        radial-gradient(circle at center, rgba(201,178,143,.14), transparent 50%),
-        url('https://images.unsplash.com/photo-1514302240736-b1fee5985889?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+    .hero-side{
+      display:flex;
+      justify-content:flex-end;
+      align-items:flex-end;
     }
 
-    .hero-visual::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(11,11,11,.02), rgba(11,11,11,.48));
+    .hero-panel{
+      width:min(360px, 100%);
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      padding:22px 20px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
     }
 
-    .hero-quote{
-      position:absolute;
-      left:24px;
-      right:24px;
-      bottom:24px;
-      z-index:2;
+    .hero-panel-label{
+      font-size:.72rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:12px;
+    }
+
+    .hero-panel-quote{
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.25rem, 2.5vw, 1.9rem);
-      line-height:1.18;
-      max-width:16ch;
+      font-size:1.6rem;
+      line-height:1.08;
+      margin:0 0 16px;
+    }
+
+    .hero-panel-text{
+      font-size:.94rem;
+      line-height:1.75;
+      color:var(--muted);
+      margin:0;
     }
 
     .section{
-      padding:72px 0;
+      position:relative;
+      padding:88px 0;
+      z-index:1;
     }
 
     .section-head{
       display:flex;
       justify-content:space-between;
-      gap:16px;
-      align-items:end;
-      margin-bottom:24px;
+      align-items:flex-end;
+      gap:20px;
+      margin-bottom:28px;
     }
 
     .section-kicker{
       color:var(--accent);
       text-transform:uppercase;
-      letter-spacing:.14em;
-      font-size:.74rem;
-      margin-bottom:10px;
+      letter-spacing:.18em;
+      font-size:.72rem;
+      margin-bottom:12px;
     }
 
     h2{
       margin:0;
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2rem, 4vw, 3.2rem);
-      line-height:1;
+      font-size:clamp(2.3rem, 4.6vw, 3.8rem);
+      line-height:.95;
+      font-weight:600;
     }
 
     .section-note{
-      max-width:52ch;
+      max-width:56ch;
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.85;
       font-size:1rem;
     }
 
     .grid-2{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:22px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
       gap:18px;
     }
 
     .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
+      position:relative;
       overflow:hidden;
+      border-radius:var(--radius-xl);
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      box-shadow:var(--shadow);
     }
 
     .project-card{
+      min-height:620px;
       display:flex;
       flex-direction:column;
-      min-height:520px;
+      transition:transform .35s ease, border-color .35s ease, background .35s ease;
+    }
+
+    .project-card:hover{
+      transform:translateY(-3px);
+      border-color:rgba(255,255,255,0.14);
+      background:linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.03));
     }
 
     .project-media{
-      min-height:260px;
+      position:relative;
+      min-height:320px;
+      overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,0.05);
       background-size:cover;
       background-position:center;
-      position:relative;
+      filter:saturate(.72);
     }
+
+    .project-media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.48)),
+        radial-gradient(circle at center, rgba(201,178,143,0.12), transparent 45%);
+    }
+
     .project-media::after{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.45));
+      background:linear-gradient(180deg, transparent 0%, rgba(7,7,7,0.68) 100%);
     }
 
     .project-body{
-      padding:24px;
       display:flex;
       flex-direction:column;
-      gap:14px;
-      flex:1;
-    }
-
-    .project-title{
-      font-family:"Cormorant Garamond",serif;
-      font-size:2rem;
-      line-height:1;
-      margin:0;
-    }
-
-    .project-text{
-      color:var(--muted);
-      line-height:1.7;
-      margin:0;
+      gap:16px;
+      padding:28px 24px 24px;
       flex:1;
     }
 
@@ -308,42 +446,90 @@
 
     .chip{
       border:1px solid var(--line);
+      color:var(--soft);
+      background:rgba(255,255,255,0.02);
       border-radius:999px;
       padding:7px 10px;
-      font-size:.78rem;
-      color:var(--soft);
+      font-size:.76rem;
+      letter-spacing:.02em;
     }
 
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:16px;
+    .project-title{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:2.2rem;
+      line-height:.95;
+      font-weight:600;
+    }
+
+    .project-text{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+      font-size:1rem;
+      max-width:58ch;
+      flex:1;
+    }
+
+    .card-link{
+      margin-top:auto;
     }
 
     .mini-card{
-      padding:22px;
-      min-height:220px;
+      min-height:250px;
+      padding:24px 22px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      transition:transform .3s ease, border-color .3s ease, background .3s ease;
+    }
+
+    .mini-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,0.13);
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.028));
     }
 
     .mini-title{
+      margin:0 0 12px;
       font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      margin:0 0 10px;
+      font-size:1.9rem;
+      line-height:.96;
+      font-weight:600;
     }
 
     .mini-text{
-      color:var(--muted);
-      line-height:1.65;
       margin:0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:.98rem;
+    }
+
+    .contact-panel{
+      padding:30px 26px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.028)),
+        radial-gradient(circle at top right, rgba(201,178,143,0.12), transparent 36%);
+    }
+
+    .contact-name{
+      font-family:"Cormorant Garamond",serif;
+      font-size:2rem;
+      line-height:.96;
+      margin:0 0 14px;
+    }
+
+    .contact-text{
+      margin:0;
+      color:var(--muted);
+      line-height:1.9;
     }
 
     .footer{
-      padding:32px 0 64px;
-      color:var(--soft);
-      border-top:1px solid var(--line);
+      position:relative;
+      z-index:1;
+      padding:34px 0 64px;
+      border-top:1px solid rgba(255,255,255,0.06);
     }
 
     .footer-inner{
@@ -351,27 +537,63 @@
       justify-content:space-between;
       gap:18px;
       flex-wrap:wrap;
+      color:var(--soft);
+      font-size:.94rem;
     }
 
-    @media (max-width: 980px){
-      .hero-grid,
-      .grid-2,
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width: 1100px){
+      .hero-grid{
+        grid-template-columns:1fr;
+        gap:22px;
+        align-items:end;
+      }
+
+      .hero-side{
+        justify-content:flex-start;
+      }
+
+      h1{
+        max-width:12ch;
+      }
+
       .grid-3{
         grid-template-columns:1fr;
       }
+    }
 
-      .hero{
-        min-height:auto;
-        padding-top:36px;
-      }
-
-      .hero-visual{
-        min-height:340px;
+    @media (max-width: 900px){
+      .grid-2{
+        grid-template-columns:1fr;
       }
 
       .section-head{
         flex-direction:column;
-        align-items:start;
+        align-items:flex-start;
+      }
+
+      .project-card{
+        min-height:unset;
+      }
+
+      .project-media{
+        min-height:280px;
+      }
+    }
+
+    @media (max-width: 760px){
+      :root{
+        --nav-h:72px;
       }
 
       .nav-inner{
@@ -381,16 +603,83 @@
       }
 
       .nav-links{
-        gap:12px;
-        font-size:.9rem;
+        gap:10px 12px;
+      }
+
+      .brand-name{
+        font-size:1.45rem;
+      }
+
+      .brand-sub{
+        white-space:normal;
+      }
+
+      .hero{
+        min-height:auto;
+      }
+
+      .hero-grid{
+        padding:62px 0 56px;
+      }
+
+      h1{
+        font-size:clamp(2.7rem, 12vw, 4.5rem);
+        max-width:12ch;
+      }
+
+      .hero-lead{
+        font-size:1rem;
+        line-height:1.82;
+      }
+
+      .hero-panel{
+        width:100%;
+      }
+
+      .section{
+        padding:72px 0;
       }
     }
 
     @media (max-width: 640px){
-      .wrap{width:min(var(--max), calc(100% - 20px))}
-      .hero-copy{padding:28px 18px}
-      .project-body,.mini-card{padding:18px}
-      .hero-quote{left:18px;right:18px;bottom:18px}
+      .wrap{
+        width:min(var(--max), calc(100% - 20px));
+      }
+
+      .hero-grid{
+        padding:52px 0 48px;
+      }
+
+      .hero-statement{
+        max-width:18ch;
+      }
+
+      .hero-panel{
+        padding:20px 18px;
+      }
+
+      .project-body,
+      .mini-card,
+      .contact-panel{
+        padding:22px 18px;
+      }
+
+      .project-title{
+        font-size:2rem;
+      }
+
+      .mini-title{
+        font-size:1.7rem;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .cta-row{
+        flex-direction:column;
+        align-items:stretch;
+      }
     }
   </style>
 </head>
@@ -398,82 +687,113 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <div class="brand">
-        <div class="brand-main">Piotr Lichwała</div>
+        <div class="brand-name">Piotr Lichwała</div>
         <div class="brand-sub">Vibrosław · Audiovisual Creator</div>
       </div>
-      <nav class="nav-links">
+
+      <nav class="nav-links" aria-label="Main navigation">
         <a href="#projects">Projects</a>
         <a href="#other">Other Work</a>
         <a href="#contact">Contact</a>
-        <a href="/pl/">PL</a>
+        <a class="lang-link" href="/pl/">PL</a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-image"></div>
+        <div class="hero-fade"></div>
+      </div>
+
       <div class="wrap hero-grid">
-        <div class="hero-copy">
+        <div class="hero-copy reveal">
           <div class="eyebrow">Official Website</div>
-          <h1>Projects at the intersection of memory, history, and responsibility.</h1>
+
+          <h1>Projects shaped by memory, witness, and responsibility.</h1>
+
           <p class="hero-lead">
-            Piotr Lichwała (Vibrosław) creates audiovisual works built from testimony, narrative music, and cinematic form — designed for attentive audiences, institutional contexts, and reflective viewing.
+            Piotr Lichwała (Vibrosław) creates audiovisual works built from testimony, narrative music, and cinematic form — developed for attentive audiences, institutional presentation, and reflective viewing.
           </p>
-          <div class="manifest-line">This work is not only about the past. It is about what responsibility asks of us now.</div>
+
+          <div class="hero-statement">
+            This work is not only about the past. It is about what responsibility asks of us now.
+          </div>
+
           <div class="cta-row">
             <a class="btn btn-primary" href="#projects">Explore Projects</a>
             <a class="btn btn-secondary" href="#contact">Contact</a>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-quote">“Truth does not need noise. It needs to be heard.”</div>
+        <div class="hero-side reveal">
+          <aside class="hero-panel">
+            <div class="hero-panel-label">Orientation</div>
+            <p class="hero-panel-quote">“Truth does not need noise. It needs to be heard.”</p>
+            <p class="hero-panel-text">
+              This platform brings together institutional audiovisual works, public-facing historical series, and selected authorial projects under one coherent narrative world.
+            </p>
+          </aside>
         </div>
       </div>
     </section>
 
     <section class="section" id="projects">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
             <div class="section-kicker">Core Worlds</div>
             <h2>Two primary narrative paths</h2>
           </div>
+
           <div class="section-note">
-            One institutional and immersive. One episodic and public-facing. Both belong to a coherent authorial world.
+            One institutional and immersive. One episodic and public-facing. Both belong to a coherent authorial universe shaped by history, ethical tension, and cinematic storytelling.
           </div>
         </div>
 
         <div class="grid-2">
-          <article class="card project-card">
-            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80');"></div>
+          <article class="card project-card reveal">
+            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80');"></div>
+
             <div class="project-body">
               <div class="chips">
                 <span class="chip">Institutional</span>
                 <span class="chip">Audiovisual Report</span>
                 <span class="chip">65 min</span>
               </div>
+
               <h3 class="project-title">Rap-Ort</h3>
+
               <p class="project-text">
-                A narrative audiovisual framework built around ethical witness, memory, and the pressure of totalitarian systems. Its current central work is <strong>Rap-Ort: Conscience Report / Prawda Sumienia</strong>.
+                A narrative audiovisual framework built around ethical witness, historical pressure, and the consequences of silence under totalitarian systems. Its central current work is <strong>Rap-Ort: Conscience Report / Prawda Sumienia</strong>.
               </p>
-              <a class="btn btn-secondary" href="#">Enter Rap-Ort</a>
+
+              <div class="card-link">
+                <a class="btn btn-secondary" href="#">Enter Rap-Ort</a>
+              </div>
             </div>
           </article>
 
-          <article class="card project-card">
-            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1400&q=80');"></div>
+          <article class="card project-card reveal">
+            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=80');"></div>
+
             <div class="project-body">
               <div class="chips">
                 <span class="chip">Series</span>
                 <span class="chip">YouTube-facing</span>
-                <span class="chip">Historical stories</span>
+                <span class="chip">Historical Episodes</span>
               </div>
+
               <h3 class="project-title">SZTAB</h3>
+
               <p class="project-text">
-                A developing video series of historical episodes focused on figures, events, and acts of resistance — conceived for broader reach while preserving seriousness and narrative depth.
+                A developing series of historical episodes focused on figures, acts of resistance, and moments of moral weight — conceived for wider reach while preserving seriousness, atmosphere, and narrative depth.
               </p>
-              <a class="btn btn-secondary" href="#">Enter SZTAB</a>
+
+              <div class="card-link">
+                <a class="btn btn-secondary" href="#">Enter SZTAB</a>
+              </div>
             </div>
           </article>
         </div>
@@ -482,38 +802,48 @@
 
     <section class="section" id="other">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Additional Sections</div>
-            <h2>Beyond the two core worlds</h2>
+            <div class="section-kicker">Additional Areas</div>
+            <h2>Beyond the two central worlds</h2>
           </div>
+
           <div class="section-note">
-            Secondary areas can remain lighter at first, then expand as the ecosystem grows.
+            These sections can begin as lighter entry points and expand over time into a broader ecosystem of authorial work, historical material, and parallel forms of expression.
           </div>
         </div>
 
         <div class="grid-3">
-          <article class="card mini-card">
+          <article class="card mini-card reveal">
             <div>
               <h3 class="mini-title">Manifest</h3>
-              <p class="mini-text">A space for selected non-historical writing, songs, and reflective work that remains part of the broader authorial voice.</p>
+              <p class="mini-text">
+                A space for selected non-historical songs, reflections, and artistic work that remains part of the wider authorial voice.
+              </p>
             </div>
+
             <a class="btn btn-secondary" href="#">Open Manifest</a>
           </article>
 
-          <article class="card mini-card">
+          <article class="card mini-card reveal">
             <div>
               <h3 class="mini-title">Archive</h3>
-              <p class="mini-text">Earlier historical works, songs without video, and thematic foundations that may later evolve into new audiovisual chapters.</p>
+              <p class="mini-text">
+                Earlier historical songs, thematic foundations, and material that may later evolve into new audiovisual chapters.
+              </p>
             </div>
+
             <a class="btn btn-secondary" href="#">Open Archive</a>
           </article>
 
-          <article class="card mini-card">
+          <article class="card mini-card reveal">
             <div>
               <h3 class="mini-title">About</h3>
-              <p class="mini-text">A concise author page explaining who Piotr Lichwała is, how Vibrosław functions artistically, and why these forms exist.</p>
+              <p class="mini-text">
+                A concise author page explaining who Piotr Lichwała is, how Vibrosław functions artistically, and why these forms exist.
+              </p>
             </div>
+
             <a class="btn btn-secondary" href="#">Read More</a>
           </article>
         </div>
@@ -522,25 +852,24 @@
 
     <section class="section" id="contact">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
             <div class="section-kicker">Contact</div>
             <h2>Screenings, institutions, partnerships</h2>
           </div>
+
           <div class="section-note">
-            For educational, cultural, institutional, or programming enquiries, direct contact remains the clearest next step.
+            For educational, institutional, cultural, or programming enquiries, direct contact remains the clearest next step.
           </div>
         </div>
 
-        <div class="card mini-card" style="min-height:unset;">
-          <div>
-            <h3 class="mini-title">Direct contact</h3>
-            <p class="mini-text">
-              Piotr Lichwała (Vibrosław)<br>
-              Email: peter.lichwala@gmail.com<br>
-              United Kingdom
-            </p>
-          </div>
+        <div class="card contact-panel reveal">
+          <h3 class="contact-name">Piotr Lichwała (Vibrosław)</h3>
+          <p class="contact-text">
+            Email: peter.lichwala@gmail.com<br>
+            Based in the United Kingdom<br>
+            Available for institutional and international enquiries
+          </p>
         </div>
       </div>
     </section>
@@ -552,5 +881,22 @@
       <div>Official website · English version</div>
     </div>
   </footer>
+
+  <script>
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14
+    });
+
+    revealItems.forEach(item => revealObserver.observe(item));
+  </script>
 </body>
 </html>
