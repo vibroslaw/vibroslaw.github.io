@@ -1,86 +1,556 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Piotr Lichwała (Vibrosław)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piotr Lichwała (Vibrosław) — Audiovisual Projects</title>
+  <meta name="description" content="Official website of Piotr Lichwała (Vibrosław) — audiovisual projects at the intersection of history, memory, and responsibility." />
+  <meta name="theme-color" content="#0b0b0b" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --bg2:#121212;
+      --line:rgba(255,255,255,.1);
+      --text:#ece7df;
+      --muted:rgba(236,231,223,.72);
+      --soft:rgba(236,231,223,.52);
+      --accent:#c9b28f;
+      --card:rgba(255,255,255,.03);
+      --max:1200px;
+      --radius:22px;
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at top, rgba(201,178,143,.08), transparent 30%),
+        linear-gradient(180deg, #0a0a0a 0%, #0d0d0d 100%);
+      color:var(--text);
+      font-family:"Inter",sans-serif;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
 
-<style>
-body {
-    margin:0;
-    background:#0a0a0a;
-    color:#eaeaea;
-    font-family: 'Inter', sans-serif;
-}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
 
-.hero {
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:20px;
-}
+    .wrap{width:min(var(--max), calc(100% - 32px)); margin:0 auto}
 
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size:52px;
-    margin-bottom:10px;
-}
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(12px);
+      background:rgba(11,11,11,.75);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:72px;
+      gap:16px;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .brand-main{
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.5rem;
+      letter-spacing:.02em;
+      line-height:1;
+    }
+    .brand-sub{
+      font-size:.76rem;
+      color:var(--soft);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
 
-.subtitle {
-    opacity:0.6;
-    margin-bottom:20px;
-}
+    .nav-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      font-size:.95rem;
+      color:var(--muted);
+    }
 
-.manifest {
-    opacity:0.8;
-    max-width:600px;
-    margin:auto;
-    line-height:1.6;
-}
+    .hero{
+      min-height:calc(100vh - 72px);
+      display:grid;
+      align-items:center;
+      padding:72px 0 56px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:28px;
+      align-items:stretch;
+    }
 
-.button {
-    margin-top:40px;
-    display:inline-block;
-    padding:14px 28px;
-    border:1px solid #eaeaea;
-    text-decoration:none;
-    color:#eaeaea;
-    transition:0.3s;
-}
+    .hero-copy,
+    .hero-visual{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
 
-.button:hover {
-    background:#eaeaea;
-    color:#0a0a0a;
-}
-</style>
+    .hero-copy{
+      padding:42px 28px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
 
+    .eyebrow{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.74rem;
+      margin-bottom:16px;
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(2.5rem, 7vw, 5.2rem);
+      line-height:.95;
+      font-weight:600;
+    }
+
+    .hero-lead{
+      font-size:1.05rem;
+      line-height:1.75;
+      color:var(--muted);
+      max-width:56ch;
+      margin:0 0 20px;
+    }
+
+    .manifest-line{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(1.35rem, 3vw, 2rem);
+      line-height:1.2;
+      margin:6px 0 0;
+      color:var(--text);
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 18px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      transition:.25s ease;
+      font-size:.96rem;
+    }
+
+    .btn-primary{
+      background:var(--text);
+      color:#0b0b0b;
+      border-color:transparent;
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      opacity:.95;
+    }
+
+    .btn-secondary{
+      color:var(--text);
+      background:transparent;
+    }
+
+    .btn-secondary:hover{
+      background:rgba(255,255,255,.05);
+    }
+
+    .hero-visual{
+      position:relative;
+      overflow:hidden;
+      min-height:420px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.58)),
+        radial-gradient(circle at center, rgba(201,178,143,.14), transparent 50%),
+        url('https://images.unsplash.com/photo-1514302240736-b1fee5985889?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+    }
+
+    .hero-visual::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(11,11,11,.02), rgba(11,11,11,.48));
+    }
+
+    .hero-quote{
+      position:absolute;
+      left:24px;
+      right:24px;
+      bottom:24px;
+      z-index:2;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(1.25rem, 2.5vw, 1.9rem);
+      line-height:1.18;
+      max-width:16ch;
+    }
+
+    .section{
+      padding:72px 0;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:end;
+      margin-bottom:24px;
+    }
+
+    .section-kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.74rem;
+      margin-bottom:10px;
+    }
+
+    h2{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(2rem, 4vw, 3.2rem);
+      line-height:1;
+    }
+
+    .section-note{
+      max-width:52ch;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:1rem;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .project-card{
+      display:flex;
+      flex-direction:column;
+      min-height:520px;
+    }
+
+    .project-media{
+      min-height:260px;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+    .project-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.45));
+    }
+
+    .project-body{
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      flex:1;
+    }
+
+    .project-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:2rem;
+      line-height:1;
+      margin:0;
+    }
+
+    .project-text{
+      color:var(--muted);
+      line-height:1.7;
+      margin:0;
+      flex:1;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:.78rem;
+      color:var(--soft);
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .mini-card{
+      padding:22px;
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .mini-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.7rem;
+      margin:0 0 10px;
+    }
+
+    .mini-text{
+      color:var(--muted);
+      line-height:1.65;
+      margin:0;
+    }
+
+    .footer{
+      padding:32px 0 64px;
+      color:var(--soft);
+      border-top:1px solid var(--line);
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 980px){
+      .hero-grid,
+      .grid-2,
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+
+      .hero{
+        min-height:auto;
+        padding-top:36px;
+      }
+
+      .hero-visual{
+        min-height:340px;
+      }
+
+      .section-head{
+        flex-direction:column;
+        align-items:start;
+      }
+
+      .nav-inner{
+        min-height:auto;
+        padding:14px 0;
+        align-items:flex-start;
+      }
+
+      .nav-links{
+        gap:12px;
+        font-size:.9rem;
+      }
+    }
+
+    @media (max-width: 640px){
+      .wrap{width:min(var(--max), calc(100% - 20px))}
+      .hero-copy{padding:28px 18px}
+      .project-body,.mini-card{padding:18px}
+      .hero-quote{left:18px;right:18px;bottom:18px}
+    }
+  </style>
 </head>
-
 <body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="brand-main">Piotr Lichwała</div>
+        <div class="brand-sub">Vibrosław · Audiovisual Creator</div>
+      </div>
+      <nav class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#other">Other Work</a>
+        <a href="#contact">Contact</a>
+        <a href="/pl/">PL</a>
+      </nav>
+    </div>
+  </header>
 
-<section class="hero">
-<div>
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Official Website</div>
+          <h1>Projects at the intersection of memory, history, and responsibility.</h1>
+          <p class="hero-lead">
+            Piotr Lichwała (Vibrosław) creates audiovisual works built from testimony, narrative music, and cinematic form — designed for attentive audiences, institutional contexts, and reflective viewing.
+          </p>
+          <div class="manifest-line">This work is not only about the past. It is about what responsibility asks of us now.</div>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#projects">Explore Projects</a>
+            <a class="btn btn-secondary" href="#contact">Contact</a>
+          </div>
+        </div>
 
-<h1>Piotr Lichwała</h1>
+        <div class="hero-visual">
+          <div class="hero-quote">“Truth does not need noise. It needs to be heard.”</div>
+        </div>
+      </div>
+    </section>
 
-<div class="subtitle">
-Audiovisual Creator<br>
-Creator of Vibrosław
-</div>
+    <section class="section" id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Core Worlds</div>
+            <h2>Two primary narrative paths</h2>
+          </div>
+          <div class="section-note">
+            One institutional and immersive. One episodic and public-facing. Both belong to a coherent authorial world.
+          </div>
+        </div>
 
-<div class="manifest">
-This work is not about history.<br>
-It is about responsibility.
-</div>
+        <div class="grid-2">
+          <article class="card project-card">
+            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80');"></div>
+            <div class="project-body">
+              <div class="chips">
+                <span class="chip">Institutional</span>
+                <span class="chip">Audiovisual Report</span>
+                <span class="chip">65 min</span>
+              </div>
+              <h3 class="project-title">Rap-Ort</h3>
+              <p class="project-text">
+                A narrative audiovisual framework built around ethical witness, memory, and the pressure of totalitarian systems. Its current central work is <strong>Rap-Ort: Conscience Report / Prawda Sumienia</strong>.
+              </p>
+              <a class="btn btn-secondary" href="#">Enter Rap-Ort</a>
+            </div>
+          </article>
 
-<a href="#" class="button">Enter</a>
+          <article class="card project-card">
+            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1400&q=80');"></div>
+            <div class="project-body">
+              <div class="chips">
+                <span class="chip">Series</span>
+                <span class="chip">YouTube-facing</span>
+                <span class="chip">Historical stories</span>
+              </div>
+              <h3 class="project-title">SZTAB</h3>
+              <p class="project-text">
+                A developing video series of historical episodes focused on figures, events, and acts of resistance — conceived for broader reach while preserving seriousness and narrative depth.
+              </p>
+              <a class="btn btn-secondary" href="#">Enter SZTAB</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-</div>
-</section>
+    <section class="section" id="other">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Additional Sections</div>
+            <h2>Beyond the two core worlds</h2>
+          </div>
+          <div class="section-note">
+            Secondary areas can remain lighter at first, then expand as the ecosystem grows.
+          </div>
+        </div>
 
+        <div class="grid-3">
+          <article class="card mini-card">
+            <div>
+              <h3 class="mini-title">Manifest</h3>
+              <p class="mini-text">A space for selected non-historical writing, songs, and reflective work that remains part of the broader authorial voice.</p>
+            </div>
+            <a class="btn btn-secondary" href="#">Open Manifest</a>
+          </article>
+
+          <article class="card mini-card">
+            <div>
+              <h3 class="mini-title">Archive</h3>
+              <p class="mini-text">Earlier historical works, songs without video, and thematic foundations that may later evolve into new audiovisual chapters.</p>
+            </div>
+            <a class="btn btn-secondary" href="#">Open Archive</a>
+          </article>
+
+          <article class="card mini-card">
+            <div>
+              <h3 class="mini-title">About</h3>
+              <p class="mini-text">A concise author page explaining who Piotr Lichwała is, how Vibrosław functions artistically, and why these forms exist.</p>
+            </div>
+            <a class="btn btn-secondary" href="#">Read More</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Contact</div>
+            <h2>Screenings, institutions, partnerships</h2>
+          </div>
+          <div class="section-note">
+            For educational, cultural, institutional, or programming enquiries, direct contact remains the clearest next step.
+          </div>
+        </div>
+
+        <div class="card mini-card" style="min-height:unset;">
+          <div>
+            <h3 class="mini-title">Direct contact</h3>
+            <p class="mini-text">
+              Piotr Lichwała (Vibrosław)<br>
+              Email: peter.lichwala@gmail.com<br>
+              United Kingdom
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>Piotr Lichwała (Vibrosław)</div>
+      <div>Official website · English version</div>
+    </div>
+  </footer>
 </body>
 </html>
