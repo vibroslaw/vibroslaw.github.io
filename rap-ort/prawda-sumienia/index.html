@@ -5,640 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Conscience Report — Rap-Ort</title>
-  <meta name="description" content="Conscience Report is the central current chapter of the Rap-Ort universe — an institutional audiovisual work built around witness, responsibility, and the consequences of silence." />
+  <meta name="description" content="Conscience Report is the English-language chapter of Rap-Ort — an institutional audiovisual work built around witness, moral responsibility, and the consequences of silence under historical pressure." />
   <meta name="theme-color" content="#090909" />
 
   <meta property="og:title" content="Conscience Report — Rap-Ort" />
-  <meta property="og:description" content="An institutional audiovisual chapter built around witness, responsibility, and the consequences of silence." />
+  <meta property="og:description" content="An institutional audiovisual work built around witness, moral responsibility, and the consequences of silence under historical pressure." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/rap-ort/prawda-sumienia/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#080808;
-      --bg-soft:#101010;
-      --panel:rgba(255,255,255,0.04);
-      --line:rgba(255,255,255,0.08);
-      --line-strong:rgba(255,255,255,0.14);
-
-      --text:#efe8de;
-      --muted:rgba(239,232,222,0.74);
-      --soft:rgba(239,232,222,0.50);
-
-      --accent:#cbb08a;
-      --shadow:0 30px 90px rgba(0,0,0,0.38);
-      --radius-xl:32px;
-      --radius-lg:24px;
-
-      --max:1280px;
-      --nav-h:78px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:"Inter",sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top, rgba(203,176,138,.09), transparent 26%),
-        linear-gradient(180deg, #070707 0%, #0b0b0b 30%, #0d0d0d 100%);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        linear-gradient(rgba(255,255,255,.014), rgba(255,255,255,.014)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.010) 0px,
-          rgba(255,255,255,.010) 1px,
-          transparent 1px,
-          transparent 3px
-        );
-      opacity:.11;
-      mix-blend-mode:soft-light;
-      z-index:0;
-    }
-
-    a{color:inherit;text-decoration:none}
-    .wrap{
-      width:min(var(--max), calc(100% - 32px));
-      margin:0 auto;
-      position:relative;
-      z-index:1;
-    }
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:100;
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      background:rgba(8,8,8,.74);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-
-    .nav-inner{
-      min-height:var(--nav-h);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .brand-main{
-      font-family:"Cinzel",serif;
-      font-size:1.15rem;
-      line-height:1;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .brand-sub{
-      font-size:.76rem;
-      color:var(--soft);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      font-size:.94rem;
-      transition:color .25s ease;
-    }
-
-    .nav-links a:hover{color:var(--text)}
-
-    .lang-switch{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .lang-item{
-      color:var(--muted);
-      font-size:.94rem;
-    }
-
-    .lang-item.active{color:var(--text)}
-    .lang-sep{color:var(--soft)}
-
-    .hero{
-      position:relative;
-      min-height:calc(100vh - var(--nav-h));
-      display:flex;
-      align-items:center;
-      overflow:hidden;
-    }
-
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      z-index:0;
-      background:
-        linear-gradient(180deg, rgba(6,6,6,.20) 0%, rgba(6,6,6,.36) 36%, rgba(6,6,6,.88) 100%),
-        radial-gradient(circle at 76% 24%, rgba(203,176,138,.18), transparent 30%),
-        url('https://images.unsplash.com/photo-1514302240736-b1fee5985889?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
-      filter:saturate(.58) brightness(.58) contrast(1.02);
-      transform:scale(1.04);
-    }
-
-    .hero-overlay{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(6,6,6,.88) 0%, rgba(6,6,6,.70) 38%, rgba(6,6,6,.30) 72%, rgba(6,6,6,.18) 100%),
-        linear-gradient(180deg, rgba(6,6,6,.10) 0%, rgba(6,6,6,.42) 58%, rgba(6,6,6,.95) 100%);
-    }
-
-    .hero-grid{
-      position:relative;
-      z-index:2;
-      display:grid;
-      grid-template-columns:minmax(0, 760px) minmax(280px, 360px);
-      justify-content:space-between;
-      gap:48px;
-      align-items:end;
-      width:100%;
-      padding:98px 0 78px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:20px;
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.20em;
-      font-size:.72rem;
-    }
-
-    .eyebrow::before{
-      content:"";
-      width:42px;
-      height:1px;
-      background:rgba(203,176,138,.60);
-    }
-
-    .hero-title{
-      margin:0;
-      font-family:"Cinzel",serif;
-      font-size:clamp(2.8rem, 6vw, 5.4rem);
-      line-height:.94;
-      letter-spacing:.07em;
-      text-transform:uppercase;
-    }
-
-    .hero-subtitle{
-      margin:18px 0 0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.45rem, 2.2vw, 2.1rem);
-      line-height:1.08;
-      max-width:18ch;
-    }
-
-    .hero-lead{
-      margin:28px 0 0;
-      max-width:58ch;
-      color:var(--muted);
-      line-height:1.92;
-      font-size:1.04rem;
-    }
-
-    .cta-row{
-      margin-top:34px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      min-height:50px;
-      padding:0 20px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      border:1px solid var(--line);
-      font-size:.96rem;
-      transition:transform .25s ease, background .25s ease, border-color .25s ease;
-    }
-
-    .btn:hover{transform:translateY(-1px)}
-
-    .btn-primary{
-      background:var(--text);
-      color:#0a0a0a;
-      border-color:transparent;
-    }
-
-    .btn-secondary{
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-    }
-
-    .btn-secondary:hover{
-      background:rgba(255,255,255,.08);
-      border-color:var(--line-strong);
-    }
-
-    .hero-panel{
-      width:100%;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
-        radial-gradient(circle at top right, rgba(203,176,138,.12), transparent 36%);
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      padding:24px 22px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-    }
-
-    .hero-panel-label{
-      font-size:.72rem;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:12px;
-    }
-
-    .hero-panel-quote{
-      margin:0 0 16px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.68rem;
-      line-height:1.08;
-    }
-
-    .hero-panel-text{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:.95rem;
-    }
-
-    .section{
-      position:relative;
-      z-index:1;
-      padding:92px 0;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:20px;
-      margin-bottom:30px;
-    }
-
-    .section-kicker{
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-size:.72rem;
-      margin-bottom:12px;
-    }
-
-    h2{
-      margin:0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.4rem, 4.8vw, 4rem);
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .section-note{
-      max-width:56ch;
-      color:var(--muted);
-      line-height:1.88;
-      font-size:1rem;
-    }
-
-    .panel{
-      border:1px solid var(--line);
-      border-radius:var(--radius-xl);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.024)),
-        radial-gradient(circle at top right, rgba(203,176,138,.10), transparent 34%);
-      box-shadow:var(--shadow);
-      padding:34px 28px;
-    }
-
-    .panel p{
-      max-width:72ch;
-      color:var(--muted);
-      line-height:1.95;
-      font-size:1.05rem;
-      margin:0;
-    }
-
-    .quote-block{
-      padding:26px 0 4px;
-      text-align:center;
-    }
-
-    .quote-block p{
-      margin:0 auto;
-      max-width:18ch;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.9rem, 4vw, 3rem);
-      line-height:1.04;
-    }
-
-    .quote-block span{
-      display:block;
-      margin-top:14px;
-      color:var(--soft);
-      font-size:.9rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:24px;
-    }
-
-    .card{
-      border-radius:var(--radius-xl);
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .card-body{
-      padding:30px 24px 24px;
-    }
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:16px;
-    }
-
-    .chip{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
-      color:var(--soft);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:.76rem;
-    }
-
-    .card h3{
-      margin:0 0 14px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:2rem;
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.86;
-      font-size:1rem;
-    }
-
-    .principles{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:18px;
-    }
-
-    .principle{
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.024));
-      box-shadow:var(--shadow);
-      padding:24px 20px;
-    }
-
-    .principle h3{
-      margin:0 0 12px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      line-height:.96;
-    }
-
-    .principle p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:.98rem;
-    }
-
-    .footer{
-      position:relative;
-      z-index:1;
-      padding:34px 0 64px;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-
-    .footer-inner{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-      color:var(--soft);
-      font-size:.94rem;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(18px);
-      transition:opacity .8s ease, transform .8s ease;
-    }
-
-    .reveal.visible{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    @media (max-width:1100px){
-      .hero-grid,
-      .grid,
-      .principles{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width:900px){
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-    @media (max-width:760px){
-      :root{--nav-h:72px}
-
-      .nav-inner{
-        min-height:auto;
-        padding:14px 0;
-        align-items:flex-start;
-      }
-
-      .nav-links{
-        gap:10px 12px;
-      }
-
-      .hero{
-        min-height:auto;
-      }
-
-      .hero-grid{
-        grid-template-columns:1fr;
-        padding:58px 0 52px;
-        gap:20px;
-      }
-
-      .eyebrow{
-        justify-content:center;
-      }
-
-      .hero-copy{
-        text-align:center;
-      }
-
-      .hero-title{
-        font-size:clamp(2.7rem, 11vw, 4.6rem);
-        max-width:12ch;
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-subtitle,
-      .hero-lead{
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-subtitle{max-width:16ch}
-      .hero-lead{
-        max-width:30ch;
-        font-size:1rem;
-        line-height:1.84;
-      }
-
-      .cta-row{
-        justify-content:center;
-      }
-
-      .hero-panel{
-        max-width:560px;
-        margin:0 auto;
-      }
-
-      .section{
-        padding:74px 0;
-      }
-    }
-
-    @media (max-width:640px){
-      .wrap{
-        width:min(var(--max), calc(100% - 20px));
-      }
-
-      .hero-grid{
-        padding:50px 0 48px;
-      }
-
-      .panel,
-      .card-body,
-      .principle{
-        padding:22px 18px;
-      }
-
-      .btn{
-        width:100%;
-      }
-
-      .cta-row{
-        flex-direction:column;
-        align-items:stretch;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
+  <link rel="stylesheet" href="/assets/css/prawda-sumienia.css" />
 </head>
-<body>
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <div class="brand">
-        <div class="brand-main">Rap-Ort · Chapter</div>
-        <div class="brand-sub">Conscience Report</div>
-      </div>
+<body
+  data-page="prawda-sumienia"
+  data-lang="en"
+  data-quotes='[
+    "Truth does not need noise. It needs to be heard.",
+    "This is not a story of heroes. It is a story of choices.",
+    "Witness does not exist to be decorated. It exists to be carried.",
+    "Silence does not end history. Sometimes it becomes its heaviest part.",
+    "This work asks not only what happened, but what we are meant to do with that knowledge now."
+  ]'
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
 
-      <nav class="nav-links" aria-label="Main navigation">
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="#concept">Concept</a>
+      <a class="mobile-menu-link" href="#architecture">Architecture</a>
+      <a class="mobile-menu-link" href="#context">Why It Matters</a>
+      <a class="mobile-menu-link" href="#institutional">Institutional Mode</a>
+      <a class="mobile-menu-link" href="#principles">Principles</a>
+      <a class="mobile-menu-link" href="#contact">Contact</a>
+
+      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+        Cinematic Mode
+      </button>
+
+      <div class="mobile-lang-switch">
+        <a href="/rap-ort/prawda-sumienia/" class="active">EN</a>
+        <span>|</span>
+        <a href="/rap-ort/prawda-sumienia/pl/">PL</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/" aria-label="Conscience Report">
+        <div class="brand-name ps-brand">Rap-Ort · Chapter</div>
+        <div class="brand-sub">Conscience Report</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Main navigation">
         <a href="#concept">Concept</a>
-        <a href="#format">Format</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#context">Why It Matters</a>
+        <a href="#institutional">Institutional Mode</a>
         <a href="#principles">Principles</a>
+        <a href="#contact">Contact</a>
+
+        <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
+
         <div class="lang-switch">
-          <a href="/rap-ort/prawda-sumienia/" class="lang-item active">EN</a>
-          <span class="lang-sep">|</span>
-          <a href="/rap-ort/prawda-sumienia/pl/" class="lang-item">PL</a>
+          <a href="/rap-ort/prawda-sumienia/" class="active">EN</a>
+          <span>|</span>
+          <a href="/rap-ort/prawda-sumienia/pl/">PL</a>
         </div>
       </nav>
+
+      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-overlay"></div>
+    <section class="hero hero-ps">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-image"></div>
+        <div class="hero-light"></div>
+        <div class="hero-fade"></div>
+      </div>
 
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
-          <div class="eyebrow">Central Current Chapter</div>
+          <div class="eyebrow">English-language chapter of Rap-Ort</div>
+
           <h1 class="hero-title">Conscience Report</h1>
-          <div class="hero-subtitle">An institutional audiovisual work built around witness, moral pressure, and the consequences of silence.</div>
+
+          <div class="hero-subtitle">
+            An institutional audiovisual work built around witness, moral pressure, and the consequences of silence.
+          </div>
+
           <p class="hero-lead">
-            Conscience Report is the central current chapter of the Rap-Ort universe. Designed as a complete audiovisual experience, it moves between narrative music, cinematic image, and ethical report-like structure — intended for reflective and institutional presentation rather than spectacle.
+            Conscience Report is the English-language chapter of the Rap-Ort universe.
+            It is built as a full audiovisual experience moving between narrative music,
+            cinematic image, and the ethical structure of a report. Developed on a new musical
+            foundation and a new visual body, it preserves the same structural meaning as the Polish chapter
+            while opening that meaning to an international audience and to the Polish diaspora abroad.
           </p>
 
+          <div class="hero-statement">
+            This is not simply a work about a past event. It is a confrontation with what witness, silence, and responsibility still demand in the present.
+          </div>
+
+          <div class="memory-quote-block">
+            <div class="memory-quote-label">Axis of the chapter</div>
+            <p class="memory-quote-text" id="memoryQuoteText">
+              Truth does not need noise. It needs to be heard.
+            </p>
+          </div>
+
           <div class="cta-row">
-            <a class="btn btn-primary" href="#concept">Explore Chapter</a>
-            <a class="btn btn-secondary" href="/rap-ort/">Back to Rap-Ort</a>
+            <a class="btn btn-primary" href="#architecture">See the structure of the chapter</a>
+            <a class="btn btn-secondary" href="#institutional">Institutional mode</a>
+            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Enter Cinematic Mode</button>
           </div>
         </div>
 
         <div class="hero-side reveal">
-          <aside class="hero-panel">
-            <div class="hero-panel-label">Orientation</div>
-            <p class="hero-panel-quote">“Truth does not need noise. It needs to be heard.”</p>
-            <p class="hero-panel-text">
-              This chapter is conceived for concentrated viewing, institutional use, and reflective discussion grounded in witness and responsibility.
+          <aside class="glass-panel">
+            <div class="panel-label">Orientation</div>
+            <p class="panel-quote">“Truth does not need noise. It needs to be heard.”</p>
+            <p class="panel-text">
+              This chapter is intended for focused, reflective, and institutional reception.
+              It does not exist to dramatize history for effect, but to restore weight to witness,
+              moral pressure, and the cost of silence.
             </p>
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section continue-section" id="continueSection">
+      <div class="wrap">
+        <div class="content-panel continue-panel" id="continuePanel">
+          <h3>Continue where you left off</h3>
+          <p id="continueText">Return to the most recently opened Rap-Ort chapter.</p>
+          <div class="cta-row compact">
+            <a class="btn btn-primary" href="#" id="continueButton">Continue</a>
+            <button class="btn btn-secondary" type="button" id="dismissContinue">Dismiss</button>
+          </div>
         </div>
       </div>
     </section>
@@ -648,66 +165,195 @@
         <div class="section-head reveal">
           <div>
             <div class="section-kicker">Concept</div>
-            <h2>A chapter structured as witness</h2>
+            <h2>A chapter built like witness</h2>
           </div>
           <div class="section-note">
-            Its aim is not to reconstruct history in a literal way, but to create an attentive space in which testimony, responsibility, and the ethical weight of decisions can be encountered through audiovisual form.
+            The aim is not to produce a literal reconstruction of history, but to create a space in which witness, responsibility, and the ethical weight of decision can be encountered through audiovisual form.
           </div>
         </div>
 
-        <div class="panel reveal">
+        <div class="content-panel reveal">
+          <h3>A work developed for attentive reception</h3>
           <p>
-            Built around the reports of Witold Pilecki, the experience of Auschwitz, and broader questions of silence, witness, and human responsibility, Conscience Report exists as a complete chapter within Rap-Ort: self-contained, but also part of a larger narrative universe. Its language remains restrained, historically conscious, and oriented toward reflection rather than sensation.
+            Built around Witold Pilecki’s reports, the experience of Auschwitz, and wider questions of silence,
+            witness, and human responsibility, Conscience Report stands as a full chapter of the Rap-Ort universe,
+            while also acting as a bridge for audiences who do not automatically carry the Polish historical frame
+            within themselves. Its language remains restrained, historically conscious, and directed toward reflection rather than sensation.
+            The purpose is not decorative representation, but the recovery of weight — the weight of witness,
+            and the weight of what follows once witness has been heard.
           </p>
         </div>
 
         <div class="quote-block reveal">
-          <p>“This is not a story about heroes. It is a story about choices.”</p>
+          <p>“This is not a story of heroes. It is a story of choices.”</p>
           <span>Conscience Report</span>
         </div>
       </div>
     </section>
 
-    <section class="section" id="format">
+    <section class="section" id="architecture">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Format</div>
-            <h2>Institutional audiovisual work</h2>
+            <div class="section-kicker">Architecture of the chapter</div>
+            <h2>How Conscience Report works</h2>
           </div>
           <div class="section-note">
-            The chapter was designed as a linear and reflective screening experience rather than a concert, conventional film, or educational simplification.
+            The work does not rely on one medium alone. Its force emerges from the tension between source, rhythm, image, and ethical pressure.
           </div>
         </div>
 
-        <div class="grid">
-          <article class="card reveal">
+        <div class="grid grid-2">
+          <article class="card stage-card reveal">
             <div class="card-body">
               <div class="chips">
-                <span class="chip">Approx. 65 min</span>
-                <span class="chip">Audiovisual</span>
-                <span class="chip">Institutional</span>
+                <span class="chip">Source</span>
+                <span class="chip">Witness</span>
               </div>
-              <h3>Mode of presentation</h3>
+              <h3>Foundational material</h3>
               <p>
-                A complete audiovisual chapter intended for screenings in institutional, educational, or commemorative settings, with or without follow-up discussion.
+                At the basis of the chapter stands the obligation to treat witness seriously — not as raw material for effect,
+                but as the point of gravity from which everything else begins.
               </p>
             </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card stage-card reveal">
             <div class="card-body">
               <div class="chips">
-                <span class="chip">Narrative music</span>
-                <span class="chip">Cinematic image</span>
-                <span class="chip">Ethical frame</span>
+                <span class="chip">Form</span>
+                <span class="chip">Music + image</span>
               </div>
-              <h3>Language of form</h3>
+              <h3>Audiovisual language</h3>
               <p>
-                The work moves between narrative music, cinematic composition, and report-like structure, maintaining restraint and seriousness throughout.
+                Narrative music, cinematic composition, and the structure of a report work together here not in order to compete for attention,
+                but in order to build one continuous experience.
               </p>
             </div>
           </article>
+
+          <article class="card stage-card reveal">
+            <div class="card-body">
+              <div class="chips">
+                <span class="chip">Tension</span>
+                <span class="chip">Silence and responsibility</span>
+              </div>
+              <h3>Moral axis</h3>
+              <p>
+                Conscience Report does not stop at the question of what happened.
+                Its deeper weight appears in the question of what encounter with witness does to the one who receives it.
+              </p>
+            </div>
+          </article>
+
+          <article class="card stage-card reveal">
+            <div class="card-body">
+              <div class="chips">
+                <span class="chip">Reception</span>
+                <span class="chip">Attention</span>
+              </div>
+              <h3>Mode of experience</h3>
+              <p>
+                This chapter is designed for linear, reflective, and guided reception —
+                not as background content, but as a work that asks for presence.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div class="content-panel reveal architecture-panel">
+          <h3>Not a concert. Not a conventional film. Not a simplified lesson.</h3>
+          <p>
+            Conscience Report does not function as a concert, a conventional fiction feature, or a compressed history lesson.
+            It is an institutional audiovisual work operating at the point where report, narrative music, and cinematic form meet.
+            Its composition is designed not for immediate effect, but for a long ethical resonance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="context">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Why this matters beyond Poland</div>
+            <h2>A chapter that translates historical weight into shared moral language</h2>
+          </div>
+          <div class="section-note">
+            International audiences and the Polish diaspora may not enter the work from the same historical shorthand as a Polish audience. This chapter is built to bridge that distance without reducing the seriousness of the source.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <h3>A bridge, not an explanation from the outside</h3>
+          <p>
+            Conscience Report grows from a deeply Polish historical and moral experience, but it does not remain closed inside it.
+            For international audiences, the chapter opens that experience without flattening it. For the Polish diaspora,
+            it can function as a bridge between inherited memory and a language capable of carrying that memory in a wider cultural space.
+            Its purpose is not to universalize history by erasing its origin, but to make its pressure intelligible beyond a single national frame.
+          </p>
+        </div>
+
+        <div class="grid grid-3 audience-grid">
+          <article class="card audience-card reveal">
+            <div class="card-body">
+              <h3>International viewers</h3>
+              <p>
+                As an entry into witness, responsibility, totalitarian pressure, and the cost of silence without requiring prior immersion in Polish historical discourse.
+              </p>
+            </div>
+          </article>
+
+          <article class="card audience-card reveal">
+            <div class="card-body">
+              <h3>Polish diaspora</h3>
+              <p>
+                As a bridge between memory carried through Polish experience and a form capable of speaking clearly in an international environment.
+              </p>
+            </div>
+          </article>
+
+          <article class="card audience-card reveal">
+            <div class="card-body">
+              <h3>Institutions abroad</h3>
+              <p>
+                As a serious entry point for schools, universities, museums, and cultural organizations that need both context and artistic discipline.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="institutional">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Institutional mode</div>
+            <h2>How this chapter can work in practice</h2>
+          </div>
+          <div class="section-note">
+            Conscience Report is conceived as a screening work, but also as a starting point for educational, commemorative, and reflective use.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <h3>Use and reception</h3>
+          <p>
+            This chapter can function as an institutional screening, an anniversary event, a component within an educational program,
+            a point of departure for post-screening discussion, and later as a foundation for guided work led by a teacher or facilitator.
+            It is built to operate across contexts — from schools and universities to museums, cultural organizations,
+            and diaspora environments seeking a serious and usable form.
+          </p>
+        </div>
+
+        <div class="content-panel reveal teaser-panel">
+          <h3>Educational layer</h3>
+          <p>
+            In later stages, further guided pathways will be developed within this chapter:
+            teacher-facing materials, reception structures, supporting resources, and deeper frameworks for work with a group.
+            The space for that layer already exists here — but it does not yet interrupt the central experience of the work itself.
+          </p>
         </div>
       </div>
     </section>
@@ -716,58 +362,151 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Foundational Principles</div>
+            <div class="section-kicker">Foundational principles</div>
             <h2>What governs this chapter</h2>
           </div>
           <div class="section-note">
-            Conscience Report is defined not by visual scale alone, but by its treatment of witness, silence, and moral consequence.
+            Conscience Report is defined not by visual scale alone, but by how it treats witness, silence, complexity, and moral consequence.
           </div>
         </div>
 
-        <div class="principles">
-          <article class="principle reveal">
-            <h3>Witness</h3>
-            <p>Testimony remains the core axis of the work. The chapter begins from the obligation to take witness seriously.</p>
+        <div class="grid grid-2 principles-grid">
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Witness</h3>
+              <p>
+                Witness remains the central axis of the work. The chapter begins from the obligation to treat it seriously.
+              </p>
+            </div>
           </article>
 
-          <article class="principle reveal">
-            <h3>Restraint</h3>
-            <p>The form avoids spectacle, sensationalism, and aesthetic excess. Meaning remains more important than display.</p>
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Restraint</h3>
+              <p>
+                The form avoids spectacle, sensationalism, and aesthetic excess. Meaning remains more important than effect.
+              </p>
+            </div>
           </article>
 
-          <article class="principle reveal">
-            <h3>Responsibility</h3>
-            <p>The chapter asks not only what happened, but what responsibility now demands of the audience facing this testimony.</p>
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Complexity</h3>
+              <p>
+                The work does not search for comfortable simplifications. It accepts the weight of history without reducing it to one easy answer.
+              </p>
+            </div>
+          </article>
+
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Responsibility</h3>
+              <p>
+                The chapter asks not only what happened, but what this confrontation with witness requires from the viewer now.
+              </p>
+            </div>
           </article>
         </div>
+      </div>
+    </section>
 
-        <div class="cta-row reveal" style="margin-top:32px;">
-          <a class="btn btn-secondary" href="/rap-ort/">Back to Rap-Ort Universe</a>
-          <a class="btn btn-secondary" href="/">Main Site</a>
+    <section class="section" id="related">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Within the Rap-Ort universe</div>
+            <h2>Further entries</h2>
+          </div>
+          <div class="section-note">
+            Conscience Report functions as the English-language parallel chapter, while the Polish source chapter remains Prawda Sumienia inside the same wider architecture.
+          </div>
+        </div>
+
+        <div class="grid grid-2 related-grid">
+          <article class="content-panel reveal">
+            <h3>Prawda Sumienia</h3>
+            <p>
+              Return to the central Polish chapter in order to see how the source work stands inside its own language, rhythm, and institutional frame.
+            </p>
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Open Prawda Sumienia</a>
+            </div>
+          </article>
+
+          <article class="content-panel reveal">
+            <h3>Back to Rap-Ort</h3>
+            <p>
+              Return to the wider universe in order to see how this chapter functions within the broader architecture of memory, responsibility, and future entries.
+            </p>
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/">Open Rap-Ort</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Contact and collaboration</div>
+            <h2>Screenings, institutions, future layer development</h2>
+          </div>
+          <div class="section-note">
+            Conscience Report can function as a screening work, an anniversary event, a point of departure for discussion, or the basis for broader institutional collaboration.
+          </div>
+        </div>
+
+        <div class="grid grid-2 contact-grid">
+          <article class="content-panel reveal">
+            <h3>Direct contact</h3>
+            <p>
+              Piotr Lichwała (Vibrosław)<br>
+              Email: peter.lichwala@gmail.com<br>
+              United Kingdom
+            </p>
+
+            <div class="cta-row compact">
+              <a class="btn btn-primary" href="mailto:peter.lichwala@gmail.com">Send email</a>
+              <a class="btn btn-secondary" href="/rap-ort/">Back to Rap-Ort</a>
+            </div>
+          </article>
+
+          <article class="content-panel reveal">
+            <h3>Chapter navigation</h3>
+            <p>
+              This page remains the English-language entry into the chapter, while the Polish source chapter and the wider Rap-Ort universe continue alongside it.
+            </p>
+
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Prawda Sumienia</a>
+              <a class="btn btn-secondary" href="/">Homepage</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <div class="floating-tools">
+    <button class="tool-button" id="reducedMotionToggle" type="button">Reduced Motion</button>
+    <button class="tool-button" id="scrollTopButton" type="button">Top</button>
+  </div>
+
+  <footer class="site-footer">
     <div class="wrap footer-inner">
       <div>Conscience Report · Rap-Ort · Piotr Lichwała (Vibrosław)</div>
       <div>English version</div>
     </div>
   </footer>
 
-  <script>
-    const revealItems = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14 });
-
-    revealItems.forEach(item => revealObserver.observe(item));
-  </script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/cinematic.js"></script>
+  <script src="/assets/js/continue.js"></script>
+  <script src="/assets/js/quotes.js"></script>
+  <script src="/assets/js/prawda-sumienia.js"></script>
 </body>
 </html>
