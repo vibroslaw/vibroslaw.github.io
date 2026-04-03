@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Battles — SZTAB</title>
+  <meta name="description" content="Battles is a SZTAB category devoted to clashes and turning points where history changed direction." />
+  <meta name="theme-color" content="#090909" />
+
+  <meta property="og:title" content="Battles — SZTAB" />
+  <meta property="og:description" content="A cinematic series exploring battles and turning points that shaped history." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piotrlichwala.com/sztab/battles/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#090909; --bg-soft:#101010;
+      --line:rgba(255,255,255,0.08);
+      --text:#f0e9df; --muted:rgba(240,233,223,0.74);
+      --accent:#d4a95c;
+      --shadow:0 30px 90px rgba(0,0,0,0.38);
+      --radius-xl:32px;
+      --max:1320px;
+      --nav-h:78px;
+      --ease:cubic-bezier(.22,1,.36,1);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#080808,#0e0e0e);
+    }
+
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(var(--max), calc(100% - 32px)); margin:auto}
+
+    /* NAV */
+    .nav{
+      position:sticky; top:0;
+      backdrop-filter:blur(14px);
+      background:rgba(9,9,9,0.8);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav-inner{
+      min-height:var(--nav-h);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .brand-main{
+      font-family:"Oswald";
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+
+    .nav-links a{color:var(--muted)}
+
+    .lang-switch{display:flex; gap:8px}
+    .lang-item.active{color:white}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      min-height:85vh;
+      display:flex;
+      align-items:flex-end;
+    }
+
+    .hero-bg{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.9)),
+        url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=2200&q=80') center/cover;
+      filter:brightness(.6);
+    }
+
+    .hero-content{
+      position:relative;
+      padding:90px 0;
+      max-width:700px;
+    }
+
+    .hero-title{
+      font-family:"Oswald";
+      font-size:clamp(3rem,6vw,6rem);
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin:0;
+    }
+
+    .hero-subtitle{
+      font-family:"Cormorant Garamond";
+      font-size:2rem;
+      margin-top:16px;
+    }
+
+    .hero-lead{
+      margin-top:20px;
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    /* BUTTON */
+    .btn{
+      display:inline-block;
+      padding:12px 20px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      margin-top:24px;
+    }
+
+    .btn-primary{
+      background:white;
+      color:black;
+    }
+
+    /* SECTION */
+    .section{padding:80px 0}
+    h2{
+      font-family:"Cormorant Garamond";
+      font-size:2.8rem;
+    }
+
+    .episodes{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      transition:.3s;
+    }
+
+    .card:hover{transform:translateY(-4px)}
+
+    .card-img{
+      height:220px;
+      background-size:cover;
+      background-position:center;
+    }
+
+    .card-body{padding:20px}
+    .card-title{
+      font-family:"Cormorant Garamond";
+      font-size:1.8rem;
+    }
+
+    .card-text{color:var(--muted)}
+
+    @media(max-width:900px){
+      .episodes{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand-main">SZTAB · Battles</div>
+
+    <nav class="nav-links">
+      <a href="#episodes">Episodes</a>
+      <div class="lang-switch">
+        <a href="/sztab/battles/" class="lang-item active">EN</a>
+        <span>|</span>
+        <a href="/sztab/battles/pl/">PL</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="wrap hero-content">
+    <h1 class="hero-title">Battles</h1>
+
+    <div class="hero-subtitle">
+      Moments where history collided and changed direction.
+    </div>
+
+    <p class="hero-lead">
+      Battles gathers episodes built around confrontation, impact, and consequence. 
+      Not just military events — but moments where history accelerated and reshaped the future.
+    </p>
+
+    <a class="btn btn-primary" href="#episodes">Explore Episodes</a>
+  </div>
+</section>
+
+<section class="section" id="episodes">
+  <div class="wrap">
+    <h2>Episode Catalogue</h2>
+
+    <div class="episodes">
+
+      <div class="card">
+        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="card-body">
+          <div class="card-title">Grunwald</div>
+          <p class="card-text">
+            A battle remembered across centuries — where symbol and history merged.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1516542076529-1ea3854896c1?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="card-body">
+          <div class="card-title">Warsaw 1920</div>
+          <p class="card-text">
+            A decisive clash shaping the political future of Europe.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1520975928318-3b5c3b3f38d6?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="card-body">
+          <div class="card-title">Vilnius</div>
+          <p class="card-text">
+            A battlefield where memory, identity, and geopolitics intersect.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>
