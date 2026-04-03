@@ -1,9 +1,10 @@
 body.cinematic-mode{
-  background:#050505;
+  background:#040404;
 }
 
 body.cinematic-mode .site-header{
   opacity:.06;
+  transform:translateY(-6px);
 }
 
 body.cinematic-mode .site-footer{
@@ -16,8 +17,8 @@ body.cinematic-mode .floating-tools{
 
 body.cinematic-mode .hero-fade{
   background:
-    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.94)),
-    linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.08));
+    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.95)),
+    linear-gradient(90deg, rgba(0,0,0,.64), rgba(0,0,0,.10));
 }
 
 body.cinematic-mode .hero-light{
@@ -25,16 +26,17 @@ body.cinematic-mode .hero-light{
 }
 
 body.cinematic-mode .section{
-  padding:110px 0;
+  padding:124px 0;
 }
 
 body.cinematic-mode .content-panel,
 body.cinematic-mode .card,
-body.cinematic-mode .glass-panel{
-  border-color:rgba(255,255,255,0.06);
+body.cinematic-mode .glass-panel,
+body.cinematic-mode .timeline-item{
+  border-color:rgba(255,255,255,0.055);
   background:
-    linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.014)),
-    radial-gradient(circle at top right, rgba(201,178,143,.07), transparent 40%);
+    linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.012)),
+    radial-gradient(circle at top right, rgba(201,178,143,.06), transparent 40%);
 }
 
 body.cinematic-mode .section-note,
@@ -42,11 +44,26 @@ body.cinematic-mode p,
 body.cinematic-mode .panel-text,
 body.cinematic-mode .hero-lead,
 body.cinematic-mode .memory-quote-text{
-  color:rgba(240,233,223,.78);
+  color:rgba(242,236,227,.80);
+}
+
+body.cinematic-mode .btn-secondary,
+body.cinematic-mode .btn-tertiary,
+body.cinematic-mode .contact-link,
+body.cinematic-mode .tool-button{
+  opacity:.88;
 }
 
 body.cinematic-mode .site-header,
 body.cinematic-mode .site-footer,
 body.cinematic-mode .floating-tools{
-  transition:opacity .45s ease;
+  transition:
+    opacity .45s var(--ease),
+    transform .45s var(--ease);
+}
+
+@media (max-width:760px){
+  body.cinematic-mode .section{
+    padding:96px 0;
+  }
 }
