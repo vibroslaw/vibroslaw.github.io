@@ -5,640 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Prawda Sumienia — Rap-Ort</title>
-  <meta name="description" content="Prawda Sumienia to centralny obecnie rozdział uniwersum Rap-Ort — instytucjonalne dzieło audiowizualne zbudowane wokół świadectwa, odpowiedzialności i konsekwencji milczenia." />
+  <meta name="description" content="Prawda Sumienia to centralny rozdział uniwersum Rap-Ort — instytucjonalne dzieło audiowizualne zbudowane wokół świadectwa, odpowiedzialności i konsekwencji milczenia." />
   <meta name="theme-color" content="#090909" />
 
   <meta property="og:title" content="Prawda Sumienia — Rap-Ort" />
-  <meta property="og:description" content="Instytucjonalny rozdział audiowizualny zbudowany wokół świadectwa, odpowiedzialności i konsekwencji milczenia." />
+  <meta property="og:description" content="Instytucjonalne dzieło audiowizualne zbudowane wokół świadectwa, odpowiedzialności i konsekwencji milczenia." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/rap-ort/prawda-sumienia/pl/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#080808;
-      --bg-soft:#101010;
-      --panel:rgba(255,255,255,0.04);
-      --line:rgba(255,255,255,0.08);
-      --line-strong:rgba(255,255,255,0.14);
-
-      --text:#efe8de;
-      --muted:rgba(239,232,222,0.74);
-      --soft:rgba(239,232,222,0.50);
-
-      --accent:#cbb08a;
-      --shadow:0 30px 90px rgba(0,0,0,0.38);
-      --radius-xl:32px;
-      --radius-lg:24px;
-
-      --max:1280px;
-      --nav-h:78px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:"Inter",sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top, rgba(203,176,138,.09), transparent 26%),
-        linear-gradient(180deg, #070707 0%, #0b0b0b 30%, #0d0d0d 100%);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        linear-gradient(rgba(255,255,255,.014), rgba(255,255,255,.014)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.010) 0px,
-          rgba(255,255,255,.010) 1px,
-          transparent 1px,
-          transparent 3px
-        );
-      opacity:.11;
-      mix-blend-mode:soft-light;
-      z-index:0;
-    }
-
-    a{color:inherit;text-decoration:none}
-    .wrap{
-      width:min(var(--max), calc(100% - 32px));
-      margin:0 auto;
-      position:relative;
-      z-index:1;
-    }
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:100;
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      background:rgba(8,8,8,.74);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-
-    .nav-inner{
-      min-height:var(--nav-h);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .brand-main{
-      font-family:"Cinzel",serif;
-      font-size:1.15rem;
-      line-height:1;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .brand-sub{
-      font-size:.76rem;
-      color:var(--soft);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      font-size:.94rem;
-      transition:color .25s ease;
-    }
-
-    .nav-links a:hover{color:var(--text)}
-
-    .lang-switch{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .lang-item{
-      color:var(--muted);
-      font-size:.94rem;
-    }
-
-    .lang-item.active{color:var(--text)}
-    .lang-sep{color:var(--soft)}
-
-    .hero{
-      position:relative;
-      min-height:calc(100vh - var(--nav-h));
-      display:flex;
-      align-items:center;
-      overflow:hidden;
-    }
-
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      z-index:0;
-      background:
-        linear-gradient(180deg, rgba(6,6,6,.20) 0%, rgba(6,6,6,.36) 36%, rgba(6,6,6,.88) 100%),
-        radial-gradient(circle at 76% 24%, rgba(203,176,138,.18), transparent 30%),
-        url('https://images.unsplash.com/photo-1514302240736-b1fee5985889?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
-      filter:saturate(.58) brightness(.58) contrast(1.02);
-      transform:scale(1.04);
-    }
-
-    .hero-overlay{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(6,6,6,.88) 0%, rgba(6,6,6,.70) 38%, rgba(6,6,6,.30) 72%, rgba(6,6,6,.18) 100%),
-        linear-gradient(180deg, rgba(6,6,6,.10) 0%, rgba(6,6,6,.42) 58%, rgba(6,6,6,.95) 100%);
-    }
-
-    .hero-grid{
-      position:relative;
-      z-index:2;
-      display:grid;
-      grid-template-columns:minmax(0, 760px) minmax(280px, 360px);
-      justify-content:space-between;
-      gap:48px;
-      align-items:end;
-      width:100%;
-      padding:98px 0 78px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:20px;
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.20em;
-      font-size:.72rem;
-    }
-
-    .eyebrow::before{
-      content:"";
-      width:42px;
-      height:1px;
-      background:rgba(203,176,138,.60);
-    }
-
-    .hero-title{
-      margin:0;
-      font-family:"Cinzel",serif;
-      font-size:clamp(2.8rem, 6vw, 5.4rem);
-      line-height:.94;
-      letter-spacing:.07em;
-      text-transform:uppercase;
-    }
-
-    .hero-subtitle{
-      margin:18px 0 0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.45rem, 2.2vw, 2.1rem);
-      line-height:1.08;
-      max-width:18ch;
-    }
-
-    .hero-lead{
-      margin:28px 0 0;
-      max-width:58ch;
-      color:var(--muted);
-      line-height:1.92;
-      font-size:1.04rem;
-    }
-
-    .cta-row{
-      margin-top:34px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      min-height:50px;
-      padding:0 20px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      border:1px solid var(--line);
-      font-size:.96rem;
-      transition:transform .25s ease, background .25s ease, border-color .25s ease;
-    }
-
-    .btn:hover{transform:translateY(-1px)}
-
-    .btn-primary{
-      background:var(--text);
-      color:#0a0a0a;
-      border-color:transparent;
-    }
-
-    .btn-secondary{
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-    }
-
-    .btn-secondary:hover{
-      background:rgba(255,255,255,.08);
-      border-color:var(--line-strong);
-    }
-
-    .hero-panel{
-      width:100%;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
-        radial-gradient(circle at top right, rgba(203,176,138,.12), transparent 36%);
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      padding:24px 22px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-    }
-
-    .hero-panel-label{
-      font-size:.72rem;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:12px;
-    }
-
-    .hero-panel-quote{
-      margin:0 0 16px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.68rem;
-      line-height:1.08;
-    }
-
-    .hero-panel-text{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:.95rem;
-    }
-
-    .section{
-      position:relative;
-      z-index:1;
-      padding:92px 0;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:20px;
-      margin-bottom:30px;
-    }
-
-    .section-kicker{
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-size:.72rem;
-      margin-bottom:12px;
-    }
-
-    h2{
-      margin:0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.4rem, 4.8vw, 4rem);
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .section-note{
-      max-width:56ch;
-      color:var(--muted);
-      line-height:1.88;
-      font-size:1rem;
-    }
-
-    .panel{
-      border:1px solid var(--line);
-      border-radius:var(--radius-xl);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.024)),
-        radial-gradient(circle at top right, rgba(203,176,138,.10), transparent 34%);
-      box-shadow:var(--shadow);
-      padding:34px 28px;
-    }
-
-    .panel p{
-      max-width:72ch;
-      color:var(--muted);
-      line-height:1.95;
-      font-size:1.05rem;
-      margin:0;
-    }
-
-    .quote-block{
-      padding:26px 0 4px;
-      text-align:center;
-    }
-
-    .quote-block p{
-      margin:0 auto;
-      max-width:18ch;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.9rem, 4vw, 3rem);
-      line-height:1.04;
-    }
-
-    .quote-block span{
-      display:block;
-      margin-top:14px;
-      color:var(--soft);
-      font-size:.9rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:24px;
-    }
-
-    .card{
-      border-radius:var(--radius-xl);
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .card-body{
-      padding:30px 24px 24px;
-    }
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:16px;
-    }
-
-    .chip{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
-      color:var(--soft);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:.76rem;
-    }
-
-    .card h3{
-      margin:0 0 14px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:2rem;
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.86;
-      font-size:1rem;
-    }
-
-    .principles{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:18px;
-    }
-
-    .principle{
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.024));
-      box-shadow:var(--shadow);
-      padding:24px 20px;
-    }
-
-    .principle h3{
-      margin:0 0 12px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      line-height:.96;
-    }
-
-    .principle p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:.98rem;
-    }
-
-    .footer{
-      position:relative;
-      z-index:1;
-      padding:34px 0 64px;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-
-    .footer-inner{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-      color:var(--soft);
-      font-size:.94rem;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(18px);
-      transition:opacity .8s ease, transform .8s ease;
-    }
-
-    .reveal.visible{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    @media (max-width:1100px){
-      .hero-grid,
-      .grid,
-      .principles{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width:900px){
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-    @media (max-width:760px){
-      :root{--nav-h:72px}
-
-      .nav-inner{
-        min-height:auto;
-        padding:14px 0;
-        align-items:flex-start;
-      }
-
-      .nav-links{
-        gap:10px 12px;
-      }
-
-      .hero{
-        min-height:auto;
-      }
-
-      .hero-grid{
-        grid-template-columns:1fr;
-        padding:58px 0 52px;
-        gap:20px;
-      }
-
-      .eyebrow{
-        justify-content:center;
-      }
-
-      .hero-copy{
-        text-align:center;
-      }
-
-      .hero-title{
-        font-size:clamp(2.7rem, 11vw, 4.6rem);
-        max-width:12ch;
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-subtitle,
-      .hero-lead{
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-subtitle{max-width:16ch}
-      .hero-lead{
-        max-width:30ch;
-        font-size:1rem;
-        line-height:1.84;
-      }
-
-      .cta-row{
-        justify-content:center;
-      }
-
-      .hero-panel{
-        max-width:560px;
-        margin:0 auto;
-      }
-
-      .section{
-        padding:74px 0;
-      }
-    }
-
-    @media (max-width:640px){
-      .wrap{
-        width:min(var(--max), calc(100% - 20px));
-      }
-
-      .hero-grid{
-        padding:50px 0 48px;
-      }
-
-      .panel,
-      .card-body,
-      .principle{
-        padding:22px 18px;
-      }
-
-      .btn{
-        width:100%;
-      }
-
-      .cta-row{
-        flex-direction:column;
-        align-items:stretch;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
+  <link rel="stylesheet" href="/assets/css/prawda-sumienia.css" />
 </head>
-<body>
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <div class="brand">
-        <div class="brand-main">Rap-Ort · Rozdział</div>
-        <div class="brand-sub">Prawda Sumienia</div>
-      </div>
+<body
+  data-page="prawda-sumienia"
+  data-lang="pl"
+  data-quotes='[
+    "Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.",
+    "To nie jest historia bohaterów. To historia wyborów.",
+    "Świadectwo nie istnieje po to, by zostać ozdobione. Istnieje po to, by zostać uniesione.",
+    "Milczenie nie kończy historii. Czasem jest jej najcięższą częścią.",
+    "To dzieło nie pyta tylko, co się wydarzyło. Pyta również, co z tym zrobimy teraz."
+  ]'
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
 
-      <nav class="nav-links" aria-label="Główna nawigacja">
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="#concept">Koncepcja</a>
+      <a class="mobile-menu-link" href="#architecture">Architektura</a>
+      <a class="mobile-menu-link" href="#institutional">Tryb instytucjonalny</a>
+      <a class="mobile-menu-link" href="#principles">Założenia</a>
+      <a class="mobile-menu-link" href="#contact">Kontakt</a>
+
+      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+        Tryb kinowy
+      </button>
+
+      <div class="mobile-lang-switch">
+        <a href="/rap-ort/conscience-report/">EN</a>
+        <span>|</span>
+        <a href="/rap-ort/prawda-sumienia/pl/" class="active">PL</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/pl/" aria-label="Prawda Sumienia">
+        <div class="brand-name ps-brand">Rap-Ort · Rozdział</div>
+        <div class="brand-sub">Prawda Sumienia</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Główna nawigacja">
         <a href="#concept">Koncepcja</a>
-        <a href="#format">Forma</a>
+        <a href="#architecture">Architektura</a>
+        <a href="#institutional">Tryb instytucjonalny</a>
         <a href="#principles">Założenia</a>
+        <a href="#contact">Kontakt</a>
+
+        <button type="button" id="cinematicToggle" class="nav-button">Tryb kinowy</button>
+
         <div class="lang-switch">
-          <a href="/rap-ort/prawda-sumienia/" class="lang-item">EN</a>
-          <span class="lang-sep">|</span>
-          <a href="/rap-ort/prawda-sumienia/pl/" class="lang-item active">PL</a>
+          <a href="/rap-ort/conscience-report/">EN</a>
+          <span>|</span>
+          <a href="/rap-ort/prawda-sumienia/pl/" class="active">PL</a>
         </div>
       </nav>
+
+      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Otwórz menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-overlay"></div>
+    <section class="hero hero-ps">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-image"></div>
+        <div class="hero-light"></div>
+        <div class="hero-fade"></div>
+      </div>
 
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
-          <div class="eyebrow">Centralny Obecnie Rozdział</div>
+          <div class="eyebrow">Centralny rozdział uniwersum Rap-Ort</div>
+
           <h1 class="hero-title">Prawda Sumienia</h1>
-          <div class="hero-subtitle">Instytucjonalne dzieło audiowizualne zbudowane wokół świadectwa, presji moralnej i konsekwencji milczenia.</div>
+
+          <div class="hero-subtitle">
+            Instytucjonalne dzieło audiowizualne zbudowane wokół świadectwa, presji moralnej i konsekwencji milczenia.
+          </div>
+
           <p class="hero-lead">
-            Prawda Sumienia jest centralnym obecnie rozdziałem uniwersum Rap-Ort. Została pomyślana jako pełne doświadczenie audiowizualne, poruszające się pomiędzy muzyką narracyjną, obrazem filmowym i etyczną strukturą raportu — przeznaczone do uważnej prezentacji i odbioru instytucjonalnego, a nie widowiska.
+            Prawda Sumienia jest centralnym obecnie rozdziałem uniwersum Rap-Ort.
+            Została pomyślana jako pełne doświadczenie audiowizualne, poruszające się pomiędzy
+            muzyką narracyjną, obrazem filmowym i etyczną strukturą raportu — przeznaczone
+            do uważnej prezentacji i odbioru instytucjonalnego, a nie widowiska.
           </p>
 
+          <div class="hero-statement">
+            To nie jest seans o historii zamkniętej w przeszłości. To konfrontacja z tym, co świadectwo nadal wymaga od teraźniejszości.
+          </div>
+
+          <div class="memory-quote-block">
+            <div class="memory-quote-label">Oś rozdziału</div>
+            <p class="memory-quote-text" id="memoryQuoteText">
+              Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.
+            </p>
+          </div>
+
           <div class="cta-row">
-            <a class="btn btn-primary" href="#concept">Wejdź do Rozdziału</a>
-            <a class="btn btn-secondary" href="/rap-ort/pl/">Powrót do Rap-Ort</a>
+            <a class="btn btn-primary" href="#architecture">Zobacz architekturę rozdziału</a>
+            <a class="btn btn-secondary" href="#institutional">Tryb instytucjonalny</a>
+            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Włącz tryb kinowy</button>
           </div>
         </div>
 
         <div class="hero-side reveal">
-          <aside class="hero-panel">
-            <div class="hero-panel-label">Orientacja</div>
-            <p class="hero-panel-quote">„Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.”</p>
-            <p class="hero-panel-text">
-              Ten rozdział został pomyślany dla odbioru skupionego, instytucjonalnego i refleksyjnego — zakorzenionego w świadectwie oraz odpowiedzialności.
+          <aside class="glass-panel">
+            <div class="panel-label">Orientacja</div>
+            <p class="panel-quote">„Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.”</p>
+            <p class="panel-text">
+              Ten rozdział został pomyślany dla odbioru skupionego, instytucjonalnego i refleksyjnego —
+              zakorzenionego w świadectwie oraz odpowiedzialności. Nie istnieje po to, by epatować historią,
+              lecz po to, by przywrócić jej wagę.
             </p>
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section continue-section" id="continueSection">
+      <div class="wrap">
+        <div class="content-panel continue-panel" id="continuePanel">
+          <h3>Kontynuuj od miejsca, w którym skończyłeś</h3>
+          <p id="continueText">Wróć do ostatnio otwieranego rozdziału Rap-Ort.</p>
+          <div class="cta-row compact">
+            <a class="btn btn-primary" href="#" id="continueButton">Kontynuuj</a>
+            <button class="btn btn-secondary" type="button" id="dismissContinue">Zamknij</button>
+          </div>
         </div>
       </div>
     </section>
@@ -651,13 +165,18 @@
             <h2>Rozdział zbudowany jak świadectwo</h2>
           </div>
           <div class="section-note">
-            Celem nie jest literalna rekonstrukcja historii, lecz stworzenie uważnej przestrzeni, w której świadectwo, odpowiedzialność i etyczny ciężar decyzji mogą zostać spotkane poprzez formę audiowizualną.
+            Celem nie jest literalna rekonstrukcja historii, lecz stworzenie przestrzeni, w której świadectwo, odpowiedzialność i etyczny ciężar decyzji mogą zostać spotkane poprzez formę audiowizualną.
           </div>
         </div>
 
-        <div class="panel reveal">
+        <div class="content-panel reveal">
+          <h3>Dzieło rozwijane z myślą o uważnym odbiorze</h3>
           <p>
-            Zbudowana wokół raportów Witolda Pileckiego, doświadczenia Auschwitz oraz szerszych pytań o milczenie, świadectwo i ludzką odpowiedzialność, Prawda Sumienia istnieje jako pełny, samodzielny rozdział uniwersum Rap-Ort, a zarazem część większej struktury narracyjnej. Jej język pozostaje powściągliwy, świadomy historycznie i skierowany ku refleksji, nie ku sensacji.
+            Zbudowana wokół raportów Witolda Pileckiego, doświadczenia Auschwitz oraz szerszych pytań o milczenie,
+            świadectwo i ludzką odpowiedzialność, Prawda Sumienia istnieje jako pełny, samodzielny rozdział uniwersum Rap-Ort,
+            a zarazem część większej struktury narracyjnej. Jej język pozostaje powściągliwy, świadomy historycznie
+            i skierowany ku refleksji, nie ku sensacji. Nie chodzi tu o dekoracyjne odtworzenie przeszłości,
+            lecz o przywrócenie ciężaru świadectwu oraz pytaniu o to, co z nim robi współczesny odbiorca.
           </p>
         </div>
 
@@ -668,46 +187,145 @@
       </div>
     </section>
 
-    <section class="section" id="format">
+    <section class="section" id="architecture">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Forma</div>
-            <h2>Instytucjonalne dzieło audiowizualne</h2>
+            <div class="section-kicker">Architektura rozdziału</div>
+            <h2>Jak pracuje Prawda Sumienia</h2>
           </div>
           <div class="section-note">
-            Ten rozdział został zaprojektowany jako linearne i refleksyjne doświadczenie projekcyjne, a nie koncert, klasyczny film czy uproszczony materiał dydaktyczny.
+            To dzieło nie opiera się na jednym medium. Jego siła rodzi się z napięcia pomiędzy źródłem, rytmem, obrazem i pytaniem etycznym.
           </div>
         </div>
 
-        <div class="grid">
-          <article class="card reveal">
+        <div class="grid grid-2">
+          <article class="card stage-card reveal">
             <div class="card-body">
               <div class="chips">
-                <span class="chip">Ok. 65 min</span>
-                <span class="chip">Audiowizualne</span>
-                <span class="chip">Instytucjonalne</span>
+                <span class="chip">Źródło</span>
+                <span class="chip">Świadectwo</span>
               </div>
-              <h3>Tryb prezentacji</h3>
+              <h3>Materiał wyjściowy</h3>
               <p>
-                Pełny rozdział audiowizualny przeznaczony do projekcji w kontekście instytucjonalnym, edukacyjnym lub rocznicowym — z rozmową po seansie albo bez niej.
+                U podstaw rozdziału leży obowiązek poważnego potraktowania świadectwa — nie jako pretekstu do efektu,
+                lecz jako punktu ciężkości, od którego wszystko się zaczyna.
               </p>
             </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card stage-card reveal">
             <div class="card-body">
               <div class="chips">
-                <span class="chip">Muzyka narracyjna</span>
-                <span class="chip">Obraz filmowy</span>
-                <span class="chip">Rama etyczna</span>
+                <span class="chip">Forma</span>
+                <span class="chip">Muzyka + obraz</span>
               </div>
-              <h3>Język formy</h3>
+              <h3>Język audiowizualny</h3>
               <p>
-                Dzieło porusza się pomiędzy muzyką narracyjną, kompozycją filmową i strukturą raportu, zachowując powściągliwość i ciężar znaczenia na każdym poziomie.
+                Muzyka narracyjna, obraz filmowy i struktura raportu współpracują tu nie po to, by rywalizować o uwagę,
+                lecz po to, by zbudować jedno, linearne doświadczenie.
               </p>
             </div>
           </article>
+
+          <article class="card stage-card reveal">
+            <div class="card-body">
+              <div class="chips">
+                <span class="chip">Napięcie</span>
+                <span class="chip">Cisza i odpowiedzialność</span>
+              </div>
+              <h3>Oś moralna</h3>
+              <p>
+                Prawda Sumienia nie zatrzymuje się na pytaniu „co się wydarzyło”.
+                Jej właściwy ciężar ujawnia się w pytaniu: co robi z nami zetknięcie ze świadectwem.
+              </p>
+            </div>
+          </article>
+
+          <article class="card stage-card reveal">
+            <div class="card-body">
+              <div class="chips">
+                <span class="chip">Odbiór</span>
+                <span class="chip">Skupienie</span>
+              </div>
+              <h3>Tryb doświadczenia</h3>
+              <p>
+                To dzieło zostało zaprojektowane do odbioru linearnego, refleksyjnego i prowadzonego z uwagą —
+                nie jako tło, lecz jako forma, która wymaga obecności.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div class="content-panel reveal architecture-panel">
+          <h3>Nie koncert. Nie klasyczny film. Nie materiał uproszczony.</h3>
+          <p>
+            Prawda Sumienia nie funkcjonuje jako koncert, klasyczny film fabularny ani skrócona lekcja historii.
+            To instytucjonalne dzieło audiowizualne, które pracuje na styku raportu, muzyki narracyjnej i języka filmu.
+            Jego kompozycja ma prowadzić nie do szybkiego efektu, lecz do długiego rezonansu.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="institutional">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Tryb instytucjonalny</div>
+            <h2>Jak ten rozdział może pracować w rzeczywistości</h2>
+          </div>
+          <div class="section-note">
+            Prawda Sumienia została pomyślana jako dzieło projekcyjne, ale zarazem jako punkt wyjścia do pracy edukacyjnej, rocznicowej i refleksyjnej.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <h3>Zastosowanie</h3>
+          <p>
+            Ten rozdział może funkcjonować jako pokaz instytucjonalny, wydarzenie rocznicowe, element programu edukacyjnego,
+            punkt wyjścia do rozmowy po seansie, a w kolejnych warstwach także jako podstawa do prowadzenia zajęć przez nauczyciela
+            lub opiekuna grupy. Prawda Sumienia ma być zdolna pracować w różnych kontekstach — od szkoły, przez uczelnię,
+            po muzeum, ośrodek kultury i środowiska Polonii.
+          </p>
+        </div>
+
+        <div class="grid grid-3 audience-grid">
+          <article class="card audience-card reveal">
+            <div class="card-body">
+              <h3>Szkoły</h3>
+              <p>
+                Jako dzieło otwierające rozmowę o świadectwie, odpowiedzialności, systemach przemocy i ciężarze milczenia.
+              </p>
+            </div>
+          </article>
+
+          <article class="card audience-card reveal">
+            <div class="card-body">
+              <h3>Uczelnie</h3>
+              <p>
+                Jako materiał do pracy z historią, etyką, pamięcią zbiorową, dokumentem i językiem formy audiowizualnej.
+              </p>
+            </div>
+          </article>
+
+          <article class="card audience-card reveal">
+            <div class="card-body">
+              <h3>Instytucje kultury</h3>
+              <p>
+                Jako projekcja rocznicowa, wydarzenie specjalne, punkt programu lub część większej ramy pamięciowej i kuratorskiej.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div class="content-panel reveal teaser-panel">
+          <h3>Warstwa edukacyjna</h3>
+          <p>
+            W kolejnych etapach wewnątrz tego rozdziału będą rozwijane dalsze ścieżki pracy:
+            materiały dla nauczyciela, tryby prowadzenia odbioru, zasoby pomocnicze i struktury pogłębionej pracy z grupą.
+            Tutaj pozostaje już miejsce na tę warstwę — ale nie rozprasza ona jeszcze centralnego doświadczenia samego dzieła.
+          </p>
         </div>
       </div>
     </section>
@@ -716,58 +334,153 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Założenia Fundamentalne</div>
+            <div class="section-kicker">Założenia fundamentalne</div>
             <h2>Co rządzi tym rozdziałem</h2>
           </div>
           <div class="section-note">
-            Prawda Sumienia definiowana jest nie przez samą skalę wizualną, lecz przez sposób traktowania świadectwa, ciszy i moralnych konsekwencji.
+            Prawda Sumienia definiowana jest nie przez samą skalę wizualną, lecz przez sposób traktowania świadectwa, ciszy, złożoności i moralnych konsekwencji.
           </div>
         </div>
 
-        <div class="principles">
-          <article class="principle reveal">
-            <h3>Świadectwo</h3>
-            <p>Świadectwo pozostaje główną osią dzieła. Rozdział zaczyna się od obowiązku potraktowania go poważnie.</p>
+        <div class="grid grid-2 principles-grid">
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Świadectwo</h3>
+              <p>
+                Świadectwo pozostaje główną osią dzieła. Rozdział zaczyna się od obowiązku potraktowania go poważnie.
+              </p>
+            </div>
           </article>
 
-          <article class="principle reveal">
-            <h3>Powściągliwość</h3>
-            <p>Forma unika widowiskowości, sensacyjności i estetycznego nadmiaru. Znaczenie pozostaje ważniejsze niż efekt.</p>
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Powściągliwość</h3>
+              <p>
+                Forma unika widowiskowości, sensacyjności i estetycznego nadmiaru. Znaczenie pozostaje ważniejsze niż efekt.
+              </p>
+            </div>
           </article>
 
-          <article class="principle reveal">
-            <h3>Odpowiedzialność</h3>
-            <p>Rozdział pyta nie tylko o to, co się wydarzyło, ale również o to, czego ta konfrontacja ze świadectwem wymaga dziś od odbiorcy.</p>
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Złożoność</h3>
+              <p>
+                Dzieło nie szuka wygodnych uproszczeń. Uznaje ciężar historii i nie redukuje go do jednej, łatwej odpowiedzi.
+              </p>
+            </div>
+          </article>
+
+          <article class="card principle-card reveal">
+            <div class="card-body">
+              <h3>Odpowiedzialność</h3>
+              <p>
+                Rozdział pyta nie tylko o to, co się wydarzyło, ale również o to, czego ta konfrontacja ze świadectwem wymaga dziś od odbiorcy.
+              </p>
+            </div>
           </article>
         </div>
+      </div>
+    </section>
 
-        <div class="cta-row reveal" style="margin-top:32px;">
-          <a class="btn btn-secondary" href="/rap-ort/pl/">Powrót do Uniwersum Rap-Ort</a>
-          <a class="btn btn-secondary" href="/pl/">Strona Główna</a>
+    <section class="section" id="related">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">W uniwersum Rap-Ort</div>
+            <h2>Dalsze wejścia</h2>
+          </div>
+          <div class="section-note">
+            Prawda Sumienia pozostaje centralnym polskim rozdziałem, ale funkcjonuje wewnątrz większej struktury i obok równoległej anglojęzycznej wersji.
+          </div>
+        </div>
+
+        <div class="grid grid-2 related-grid">
+          <article class="content-panel reveal">
+            <h3>Powrót do Rap-Ort</h3>
+            <p>
+              Wróć do serca uniwersum, aby zobaczyć, jak ten rozdział funkcjonuje w szerszej architekturze pamięci, odpowiedzialności i kolejnych wejść.
+            </p>
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/pl/">Otwórz Rap-Ort</a>
+            </div>
+          </article>
+
+          <article class="content-panel reveal">
+            <h3>Conscience Report</h3>
+            <p>
+              Anglojęzyczny rozdział równoległy rozwijany na nowym podkładzie muzycznym i nowej warstwie wideo —
+              z zachowaniem tej samej osi sensu, ale w odrębnym kształcie audiowizualnym.
+            </p>
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/conscience-report/">Otwórz Conscience Report</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Kontakt i współpraca</div>
+            <h2>Projekcje, instytucje, rozwój dalszych warstw</h2>
+          </div>
+          <div class="section-note">
+            Prawda Sumienia może funkcjonować jako dzieło projekcyjne, wydarzenie rocznicowe, punkt wyjścia do rozmowy lub fundament szerszej współpracy instytucjonalnej.
+          </div>
+        </div>
+
+        <div class="grid grid-2 contact-grid">
+          <article class="content-panel reveal">
+            <h3>Kontakt bezpośredni</h3>
+            <p>
+              Piotr Lichwała (Vibrosław)<br>
+              Email: peter.lichwala@gmail.com<br>
+              Wielka Brytania
+            </p>
+
+            <div class="cta-row compact">
+              <a class="btn btn-primary" href="mailto:peter.lichwala@gmail.com">Napisz email</a>
+              <a class="btn btn-secondary" href="/rap-ort/pl/">Powrót do Rap-Ort</a>
+            </div>
+          </article>
+
+          <article class="content-panel reveal">
+            <h3>Nawigacja rozdziału</h3>
+            <p>
+              Ten rozdział pozostaje centralnym polskim wejściem do projektu. Obok niego rozwijany jest Conscience Report,
+              a wewnętrzne warstwy instytucjonalne będą rozbudowywane w dalszych etapach.
+            </p>
+
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/conscience-report/">Conscience Report</a>
+              <a class="btn btn-secondary" href="/pl/">Strona główna</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <div class="floating-tools">
+    <button class="tool-button" id="reducedMotionToggle" type="button">Mniej ruchu</button>
+    <button class="tool-button" id="scrollTopButton" type="button">Góra</button>
+  </div>
+
+  <footer class="site-footer">
     <div class="wrap footer-inner">
       <div>Prawda Sumienia · Rap-Ort · Piotr Lichwała (Vibrosław)</div>
       <div>Wersja polska</div>
     </div>
   </footer>
 
-  <script>
-    const revealItems = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14 });
-
-    revealItems.forEach(item => revealObserver.observe(item));
-  </script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/cinematic.js"></script>
+  <script src="/assets/js/continue.js"></script>
+  <script src="/assets/js/quotes.js"></script>
+  <script src="/assets/js/prawda-sumienia.js"></script>
 </body>
 </html>
