@@ -1,0 +1,52 @@
+body.cinematic-mode{
+  background:#050505;
+}
+
+body.cinematic-mode .site-header{
+  opacity:.06;
+}
+
+body.cinematic-mode .site-footer{
+  opacity:.08;
+}
+
+body.cinematic-mode .floating-tools{
+  opacity:.08;
+}
+
+body.cinematic-mode .hero-fade{
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.94)),
+    linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.08));
+}
+
+body.cinematic-mode .hero-light{
+  opacity:1.25;
+}
+
+body.cinematic-mode .section{
+  padding:110px 0;
+}
+
+body.cinematic-mode .content-panel,
+body.cinematic-mode .card,
+body.cinematic-mode .glass-panel{
+  border-color:rgba(255,255,255,0.06);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.014)),
+    radial-gradient(circle at top right, rgba(201,178,143,.07), transparent 40%);
+}
+
+body.cinematic-mode .section-note,
+body.cinematic-mode p,
+body.cinematic-mode .panel-text,
+body.cinematic-mode .hero-lead,
+body.cinematic-mode .memory-quote-text{
+  color:rgba(240,233,223,.78);
+}
+
+body.cinematic-mode .site-header,
+body.cinematic-mode .site-footer,
+body.cinematic-mode .floating-tools{
+  transition:opacity .45s ease;
+}
