@@ -4,11 +4,21 @@ const heroPS = document.querySelector(".hero-ps");
 const desktopSectionLinks = document.querySelectorAll('.desktop-nav a[href^="#"]');
 const mobileSectionLinks = document.querySelectorAll('.mobile-menu-link[href^="#"]');
 
+function getLanguage() {
+  return document.body.dataset.lang === "pl" ? "pl" : "en";
+}
+
 function updateReducedMotionLabel() {
   if (!reducedMotionToggle) return;
 
   const enabled = document.body.classList.contains("reduced-motion");
-  reducedMotionToggle.textContent = enabled ? "Ruch przywrócony" : "Mniej ruchu";
+  const lang = getLanguage();
+
+  if (lang === "pl") {
+    reducedMotionToggle.textContent = enabled ? "Ruch przywrócony" : "Mniej ruchu";
+  } else {
+    reducedMotionToggle.textContent = enabled ? "Motion Restored" : "Reduced Motion";
+  }
 }
 
 if (reducedMotionStored === "true") {
