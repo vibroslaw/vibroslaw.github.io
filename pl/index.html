@@ -3,797 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Piotr Lichwała (Vibrosław) — Projekty Audiowizualne</title>
+  <title>Piotr Lichwała (Vibrosław) — Projekty audiowizualne</title>
   <meta name="description" content="Oficjalna strona Piotra Lichwały (Vibrosław) — projekty audiowizualne na styku historii, pamięci i odpowiedzialności." />
   <meta name="theme-color" content="#090909" />
-
-  <meta property="og:title" content="Piotr Lichwała (Vibrosław) — Projekty Audiowizualne" />
+  <meta property="og:title" content="Piotr Lichwała (Vibrosław) — Projekty audiowizualne" />
   <meta property="og:description" content="Oficjalna strona Piotra Lichwały (Vibrosław) — projekty audiowizualne na styku historii, pamięci i odpowiedzialności." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/pl/" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#090909;
-      --bg-soft:#0f0f10;
-      --bg-soft-2:#141414;
-      --panel:rgba(255,255,255,0.035);
-      --panel-strong:rgba(255,255,255,0.055);
-      --line:rgba(255,255,255,0.08);
-      --line-strong:rgba(255,255,255,0.14);
-
-      --text:#f0e9df;
-      --muted:rgba(240,233,223,0.72);
-      --soft:rgba(240,233,223,0.52);
-
-      --accent:#c9b28f;
-      --accent-soft:rgba(201,178,143,0.16);
-
-      --shadow:0 30px 80px rgba(0,0,0,0.35);
-      --radius-xl:30px;
-      --radius-lg:24px;
-      --radius-md:18px;
-
-      --max:1280px;
-      --nav-h:78px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      color:var(--text);
-      font-family:"Inter",sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(201,178,143,0.08), transparent 28%),
-        linear-gradient(180deg, #080808 0%, #0b0b0b 32%, #0d0d0d 100%);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        linear-gradient(rgba(255,255,255,0.015), rgba(255,255,255,0.015)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,0.012) 0px,
-          rgba(255,255,255,0.012) 1px,
-          transparent 1px,
-          transparent 3px
-        );
-      opacity:.12;
-      mix-blend-mode:soft-light;
-      z-index:0;
-    }
-
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    img, video{
-      display:block;
-      max-width:100%;
-    }
-
-    .wrap{
-      width:min(var(--max), calc(100% - 32px));
-      margin:0 auto;
-      position:relative;
-      z-index:1;
-    }
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:100;
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      background:rgba(9,9,9,0.72);
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .nav-inner{
-      min-height:var(--nav-h);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      min-width:0;
-    }
-
-    .brand-name{
-      font-family:"Cormorant Garamond",serif;
-      font-weight:600;
-      font-size:1.65rem;
-      line-height:1;
-      letter-spacing:.02em;
-    }
-
-    .brand-sub{
-      font-size:.76rem;
-      line-height:1.2;
-      color:var(--soft);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      white-space:nowrap;
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      font-size:.94rem;
-      transition:opacity .25s ease, color .25s ease;
-    }
-
-    .nav-links a:hover{
-      color:var(--text);
-    }
-
-    .lang-switch{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .lang-item{
-      color:var(--muted);
-      font-size:.94rem;
-      transition:opacity .25s ease, color .25s ease;
-    }
-
-    .lang-item:hover{
-      color:var(--text);
-    }
-
-    .lang-item.active{
-      color:var(--text);
-    }
-
-    .lang-sep{
-      color:var(--soft);
-      font-size:.9rem;
-  
-    }
-
-    .hero{
-      position:relative;
-      min-height:calc(100vh - var(--nav-h));
-      display:flex;
-      align-items:center;
-      overflow:hidden;
-    }
-
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      z-index:0;
-      overflow:hidden;
-    }
-
-    .hero-image{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(8,8,8,0.18) 0%, rgba(8,8,8,0.28) 38%, rgba(8,8,8,0.76) 100%),
-        radial-gradient(circle at 72% 28%, rgba(201,178,143,0.18), transparent 28%),
-        url('https://images.unsplash.com/photo-1514302240736-b1fee5985889?auto=format&fit=crop&w=1800&q=80') center center / cover no-repeat;
-      transform:scale(1.03);
-      filter:saturate(.72) contrast(1.02) brightness(.68);
-    }
-
-    .hero-fade{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(8,8,8,0.86) 0%, rgba(8,8,8,0.68) 36%, rgba(8,8,8,0.30) 68%, rgba(8,8,8,0.24) 100%),
-        linear-gradient(180deg, rgba(8,8,8,0.10) 0%, rgba(8,8,8,0.40) 58%, rgba(8,8,8,0.92) 100%);
-    }
-
-    .hero-grid{
-      position:relative;
-      z-index:2;
-      display:grid;
-      grid-template-columns:minmax(0, 760px) minmax(280px, 360px);
-      justify-content:space-between;
-      gap:48px;
-      align-items:end;
-      width:100%;
-      padding:96px 0 74px;
-    }
-
-    .hero-copy{
-      max-width:760px;
-      padding-right:24px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:20px;
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-size:.74rem;
-    }
-
-    .eyebrow::before{
-      content:"";
-      width:38px;
-      height:1px;
-      background:rgba(201,178,143,0.6);
-    }
-
-    h1{
-      margin:0 0 20px;
-      font-family:"Cormorant Garamond",serif;
-      font-weight:600;
-      font-size:clamp(3.8rem, 7vw, 6.6rem);
-      line-height:.88;
-      letter-spacing:-0.025em;
-      max-width:12ch;
-    }
-
-    .hero-lead{
-      margin:0;
-      max-width:60ch;
-      font-size:1.07rem;
-      line-height:1.95;
-      color:var(--muted);
-    }
-
-    .hero-statement{
-      margin-top:30px;
-      max-width:20ch;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.5rem, 2.3vw, 2.15rem);
-      line-height:1.1;
-      color:var(--text);
-    }
-
-    .cta-row{
-      margin-top:34px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      min-height:50px;
-      padding:0 20px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      border:1px solid var(--line);
-      font-size:.96rem;
-      transition:transform .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
-      will-change:transform;
-    }
-
-    .btn:hover{
-      transform:translateY(-1px);
-    }
-
-    .btn-primary{
-      background:var(--text);
-      color:#0a0a0a;
-      border-color:transparent;
-    }
-
-    .btn-secondary{
-      background:rgba(255,255,255,0.03);
-      color:var(--text);
-    }
-
-    .btn-secondary:hover{
-      background:rgba(255,255,255,0.08);
-      border-color:var(--line-strong);
-    }
-
-    .hero-side{
-      display:flex;
-      justify-content:flex-end;
-      align-items:flex-end;
-    }
-
-    .hero-panel{
-      width:100%;
-      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      padding:24px 22px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      align-self:end;
-    }
-
-    .hero-panel-label{
-      font-size:.72rem;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:12px;
-    }
-
-    .hero-panel-quote{
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      line-height:1.08;
-      margin:0 0 16px;
-    }
-
-    .hero-panel-text{
-      font-size:.94rem;
-      line-height:1.78;
-      color:var(--muted);
-      margin:0;
-    }
-
-    .section{
-      position:relative;
-      padding:88px 0;
-      z-index:1;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:20px;
-      margin-bottom:28px;
-    }
-
-    .section-kicker{
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-size:.72rem;
-      margin-bottom:12px;
-    }
-
-    h2{
-      margin:0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.3rem, 4.6vw, 3.8rem);
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .section-note{
-      max-width:56ch;
-      color:var(--muted);
-      line-height:1.85;
-      font-size:1rem;
-    }
-
-    .grid-2{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:22px;
-    }
-
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:18px;
-    }
-
-    .card{
-      position:relative;
-      overflow:hidden;
-      border-radius:var(--radius-xl);
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
-      box-shadow:var(--shadow);
-    }
-
-    .project-card{
-      min-height:620px;
-      display:flex;
-      flex-direction:column;
-      transition:transform .35s ease, border-color .35s ease, background .35s ease;
-    }
-
-    .project-card:hover{
-      transform:translateY(-3px);
-      border-color:rgba(255,255,255,0.14);
-      background:linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.03));
-    }
-
-    .project-media{
-      position:relative;
-      min-height:320px;
-      overflow:hidden;
-      border-bottom:1px solid rgba(255,255,255,0.05);
-      background-size:cover;
-      background-position:center;
-      filter:saturate(.72);
-    }
-
-    .project-media::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.48)),
-        radial-gradient(circle at center, rgba(201,178,143,0.12), transparent 45%);
-    }
-
-    .project-media::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, transparent 0%, rgba(7,7,7,0.68) 100%);
-    }
-
-    .project-body{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      padding:28px 24px 24px;
-      flex:1;
-    }
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .chip{
-      border:1px solid var(--line);
-      color:var(--soft);
-      background:rgba(255,255,255,0.02);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:.76rem;
-      letter-spacing:.02em;
-    }
-
-    .project-title{
-      margin:0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:2.2rem;
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .project-text{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:1rem;
-      max-width:58ch;
-      flex:1;
-    }
-
-    .card-link{
-      margin-top:auto;
-    }
-
-    .mini-card{
-      min-height:250px;
-      padding:24px 22px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      transition:transform .3s ease, border-color .3s ease, background .3s ease;
-    }
-
-    .mini-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(255,255,255,0.13);
-      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.028));
-    }
-
-    .mini-title{
-      margin:0 0 12px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.9rem;
-      line-height:.96;
-      font-weight:600;
-    }
-
-    .mini-text{
-      margin:0;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:.98rem;
-    }
-
-    .contact-panel{
-      padding:30px 26px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.028)),
-        radial-gradient(circle at top right, rgba(201,178,143,0.12), transparent 36%);
-    }
-
-    .contact-name{
-      font-family:"Cormorant Garamond",serif;
-      font-size:2rem;
-      line-height:.96;
-      margin:0 0 14px;
-    }
-
-    .contact-text{
-      margin:0;
-      color:var(--muted);
-      line-height:1.9;
-    }
-
-    .footer{
-      position:relative;
-      z-index:1;
-      padding:34px 0 64px;
-      border-top:1px solid rgba(255,255,255,0.06);
-    }
-
-    .footer-inner{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-      color:var(--soft);
-      font-size:.94rem;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(18px);
-      transition:opacity .8s ease, transform .8s ease;
-    }
-
-    .reveal.visible{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    @media (max-width: 1100px){
-      .hero-grid{
-        grid-template-columns:1fr;
-        gap:22px;
-        align-items:end;
-      }
-
-      .hero-side{
-        justify-content:flex-start;
-      }
-
-      h1{
-        max-width:12ch;
-      }
-
-      .grid-3{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width: 900px){
-      .grid-2{
-        grid-template-columns:1fr;
-      }
-
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .project-card{
-        min-height:unset;
-      }
-
-      .project-media{
-        min-height:280px;
-      }
-    }
-
-    @media (max-width: 760px){
-      :root{
-        --nav-h:72px;
-      }
-
-      .nav-inner{
-        min-height:auto;
-        padding:14px 0;
-        align-items:flex-start;
-      }
-
-      .nav-links{
-        gap:10px 12px;
-      }
-
-      .brand-name{
-        font-size:1.45rem;
-      }
-
-      .brand-sub{
-        white-space:normal;
-      }
-
-      .hero{
-        min-height:auto;
-      }
-
-      .hero-fade{
-        background:
-          linear-gradient(180deg, rgba(8,8,8,0.44) 0%, rgba(8,8,8,0.58) 34%, rgba(8,8,8,0.92) 100%);
-      }
-
-      .hero-grid{
-        grid-template-columns:1fr;
-        padding:58px 0 52px;
-        gap:20px;
-      }
-
-      .hero-copy{
-        max-width:100%;
-        padding-right:0;
-        text-align:center;
-        margin:0 auto;
-      }
-
-      .eyebrow{
-        justify-content:center;
-      }
-
-      h1{
-        font-size:clamp(2.7rem, 11vw, 4.4rem);
-        max-width:12ch;
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-lead{
-        font-size:1rem;
-        line-height:1.82;
-        max-width:30ch;
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-statement{
-        max-width:16ch;
-        margin-left:auto;
-        margin-right:auto;
-        text-align:center;
-      }
-
-      .cta-row{
-        justify-content:center;
-      }
-
-      .hero-side{
-        justify-content:center;
-      }
-
-      .hero-panel{
-        max-width:560px;
-        margin:0 auto;
-      }
-
-      .section{
-        padding:72px 0;
-      }
-    }
-
-    @media (max-width: 640px){
-      .wrap{
-        width:min(var(--max), calc(100% - 20px));
-      }
-
-      .hero-grid{
-        padding:50px 0 48px;
-      }
-
-      .project-body,
-      .mini-card,
-      .contact-panel{
-        padding:22px 18px;
-      }
-
-      .project-title{
-        font-size:2rem;
-      }
-
-      .mini-title{
-        font-size:1.7rem;
-      }
-
-      .btn{
-        width:100%;
-      }
-
-      .cta-row{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .hero-panel{
-        padding:20px 18px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/main.css" />
 </head>
-<body>
+<body data-quotes='["Prawda nie potrzebuje ha\u0142asu. Potrzebuje, by zosta\u0142a us\u0142yszana.", "Nie wszystko, co wa\u017cne, jest od razu widoczne.", "Historia to nie tylko to, co si\u0119 wydarzy\u0142o. To tak\u017ce to, co pozosta\u0142o bez odpowiedzi.", "\u015awiadectwo bez formy zanika. Forma bez \u015bwiadectwa pustoszeje.", "Niekt\u00f3re historie przetrwaj\u0105 tylko wtedy, gdy kto\u015b zdecyduje si\u0119 nie\u015b\u0107 je dalej."]'>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <div class="mobile-panel" id="mobilePanel" aria-hidden="true">
+    <div class="mobile-panel-inner">
+      <a class="mobile-link" href="#projects">Projekty</a>
+      <a class="mobile-link" href="#pathways">Jak wejść</a>
+      <a class="mobile-link" href="#timeline">Mapa</a>
+      <a class="mobile-link" href="#about">O autorze</a>
+      <a class="mobile-link" href="#contact">Kontakt</a>
+      <button type="button" id="mobileCinematicToggle">Tryb kinowy</button>
+      <div class="lang-switch"><a href="/" class="lang-item">EN</a><span class="lang-sep">|</span><a href="/pl/" class="lang-item active">PL</a></div>
+    </div>
+  </div>
+
   <header class="nav">
     <div class="wrap nav-inner">
       <div class="brand">
         <div class="brand-name">Piotr Lichwała</div>
-        <div class="brand-sub">Vibrosław · Twórca Audiowizualny</div>
+        <div class="brand-sub">Vibrosław · Twórca audiowizualny</div>
       </div>
 
-      <nav class="nav-links" aria-label="Główna nawigacja">
+      <nav class="nav-links" aria-label="Main navigation">
         <a href="#projects">Projekty</a>
-        <a href="#other">Inne Obszary</a>
+        <a href="#pathways">Jak wejść</a>
+        <a href="#timeline">Mapa</a>
+        <a href="#about">O autorze</a>
         <a href="#contact">Kontakt</a>
-        <div class="lang-switch">
-          <a href="/" class="lang-item">EN</a>
-          <span class="lang-sep">|</span>
-          <a href="/pl/" class="lang-item active">PL</a>
-        </div>
+        <button type="button" id="cinematicToggle" data-enter="Tryb kinowy" data-exit="Exit">Tryb kinowy</button>
+        <div class="lang-switch"><a href="/" class="lang-item">EN</a><span class="lang-sep">|</span><a href="/pl/" class="lang-item active">PL</a></div>
       </nav>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Więcej">
+        <span class="nav-toggle-lines"><span></span><span></span><span></span></span>
+      </button>
+    </div>
   </header>
 
   <main>
     <section class="hero">
       <div class="hero-bg" aria-hidden="true">
-        <div class="hero-image"></div>
+        <div class="hero-image home"></div>
+        <div class="hero-glow"></div>
         <div class="hero-fade"></div>
       </div>
 
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
-          <div class="eyebrow">Oficjalna Strona</div>
-
+          <div class="eyebrow">Oficjalna strona</div>
           <h1>Projekty kształtowane przez pamięć, świadectwo i odpowiedzialność.</h1>
+          <p class="hero-lead">Piotr Lichwała (Vibrosław) tworzy formy audiowizualne budowane ze świadectwa, narracyjnej muzyki i języka filmowego — rozwijane z myślą o uważnym odbiorze, prezentacji instytucjonalnej i refleksji.</p>
+          <div class="hero-statement">Ta twórczość nie dotyczy wyłącznie przeszłości. Dotyczy także tego, czego odpowiedzialność wymaga od nas teraz.</div>
 
-          <p class="hero-lead">
-            Piotr Lichwała (Vibrosław) tworzy formy audiowizualne zbudowane ze świadectwa, narracyjnej muzyki i języka filmowego — rozwijane z myślą o uważnym odbiorze, prezentacji instytucjonalnej i refleksji.
-          </p>
-
-          <div class="hero-statement">
-            Ta twórczość nie dotyczy wyłącznie przeszłości. Dotyczy także tego, czego odpowiedzialność wymaga od nas teraz.
+          <div class="memory-quote">
+            <div class="memory-quote-label">Memory Quote</div>
+            <p class="memory-quote-text" id="memoryQuoteText">Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.</p>
           </div>
 
           <div class="cta-row">
-            <a class="btn btn-primary" href="#projects">Zobacz Projekty</a>
-            <a class="btn btn-secondary" href="#contact">Kontakt</a>
+            <a class="btn btn-primary fade-link" href="/rap-ort/" data-track="Rap-Ort">Wejdź do Rap-Ort</a>
+            <a class="btn btn-secondary fade-link" href="/sztab/" data-track="SZTAB">Wejdź do SZTAB</a>
+            <button class="btn btn-tertiary" type="button" id="cinematicHeroButton" data-enter="Włącz tryb kinowy" data-exit="Exit">Włącz tryb kinowy</button>
           </div>
         </div>
 
         <div class="hero-side reveal">
           <aside class="hero-panel">
             <div class="hero-panel-label">Orientacja</div>
-            <p class="hero-panel-quote">„Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.”</p>
-            <p class="hero-panel-text">
-              Ta strona łączy instytucjonalne projekty audiowizualne, publiczne serie historyczne oraz wybrane obszary twórczości autorskiej w ramach jednego, spójnego świata narracyjnego.
-            </p>
+            <p class="hero-panel-quote">Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.</p>
+            <p class="hero-panel-text">Ta platforma łączy instytucjonalne projekty audiowizualne, publiczne serie historyczne oraz wybrane obszary twórczości autorskiej w ramach jednego, spójnego świata narracyjnego.</p>
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="continue">
+      <div class="wrap">
+        <div class="card continue-panel continue-banner" id="continueBanner">
+          <h3 class="panel-title">Kontynuuj od miejsca, w którym skończyłeś</h3>
+          <p class="panel-text" id="continueText" data-label="Wróć do świata {title}, który był ostatnio otwierany.">Wróć do świata Rap-Ort, który był ostatnio otwierany.</p>
+          <div class="continue-actions">
+            <a class="btn btn-primary fade-link" id="continueButton" data-label="Kontynuuj: {title}" href="#">Kontynuuj: Rap-Ort</a>
+            <button class="btn btn-secondary" type="button" id="dismissContinue">Zamknij</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Dlaczego to istnieje</div>
+            <h2>Uporządkowana odpowiedź na zanikającą pamięć</h2>
+          </div>
+          <div class="section-note">Ta twórczość istnieje dlatego, że pamięć bez struktury zanika — a historia bez interpretacji zamienia się w szum.</div>
+        </div>
+
+        <div class="card why-panel reveal">
+          <h3 class="panel-title">Dlaczego to istnieje</h3>
+          <p class="panel-text">Te projekty nie są projektowane wyłącznie jako treść. Są projektowane jako formy uwagi. Ich celem jest przywrócenie ciężaru, kontekstu i moralnego napięcia historiom, które zbyt często redukowane są do skrótu, symbolu lub sloganu. Nie chodzi o rekonstrukcję dla samej rekonstrukcji, lecz o ponowne spotkanie ze świadectwem, konsekwencją i tym, czego przeszłość nadal wymaga od teraźniejszości.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pathways">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Jak wejść w ten świat</div>
+            <h2>Trzy ścieżki wejścia</h2>
+          </div>
+          <div class="section-note">Zacznij od jednej historii. Wróć po następną. Zostań dla wzoru, który się wyłania.</div>
+        </div>
+
+        <div class="grid-3">
+          <article class="card mini-card reveal">
+            <div>
+              <h3 class="mini-title">Wejście instytucjonalne</h3>
+              <p class="mini-text">Wejdź przez Rap-Ort, jeśli zaczynasz od dłuższej, instytucjonalnej formy stworzonej do uważnego odbioru i refleksyjnej projekcji.</p>
+            </div>
+            <a class="btn btn-secondary fade-link" href="/rap-ort/" data-track="Rap-Ort">Wejdź do Rap-Ort</a>
+          </article>
+
+          <article class="card mini-card reveal">
+            <div>
+              <h3 class="mini-title">Wejście odcinkowe</h3>
+              <p class="mini-text">Wejdź przez SZTAB, jeśli wolisz skoncentrowany pojedynczy odcinek, który otwiera się na szerszy świat postaci, braków pamięci i historycznych napięć.</p>
+            </div>
+            <a class="btn btn-secondary fade-link" href="/sztab/" data-track="SZTAB">Wejdź do SZTAB</a>
+          </article>
+
+          <article class="card mini-card reveal">
+            <div>
+              <h3 class="mini-title">Wejście autorskie</h3>
+              <p class="mini-text">Wejdź przez szerszy obszar twórczości, jeśli chcesz zrozumieć głos autorski poza dwoma centralnymi światami projektu.</p>
+            </div>
+            <a class="btn btn-secondary" href="#other">Poznaj inne obszary</a>
+          </article>
         </div>
       </div>
     </section>
@@ -802,59 +163,95 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Główne Światy</div>
+            <div class="section-kicker">Główne światy</div>
             <h2>Dwie podstawowe ścieżki narracyjne</h2>
           </div>
-
-          <div class="section-note">
-            Jedna bardziej instytucjonalna i immersyjna. Druga epizodyczna i bardziej publiczna. Obie należą do jednego, spójnego świata autorskiego budowanego przez historię, napięcie etyczne i filmową narrację.
-          </div>
+          <div class="section-note">Jedna bardziej instytucjonalna i immersyjna. Druga epizodyczna i bardziej publiczna. Obie należą do jednego, spójnego świata autorskiego budowanego przez historię, napięcie etyczne i filmową narrację.</div>
         </div>
 
         <div class="grid-2">
           <article class="card project-card reveal">
             <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80');"></div>
-
             <div class="project-body">
               <div class="chips">
                 <span class="chip">Instytucjonalne</span>
-                <span class="chip">Raport Audiowizualny</span>
+                <span class="chip">Raport audiowizualny</span>
                 <span class="chip">65 min</span>
               </div>
-
               <h3 class="project-title">Rap-Ort</h3>
-
-              <p class="project-text">
-                Narracyjny framework audiowizualny zbudowany wokół świadectwa, presji historii i konsekwencji milczenia w warunkach systemów totalitarnych. Jego centralnym obecnie dziełem jest <strong>Rap-Ort: Prawda Sumienia</strong>.
-              </p>
-
+              <p class="project-text">Narracyjny framework audiowizualny zbudowany wokół świadectwa, presji historii i konsekwencji milczenia w warunkach systemów totalitarnych. Jego centralnym obecnie dziełem jest Rap-Ort: Prawda Sumienia.</p>
               <div class="card-link">
-                <a class="btn btn-secondary" href="/rap-ort/pl/">Wejdź do Rap-Ort</a>
+                <a class="btn btn-secondary fade-link" href="/rap-ort/" data-track="Rap-Ort">Wejdź do Rap-Ort</a>
               </div>
             </div>
           </article>
 
           <article class="card project-card reveal">
             <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=80');"></div>
-
             <div class="project-body">
               <div class="chips">
                 <span class="chip">Seria</span>
-                <span class="chip">YouTube</span>
-                <span class="chip">Epizody Historyczne</span>
+                <span class="chip">Publiczne wejście</span>
+                <span class="chip">Epizody historyczne</span>
               </div>
-
               <h3 class="project-title">SZTAB</h3>
-
-              <p class="project-text">
-                Rozwijana seria historycznych odcinków poświęconych postaciom, aktom oporu i momentom o szczególnym ciężarze moralnym — pomyślana dla szerszego odbiorcy, ale z zachowaniem powagi, atmosfery i głębi narracyjnej.
-              </p>
-
+              <p class="project-text">Rozwijana seria historycznych odcinków poświęconych postaciom, aktom oporu i momentom o szczególnym ciężarze moralnym — pomyślana dla szerszego odbiorcy, ale z zachowaniem powagi, atmosfery i głębi narracyjnej.</p>
               <div class="card-link">
-                <a class="btn btn-secondary" href="/sztab/pl/">Wejdź do SZTAB</a>
+                <a class="btn btn-secondary fade-link" href="/sztab/" data-track="SZTAB">Wejdź do SZTAB</a>
               </div>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="timeline">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Mapa narracyjna</div>
+            <h2>Jak rozwija się świat projektu</h2>
+          </div>
+          <div class="section-note">Nie jako lista publikacji, lecz jako uporządkowany ekosystem form — dłuższych prac, krótkich epizodów historycznych i sąsiednich przestrzeni autorskich.</div>
+        </div>
+        <div class="timeline"><div class="timeline-item reveal"><div class="timeline-label">Oś główna</div><h3 class="timeline-title">Rap-Ort</h3><p class="timeline-text">Dłuższe formy audiowizualne rozwijane z myślą o uważnej, instytucjonalnej i refleksyjnej prezentacji — tam, gdzie muzyka i obraz niosą spójny łuk historyczny i etyczny.</p></div><div class="timeline-item reveal"><div class="timeline-label">Oś równoległa</div><h3 class="timeline-title">SZTAB</h3><p class="timeline-text">Krótkie formy historyczne budowane dla szerszego obiegu, ale bez rezygnacji z ciężaru, spójnej atmosfery i odpowiedzialności narracyjnej.</p></div><div class="timeline-item reveal"><div class="timeline-label">Oś sąsiednia</div><h3 class="timeline-title">Manifest / Archiwum</h3><p class="timeline-text">Przestrzenie dla szerszej twórczości autorskiej, tematycznych fundamentów i wcześniejszych materiałów, które później mogą rozwinąć się w nowe rozdziały.</p></div><div class="timeline-item reveal"><div class="timeline-label">Ruch naprzód</div><h3 class="timeline-title">Przyszłe rozszerzenia</h3><p class="timeline-text">Strona została pomyślana jako żywa struktura — zdolna rozwijać się w dossier, ścieżki odcinków, zasoby instytucjonalne i wielojęzyczne warstwy prezentacji.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="institutions">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Dla instytucji</div>
+            <h2>Czytelne wejścia do wykorzystania kulturalnego i edukacyjnego</h2>
+          </div>
+          <div class="section-note">Zaprojektowane nie tylko do odkrywania, ale do bezpośredniej rozmowy z instytucją.</div>
+        </div>
+
+        <div class="card institution-panel reveal">
+          <h3 class="panel-title">Zastosowanie instytucjonalne</h3>
+          <p class="panel-text">Ta platforma może wspierać projekcje, ramę edukacyjną, rozmowy licencyjne i kulturowo osadzoną prezentację. Została pomyślana dla instytucji, które potrzebują czytelnej propozycji artystycznej, spójnego świata narracyjnego i prostego przejścia do kontaktu.</p>
+          <div class="institution-list"><div class="institution-item"><strong>Projekcje:</strong> formy audiowizualne rozwijane do refleksyjnego oglądania i prezentacji z kontekstem.</div><div class="institution-item"><strong>Edukacja:</strong> odpowiednie dla szkół, uczelni, muzeów i ośrodków kultury.</div><div class="institution-item"><strong>Licencjonowanie:</strong> bezpośrednia rozmowa o wykorzystaniu instytucjonalnym, dostępie czasowym lub formatach wydarzeń.</div><div class="institution-item"><strong>Partnerstwa:</strong> otwartość na dialog wokół programów kuratorskich, materiałów kontekstowych i prezentacji międzynarodowej.</div></div>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">Poproś o kontakt</a>
+            <a class="btn btn-secondary" href="/rap-ort/">Zobacz Rap-Ort</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="recognition">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Wybrane sygnały odbioru</div>
+            <h2>Ślady poza samą stroną</h2>
+          </div>
+          <div class="section-note">Powściągliwy wybór sygnałów, które pomagają umieścić projekt w szerszym kontekście publicznym i instytucjonalnym.</div>
+        </div>
+
+        <div class="card recognition-panel reveal">
+          <div class="recognition-list"><div class="recognition-item"><div class="recognition-item-title">Kontekst premiery</div><p class="recognition-item-text">Projekt rozwijany z myślą o prezentacji publicznej i instytucjonalnej, a nie wyłącznie o klasycznej logice publikacyjnej.</p></div><div class="recognition-item"><div class="recognition-item-title">Kierunek archiwalny i edukacyjny</div><p class="recognition-item-text">Struktura projektu wspiera użycie kontekstowe, refleksyjną rozmowę i przyszłe ścieżki edukacyjne.</p></div><div class="recognition-item"><div class="recognition-item-title">Spójność autorska</div><p class="recognition-item-text">Budowany jako długofalowy świat, a nie zbiór przypadkowych publikacji.</p></div></div>
         </div>
       </div>
     </section>
@@ -863,48 +260,54 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Dodatkowe Obszary</div>
+            <div class="section-kicker">Dodatkowe obszary</div>
             <h2>Poza dwoma centralnymi światami</h2>
           </div>
-
-          <div class="section-note">
-            Te sekcje mogą zaczynać jako lżejsze punkty wejścia, a z czasem rozwinąć się w szerszy ekosystem twórczości autorskiej, materiałów historycznych i równoległych form wypowiedzi.
-          </div>
+          <div class="section-note">Te sekcje mogą zaczynać jako lżejsze punkty wejścia, a z czasem rozwinąć się w szerszy ekosystem twórczości autorskiej, materiałów historycznych i równoległych form wypowiedzi.</div>
         </div>
 
-        <div class="grid-3">
-          <article class="card mini-card reveal">
+        <div class="grid-3"><article class="card mini-card reveal">
             <div>
               <h3 class="mini-title">Manifest</h3>
-              <p class="mini-text">
-                Przestrzeń dla wybranych utworów niezwiązanych bezpośrednio z historią, refleksji i twórczości, która pozostaje częścią szerszego głosu autorskiego.
-              </p>
+              <p class="mini-text">Przestrzeń dla wybranych utworów niezwiązanych bezpośrednio z historią, refleksji i twórczości, która pozostaje częścią szerszego głosu autorskiego.</p>
             </div>
-
             <a class="btn btn-secondary" href="#">Otwórz Manifest</a>
-          </article>
-
-          <article class="card mini-card reveal">
+          </article><article class="card mini-card reveal">
             <div>
               <h3 class="mini-title">Archiwum</h3>
-              <p class="mini-text">
-                Wcześniejsze utwory historyczne, fundamenty tematyczne i materiały, które z czasem mogą stać się podstawą kolejnych rozdziałów audiowizualnych.
-              </p>
+              <p class="mini-text">Wcześniejsze utwory historyczne, fundamenty tematyczne i materiały, które z czasem mogą stać się podstawą kolejnych rozdziałów audiowizualnych.</p>
             </div>
-
             <a class="btn btn-secondary" href="#">Otwórz Archiwum</a>
-          </article>
-
-          <article class="card mini-card reveal">
+          </article><article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">O Autorze</h3>
-              <p class="mini-text">
-                Zwięzła strona wyjaśniająca, kim jest Piotr Lichwała, jak funkcjonuje artystycznie Vibrosław i dlaczego powstają właśnie takie formy.
-              </p>
+              <h3 class="mini-title">Profil autorski</h3>
+              <p class="mini-text">Zwięzła rama autorska wyjaśniająca, jak funkcjonuje Vibrosław i dlaczego powstają właśnie takie formy.</p>
             </div>
+            <a class="btn btn-secondary" href="#">Czytaj więcej</a>
+          </article></div>
+      </div>
+    </section>
 
-            <a class="btn btn-secondary" href="#">Czytaj Więcej</a>
-          </article>
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">O autorze</div>
+            <h2>Twórczość na styku pamięci, historii i odpowiedzialności</h2>
+          </div>
+          <div class="section-note">Autorska praktyka rozwijana przez muzykę, obraz i formę audiowizualną — budowana nie dla hałasu, lecz dla uwagi.</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card about-panel reveal">
+            <h3 class="panel-title">Piotr Lichwała (Vibrosław)</h3>
+            <p class="panel-text">Piotr Lichwała (Vibrosław) tworzy autorskie projekty audiowizualne kształtowane przez pamięć, świadectwo i napięcie moralne historii. Łączy narracyjną muzykę, obraz filmowy i struktury krótkie lub długie rozwijane z myślą o uważnym odbiorze — zarówno publicznym, jak i instytucjonalnym.</p>
+          </div>
+
+          <div class="card about-panel reveal">
+            <h3 class="panel-title">Dlaczego te formy</h3>
+            <p class="panel-text">Ta twórczość rozwija się na styku sztuki, historii i odpowiedzialności za sposób opowiadania przeszłości. Projekty takie jak Rap-Ort i SZTAB nie służą wyłącznie rekonstrukcji wydarzeń, lecz próbie przywrócenia im ciężaru, ludzkiej skali i współczesnego znaczenia.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -914,25 +317,32 @@
         <div class="section-head reveal">
           <div>
             <div class="section-kicker">Kontakt</div>
-            <h2>Projekcje, instytucje, współprace</h2>
+            <h2>Projekcje, instytucje, partnerstwa</h2>
           </div>
-
-          <div class="section-note">
-            W sprawach edukacyjnych, instytucjonalnych, kulturalnych i programowych najczytelniejszym kolejnym krokiem pozostaje kontakt bezpośredni.
-          </div>
+          <div class="section-note">W sprawach edukacyjnych, instytucjonalnych, kulturalnych i programowych najczytelniejszym kolejnym krokiem pozostaje kontakt bezpośredni.</div>
         </div>
 
         <div class="card contact-panel reveal">
           <h3 class="contact-name">Piotr Lichwała (Vibrosław)</h3>
           <p class="contact-text">
-            Email: peter.lichwala@gmail.com<br>
-            Wielka Brytania<br>
-            Dostępny do kontaktu instytucjonalnego i międzynarodowego
+            <strong>Email:</strong> peter.lichwala@gmail.com<br>
+            <strong>Lokalizacja:</strong> Wielka Brytania<br>
+            <strong>Dostępność:</strong> zapytania instytucjonalne, kulturalne i międzynarodowe
           </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:peter.lichwala@gmail.com">Napisz email</a>
+            <a class="btn btn-secondary" href="https://youtube.com/@vibroslaw" target="_blank" rel="noopener noreferrer">YouTube</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
+
+  <div class="floating-tools" aria-label="Display controls">
+    <button class="tool-btn label" id="reducedMotionToggle" type="button" data-reduce="Reduced Motion" data-restore="Motion Restored">Mniej ruchu</button>
+    <button class="tool-btn label" id="scrollTopButton" type="button">Góra</button>
+  </div>
 
   <footer class="footer">
     <div class="wrap footer-inner">
@@ -941,21 +351,7 @@
     </div>
   </footer>
 
-  <script>
-    const revealItems = document.querySelectorAll('.reveal');
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.14
-    });
-
-    revealItems.forEach(item => revealObserver.observe(item));
-  </script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/home.js"></script>
 </body>
 </html>
