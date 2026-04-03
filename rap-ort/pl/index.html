@@ -1,94 +1,889 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Rap-Ort — Prawda Sumienia</title>
+  <title>Rap-Ort — Uniwersum świadectwa i odpowiedzialności</title>
+  <meta name="description" content="Rap-Ort to audiowizualne uniwersum zbudowane wokół świadectwa, odpowiedzialności, pamięci i presji historii." />
+  <meta name="theme-color" content="#090909" />
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta property="og:title" content="Rap-Ort — Uniwersum świadectwa i odpowiedzialności" />
+  <meta property="og:description" content="Audiowizualne uniwersum zbudowane wokół świadectwa, odpowiedzialności, pamięci i presji historii." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piotrlichwala.com/rap-ort/pl/" />
 
-<style>
-body{
-  margin:0;
-  background:#0a0a0a;
-  color:#ece7df;
-  font-family:Inter,sans-serif;
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-.wrap{width:min(1100px,90%);margin:auto}
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-.hero{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  background:
-    linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),
-    url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
-}
+  <style>
+    :root{
+      --bg:#080808;
+      --bg-soft:#101010;
+      --bg-soft-2:#151515;
+      --panel:rgba(255,255,255,0.04);
+      --panel-2:rgba(255,255,255,0.025);
+      --line:rgba(255,255,255,0.08);
+      --line-strong:rgba(255,255,255,0.14);
 
-h1{
-  font-family:"Cormorant Garamond";
-  font-size:clamp(3rem,8vw,5rem);
-  line-height:.9;
-}
+      --text:#efe8de;
+      --muted:rgba(239,232,222,0.74);
+      --soft:rgba(239,232,222,0.50);
 
-.statement{
-  margin-top:20px;
-  font-size:1.2rem;
-  color:rgba(236,231,223,.7);
-}
+      --accent:#cbb08a;
+      --accent-soft:rgba(203,176,138,0.18);
 
-.section{padding:80px 0}
+      --shadow:0 30px 90px rgba(0,0,0,0.38);
+      --radius-xl:32px;
+      --radius-lg:24px;
+      --radius-md:18px;
 
-h2{
-  font-family:"Cormorant Garamond";
-  font-size:2.5rem;
-}
+      --max:1300px;
+      --nav-h:78px;
+    }
 
-.text{
-  color:rgba(236,231,223,.7);
-  line-height:1.8;
-  max-width:600px;
-}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top, rgba(203,176,138,.09), transparent 26%),
+        linear-gradient(180deg, #070707 0%, #0b0b0b 30%, #0d0d0d 100%);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+    }
 
-.quote{
-  font-family:"Cormorant Garamond";
-  font-size:2rem;
-  margin:60px 0;
-  text-align:center;
-}
-</style>
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.014), rgba(255,255,255,.014)),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,.010) 0px,
+          rgba(255,255,255,.010) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      opacity:.11;
+      mix-blend-mode:soft-light;
+      z-index:0;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img, video{display:block;max-width:100%}
+
+    .wrap{
+      width:min(var(--max), calc(100% - 32px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      background:rgba(8,8,8,.74);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .nav-inner{
+      min-height:var(--nav-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width:0;
+    }
+
+    .brand-main{
+      font-family:"Cinzel",serif;
+      font-size:1.45rem;
+      line-height:1;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .brand-sub{
+      font-size:.76rem;
+      line-height:1.2;
+      color:var(--soft);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      font-size:.94rem;
+      transition:color .25s ease, opacity .25s ease;
+    }
+
+    .nav-links a:hover{
+      color:var(--text);
+    }
+
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .lang-item{
+      color:var(--muted);
+      font-size:.94rem;
+      transition:opacity .25s ease, color .25s ease;
+    }
+
+    .lang-item:hover{
+      color:var(--text);
+    }
+
+    .lang-item.active{
+      color:var(--text);
+    }
+
+    .lang-sep{
+      color:var(--soft);
+      font-size:.9rem;
+    }
+
+    .hero{
+      position:relative;
+      min-height:calc(100vh - var(--nav-h));
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      z-index:0;
+    }
+
+    .hero-image{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(6,6,6,.18) 0%, rgba(6,6,6,.34) 38%, rgba(6,6,6,.86) 100%),
+        radial-gradient(circle at 75% 25%, rgba(203,176,138,.18), transparent 28%),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80') center center / cover no-repeat;
+      filter:saturate(.62) brightness(.62) contrast(1.02);
+      transform:scale(1.04);
+    }
+
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(6,6,6,.88) 0%, rgba(6,6,6,.68) 36%, rgba(6,6,6,.28) 72%, rgba(6,6,6,.18) 100%),
+        linear-gradient(180deg, rgba(6,6,6,.10) 0%, rgba(6,6,6,.42) 58%, rgba(6,6,6,.95) 100%);
+    }
+
+    .hero-grid{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:minmax(0, 760px) minmax(280px, 360px);
+      justify-content:space-between;
+      gap:48px;
+      align-items:end;
+      width:100%;
+      padding:98px 0 78px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:20px;
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.20em;
+      font-size:.72rem;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:42px;
+      height:1px;
+      background:rgba(203,176,138,.60);
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Cinzel",serif;
+      font-weight:600;
+      font-size:clamp(3.2rem, 7vw, 6rem);
+      line-height:.92;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hero-subtitle{
+      margin:16px 0 0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(1.5rem, 2.4vw, 2.3rem);
+      line-height:1.08;
+      color:var(--text);
+      max-width:18ch;
+    }
+
+    .hero-lead{
+      margin:28px 0 0;
+      max-width:58ch;
+      color:var(--muted);
+      line-height:1.92;
+      font-size:1.04rem;
+    }
+
+    .cta-row{
+      margin-top:34px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+
+    .btn{
+      min-height:50px;
+      padding:0 20px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:.96rem;
+      transition:transform .25s ease, background .25s ease, border-color .25s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      background:var(--text);
+      color:#0a0a0a;
+      border-color:transparent;
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+    }
+
+    .btn-secondary:hover{
+      background:rgba(255,255,255,.08);
+      border-color:var(--line-strong);
+    }
+
+    .hero-panel{
+      width:100%;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
+        radial-gradient(circle at top right, rgba(203,176,138,.12), transparent 36%);
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      padding:24px 22px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+
+    .hero-panel-label{
+      font-size:.72rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:12px;
+    }
+
+    .hero-panel-quote{
+      margin:0 0 16px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.72rem;
+      line-height:1.08;
+    }
+
+    .hero-panel-text{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+      font-size:.95rem;
+    }
+
+    .section{
+      position:relative;
+      z-index:1;
+      padding:92px 0;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:20px;
+      margin-bottom:30px;
+    }
+
+    .section-kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.72rem;
+      margin-bottom:12px;
+    }
+
+    h2{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(2.4rem, 4.8vw, 4rem);
+      line-height:.95;
+      font-weight:600;
+    }
+
+    .section-note{
+      max-width:56ch;
+      color:var(--muted);
+      line-height:1.88;
+      font-size:1rem;
+    }
+
+    .intro-panel{
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.024)),
+        radial-gradient(circle at top right, rgba(203,176,138,.10), transparent 34%);
+      box-shadow:var(--shadow);
+      padding:34px 28px;
+    }
+
+    .intro-text{
+      max-width:70ch;
+      color:var(--muted);
+      line-height:1.95;
+      font-size:1.05rem;
+      margin:0;
+    }
+
+    .quote-block{
+      padding:26px 0 4px;
+      text-align:center;
+    }
+
+    .quote-block p{
+      margin:0 auto;
+      max-width:18ch;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(1.9rem, 4vw, 3rem);
+      line-height:1.04;
+    }
+
+    .quote-block span{
+      display:block;
+      margin-top:14px;
+      color:var(--soft);
+      font-size:.9rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:24px;
+    }
+
+    .chapter-card{
+      position:relative;
+      min-height:620px;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      border-radius:var(--radius-xl);
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
+      box-shadow:var(--shadow);
+      transition:transform .35s ease, border-color .35s ease, background .35s ease;
+    }
+
+    .chapter-card:hover{
+      transform:translateY(-3px);
+      border-color:rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+    }
+
+    .chapter-media{
+      position:relative;
+      min-height:340px;
+      background-size:cover;
+      background-position:center;
+      filter:saturate(.62);
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+
+    .chapter-media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.50)),
+        radial-gradient(circle at center, rgba(203,176,138,.12), transparent 46%);
+    }
+
+    .chapter-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent 0%, rgba(7,7,7,.70) 100%);
+    }
+
+    .chapter-body{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      padding:30px 24px 24px;
+      flex:1;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--soft);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:.76rem;
+      letter-spacing:.02em;
+    }
+
+    .chapter-title{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:2.2rem;
+      line-height:.95;
+      font-weight:600;
+    }
+
+    .chapter-text{
+      margin:0;
+      color:var(--muted);
+      line-height:1.86;
+      font-size:1rem;
+      flex:1;
+    }
+
+    .principles{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .principle{
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.024));
+      box-shadow:var(--shadow);
+      padding:24px 20px;
+    }
+
+    .principle h3{
+      margin:0 0 12px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.7rem;
+      line-height:.96;
+      font-weight:600;
+    }
+
+    .principle p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+      font-size:.98rem;
+    }
+
+    .back-home{
+      margin-top:18px;
+    }
+
+    .footer{
+      position:relative;
+      z-index:1;
+      padding:34px 0 64px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      color:var(--soft);
+      font-size:.94rem;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width:1100px){
+      .hero-grid{
+        grid-template-columns:1fr;
+        gap:22px;
+      }
+
+      .grid,
+      .principles{
+        grid-template-columns:1fr;
+      }
+
+      .hero-title{
+        max-width:12ch;
+      }
+    }
+
+    @media (max-width:900px){
+      .section-head{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .chapter-card{
+        min-height:unset;
+      }
+    }
+
+    @media (max-width:760px){
+      :root{--nav-h:72px}
+
+      .nav-inner{
+        min-height:auto;
+        padding:14px 0;
+        align-items:flex-start;
+      }
+
+      .nav-links{
+        gap:10px 12px;
+      }
+
+      .brand-sub{
+        white-space:normal;
+      }
+
+      .hero{
+        min-height:auto;
+      }
+
+      .hero-overlay{
+        background:
+          linear-gradient(180deg, rgba(6,6,6,.42) 0%, rgba(6,6,6,.56) 32%, rgba(6,6,6,.92) 100%);
+      }
+
+      .hero-grid{
+        grid-template-columns:1fr;
+        padding:58px 0 52px;
+        gap:20px;
+      }
+
+      .eyebrow{
+        justify-content:center;
+      }
+
+      .hero-copy{
+        text-align:center;
+      }
+
+      .hero-title{
+        font-size:clamp(2.8rem, 12vw, 4.6rem);
+        max-width:12ch;
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .hero-subtitle,
+      .hero-lead{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .hero-subtitle{
+        max-width:16ch;
+      }
+
+      .hero-lead{
+        max-width:30ch;
+        font-size:1rem;
+        line-height:1.84;
+      }
+
+      .cta-row{
+        justify-content:center;
+      }
+
+      .hero-panel{
+        max-width:560px;
+        margin:0 auto;
+      }
+
+      .section{
+        padding:74px 0;
+      }
+    }
+
+    @media (max-width:640px){
+      .wrap{
+        width:min(var(--max), calc(100% - 20px));
+      }
+
+      .hero-grid{
+        padding:50px 0 48px;
+      }
+
+      .chapter-body,
+      .intro-panel,
+      .principle{
+        padding:22px 18px;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .cta-row{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .chapter-title{
+        font-size:2rem;
+      }
+
+      .hero-panel{
+        padding:20px 18px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="brand-main">Rap-Ort</div>
+        <div class="brand-sub">Uniwersum świadectwa i odpowiedzialności</div>
+      </div>
 
-<section class="hero">
-  <div>
-    <h1>Rap-Ort</h1>
-    <div class="statement">Prawda Sumienia</div>
-  </div>
-</section>
+      <nav class="nav-links" aria-label="Główna nawigacja">
+        <a href="#chapters">Rozdziały</a>
+        <a href="#principles">Założenia</a>
+        <a href="#contact-anchor">Kontakt</a>
+        <div class="lang-switch">
+          <a href="/rap-ort/" class="lang-item">EN</a>
+          <span class="lang-sep">|</span>
+          <a href="/rap-ort/pl/" class="lang-item active">PL</a>
+        </div>
+      </nav>
+    </div>
+  </header>
 
-<section class="section wrap">
-  <h2>Opis</h2>
-  <p class="text">
-    Rap-Ort to audiowizualny projekt narracyjny zbudowany na podstawie świadectw, raportów i doświadczenia jednostki w systemach totalitarnych.
-  </p>
-</section>
+  <main>
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-image"></div>
+        <div class="hero-overlay"></div>
+      </div>
 
-<section class="quote">
-  „To nie jest historia bohaterów. To historia wyborów.”
-</section>
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">Audiowizualne Uniwersum Narracyjne</div>
+          <h1 class="hero-title">Rap-Ort</h1>
+          <div class="hero-subtitle">Świat zbudowany z pamięci, świadectwa, ciszy i moralnej presji.</div>
+          <p class="hero-lead">
+            Rap-Ort nie jest wyłącznie pojedynczym projektem. To rozwijające się uniwersum audiowizualne budowane wokół świadectwa, napięcia historycznego i konsekwencji ludzkich decyzji podejmowanych pod presją systemu. Każde dzieło może wyrastać z tej samej struktury sumienia, odpowiedzialności i pamięci.
+          </p>
 
-<section class="section wrap">
-  <h2>Forma</h2>
-  <p class="text">
-    Projekt łączy muzykę narracyjną, obraz filmowy i strukturę raportu. Przeznaczony jest do projekcji instytucjonalnych i odbioru refleksyjnego.
-  </p>
-</section>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#chapters">Wejdź do Rozdziałów</a>
+            <a class="btn btn-secondary" href="/">Powrót do Strony Głównej</a>
+          </div>
+        </div>
 
+        <div class="hero-side reveal">
+          <aside class="hero-panel">
+            <div class="hero-panel-label">Orientacja</div>
+            <p class="hero-panel-quote">„Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.”</p>
+            <p class="hero-panel-text">
+              Rap-Ort powstał z myślą o odbiorze refleksyjnym i kontekście instytucjonalnym. Sytuuje się pomiędzy muzyką narracyjną, językiem filmu i etyczną formą świadectwa.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Świat Rap-Ort</div>
+            <h2>To framework, nie pojedynczy tytuł</h2>
+          </div>
+          <div class="section-note">
+            Rap-Ort funkcjonuje jako szersze pole narracyjne. Poszczególne dzieła mogą koncentrować się na innych postaciach, wydarzeniach i napięciach, ale pozostają częścią tego samego języka etycznego i audiowizualnego.
+          </div>
+        </div>
+
+        <div class="intro-panel reveal">
+          <p class="intro-text">
+            Jego celem nie jest widowisko ani uproszczona dydaktyka. Rap-Ort istnieje po to, by tworzyć uważną przestrzeń, w której świadectwo, odpowiedzialność i presja historii mogą być spotkane poprzez obraz, głos, rytm i ciszę. To uniwersum może rozwijać się dalej poprzez kolejne rozdziały, zachowując ten sam ciężar formy i powściągliwość.
+          </p>
+        </div>
+
+        <div class="quote-block reveal">
+          <p>„To nie jest historia bohaterów. To historia wyborów.”</p>
+          <span>Rap-Ort</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="chapters">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Obecne i Przyszłe Rozdziały</div>
+            <h2>Dzieła wyrastające z uniwersum Rap-Ort</h2>
+          </div>
+          <div class="section-note">
+            Jeden rozdział może przyjąć formę pełnego audiowizualnego raportu instytucjonalnego. Inny może z czasem wyłonić się poprzez nową postać, nowy kontekst lub inną oś świadectwa.
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="chapter-card reveal">
+            <div class="chapter-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80');"></div>
+            <div class="chapter-body">
+              <div class="chips">
+                <span class="chip">Obecny Rozdział</span>
+                <span class="chip">Instytucjonalny</span>
+                <span class="chip">65 min</span>
+              </div>
+              <h3 class="chapter-title">Prawda Sumienia</h3>
+              <p class="chapter-text">
+                Centralne obecnie dzieło uniwersum Rap-Ort: audiowizualny raport instytucjonalny zbudowany wokół świadectwa, presji historii i moralnych konsekwencji milczenia.
+              </p>
+              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/">Wejdź do Rozdziału</a>
+            </div>
+          </article>
+
+          <article class="chapter-card reveal">
+            <div class="chapter-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1800&q=80');"></div>
+            <div class="chapter-body">
+              <div class="chips">
+                <span class="chip">Przyszły Rozdział</span>
+                <span class="chip">W Rozwoju</span>
+              </div>
+              <h3 class="chapter-title">Kolejne Wejścia</h3>
+              <p class="chapter-text">
+                Z tego samego uniwersum mogą z czasem wyrastać kolejne dzieła — zachowujące tę samą dyscyplinę wizualną, powagę narracji i etyczną ramę.
+              </p>
+              <a class="btn btn-secondary" href="#">Wkrótce</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="principles">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Założenia Fundamentalne</div>
+            <h2>Co definiuje Rap-Ort</h2>
+          </div>
+          <div class="section-note">
+            To uniwersum nie jest spajane samym brandingiem, lecz dyscypliną formy, etyczną powściągliwością i jasnym stosunkiem do pamięci oraz świadectwa.
+          </div>
+        </div>
+
+        <div class="principles">
+          <article class="principle reveal">
+            <h3>Świadectwo</h3>
+            <p>Każdy rozdział zaczyna się od obowiązku potraktowania świadectwa poważnie — bez widowiskowości, sensacyjności i estetycznego nadmiaru.</p>
+          </article>
+
+          <article class="principle reveal">
+            <h3>Odpowiedzialność</h3>
+            <p>Te dzieła pytają nie tylko o to, co się wydarzyło, lecz również o to, czego odpowiedzialność wymaga od odbiorcy dzisiaj.</p>
+          </article>
+
+          <article class="principle reveal">
+            <h3>Forma</h3>
+            <p>Rap-Ort porusza się pomiędzy muzyką narracyjną, językiem filmu i strukturą raportu — zawsze podporządkowując formę znaczeniu, nigdy odwrotnie.</p>
+          </article>
+        </div>
+
+        <div class="back-home reveal" id="contact-anchor">
+          <a class="btn btn-secondary" href="/">Powrót do Strony Głównej</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>Rap-Ort · Piotr Lichwała (Vibrosław)</div>
+      <div>Oficjalne uniwersum rozdziałów · Wersja polska</div>
+    </div>
+  </footer>
+
+  <script>
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14
+    });
+
+    revealItems.forEach(item => revealObserver.observe(item));
+  </script>
 </body>
-</html>
+          </html>
