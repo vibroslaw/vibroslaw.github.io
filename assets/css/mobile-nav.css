@@ -11,6 +11,16 @@
   justify-content:center;
   gap:4px;
   padding:0;
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    border-color .25s ease;
+}
+
+.mobile-nav-toggle:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.14);
 }
 
 .mobile-nav-toggle span{
@@ -24,13 +34,13 @@
 .mobile-menu-overlay{
   position:fixed;
   inset:0;
-  z-index:140;
+  z-index:170;
   background:
     radial-gradient(circle at top, rgba(201,178,143,.10), transparent 30%),
-    linear-gradient(180deg, rgba(9,9,9,.98), rgba(9,9,9,.98));
+    linear-gradient(180deg, rgba(9,9,9,.985), rgba(9,9,9,.985));
   opacity:0;
   pointer-events:none;
-  transition:opacity .35s ease;
+  transition:opacity .35s var(--ease);
 }
 
 body.mobile-menu-open .mobile-menu-overlay{
@@ -39,16 +49,16 @@ body.mobile-menu-open .mobile-menu-overlay{
 }
 
 .mobile-menu-panel{
-  width:min(var(--max), calc(100% - 32px));
+  width:min(var(--max), calc(100% - 22px));
   margin:0 auto;
-  padding:98px 0 32px;
+  padding:94px 0 28px;
   display:grid;
   gap:12px;
 }
 
 .mobile-menu-link,
 .mobile-menu-button{
-  min-height:56px;
+  min-height:58px;
   border-radius:18px;
   border:1px solid var(--line);
   background:rgba(255,255,255,.03);
@@ -58,6 +68,17 @@ body.mobile-menu-open .mobile-menu-overlay{
   justify-content:space-between;
   padding:0 18px;
   font-size:1rem;
+  transition:
+    transform .25s var(--ease),
+    border-color .25s var(--ease),
+    background .25s var(--ease);
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-button:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
 }
 
 .mobile-lang-switch{
