@@ -79,7 +79,7 @@
     }
 
     a{color:inherit;text-decoration:none}
-    img, iframe{display:block;max-width:100%}
+    img{display:block;max-width:100%}
 
     .wrap{
       width:min(var(--max), calc(100% - 32px));
@@ -154,7 +154,7 @@
 
     .hero{
       position:relative;
-      min-height:calc(92vh - var(--nav-h));
+      min-height:calc(88vh - var(--nav-h));
       display:flex;
       align-items:flex-end;
       overflow:hidden;
@@ -427,13 +427,13 @@
       font-size:1rem;
     }
 
-    .categories{
+    .episodes{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
       gap:22px;
     }
 
-    .category-card{
+    .episode-card{
       border-radius:var(--radius-xl);
       border:1px solid var(--line);
       overflow:hidden;
@@ -443,13 +443,13 @@
       position:relative;
     }
 
-    .category-card:hover{
+    .episode-card:hover{
       transform:translateY(-5px);
       border-color:rgba(255,255,255,.14);
       background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
     }
 
-    .category-image{
+    .episode-image{
       height:230px;
       background-size:cover;
       background-position:center;
@@ -457,7 +457,7 @@
       position:relative;
     }
 
-    .category-image::before{
+    .episode-image::before{
       content:"";
       position:absolute;
       inset:0;
@@ -466,27 +466,26 @@
         radial-gradient(circle at center, rgba(212,169,92,.12), transparent 46%);
     }
 
-    .category-body{
+    .episode-body{
       padding:24px 20px 22px;
     }
 
-    .category-title{
+    .episode-title{
       margin:0 0 12px;
-      font-family:"Oswald",sans-serif;
-      font-size:1.7rem;
-      line-height:1;
-      letter-spacing:.12em;
-      text-transform:uppercase;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.85rem;
+      line-height:.95;
+      font-weight:600;
     }
 
-    .category-text{
+    .episode-text{
       margin:0;
       color:var(--muted);
       line-height:1.8;
       font-size:.97rem;
     }
 
-    .category-link{
+    .episode-link{
       margin-top:18px;
       display:inline-flex;
       align-items:center;
@@ -495,12 +494,12 @@
       font-size:.95rem;
     }
 
-    .category-link::after{
+    .episode-link::after{
       content:"→";
       transition:transform .3s var(--ease);
     }
 
-    .category-card:hover .category-link::after{
+    .episode-card:hover .episode-link::after{
       transform:translateX(4px);
     }
 
@@ -551,7 +550,7 @@
     @media (max-width:1100px){
       .hero-grid,
       .featured,
-      .categories{
+      .episodes{
         grid-template-columns:1fr;
       }
     }
@@ -634,7 +633,7 @@
       }
 
       .featured-body,
-      .category-body{
+      .episode-body{
         padding:22px 18px;
       }
 
@@ -654,18 +653,18 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <div class="brand">
-        <div class="brand-main">SZTAB</div>
-        <div class="brand-sub">Cinematic historical series</div>
+        <div class="brand-main">SZTAB · Original</div>
+        <div class="brand-sub">Postacie rozpoznawalne, ale niewyczerpane</div>
       </div>
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#featured">Featured</a>
-        <a href="#categories">Categories</a>
-        <a href="#entry-points">Entry Points</a>
+      <nav class="nav-links" aria-label="Główna nawigacja">
+        <a href="#featured">Wyróżnione</a>
+        <a href="#episodes">Odcinki</a>
+        <a href="#entry-points">Punkty wejścia</a>
         <div class="lang-switch">
-          <a href="/sztab/" class="lang-item active">EN</a>
+          <a href="/sztab/original/" class="lang-item">EN</a>
           <span class="lang-sep">|</span>
-          <a href="/sztab/pl/" class="lang-item">PL</a>
+          <a href="/sztab/original/pl/" class="lang-item active">PL</a>
         </div>
       </nav>
     </div>
@@ -678,25 +677,25 @@
 
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow reveal reveal-stagger-1">Cinematic historical series</div>
-          <h1 class="hero-title reveal reveal-stagger-2">SZTAB</h1>
-          <div class="hero-subtitle reveal reveal-stagger-3">Episodes about resistance, memory, and the moments that shaped history.</div>
+          <div class="eyebrow reveal reveal-stagger-1">Kategoria serii SZTAB</div>
+          <h1 class="hero-title reveal reveal-stagger-2">Original</h1>
+          <div class="hero-subtitle reveal reveal-stagger-3">Postacie rozpoznawalne, ale wciąż niewyczerpane.</div>
           <p class="hero-lead reveal reveal-stagger-4">
-            SZTAB is a growing series of short music-film works. Each episode stands as a self-contained story — about a figure, a neglected name, or a battle that changed the course of history. It is designed for broader audiences without surrendering gravity, atmosphere, or respect.
+            Original skupia tych bohaterów i świadków historii, którzy są obecni w pamięci zbiorowej, ale nadal domagają się nowego odczytania. To przestrzeń dla odcinków, które nie powtarzają szkolnych skrótów, lecz próbują odzyskać napięcie, ciężar i ludzką skalę znanych postaci.
           </p>
 
           <div class="cta-row reveal reveal-stagger-4">
-            <a class="btn btn-primary" href="#categories">Enter the Series</a>
-            <a class="btn btn-secondary" href="/">Back to Main Site</a>
+            <a class="btn btn-primary" href="#episodes">Przeglądaj Odcinki</a>
+            <a class="btn btn-secondary" href="/sztab/pl/">Powrót do SZTAB</a>
           </div>
         </div>
 
         <div class="hero-side reveal reveal-stagger-4">
           <aside class="hero-panel">
-            <div class="hero-panel-label">Series Orientation</div>
-            <p class="hero-panel-quote">History does not survive by itself. Someone has to carry it forward.</p>
+            <div class="hero-panel-label">Orientacja Kategorii</div>
+            <p class="hero-panel-quote">Znane nazwiska nie zawsze oznaczają opowiedzianą historię.</p>
             <p class="hero-panel-text">
-              SZTAB organizes its stories around three axes: Original, Forgotten, and Battles — creating not a playlist, but a durable world of memory and narrative.
+              Original porządkuje te odcinki, które wracają do rozpoznawalnych postaci i próbują przywrócić im gęstość, napięcie i realną obecność.
             </p>
           </aside>
         </div>
@@ -707,11 +706,11 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Featured Episode</div>
-            <h2>Current point of entry</h2>
+            <div class="section-kicker">Wyróżniony Odcinek</div>
+            <h2>Obecny punkt wejścia</h2>
           </div>
           <div class="section-note">
-            This is where the most important or newest episode can be placed as the central entry into the series.
+            W tej sekcji możesz eksponować odcinek najważniejszy dla kategorii albo aktualnie najmocniej promowany.
           </div>
         </div>
 
@@ -720,68 +719,68 @@
 
           <div class="featured-body reveal">
             <div class="chips">
-              <span class="chip">Featured</span>
-              <span class="chip">Episode</span>
+              <span class="chip">Original</span>
+              <span class="chip">Wyróżnione</span>
               <span class="chip">SZTAB</span>
             </div>
 
-            <h3 class="featured-title">Zo — The Silence That Fights</h3>
+            <h3 class="featured-title">Zo — Cisza, która walczy</h3>
             <p class="featured-text">
-              A cinematic episode dedicated to Elżbieta Zawacka — resistance, intelligence, discipline, and moral strength. It functions as a standalone story, but also as an entry into the wider world of the series.
+              Filmowy odcinek poświęcony Elżbiecie Zawackiej — oporowi, inteligencji, dyscyplinie i sile moralnej. To aktualnie najczytelniejszy punkt wejścia do kategorii Original.
             </p>
 
             <div class="cta-row" style="margin-top:auto;">
-              <a class="btn btn-primary" href="/sztab/zo/">Open Episode</a>
-              <a class="btn btn-secondary" href="https://www.youtube.com/watch?v=JgV9KEZTbeM" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+              <a class="btn btn-primary" href="/sztab/zo/pl/">Otwórz Odcinek</a>
+              <a class="btn btn-secondary" href="https://www.youtube.com/watch?v=JgV9KEZTbeM" target="_blank" rel="noopener noreferrer">Zobacz na YouTube</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="categories">
+    <section class="section" id="episodes">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Series Categories</div>
-            <h2>Three axes of the SZTAB world</h2>
+            <div class="section-kicker">Odcinki</div>
+            <h2>Galeria postaci</h2>
           </div>
           <div class="section-note">
-            Each category forms its own narrative space and organizes episodes according to their kind, emphasis, and historical function.
+            Każda karta może prowadzić bezpośrednio do odcinka, osobnej podstrony premium albo w przyszłości do szerszego dossier epizodu.
           </div>
         </div>
 
-        <div class="categories">
-          <a class="category-card reveal" href="/sztab/original/">
-            <div class="category-image" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80')"></div>
-            <div class="category-body">
-              <h3 class="category-title">Original</h3>
-              <p class="category-text">
-                Recognizable figures who still remain far from exhausted. Zo, Karski, Pilecki, Inka, and others who continue to define the field of memory.
+        <div class="episodes">
+          <a class="episode-card reveal" href="/sztab/zo/pl/">
+            <div class="episode-image" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="episode-body">
+              <h3 class="episode-title">Zo — Cisza, która walczy</h3>
+              <p class="episode-text">
+                Elżbieta Zawacka: opór, inteligencja, dyscyplina i wewnętrzna siła ukazana w krótkiej formie muzyczno-filmowej.
               </p>
-              <div class="category-link">Enter category</div>
+              <div class="episode-link">Otwórz odcinek</div>
             </div>
           </a>
 
-          <a class="category-card reveal" href="/sztab/forgotten/">
-            <div class="category-image" style="background-image:url('https://images.unsplash.com/photo-1520975928318-3b5c3b3f38d6?auto=format&fit=crop&w=1600&q=80')"></div>
-            <div class="category-body">
-              <h3 class="category-title">Forgotten</h3>
-              <p class="category-text">
-                Names, stories, and achievements pushed to the margins. A place for those who must be restored to memory.
+          <a class="episode-card reveal" href="#">
+            <div class="episode-image" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="episode-body">
+              <h3 class="episode-title">Karski</h3>
+              <p class="episode-text">
+                Świadek, który próbował poruszyć świat — i stał się jedną z najważniejszych figur pamięci moralnej XX wieku.
               </p>
-              <div class="category-link">Enter category</div>
+              <div class="episode-link">Wkrótce</div>
             </div>
           </a>
 
-          <a class="category-card reveal" href="/sztab/battles/">
-            <div class="category-image" style="background-image:url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=1600&q=80')"></div>
-            <div class="category-body">
-              <h3 class="category-title">Battles</h3>
-              <p class="category-text">
-                Clashes and historical moments in which direction changed. Battles retold as compact, cinematic forms of memory.
+          <a class="episode-card reveal" href="#">
+            <div class="episode-image" style="background-image:url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="episode-body">
+              <h3 class="episode-title">Pilecki</h3>
+              <p class="episode-text">
+                Postać rozpoznawalna symbolicznie, ale stale domagająca się nowego, uczciwego i nienadmiernie pomnikowego odczytania.
               </p>
-              <div class="category-link">Enter category</div>
+              <div class="episode-link">Wkrótce</div>
             </div>
           </a>
         </div>
@@ -792,38 +791,38 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Entry Points</div>
-            <h2>Where to begin</h2>
+            <div class="section-kicker">Punkty Wejścia</div>
+            <h2>Jak czytać tę kategorię</h2>
           </div>
           <div class="section-note">
-            The series can be approached through a central episode, a category path, or the broader project world connected to Rap-Ort.
+            Original nie służy do prostego potwierdzania tego, co już wiadomo. To raczej próba ponownego wejścia w postacie, które bywają pamiętane bardziej jako symbole niż jako ludzie.
           </div>
         </div>
 
         <div class="featured">
           <div class="featured-body reveal">
             <div class="chips">
-              <span class="chip">Episode-first</span>
+              <span class="chip">Odcinek</span>
             </div>
-            <h3 class="featured-title">Start with Zo</h3>
+            <h3 class="featured-title">Wejdź przez konkretną postać</h3>
             <p class="featured-text">
-              The clearest current way into SZTAB is through “Zo — The Silence That Fights”: a concentrated episode that establishes the tone, rhythm, and ambition of the series.
+              Najlepszy sposób wejścia do tej kategorii to rozpoczęcie od pojedynczego odcinka — takiego jak „Zo” — a następnie przechodzenie do kolejnych postaci.
             </p>
             <div class="cta-row" style="margin-top:auto;">
-              <a class="btn btn-primary" href="/sztab/zo/">Open Zo</a>
+              <a class="btn btn-primary" href="/sztab/zo/pl/">Zacznij od Zo</a>
             </div>
           </div>
 
           <div class="featured-body reveal">
             <div class="chips">
-              <span class="chip">World-first</span>
+              <span class="chip">Świat serii</span>
             </div>
-            <h3 class="featured-title">Continue through categories</h3>
+            <h3 class="featured-title">Wróć do całego SZTAB</h3>
             <p class="featured-text">
-              From there, the series expands through Original, Forgotten, and Battles — creating a structured historical atlas rather than a loose list of releases.
+              Original jest jedną z osi SZTAB. Cała seria rozwija się również przez Forgotten i Battles, budując większy atlas pamięci i oporu.
             </p>
             <div class="cta-row" style="margin-top:auto;">
-              <a class="btn btn-secondary" href="/rap-ort/">Visit Rap-Ort</a>
+              <a class="btn btn-secondary" href="/sztab/pl/">Powrót do SZTAB</a>
             </div>
           </div>
         </div>
@@ -833,8 +832,8 @@
 
   <footer class="footer">
     <div class="wrap footer-inner">
-      <div>SZTAB · Piotr Lichwała (Vibrosław)</div>
-      <div>English version</div>
+      <div>Original · SZTAB · Piotr Lichwała (Vibrosław)</div>
+      <div>Wersja polska</div>
     </div>
   </footer>
 
