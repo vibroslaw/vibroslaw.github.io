@@ -152,12 +152,30 @@
       color:var(--text);
     }
 
-    .lang-link{
-      padding:10px 14px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(255,255,255,0.02);
-      color:var(--text) !important;
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .lang-item{
+      color:var(--muted);
+      font-size:.94rem;
+      transition:opacity .25s ease, color .25s ease;
+    }
+
+    .lang-item:hover{
+      color:var(--text);
+    }
+
+    .lang-item.active{
+      color:var(--text);
+    }
+
+    .lang-sep{
+      color:var(--soft);
+      font-size:.9rem;
+  
     }
 
     .hero{
@@ -644,8 +662,8 @@
       }
 
       h1{
-        font-size:clamp(2.8rem, 12vw, 4.6rem);
-        max-width:10ch;
+        font-size:clamp(2.7rem, 11vw, 4.4rem);
+        max-width:12ch;
         margin-left:auto;
         margin-right:auto;
       }
