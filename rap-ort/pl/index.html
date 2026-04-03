@@ -4,18 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Rap-Ort — Uniwersum świadectwa i odpowiedzialności</title>
-  <meta name="description" content="Rap-Ort to audiowizualne uniwersum zbudowane wokół świadectwa, odpowiedzialności, pamięci i presji historii." />
+  <title>Rap-Ort — Uniwersum świadectwa, pamięci i odpowiedzialności</title>
+  <meta name="description" content="Rap-Ort to autorskie uniwersum audiowizualne budowane wokół świadectwa, pamięci, odpowiedzialności i presji historii. Jego centralnym rozdziałem jest Prawda Sumienia." />
   <meta name="theme-color" content="#090909" />
 
-  <meta property="og:title" content="Rap-Ort — Uniwersum świadectwa i odpowiedzialności" />
-  <meta property="og:description" content="Audiowizualne uniwersum zbudowane wokół świadectwa, odpowiedzialności, pamięci i presji historii." />
+  <meta property="og:title" content="Rap-Ort — Uniwersum świadectwa, pamięci i odpowiedzialności" />
+  <meta property="og:description" content="Autorskie uniwersum audiowizualne budowane wokół świadectwa, pamięci, odpowiedzialności i presji historii." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/rap-ort/pl/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
@@ -23,25 +22,28 @@
       --bg:#080808;
       --bg-soft:#101010;
       --bg-soft-2:#151515;
-      --panel:rgba(255,255,255,0.04);
-      --panel-2:rgba(255,255,255,0.025);
-      --line:rgba(255,255,255,0.08);
-      --line-strong:rgba(255,255,255,0.14);
+      --panel:rgba(255,255,255,.04);
+      --panel-2:rgba(255,255,255,.024);
+      --line:rgba(255,255,255,.08);
+      --line-strong:rgba(255,255,255,.14);
 
       --text:#efe8de;
-      --muted:rgba(239,232,222,0.74);
-      --soft:rgba(239,232,222,0.50);
+      --muted:rgba(239,232,222,.74);
+      --soft:rgba(239,232,222,.50);
 
       --accent:#cbb08a;
-      --accent-soft:rgba(203,176,138,0.18);
+      --accent-soft:rgba(203,176,138,.18);
 
-      --shadow:0 30px 90px rgba(0,0,0,0.38);
+      --shadow:0 30px 90px rgba(0,0,0,.38);
+      --shadow-strong:0 40px 120px rgba(0,0,0,.48);
+
       --radius-xl:32px;
       --radius-lg:24px;
       --radius-md:18px;
 
-      --max:1300px;
+      --max:1320px;
       --nav-h:78px;
+      --ease:cubic-bezier(.22,1,.36,1);
     }
 
     *{box-sizing:border-box}
@@ -81,7 +83,7 @@
     img, video{display:block;max-width:100%}
 
     .wrap{
-      width:min(var(--max), calc(100% - 32px));
+      width:min(var(--max), calc(100% - 36px));
       margin:0 auto;
       position:relative;
       z-index:1;
@@ -90,10 +92,10 @@
     .nav{
       position:sticky;
       top:0;
-      z-index:100;
+      z-index:120;
       backdrop-filter:blur(18px);
       -webkit-backdrop-filter:blur(18px);
-      background:rgba(8,8,8,.74);
+      background:rgba(8,8,8,.76);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
 
@@ -114,18 +116,18 @@
 
     .brand-main{
       font-family:"Cinzel",serif;
-      font-size:1.45rem;
+      font-size:1.48rem;
       line-height:1;
-      letter-spacing:.08em;
+      letter-spacing:.1em;
       text-transform:uppercase;
     }
 
     .brand-sub{
-      font-size:.76rem;
+      font-size:.74rem;
       line-height:1.2;
       color:var(--soft);
       text-transform:uppercase;
-      letter-spacing:.16em;
+      letter-spacing:.18em;
     }
 
     .nav-links{
@@ -137,38 +139,31 @@
 
     .nav-links a{
       color:var(--muted);
-      font-size:.94rem;
-      transition:color .25s ease, opacity .25s ease;
+      font-size:.93rem;
+      transition:color .25s ease, opacity .25s ease, transform .25s ease;
     }
 
     .nav-links a:hover{
       color:var(--text);
+      transform:translateY(-1px);
     }
 
     .lang-switch{
       display:flex;
       align-items:center;
       gap:10px;
+      margin-left:2px;
     }
 
     .lang-item{
       color:var(--muted);
-      font-size:.94rem;
+      font-size:.93rem;
       transition:opacity .25s ease, color .25s ease;
     }
 
-    .lang-item:hover{
-      color:var(--text);
-    }
-
-    .lang-item.active{
-      color:var(--text);
-    }
-
-    .lang-sep{
-      color:var(--soft);
-      font-size:.9rem;
-    }
+    .lang-item:hover{color:var(--text)}
+    .lang-item.active{color:var(--text)}
+    .lang-sep{color:var(--soft);font-size:.9rem}
 
     .hero{
       position:relative;
@@ -182,105 +177,125 @@
       position:absolute;
       inset:0;
       z-index:0;
+      overflow:hidden;
     }
 
     .hero-image{
       position:absolute;
-      inset:0;
+      inset:-2%;
       background:
-        linear-gradient(180deg, rgba(6,6,6,.18) 0%, rgba(6,6,6,.34) 38%, rgba(6,6,6,.86) 100%),
+        linear-gradient(180deg, rgba(6,6,6,.18) 0%, rgba(6,6,6,.34) 38%, rgba(6,6,6,.88) 100%),
         radial-gradient(circle at 75% 25%, rgba(203,176,138,.18), transparent 28%),
-        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80') center center / cover no-repeat;
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=80') center center / cover no-repeat;
       filter:saturate(.62) brightness(.62) contrast(1.02);
-      transform:scale(1.04);
+      transform:scale(1.05);
+      animation:heroFloat 18s ease-in-out infinite alternate;
     }
 
     .hero-overlay{
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg, rgba(6,6,6,.88) 0%, rgba(6,6,6,.68) 36%, rgba(6,6,6,.28) 72%, rgba(6,6,6,.18) 100%),
-        linear-gradient(180deg, rgba(6,6,6,.10) 0%, rgba(6,6,6,.42) 58%, rgba(6,6,6,.95) 100%);
+        linear-gradient(90deg, rgba(6,6,6,.90) 0%, rgba(6,6,6,.70) 36%, rgba(6,6,6,.28) 72%, rgba(6,6,6,.18) 100%),
+        linear-gradient(180deg, rgba(6,6,6,.10) 0%, rgba(6,6,6,.42) 58%, rgba(6,6,6,.96) 100%);
     }
 
     .hero-grid{
       position:relative;
       z-index:2;
       display:grid;
-      grid-template-columns:minmax(0, 760px) minmax(280px, 360px);
+      grid-template-columns:minmax(0, 780px) minmax(290px, 370px);
       justify-content:space-between;
-      gap:48px;
+      gap:54px;
       align-items:end;
       width:100%;
-      padding:98px 0 78px;
+      padding:110px 0 84px;
+    }
+
+    .hero-copy{
+      max-width:780px;
     }
 
     .eyebrow{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      margin-bottom:20px;
+      margin-bottom:22px;
       color:var(--accent);
       text-transform:uppercase;
-      letter-spacing:.20em;
-      font-size:.72rem;
+      letter-spacing:.22em;
+      font-size:.70rem;
     }
 
     .eyebrow::before{
       content:"";
       width:42px;
       height:1px;
-      background:rgba(203,176,138,.60);
+      background:rgba(203,176,138,.62);
     }
 
     .hero-title{
       margin:0;
       font-family:"Cinzel",serif;
       font-weight:600;
-      font-size:clamp(3.2rem, 7vw, 6rem);
-      line-height:.92;
-      letter-spacing:.08em;
+      font-size:clamp(3.5rem, 7vw, 6.4rem);
+      line-height:.9;
+      letter-spacing:.10em;
       text-transform:uppercase;
     }
 
     .hero-subtitle{
-      margin:16px 0 0;
+      margin:18px 0 0;
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.5rem, 2.4vw, 2.3rem);
-      line-height:1.08;
+      font-size:clamp(1.6rem, 2.5vw, 2.35rem);
+      line-height:1.06;
       color:var(--text);
-      max-width:18ch;
+      max-width:19ch;
     }
 
     .hero-lead{
-      margin:28px 0 0;
-      max-width:58ch;
+      margin:30px 0 0;
+      max-width:60ch;
       color:var(--muted);
-      line-height:1.92;
-      font-size:1.04rem;
+      line-height:1.95;
+      font-size:1.05rem;
     }
 
     .cta-row{
-      margin-top:34px;
+      margin-top:36px;
       display:flex;
       flex-wrap:wrap;
       gap:14px;
     }
 
     .btn{
-      min-height:50px;
-      padding:0 20px;
+      min-height:52px;
+      padding:0 22px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       border-radius:999px;
       border:1px solid var(--line);
       font-size:.96rem;
-      transition:transform .25s ease, background .25s ease, border-color .25s ease;
+      transition:transform .28s var(--ease), background .28s var(--ease), border-color .28s var(--ease), box-shadow .28s var(--ease);
+      position:relative;
+      overflow:hidden;
     }
 
+    .btn::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:linear-gradient(120deg, transparent 18%, rgba(255,255,255,.14), transparent 82%);
+      transform:translateX(-120%);
+      transition:transform .85s var(--ease);
+      pointer-events:none;
+    }
+
+    .btn:hover::before{transform:translateX(120%)}
     .btn:hover{
-      transform:translateY(-1px);
+      transform:translateY(-2px);
+      box-shadow:0 16px 34px rgba(0,0,0,.26);
     }
 
     .btn-primary{
@@ -302,18 +317,18 @@
     .hero-panel{
       width:100%;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
+        linear-gradient(180deg, rgba(255,255,255,.052), rgba(255,255,255,.028)),
         radial-gradient(circle at top right, rgba(203,176,138,.12), transparent 36%);
       border:1px solid var(--line);
       border-radius:var(--radius-lg);
-      padding:24px 22px;
+      padding:26px 24px;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
     }
 
     .hero-panel-label{
-      font-size:.72rem;
+      font-size:.70rem;
       letter-spacing:.18em;
       text-transform:uppercase;
       color:var(--accent);
@@ -323,29 +338,29 @@
     .hero-panel-quote{
       margin:0 0 16px;
       font-family:"Cormorant Garamond",serif;
-      font-size:1.72rem;
-      line-height:1.08;
+      font-size:1.8rem;
+      line-height:1.06;
     }
 
     .hero-panel-text{
       margin:0;
       color:var(--muted);
-      line-height:1.82;
-      font-size:.95rem;
+      line-height:1.84;
+      font-size:.96rem;
     }
 
     .section{
       position:relative;
       z-index:1;
-      padding:92px 0;
+      padding:104px 0;
     }
 
     .section-head{
       display:flex;
       justify-content:space-between;
       align-items:end;
-      gap:20px;
-      margin-bottom:30px;
+      gap:28px;
+      margin-bottom:34px;
     }
 
     .section-kicker{
@@ -359,38 +374,45 @@
     h2{
       margin:0;
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.4rem, 4.8vw, 4rem);
-      line-height:.95;
+      font-size:clamp(2.5rem, 5vw, 4.1rem);
+      line-height:.94;
       font-weight:600;
     }
 
     .section-note{
-      max-width:56ch;
+      max-width:58ch;
       color:var(--muted);
-      line-height:1.88;
+      line-height:1.9;
       font-size:1rem;
     }
 
-    .intro-panel{
+    .panel{
       border:1px solid var(--line);
       border-radius:var(--radius-xl);
       background:
-        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.024)),
+        linear-gradient(180deg, rgba(255,255,255,.046), rgba(255,255,255,.024)),
         radial-gradient(circle at top right, rgba(203,176,138,.10), transparent 34%);
       box-shadow:var(--shadow);
-      padding:34px 28px;
+      padding:36px 30px;
+      transition:transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
     }
 
-    .intro-text{
-      max-width:70ch;
+    .panel:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.12);
+      box-shadow:var(--shadow-strong);
+    }
+
+    .panel p{
+      max-width:72ch;
       color:var(--muted);
-      line-height:1.95;
+      line-height:1.96;
       font-size:1.05rem;
       margin:0;
     }
 
     .quote-block{
-      padding:26px 0 4px;
+      padding:28px 0 0;
       text-align:center;
     }
 
@@ -398,8 +420,8 @@
       margin:0 auto;
       max-width:18ch;
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.9rem, 4vw, 3rem);
-      line-height:1.04;
+      font-size:clamp(2rem, 4.2vw, 3.1rem);
+      line-height:1.03;
     }
 
     .quote-block span{
@@ -411,15 +433,21 @@
       text-transform:uppercase;
     }
 
-    .grid{
+    .grid-2{
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
       gap:24px;
     }
 
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
     .chapter-card{
       position:relative;
-      min-height:620px;
+      min-height:660px;
       display:flex;
       flex-direction:column;
       overflow:hidden;
@@ -427,18 +455,19 @@
       border:1px solid var(--line);
       background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
       box-shadow:var(--shadow);
-      transition:transform .35s ease, border-color .35s ease, background .35s ease;
+      transition:transform .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease), box-shadow .35s var(--ease);
     }
 
     .chapter-card:hover{
-      transform:translateY(-3px);
+      transform:translateY(-4px);
       border-color:rgba(255,255,255,.14);
       background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+      box-shadow:var(--shadow-strong);
     }
 
     .chapter-media{
       position:relative;
-      min-height:340px;
+      min-height:360px;
       background-size:cover;
       background-position:center;
       filter:saturate(.62);
@@ -450,7 +479,7 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.50)),
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.52)),
         radial-gradient(circle at center, rgba(203,176,138,.12), transparent 46%);
     }
 
@@ -458,14 +487,14 @@
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg, transparent 0%, rgba(7,7,7,.70) 100%);
+      background:linear-gradient(180deg, transparent 0%, rgba(7,7,7,.72) 100%);
     }
 
     .chapter-body{
       display:flex;
       flex-direction:column;
       gap:16px;
-      padding:30px 24px 24px;
+      padding:32px 26px 26px;
       flex:1;
     }
 
@@ -488,8 +517,8 @@
     .chapter-title{
       margin:0;
       font-family:"Cormorant Garamond",serif;
-      font-size:2.2rem;
-      line-height:.95;
+      font-size:2.28rem;
+      line-height:.94;
       font-weight:600;
     }
 
@@ -499,6 +528,36 @@
       line-height:1.86;
       font-size:1rem;
       flex:1;
+    }
+
+    .mini-panels{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:22px;
+      margin-top:26px;
+    }
+
+    .mini-panel{
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.024));
+      box-shadow:var(--shadow);
+      padding:24px 22px;
+    }
+
+    .mini-panel h3{
+      margin:0 0 12px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.8rem;
+      line-height:.95;
+      font-weight:600;
+    }
+
+    .mini-panel p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.84;
+      font-size:.98rem;
     }
 
     .principles{
@@ -518,26 +577,90 @@
     .principle h3{
       margin:0 0 12px;
       font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      line-height:.96;
+      font-size:1.72rem;
+      line-height:.95;
       font-weight:600;
     }
 
     .principle p{
       margin:0;
       color:var(--muted);
-      line-height:1.82;
+      line-height:1.84;
       font-size:.98rem;
     }
 
-    .back-home{
-      margin-top:18px;
+    .audience-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .audience-card{
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.024));
+      box-shadow:var(--shadow);
+      padding:24px 20px;
+    }
+
+    .audience-card h3{
+      margin:0 0 12px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.68rem;
+      line-height:.96;
+      font-weight:600;
+    }
+
+    .audience-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+      font-size:.97rem;
+    }
+
+    .contact-panel{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:24px;
+      align-items:stretch;
+    }
+
+    .contact-card{
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.046), rgba(255,255,255,.024)),
+        radial-gradient(circle at top right, rgba(203,176,138,.10), transparent 34%);
+      box-shadow:var(--shadow);
+      padding:32px 28px;
+    }
+
+    .contact-card h3{
+      margin:0 0 14px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:2rem;
+      line-height:.95;
+      font-weight:600;
+    }
+
+    .contact-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.9;
+      font-size:1rem;
+    }
+
+    .contact-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:24px;
     }
 
     .footer{
       position:relative;
       z-index:1;
-      padding:34px 0 64px;
+      padding:38px 0 68px;
       border-top:1px solid rgba(255,255,255,.06);
     }
 
@@ -548,33 +671,38 @@
       flex-wrap:wrap;
       color:var(--soft);
       font-size:.94rem;
+      line-height:1.7;
     }
 
     .reveal{
       opacity:0;
-      transform:translateY(18px);
-      transition:opacity .8s ease, transform .8s ease;
+      transform:translateY(22px);
+      filter:blur(6px);
+      transition:opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease);
     }
 
     .reveal.visible{
       opacity:1;
       transform:translateY(0);
+      filter:blur(0);
+    }
+
+    @keyframes heroFloat{
+      from{transform:scale(1.05) translate3d(0,0,0)}
+      to{transform:scale(1.09) translate3d(-1.5%, -1%, 0)}
     }
 
     @media (max-width:1100px){
-      .hero-grid{
+      .hero-grid,
+      .grid-2,
+      .contact-panel,
+      .mini-panels,
+      .principles,
+      .audience-grid{
         grid-template-columns:1fr;
-        gap:22px;
       }
 
-      .grid,
-      .principles{
-        grid-template-columns:1fr;
-      }
-
-      .hero-title{
-        max-width:12ch;
-      }
+      .hero-title{max-width:12ch}
     }
 
     @media (max-width:900px){
@@ -590,6 +718,10 @@
 
     @media (max-width:760px){
       :root{--nav-h:72px}
+
+      .wrap{
+        width:min(var(--max), calc(100% - 22px));
+      }
 
       .nav-inner{
         min-height:auto;
@@ -611,12 +743,12 @@
 
       .hero-overlay{
         background:
-          linear-gradient(180deg, rgba(6,6,6,.42) 0%, rgba(6,6,6,.56) 32%, rgba(6,6,6,.92) 100%);
+          linear-gradient(180deg, rgba(6,6,6,.42) 0%, rgba(6,6,6,.56) 32%, rgba(6,6,6,.94) 100%);
       }
 
       .hero-grid{
         grid-template-columns:1fr;
-        padding:58px 0 52px;
+        padding:62px 0 54px;
         gap:20px;
       }
 
@@ -629,7 +761,7 @@
       }
 
       .hero-title{
-        font-size:clamp(2.8rem, 12vw, 4.6rem);
+        font-size:clamp(2.9rem, 12vw, 4.8rem);
         max-width:12ch;
         margin-left:auto;
         margin-right:auto;
@@ -641,14 +773,11 @@
         margin-right:auto;
       }
 
-      .hero-subtitle{
-        max-width:16ch;
-      }
-
+      .hero-subtitle{max-width:16ch}
       .hero-lead{
-        max-width:30ch;
+        max-width:31ch;
         font-size:1rem;
-        line-height:1.84;
+        line-height:1.86;
       }
 
       .cta-row{
@@ -661,22 +790,21 @@
       }
 
       .section{
-        padding:74px 0;
+        padding:78px 0;
       }
     }
 
     @media (max-width:640px){
-      .wrap{
-        width:min(var(--max), calc(100% - 20px));
-      }
-
       .hero-grid{
-        padding:50px 0 48px;
+        padding:52px 0 48px;
       }
 
+      .panel,
       .chapter-body,
-      .intro-panel,
-      .principle{
+      .mini-panel,
+      .principle,
+      .audience-card,
+      .contact-card{
         padding:22px 18px;
       }
 
@@ -684,7 +812,8 @@
         width:100%;
       }
 
-      .cta-row{
+      .cta-row,
+      .contact-actions{
         flex-direction:column;
         align-items:stretch;
       }
@@ -702,15 +831,17 @@
 <body>
   <header class="nav">
     <div class="wrap nav-inner">
-      <div class="brand">
+      <a class="brand" href="/rap-ort/pl/" aria-label="Rap-Ort strona główna">
         <div class="brand-main">Rap-Ort</div>
-        <div class="brand-sub">Uniwersum świadectwa i odpowiedzialności</div>
-      </div>
+        <div class="brand-sub">Uniwersum świadectwa, pamięci i odpowiedzialności</div>
+      </a>
 
       <nav class="nav-links" aria-label="Główna nawigacja">
+        <a href="#what">Czym jest</a>
         <a href="#chapters">Rozdziały</a>
+        <a href="#education">Edukacja</a>
         <a href="#principles">Założenia</a>
-        <a href="#contact-anchor">Kontakt</a>
+        <a href="#contact">Kontakt</a>
         <div class="lang-switch">
           <a href="/rap-ort/" class="lang-item">EN</a>
           <span class="lang-sep">|</span>
@@ -729,16 +860,19 @@
 
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
-          <div class="eyebrow">Audiowizualne Uniwersum Narracyjne</div>
+          <div class="eyebrow">Audiowizualne uniwersum narracyjne</div>
           <h1 class="hero-title">Rap-Ort</h1>
-          <div class="hero-subtitle">Świat zbudowany z pamięci, świadectwa, ciszy i moralnej presji.</div>
+          <div class="hero-subtitle">Świat zbudowany z pamięci, świadectwa i moralnego ciężaru historii.</div>
           <p class="hero-lead">
-            Rap-Ort nie jest wyłącznie pojedynczym projektem. To rozwijające się uniwersum audiowizualne budowane wokół świadectwa, napięcia historycznego i konsekwencji ludzkich decyzji podejmowanych pod presją systemu. Każde dzieło może wyrastać z tej samej struktury sumienia, odpowiedzialności i pamięci.
+            Rap-Ort nie jest wyłącznie pojedynczym projektem. To rozwijające się uniwersum audiowizualne
+            budowane wokół świadectwa, napięcia historycznego i konsekwencji ludzkich decyzji podejmowanych
+            pod presją systemu. Poszczególne dzieła mogą wyrastać z różnych postaci, różnych osi i różnych kontekstów,
+            ale pozostają częścią tej samej struktury pamięci, odpowiedzialności i sumienia.
           </p>
 
           <div class="cta-row">
-            <a class="btn btn-primary" href="#chapters">Wejdź do Rozdziałów</a>
-            <a class="btn btn-secondary" href="/">Powrót do Strony Głównej</a>
+            <a class="btn btn-primary" href="#chapters">Wejdź do rozdziałów</a>
+            <a class="btn btn-secondary" href="/pl/">Powrót do strony głównej</a>
           </div>
         </div>
 
@@ -747,28 +881,33 @@
             <div class="hero-panel-label">Orientacja</div>
             <p class="hero-panel-quote">„Prawda nie potrzebuje hałasu. Potrzebuje, by została usłyszana.”</p>
             <p class="hero-panel-text">
-              Rap-Ort powstał z myślą o odbiorze refleksyjnym i kontekście instytucjonalnym. Sytuuje się pomiędzy muzyką narracyjną, językiem filmu i etyczną formą świadectwa.
+              Rap-Ort został pomyślany jako przestrzeń odbioru refleksyjnego i instytucjonalnego.
+              Sytuuje się pomiędzy muzyką narracyjną, językiem filmu i etyczną formą świadectwa —
+              nie po to, by upraszczać historię, lecz by przywracać jej ciężar.
             </p>
           </aside>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="what">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
             <div class="section-kicker">Świat Rap-Ort</div>
-            <h2>To framework, nie pojedynczy tytuł</h2>
+            <h2>To uniwersum, nie pojedynczy tytuł</h2>
           </div>
           <div class="section-note">
-            Rap-Ort funkcjonuje jako szersze pole narracyjne. Poszczególne dzieła mogą koncentrować się na innych postaciach, wydarzeniach i napięciach, ale pozostają częścią tego samego języka etycznego i audiowizualnego.
+            Rap-Ort funkcjonuje jako szersze pole narracyjne. Poszczególne rozdziały mogą koncentrować się na innych postaciach, wydarzeniach i napięciach, ale pozostają częścią tego samego języka etycznego i audiowizualnego.
           </div>
         </div>
 
-        <div class="intro-panel reveal">
-          <p class="intro-text">
-            Jego celem nie jest widowisko ani uproszczona dydaktyka. Rap-Ort istnieje po to, by tworzyć uważną przestrzeń, w której świadectwo, odpowiedzialność i presja historii mogą być spotkane poprzez obraz, głos, rytm i ciszę. To uniwersum może rozwijać się dalej poprzez kolejne rozdziały, zachowując ten sam ciężar formy i powściągliwość.
+        <div class="panel reveal">
+          <p>
+            Celem Rap-Ort nie jest widowisko ani uproszczona dydaktyka. To uniwersum istnieje po to, by tworzyć uważną przestrzeń,
+            w której świadectwo, odpowiedzialność i presja historii mogą być spotkane poprzez obraz, głos, rytm i ciszę.
+            Nie jest koncertem. Nie jest klasycznym filmem fabularnym. Nie jest teledyskową składanką. Nie jest publicystycznym oskarżeniem.
+            Jest autorską strukturą pamięci i sumienia — formą, w której raport, narracja i doświadczenie audiowizualne spotykają się w jednym porządku.
           </p>
         </div>
 
@@ -783,28 +922,30 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Obecne i Przyszłe Rozdziały</div>
-            <h2>Dzieła wyrastające z uniwersum Rap-Ort</h2>
+            <div class="section-kicker">Centralne rozdziały</div>
+            <h2>Pierwsze główne wejścia do uniwersum</h2>
           </div>
           <div class="section-note">
-            Jeden rozdział może przyjąć formę pełnego audiowizualnego raportu instytucjonalnego. Inny może z czasem wyłonić się poprzez nową postać, nowy kontekst lub inną oś świadectwa.
+            Rap-Ort rozwija się przez rozdziały. Każdy z nich może zachowywać ten sam rdzeń etyczny i strukturę sensu, a jednocześnie być odrębnym doświadczeniem audiowizualnym.
           </div>
         </div>
 
-        <div class="grid">
+        <div class="grid-2">
           <article class="chapter-card reveal">
             <div class="chapter-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80');"></div>
             <div class="chapter-body">
               <div class="chips">
-                <span class="chip">Obecny Rozdział</span>
+                <span class="chip">Rozdział centralny</span>
+                <span class="chip">Polska wersja</span>
                 <span class="chip">Instytucjonalny</span>
                 <span class="chip">65 min</span>
               </div>
               <h3 class="chapter-title">Prawda Sumienia</h3>
               <p class="chapter-text">
-                Centralne obecnie dzieło uniwersum Rap-Ort: audiowizualny raport instytucjonalny zbudowany wokół świadectwa, presji historii i moralnych konsekwencji milczenia.
+                Centralne obecnie dzieło uniwersum Rap-Ort: audiowizualny raport instytucjonalny zbudowany wokół świadectwa,
+                presji historii i moralnych konsekwencji milczenia. To główny polski rozdział projektu, z którego wyrastają dalsze warstwy edukacyjne, instytucjonalne i interpretacyjne.
               </p>
-              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Wejdź do Rozdziału</a>
+              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Wejdź do rozdziału</a>
             </div>
           </article>
 
@@ -812,15 +953,77 @@
             <div class="chapter-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1800&q=80');"></div>
             <div class="chapter-body">
               <div class="chips">
-                <span class="chip">Przyszły Rozdział</span>
-                <span class="chip">W Rozwoju</span>
+                <span class="chip">Rozdział równoległy</span>
+                <span class="chip">Wersja angielska</span>
+                <span class="chip">Nowa muzyka</span>
+                <span class="chip">Nowe wideo</span>
               </div>
-              <h3 class="chapter-title">Kolejne Wejścia</h3>
+              <h3 class="chapter-title">Conscience Report</h3>
               <p class="chapter-text">
-                Z tego samego uniwersum mogą z czasem wyrastać kolejne dzieła — zachowujące tę samą dyscyplinę wizualną, powagę narracji i etyczną ramę.
+                Anglojęzyczny rozdział rozwijany jako odrębna wersja audiowizualna. Zachowuje tę samą strukturę i sens,
+                ale wyrasta z nowego podkładu muzycznego oraz nowej warstwy wideo — po to, by przemówić w pełni własnym językiem do odbiorcy międzynarodowego.
               </p>
-              <a class="btn btn-secondary" href="#">Wkrótce</a>
+              <a class="btn btn-secondary" href="/rap-ort/conscience-report/">Wejdź do rozdziału</a>
             </div>
+          </article>
+        </div>
+
+        <div class="mini-panels">
+          <article class="mini-panel reveal">
+            <h3>Kolejne wejścia</h3>
+            <p>
+              Z tego samego uniwersum mogą z czasem wyrastać dalsze dzieła — zachowujące tę samą dyscyplinę wizualną,
+              powagę narracji i etyczną ramę, ale koncentrujące się na innych postaciach, wydarzeniach i napięciach.
+            </p>
+          </article>
+
+          <article class="mini-panel reveal">
+            <h3>Warstwy wewnętrzne</h3>
+            <p>
+              Każdy rozdział może rozwijać się dalej poprzez własne podstrony: ścieżki edukacyjne, materiały dla nauczyciela,
+              tryb pracy instytucjonalnej, interaktywne zasoby i narzędzia do prowadzenia zajęć.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="education">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Warstwa edukacyjna</div>
+            <h2>Uniwersum gotowe do pracy z uczniem i instytucją</h2>
+          </div>
+          <div class="section-note">
+            Rap-Ort nie kończy się na projekcji. Został pomyślany tak, by z czasem działać również jako środowisko pracy edukacyjnej — prowadzonej z autorem albo bez jego obecności.
+          </div>
+        </div>
+
+        <div class="panel reveal">
+          <p>
+            Wewnętrzne podstrony rozdziałów będą rozwijane jako premium warstwy edukacyjne i instytucjonalne:
+            z materiałami do lekcji, ścieżkami dla nauczyciela, prowadzeniem zajęć krok po kroku, zasobami do samodzielnej pracy,
+            interaktywnymi punktami wejścia, dokumentami źródłowymi, kontekstem historycznym i narzędziami do rozmowy
+            dostosowanymi do wieku, poziomu i charakteru odbiorcy. Rap-Ort ma być zdolny pracować zarówno z uczniem szkoły podstawowej,
+            jak i ze studentem, grupą teatralną, instytucją pamięci oraz zagraniczną Polonią.
+          </p>
+        </div>
+
+        <div class="audience-grid" style="margin-top:24px;">
+          <article class="audience-card reveal">
+            <h3>Szkoła podstawowa</h3>
+            <p>Wejścia uproszczone, bez uproszczenia sensu — z naciskiem na pamięć, wybór, odpowiedzialność i pierwsze spotkanie ze świadectwem.</p>
+          </article>
+
+          <article class="audience-card reveal">
+            <h3>Szkoła średnia i uczelnia</h3>
+            <p>Praca z kontekstem, napięciem moralnym, dokumentem, strukturą opowieści i odpowiedzialnością za interpretację historii.</p>
+          </article>
+
+          <article class="audience-card reveal">
+            <h3>Teatr, instytucje, Polonia</h3>
+            <p>Ścieżki projekcyjne, rozmowa po pokazie, materiały kontekstowe, użycie rocznicowe i międzynarodowe prowadzenie odbioru.</p>
           </article>
         </div>
       </div>
@@ -830,7 +1033,7 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Założenia Fundamentalne</div>
+            <div class="section-kicker">Założenia fundamentalne</div>
             <h2>Co definiuje Rap-Ort</h2>
           </div>
           <div class="section-note">
@@ -854,9 +1057,46 @@
             <p>Rap-Ort porusza się pomiędzy muzyką narracyjną, językiem filmu i strukturą raportu — zawsze podporządkowując formę znaczeniu, nigdy odwrotnie.</p>
           </article>
         </div>
+      </div>
+    </section>
 
-        <div class="back-home reveal" id="contact-anchor">
-          <a class="btn btn-secondary" href="/">Powrót do Strony Głównej</a>
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Kontakt i współpraca</div>
+            <h2>Projekcje, edukacja, instytucje, rozwój rozdziałów</h2>
+          </div>
+          <div class="section-note">
+            Rap-Ort może funkcjonować jako pokaz, wydarzenie rocznicowe, narzędzie edukacyjne, rozdział pracy instytucjonalnej albo długofalowy projekt partnerski.
+          </div>
+        </div>
+
+        <div class="contact-panel">
+          <article class="contact-card reveal">
+            <h3>Kontakt bezpośredni</h3>
+            <p>
+              Piotr Lichwała (Vibrosław)<br>
+              Email: peter.lichwala@gmail.com<br>
+              Wielka Brytania
+            </p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="mailto:peter.lichwala@gmail.com">Napisz email</a>
+              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Otwórz Prawda Sumienia</a>
+            </div>
+          </article>
+
+          <article class="contact-card reveal">
+            <h3>Do czego ten świat jest gotowy</h3>
+            <p>
+              Projekcje instytucjonalne. Zajęcia prowadzone przez nauczyciela. Wydarzenia rocznicowe.
+              Rozmowa po pokazie. Rozwój ścieżek edukacyjnych. Międzynarodowe wejścia do Conscience Report.
+            </p>
+            <div class="contact-actions">
+              <a class="btn btn-secondary" href="/rap-ort/conscience-report/">Otwórz Conscience Report</a>
+              <a class="btn btn-secondary" href="/pl/">Powrót do strony głównej</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -879,11 +1119,9 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, {
-      threshold: 0.14
-    });
+    }, { threshold: 0.14 });
 
     revealItems.forEach(item => revealObserver.observe(item));
   </script>
 </body>
-          </html>
+</html>
