@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>SZTAB — Stories of Resistance</title>
-  <meta name="description" content="SZTAB is a cinematic historical series exploring resistance, memory, and overlooked figures through music, image, and narrative storytelling." />
+  <title>SZTAB — Cinematic Historical Series</title>
+  <meta name="description" content="SZTAB is a cinematic historical series built around resistance, memory, and the moments that shaped history — through music, image, and narrative." />
   <meta name="theme-color" content="#090909" />
 
-  <meta property="og:title" content="SZTAB — Stories of Resistance" />
-  <meta property="og:description" content="A cinematic historical series exploring resistance, memory, and overlooked figures through music, image, and narrative storytelling." />
+  <meta property="og:title" content="SZTAB — Cinematic Historical Series" />
+  <meta property="og:description" content="A cinematic historical series built around resistance, memory, and the moments that shaped history." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/sztab/" />
 
@@ -26,21 +26,23 @@
       --panel:rgba(255,255,255,0.04);
       --panel-2:rgba(255,255,255,0.025);
       --line:rgba(255,255,255,0.08);
-      --line-strong:rgba(255,255,255,0.14);
+      --line-strong:rgba(255,255,255,0.16);
 
       --text:#f0e9df;
-      --muted:rgba(240,233,223,0.72);
-      --soft:rgba(240,233,223,0.50);
+      --muted:rgba(240,233,223,0.74);
+      --soft:rgba(240,233,223,0.52);
 
       --accent:#d4a95c;
-      --accent-soft:rgba(212,169,92,0.16);
+      --accent-soft:rgba(212,169,92,0.14);
 
       --shadow:0 30px 90px rgba(0,0,0,0.38);
-      --radius-xl:30px;
+      --radius-xl:32px;
       --radius-lg:24px;
+      --radius-md:18px;
 
       --max:1320px;
       --nav-h:78px;
+      --ease:cubic-bezier(.22,1,.36,1);
     }
 
     *{box-sizing:border-box}
@@ -146,11 +148,7 @@
       gap:10px;
     }
 
-    .lang-item{
-      color:var(--muted);
-      font-size:.94rem;
-    }
-
+    .lang-item{color:var(--muted); font-size:.94rem;}
     .lang-item.active{color:var(--text)}
     .lang-sep{color:var(--soft)}
 
@@ -171,6 +169,7 @@
         url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=2200&q=80') center/cover no-repeat;
       filter:saturate(.72) brightness(.60) contrast(1.04);
       transform:scale(1.04);
+      animation:heroFloat 18s ease-in-out infinite alternate;
     }
 
     .hero-overlay{
@@ -209,6 +208,8 @@
       width:42px;
       height:1px;
       background:rgba(212,169,92,.64);
+      transform-origin:left center;
+      animation:lineGrow 1.2s var(--ease) both;
     }
 
     .hero-title{
@@ -252,10 +253,29 @@
       border-radius:999px;
       border:1px solid var(--line);
       font-size:.96rem;
-      transition:transform .25s ease, background .25s ease, border-color .25s ease;
+      transition:transform .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+      position:relative;
+      overflow:hidden;
     }
 
-    .btn:hover{transform:translateY(-1px)}
+    .btn::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:linear-gradient(120deg, transparent 20%, rgba(255,255,255,.12), transparent 80%);
+      transform:translateX(-120%);
+      transition:transform .8s var(--ease);
+      pointer-events:none;
+    }
+
+    .btn:hover::before{
+      transform:translateX(120%);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 34px rgba(0,0,0,.25);
+    }
 
     .btn-primary{
       background:var(--text);
@@ -422,90 +442,81 @@
       border:0;
     }
 
-    .episodes{
+    .categories{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
       gap:22px;
     }
 
-    .episode-card{
+    .category-card{
       border-radius:var(--radius-xl);
       border:1px solid var(--line);
       overflow:hidden;
       background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
       box-shadow:var(--shadow);
-      transition:transform .35s ease, border-color .35s ease, background .35s ease;
+      transition:transform .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease);
+      position:relative;
     }
 
-    .episode-card:hover{
-      transform:translateY(-4px);
+    .category-card:hover{
+      transform:translateY(-5px);
       border-color:rgba(255,255,255,.14);
       background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
     }
 
-    .episode-image{
-      height:220px;
+    .category-image{
+      height:230px;
       background-size:cover;
       background-position:center;
-      filter:saturate(.72);
+      filter:saturate(.74);
       position:relative;
     }
 
-    .episode-image::before{
+    .category-image::before{
       content:"";
       position:absolute;
       inset:0;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.52)),
+        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.56)),
         radial-gradient(circle at center, rgba(212,169,92,.12), transparent 46%);
     }
 
-    .episode-body{
+    .category-body{
       padding:24px 20px 22px;
     }
 
-    .episode-title{
+    .category-title{
       margin:0 0 12px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.9rem;
-      line-height:.95;
-      font-weight:600;
+      font-family:"Oswald",sans-serif;
+      font-size:1.7rem;
+      line-height:1;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
-    .episode-text{
+    .category-text{
       margin:0;
       color:var(--muted);
       line-height:1.8;
       font-size:.97rem;
     }
 
-    .principles{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:18px;
+    .category-link{
+      margin-top:18px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--text);
+      font-size:.95rem;
     }
 
-    .principle{
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.024));
-      box-shadow:var(--shadow);
-      padding:24px 20px;
+    .category-link::after{
+      content:"→";
+      transition:transform .3s var(--ease);
     }
 
-    .principle h3{
-      margin:0 0 12px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      line-height:.96;
-      font-weight:600;
-    }
-
-    .principle p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:.98rem;
+    .category-card:hover .category-link::after{
+      transform:translateX(4px);
     }
 
     .footer{
@@ -526,20 +537,36 @@
 
     .reveal{
       opacity:0;
-      transform:translateY(18px);
-      transition:opacity .8s ease, transform .8s ease;
+      transform:translateY(26px);
+      filter:blur(6px);
+      transition:opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease);
     }
 
     .reveal.visible{
       opacity:1;
       transform:translateY(0);
+      filter:blur(0);
+    }
+
+    .reveal-stagger-1{transition-delay:.05s}
+    .reveal-stagger-2{transition-delay:.12s}
+    .reveal-stagger-3{transition-delay:.20s}
+    .reveal-stagger-4{transition-delay:.28s}
+
+    @keyframes heroFloat{
+      from{transform:scale(1.04) translate3d(0,0,0)}
+      to{transform:scale(1.08) translate3d(-1.5%, -1%, 0)}
+    }
+
+    @keyframes lineGrow{
+      from{transform:scaleX(0)}
+      to{transform:scaleX(1)}
     }
 
     @media (max-width:1100px){
       .hero-grid,
       .featured,
-      .episodes,
-      .principles{
+      .categories{
         grid-template-columns:1fr;
       }
     }
@@ -622,8 +649,7 @@
       }
 
       .featured-body,
-      .episode-body,
-      .principle{
+      .category-body{
         padding:22px 18px;
       }
 
@@ -644,17 +670,17 @@
     <div class="wrap nav-inner">
       <div class="brand">
         <div class="brand-main">SZTAB</div>
-        <div class="brand-sub">Stories of resistance</div>
+        <div class="brand-sub">Filmowa seria historyczna</div>
       </div>
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#featured">Featured</a>
-        <a href="#episodes">Episodes</a>
-        <a href="#principles">Principles</a>
+      <nav class="nav-links" aria-label="Główna nawigacja">
+        <a href="#featured">Wyróżnione</a>
+        <a href="#video">Trailer</a>
+        <a href="#categories">Kategorie</a>
         <div class="lang-switch">
-          <a href="/sztab/" class="lang-item active">EN</a>
+          <a href="/sztab/" class="lang-item">EN</a>
           <span class="lang-sep">|</span>
-          <a href="/sztab/pl/" class="lang-item">PL</a>
+          <a href="/sztab/pl/" class="lang-item active">PL</a>
         </div>
       </nav>
     </div>
@@ -666,26 +692,26 @@
       <div class="hero-overlay"></div>
 
       <div class="wrap hero-grid">
-        <div class="hero-copy reveal">
-          <div class="eyebrow">Cinematic Historical Series</div>
-          <h1 class="hero-title">SZTAB</h1>
-          <div class="hero-subtitle">Episodes of resistance, witness, courage, and memory.</div>
-          <p class="hero-lead">
-            SZTAB is a developing series of cinematic historical works built for wider audiences without abandoning seriousness. Each entry focuses on a figure, event, or moral turning point — combining music, image, and narrative force in a form designed for digital reach and long-term cultural weight.
+        <div class="hero-copy">
+          <div class="eyebrow reveal reveal-stagger-1">Filmowa seria historyczna</div>
+          <h1 class="hero-title reveal reveal-stagger-2">SZTAB</h1>
+          <div class="hero-subtitle reveal reveal-stagger-3">Odcinki o oporze, pamięci i momentach, które kształtowały historię.</div>
+          <p class="hero-lead reveal reveal-stagger-4">
+            SZTAB to rozwijana seria krótkich form muzyczno-filmowych. Każdy odcinek stanowi osobną opowieść — o postaci, o przemilczanym nazwisku albo o bitwie, która zmieniła bieg historii. To seria budowana dla szerokiego odbiorcy, ale z zachowaniem ciężaru, atmosfery i szacunku.
           </p>
 
-          <div class="cta-row">
-            <a class="btn btn-primary" href="#episodes">Watch the Series</a>
-            <a class="btn btn-secondary" href="/">Back to Main Site</a>
+          <div class="cta-row reveal reveal-stagger-4">
+            <a class="btn btn-primary" href="#categories">Wejdź do Serii</a>
+            <a class="btn btn-secondary" href="/pl/">Powrót do Strony Głównej</a>
           </div>
         </div>
 
-        <div class="hero-side reveal">
+        <div class="hero-side reveal reveal-stagger-4">
           <aside class="hero-panel">
-            <div class="hero-panel-label">Series Orientation</div>
-            <p class="hero-panel-quote">History does not survive by itself. Someone has to carry it forward.</p>
+            <div class="hero-panel-label">Orientacja Serii</div>
+            <p class="hero-panel-quote">Historia nie przetrwa sama z siebie. Ktoś musi ją nieść dalej.</p>
             <p class="hero-panel-text">
-              SZTAB was conceived as a more public-facing counterpart to Rap-Ort: dynamic, episodic, and accessible — yet still anchored in seriousness, memory, and historical responsibility.
+              SZTAB porządkuje swoje opowieści wokół trzech osi: Original, Forgotten i Battles — tak, by zbudować nie playlistę, lecz trwały świat pamięci i narracji.
             </p>
           </aside>
         </div>
@@ -696,11 +722,11 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Featured Episode</div>
-            <h2>The current point of entry</h2>
+            <div class="section-kicker">Wyróżniony Odcinek</div>
+            <h2>Aktualny punkt wejścia</h2>
           </div>
           <div class="section-note">
-            This section can feature your newest or most important episode, with a direct embed and a short framing text.
+            Tutaj możesz eksponować najważniejszy albo najnowszy odcinek serii.
           </div>
         </div>
 
@@ -709,19 +735,19 @@
 
           <div class="featured-body reveal">
             <div class="chips">
-              <span class="chip">Featured</span>
-              <span class="chip">Episode</span>
-              <span class="chip">Historical series</span>
+              <span class="chip">Wyróżnione</span>
+              <span class="chip">Odcinek</span>
+              <span class="chip">SZTAB</span>
             </div>
 
-            <h3 class="featured-title">Zo — The Silence That Fights</h3>
+            <h3 class="featured-title">Zo — Cisza, która walczy</h3>
             <p class="featured-text">
-              A cinematic episode centered on Elżbieta Zawacka: resistance, intelligence, discipline, and moral strength. It functions as both a standalone narrative and an entry point into the wider SZTAB series.
+              Filmowy odcinek poświęcony Elżbiecie Zawackiej — oporowi, inteligencji, dyscyplinie i sile moralnej. Działa jako samodzielna opowieść, ale również jako wejście do szerszego świata serii.
             </p>
 
             <div class="cta-row" style="margin-top:auto;">
-              <a class="btn btn-primary" href="#video">Watch Trailer</a>
-              <a class="btn btn-secondary" href="#episodes">View Episodes</a>
+              <a class="btn btn-primary" href="/sztab/zo/pl/">Otwórz Odcinek</a>
+              <a class="btn btn-secondary" href="#video">Zobacz Wideo</a>
             </div>
           </div>
         </div>
@@ -732,92 +758,65 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Video</div>
-            <h2>Embedded episode or trailer</h2>
+            <div class="section-kicker">Trailer / Odcinek</div>
+            <h2>Wideo serii</h2>
           </div>
           <div class="section-note">
-            Replace the placeholder video below with your actual YouTube embed link.
+            Osadzony materiał YouTube — może to być trailer serii albo wyróżniony odcinek.
           </div>
         </div>
 
         <div class="video-wrap reveal">
-          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="SZTAB video" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/JgV9KEZTbeM" title="SZTAB video" allowfullscreen></iframe>
         </div>
       </div>
     </section>
 
-    <section class="section" id="episodes">
+    <section class="section" id="categories">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Episodes</div>
-            <h2>Current and future entries</h2>
+            <div class="section-kicker">Kategorie Serii</div>
+            <h2>Trzy osie świata SZTAB</h2>
           </div>
           <div class="section-note">
-            Each card can later link to a dedicated episode page, trailer, or YouTube release.
+            Każda kategoria stanowi osobną przestrzeń narracyjną i porządkuje kolejne odcinki według ich rodzaju oraz historycznej funkcji.
           </div>
         </div>
 
-        <div class="episodes">
-          <article class="episode-card reveal">
-            <div class="episode-image" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80')"></div>
-            <div class="episode-body">
-              <h3 class="episode-title">Zo — The Silence That Fights</h3>
-              <p class="episode-text">Elżbieta Zawacka: resistance, intelligence, and discipline under pressure.</p>
+        <div class="categories">
+          <a class="category-card reveal" href="/sztab/original/pl/">
+            <div class="category-image" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="category-body">
+              <h3 class="category-title">Original</h3>
+              <p class="category-text">
+                Postacie rozpoznawalne, ale wciąż niewyczerpane. Zo, Karski, Pilecki, Inka i inni, którzy pozostają punktami odniesienia dla pamięci.
+              </p>
+              <div class="category-link">Wejdź do kategorii</div>
             </div>
-          </article>
+          </a>
 
-          <article class="episode-card reveal">
-            <div class="episode-image" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=80')"></div>
-            <div class="episode-body">
-              <h3 class="episode-title">Karski</h3>
-              <p class="episode-text">A witness who tried to warn the world — and carried truth across silence.</p>
+          <a class="category-card reveal" href="/sztab/forgotten/pl/">
+            <div class="category-image" style="background-image:url('https://images.unsplash.com/photo-1520975928318-3b5c3b3f38d6?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="category-body">
+              <h3 class="category-title">Forgotten</h3>
+              <p class="category-text">
+                Nazwiska, historie i osiągnięcia, które zostały wypchnięte na margines. Miejsce dla tych, których trzeba przywrócić pamięci.
+              </p>
+              <div class="category-link">Wejdź do kategorii</div>
             </div>
-          </article>
+          </a>
 
-          <article class="episode-card reveal">
-            <div class="episode-image" style="background-image:url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=1600&q=80')"></div>
-            <div class="episode-body">
-              <h3 class="episode-title">Coming Next</h3>
-              <p class="episode-text">Further figures, events, and historical turning points will enter the series over time.</p>
+          <a class="category-card reveal" href="/sztab/battles/pl/">
+            <div class="category-image" style="background-image:url('https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="category-body">
+              <h3 class="category-title">Battles</h3>
+              <p class="category-text">
+                Starcia i wydarzenia, w których historia zmieniała kierunek. Bitwy opowiedziane jako zwarte, filmowe formy pamięci.
+              </p>
+              <div class="category-link">Wejdź do kategorii</div>
             </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="principles">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <div class="section-kicker">Foundational Principles</div>
-            <h2>What defines SZTAB</h2>
-          </div>
-          <div class="section-note">
-            SZTAB expands reach, but not at the cost of seriousness. Its ambition is accessibility without simplification.
-          </div>
-        </div>
-
-        <div class="principles">
-          <article class="principle reveal">
-            <h3>Reach</h3>
-            <p>The series is designed to speak to wider digital audiences while retaining historical weight and narrative coherence.</p>
-          </article>
-
-          <article class="principle reveal">
-            <h3>Focus</h3>
-            <p>Each episode centers on a figure, event, or act of resistance rather than trying to contain an entire historical field at once.</p>
-          </article>
-
-          <article class="principle reveal">
-            <h3>Respect</h3>
-            <p>Even in a more dynamic form, the treatment of history remains restrained, serious, and conscious of ethical responsibility.</p>
-          </article>
-        </div>
-
-        <div class="cta-row reveal" style="margin-top:32px;">
-          <a class="btn btn-secondary" href="/">Back to Main Site</a>
-          <a class="btn btn-secondary" href="/rap-ort/">Visit Rap-Ort</a>
+          </a>
         </div>
       </div>
     </section>
@@ -826,14 +825,15 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <div>SZTAB · Piotr Lichwała (Vibrosław)</div>
-      <div>English version</div>
+      <div>Wersja polska</div>
     </div>
   </footer>
 
   <script>
     const revealItems = document.querySelectorAll('.reveal');
+
     const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
           revealObserver.unobserve(entry.target);
@@ -841,7 +841,7 @@
       });
     }, { threshold: 0.14 });
 
-    revealItems.forEach(item => revealObserver.observe(item));
+    revealItems.forEach((item) => revealObserver.observe(item));
   </script>
 </body>
 </html>
