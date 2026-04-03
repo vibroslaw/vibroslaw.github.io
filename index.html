@@ -3,101 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Piotr Lichwała (Vibrosław) — Audiovisual Projects</title>
   <meta name="description" content="Official website of Piotr Lichwała (Vibrosław) — audiovisual projects at the intersection of history, memory, and responsibility." />
   <meta name="theme-color" content="#090909" />
+
   <meta property="og:title" content="Piotr Lichwała (Vibrosław) — Audiovisual Projects" />
   <meta property="og:description" content="Official website of Piotr Lichwała (Vibrosław) — audiovisual projects at the intersection of history, memory, and responsibility." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/home.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
 </head>
-<body data-quotes='["Truth does not need noise. It needs to be heard.", "Not everything that matters is visible.", "History is not only what happened. It is also what remains unanswered.", "Witness without form fades. Form without witness empties itself.", "Some stories survive only when someone chooses to carry them forward."]'>
+<body
+  data-page="home"
+  data-lang="en"
+  data-quotes='[
+    "Truth does not need noise. It needs to be heard.",
+    "Not everything that matters is visible.",
+    "History is not only what happened. It is also what remains unanswered.",
+    "Witness without form fades. Form without witness empties itself.",
+    "Some stories survive only when someone chooses to carry them forward."
+  ]'
+>
   <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
   <div class="progress-bar" aria-hidden="true"></div>
 
-  <div class="mobile-panel" id="mobilePanel" aria-hidden="true">
-    <div class="mobile-panel-inner">
-      <a class="mobile-link" href="#projects">Projects</a>
-      <a class="mobile-link" href="#pathways">How to Enter</a>
-      <a class="mobile-link" href="#timeline">Timeline</a>
-      <a class="mobile-link" href="#about">About</a>
-      <a class="mobile-link" href="#contact">Contact</a>
-      <button type="button" id="mobileCinematicToggle">Cinematic Mode</button>
-      <div class="lang-switch"><a href="/" class="lang-item active">EN</a><span class="lang-sep">|</span><a href="/pl/" class="lang-item">PL</a></div>
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="#projects">Projects</a>
+      <a class="mobile-menu-link" href="#pathways">How to Enter</a>
+      <a class="mobile-menu-link" href="#timeline">Timeline</a>
+      <a class="mobile-menu-link" href="#institutions">Institutions</a>
+      <a class="mobile-menu-link" href="#about">About</a>
+      <a class="mobile-menu-link" href="#contact">Contact</a>
+
+      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+        Cinematic Mode
+      </button>
+
+      <div class="mobile-lang-switch">
+        <a href="/" class="active">EN</a>
+        <span>|</span>
+        <a href="/pl/">PL</a>
+      </div>
     </div>
   </div>
 
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <div class="brand">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/">
         <div class="brand-name">Piotr Lichwała</div>
         <div class="brand-sub">Vibrosław · Audiovisual Creator</div>
-      </div>
+      </a>
 
-      <nav class="nav-links" aria-label="Main navigation">
+      <nav class="desktop-nav" aria-label="Main navigation">
         <a href="#projects">Projects</a>
         <a href="#pathways">How to Enter</a>
         <a href="#timeline">Timeline</a>
+        <a href="#institutions">Institutions</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
-        <button type="button" id="cinematicToggle" data-enter="Cinematic Mode" data-exit="Exit">Cinematic Mode</button>
-        <div class="lang-switch"><a href="/" class="lang-item active">EN</a><span class="lang-sep">|</span><a href="/pl/" class="lang-item">PL</a></div>
+
+        <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
+
+        <div class="lang-switch">
+          <a href="/" class="active">EN</a>
+          <span>|</span>
+          <a href="/pl/">PL</a>
+        </div>
       </nav>
 
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="More">
-        <span class="nav-toggle-lines"><span></span><span></span><span></span></span>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero hero-home">
       <div class="hero-bg" aria-hidden="true">
-        <div class="hero-image home"></div>
-        <div class="hero-glow"></div>
+        <div class="hero-image"></div>
+        <div class="hero-light"></div>
         <div class="hero-fade"></div>
       </div>
 
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
           <div class="eyebrow">Official Website</div>
-          <h1>Projects shaped by memory, witness, and responsibility.</h1>
-          <p class="hero-lead">Piotr Lichwała (Vibrosław) creates audiovisual works built from testimony, narrative music, and cinematic form — developed for attentive audiences, institutional presentation, and reflective viewing.</p>
-          <div class="hero-statement">This work is not only about the past. It is about what responsibility asks of us now.</div>
 
-          <div class="memory-quote">
+          <h1>Projects shaped by memory, witness, and responsibility.</h1>
+
+          <p class="hero-lead">
+            Piotr Lichwała (Vibrosław) creates audiovisual works built from testimony,
+            narrative music, and cinematic form — developed for attentive audiences,
+            institutional presentation, and reflective viewing.
+          </p>
+
+          <div class="hero-statement">
+            This work is not only about the past. It is about what responsibility asks of us now.
+          </div>
+
+          <div class="memory-quote-block">
             <div class="memory-quote-label">Memory Quote</div>
-            <p class="memory-quote-text" id="memoryQuoteText">Truth does not need noise. It needs to be heard.</p>
+            <p class="memory-quote-text" id="memoryQuoteText">
+              Truth does not need noise. It needs to be heard.
+            </p>
           </div>
 
           <div class="cta-row">
-            <a class="btn btn-primary fade-link" href="/rap-ort/" data-track="Rap-Ort">Enter Rap-Ort</a>
-            <a class="btn btn-secondary fade-link" href="/sztab/" data-track="SZTAB">Enter SZTAB</a>
-            <button class="btn btn-tertiary" type="button" id="cinematicHeroButton" data-enter="Enter Cinematic Mode" data-exit="Exit">Enter Cinematic Mode</button>
+            <a class="btn btn-primary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Enter Rap-Ort</a>
+            <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Enter SZTAB</a>
+            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Enter Cinematic Mode</button>
           </div>
         </div>
 
         <div class="hero-side reveal">
-          <aside class="hero-panel">
-            <div class="hero-panel-label">Orientation</div>
-            <p class="hero-panel-quote">Truth does not need noise. It needs to be heard.</p>
-            <p class="hero-panel-text">This platform brings together institutional audiovisual works, public-facing historical series, and selected authorial projects under one coherent narrative world.</p>
+          <aside class="glass-panel">
+            <div class="panel-label">Orientation</div>
+            <p class="panel-quote">Truth does not need noise. It needs to be heard.</p>
+            <p class="panel-text">
+              This platform brings together institutional audiovisual works, public-facing
+              historical series, and selected authorial projects under one coherent narrative world.
+            </p>
           </aside>
         </div>
       </div>
     </section>
 
-    <section class="section" id="continue">
+    <section class="section continue-section" id="continueSection">
       <div class="wrap">
-        <div class="card continue-panel continue-banner" id="continueBanner">
-          <h3 class="panel-title">Continue where you left off</h3>
-          <p class="panel-text" id="continueText" data-label="Return to {title}, the last project world you opened.">Return to Rap-Ort, the last project world you opened.</p>
-          <div class="continue-actions">
-            <a class="btn btn-primary fade-link" id="continueButton" data-label="Continue to {title}" href="#">Continue to Rap-Ort</a>
+        <div class="content-panel continue-panel" id="continuePanel">
+          <h3>Continue where you left off</h3>
+          <p id="continueText">Return to the last project world you opened.</p>
+          <div class="cta-row compact">
+            <a class="btn btn-primary" href="#" id="continueButton">Continue</a>
             <button class="btn btn-secondary" type="button" id="dismissContinue">Dismiss</button>
           </div>
         </div>
@@ -111,12 +160,19 @@
             <div class="section-kicker">Why This Exists</div>
             <h2>A structured response to fading memory</h2>
           </div>
-          <div class="section-note">This work exists because memory without structure fades — and history without interpretation becomes noise.</div>
+          <div class="section-note">
+            This work exists because memory without structure fades — and history without interpretation becomes noise.
+          </div>
         </div>
 
-        <div class="card why-panel reveal">
-          <h3 class="panel-title">Why this exists</h3>
-          <p class="panel-text">These projects are not designed as content alone. They are designed as forms of attention. They attempt to restore weight, context, and moral pressure to histories that are too often reduced to summary, symbol, or slogan. The aim is not reconstruction for its own sake, but a renewed encounter with witness, consequence, and the demands the past still places on the present.</p>
+        <div class="content-panel reveal">
+          <h3>Why this exists</h3>
+          <p>
+            These projects are not designed as content alone. They are designed as forms of attention.
+            They attempt to restore weight, context, and moral pressure to histories that are too often reduced
+            to summary, symbol, or slogan. The aim is not reconstruction for its own sake, but a renewed
+            encounter with witness, consequence, and the demands the past still places on the present.
+          </p>
         </div>
       </div>
     </section>
@@ -128,30 +184,41 @@
             <div class="section-kicker">How to Enter This World</div>
             <h2>Three ways into the work</h2>
           </div>
-          <div class="section-note">Start with one story. Return for another. Stay for the pattern.</div>
+          <div class="section-note">
+            Start with one story. Return for another. Stay for the pattern.
+          </div>
         </div>
 
-        <div class="grid-3">
+        <div class="grid grid-3">
           <article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">Institutional Entry</h3>
-              <p class="mini-text">Begin with Rap-Ort if you are entering through the longer-form institutional experience built for attentive screening and reflective context.</p>
+              <h3>Institutional Entry</h3>
+              <p>
+                Begin with Rap-Ort if you are entering through the longer-form institutional experience
+                built for attentive screening and reflective context.
+              </p>
             </div>
-            <a class="btn btn-secondary fade-link" href="/rap-ort/" data-track="Rap-Ort">Enter Rap-Ort</a>
+            <a class="btn btn-secondary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Enter Rap-Ort</a>
           </article>
 
           <article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">Episode Entry</h3>
-              <p class="mini-text">Begin with SZTAB if you prefer a concentrated single episode that opens into a wider world of historical figures, absences, and conflicts.</p>
+              <h3>Episode Entry</h3>
+              <p>
+                Begin with SZTAB if you prefer a concentrated single episode that opens into a wider world
+                of historical figures, absences, and conflicts.
+              </p>
             </div>
-            <a class="btn btn-secondary fade-link" href="/sztab/" data-track="SZTAB">Enter SZTAB</a>
+            <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Enter SZTAB</a>
           </article>
 
           <article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">Authorial Entry</h3>
-              <p class="mini-text">Begin with the wider body of work if you want to understand the authorial voice beyond the two central project worlds.</p>
+              <h3>Authorial Entry</h3>
+              <p>
+                Begin with the wider body of work if you want to understand the authorial voice
+                beyond the two central project worlds.
+              </p>
             </div>
             <a class="btn btn-secondary" href="#other">Explore Other Work</a>
           </article>
@@ -166,10 +233,13 @@
             <div class="section-kicker">Core Worlds</div>
             <h2>Two primary narrative paths</h2>
           </div>
-          <div class="section-note">One institutional and immersive. One episodic and public-facing. Both belong to a coherent authorial universe shaped by history, ethical tension, and cinematic storytelling.</div>
+          <div class="section-note">
+            One institutional and immersive. One episodic and public-facing.
+            Both belong to a coherent authorial universe shaped by history, ethical tension, and cinematic storytelling.
+          </div>
         </div>
 
-        <div class="grid-2">
+        <div class="grid grid-2">
           <article class="card project-card reveal">
             <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80');"></div>
             <div class="project-body">
@@ -178,10 +248,16 @@
                 <span class="chip">Audiovisual Report</span>
                 <span class="chip">65 min</span>
               </div>
-              <h3 class="project-title">Rap-Ort</h3>
-              <p class="project-text">A narrative audiovisual framework built around ethical witness, historical pressure, and the consequences of silence under totalitarian systems. Its central current work is Rap-Ort: Conscience Report / Prawda Sumienia.</p>
+
+              <h3>Rap-Ort</h3>
+              <p>
+                A narrative audiovisual framework built around ethical witness, historical pressure,
+                and the consequences of silence under totalitarian systems. Its central current work
+                is <strong>Rap-Ort: Conscience Report / Prawda Sumienia</strong>.
+              </p>
+
               <div class="card-link">
-                <a class="btn btn-secondary fade-link" href="/rap-ort/" data-track="Rap-Ort">Enter Rap-Ort</a>
+                <a class="btn btn-secondary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Enter Rap-Ort</a>
               </div>
             </div>
           </article>
@@ -194,10 +270,16 @@
                 <span class="chip">Public-facing</span>
                 <span class="chip">Historical Episodes</span>
               </div>
-              <h3 class="project-title">SZTAB</h3>
-              <p class="project-text">A developing series of historical episodes focused on figures, acts of resistance, and moments of moral weight — conceived for wider reach while preserving seriousness, atmosphere, and narrative depth.</p>
+
+              <h3>SZTAB</h3>
+              <p>
+                A developing series of historical episodes focused on figures, acts of resistance,
+                and moments of moral weight — conceived for wider reach while preserving seriousness,
+                atmosphere, and narrative depth.
+              </p>
+
               <div class="card-link">
-                <a class="btn btn-secondary fade-link" href="/sztab/" data-track="SZTAB">Enter SZTAB</a>
+                <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Enter SZTAB</a>
               </div>
             </div>
           </article>
@@ -212,9 +294,49 @@
             <div class="section-kicker">Narrative Map</div>
             <h2>How the project world unfolds</h2>
           </div>
-          <div class="section-note">Not a list of releases, but a structured ecosystem of forms — longer works, short historical episodes, and adjacent authorial spaces.</div>
+          <div class="section-note">
+            Not a list of releases, but a structured ecosystem of forms — longer works,
+            short historical episodes, and adjacent authorial spaces.
+          </div>
         </div>
-        <div class="timeline"><div class="timeline-item reveal"><div class="timeline-label">Primary Axis</div><h3 class="timeline-title">Rap-Ort</h3><p class="timeline-text">Long-form audiovisual works developed for attentive, institutional, and reflective presentation — where music and image carry a sustained historical and ethical arc.</p></div><div class="timeline-item reveal"><div class="timeline-label">Parallel Axis</div><h3 class="timeline-title">SZTAB</h3><p class="timeline-text">Short-form historical episodes built for wider circulation without surrendering gravity, atmospheric coherence, or narrative responsibility.</p></div><div class="timeline-item reveal"><div class="timeline-label">Adjacent Axis</div><h3 class="timeline-title">Manifest / Archive</h3><p class="timeline-text">Spaces for broader authorial work, thematic foundations, and earlier material that may later evolve into new cinematic or musical chapters.</p></div><div class="timeline-item reveal"><div class="timeline-label">Forward Motion</div><h3 class="timeline-title">Future Expansions</h3><p class="timeline-text">The website is designed as a living structure — able to grow into dossiers, episode paths, institutional resources, and multilingual presentation layers.</p></div></div>
+
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <div class="timeline-label">Primary Axis</div>
+            <h3>Rap-Ort</h3>
+            <p>
+              Long-form audiovisual works developed for attentive, institutional, and reflective presentation —
+              where music and image carry a sustained historical and ethical arc.
+            </p>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-label">Parallel Axis</div>
+            <h3>SZTAB</h3>
+            <p>
+              Short-form historical episodes built for wider circulation without surrendering gravity,
+              atmospheric coherence, or narrative responsibility.
+            </p>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-label">Adjacent Axis</div>
+            <h3>Manifest / Archive</h3>
+            <p>
+              Spaces for broader authorial work, thematic foundations, and earlier material
+              that may later evolve into new cinematic or musical chapters.
+            </p>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-label">Forward Motion</div>
+            <h3>Future Expansions</h3>
+            <p>
+              The website is designed as a living structure — able to grow into dossiers,
+              episode paths, institutional resources, and multilingual presentation layers.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -225,13 +347,26 @@
             <div class="section-kicker">For Institutions</div>
             <h2>Clear entry points for cultural and educational use</h2>
           </div>
-          <div class="section-note">Designed not only for discovery, but for direct institutional conversation.</div>
+          <div class="section-note">
+            Designed not only for discovery, but for direct institutional conversation.
+          </div>
         </div>
 
-        <div class="card institution-panel reveal">
-          <h3 class="panel-title">Institutional use</h3>
-          <p class="panel-text">This platform can support screenings, educational framing, licensing conversations, and culturally contextual presentation. It is designed for institutions that need a clear artistic proposition, a coherent narrative world, and a direct path to contact.</p>
-          <div class="institution-list"><div class="institution-item"><strong>Screenings:</strong> audiovisual works developed for reflective viewing and contextual presentation.</div><div class="institution-item"><strong>Education:</strong> suitable for schools, universities, museums, and cultural centres.</div><div class="institution-item"><strong>Licensing:</strong> direct conversation around institutional use, site-licensed access, or event formats.</div><div class="institution-item"><strong>Partnerships:</strong> open to dialogue regarding curated programmes, contextual materials, and international presentation.</div></div>
+        <div class="content-panel reveal">
+          <h3>Institutional use</h3>
+          <p>
+            This platform can support screenings, educational framing, licensing conversations,
+            and culturally contextual presentation. It is designed for institutions that need
+            a clear artistic proposition, a coherent narrative world, and a direct path to contact.
+          </p>
+
+          <div class="institution-list">
+            <div class="institution-item"><strong>Screenings:</strong> audiovisual works developed for reflective viewing and contextual presentation.</div>
+            <div class="institution-item"><strong>Education:</strong> suitable for schools, universities, museums, and cultural centres.</div>
+            <div class="institution-item"><strong>Licensing:</strong> direct conversation around institutional use, site-licensed access, or event formats.</div>
+            <div class="institution-item"><strong>Partnerships:</strong> open to dialogue regarding curated programmes, contextual materials, and international presentation.</div>
+          </div>
+
           <div class="cta-row">
             <a class="btn btn-primary" href="#contact">Request Contact</a>
             <a class="btn btn-secondary" href="/rap-ort/">View Rap-Ort</a>
@@ -247,11 +382,28 @@
             <div class="section-kicker">Selected Recognition</div>
             <h2>Signals beyond the website</h2>
           </div>
-          <div class="section-note">A restrained selection of references that helps place the work in a broader public and institutional context.</div>
+          <div class="section-note">
+            A restrained selection of references that helps place the work in a broader public and institutional context.
+          </div>
         </div>
 
-        <div class="card recognition-panel reveal">
-          <div class="recognition-list"><div class="recognition-item"><div class="recognition-item-title">Premiere Context</div><p class="recognition-item-text">Developed for public-facing and institutional presentation rather than conventional release logic alone.</p></div><div class="recognition-item"><div class="recognition-item-title">Archival and Educational Direction</div><p class="recognition-item-text">Structured in a way that can support contextual use, reflective discussion, and future educational pathways.</p></div><div class="recognition-item"><div class="recognition-item-title">Authorial Consistency</div><p class="recognition-item-text">Built as a coherent long-term world rather than a set of disconnected releases.</p></div></div>
+        <div class="content-panel reveal">
+          <div class="recognition-list">
+            <div class="recognition-item">
+              <div class="recognition-title">Premiere Context</div>
+              <p>Developed for public-facing and institutional presentation rather than conventional release logic alone.</p>
+            </div>
+
+            <div class="recognition-item">
+              <div class="recognition-title">Archival and Educational Direction</div>
+              <p>Structured in a way that can support contextual use, reflective discussion, and future educational pathways.</p>
+            </div>
+
+            <div class="recognition-item">
+              <div class="recognition-title">Authorial Consistency</div>
+              <p>Built as a coherent long-term world rather than a set of disconnected releases.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -263,28 +415,46 @@
             <div class="section-kicker">Additional Areas</div>
             <h2>Beyond the two central worlds</h2>
           </div>
-          <div class="section-note">These sections can begin as lighter entry points and expand over time into a broader ecosystem of authorial work, historical material, and parallel forms of expression.</div>
+          <div class="section-note">
+            These sections can begin as lighter entry points and expand over time into a broader ecosystem
+            of authorial work, historical material, and parallel forms of expression.
+          </div>
         </div>
 
-        <div class="grid-3"><article class="card mini-card reveal">
+        <div class="grid grid-3">
+          <article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">Manifest</h3>
-              <p class="mini-text">A space for selected non-historical songs, reflections, and artistic work that remains part of the wider authorial voice.</p>
+              <h3>Manifest</h3>
+              <p>
+                A space for selected non-historical songs, reflections, and artistic work
+                that remains part of the wider authorial voice.
+              </p>
             </div>
             <a class="btn btn-secondary" href="#">Open Manifest</a>
-          </article><article class="card mini-card reveal">
+          </article>
+
+          <article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">Archive</h3>
-              <p class="mini-text">Earlier historical songs, thematic foundations, and material that may later evolve into new audiovisual chapters.</p>
+              <h3>Archive</h3>
+              <p>
+                Earlier historical songs, thematic foundations, and material
+                that may later evolve into new audiovisual chapters.
+              </p>
             </div>
             <a class="btn btn-secondary" href="#">Open Archive</a>
-          </article><article class="card mini-card reveal">
+          </article>
+
+          <article class="card mini-card reveal">
             <div>
-              <h3 class="mini-title">Authorial Profile</h3>
-              <p class="mini-text">A concise authorial frame explaining how Vibrosław functions artistically and why these particular forms exist.</p>
+              <h3>Authorial Profile</h3>
+              <p>
+                A concise authorial frame explaining how Vibrosław functions artistically
+                and why these particular forms exist.
+              </p>
             </div>
-            <a class="btn btn-secondary" href="#">Read More</a>
-          </article></div>
+            <a class="btn btn-secondary" href="#about">Read More</a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -295,18 +465,29 @@
             <div class="section-kicker">About</div>
             <h2>Work at the intersection of memory, history, and responsibility</h2>
           </div>
-          <div class="section-note">An authorial practice developed through music, image, and audiovisual form — built not for noise, but for attention.</div>
+          <div class="section-note">
+            An authorial practice developed through music, image, and audiovisual form — built not for noise, but for attention.
+          </div>
         </div>
 
-        <div class="grid-2">
-          <div class="card about-panel reveal">
-            <h3 class="panel-title">Piotr Lichwała (Vibrosław)</h3>
-            <p class="panel-text">Piotr Lichwała (Vibrosław) creates original audiovisual works shaped by memory, witness, and the moral tension of history. His practice combines narrative music, cinematic image, and short- or long-form structures developed for attentive viewing — both public and institutional.</p>
+        <div class="grid grid-2">
+          <div class="content-panel reveal">
+            <h3>Piotr Lichwała (Vibrosław)</h3>
+            <p>
+              Piotr Lichwała (Vibrosław) creates original audiovisual works shaped by memory,
+              witness, and the moral tension of history. His practice combines narrative music,
+              cinematic image, and short- or long-form structures developed for attentive viewing —
+              both public and institutional.
+            </p>
           </div>
 
-          <div class="card about-panel reveal">
-            <h3 class="panel-title">Why these forms</h3>
-            <p class="panel-text">The work unfolds at the intersection of art, history, and responsibility in the telling of the past. Projects such as Rap-Ort and SZTAB do not aim only to reconstruct events, but to restore their weight, human scale, and contemporary resonance.</p>
+          <div class="content-panel reveal">
+            <h3>Why these forms</h3>
+            <p>
+              The work unfolds at the intersection of art, history, and responsibility in the telling of the past.
+              Projects such as Rap-Ort and SZTAB do not aim only to reconstruct events, but to restore their weight,
+              human scale, and contemporary resonance.
+            </p>
           </div>
         </div>
       </div>
@@ -319,12 +500,14 @@
             <div class="section-kicker">Contact</div>
             <h2>Screenings, institutions, partnerships</h2>
           </div>
-          <div class="section-note">For educational, institutional, cultural, or programming enquiries, direct contact remains the clearest next step.</div>
+          <div class="section-note">
+            For educational, institutional, cultural, or programming enquiries, direct contact remains the clearest next step.
+          </div>
         </div>
 
-        <div class="card contact-panel reveal">
-          <h3 class="contact-name">Piotr Lichwała (Vibrosław)</h3>
-          <p class="contact-text">
+        <div class="content-panel reveal">
+          <h3>Piotr Lichwała (Vibrosław)</h3>
+          <p>
             <strong>Email:</strong> peter.lichwala@gmail.com<br>
             <strong>Location:</strong> United Kingdom<br>
             <strong>Availability:</strong> institutional, cultural, and international enquiries
@@ -339,12 +522,12 @@
     </section>
   </main>
 
-  <div class="floating-tools" aria-label="Display controls">
-    <button class="tool-btn label" id="reducedMotionToggle" type="button" data-reduce="Reduced Motion" data-restore="Motion Restored">Reduced Motion</button>
-    <button class="tool-btn label" id="scrollTopButton" type="button">Top</button>
+  <div class="floating-tools">
+    <button class="tool-button" id="reducedMotionToggle" type="button">Reduced Motion</button>
+    <button class="tool-button" id="scrollTopButton" type="button">Top</button>
   </div>
 
-  <footer class="footer">
+  <footer class="site-footer">
     <div class="wrap footer-inner">
       <div>Piotr Lichwała (Vibrosław)</div>
       <div>Official website · English version</div>
@@ -352,6 +535,11 @@
   </footer>
 
   <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/cinematic.js"></script>
+  <script src="/assets/js/continue.js"></script>
+  <script src="/assets/js/quotes.js"></script>
   <script src="/assets/js/home.js"></script>
 </body>
 </html>
