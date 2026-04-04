@@ -257,16 +257,20 @@
       </div>
 
       <div class="lab-present-controls">
-        <div class="lab-present-mode-tabs" id="labPresentModeTabs"></div>
+  <div class="lab-present-mode-tabs" id="labPresentModeTabs"></div>
 
-        <button class="lab-present-icon" id="labPresentFullscreenToggle" type="button" aria-label="Pełny ekran">
-          ⤢
-        </button>
+  <button class="lab-present-icon" id="labPresentBlackoutToggle" type="button" aria-label="Blackout ekranu">
+    ●
+  </button>
 
-        <button class="lab-present-icon" id="labPresentClose" type="button" aria-label="Zamknij tryb prezentacji">
-          ×
-        </button>
-      </div>
+  <button class="lab-present-icon" id="labPresentFullscreenToggle" type="button" aria-label="Pełny ekran">
+    ⤢
+  </button>
+
+  <button class="lab-present-icon" id="labPresentClose" type="button" aria-label="Zamknij tryb prezentacji">
+    ×
+  </button>
+</div>
     </header>
 
     <main class="lab-present-stage">
@@ -359,6 +363,21 @@
         <button class="btn btn-primary" type="button" id="labPresentNextView">Następny widok</button>
       </div>
     </footer>
+    <div class="lab-present-transition" id="labPresentTransition" aria-hidden="true">
+  <div class="lab-present-transition-inner">
+    <div class="lab-present-transition-kicker">Laboratorium Sumienia</div>
+    <div class="lab-present-transition-title" id="labPresentTransitionTitle">Prompt</div>
+    <div class="lab-present-transition-line"></div>
+  </div>
+</div>
+
+<div class="lab-present-blackout" id="labPresentBlackout" hidden aria-hidden="true">
+  <div class="lab-present-blackout-inner">
+    <div class="lab-present-blackout-mark">●</div>
+    <div class="lab-present-blackout-text">Blackout aktywny</div>
+    <div class="lab-present-blackout-subtext">Naciśnij B, aby wrócić</div>
+  </div>
+</div>
   </div>
 </div>
   
