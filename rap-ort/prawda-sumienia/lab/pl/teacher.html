@@ -234,7 +234,55 @@
       <div>Wersja polska</div>
     </div>
   </footer>
+  <div class="lab-qr-modal" id="labQrModal" hidden aria-hidden="true">
+  <div class="lab-qr-backdrop" data-qr-close></div>
 
+  <div class="lab-qr-dialog" role="dialog" aria-modal="true" aria-labelledby="labQrTitle">
+    <button class="lab-qr-close" id="labQrClose" type="button" aria-label="Zamknij generator QR">
+      ×
+    </button>
+
+    <div class="lab-qr-head">
+      <div class="panel-topline">Generator QR</div>
+      <h2 id="labQrTitle" class="lab-qr-title">Udostępnij wejście do sesji</h2>
+      <p class="lab-qr-subtitle" id="labQrSubtitle">
+        Wybierz tryb i pokaż uczniom kod do zeskanowania.
+      </p>
+    </div>
+
+    <div class="lab-qr-modes" id="labQrModes"></div>
+
+    <div class="lab-qr-stage">
+      <div class="lab-qr-frame">
+        <div class="lab-qr-canvas-wrap" id="labQrCanvasWrap"></div>
+      </div>
+
+      <div class="lab-qr-meta">
+        <div class="lab-qr-meta-block">
+          <span class="lab-qr-label">Aktywny tryb</span>
+          <strong class="lab-qr-value" id="labQrActiveMode">—</strong>
+        </div>
+
+        <div class="lab-qr-meta-block">
+          <span class="lab-qr-label">Link</span>
+          <div class="lab-qr-link-row">
+            <input class="lab-qr-link-input" id="labQrLinkInput" type="text" readonly value="" />
+          </div>
+        </div>
+
+        <div class="cta-row compact">
+          <button class="btn btn-primary" id="labQrCopyButton" type="button">Kopiuj link</button>
+          <button class="btn btn-secondary" id="labQrOpenButton" type="button">Otwórz</button>
+          <button class="btn btn-secondary" id="labQrDownloadButton" type="button">Pobierz PNG</button>
+        </div>
+
+        <div class="lab-qr-note" id="labQrNote">
+          QR został zoptymalizowany pod czytelność i szybkie skanowanie.
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/transitions.js"></script>
   <script src="/assets/js/lab-core.js"></script>
