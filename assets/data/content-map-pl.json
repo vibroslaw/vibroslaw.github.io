@@ -1,0 +1,928 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "content-map",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "designIntent": "Uporządkować stronę wokół działów edukacyjnych i prostego trybu pracy nauczyciela, bez przeciążania funkcjami oraz bez konieczności budowania lekcji od zera.",
+  "coreDecision": {
+    "primaryModel": "section-first",
+    "teacherEntryLogic": "wybierz dział -> wybierz pytanie -> wybierz tryb projekcji -> uruchom raport ucznia",
+    "preferredUseCase": "pełna projekcja 65 minut + rozmowa + raport ucznia",
+    "secondaryUseCase": "curated mode tylko tam, gdzie ma sens metodologiczny, rocznicowy albo wprowadzający",
+    "rejectedComplexity": [
+      "rozbudowane hotspoty jako rdzeń strony",
+      "duża liczba obiektów wymagających osobnych zdjęć",
+      "oddzielny QR dla wielu trybów naraz jako standard",
+      "zbyt rozbudowane drzewo funkcji dla nauczyciela pierwszego kontaktu"
+    ]
+  },
+  "assetStrategy": {
+    "singleMasterVideoPreferred": true,
+    "masterVideoType": "4k-stream-master",
+    "masterVideoLengthMin": 65,
+    "curatedExportsAllowed": true,
+    "curatedExportsMustBeMeaningful": true,
+    "curatedExportsPolicy": "Nie tniemy przypadkowych fragmentów. Każdy curated mode musi mieć własny sens dydaktyczny i własną oś rozmowy.",
+    "interactiveImagesRequired": false,
+    "interactiveImagesOptional": true,
+    "teacherGuideFirst": true,
+    "qrDefaultMode": "report-only",
+    "studentOwnDeviceFlow": true,
+    "studentAnonymousArchiveAllowed": true,
+    "studentPdfSouvenirOptional": true
+  },
+  "deliveryModel": {
+    "videoDelivery": {
+      "mode": "secure-stream",
+      "directDownloadPublic": false,
+      "recommendedTechnicalModel": "signed-hls-or-signed-mp4",
+      "tokenScopeExamples": [
+        "1 day",
+        "7 days",
+        "30 days"
+      ],
+      "teacherAccessModel": "signed teacher session token",
+      "institutionAccessModel": "time-limited licensed access",
+      "note": "Warstwa techniczna nie należy do JSON, ale model strony jest przygotowany pod strumień czasowy zamiast publicznego pliku do pobrania."
+    },
+    "reportDelivery": {
+      "mode": "browser-first",
+      "studentFlow": "uczeń otwiera raport przez QR na własnym telefonie",
+      "archiveMode": "anonymous-local-or-session-linked",
+      "pdfExport": true,
+      "emailSouvenirOptional": true,
+      "emailRequiresExplicitConsent": true
+    }
+  },
+  "teacherExperienceModel": {
+    "firstScreenMustShow": [
+      "działy edukacyjne",
+      "krótki opis działu",
+      "rekomendowane pytanie",
+      "tryb pełny lub curated",
+      "przycisk otwarcia Teacher Guide",
+      "przycisk uruchomienia projekcji",
+      "przycisk wygenerowania QR do raportu"
+    ],
+    "teacherMustNotNeed": [
+      "ręcznego składania scenariusza z wielu modułów",
+      "szukania materiałów w różnych zakładkach",
+      "obsługi więcej niż jednego głównego pytania naraz",
+      "podejmowania decyzji technicznych przed wyborem działu"
+    ],
+    "teacherConsoleStructure": {
+      "level1": "dział",
+      "level2": "pytanie",
+      "level3": "projekcja",
+      "level4": "prowadzenie rozmowy",
+      "level5": "raport ucznia"
+    }
+  },
+  "projectionModes": {
+    "full-65": {
+      "id": "full-65",
+      "title": "Pełny rozdział",
+      "runtimeMin": 65,
+      "discussionExpectedMin": {
+        "min": 15,
+        "max": 30
+      },
+      "bestFor": [
+        "wydarzenia szkolne",
+        "rocznice",
+        "instytucje",
+        "najpełniejsze wejście w projekt",
+        "pierwsze spotkanie z osią projektu"
+      ],
+      "teacherLoad": "low",
+      "studentLoad": "low",
+      "recommendedDefault": true
+    },
+    "curated-35": {
+      "id": "curated-35",
+      "title": "Wybór kuratorski",
+      "runtimeMin": 35,
+      "discussionExpectedMin": {
+        "min": 12,
+        "max": 25
+      },
+      "bestFor": [
+        "sekcje metodologiczne",
+        "spotkania wprowadzające",
+        "bardziej precyzyjny temat przewodni",
+        "grupy z krótszym czasem, ale nie przypadkowym cięciem materiału"
+      ],
+      "teacherLoad": "medium",
+      "studentLoad": "low",
+      "recommendedDefault": false
+    },
+    "seminar-extended": {
+      "id": "seminar-extended",
+      "title": "Pełny rozdział + seminarium",
+      "runtimeMin": 65,
+      "discussionExpectedMin": {
+        "min": 30,
+        "max": 60
+      },
+      "bestFor": [
+        "uczelnia",
+        "instytucje pamięci",
+        "zaawansowane grupy",
+        "spotkania autorskie lub eksperckie"
+      ],
+      "teacherLoad": "medium",
+      "studentLoad": "medium",
+      "recommendedDefault": false
+    }
+  },
+  "masterUnits": [
+    {
+      "id": "unit-01-prolog-swiadectwa",
+      "order": 1,
+      "title": "Prolog świadectwa",
+      "editorialFunction": "wejście w ton projektu i ustawienie pytania o świadectwo",
+      "narrativeRole": "otwarcie",
+      "approxRuntimeMin": {
+        "min": 5,
+        "max": 7
+      },
+      "contentWeight": "high",
+      "worksInCuratedMode": true,
+      "teacherValue": "Bardzo dobre wejście do działów Pilecki, Polonia, Sumienie i AI.",
+      "teacherGuideHooks": [
+        "świadectwo",
+        "raport",
+        "odpowiedzialność odbioru"
+      ],
+      "riskIfUsedAlone": "Może być zbyt ogólne bez późniejszego domknięcia raportem albo pytaniem o sens przekazu.",
+      "sourceMode": "świadectwo-i-oś-projektu",
+      "metaphorDensity": "medium",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "to nie jest jeszcze pełna historia, tylko próg wejścia",
+        "świadectwo jako oś projektu",
+        "różnica między nastrojem a sensem materiału"
+      ]
+    },
+    {
+      "id": "unit-02-pilecki-rdzen",
+      "order": 2,
+      "title": "Pilecki jako rdzeń rozdziału",
+      "editorialFunction": "ustawienie osi biograficzno-świadectwowej",
+      "narrativeRole": "rdzeń historyczny",
+      "approxRuntimeMin": {
+        "min": 8,
+        "max": 10
+      },
+      "contentWeight": "very-high",
+      "worksInCuratedMode": true,
+      "teacherValue": "Najważniejszy komponent dla działu rocznicowego i dla pierwszego kontaktu nauczyciela z projektem.",
+      "teacherGuideHooks": [
+        "Pilecki",
+        "raport",
+        "świadectwo"
+      ],
+      "riskIfUsedAlone": "Bez dalszego przejścia do raportu może zostać odebrane zbyt pomnikowo.",
+      "sourceMode": "postac-centralna",
+      "metaphorDensity": "low",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "Pilecki jako rdzeń projektu",
+        "bez automatycznej heroizacji każdego elementu",
+        "relacja między postacią a funkcją raportu"
+      ]
+    },
+    {
+      "id": "unit-03-przestrzen-obozowa",
+      "order": 3,
+      "title": "Przestrzeń obozowa i warunki miejsca",
+      "editorialFunction": "wejście przez miejsce, próg, przestrzeń i materialny układ przemocy",
+      "narrativeRole": "osadzenie przestrzenne",
+      "approxRuntimeMin": {
+        "min": 9,
+        "max": 11
+      },
+      "contentWeight": "high",
+      "worksInCuratedMode": true,
+      "teacherValue": "Kluczowe dla działu Auschwitz i dla tematów o przestrzeni systemu.",
+      "teacherGuideHooks": [
+        "Auschwitz",
+        "miejsce",
+        "granica",
+        "przestrzeń"
+      ],
+      "riskIfUsedAlone": "Bez świadectwa i komentarza źródłowego może zostać odebrane zbyt symbolicznie.",
+      "sourceMode": "miejsce-plus-kontekst",
+      "metaphorDensity": "medium",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "miejsce nie jest samowystarczalnym źródłem",
+        "przestrzeń jako część działania systemu",
+        "nie antropomorfizować miejsca"
+      ]
+    },
+    {
+      "id": "unit-04-system-i-codziennosc",
+      "order": 4,
+      "title": "System, ciało i codzienność pod presją",
+      "editorialFunction": "pokazanie działania systemu na poziomie warunków życia, ciała, oznaczenia i codziennego porządku",
+      "narrativeRole": "pogłębienie",
+      "approxRuntimeMin": {
+        "min": 9,
+        "max": 11
+      },
+      "contentWeight": "very-high",
+      "worksInCuratedMode": true,
+      "teacherValue": "Najmocniejsza część dla działu Totalitaryzm i wybory pod presją.",
+      "teacherGuideHooks": [
+        "totalitaryzm",
+        "system",
+        "ciało",
+        "codzienność"
+      ],
+      "riskIfUsedAlone": "Może przeciążyć młodszą grupę bez dobrego pytania prowadzącego.",
+      "sourceMode": "mechanizmy-systemu",
+      "metaphorDensity": "medium",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "jak system przechodzi z ideologii do codziennego nacisku",
+        "dlaczego codzienność jest ważna dla rozumienia przemocy",
+        "nie sprowadzać wszystkiego do jednego wielkiego symbolu"
+      ]
+    },
+    {
+      "id": "unit-05-raport-ryzyko-przekaz",
+      "order": 5,
+      "title": "Raport, ryzyko i przekazanie świadectwa",
+      "editorialFunction": "pokazanie sensu raportu jako próby zapisania i przekazania dalej",
+      "narrativeRole": "punkt ciężkości projektu",
+      "approxRuntimeMin": {
+        "min": 10,
+        "max": 12
+      },
+      "contentWeight": "critical",
+      "worksInCuratedMode": true,
+      "teacherValue": "Najważniejsza jednostka spinająca Pileckiego, AI, Polonię i Sumienie.",
+      "teacherGuideHooks": [
+        "raport",
+        "świadectwo",
+        "odpowiedzialność",
+        "przekaz"
+      ],
+      "riskIfUsedAlone": "Bez wcześniejszego ustawienia sensu projektu może być odebrany zbyt abstrakcyjnie.",
+      "sourceMode": "raport-jako-rdzen",
+      "metaphorDensity": "low",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "raport nie jest tylko dokumentem, ale formą przekazania",
+        "ryzyko i odpowiedzialność",
+        "co odróżnia raport od późniejszego skrótu"
+      ]
+    },
+    {
+      "id": "unit-06-powojenne-echo-i-pamiec",
+      "order": 6,
+      "title": "Powojenne echo, pamięć i trudność interpretacji",
+      "editorialFunction": "przejście od wydarzenia do późniejszego odczytania, pamięci i napięć interpretacyjnych",
+      "narrativeRole": "rozszerzenie",
+      "approxRuntimeMin": {
+        "min": 8,
+        "max": 10
+      },
+      "contentWeight": "medium-high",
+      "worksInCuratedMode": true,
+      "teacherValue": "Przydatne dla nauczyciela bardziej świadomego metodologicznie albo dla uczelni.",
+      "teacherGuideHooks": [
+        "pamięć",
+        "interpretacja",
+        "powojenność"
+      ],
+      "riskIfUsedAlone": "Nie jest najlepszym pierwszym wejściem dla nauczyciela początkującego.",
+      "sourceMode": "pamiec-plus-interpretacja",
+      "metaphorDensity": "medium",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "odróżniać fakt historyczny od późniejszej pamięci",
+        "nie zamieniać tej jednostki w oś dominującą",
+        "ostrożność wobec pobocznych postaci i uproszczeń"
+      ]
+    },
+    {
+      "id": "unit-07-sumienie-i-domkniecie",
+      "order": 7,
+      "title": "Sumienie, czas decyzji i domknięcie",
+      "editorialFunction": "przejście od historii ku odpowiedzialności odbiorcy oraz sensowi reakcji tu i teraz",
+      "narrativeRole": "zakończenie",
+      "approxRuntimeMin": {
+        "min": 8,
+        "max": 10
+      },
+      "contentWeight": "critical",
+      "worksInCuratedMode": true,
+      "teacherValue": "Najmocniejsza jednostka kończąca dla działu Sumienie i znaczenie raportu.",
+      "teacherGuideHooks": [
+        "sumienie",
+        "czas decyzji",
+        "reakcja odbiorcy"
+      ],
+      "riskIfUsedAlone": "Bez dobrego poprowadzenia może wejść w tani moralizm.",
+      "sourceMode": "domkniecie-refleksyjne",
+      "metaphorDensity": "high",
+      "needsCommentary": true,
+      "teacherCommentaryFocus": [
+        "nie robić prostych analogii jeden do jednego",
+        "sumienie jako pytanie o własną reakcję",
+        "raport jako coś, co coś z nami robi"
+      ]
+    }
+  ],
+  "optionalMetaUnits": [
+    {
+      "id": "meta-01-ai-process",
+      "title": "Proces twórczy: AI i odpowiedzialność",
+      "assetType": "teacher-guide-panel-or-short-featurette",
+      "requiredForLaunch": false,
+      "recommendedForSection": "section-ai-historia",
+      "canExistWithoutVideo": true,
+      "preferredForm": "teacher guide + plansza + kilka kadrów + narracja nauczyciela",
+      "purpose": "Wyjaśnić, że forma generatywna nie zastępuje źródła i wymaga jasnego komunikowania granic interpretacji."
+    },
+    {
+      "id": "meta-02-polonia-context",
+      "title": "Most kontekstowy dla Polonii",
+      "assetType": "teacher-guide-panel",
+      "requiredForLaunch": false,
+      "recommendedForSection": "section-polonia",
+      "canExistWithoutVideo": true,
+      "preferredForm": "karta kontekstowa z prostymi dopowiedzeniami historycznymi",
+      "purpose": "Pomóc nauczycielowi przełożyć ciężar polskiego doświadczenia bez banalizacji."
+    }
+  ],
+  "sectionBindings": [
+    {
+      "sectionId": "section-pilecki-rocznicowy",
+      "teacherGuideRef": "section-pilecki-rocznicowy",
+      "priority": 1,
+      "recommendedForFirstTimeTeacher": true,
+      "defaultProjectionModeId": "full-65",
+      "allowedProjectionModes": [
+        "full-65",
+        "curated-35",
+        "seminar-extended"
+      ],
+      "recommendedQuestionId": "q-pilecki-01",
+      "recommendedUnitsFull": [
+        "unit-01-prolog-swiadectwa",
+        "unit-02-pilecki-rdzen",
+        "unit-03-przestrzen-obozowa",
+        "unit-04-system-i-codziennosc",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-06-powojenne-echo-i-pamiec",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "recommendedUnitsCurated": [
+        "unit-01-prolog-swiadectwa",
+        "unit-02-pilecki-rdzen",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "curatedSense": "Wersja skrócona działa tylko jako rocznicowe wejście w oś Pilecki -> raport -> odpowiedzialność odbioru.",
+      "teacherFlow": {
+        "beforeProjection": [
+          "wybierz jedno pytanie główne",
+          "otwórz teacher guide działu",
+          "ustaw tryb pełny jako domyślny"
+        ],
+        "duringProjection": [
+          "nie zatrzymuj zbyt często",
+          "przy full-65 pozwól rozdziałowi wybrzmieć jako całości",
+          "w curated-35 zaplanuj tylko 1 lub 2 pauzy"
+        ],
+        "afterProjection": [
+          "jedna rozmowa główna",
+          "raport ucznia przez QR",
+          "ewentualne archiwum anonimowe"
+        ]
+      }
+    },
+    {
+      "sectionId": "section-totalitaryzm-wybor",
+      "teacherGuideRef": "section-totalitaryzm-wybor",
+      "priority": 2,
+      "recommendedForFirstTimeTeacher": false,
+      "defaultProjectionModeId": "full-65",
+      "allowedProjectionModes": [
+        "full-65",
+        "curated-35",
+        "seminar-extended"
+      ],
+      "recommendedQuestionId": "q-total-01",
+      "recommendedUnitsFull": [
+        "unit-02-pilecki-rdzen",
+        "unit-03-przestrzen-obozowa",
+        "unit-04-system-i-codziennosc",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-06-powojenne-echo-i-pamiec",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "recommendedUnitsCurated": [
+        "unit-03-przestrzen-obozowa",
+        "unit-04-system-i-codziennosc",
+        "unit-05-raport-ryzyko-przekaz"
+      ],
+      "curatedSense": "Wersja skrócona ma sens jako materiał o mechanizmach systemu, warunkach decyzji i odpowiedzialności interpretacyjnej.",
+      "teacherFlow": {
+        "beforeProjection": [
+          "upewnij się, że grupa jest gotowa na rozmowę bez prostych ocen moralnych",
+          "wybierz jedno pytanie główne i maksymalnie jedno pytanie pomocnicze"
+        ],
+        "duringProjection": [
+          "w curated-35 zatrzymaj się tylko tam, gdzie chcesz wydobyć mechanizm systemu",
+          "nie zamieniaj projekcji w ciągły komentarz"
+        ],
+        "afterProjection": [
+          "rozmowa o warunkach decyzji",
+          "dopiero potem raport ucznia"
+        ]
+      }
+    },
+    {
+      "sectionId": "section-auschwitz",
+      "teacherGuideRef": "section-auschwitz",
+      "priority": 3,
+      "recommendedForFirstTimeTeacher": false,
+      "defaultProjectionModeId": "full-65",
+      "allowedProjectionModes": [
+        "full-65",
+        "curated-35",
+        "seminar-extended"
+      ],
+      "recommendedQuestionId": "q-auschwitz-01",
+      "recommendedUnitsFull": [
+        "unit-01-prolog-swiadectwa",
+        "unit-03-przestrzen-obozowa",
+        "unit-04-system-i-codziennosc",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "recommendedUnitsCurated": [
+        "unit-03-przestrzen-obozowa",
+        "unit-04-system-i-codziennosc",
+        "unit-05-raport-ryzyko-przekaz"
+      ],
+      "curatedSense": "Wersja skrócona działa jako wejście przez miejsce, świadectwo i pamięć — nie jako czysty skrót emocjonalny.",
+      "teacherFlow": {
+        "beforeProjection": [
+          "ustaw ton powściągliwy",
+          "nie przeciążaj wstępem faktograficznym"
+        ],
+        "duringProjection": [
+          "pozwól przestrzeni działać, ale wracaj do świadectwa i źródła",
+          "nie komentuj każdego obrazu"
+        ],
+        "afterProjection": [
+          "jedna rozmowa o miejscu, świadectwie i pamięci",
+          "raport ucznia jako domknięcie"
+        ]
+      }
+    },
+    {
+      "sectionId": "section-ai-historia",
+      "teacherGuideRef": "section-ai-historia",
+      "priority": 6,
+      "recommendedForFirstTimeTeacher": false,
+      "defaultProjectionModeId": "curated-35",
+      "allowedProjectionModes": [
+        "curated-35",
+        "seminar-extended"
+      ],
+      "recommendedQuestionId": "q-ai-01",
+      "recommendedUnitsFull": [],
+      "recommendedUnitsCurated": [
+        "unit-01-prolog-swiadectwa",
+        "unit-05-raport-ryzyko-przekaz"
+      ],
+      "requiredMetaUnits": [
+        "meta-01-ai-process"
+      ],
+      "curatedSense": "Ta sekcja nie potrzebuje całego 65-minutowego rozdziału jako domyślnego. Lepiej działa jako świadomie zbudowany wybór + objaśnienie procesu i granic formy.",
+      "teacherFlow": {
+        "beforeProjection": [
+          "otwórz teacher guide sekcji",
+          "przygotuj prosty komunikat: AI nie jest źródłem"
+        ],
+        "duringProjection": [
+          "pokaż wybrane fragmenty jako case study",
+          "uzupełnij je objaśnieniem formy, nie zachwytem technicznym"
+        ],
+        "afterProjection": [
+          "krótka rozmowa metodologiczna",
+          "opcjonalny raport ucznia lub mini-raport refleksyjny"
+        ]
+      }
+    },
+    {
+      "sectionId": "section-polonia",
+      "teacherGuideRef": "section-polonia",
+      "priority": 4,
+      "recommendedForFirstTimeTeacher": false,
+      "defaultProjectionModeId": "full-65",
+      "allowedProjectionModes": [
+        "full-65",
+        "curated-35",
+        "seminar-extended"
+      ],
+      "recommendedQuestionId": "q-polonia-01",
+      "recommendedUnitsFull": [
+        "unit-01-prolog-swiadectwa",
+        "unit-02-pilecki-rdzen",
+        "unit-03-przestrzen-obozowa",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "recommendedUnitsCurated": [
+        "unit-01-prolog-swiadectwa",
+        "unit-02-pilecki-rdzen",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "requiredMetaUnits": [
+        "meta-02-polonia-context"
+      ],
+      "curatedSense": "Wersja skrócona działa wtedy, gdy trzeba zbudować most: Pilecki -> raport -> przekaz -> odpowiedzialność w odbiorze międzynarodowym.",
+      "teacherFlow": {
+        "beforeProjection": [
+          "sprawdź poziom znajomości kontekstu polskiego",
+          "wybierz jedno pytanie mostowe"
+        ],
+        "duringProjection": [
+          "nie zakładaj pełnej wspólnej wiedzy",
+          "dopowiadaj tylko to, co konieczne"
+        ],
+        "afterProjection": [
+          "raport ucznia z pytaniem o most kulturowy",
+          "opcjonalne PDF jako pamiątka"
+        ]
+      }
+    },
+    {
+      "sectionId": "section-sumienie-raport",
+      "teacherGuideRef": "section-sumienie-raport",
+      "priority": 5,
+      "recommendedForFirstTimeTeacher": true,
+      "defaultProjectionModeId": "full-65",
+      "allowedProjectionModes": [
+        "full-65",
+        "curated-35",
+        "seminar-extended"
+      ],
+      "recommendedQuestionId": "q-sumienie-01",
+      "recommendedUnitsFull": [
+        "unit-01-prolog-swiadectwa",
+        "unit-02-pilecki-rdzen",
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "recommendedUnitsCurated": [
+        "unit-05-raport-ryzyko-przekaz",
+        "unit-07-sumienie-i-domkniecie"
+      ],
+      "curatedSense": "To jedna z niewielu sekcji, gdzie skrót nadal ma bardzo mocny sens: raport -> odpowiedzialność -> decyzja -> raport ucznia.",
+      "teacherFlow": {
+        "beforeProjection": [
+          "zaznacz, że nie chodzi o ocenianie cudzych sumień",
+          "ustaw pytanie o odpowiedzialność odbiorcy"
+        ],
+        "duringProjection": [
+          "nie zatrzymuj zbyt często",
+          "pilnuj, by nie wejść w tani motywacyjny ton"
+        ],
+        "afterProjection": [
+          "rozmowa o odpowiedzialności odbioru",
+          "raport ucznia jako najważniejsze domknięcie"
+        ]
+      }
+    }
+  ],
+  "teacherGuideIntegration": {
+    "panelLogic": {
+      "teacherGuidePanelOpensInline": true,
+      "teacherGuideStartsCollapsed": true,
+      "openOnlyOneGuideAtATime": true,
+      "showRecommendedQuestionAtTop": true,
+      "showOtherQuestionsCollapsed": true,
+      "showAdvancedContextCollapsed": true
+    },
+    "teacherGuideFieldsPerSection": [
+      "oneSentencePurpose",
+      "forWhom",
+      "bestUsedWhen",
+      "recommendedQuestion",
+      "teacherOpening",
+      "teacherClosure",
+      "doNotSay",
+      "sourceClarifier",
+      "metaphorClarifier"
+    ],
+    "teacherGuideMustHideByDefault": [
+      "rozszerzone konteksty poboczne",
+      "dodatkowe pytania niż rekomendowane",
+      "noty bardziej akademickie",
+      "warstwa zaawansowana o porównaniach systemów"
+    ]
+  },
+  "reportFlow": {
+    "model": "student-report-primary",
+    "reportEntry": {
+      "triggerFromTeacherConsole": true,
+      "triggerFromProjectionFooter": true,
+      "qrVisibleAfterProjection": true,
+      "qrType": "single-report-qr"
+    },
+    "studentFlow": {
+      "device": "own-phone",
+      "identityModeDefault": "anonymous",
+      "mandatoryFields": [],
+      "optionalFields": [
+        "quote",
+        "keyMoment",
+        "finalResponse",
+        "openQuestion"
+      ],
+      "teacherShouldNotSeeLiveTyping": true,
+      "studentCanSavePdf": true,
+      "studentCanLeaveArchiveEntry": true
+    },
+    "archiveFlow": {
+      "mode": "anonymous-session-archive",
+      "teacherCanReviewAggregate": true,
+      "teacherCanOpenSingleArchivedReport": true,
+      "teacherCanExportArchiveJson": true,
+      "teacherCanGeneratePdfFromSingleReport": true
+    }
+  },
+  "qrPolicy": {
+    "default": "report-only",
+    "why": "Najprostszy, najmniej mylący model dla nauczyciela pierwszego kontaktu i dla ucznia podczas zajęć.",
+    "visibleByDefault": [
+      "qr-report-student"
+    ],
+    "hiddenByDefault": [
+      "qr-knowledge-card",
+      "qr-bio-card",
+      "qr-extra-context"
+    ],
+    "optionalTeacherUnlocks": [
+      {
+        "id": "unlock-hero-cards",
+        "title": "Karty postaci i pojęć",
+        "useWhen": "nauczyciel świadomie chce dołożyć warstwę informacyjną po projekcji albo przed raportem",
+        "warning": "Nie uruchamiaj na pierwszej lekcji, jeśli grozi to rozproszeniem."
+      }
+    ]
+  },
+  "optionalInfoCards": {
+    "enabledByDefault": false,
+    "displayMode": "teacher-choice",
+    "cards": [
+      {
+        "id": "card-pilecki",
+        "title": "Pilecki",
+        "category": "postać centralna",
+        "shownInSections": [
+          "section-pilecki-rocznicowy",
+          "section-polonia",
+          "section-sumienie-raport"
+        ]
+      },
+      {
+        "id": "card-totalitaryzm",
+        "title": "Totalitaryzm",
+        "category": "pojęcie",
+        "shownInSections": [
+          "section-totalitaryzm-wybor",
+          "section-polonia"
+        ]
+      },
+      {
+        "id": "card-nazizm",
+        "title": "Nazizm",
+        "category": "kontekst historyczny",
+        "shownInSections": [
+          "section-auschwitz",
+          "section-totalitaryzm-wybor",
+          "section-polonia"
+        ]
+      },
+      {
+        "id": "card-stalinizm",
+        "title": "Stalinizm / wczesny komunizm",
+        "category": "kontekst historyczny",
+        "shownInSections": [
+          "section-totalitaryzm-wybor"
+        ]
+      },
+      {
+        "id": "card-prl",
+        "title": "PRL",
+        "category": "kontekst powojenny",
+        "shownInSections": [
+          "section-totalitaryzm-wybor",
+          "section-ai-historia"
+        ]
+      },
+      {
+        "id": "card-cyrankiewicz",
+        "title": "Cyrankiewicz",
+        "category": "kontekst rozszerzony",
+        "shownInSections": [
+          "section-totalitaryzm-wybor"
+        ],
+        "visibility": "advanced-only"
+      },
+      {
+        "id": "card-raport",
+        "title": "Raport",
+        "category": "forma świadectwa",
+        "shownInSections": [
+          "section-pilecki-rocznicowy",
+          "section-auschwitz",
+          "section-ai-historia",
+          "section-polonia",
+          "section-sumienie-raport"
+        ]
+      }
+    ]
+  },
+  "teacherGuideTrackNotes": [
+    {
+      "unitId": "unit-01-prolog-swiadectwa",
+      "historicalTruthMode": "ustawienie osi projektu, nie pełna opowieść faktograficzna",
+      "metaphorUse": "dopuszczalna",
+      "teacherMustClarify": "To wejście ustawia pytanie, a nie wyczerpuje materiał historyczny."
+    },
+    {
+      "unitId": "unit-02-pilecki-rdzen",
+      "historicalTruthMode": "rdzeń historyczny",
+      "metaphorUse": "oszczędna",
+      "teacherMustClarify": "Pilecki pozostaje centrum rozdziału jako świadek i autor raportu."
+    },
+    {
+      "unitId": "unit-03-przestrzen-obozowa",
+      "historicalTruthMode": "przestrzeń + kontekst",
+      "metaphorUse": "umiarkowana",
+      "teacherMustClarify": "Miejsce nie jest samym źródłem; wymaga świadectwa i komentarza."
+    },
+    {
+      "unitId": "unit-04-system-i-codziennosc",
+      "historicalTruthMode": "mechanizmy systemu",
+      "metaphorUse": "umiarkowana",
+      "teacherMustClarify": "Nie chodzi o wielki skrót, lecz o sposób działania systemu na poziomie życia codziennego."
+    },
+    {
+      "unitId": "unit-05-raport-ryzyko-przekaz",
+      "historicalTruthMode": "źródło i przekaz",
+      "metaphorUse": "niska",
+      "teacherMustClarify": "Raport jest osią projektu, ale nie zamyka interpretacji."
+    },
+    {
+      "unitId": "unit-06-powojenne-echo-i-pamiec",
+      "historicalTruthMode": "pamięć i odczytanie",
+      "metaphorUse": "umiarkowana",
+      "teacherMustClarify": "To część rozszerzająca, nie oś dominująca dla pierwszego kontaktu."
+    },
+    {
+      "unitId": "unit-07-sumienie-i-domkniecie",
+      "historicalTruthMode": "przejście do odpowiedzialności odbiorcy",
+      "metaphorUse": "wysoka, ale kontrolowana",
+      "teacherMustClarify": "Nie robić prostych porównań między historią ekstremalną a codziennością ucznia."
+    }
+  ],
+  "recommendedTeacherJourneys": [
+    {
+      "id": "journey-first-school-use",
+      "title": "Pierwsze użycie w szkole",
+      "recommendedSectionId": "section-pilecki-rocznicowy",
+      "recommendedModeId": "full-65",
+      "reason": "Najbardziej spójne z osią dokumentów i najłatwiejsze do poprowadzenia.",
+      "steps": [
+        "wybierz dział Pilecki",
+        "użyj pytania rekomendowanego",
+        "uruchom pełny rozdział",
+        "po projekcji otwórz rozmowę",
+        "na końcu pokaż QR do raportu"
+      ]
+    },
+    {
+      "id": "journey-most-reflective",
+      "title": "Najmocniejsze domknięcie refleksyjne",
+      "recommendedSectionId": "section-sumienie-raport",
+      "recommendedModeId": "full-65",
+      "reason": "Najlepiej spina historię z odpowiedzialnością odbiorcy bez banalizacji.",
+      "steps": [
+        "wybierz dział Sumienie",
+        "utrzymaj spokojny ton",
+        "nie zatrzymuj projekcji zbyt często",
+        "raport potraktuj jako główne domknięcie"
+      ]
+    },
+    {
+      "id": "journey-method-workshop",
+      "title": "Warsztat AI i historia",
+      "recommendedSectionId": "section-ai-historia",
+      "recommendedModeId": "curated-35",
+      "reason": "Ta sekcja lepiej działa przez wybrane fragmenty i objaśnienie procesu niż przez automatyczny pełny pokaz.",
+      "steps": [
+        "wybierz dział AI i historia",
+        "pokaż curated mode",
+        "otwórz meta-unit o odpowiedzialnej formie",
+        "zakończ krótką refleksją lub mini-raportem"
+      ]
+    }
+  ],
+  "uiLocks": {
+    "mustHideIfNoAssets": [
+      "interactive-object-hotspots",
+      "multi-qr-switcher",
+      "advanced-object-modal-as-default-entry"
+    ],
+    "mustStayVisible": [
+      "section-cards",
+      "recommended-question",
+      "teacher-guide-button",
+      "start-projection-button",
+      "generate-report-qr-button"
+    ],
+    "shouldBeSecondLayerOnly": [
+      "advanced-context",
+      "optional-info-cards",
+      "archive-export-tools",
+      "single-report-pdf-generation"
+    ]
+  },
+  "launchReadiness": {
+    "minimumViableLaunch": [
+      "single master video",
+      "6 działów edukacyjnych",
+      "teacher guide",
+      "wybór pytania",
+      "tryb pełny i curated",
+      "qr do raportu ucznia",
+      "archiwum anonimowe",
+      "pdf raportu"
+    ],
+    "canBeAddedLater": [
+      "karty postaci i pojęć",
+      "warstwa email pamiątki",
+      "rozszerzone meta-unit o AI",
+      "bardziej zaawansowane archive analytics",
+      "hotspoty i interaktywne zdjęcia"
+    ],
+    "mustNotBlockLaunch": [
+      "brak zdjęć detalicznych pasiaka",
+      "brak rozbudowanych obiektów 3D",
+      "brak wielu niezależnych QR-ów",
+      "brak osobnego wideo dla każdego działu"
+    ]
+  },
+  "coherenceWithDocuments": {
+    "highestAlignmentSections": [
+      "section-pilecki-rocznicowy",
+      "section-auschwitz",
+      "section-sumienie-raport"
+    ],
+    "documentCoreMaintained": true,
+    "coreMaintainedBy": [
+      "Pilecki pozostaje osią",
+      "raport pozostaje kluczową kategorią",
+      "świadectwo pozostaje ważniejsze niż efekt",
+      "powściągliwość pozostaje regułą tonu",
+      "uczeń kończy pracę własnym raportem, nie tylko biernym odbiorem"
+    ],
+    "riskSectionsRequiringTeacherDiscipline": [
+      "section-totalitaryzm-wybor",
+      "section-ai-historia"
+    ]
+  },
+  "successConditions": {
+    "forTeacher": [
+      "Nauczyciel wybiera dział w mniej niż 30 sekund.",
+      "Nauczyciel widzi od razu pytanie rekomendowane.",
+      "Nauczyciel uruchamia projekcję bez przeklikiwania wielu ekranów.",
+      "Nauczyciel po projekcji ma jedno jasne przejście do raportu ucznia."
+    ],
+    "forStudent": [
+      "Uczeń nie musi obsługiwać strony podczas projekcji.",
+      "Uczeń wchodzi dopiero na etapie raportu albo po jasnym sygnale nauczyciela.",
+      "Uczeń może zostawić odpowiedź anonimowo.",
+      "Uczeń może pobrać swój raport jako PDF."
+    ],
+    "forYouAsAuthor": [
+      "Nie musisz budować wielu osobnych assetów wizualnych przed startem.",
+      "Nie musisz tworzyć osobnego wideo dla każdego działu.",
+      "Rdzeń strony działa na jednym masterze i prostym systemie sekcji.",
+      "Teacher Guide przejmuje większość objaśniania bez dokładania kolejnych warstw produkcyjnych."
+    ]
+  }
+    }
