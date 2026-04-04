@@ -1,0 +1,463 @@
+{
+  "version": "1.2.0",
+  "lang": "pl",
+  "globalPolicy": {
+    "primaryAxis": "Witold Pilecki, świadectwo, raport, odpowiedzialność odbioru",
+    "secondaryAxis": "System, źródło, pamięć, warunki interpretacji",
+    "cyrankiewiczPolicy": {
+      "studentFacing": false,
+      "teacherFacing": "advanced-only",
+      "default": "excluded",
+      "notes": "Cyrankiewicz nie jest osią lekcji podstawowych. Nie pojawia się w ścieżce ucznia. Ewentualne odniesienia mogą wystąpić wyłącznie w notach rozszerzonych dla starszych grup i nie mogą przejąć głównego nurtu projektu."
+    },
+    "forbiddenFrames": [
+      "porównanie rankingowe postaci historycznych",
+      "prosty wyrok moralny wymuszony przez pytanie",
+      "heroizacja jako domyślna rama odpowiedzi",
+      "rozmowa o 'kto był lepszy albo gorszy'",
+      "przypisywanie intencji bez oparcia w źródłach"
+    ]
+  },
+  "lessons": [
+    {
+      "id": "ps-pl-45-78-swiadectwo",
+      "title": "Wejście w świadectwo",
+      "ageGroup": "7-8",
+      "durationMin": 45,
+      "axis": "swiadectwo",
+      "reportTemplate": "raport-odbioru",
+      "enabled": true,
+      "ui": {
+        "theme": "archive-cinematic-dark",
+        "entryPreset": "veil-rise",
+        "defaultAmbience": "quiet-resonance"
+      },
+      "guardrails": [
+        "Nie przechodź do sporów personalnych ani ocen postaci historycznych.",
+        "Utrzymuj rozmowę przy źródle, obiekcie i pojęciu świadectwa.",
+        "Nie wymagaj od uczniów jednoznacznych ocen moralnych."
+      ],
+      "steps": [
+        {
+          "id": "step-01",
+          "type": "entry",
+          "durationMin": 4,
+          "title": "Wejście",
+          "teacherInstruction": "Uruchom pytanie otwierające bez szerszego komentarza. Pozwól uczniom wejść przez własną odpowiedź.",
+          "teacherCaution": "Nie dopowiadaj od razu 'właściwego sensu'.",
+          "studentScreen": "entry-screen",
+          "promptIds": ["p-78-open-01"]
+        },
+        {
+          "id": "step-02",
+          "type": "object",
+          "durationMin": 6,
+          "title": "Obiekt pamięci",
+          "objectId": "barbed-wire",
+          "teacherInstruction": "Wyświetl obiekt, daj chwilę ciszy, odczytaj krótki podpis i uruchom pytanie.",
+          "teacherCaution": "Nie zamieniaj obiektu w pełny skrót całej historii.",
+          "promptIds": ["p-78-obs-01"]
+        },
+        {
+          "id": "step-03",
+          "type": "projection",
+          "durationMin": 10,
+          "title": "Fragment dzieła",
+          "teacherInstruction": "Odtwórz wskazany fragment bez przerywania.",
+          "teacherCaution": "Uczniowie nie notują w trakcie."
+        },
+        {
+          "id": "step-04",
+          "type": "pause",
+          "durationMin": 7,
+          "title": "Pierwsze zatrzymanie",
+          "teacherInstruction": "Zadaj jedno pytanie obserwacyjne i zbierz krótkie odpowiedzi.",
+          "teacherCaution": "Nie przesuwaj rozmowy zbyt szybko w stronę wielkich uogólnień.",
+          "promptIds": ["p-78-obs-02"]
+        },
+        {
+          "id": "step-05",
+          "type": "report",
+          "durationMin": 12,
+          "title": "Raport odbioru",
+          "teacherInstruction": "Uczniowie wybierają cytat, obiekt i jedną odpowiedź końcową.",
+          "teacherCaution": "Nie oceniaj odpowiedzi według klucza moralnego.",
+          "studentScreen": "report-builder"
+        },
+        {
+          "id": "step-06",
+          "type": "closure",
+          "durationMin": 6,
+          "title": "Zamknięcie",
+          "teacherInstruction": "Zakończ pytaniem o to, jakie pytanie zostaje po lekcji.",
+          "teacherCaution": "Nie wymuszaj jednej wspólnej odpowiedzi.",
+          "promptIds": ["p-78-ref-02"]
+        }
+      ]
+    },
+    {
+      "id": "ps-pl-45-liceum-swiadectwo",
+      "title": "Raport odbioru — świadectwo",
+      "ageGroup": "liceum",
+      "durationMin": 45,
+      "axis": "swiadectwo",
+      "reportTemplate": "raport-odbioru",
+      "enabled": true,
+      "ui": {
+        "theme": "archive-cinematic-dark",
+        "entryPreset": "veil-rise",
+        "defaultAmbience": "quiet-resonance"
+      },
+      "guardrails": [
+        "Nie prowadź uczniów do prostego wyroku moralnego.",
+        "Oddzielaj świadectwo, interpretację i odpowiedź osobistą.",
+        "Nie wprowadzaj Cyrankiewicza do trybu podstawowego.",
+        "Utrzymuj Pileckiego jako rdzeń rozdziału, ale bez hagiografii."
+      ],
+      "steps": [
+        {
+          "id": "step-01",
+          "type": "entry",
+          "durationMin": 3,
+          "title": "Wejście",
+          "teacherInstruction": "Nie wprowadzaj jeszcze pełnego kontekstu historycznego. Pozwól klasie wejść przez pytanie.",
+          "teacherCaution": "Nie używaj od razu słów typu 'bohaterstwo' albo 'poświęcenie'.",
+          "studentScreen": "entry-screen",
+          "promptIds": ["p-l-open-01"]
+        },
+        {
+          "id": "step-02",
+          "type": "object",
+          "durationMin": 5,
+          "title": "Obiekt pamięci",
+          "objectId": "barbed-wire",
+          "teacherInstruction": "Wyświetl obiekt. Zostaw 20 sekund ciszy. Następnie odczytaj krótki opis.",
+          "teacherCaution": "Nie zamieniaj obiektu w metaforę totalną.",
+          "promptIds": ["p-l-obs-02"]
+        },
+        {
+          "id": "step-03",
+          "type": "projection",
+          "durationMin": 8,
+          "title": "Fragment dzieła",
+          "teacherInstruction": "Odtwórz wskazany fragment bez przerywania.",
+          "teacherCaution": "Nie komentuj w trakcie.",
+          "studentScreen": "projection-mode"
+        },
+        {
+          "id": "step-04",
+          "type": "pause",
+          "durationMin": 6,
+          "title": "Pierwsze zatrzymanie",
+          "teacherInstruction": "Zadaj jedno pytanie obserwacyjne. Zbieraj odpowiedzi bez natychmiastowego podsumowania.",
+          "teacherCaution": "Nie nadawaj odpowiedziom hierarchii moralnej.",
+          "promptIds": ["p-l-obs-01"]
+        },
+        {
+          "id": "step-05",
+          "type": "object",
+          "durationMin": 5,
+          "title": "Dokument",
+          "objectId": "report-document",
+          "teacherInstruction": "Uruchom drugi obiekt jako przejście od obrazu do źródła.",
+          "teacherCaution": "Najpierw pytaj o funkcję źródła, nie o etykietę odwagi.",
+          "promptIds": ["p-l-src-01"]
+        },
+        {
+          "id": "step-06",
+          "type": "discussion",
+          "durationMin": 6,
+          "title": "Krótka interpretacja",
+          "teacherInstruction": "Wybierz jedno pytanie interpretacyjne i trzymaj rozmowę w granicach źródeł.",
+          "teacherCaution": "Nie przechodź do sporów personalnych ani ocen pobocznych postaci.",
+          "promptIds": ["p-l-int-03"]
+        },
+        {
+          "id": "step-07",
+          "type": "report",
+          "durationMin": 9,
+          "title": "Raport odbioru",
+          "teacherInstruction": "Uczniowie wybierają cytat, obiekt i odpowiedź końcową. Raport generuje się w PDF.",
+          "teacherCaution": "Nie sugeruj, który cytat jest 'najlepszy'.",
+          "studentScreen": "report-builder"
+        },
+        {
+          "id": "step-08",
+          "type": "closure",
+          "durationMin": 3,
+          "title": "Zamknięcie",
+          "teacherInstruction": "Zadaj pytanie końcowe i zamknij lekcję chwilą ciszy.",
+          "teacherCaution": "Nie zamykaj rozmowy jednym morałem.",
+          "promptIds": ["p-l-ref-01"]
+        }
+      ]
+    },
+    {
+      "id": "ps-pl-90-liceum-wybor",
+      "title": "Raport odbioru — wybór i ostrożność interpretacyjna",
+      "ageGroup": "liceum",
+      "durationMin": 90,
+      "axis": "wybor",
+      "reportTemplate": "raport-interpretacyjny",
+      "enabled": true,
+      "ui": {
+        "theme": "archive-cinematic-dark",
+        "entryPreset": "slow-reveal",
+        "defaultAmbience": "quiet-resonance"
+      },
+      "guardrails": [
+        "Nie przekształcaj lekcji w ranking postaw.",
+        "Nie każ uczniom wydawać wyroku na osoby działające pod skrajną presją.",
+        "Pilecki pozostaje osią rozdziału; inne osoby nie przejmują narracji.",
+        "Cyrankiewicz nie pojawia się w warstwie uczniowskiej."
+      ],
+      "steps": [
+        {
+          "id": "step-01",
+          "type": "entry",
+          "durationMin": 5,
+          "title": "Wejście",
+          "teacherInstruction": "Uruchom pytanie otwierające i zostaw minutę ciszy po pierwszych odpowiedziach.",
+          "teacherCaution": "Nie dopowiadaj, czym jest 'właściwy wybór'.",
+          "promptIds": ["p-l-open-01"]
+        },
+        {
+          "id": "step-02",
+          "type": "object",
+          "durationMin": 7,
+          "title": "Próg i przestrzeń",
+          "objectId": "gate-fragment",
+          "teacherInstruction": "Ustaw obiekt jako wejście w temat warunków działania pod presją systemu.",
+          "teacherCaution": "Mów o funkcji przestrzeni, nie o symbolach totalnych.",
+          "promptIds": ["p-l-obs-02"]
+        },
+        {
+          "id": "step-03",
+          "type": "projection",
+          "durationMin": 12,
+          "title": "Fragment dzieła I",
+          "teacherInstruction": "Odtwórz pierwszy wskazany fragment bez komentarza.",
+          "teacherCaution": "Nie przerywaj."
+        },
+        {
+          "id": "step-04",
+          "type": "pause",
+          "durationMin": 8,
+          "title": "Zatrzymanie I",
+          "teacherInstruction": "Pracuj na pytaniu obserwacyjnym i jednym pytaniu źródłowym.",
+          "teacherCaution": "Nie przechodź od razu do oceny postaw.",
+          "promptIds": ["p-l-obs-01", "p-l-src-02"]
+        },
+        {
+          "id": "step-05",
+          "type": "object",
+          "durationMin": 7,
+          "title": "Tożsamość i oznaczenie",
+          "objectId": "striped-uniform",
+          "teacherInstruction": "Przenieś uwagę z przestrzeni na ciało, oznaczenie i warunki życia.",
+          "teacherCaution": "Unikaj skrótu 'odebranie wszystkiego'.",
+          "promptIds": ["p-l-int-01"]
+        },
+        {
+          "id": "step-06",
+          "type": "projection",
+          "durationMin": 12,
+          "title": "Fragment dzieła II",
+          "teacherInstruction": "Odtwórz drugi wskazany fragment.",
+          "teacherCaution": "Zachowaj rytm i ciszę po zakończeniu."
+        },
+        {
+          "id": "step-07",
+          "type": "discussion",
+          "durationMin": 12,
+          "title": "Rozmowa interpretacyjna",
+          "teacherInstruction": "Prowadź rozmowę o warunkach decyzji, nie o prostym osądzie człowieka.",
+          "teacherCaution": "Jeśli pojawi się temat osób pobocznych, wróć do poziomu źródła, warunków i ograniczeń interpretacyjnych.",
+          "promptIds": ["p-l-int-02", "p-l-ref-03"]
+        },
+        {
+          "id": "step-08",
+          "type": "report",
+          "durationMin": 15,
+          "title": "Raport interpretacyjny",
+          "teacherInstruction": "Uczniowie wybierają cytat, obiekt, punkt ciężkości i odpowiedź interpretacyjną.",
+          "teacherCaution": "Nie oczekuj jednej wspólnej konkluzji.",
+          "studentScreen": "report-builder"
+        },
+        {
+          "id": "step-09",
+          "type": "closure",
+          "durationMin": 12,
+          "title": "Zamknięcie",
+          "teacherInstruction": "Zamknij lekcję pytaniem, które pozostaje otwarte.",
+          "teacherCaution": "Nie zamykaj rozmowy morałem.",
+          "promptIds": ["p-l-ref-01"]
+        }
+      ]
+    },
+    {
+      "id": "ps-pl-120-uczelnia-swiadectwo",
+      "title": "Seminarium świadectwa",
+      "ageGroup": "uczelnia",
+      "durationMin": 120,
+      "axis": "swiadectwo",
+      "reportTemplate": "raport-interpretacyjny",
+      "enabled": true,
+      "ui": {
+        "theme": "archive-cinematic-dark",
+        "entryPreset": "slow-reveal",
+        "defaultAmbience": "archival-air"
+      },
+      "guardrails": [
+        "Utrzymuj rozróżnienie między źródłem, formą i odpowiedzią interpretacyjną.",
+        "Nie upraszczaj złożoności decyzji historycznych.",
+        "Cyrankiewicz, jeśli pojawi się w notach rozszerzonych, pozostaje wyłącznie pobocznym kontekstem metodologicznym.",
+        "Nie zamieniaj seminarium w debatę o rankingu postaci."
+      ],
+      "steps": [
+        {
+          "id": "step-01",
+          "type": "entry",
+          "durationMin": 8,
+          "title": "Wejście seminaryjne",
+          "teacherInstruction": "Uruchom pytanie otwierające jako problem metodologiczny.",
+          "teacherCaution": "Nie ustawiaj od początku jednej tezy końcowej.",
+          "promptIds": ["p-u-open-01"]
+        },
+        {
+          "id": "step-02",
+          "type": "object",
+          "durationMin": 10,
+          "title": "Dokument jako źródło",
+          "objectId": "report-document",
+          "teacherInstruction": "Pracuj na dokumencie jako punkcie ciężkości seminarium.",
+          "teacherCaution": "Nie utożsamiaj dokumentu z pełnym rozstrzygnięciem interpretacyjnym."
+        },
+        {
+          "id": "step-03",
+          "type": "projection",
+          "durationMin": 18,
+          "title": "Fragment dzieła",
+          "teacherInstruction": "Odtwórz wskazany fragment w całości.",
+          "teacherCaution": "Bez komentarza w trakcie."
+        },
+        {
+          "id": "step-04",
+          "type": "discussion",
+          "durationMin": 20,
+          "title": "Źródło i forma",
+          "teacherInstruction": "Prowadź rozmowę przez granicę: świadectwo, forma, odpowiedzialność interpretacyjna.",
+          "teacherCaution": "Dbaj o precyzję pojęć i o odróżnienie poziomów analizy.",
+          "promptIds": ["p-u-src-01", "p-u-int-01"]
+        },
+        {
+          "id": "step-05",
+          "type": "object",
+          "durationMin": 10,
+          "title": "Przestrzeń i ślad",
+          "objectId": "brick-wall",
+          "teacherInstruction": "Przenieś rozmowę na relację miejsca, śladu i pamięci.",
+          "teacherCaution": "Unikaj antropomorfizacji miejsca."
+        },
+        {
+          "id": "step-06",
+          "type": "discussion",
+          "durationMin": 24,
+          "title": "Dyskusja pogłębiona",
+          "teacherInstruction": "Pracuj na pytaniach interpretacyjnych i refleksyjnych bez wymuszania prostych rozstrzygnięć.",
+          "teacherCaution": "Jeśli używasz not rozszerzonych, trzymaj konteksty poboczne poza centrum rozmowy.",
+          "promptIds": ["p-u-int-02", "p-u-ref-01"]
+        },
+        {
+          "id": "step-07",
+          "type": "report",
+          "durationMin": 18,
+          "title": "Raport interpretacyjny",
+          "teacherInstruction": "Uczestnicy wypełniają raport końcowy jako dokument seminarium.",
+          "teacherCaution": "Nie oceniaj według zgodności światopoglądowej, lecz według jakości rozróżnień i argumentacji.",
+          "studentScreen": "report-builder"
+        },
+        {
+          "id": "step-08",
+          "type": "closure",
+          "durationMin": 12,
+          "title": "Zamknięcie",
+          "teacherInstruction": "Zamknij seminarium wskazaniem pytania, którego nie należy zamykać zbyt szybko.",
+          "teacherCaution": "Pozostaw miejsce na nierozstrzygnięcie."
+        }
+      ]
+    },
+    {
+      "id": "ps-pl-90-polonia-bridge",
+      "title": "Bridge Mode",
+      "ageGroup": "polonia",
+      "durationMin": 90,
+      "axis": "pamiec",
+      "reportTemplate": "raport-odbioru",
+      "enabled": true,
+      "ui": {
+        "theme": "archive-cinematic-dark",
+        "entryPreset": "veil-rise",
+        "defaultAmbience": "archival-air"
+      },
+      "guardrails": [
+        "Nie redukuj polskiego kontekstu do prostego skrótu kulturowego.",
+        "Nie zakładaj pełnej znajomości realiów historycznych.",
+        "Nie zamieniaj lekcji w ogólną opowieść tożsamościową bez źródła i świadectwa."
+      ],
+      "steps": [
+        {
+          "id": "step-01",
+          "type": "entry",
+          "durationMin": 6,
+          "title": "Wejście",
+          "teacherInstruction": "Wprowadź grupę przez pytanie o pamięć przenoszoną między językami i kontekstami.",
+          "teacherCaution": "Nie upraszczaj polskiego doświadczenia do jednej formuły tożsamościowej.",
+          "promptIds": ["p-pol-open-01"]
+        },
+        {
+          "id": "step-02",
+          "type": "object",
+          "durationMin": 8,
+          "title": "Dokument jako most",
+          "objectId": "report-document",
+          "teacherInstruction": "Ustaw dokument jako punkt przejścia między doświadczeniem a językiem odbioru.",
+          "teacherCaution": "Mów o źródle i przekładzie sensu, nie o uproszczonym 'przenoszeniu emocji'."
+        },
+        {
+          "id": "step-03",
+          "type": "projection",
+          "durationMin": 15,
+          "title": "Fragment dzieła",
+          "teacherInstruction": "Odtwórz wskazany fragment.",
+          "teacherCaution": "Nie komentuj w trakcie."
+        },
+        {
+          "id": "step-04",
+          "type": "discussion",
+          "durationMin": 18,
+          "title": "Rozmowa",
+          "teacherInstruction": "Rozmawiaj o tym, jak zachować ciężar polskiego doświadczenia w szerszej przestrzeni kulturowej.",
+          "teacherCaution": "Nie zastępuj historii samą emocją albo samą tożsamością.",
+          "promptIds": ["p-pol-ref-01"]
+        },
+        {
+          "id": "step-05",
+          "type": "report",
+          "durationMin": 18,
+          "title": "Raport odbioru",
+          "teacherInstruction": "Uczestnicy tworzą raport końcowy.",
+          "teacherCaution": "Pozostaw możliwość odpowiedzi krótkiej i osobistej."
+        },
+        {
+          "id": "step-06",
+          "type": "closure",
+          "durationMin": 10,
+          "title": "Zamknięcie",
+          "teacherInstruction": "Zakończ krótką refleksją o pamięci jako praktyce odpowiedzialnego odbioru.",
+          "teacherCaution": "Nie kończ patetyczną formułą."
+        }
+      ]
+    }
+  ]
+}
