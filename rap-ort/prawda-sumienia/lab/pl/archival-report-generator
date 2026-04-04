@@ -1,0 +1,139 @@
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+    
+
+      
+        
+Generator archiwalny
+
+        
+Raport osobisty
+
+        
+
+          Uczestnik skanuje QR, wpisuje datę, miejsce i własny zapis. Tekst układa się bezpośrednio na wgranym obrazie dokumentu i może zostać pobrany jako PNG albo PDF.
+        
+
+
+    <div class="field-grid">
+      <div class="field">
+        <label for="backgroundUpload">Tło dokumentu</label>
+        <input id="backgroundUpload" type="file" accept="image/*" />
+      </div>
+
+      <div class="field">
+        <label for="reportDate">Data</label>
+        <input id="reportDate" type="text" placeholder="np. 25 maja" value="25 maja" />
+      </div>
+
+      <div class="field">
+        <label for="reportPlace">Miejsce</label>
+        <input id="reportPlace" type="text" placeholder="np. Oświęcim" value="Oświęcim" />
+      </div>
+
+      <div class="field">
+        <label for="reportIntro">Wprowadzenie</label>
+        <textarea id="reportIntro">Ten dokument nie jest testem wiedzy.
+
+
+
+Jest zapisem chwili, w której historia przestaje być odległa. Jeśli chcesz — zapisz jedną myśl, jedno pytanie lub jedno zdanie, które pozostało po tym doświadczeniu.
+
+
+
+
+      <div class="field">
+        <label for="reportBody">Treść raportu</label>
+        <textarea id="reportBody" placeholder="Wpisz własną myśl, pytanie albo jedno zdanie..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="reportFooter">Stopka</label>
+        <input id="reportFooter" type="text" value="dokument pozostaje do Twojej dyspozycji" />
+      </div>
+
+      <div class="toggle-row">
+        <input id="typewriterSoundToggle" type="checkbox" checked />
+        <label for="typewriterSoundToggle">Stuk maszyny podczas pisania</label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="downloadPngButton" type="button">Pobierz PNG</button>
+      <button class="btn" id="downloadPdfButton" type="button">Pobierz PDF</button>
+      <button class="btn" id="printButton" type="button">Drukuj</button>
+      <button class="btn" id="clearBodyButton" type="button">Wyczyść treść</button>
+    </div>
+
+    <p class="note" id="generatorStatus">
+      Font nie będzie identyczny 1:1 bez oryginalnego pliku czcionki, ale ta wersja używa bardzo bliskiego, archiwalnego kroju typu maszyna do pisania.
+    </p>
+  </aside>
+
+  <section class="panel preview-panel">
+    <div class="preview-topbar">
+      <div class="preview-title">Podgląd dokumentu na bazie wgranego obrazu</div>
+      <div class="status" id="previewScaleStatus">Gotowe do eksportu</div>
+    </div>
+
+    <div class="paper-stage">
+      <div class="paper" id="paperDocument">
+        <img class="paper-bg" id="paperBackground" src="/assets/images/reports/raport-template.jpg" alt="Archiwalna karta raportu" />
+        <div class="paper-overlay"></div>
+
+        <div class="paper-content" id="paperContent">
+          <h2 class="report-title">RAPORT</h2>
+          <div class="report-subtitle">(dokument osobisty)</div>
+
+          <div class="meta">
+            <div class="meta-line"><span>Data:</span> <span class="meta-value" id="paperDate">25 maja</span></div>
+            <div class="meta-line"><span>Miejsce:</span> <span class="meta-value" id="paperPlace">Oświęcim</span></div>
+          </div>
+
+          <div class="intro" id="paperIntro">Ten dokument nie jest testem wiedzy.
+
+
+
+Jest zapisem chwili, w której historia przestaje być odległa. Jeśli chcesz — zapisz jedną myśl, jedno pytanie lub jedno zdanie, które pozostało po tym doświadczeniu.
+
+
+          <div class="write-area">
+            <div class="write-lines" aria-hidden="true">
+              <div class="write-line"></div>
+              <div class="write-line"></div>
+              <div class="write-line"></div>
+              <div class="write-line"></div>
+              <div class="write-line"></div>
+            </div>
+            <div class="write-text" id="paperBody"></div>
+          </div>
+
+          <div class="report-footer" id="paperFooter">dokument pozostaje do Twojej dyspozycji</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+  
+
+
+
+  
+  
+  
+
+
