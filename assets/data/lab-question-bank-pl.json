@@ -233,4 +233,401 @@
     },
     {
       "sectionId": "section-auschwitz",
-      "sectionLabel": "Auschwitz
+      "sectionLabel": "Auschwitz — miejsce, ślad, świadectwo",
+      "defaultQuestionId": "q-auschwitz-01",
+      "teacherSectionIntro": "W tym dziale pytania mają prowadzić przez miejsce, ślad, dokument i ograniczenia interpretacji, bez sprowadzania Auschwitz do jednego znaku lub hasła.",
+      "questions": [
+        {
+          "id": "q-auschwitz-01",
+          "order": 1,
+          "label": "Ślad i historia",
+          "text": "Co zmienia się, gdy patrzysz na historię przez ślad, miejsce albo dokument?",
+          "tone": "rdzeniowe",
+          "bestFor": [
+            "lekcja główna",
+            "liceum",
+            "uczelnia",
+            "Polonia"
+          ],
+          "useWhen": "Gdy chcesz otworzyć dział bez wchodzenia od razu w patos lub symboliczny skrót.",
+          "avoidWhen": "Nie używaj tylko wtedy, gdy potrzebujesz pytania bardzo prostego dla młodszej grupy.",
+          "teacherNote": "Najbardziej pojemne i najbezpieczniejsze pytanie działu."
+        },
+        {
+          "id": "q-auschwitz-02",
+          "order": 2,
+          "label": "Poza symbolem",
+          "text": "Dlaczego nie wystarczy zatrzymać się na samym symbolu Auschwitz?",
+          "tone": "analityczne",
+          "bestFor": [
+            "liceum",
+            "uczelnia",
+            "rozmowa po projekcji"
+          ],
+          "useWhen": "Gdy chcesz przejść od ogólnego skojarzenia do bardziej uczciwej pracy z materiałem.",
+          "avoidWhen": "Nie dawaj jako pierwszego pytania klasie, która nie ma jeszcze podstawowego kontekstu.",
+          "teacherNote": "Dobre do przełamania powierzchownego odbioru."
+        },
+        {
+          "id": "q-auschwitz-03",
+          "order": 3,
+          "label": "Detal, który zostaje",
+          "text": "Który detal lub motyw działał tu najmocniej i dlaczego?",
+          "tone": "obserwacyjne",
+          "bestFor": [
+            "klasy 7-8",
+            "liceum",
+            "krótszy wariant rozmowy"
+          ],
+          "useWhen": "Gdy chcesz zakotwiczyć rozmowę w konkretnym fragmencie materiału.",
+          "avoidWhen": "Nie używaj jako jedynego pytania przy głębszym seminarium.",
+          "teacherNote": "Bardzo dobre po zatrzymaniu jednego kadru lub motywu."
+        },
+        {
+          "id": "q-auschwitz-04",
+          "order": 4,
+          "label": "Nie do pominięcia",
+          "text": "Co było dla ciebie najtrudniejsze do pominięcia po tym materiale?",
+          "tone": "refleksyjne",
+          "bestFor": [
+            "domknięcie",
+            "liceum",
+            "Polonia",
+            "lekcja wychowawcza z kontekstem historycznym"
+          ],
+          "useWhen": "Gdy chcesz zebrać osobisty, ale wciąż powściągliwy odbiór.",
+          "avoidWhen": "Nie zaczynaj od niego przed obejrzeniem materiału.",
+          "teacherNote": "Dobry pomost do raportu ucznia."
+        },
+        {
+          "id": "q-auschwitz-05",
+          "order": 5,
+          "label": "Ślad a interpretacja",
+          "text": "Jak odróżnić ślad historyczny od własnej interpretacji tego śladu?",
+          "tone": "metodologiczne",
+          "bestFor": [
+            "liceum",
+            "uczelnia",
+            "AI i historia jako łącznik"
+          ],
+          "useWhen": "Gdy chcesz połączyć dział Auschwitz z pytaniem o odpowiedzialne czytanie historii.",
+          "avoidWhen": "Nie dawaj jako pierwszego pytania klasie młodszej bez przygotowania.",
+          "teacherNote": "Najmocniejsze pytanie metodologiczne w tym dziale."
+        }
+      ]
+    },
+    {
+      "sectionId": "section-ai-historia",
+      "sectionLabel": "AI i historia",
+      "defaultQuestionId": "q-ai-01",
+      "teacherSectionIntro": "W tym dziale pytania mają pomagać oddzielić źródło od formy, atrakcyjność przekazu od wiarygodności oraz możliwości AI od odpowiedzialności historycznej.",
+      "questions": [
+        {
+          "id": "q-ai-01",
+          "order": 1,
+          "label": "Granica formy",
+          "text": "Gdzie widzisz granicę między formą a źródłem?",
+          "tone": "rdzeniowe",
+          "bestFor": [
+            "liceum",
+            "uczelnia",
+            "zajęcia projektowe"
+          ],
+          "useWhen": "Gdy chcesz ustawić najważniejsze pytanie tego działu od razu jasno.",
+          "avoidWhen": "Nie używaj jako jedynego pytania w młodszej grupie bez dopowiedzenia, czym jest źródło.",
+          "teacherNote": "Najbardziej centralne pytanie działu."
+        },
+        {
+          "id": "q-ai-02",
+          "order": 2,
+          "label": "Zysk i ryzyko",
+          "text": "Co daje nowoczesna forma, a jakie niesie ryzyko dla odbioru historii?",
+          "tone": "zbalansowane",
+          "bestFor": [
+            "liceum",
+            "uczelnia",
+            "rozmowa po pokazie projektu"
+          ],
+          "useWhen": "Gdy chcesz uniknąć zarówno bezkrytycznego zachwytu, jak i prostego odrzucenia AI.",
+          "avoidWhen": "Nie zaczynaj od niego bez pokazania przykładu materiału.",
+          "teacherNote": "Najbardziej praktyczne pytanie dla szkół."
+        },
+        {
+          "id": "q-ai-03",
+          "order": 3,
+          "label": "Sugestywność a dowód",
+          "text": "Dlaczego sugestywny obraz nie staje się automatycznie dowodem historycznym?",
+          "tone": "metodologiczne",
+          "bestFor": [
+            "liceum",
+            "uczelnia",
+            "zajęcia medialne"
+          ],
+          "useWhen": "Gdy chcesz nauczyć uczniów podstawowej higieny odbioru obrazu.",
+          "avoidWhen": "Nie dawaj jako pytania pierwszego bez wcześniejszego przykładu.",
+          "teacherNote": "Najmocniejsze pytanie edukacyjne tego działu."
+        },
+        {
+          "id": "q-ai-04",
+          "order": 4,
+          "label": "Źródło czy forma",
+          "text": "Co w tym materiale było dla ciebie bardziej przekonujące: źródło czy forma?",
+          "tone": "porządkujące",
+          "bestFor": [
+            "krótsza rozmowa",
+            "liceum",
+            "Polonia"
+          ],
+          "useWhen": "Gdy chcesz szybko sprawdzić, jak uczniowie odbierają relację między treścią a formą.",
+          "avoidWhen": "Nie używaj jako jedynego pytania w seminarium akademickim.",
+          "teacherNote": "Dobre jako przejście do raportu."
+        },
+        {
+          "id": "q-ai-05",
+          "order": 5,
+          "label": "Odpowiedzialne użycie AI",
+          "text": "Jak rozumiesz odpowiedzialne użycie AI w pracy z historią?",
+          "tone": "domykające",
+          "bestFor": [
+            "domknięcie działu",
+            "liceum",
+            "uczelnia",
+            "spotkania projektowe"
+          ],
+          "useWhen": "Gdy chcesz połączyć temat narzędzia z etyką pracy i odbioru.",
+          "avoidWhen": "Nie zaczynaj od niego bez wcześniejszej rozmowy o źródle i formie.",
+          "teacherNote": "Najlepsze pytanie końcowe działu."
+        }
+      ]
+    },
+    {
+      "sectionId": "section-polonia",
+      "sectionLabel": "Historia dla Polonii",
+      "defaultQuestionId": "q-polonia-01",
+      "teacherSectionIntro": "W tym dziale pytania mają pomagać budować most między polskim doświadczeniem historycznym a odbiorcą zagranicznym bez redukowania sensu i ciężaru materiału.",
+      "questions": [
+        {
+          "id": "q-polonia-01",
+          "order": 1,
+          "label": "Most pamięci",
+          "text": "Co w tym materiale działa jako most między polskim doświadczeniem a szerszym odbiorcą?",
+          "tone": "rdzeniowe",
+          "bestFor": [
+            "Polonia",
+            "grupy dwujęzyczne",
+            "wydarzenia międzynarodowe"
+          ],
+          "useWhen": "Gdy chcesz otworzyć rozmowę bez zakładania wspólnej wiedzy wszystkich uczestników.",
+          "avoidWhen": "Nie używaj, gdy grupa jest całkowicie lokalna i nie potrzebuje tego kontekstu.",
+          "teacherNote": "Najbardziej naturalne pytanie dla tego działu."
+        },
+        {
+          "id": "q-polonia-02",
+          "order": 2,
+          "label": "Kontekst potrzebny",
+          "text": "Który element wymagał dodatkowego kontekstu, żeby był naprawdę zrozumiały?",
+          "tone": "praktyczne",
+          "bestFor": [
+            "Polonia",
+            "liceum",
+            "uczelnia"
+          ],
+          "useWhen": "Gdy chcesz sprawdzić, co wymaga dopowiedzenia nauczyciela.",
+          "avoidWhen": "Nie używaj jako pytania końcowego domykającego sens działu.",
+          "teacherNote": "Bardzo pomocne dla nauczyciela pracującego pierwszy raz z grupą zagraniczną."
+        },
+        {
+          "id": "q-polonia-03",
+          "order": 3,
+          "label": "Bez uproszczenia",
+          "text": "Jak zachować ciężar historii, nie zamykając jej tylko w lokalnym odbiorze?",
+          "tone": "pogłębione",
+          "bestFor": [
+            "uczelnia",
+            "Polonia",
+            "grupy refleksyjne"
+          ],
+          "useWhen": "Gdy chcesz rozmawiać o odpowiedzialnym przekładzie pamięci między kontekstami.",
+          "avoidWhen": "Nie używaj jako pierwszego pytania w młodszej grupie.",
+          "teacherNote": "Najmocniejsze pytanie metodologiczne działu."
+        },
+        {
+          "id": "q-polonia-04",
+          "order": 4,
+          "label": "Czytelność ponad językiem",
+          "text": "Co było w tym materiale najbardziej czytelne ponad językiem i kontekstem?",
+          "tone": "obserwacyjne",
+          "bestFor": [
+            "Polonia",
+            "liceum",
+            "wydarzenia dwujęzyczne"
+          ],
+          "useWhen": "Gdy chcesz zebrać konkretne odpowiedzi po pokazie materiału.",
+          "avoidWhen": "Nie używaj jako jedynego pytania w rozbudowanym spotkaniu.",
+          "teacherNote": "Dobre po projekcji lub fragmencie."
+        },
+        {
+          "id": "q-polonia-05",
+          "order": 5,
+          "label": "Czego nie upraszczać",
+          "text": "Co twoim zdaniem nie powinno zostać uproszczone?",
+          "tone": "domykające",
+          "bestFor": [
+            "domknięcie",
+            "Polonia",
+            "liceum",
+            "uczelnia"
+          ],
+          "useWhen": "Gdy chcesz zakończyć dział pytaniem o odpowiedzialność przekazu.",
+          "avoidWhen": "Nie zaczynaj od niego bez wcześniejszego kontaktu z materiałem.",
+          "teacherNote": "Bardzo dobre pytanie końcowe."
+        }
+      ]
+    },
+    {
+      "sectionId": "section-sumienie-raport",
+      "sectionLabel": "Sumienie i znaczenie raportu",
+      "defaultQuestionId": "q-sumienie-01",
+      "teacherSectionIntro": "W tym dziale pytania mają spinać historię z pytaniem o współczesnego odbiorcę, czas decyzji, odpowiedzialność i sens raportu jako śladu.",
+      "questions": [
+        {
+          "id": "q-sumienie-01",
+          "order": 1,
+          "label": "Pytanie o odpowiedzialność",
+          "text": "Jakie pytanie o odpowiedzialność zostaje z tobą po tej pracy?",
+          "tone": "rdzeniowe",
+          "bestFor": [
+            "domknięcie całości",
+            "liceum",
+            "uczelnia",
+            "lekcja wychowawcza"
+          ],
+          "useWhen": "Gdy chcesz połączyć historię z współczesnym odbiorcą bez banalnego morału.",
+          "avoidWhen": "Nie dawaj jako pierwszego pytania przed kontaktem z materiałem.",
+          "teacherNote": "Najmocniejsze pytanie całego działu."
+        },
+        {
+          "id": "q-sumienie-02",
+          "order": 2,
+          "label": "Za późno",
+          "text": "Czy są decyzje, których nie da się nadrobić po czasie?",
+          "tone": "egzystencjalne",
+          "bestFor": [
+            "liceum",
+            "uczelnia",
+            "dział sumienia"
+          ],
+          "useWhen": "Gdy chcesz połączyć historię z pytaniem o czas i brak decyzji.",
+          "avoidWhen": "Nie używaj bez wcześniejszego osadzenia w materiale, bo może popłynąć w zbyt ogólną rozmowę.",
+          "teacherNote": "Dobre przy Twoim motywie czasu decyzji."
+        },
+        {
+          "id": "q-sumienie-03",
+          "order": 3,
+          "label": "Historia i teraźniejszość",
+          "text": "Co w tym materiale najmocniej łączy historię z pytaniem o współczesnego odbiorcę?",
+          "tone": "spinające",
+          "bestFor": [
+            "liceum",
+            "Polonia",
+            "uczelnia",
+            "spotkanie autorskie"
+          ],
+          "useWhen": "Gdy chcesz zrobić most między projektem a dzisiejszym człowiekiem.",
+          "avoidWhen": "Nie używaj jako pierwszego pytania dla młodszej grupy bez konkretnego przykładu.",
+          "teacherNote": "Najbardziej uniwersalne pytanie pomostowe."
+        },
+        {
+          "id": "q-sumienie-04",
+          "order": 4,
+          "label": "Uczciwy odbiór",
+          "text": "Co znaczy dla ciebie uczciwy odbiór takiego świadectwa?",
+          "tone": "refleksyjne",
+          "bestFor": [
+            "domknięcie",
+            "liceum",
+            "uczelnia",
+            "Polonia"
+          ],
+          "useWhen": "Gdy chcesz wrócić do centralnej idei projektu bez pomnikowego tonu.",
+          "avoidWhen": "Nie zaczynaj od tego bez wcześniejszego kontaktu z raportem lub świadectwem.",
+          "teacherNote": "Bardzo spójne z dokumentami projektu."
+        },
+        {
+          "id": "q-sumienie-05",
+          "order": 5,
+          "label": "Odpowiedź czy pytanie",
+          "text": "Z czym zostajesz po zakończeniu tego rozdziału: odpowiedzią czy pytaniem?",
+          "tone": "ciche-domknięcie",
+          "bestFor": [
+            "ostatnie minuty",
+            "liceum",
+            "uczelnia",
+            "wydarzenie instytucjonalne"
+          ],
+          "useWhen": "Gdy chcesz zostawić grupę z napięciem, a nie gotową formułą.",
+          "avoidWhen": "Nie używaj jako pytania otwierającego.",
+          "teacherNote": "Najlepsze do bardzo spokojnego zakończenia."
+        }
+      ]
+    }
+  ],
+  "teacherDefaults": {
+    "cardViewShows": [
+      "label",
+      "text",
+      "teacherNote"
+    ],
+    "teacherCanMarkFavoriteQuestions": true,
+    "teacherCanReuseLastQuestionForSection": true,
+    "teacherCanSwitchQuestionBeforeShowingQr": true,
+    "teacherCanLockQuestionForSession": true
+  },
+  "studentBinding": {
+    "studentReceives": [
+      "sectionId",
+      "sectionLabel",
+      "activeQuestionId",
+      "activeQuestionText"
+    ],
+    "studentDoesNotReceive": [
+      "otherQuestionsInSection",
+      "teacherNotes",
+      "usageTags",
+      "teacherSelectionHistory"
+    ]
+  },
+  "consistencyRules": {
+    "mustSupport": [
+      "świadectwo",
+      "raport",
+      "powściągliwość interpretacyjną",
+      "odpowiedzialność odbioru",
+      "Pileckiego jako oś projektu historycznego"
+    ],
+    "mustAvoid": [
+      "umniejszanie Pileckiego przez poboczne wątki",
+      "pytania o prosty werdykt moralny",
+      "pytania propagandowe",
+      "pytania zbyt coachingowe",
+      "pytania całkowicie oderwane od materiału"
+    ]
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel widzi od razu 5 pytań przypisanych do działu.",
+      "Może wybrać jedno pytanie w kilka sekund.",
+      "Nie gubi się w zbyt dużej liczbie opcji."
+    ],
+    "student": [
+      "Uczeń widzi tylko jedno aktywne pytanie.",
+      "Uczeń rozumie, z czym pracuje.",
+      "Pytanie jest czytelne także na telefonie."
+    ],
+    "production": [
+      "Plik nie wymaga obrazów ani dodatkowych assetów.",
+      "Może zostać od razu podpięty do teacher panel i student report.",
+      "Nie wymaga dodatkowej logiki poza wyborem działu i pytania."
+    ]
+  }
+}
