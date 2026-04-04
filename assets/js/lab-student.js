@@ -8,7 +8,8 @@
     currentObject: null,
     stageOrder: ["entry", "prompt", "object", "reflection", "report"],
     currentStage: "entry",
-    autosaveTimer: null
+    autosaveTimer: null,
+    inputSaveTimer: null
   };
 
   function cacheDom() {
@@ -63,6 +64,7 @@
       DOM.studentSaveState.textContent =
         state === "saving" ? "Zapisywanie" :
         state === "saved" ? "Zapisano" :
+        state === "error" ? "Błąd zapisu" :
         "Autosave aktywny";
     }
 
@@ -81,28 +83,6 @@
     }[stageName] || null;
   }
 
-  function setStageVisibility(stageName) {
-    runtime.stageOrder.forEach((name) => {
-      const element = getStageElement(name);
-      if (!element) return;
-
-      const isActive = name === stageName;
-      element.hidden = !isActive;
-      element.classList.toggle("is-visible", isActive);
-    });
-
-    runtime.currentStage = stageName;
-    updateProgressLabel();
-    persistSession({
-      currentStage: stageName
-    }, "saved", "Etap został zapisany.");
-
-    window.scrollTo({
-      top: 0,
-      behavior: document.body.classList.contains("reduced-motion") ? "auto" : "smooth"
-    });
-  }
-
   function getStageIndex(stageName) {
     const index = runtime.stageOrder.indexOf(stageName);
     return index >= 0 ? index : 0;
@@ -115,8 +95,41 @@
     DOM.progressLabel.textContent = `${current} / ${total}`;
   }
 
+  function updateReportPreviewHref() {
+    if (!DOM.openReportPreviewButton || !runtime.session || !window.LabCore) return;
+    DOM.openReportPreviewButton.href = window.LabCore.buildReportUrl(runtime.session);
+  }
+
+  function setStageVisibility(stageName, options = {}) {
+    runtime.stageOrder.forEach((name) => {
+      const element = getStageElement(name);
+      if (!element) return;
+
+      const isActive = name === stageName;
+      element.hidden = !isActive;
+      element.classList.toggle("is-visible", isActive);
+    });
+
+    runtime.currentStage = stageName;
+    updateProgressLabel();
+    updateReportPreviewHref();
+
+    if (!options.skipPersist) {
+      persistSession({
+        currentStage: stageName
+      }, "saved", "Etap został zapisany.");
+    }
+
+    if (!options.skipScroll) {
+      window.scrollTo({
+        top: 0,
+        behavior: document.body.classList.contains("reduced-motion") ? "auto" : "smooth"
+      });
+    }
+  }
+
   function getFirstPromptForStep(step) {
-    if (!step?.promptIds?.length) return null;
+    if (!step?.promptIds?.length || !window.LabCore) return null;
     const prompts = window.LabCore.getPromptsByIds(step.promptIds);
     return prompts[0] || null;
   }
@@ -134,15 +147,20 @@
   }
 
   function getReflectionStep() {
-    return getLessonStepByType("pause")
-      || getLessonStepByType("guided-reflection")
-      || getLessonStepByType("discussion")
-      || null;
+    return (
+      getLessonStepByType("pause") ||
+      getLessonStepByType("guided-reflection") ||
+      getLessonStepByType("discussion") ||
+      null
+    );
   }
 
   function resolveObjectFromContext() {
+    if (!window.LabCore) return null;
+
     const params = window.LabCore.getQueryParams();
     const directObjectId = params.get("objectId");
+
     if (directObjectId) {
       const directObject = window.LabCore.getObjectById(directObjectId);
       if (directObject) return directObject;
@@ -156,17 +174,56 @@
     return null;
   }
 
+  function collectCurrentResponses() {
+    const existing = runtime.session?.responses || {};
+
+    return {
+      ...existing,
+      openingResponse: DOM.studentPromptResponse?.value?.trim() || existing.openingResponse || "",
+      objectResponse: DOM.objectResponse?.value?.trim() || existing.objectResponse || "",
+      reflectionResponse: DOM.reflectionResponse?.value?.trim() || existing.reflectionResponse || "",
+      selectedQuote: DOM.selectedQuote?.value || existing.selectedQuote || "",
+      selectedObject: DOM.selectedObject?.value || existing.selectedObject || "",
+      keyMoment: DOM.keyMomentResponse?.value?.trim() || existing.keyMoment || "",
+      finalResponse: DOM.finalResponse?.value?.trim() || existing.finalResponse || "",
+      openQuestion: DOM.openQuestionSelect?.value || existing.openQuestion || ""
+    };
+  }
+
   function persistSession(patch = {}, state = "saved", text = "Postęp zapisany.") {
+    if (!window.LabCore?.updateSessionState) return;
+
     setSaveState("saving", "Zapisywanie postępu…");
 
-    runtime.session = window.LabCore.updateSessionState({
-      ...patch,
-      lastStudentActivityAt: new Date().toISOString()
-    });
+    try {
+      runtime.session = window.LabCore.updateSessionState({
+        ...patch,
+        currentStage: patch.currentStage ?? runtime.currentStage,
+        lastStudentActivityAt: new Date().toISOString(),
+        responses: patch.responses || collectCurrentResponses()
+      });
 
-    window.setTimeout(() => {
-      setSaveState(state, text);
-    }, 120);
+      updateReportPreviewHref();
+
+      window.setTimeout(() => {
+        setSaveState(state, text);
+      }, 120);
+    } catch (error) {
+      console.error("[LabStudent] Błąd zapisu sesji:", error);
+      setSaveState("error", "Nie udało się zapisać postępu.");
+    }
+  }
+
+  function scheduleAutosave(text = "Postęp zapisany automatycznie.") {
+    if (runtime.inputSaveTimer) {
+      clearTimeout(runtime.inputSaveTimer);
+    }
+
+    setSaveState("saving", "Wykryto zmiany — zapis przygotowywany.");
+
+    runtime.inputSaveTimer = window.setTimeout(() => {
+      persistSession({}, "saved", text);
+    }, 500);
   }
 
   function renderEntryStage() {
@@ -175,6 +232,7 @@
 
   function renderPromptStage() {
     const prompt = getPromptStageQuestion();
+
     window.LabCore.setText(
       DOM.studentPromptText,
       prompt?.text || "Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?"
@@ -195,19 +253,29 @@
       window.LabCore.setText(DOM.objectHumanMeaning, "—");
       window.LabCore.setText(DOM.objectQuote, "—");
       window.LabCore.setText(DOM.objectQuestionLabel, "Pytanie");
+
       if (DOM.objectVisualImage) {
-        DOM.objectVisualImage.style.background = "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
+        DOM.objectVisualImage.style.backgroundImage =
+          "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
+        DOM.objectVisualImage.style.backgroundPosition = "center";
+        DOM.objectVisualImage.style.backgroundSize = "cover";
+        DOM.objectVisualImage.style.backgroundRepeat = "no-repeat";
       }
+
+      if (DOM.openObjectDetailModeStudent) {
+        DOM.openObjectDetailModeStudent.disabled = true;
+      }
+
       return;
     }
 
     const object = runtime.currentObject;
 
-    window.LabCore.setText(DOM.objectTitle, object.title);
-    window.LabCore.setText(DOM.objectShortText, object.shortText);
-    window.LabCore.setText(DOM.objectHistoricalMeaning, object.historicalMeaning);
-    window.LabCore.setText(DOM.objectHumanMeaning, object.humanMeaning);
-    window.LabCore.setText(DOM.objectQuote, object.quote);
+    window.LabCore.setText(DOM.objectTitle, object.title || "Obiekt pamięci");
+    window.LabCore.setText(DOM.objectShortText, object.shortText || "—");
+    window.LabCore.setText(DOM.objectHistoricalMeaning, object.historicalMeaning || "—");
+    window.LabCore.setText(DOM.objectHumanMeaning, object.humanMeaning || "—");
+    window.LabCore.setText(DOM.objectQuote, object.quote || "—");
     window.LabCore.setText(DOM.objectQuestionLabel, object.primaryQuestion || "Pytanie");
 
     if (DOM.objectVisualImage) {
@@ -222,6 +290,10 @@
 
     if (DOM.objectResponse) {
       DOM.objectResponse.value = runtime.session?.responses?.objectResponse || "";
+    }
+
+    if (DOM.openObjectDetailModeStudent) {
+      DOM.openObjectDetailModeStudent.disabled = false;
     }
   }
 
@@ -288,56 +360,13 @@
     renderObjectStage();
     renderReflectionStage();
     renderReportStage();
-  }
-
-  function savePromptResponse() {
-    persistSession({
-      responses: {
-        ...runtime.session.responses,
-        openingResponse: DOM.studentPromptResponse?.value?.trim() || ""
-      }
-    });
-  }
-
-  function saveObjectResponse() {
-    persistSession({
-      responses: {
-        ...runtime.session.responses,
-        objectResponse: DOM.objectResponse?.value?.trim() || ""
-      }
-    });
-  }
-
-  function saveReflectionResponse() {
-    persistSession({
-      responses: {
-        ...runtime.session.responses,
-        reflectionResponse: DOM.reflectionResponse?.value?.trim() || ""
-      }
-    });
-  }
-
-  function saveReportResponse() {
-    persistSession({
-      responses: {
-        ...runtime.session.responses,
-        selectedQuote: DOM.selectedQuote?.value || "",
-        selectedObject: DOM.selectedObject?.value || "",
-        keyMoment: DOM.keyMomentResponse?.value?.trim() || "",
-        finalResponse: DOM.finalResponse?.value?.trim() || "",
-        openQuestion: DOM.openQuestionSelect?.value || ""
-      }
-    });
+    updateReportPreviewHref();
   }
 
   function goToStage(stageName) {
     if (!runtime.stageOrder.includes(stageName)) return;
 
-    if (runtime.currentStage === "prompt") savePromptResponse();
-    if (runtime.currentStage === "object") saveObjectResponse();
-    if (runtime.currentStage === "reflection") saveReflectionResponse();
-    if (runtime.currentStage === "report") saveReportResponse();
-
+    persistSession({}, "saved", "Postęp zapisany.");
     setStageVisibility(stageName);
   }
 
@@ -352,14 +381,16 @@
       .filter(Boolean)
       .forEach((field) => {
         field.addEventListener("input", () => {
-          setSaveState("saving", "Wykryto zmiany — zapis przygotowywany.");
+          scheduleAutosave();
         });
       });
 
     [DOM.selectedQuote, DOM.selectedObject, DOM.openQuestionSelect]
       .filter(Boolean)
       .forEach((field) => {
-        field.addEventListener("change", saveReportResponse);
+        field.addEventListener("change", () => {
+          persistSession({}, "saved", "Wybór został zapisany.");
+        });
       });
   }
 
@@ -372,22 +403,21 @@
   function bindPromptEvents() {
     DOM.studentBackFromPrompt?.addEventListener("click", () => goToStage("entry"));
     DOM.studentNextFromPrompt?.addEventListener("click", () => {
-      savePromptResponse();
       goToStage("object");
     });
   }
 
   function bindObjectEvents() {
     DOM.openObjectDetailModeStudent?.addEventListener("click", () => {
-  if (!runtime.currentObject) return;
+      if (!runtime.currentObject) return;
 
-  window.LabObjectDetail?.open?.(runtime.currentObject, {
-    contextLabel: "Tryb ucznia · praca na detalu"
-  });
-});
+      window.LabObjectDetail?.open?.(runtime.currentObject, {
+        contextLabel: "Tryb ucznia · praca na detalu"
+      });
+    });
+
     DOM.studentBackFromObject?.addEventListener("click", () => goToStage("prompt"));
     DOM.studentNextFromObject?.addEventListener("click", () => {
-      saveObjectResponse();
       goToStage("reflection");
     });
   }
@@ -395,7 +425,6 @@
   function bindReflectionEvents() {
     DOM.studentBackFromReflection?.addEventListener("click", () => goToStage("object"));
     DOM.studentNextFromReflection?.addEventListener("click", () => {
-      saveReflectionResponse();
       goToStage("report");
     });
   }
@@ -406,13 +435,13 @@
     [DOM.selectedQuote, DOM.selectedObject, DOM.keyMomentResponse, DOM.finalResponse, DOM.openQuestionSelect]
       .filter(Boolean)
       .forEach((field) => {
-        field.addEventListener("change", saveReportResponse);
-        field.addEventListener("input", saveReportResponse);
+        field.addEventListener("change", () => persistSession({}, "saved", "Raport został zaktualizowany."));
+        field.addEventListener("input", () => scheduleAutosave("Raport został zaktualizowany."));
       });
 
     DOM.openReportPreviewButton?.addEventListener("click", () => {
-      saveReportResponse();
-      DOM.openReportPreviewButton.href = window.LabCore.buildReportUrl(runtime.session);
+      persistSession({}, "saved", "Przejście do raportu.");
+      updateReportPreviewHref();
     });
   }
 
@@ -447,6 +476,7 @@
   function determineInitialStage() {
     const params = window.LabCore.getQueryParams();
     const stageFromQuery = params.get("stage");
+
     if (stageFromQuery && runtime.stageOrder.includes(stageFromQuery)) {
       return stageFromQuery;
     }
@@ -467,7 +497,8 @@
     if (
       stored.lessonId === lesson.id &&
       stored.sessionId &&
-      (!queryLessonId || queryLessonId === stored.lessonId)
+      (!queryLessonId || queryLessonId === stored.lessonId) &&
+      (!querySessionId || querySessionId === stored.sessionId)
     ) {
       return stored;
     }
@@ -482,7 +513,12 @@
       currentStepIndex: stored.currentStepIndex || 0,
       responses: stored.responses || {},
       currentStage: stored.currentStage || "entry",
-      lastStudentActivityAt: stored.lastStudentActivityAt || new Date().toISOString()
+      lastStudentActivityAt: stored.lastStudentActivityAt || new Date().toISOString(),
+      heartbeatAt: stored.heartbeatAt || null,
+      timerState: stored.timerState || {
+        running: false,
+        remainingSeconds: 0
+      }
     });
   }
 
@@ -504,7 +540,7 @@
     startAutosaveHeartbeat();
 
     const initialStage = determineInitialStage();
-    setStageVisibility(initialStage);
+    setStageVisibility(initialStage, { skipPersist: true, skipScroll: true });
 
     setSaveState("saved", "Przywrócono zapisany postęp.");
   }
@@ -517,6 +553,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     init().catch((error) => {
       console.error("[LabStudent] Błąd inicjalizacji:", error);
+      setSaveState("error", "Nie udało się uruchomić trybu ucznia.");
     });
   });
 })();
