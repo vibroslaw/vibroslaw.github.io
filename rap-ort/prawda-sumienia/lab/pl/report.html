@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laboratorium Sumienia — Raport odbioru</title>
+  <meta name="description" content="Podgląd i generowanie raportu odbioru dla ścieżki Laboratorium Sumienia." />
+  <meta name="theme-color" content="#090909" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/lab-core.css" />
+  <link rel="stylesheet" href="/assets/css/lab-report.css" />
+</head>
+<body
+  data-page="lab-report"
+  data-lang="pl"
+  data-ui="/assets/data/lab-ui-pl.json"
+  data-prompts="/assets/data/lab-prompts-pl.json"
+>
+  <header class="site-header lab-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/lab/pl/" aria-label="Powrót do Laboratorium Sumienia">
+        <div class="brand-name ps-brand">Laboratorium Sumienia</div>
+        <div class="brand-sub">Raport odbioru</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Nawigacja raportu">
+        <a href="#reportPreview">Podgląd</a>
+        <a href="#reportActions">Akcje</a>
+        <a href="/rap-ort/prawda-sumienia/lab/pl/student.html">Tryb ucznia</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="report-shell">
+    <section class="section" id="reportPreview">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Dokument końcowy</div>
+            <h1>Raport odbioru</h1>
+          </div>
+          <div class="section-note">
+            To jest podgląd dokumentu generowanego po zakończeniu ścieżki ucznia.
+            Układ raportu został pomyślany jako archiwalna karta odbioru, a nie formularz szkolny.
+          </div>
+        </div>
+
+        <div class="report-preview-shell reveal">
+          <article class="report-page" id="reportDocument">
+            <header class="report-page-header">
+              <div class="report-stamp">LABORATORIUM SUMIENIA</div>
+              <div class="report-meta">
+                <div><strong>Rozdział:</strong> Prawda Sumienia</div>
+                <div><strong>Typ raportu:</strong> Raport odbioru</div>
+                <div><strong>Sesja:</strong> <span id="reportSessionId">PS-PL-LIVE</span></div>
+              </div>
+            </header>
+
+            <section class="report-section">
+              <div class="report-section-label">Wybrany cytat</div>
+              <blockquote class="report-quote" id="reportSelectedQuote">
+                Świadectwo wymaga uważnego odczytania.
+              </blockquote>
+            </section>
+
+            <section class="report-section">
+              <div class="report-section-label">Wybrany obiekt pamięci</div>
+              <p class="report-text" id="reportSelectedObject">Drut kolczasty</p>
+            </section>
+
+            <section class="report-section">
+              <div class="report-section-label">Najważniejszy moment</div>
+              <p class="report-text" id="reportKeyMoment">
+                —
+              </p>
+            </section>
+
+            <section class="report-section">
+              <div class="report-section-label">Odpowiedź końcowa</div>
+              <p class="report-text" id="reportFinalResponse">
+                —
+              </p>
+            </section>
+
+            <section class="report-section">
+              <div class="report-section-label">Pytanie, które zostaje</div>
+              <p class="report-text" id="reportOpenQuestion">
+                Jak pamiętać odpowiedzialnie?
+              </p>
+            </section>
+
+            <footer class="report-page-footer">
+              <div><strong>Data:</strong> <span id="reportDate">—</span></div>
+              <div><strong>Instytucja:</strong> <span id="reportInstitution">—</span></div>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reportActions">
+      <div class="wrap">
+        <div class="content-panel reveal">
+          <div class="panel-topline">Akcje dokumentu</div>
+          <h2>Generowanie i archiwizacja</h2>
+
+          <p>
+            Z tego poziomu można wygenerować PDF, wydrukować dokument albo — jeśli sesja została uruchomiona
+            z aktywnym archiwum — zapisać raport w archiwum klasy.
+          </p>
+
+          <div class="cta-row">
+            <button class="btn btn-primary" type="button" id="downloadPdfButton">Pobierz PDF</button>
+            <button class="btn btn-secondary" type="button" id="printReportButton">Drukuj</button>
+            <button class="btn btn-secondary" type="button" id="saveToArchiveButton">Zapisz w archiwum klasy</button>
+          </div>
+
+          <div class="report-status" id="reportStatusMessage" aria-live="polite">
+            Dokument gotowy do wygenerowania.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>Laboratorium Sumienia · Raport odbioru</div>
+      <div>Wersja polska</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="/assets/js/lab-report-builder.js"></script>
+</body>
+</html>
