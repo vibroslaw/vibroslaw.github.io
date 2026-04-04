@@ -76,6 +76,7 @@
     DOM.currentStepCaution = document.getElementById("currentStepCaution");
 
     DOM.openObjectButton = document.getElementById("openObjectButton");
+    DOM.openObjectDetailModeTeacher = document.getElementById("openObjectDetailModeTeacher");
     DOM.triggerQrButton = document.getElementById("triggerQrButton");
     DOM.openReportBuilderButton = document.getElementById("openReportBuilderButton");
 
@@ -679,6 +680,14 @@
   }
 
   function bindTeacherControls() {
+    DOM.openObjectDetailModeTeacher?.addEventListener("click", () => {
+  const objectId = runtime.currentStep?.objectId;
+  if (!objectId) return;
+
+  window.LabObjectDetail?.openById?.(objectId, {
+    contextLabel: "Tryb nauczyciela · obiekt pamięci"
+  });
+});
     DOM.startLiveSession?.addEventListener("click", () => {
       if (!runtime.currentStep) return;
 
