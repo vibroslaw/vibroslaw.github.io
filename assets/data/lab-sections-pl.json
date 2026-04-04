@@ -1,0 +1,348 @@
+{
+  "version": "3.0.0",
+  "lang": "pl",
+  "fileRole": "lab-sections-config",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "designIntent": {
+    "mainGoal": "Uprościć wejście nauczyciela w pracę z materiałem i oprzeć całą stronę na kilku jasnych działach tematycznych zamiast na zbyt rozbudowanym systemie funkcji.",
+    "teacherExperienceGoal": "Nauczyciel ma najpierw wybrać dział, potem pytanie, a dopiero później uruchomić materiał i raport.",
+    "studentExperienceGoal": "Uczeń ma dostać prosty kontekst, jedno aktywne pytanie i krótki raport do zapisania.",
+    "productionGoal": "System ma działać bez ciężkich assetów, bez interaktywnych obrazów i bez rozbudowanych warstw, które zwiększają czas wdrożenia.",
+    "mustStayConsistentWithProject": [
+      "świadectwo",
+      "raport",
+      "odpowiedzialność odbioru",
+      "ostrożność interpretacyjna",
+      "brak prostego moralizowania",
+      "brak propagandowej narracji"
+    ]
+  },
+  "sectionModel": {
+    "selectionMode": "teacher-first",
+    "defaultView": "cards-grid",
+    "teacherMustChooseSectionFirst": true,
+    "teacherMayChooseQuestionAfterSection": true,
+    "teacherMayInjectCustomQuestion": true,
+    "studentSeesOnlyChosenSection": true,
+    "studentSeesOnlyActiveQuestion": true,
+    "defaultReportMode": "student-report-minimal"
+  },
+  "sections": [
+    {
+      "id": "section-totalitaryzm-wybor",
+      "slug": "totalitaryzm-i-wybory-pod-presja",
+      "order": 1,
+      "label": "Totalitaryzm i wybory pod presją",
+      "shortLabel": "Totalitaryzm i wybór",
+      "menuLabel": "Totalitaryzm i wybór",
+      "status": "active",
+      "isCore": true,
+      "themeTone": "system-pressure",
+      "teacherCardText": "Dział o tym, jak system naciska na ludzką decyzję i dlaczego ocena człowieka działającego pod przymusem wymaga ostrożności.",
+      "studentIntroText": "Ten dział dotyczy presji systemu, decyzji i odpowiedzialności za ocenę ludzkich wyborów.",
+      "teacherGuideIntro": "Prowadź ten dział przez warunki decyzji, nie przez szybki wyrok moralny. Najważniejsze są: nacisk systemu, ograniczenia działania i ostrożność interpretacyjna.",
+      "useCases": [
+        "lekcja o totalitaryzmie",
+        "rozmowa o decyzjach pod presją",
+        "zajęcia o systemie nazistowskim i komunistycznym",
+        "lekcja wychowawcza z mocnym kontekstem historycznym"
+      ],
+      "recommendedAudience": [
+        "klasy 7-8",
+        "liceum",
+        "technikum",
+        "uczelnia"
+      ],
+      "defaultQuestionMode": "teacher-select",
+      "defaultQuestionId": "q-totalitaryzm-01",
+      "defaultReportTemplate": "student-report-minimal",
+      "allowExtendedTeacherGuide": true,
+      "guideTopics": [
+        "mechanizm nacisku systemowego",
+        "ostrożność wobec oceniania decyzji",
+        "porównanie mechanizmów nazizmu i stalinizmu bez uproszczeń",
+        "czym różni się wiedza o systemie od spotkania ze świadectwem"
+      ],
+      "mustAvoid": [
+        "ranking postaci historycznych",
+        "prosty podział na dobrych i złych",
+        "moralny quiz",
+        "uproszczone porównania bez kontekstu"
+      ]
+    },
+    {
+      "id": "section-pilecki-rocznicowy",
+      "slug": "pilecki-rozdzial-rocznicowy",
+      "order": 2,
+      "label": "Pilecki — rozdział rocznicowy",
+      "shortLabel": "Pilecki",
+      "menuLabel": "Pilecki",
+      "status": "active",
+      "isCore": true,
+      "themeTone": "witness-anniversary",
+      "teacherCardText": "Dział rocznicowy skupiony na Pileckim jako osi projektu: świadectwie, raporcie, odpowiedzialności przekazu i uczciwym odbiorze.",
+      "studentIntroText": "Ten dział skupia się na świadectwie, raporcie i znaczeniu tego, co zostaje przekazane dalej.",
+      "teacherGuideIntro": "Trzymaj Pileckiego jako rdzeń rozdziału, ale bez hagiografii. Najpierw świadectwo, raport i odpowiedzialność odbioru, dopiero potem pamięć rocznicowa.",
+      "useCases": [
+        "25 maja",
+        "lekcja rocznicowa",
+        "wydarzenie szkolne lub instytucjonalne",
+        "spotkanie autorskie z komponentem edukacyjnym"
+      ],
+      "recommendedAudience": [
+        "klasy 7-8",
+        "liceum",
+        "technikum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionMode": "teacher-select",
+      "defaultQuestionId": "q-pilecki-01",
+      "defaultReportTemplate": "student-report-minimal",
+      "allowExtendedTeacherGuide": true,
+      "guideTopics": [
+        "Pilecki jako oś projektu",
+        "znaczenie raportu",
+        "świadectwo a późniejszy odbiór",
+        "jak pracować z rocznicą bez patosu"
+      ],
+      "mustAvoid": [
+        "hagiografia",
+        "pomnikowy ton przez całą lekcję",
+        "spychanie raportu na drugi plan",
+        "rozbijanie osi projektu przez poboczne postacie"
+      ]
+    },
+    {
+      "id": "section-auschwitz",
+      "slug": "auschwitz-miejsce-slad-swiadectwo",
+      "order": 3,
+      "label": "Auschwitz — miejsce, ślad, świadectwo",
+      "shortLabel": "Auschwitz",
+      "menuLabel": "Auschwitz",
+      "status": "active",
+      "isCore": true,
+      "themeTone": "place-trace-testimony",
+      "teacherCardText": "Dział o pracy z miejscem, śladem, dokumentem i świadectwem bez redukowania Auschwitz do jednego symbolu.",
+      "studentIntroText": "Ten dział dotyczy miejsca, śladu historycznego i sposobu, w jaki próbujemy rozumieć historię przez świadectwo.",
+      "teacherGuideIntro": "Nie zatrzymuj się na samym symbolu. Prowadź przez miejsce, ślad, dokument i ograniczenia interpretacji. Uważaj na zbyt łatwe uogólnienia.",
+      "useCases": [
+        "lekcja historyczna",
+        "praca po projekcji fragmentu",
+        "rozmowa o miejscu pamięci",
+        "zajęcia muzealne lub przyszkolne"
+      ],
+      "recommendedAudience": [
+        "klasy 7-8",
+        "liceum",
+        "technikum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionMode": "teacher-select",
+      "defaultQuestionId": "q-auschwitz-01",
+      "defaultReportTemplate": "student-report-minimal",
+      "allowExtendedTeacherGuide": true,
+      "guideTopics": [
+        "miejsce jako warunek historii",
+        "ślad historyczny a interpretacja",
+        "Auschwitz jako przestrzeń świadectwa",
+        "jak nie upraszczać tego tematu"
+      ],
+      "mustAvoid": [
+        "sensacyjność",
+        "estetyzacja cierpienia",
+        "jednowymiarowy symbolizm",
+        "mówienie, że miejsce samo wszystko tłumaczy"
+      ]
+    },
+    {
+      "id": "section-ai-historia",
+      "slug": "ai-i-historia",
+      "order": 4,
+      "label": "AI i historia",
+      "shortLabel": "AI i historia",
+      "menuLabel": "AI i historia",
+      "status": "active",
+      "isCore": true,
+      "themeTone": "method-form-source",
+      "teacherCardText": "Dział o tym, jak odpowiedzialnie pracować z historią przy użyciu AI, jak oddzielać źródło od formy i gdzie przebiega granica między rekonstrukcją a sugestią.",
+      "studentIntroText": "Ten dział dotyczy tego, jak nowoczesna forma może pomagać w opowiadaniu historii i jakie niesie ryzyka.",
+      "teacherGuideIntro": "To nie ma być lekcja o zachwycie nad technologią. Prowadź przez pytanie o źródło, formę, ryzyko uproszczenia i odpowiedzialność twórcy oraz odbiorcy.",
+      "useCases": [
+        "lekcja o mediach i historii",
+        "zajęcia projektowe",
+        "rozmowa po pokazie projektu",
+        "wprowadzenie do odpowiedzialnego użycia AI"
+      ],
+      "recommendedAudience": [
+        "liceum",
+        "technikum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionMode": "teacher-select",
+      "defaultQuestionId": "q-ai-01",
+      "defaultReportTemplate": "student-report-minimal",
+      "allowExtendedTeacherGuide": true,
+      "guideTopics": [
+        "źródło a wizualizacja",
+        "co daje forma audiowizualna",
+        "jakie są ryzyka pracy z AI",
+        "dlaczego sugestywny obraz nie jest automatycznie dowodem"
+      ],
+      "mustAvoid": [
+        "sci-fi ton",
+        "sprzedawanie technologii jako celu samego w sobie",
+        "mylenie obrazu wygenerowanego ze źródłem",
+        "lekcja sprowadzona do narzędzi zamiast odpowiedzialności"
+      ]
+    },
+    {
+      "id": "section-polonia",
+      "slug": "historia-dla-polonii",
+      "order": 5,
+      "label": "Historia dla Polonii",
+      "shortLabel": "Polonia",
+      "menuLabel": "Polonia",
+      "status": "active",
+      "isCore": true,
+      "themeTone": "bridge-memory-context",
+      "teacherCardText": "Dział o przekładaniu polskiego doświadczenia historycznego na odbiorcę zagranicznego bez gubienia ciężaru sensu.",
+      "studentIntroText": "Ten dział dotyczy pamięci historycznej przenoszonej między językami, krajami i kontekstami.",
+      "teacherGuideIntro": "Nie zakładaj pełnej znajomości realiów. Buduj most, ale nie redukuj sensu do prostego streszczenia. Zostaw miejsce na kontekst, tłumaczenie i odpowiedzialność przekazu.",
+      "useCases": [
+        "szkoły polonijne",
+        "diaspora",
+        "odbiorca dwujęzyczny",
+        "wydarzenia polsko-angielskie"
+      ],
+      "recommendedAudience": [
+        "liceum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionMode": "teacher-select",
+      "defaultQuestionId": "q-polonia-01",
+      "defaultReportTemplate": "student-report-minimal",
+      "allowExtendedTeacherGuide": true,
+      "guideTopics": [
+        "jak przekładać kontekst historyczny",
+        "co wymaga dopowiedzenia",
+        "co może działać ponad językiem",
+        "co nie powinno zostać uproszczone"
+      ],
+      "mustAvoid": [
+        "zbyt lokalne skróty bez wyjaśnienia",
+        "tożsamościowy patos zamiast pracy ze źródłem",
+        "zakładanie wspólnej wiedzy wszystkich odbiorców",
+        "upraszczanie II wojny światowej do sloganów"
+      ]
+    },
+    {
+      "id": "section-sumienie-raport",
+      "slug": "sumienie-i-znaczenie-raportu",
+      "order": 6,
+      "label": "Sumienie i znaczenie raportu",
+      "shortLabel": "Sumienie i raport",
+      "menuLabel": "Sumienie i raport",
+      "status": "active",
+      "isCore": true,
+      "themeTone": "conscience-report-time",
+      "teacherCardText": "Dział spinający historię z pytaniem o współczesnego odbiorcę, decyzję, czas i odpowiedzialność za brak działania.",
+      "studentIntroText": "Ten dział dotyczy pytania, co robi z nami świadectwo i co znaczy odpowiedzialny odbiór dzisiaj.",
+      "teacherGuideIntro": "To dział najbardziej współczesny. Nie zamieniaj go jednak w coaching. Prowadź przez pytanie o czas decyzji, raport, odpowiedzialność odbioru i to, co zostaje z człowiekiem po spotkaniu ze świadectwem.",
+      "useCases": [
+        "lekcja podsumowująca",
+        "lekcja wychowawcza",
+        "domknięcie projekcji całości",
+        "rozmowa o decyzji i czasie"
+      ],
+      "recommendedAudience": [
+        "klasy 7-8",
+        "liceum",
+        "technikum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionMode": "teacher-select",
+      "defaultQuestionId": "q-sumienie-01",
+      "defaultReportTemplate": "student-report-minimal",
+      "allowExtendedTeacherGuide": true,
+      "guideTopics": [
+        "sumienie jako pytanie, nie slogan",
+        "raport jako ślad odpowiedzialności",
+        "czas decyzji i zbyt późne działanie",
+        "jak połączyć historię z teraźniejszością bez taniego moralizowania"
+      ],
+      "mustAvoid": [
+        "banalne morały",
+        "motywacyjny coaching zamiast refleksji",
+        "oderwanie od materiału historycznego",
+        "jedna gotowa odpowiedź dla wszystkich"
+      ]
+    }
+  ],
+  "teacherSelectionFlow": {
+    "step1": "Wybierz dział",
+    "step2": "Wybierz jedno aktywne pytanie z banku działu albo wpisz własne",
+    "step3": "Zdecyduj, czy uczniowie pracują tylko z raportem, czy raportem po projekcji materiału",
+    "step4": "Pokaż ekran nauczyciela / fullscreen / projector",
+    "step5": "Na końcu pokaż QR do raportu ucznia"
+  },
+  "studentSelectionFlow": {
+    "entry": "Uczeń wchodzi przez QR przypisany do działu i aktywnego pytania.",
+    "during": "Uczeń nie ustawia działu ani pytania samodzielnie.",
+    "end": "Uczeń zapisuje raport anonimowo i może pobrać PDF."
+  },
+  "recommendedDeliveryModes": [
+    {
+      "id": "mode-full-screening",
+      "label": "Pełny pokaz + rozmowa + raport",
+      "description": "Najbardziej spójny model dla pełnego materiału około 90 minut z wejściem i domknięciem."
+    },
+    {
+      "id": "mode-guided-fragment",
+      "label": "Wybrany fragment + rozmowa + raport",
+      "description": "Wersja tylko wtedy, gdy nauczyciel świadomie wybiera dział i dokładnie wie, jaki fragment wspiera temat."
+    },
+    {
+      "id": "mode-discussion-first",
+      "label": "Rozmowa prowadząca + materiał + raport",
+      "description": "Wersja dobra dla działów AI i historia lub Sumienie i znaczenie raportu."
+    }
+  ],
+  "consistencyRules": {
+    "mustAlwaysPreserve": [
+      "Pilecki jako oś projektu w działach historycznych",
+      "świadectwo i raport jako rdzeń sensu",
+      "ostrożność interpretacyjna",
+      "powściągliwość tonu",
+      "brak prostego moralizowania"
+    ],
+    "mustNeverTurnInto": [
+      "platformę zbyt wielu funkcji",
+      "lekcję opartą na gadżetach",
+      "nawigację trudną dla nauczyciela pierwszy raz",
+      "niespójny miks działów bez jasnego sensu"
+    ]
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel rozumie dział po samej nazwie i krótkim opisie.",
+      "Nauczyciel wybiera dział i pytanie w mniej niż minutę.",
+      "Nie musi uczyć się skomplikowanego panelu."
+    ],
+    "student": [
+      "Uczeń rozumie, z jakim pytaniem pracuje.",
+      "Uczeń nie gubi się w wielu ekranach.",
+      "Raport końcowy jest prosty i szybki."
+    ],
+    "production": [
+      "Ten plik może być wdrożony bez zdjęć.",
+      "Sekcje mogą działać na samym tekście, pytaniach i raportach.",
+      "Cały system da się rozbudować później bez burzenia struktury."
+    ]
+  }
+}
