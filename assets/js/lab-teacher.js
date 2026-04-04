@@ -79,6 +79,7 @@
     DOM.openObjectDetailModeTeacher = document.getElementById("openObjectDetailModeTeacher");
     DOM.triggerQrButton = document.getElementById("triggerQrButton");
     DOM.openReportBuilderButton = document.getElementById("openReportBuilderButton");
+    DOM.openTeacherPackButton = document.getElementById("openTeacherPackButton");
 
     DOM.guardrailsList = document.getElementById("guardrailsList");
     DOM.linkedObjectPreview = document.getElementById("linkedObjectPreview");
@@ -95,6 +96,20 @@
 
   function mapStepTypeLabel(type) {
     return STEP_TYPE_LABELS[type] || type || "Etap";
+  }
+
+  function formatDateTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+
+    return new Intl.DateTimeFormat("pl-PL", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(date);
   }
 
   function setSessionStatus(state, text) {
@@ -116,18 +131,39 @@
     }
   }
 
-  function formatDateTime(value) {
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "—";
+  function updateTimerButtons() {
+    if (DOM.pauseTimerButton) {
+      DOM.pauseTimerButton.textContent = runtime.timerRunning ? "Pauza" : "Wznów";
+    }
 
-    return new Intl.DateTimeFormat("pl-PL", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    }).format(date);
+    if (DOM.startLiveSession) {
+      DOM.startLiveSession.textContent = runtime.timerRunning ? "Sesja aktywna" : "Rozpocznij sesję";
+    }
+  }
+
+  function setTimerDisplay(seconds) {
+    if (!DOM.stepCountdown || !window.LabCore?.formatClock) return;
+    DOM.stepCountdown.textContent = window.LabCore.formatClock(Math.max(0, Number(seconds || 0)));
+  }
+
+  function clearCurrentStepTimer() {
+    if (runtime.currentStepTimer) {
+      clearInterval(runtime.currentStepTimer);
+      runtime.currentStepTimer = null;
+    }
+    runtime.timerRunning = false;
+    updateTimerButtons();
+  }
+
+  function persistSessionPatch(patch = {}, statusState = "saved", statusText = "Sesja została zaktualizowana.") {
+    if (!window.LabCore?.updateSessionState) return;
+
+    runtime.session = window.LabCore.updateSessionState({
+      ...patch,
+      lastActivityAt: new Date().toISOString()
+    });
+
+    setSessionStatus(statusState, statusText);
   }
 
   function getSelectedLauncherCriteria() {
@@ -143,6 +179,8 @@
   }
 
   function buildLauncherPreviewText(lesson, reportTemplate) {
+    if (!window.LabCore) return;
+
     if (!lesson) {
       window.LabCore.setText(DOM.previewLessonTitle, "Brak dopasowanej lekcji");
       window.LabCore.setText(DOM.previewAgeGroup, "—");
@@ -167,6 +205,8 @@
   }
 
   function populateLauncherFromData() {
+    if (!window.LabCore) return;
+
     const enabledAgeGroups = window.LabCore.getEnabledAgeGroups();
     const ageGroupOptions = [
       { id: "7-8", text: "Klasy 7–8" },
@@ -224,6 +264,8 @@
   }
 
   function updateLauncherPreview() {
+    if (!window.LabCore) return;
+
     const criteria = getSelectedLauncherCriteria();
     const lesson = window.LabCore.getBestMatchingLesson({
       ageGroup: criteria.ageGroup,
@@ -236,6 +278,7 @@
 
   function handleLauncherSubmit(event) {
     event.preventDefault();
+    if (!window.LabCore) return;
 
     const criteria = getSelectedLauncherCriteria();
     const lesson = window.LabCore.getBestMatchingLesson({
@@ -293,28 +336,6 @@
     updateLauncherPreview();
   }
 
-  function clearCurrentStepTimer() {
-    if (runtime.currentStepTimer) {
-      clearInterval(runtime.currentStepTimer);
-      runtime.currentStepTimer = null;
-    }
-    runtime.timerRunning = false;
-  }
-
-  function setTimerDisplay(seconds) {
-    if (!DOM.stepCountdown) return;
-    DOM.stepCountdown.textContent = window.LabCore.formatClock(seconds);
-  }
-
-  function persistSessionPatch(patch = {}, statusState = "saved", statusText = "Sesja została zaktualizowana.") {
-    runtime.session = window.LabCore.updateSessionState({
-      ...patch,
-      lastActivityAt: new Date().toISOString()
-    });
-
-    setSessionStatus(statusState, statusText);
-  }
-
   function startCurrentStepTimer(seconds, silent = false) {
     clearCurrentStepTimer();
 
@@ -332,13 +353,14 @@
     }
 
     runtime.timerRunning = true;
+    updateTimerButtons();
 
     persistSessionPatch({
       timerState: {
         running: true,
         remainingSeconds: runtime.currentStepRemainingSeconds
       }
-    }, silent ? "live" : "live", silent ? "Sesja aktywna." : "Timer kroku został uruchomiony.");
+    }, "live", silent ? "Sesja aktywna." : "Timer kroku został uruchomiony.");
 
     runtime.currentStepTimer = window.setInterval(() => {
       runtime.currentStepRemainingSeconds -= 1;
@@ -346,6 +368,9 @@
 
       if (runtime.currentStepRemainingSeconds <= 0) {
         clearCurrentStepTimer();
+        runtime.currentStepRemainingSeconds = 0;
+        setTimerDisplay(0);
+
         persistSessionPatch({
           timerState: {
             running: false,
@@ -379,6 +404,7 @@
   function resetCurrentStepTimer() {
     const step = runtime.currentStep;
     const defaultSeconds = Number(step?.durationMin || 0) * 60;
+
     clearCurrentStepTimer();
     runtime.currentStepRemainingSeconds = defaultSeconds;
     setTimerDisplay(defaultSeconds);
@@ -443,7 +469,7 @@
   }
 
   function renderTimeline(lesson, currentStepIndex) {
-    if (!DOM.lessonTimelineList) return;
+    if (!DOM.lessonTimelineList || !window.LabCore) return;
 
     const steps = Array.isArray(lesson?.steps) ? lesson.steps : [];
     DOM.lessonTimelineList.innerHTML = "";
@@ -470,6 +496,8 @@
   }
 
   function renderTeacherArchivePanel() {
+    if (!window.LabCore?.getArchiveState) return;
+
     const archive = window.LabCore.getArchiveState();
     window.LabCore.setText(DOM.archiveReportsCount, String(archive.reportsCount || 0));
     window.LabCore.setText(DOM.archiveTopQuote, archive.topQuote || "—");
@@ -477,6 +505,8 @@
   }
 
   function renderTeacherSessionMeta() {
+    if (!window.LabCore) return;
+
     const lesson = runtime.lesson;
     const session = runtime.session;
 
@@ -514,7 +544,25 @@
     };
   }
 
+  function updateTeacherActionAvailability(step) {
+    const hasObject = Boolean(step?.objectId);
+
+    if (DOM.openObjectButton) {
+      DOM.openObjectButton.disabled = !hasObject;
+    }
+
+    if (DOM.openObjectDetailModeTeacher) {
+      DOM.openObjectDetailModeTeacher.disabled = !hasObject;
+    }
+
+    if (DOM.openReportBuilderButton) {
+      DOM.openReportBuilderButton.disabled = false;
+    }
+  }
+
   function renderCurrentStep() {
+    if (!window.LabCore) return;
+
     const lesson = runtime.lesson;
     const session = runtime.session;
     if (!lesson || !session) return;
@@ -543,6 +591,7 @@
     if (DOM.prevStepButton) DOM.prevStepButton.disabled = currentIndex <= 0;
     if (DOM.nextStepButton) DOM.nextStepButton.disabled = currentIndex >= steps.length - 1;
 
+    updateTeacherActionAvailability(step);
     renderTimeline(lesson, currentIndex);
 
     const restoredSeconds = session?.timerState?.remainingSeconds;
@@ -554,6 +603,7 @@
 
     runtime.currentStepRemainingSeconds = secondsToShow;
     setTimerDisplay(secondsToShow);
+    updateTimerButtons();
 
     window.LabTeacherPresentationBridge = {
       getState: buildPresentationState
@@ -565,7 +615,7 @@
   }
 
   function syncTeacherUrls() {
-    if (!runtime.session) return;
+    if (!runtime.session || !window.LabCore) return;
 
     if (DOM.openStudentView) {
       DOM.openStudentView.onclick = () => {
@@ -579,15 +629,29 @@
       };
     }
 
+    if (DOM.openTeacherPackButton) {
+      const teacherPackUrl = new URL("/rap-ort/prawda-sumienia/lab/pl/teacher-pack.html", window.location.origin);
+      if (runtime.session?.sessionId) teacherPackUrl.searchParams.set("sessionId", runtime.session.sessionId);
+      if (runtime.session?.lessonId) teacherPackUrl.searchParams.set("lessonId", runtime.session.lessonId);
+      DOM.openTeacherPackButton.href = teacherPackUrl.toString();
+    }
+
     if (DOM.openObjectButton) {
       DOM.openObjectButton.onclick = () => {
-        const step = runtime.currentStep;
-        if (!step?.objectId) return;
+        const objectId = runtime.currentStep?.objectId;
+        if (!objectId) return;
 
-        const url = new URL(window.LabCore.buildStudentLaunchUrl(runtime.session));
-        url.searchParams.set("stage", "object");
-        url.searchParams.set("objectId", step.objectId);
-        window.location.href = url.toString();
+        if (window.LabPresentation?.open) {
+          window.LabPresentation.open();
+          if (typeof window.LabPresentation.transitionToView === "function") {
+            window.LabPresentation.transitionToView("object");
+          }
+          return;
+        }
+
+        window.LabObjectDetail?.openById?.(objectId, {
+          contextLabel: "Tryb nauczyciela · obiekt pamięci"
+        });
       };
     }
 
@@ -681,19 +745,19 @@
 
   function bindTeacherControls() {
     DOM.openObjectDetailModeTeacher?.addEventListener("click", () => {
-  const objectId = runtime.currentStep?.objectId;
-  if (!objectId) return;
+      const objectId = runtime.currentStep?.objectId;
+      if (!objectId) return;
 
-  window.LabObjectDetail?.openById?.(objectId, {
-    contextLabel: "Tryb nauczyciela · obiekt pamięci"
-  });
-});
+      window.LabObjectDetail?.openById?.(objectId, {
+        contextLabel: "Tryb nauczyciela · obiekt pamięci"
+      });
+    });
+
     DOM.startLiveSession?.addEventListener("click", () => {
       if (!runtime.currentStep) return;
 
       const currentSeconds = runtime.currentStepRemainingSeconds || Number(runtime.currentStep.durationMin || 0) * 60;
       startCurrentStepTimer(currentSeconds);
-      DOM.startLiveSession.textContent = "Sesja aktywna";
     });
 
     DOM.prevStepButton?.addEventListener("click", () => {
@@ -707,10 +771,11 @@
     DOM.pauseTimerButton?.addEventListener("click", () => {
       if (runtime.timerRunning) {
         pauseCurrentStepTimer();
-        DOM.pauseTimerButton.textContent = "Wznów";
       } else {
-        startCurrentStepTimer(runtime.currentStepRemainingSeconds || Number(runtime.currentStep?.durationMin || 0) * 60, true);
-        DOM.pauseTimerButton.textContent = "Pauza";
+        startCurrentStepTimer(
+          runtime.currentStepRemainingSeconds || Number(runtime.currentStep?.durationMin || 0) * 60,
+          true
+        );
       }
     });
 
@@ -722,6 +787,7 @@
 
     window.addEventListener("beforeunload", () => {
       if (!runtime.session) return;
+
       persistSessionPatch({
         timerState: {
           running: false,
@@ -732,13 +798,20 @@
   }
 
   function buildOrRecoverTeacherSession(lesson) {
+    if (!window.LabCore) return null;
+
     const stored = window.LabCore.loadSessionState();
     const params = window.LabCore.getQueryParams();
 
     const querySessionId = params.get("sessionId");
     const queryLessonId = params.get("lessonId");
 
-    if (stored.lessonId === lesson.id && stored.sessionId && (!queryLessonId || queryLessonId === stored.lessonId)) {
+    if (
+      stored.lessonId === lesson.id &&
+      stored.sessionId &&
+      (!queryLessonId || queryLessonId === stored.lessonId) &&
+      (!querySessionId || querySessionId === stored.sessionId)
+    ) {
       return stored;
     }
 
@@ -762,7 +835,7 @@
   function initializeTeacherPage() {
     cacheTeacherDom();
 
-    const lesson = window.LabCore.getCurrentLessonFromContext();
+    const lesson = window.LabCore?.getCurrentLessonFromContext?.();
     if (!lesson) {
       console.error("[LabTeacher] Nie znaleziono dopasowanej lekcji.");
       return;
@@ -770,6 +843,12 @@
 
     runtime.lesson = lesson;
     runtime.session = buildOrRecoverTeacherSession(lesson);
+
+    if (!runtime.session) {
+      console.error("[LabTeacher] Nie udało się zbudować sesji.");
+      return;
+    }
+
     window.LabCore.saveSessionState(runtime.session);
 
     renderTeacherSessionMeta();
@@ -779,11 +858,13 @@
     syncTeacherUrls();
     bindTeacherControls();
     startAutosaveHeartbeat();
+    updateTimerButtons();
 
     if (runtime.session?.timerState?.running) {
-      startCurrentStepTimer(runtime.session.timerState.remainingSeconds || Number(runtime.currentStep?.durationMin || 0) * 60, true);
-      if (DOM.pauseTimerButton) DOM.pauseTimerButton.textContent = "Pauza";
-      if (DOM.startLiveSession) DOM.startLiveSession.textContent = "Sesja aktywna";
+      startCurrentStepTimer(
+        runtime.session.timerState.remainingSeconds || Number(runtime.currentStep?.durationMin || 0) * 60,
+        true
+      );
     }
   }
 
