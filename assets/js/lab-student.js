@@ -13,6 +13,7 @@
 
   function cacheDom() {
     DOM.progressLabel = document.getElementById("studentProgressLabel");
+    DOM.openObjectDetailModeStudent = document.getElementById("openObjectDetailModeStudent");
 
     DOM.entryStage = document.getElementById("studentEntryStage");
     DOM.promptStage = document.getElementById("studentPromptStage");
@@ -377,6 +378,13 @@
   }
 
   function bindObjectEvents() {
+    DOM.openObjectDetailModeStudent?.addEventListener("click", () => {
+  if (!runtime.currentObject) return;
+
+  window.LabObjectDetail?.open?.(runtime.currentObject, {
+    contextLabel: "Tryb ucznia · praca na detalu"
+  });
+});
     DOM.studentBackFromObject?.addEventListener("click", () => goToStage("prompt"));
     DOM.studentNextFromObject?.addEventListener("click", () => {
       saveObjectResponse();
