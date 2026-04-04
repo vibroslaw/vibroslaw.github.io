@@ -1,0 +1,241 @@
+{
+  "version": "1.2.0",
+  "project": "Laboratorium Sumienia",
+  "lang": "pl",
+  "qualityProfile": {
+    "target": "institutional-premium",
+    "methodologicalMode": "source-aware",
+    "rhetoricMode": "restrained",
+    "studentExperience": "immersive-minimal",
+    "teacherExperience": "guided-control-console"
+  },
+  "theme": {
+    "base": "archive-cinematic-dark",
+    "fonts": {
+      "display": "Cinzel",
+      "serif": "Cormorant Garamond",
+      "sans": "Inter"
+    },
+    "colors": {
+      "bg": "#080808",
+      "bgSoft": "#101010",
+      "bgDeeper": "#060606",
+      "panel": "rgba(255,255,255,0.04)",
+      "panelStrong": "rgba(255,255,255,0.06)",
+      "line": "rgba(255,255,255,0.08)",
+      "lineStrong": "rgba(255,255,255,0.14)",
+      "text": "#efe8de",
+      "muted": "rgba(239,232,222,0.74)",
+      "soft": "rgba(239,232,222,0.50)",
+      "accent": "#cbb08a",
+      "accentSoft": "rgba(203,176,138,0.18)",
+      "cautionSoft": "rgba(120,92,40,0.18)"
+    },
+    "surfaces": {
+      "cardRadius": 28,
+      "panelRadius": 24,
+      "buttonRadius": 999,
+      "shadow": "0 30px 90px rgba(0,0,0,0.38)",
+      "shadowStrong": "0 40px 110px rgba(0,0,0,0.46)"
+    }
+  },
+  "performance": {
+    "preferredAnimationProps": [
+      "transform",
+      "opacity",
+      "filter"
+    ],
+    "avoidLayoutAnimation": true,
+    "maxBlurPx": 10,
+    "parallaxEnabled": true,
+    "parallaxIntensity": 0.04,
+    "lazyLoadBelowFold": true,
+    "preloadStrategy": {
+      "heroImages": "eager",
+      "lessonCoreAssets": "eager",
+      "objectImages": "progressive",
+      "reportAssets": "lazy",
+      "audioAmbience": "metadata"
+    },
+    "reducedMotion": {
+      "disableParallax": true,
+      "disableLongTransitions": true,
+      "replaceWithFade": true,
+      "disableAmbientAnimation": true
+    }
+  },
+  "accessibility": {
+    "highContrastReady": true,
+    "keyboardFirstNavigation": true,
+    "minTapTargetPx": 44,
+    "screenReaderLabelsRequired": true,
+    "focusRingVisible": true,
+    "motionAlternativeAvailable": true
+  },
+  "transitions": {
+    "sceneEnter": {
+      "veil-rise": {
+        "durationMs": 900,
+        "easing": "cubic-bezier(0.22,1,0.36,1)",
+        "from": {
+          "opacity": 0,
+          "translateY": 20,
+          "blur": 6
+        },
+        "to": {
+          "opacity": 1,
+          "translateY": 0,
+          "blur": 0
+        }
+      },
+      "slow-reveal": {
+        "durationMs": 1200,
+        "easing": "cubic-bezier(0.22,1,0.36,1)",
+        "from": {
+          "opacity": 0,
+          "scale": 1.015,
+          "blur": 8
+        },
+        "to": {
+          "opacity": 1,
+          "scale": 1,
+          "blur": 0
+        }
+      },
+      "archival-fade": {
+        "durationMs": 950,
+        "easing": "ease",
+        "from": {
+          "opacity": 0
+        },
+        "to": {
+          "opacity": 1
+        }
+      }
+    },
+    "sceneExit": {
+      "soft-dim": {
+        "durationMs": 450,
+        "easing": "ease-out",
+        "to": {
+          "opacity": 0.84,
+          "blur": 3
+        }
+      },
+      "paper-fade": {
+        "durationMs": 560,
+        "easing": "ease-in-out",
+        "to": {
+          "opacity": 0,
+          "translateY": -8
+        }
+      }
+    },
+    "objectFocus": {
+      "micro-zoom": {
+        "durationMs": 1600,
+        "easing": "ease-out",
+        "from": {
+          "scale": 1
+        },
+        "to": {
+          "scale": 1.03
+        }
+      },
+      "detail-drift": {
+        "durationMs": 2800,
+        "easing": "ease-in-out",
+        "from": {
+          "translateX": 0,
+          "translateY": 0
+        },
+        "to": {
+          "translateX": -8,
+          "translateY": -4
+        }
+      }
+    },
+    "panel": {
+      "glass-hover": {
+        "durationMs": 240,
+        "easing": "ease",
+        "hover": {
+          "translateY": -2,
+          "borderOpacity": 0.14
+        }
+      }
+    }
+  },
+  "audio": {
+    "enabledByDefault": false,
+    "teacherControlsVisible": true,
+    "ambiences": {
+      "low-room-tone": {
+        "label": "Niski ambient przestrzeni",
+        "loop": true,
+        "volume": 0.16
+      },
+      "archival-air": {
+        "label": "Tło archiwalne",
+        "loop": true,
+        "volume": 0.14
+      },
+      "quiet-resonance": {
+        "label": "Cicha rezonancja",
+        "loop": true,
+        "volume": 0.12
+      }
+    },
+    "microCues": {
+      "page-open": {
+        "volume": 0.18
+      },
+      "soft-click": {
+        "volume": 0.16
+      },
+      "report-ready": {
+        "volume": 0.14
+      }
+    }
+  },
+  "screenModes": {
+    "teacher": {
+      "layout": "control-console",
+      "density": "medium",
+      "showTimeline": true,
+      "showClock": true,
+      "showStepInstructions": true,
+      "showGuardrails": true
+    },
+    "student": {
+      "layout": "immersive-minimal",
+      "density": "low",
+      "showProgress": true,
+      "showSingleActionFocus": true,
+      "showOnlyCurrentPrompt": true
+    },
+    "report": {
+      "layout": "archival-document",
+      "density": "low",
+      "showPrintGrid": false
+    }
+  },
+  "contentIntegrity": {
+    "autoSummariesAllowed": false,
+    "autoMoralVerdictsAllowed": false,
+    "studentFacingRhetoric": "minimal",
+    "teacherFacingRhetoric": "controlled",
+    "requireSourceDistinction": true,
+    "requireInterpretationDistinction": true,
+    "namedPersonComparisonsDefault": "off"
+  },
+  "reportVisuals": {
+    "documentStyle": "archival-elegant",
+    "headerStamp": "LABORATORIUM SUMIENIA",
+    "showSessionId": true,
+    "showInstitutionName": true,
+    "showDate": true,
+    "watermark": "PRAWDA SUMIENIA",
+    "footerNote": "Dokument wygenerowany w ramach licencjonowanej ścieżki pracy z rozdziałem."
+  }
+}
