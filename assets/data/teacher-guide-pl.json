@@ -1,0 +1,959 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "teacher-guide",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "guideGoal": "Dać nauczycielowi pierwszy bezpieczny, prosty i spójny sposób poprowadzenia pracy z projektem bez przeciążenia funkcjami i bez konieczności budowania lekcji od zera.",
+  "globalTeacherPrinciples": [
+    "Najpierw ustaw dział i pytanie, dopiero potem uruchamiaj szerszy komentarz historyczny.",
+    "Nie próbuj powiedzieć wszystkiego naraz. Jedna dobra oś rozmowy jest lepsza niż pięć pobocznych.",
+    "Materiał nie służy do wymuszania prostego morału, tylko do uruchomienia odpowiedzialnej refleksji.",
+    "Nie zamieniaj lekcji w test wiedzy z nazwisk i dat, jeśli celem spotkania jest świadomy odbiór rozdziału.",
+    "Uczeń nie musi mówić dużo, żeby pracować uczciwie. Dobre krótkie zdanie jest lepsze niż pusty patos.",
+    "Telefon ucznia ma być narzędziem wejścia do raportu, a nie równoległym torem uwagi podczas projekcji.",
+    "Jeżeli grupa milczy, nie oznacza to porażki. Czasem cisza jest elementem pracy, nie jej brakiem."
+  ],
+  "globalDoNotSay": [
+    "Dzisiaj pokażę wam, kto miał rację.",
+    "Ta historia ma jeden prosty morał.",
+    "Po tym materiale wszystko staje się jasne.",
+    "Tu nie ma miejsca na wątpliwości interpretacyjne.",
+    "Każdy powinien po tym myśleć dokładnie tak samo.",
+    "To jest lekcja o tym, kto był lepszym człowiekiem.",
+    "Waszym zadaniem jest dojść do jednej wspólnej odpowiedzi."
+  ],
+  "teacherGuideDefaults": {
+    "defaultDisplayMode": "collapsed-sections",
+    "expandOneSectionAtATime": true,
+    "showRecommendedQuestionFirst": true,
+    "showMicroScripts": true,
+    "showDoNotSay": true,
+    "showSourceClarifier": true,
+    "showMetaphorClarifier": true,
+    "showDifficultContextCollapsed": true,
+    "preferredTeacherTone": "spokojny, precyzyjny, bez nadmiaru patosu",
+    "teacherOpeningLengthSec": {
+      "min": 20,
+      "max": 60
+    },
+    "recommendedDiscussionAfterFullChapterMin": {
+      "min": 10,
+      "max": 30
+    },
+    "recommendedDiscussionAfterCuratedSegmentMin": {
+      "min": 8,
+      "max": 18
+    }
+  },
+  "knowledgeCards": [
+    {
+      "id": "kc-totalitaryzm",
+      "title": "Totalitaryzm",
+      "shortText": "System, który dąży do podporządkowania życia jednostki, przestrzeni społecznej i interpretacji rzeczywistości jednej dominującej logice władzy.",
+      "teacherUse": "Używaj jako krótkiego doprecyzowania po wejściu w pytanie, nie jako długiego wykładu otwierającego.",
+      "doNotOverclaim": "Nie sprowadzaj całej rozmowy do hasła. Pokazuj mechanizmy, nie tylko etykietę."
+    },
+    {
+      "id": "kc-nazizm",
+      "title": "Nazizm",
+      "shortText": "Radykalny system oparty na przemocy państwowej, rasizmie, terrorze i podporządkowaniu człowieka logice ideologicznej oraz aparatom przymusu.",
+      "teacherUse": "Używaj wtedy, gdy grupa potrzebuje krótkiego osadzenia materiału obozowego w szerszym systemie.",
+      "doNotOverclaim": "Nie zastępuj konkretu historycznego samym słowem 'nazizm'."
+    },
+    {
+      "id": "kc-stalinizm",
+      "title": "Stalinizm / wczesny komunizm powojenny",
+      "shortText": "System oparty na centralizacji władzy, przemocy politycznej, kontroli społeczeństwa i podporządkowaniu życia publicznego aparatowi państwa oraz ideologii.",
+      "teacherUse": "Pokazuj ostrożnie, tylko gdy temat sekcji rzeczywiście dotyczy porównania mechanizmów presji i przemocy systemowej.",
+      "doNotOverclaim": "Nie rób skrótu typu 'wszystko było tym samym'. Pracuj na mechanizmach, nie na haśle."
+    },
+    {
+      "id": "kc-pilecki",
+      "title": "Witold Pilecki",
+      "shortText": "Postać centralna projektu jako świadek, autor raportów i punkt odniesienia dla rozmowy o odpowiedzialności przekazu oraz odbioru.",
+      "teacherUse": "Ustawiaj go jako rdzeń rozdziału bez automatycznej heroizacji każdego zdania.",
+      "doNotOverclaim": "Nie zamieniaj całej pracy w pomnikowy monolog."
+    },
+    {
+      "id": "kc-auschwitz",
+      "title": "Auschwitz",
+      "shortText": "Miejsce, w którym materialna przestrzeń, system przemocy i świadectwa historyczne wymagają ostrożnego rozróżniania między faktem, śladem i interpretacją.",
+      "teacherUse": "Pomaga uporządkować rozmowę o miejscu, pamięci i źródłach.",
+      "doNotOverclaim": "Nie mów, że miejsce 'samo wszystko mówi'."
+    },
+    {
+      "id": "kc-raport",
+      "title": "Raport jako forma świadectwa",
+      "shortText": "Raport nie zamyka historii. Jest próbą przekazania informacji, doświadczenia i odpowiedzialności dalej — poza moment jego powstania.",
+      "teacherUse": "Idealny jako pomost między projekcją a raportem ucznia.",
+      "doNotOverclaim": "Nie traktuj raportu jako automatycznego końca interpretacji."
+    },
+    {
+      "id": "kc-ai",
+      "title": "AI i historia",
+      "shortText": "Forma generatywna może pomagać w pracy edukacyjnej tylko wtedy, gdy nie udaje źródła i nie zastępuje odpowiedzialności za selekcję, interpretację oraz ton przekazu.",
+      "teacherUse": "Używaj przy sekcji o AI jako narzędziu, nie jako centrum samej historii.",
+      "doNotOverclaim": "Nie mów, że technologia sama czyni materiał nowoczesnym i wartościowym."
+    },
+    {
+      "id": "kc-polonia",
+      "title": "Polonia i odbiorca zagraniczny",
+      "shortText": "Praca z pamięcią poza Polską wymaga dopowiadania kontekstu, ale bez redukowania ciężaru doświadczenia do uproszczonej narracji tożsamościowej.",
+      "teacherUse": "Przydatne przy grupach mieszanych językowo i kulturowo.",
+      "doNotOverclaim": "Nie zakładaj wspólnej wiedzy wyjściowej wszystkich uczestników."
+    },
+    {
+      "id": "kc-sumienie",
+      "title": "Sumienie i decyzja",
+      "shortText": "W projekcie 'sumienie' nie oznacza szybkiego osądu innych, lecz pytanie o odpowiedzialność własnego odbioru, decyzji i reakcji wtedy, gdy jeszcze jest czas.",
+      "teacherUse": "Dobre zamknięcie rozmowy prowadzące ku teraźniejszości.",
+      "doNotOverclaim": "Nie zamieniaj tego pojęcia w tani motywacyjny slogan."
+    },
+    {
+      "id": "kc-cyrankiewicz-context",
+      "title": "Kontekst poboczny: Cyrankiewicz",
+      "shortText": "Postać poboczna wobec osi podstawowej. Może pojawić się wyłącznie w starszych grupach jako przykład trudności interpretacyjnej i historycznego napięcia, nigdy jako dominujący punkt lekcji.",
+      "teacherUse": "Pokazuj tylko w trybie rozszerzonym i wyłącznie wtedy, gdy nauczyciel świadomie wybiera ten kontekst.",
+      "doNotOverclaim": "Nie ustawiaj go jako drugiej osi równoległej do Pileckiego."
+    }
+  ],
+  "sectionGuides": [
+    {
+      "id": "section-totalitaryzm-wybor",
+      "title": "Totalitaryzm i wybory pod presją",
+      "navShort": "Totalitaryzm",
+      "oneSentencePurpose": "Ten dział pomaga rozmawiać o tym, jak system nacisku wpływa na warunki decyzji, bez upraszczania ludzkich wyborów do prostych ocen.",
+      "forWhom": [
+        "liceum",
+        "uczelnia",
+        "starsze grupy świadomie przygotowane"
+      ],
+      "bestUsedWhen": [
+        "chcesz pracować na mechanizmach systemu, a nie tylko na jednym nazwisku",
+        "chcesz przejść od historii do pytań o warunki decyzji",
+        "grupa jest gotowa na ostrożniejszą rozmowę interpretacyjną"
+      ],
+      "notIdealWhen": [
+        "to jest pierwsze spotkanie z projektem i grupa nie ma jeszcze żadnego punktu wejścia",
+        "masz bardzo mało czasu i nie chcesz ryzykować zbyt szerokiej dyskusji",
+        "grupa oczekuje prostego rocznicowego wprowadzenia"
+      ],
+      "recommendedPreset": "preset-90-full",
+      "defaultProjectionMode": "full-chapter",
+      "recommendedKnowledgeCards": [
+        "kc-totalitaryzm",
+        "kc-nazizm",
+        "kc-stalinizm"
+      ],
+      "teacherOpening": {
+        "microScript": [
+          "Dzisiaj nie będziemy pytać najpierw o to, kto był dobry albo zły.",
+          "Spróbujemy zobaczyć, jak system nacisku zmienia warunki ludzkich decyzji.",
+          "Nasze pytanie nie ma dać prostego wyroku. Ma pomóc myśleć uczciwiej."
+        ],
+        "maxLengthSec": 45,
+        "toneInstruction": "Spokojnie, bez patosu, bez zbyt szybkiego używania słów typu 'bohaterstwo' albo 'zdrada'."
+      },
+      "teacherClosure": {
+        "microScript": [
+          "Nie wszystko da się rozstrzygnąć jednym zdaniem.",
+          "Ale możemy wyjść z tej pracy bardziej ostrożni wobec prostych ocen.",
+          "To już jest ważny efekt."
+        ],
+        "goal": "Zamknąć rozmowę bez morału i bez rankingu postaw."
+      },
+      "recommendedQuestionId": "q-total-01",
+      "sectionQuestions": [
+        {
+          "id": "q-total-01",
+          "text": "Co dzieje się z ludzką decyzją, kiedy system przejmuje kontrolę nad przestrzenią, językiem i strachem?",
+          "recommended": true,
+          "useWhen": "Najlepsze pytanie główne do pierwszego pełnego wejścia w ten dział.",
+          "avoidWhen": "Nie dawaj go bardzo młodej lub nieprzygotowanej grupie bez krótkiego osadzenia tematu.",
+          "followUps": [
+            "Czy ocena decyzji jest wtedy prostsza czy trudniejsza?",
+            "Jak rozpoznać nacisk systemu, zanim zaczniemy oceniać człowieka?"
+          ]
+        },
+        {
+          "id": "q-total-02",
+          "text": "Dlaczego historia decyzji podejmowanych pod presją wymaga więcej ostrożności niż szybki osąd z bezpiecznej perspektywy?",
+          "recommended": false,
+          "useWhen": "Dobre dla liceum i uczelni po pełnej projekcji.",
+          "avoidWhen": "Nie zaczynaj od niego, jeśli grupa potrzebuje najpierw konkretu, a nie poziomu meta.",
+          "followUps": [
+            "Czego nie wiemy, gdy patrzymy z oddalenia?",
+            "Co powinno zatrzymać nas przed zbyt szybkim wyrokiem?"
+          ]
+        },
+        {
+          "id": "q-total-03",
+          "text": "Jak rozpoznać moment, w którym system próbuje zastąpić człowiekowi jego własny osąd?",
+          "recommended": false,
+          "useWhen": "Dobre jako pytanie po dyskusji o mechanizmach totalitaryzmu.",
+          "avoidWhen": "Nie dawaj go na bardzo początku bez żadnego przykładu.",
+          "followUps": [
+            "Czy dzieje się to tylko przez przemoc fizyczną?",
+            "Jaką rolę odgrywa język i powtarzalność komunikatu?"
+          ]
+        },
+        {
+          "id": "q-total-04",
+          "text": "Czy każde zachowanie pod presją można mierzyć tą samą miarą?",
+          "recommended": false,
+          "useWhen": "Mocne pytanie do pogłębionej rozmowy, szczególnie po dłuższym spotkaniu.",
+          "avoidWhen": "Nie dawaj, jeśli grupa ma tendencję do natychmiastowej polaryzacji.",
+          "followUps": [
+            "Jakie warunki trzeba brać pod uwagę?",
+            "Czy brak pełnej wiedzy też powinien nas zatrzymać?"
+          ]
+        },
+        {
+          "id": "q-total-05",
+          "text": "Jakie mechanizmy totalitaryzmu widać najmocniej dopiero wtedy, gdy patrzymy nie na ideologię, ale na codzienne życie człowieka?",
+          "recommended": false,
+          "useWhen": "Dobre, gdy chcesz przejść od wielkiej historii do doświadczenia jednostki.",
+          "avoidWhen": "Nie używaj jako jedynego pytania, jeśli celem jest głównie rocznicowe wprowadzenie do Pileckiego.",
+          "followUps": [
+            "Co system robi z ciałem, rytmem dnia i przestrzenią?",
+            "Dlaczego codzienność bywa lepszym wejściem niż wielkie hasła?"
+          ]
+        }
+      ],
+      "teacherGuide": {
+        "whatToEmphasize": [
+          "mechanizm nacisku systemu",
+          "warunki decyzji",
+          "ostrożność interpretacyjną",
+          "różnicę między analizą a wyrokiem"
+        ],
+        "whatNotToOverclaim": [
+          "że wszystkie wybory da się jasno ocenić jednym kluczem",
+          "że totalitaryzm działa wyłącznie przez terror fizyczny",
+          "że pełne zrozumienie sytuacji historycznej jest dla nas dziś łatwe"
+        ],
+        "doNotSay": [
+          "Tu wszystko jest oczywiste.",
+          "Każdy na ich miejscu powinien zachować się tak samo.",
+          "Ta lekcja pokaże, kto naprawdę zasługiwał na szacunek."
+        ],
+        "sourceClarifier": "Rozmowa ma dotyczyć mechanizmów widocznych w materiale oraz warunków decyzji, nie nadawania gotowych etykiet każdej postaci.",
+        "metaphorClarifier": "Jeśli w utworach pojawia się język ciśnienia, ścisku, muru, ciszy albo przymusu, traktuj to jako narzędzia opisu warunków systemu, nie jako dosłowny skrót pełnej historii.",
+        "discussionTip": "Jeśli grupa zaczyna przechodzić w ranking postaw, wróć do pytania: 'Jakie były warunki tej decyzji?'"
+      }
+    },
+    {
+      "id": "section-pilecki-rocznicowy",
+      "title": "Pilecki — wymiar rocznicowy i historyczny",
+      "navShort": "Pilecki",
+      "oneSentencePurpose": "Ten dział służy do prowadzenia spotkań rocznicowych i historycznych, w których centrum pozostaje Pilecki jako świadek, autor raportu i punkt odniesienia dla odpowiedzialnego odbioru.",
+      "forWhom": [
+        "szkoły średnie",
+        "uczelnie",
+        "instytucje",
+        "wydarzenia rocznicowe"
+      ],
+      "bestUsedWhen": [
+        "prowadzisz wydarzenie wokół rocznicy związanej z Pileckim",
+        "chcesz mieć najbardziej reprezentacyjny i spójny dział projektu",
+        "potrzebujesz działu najbliższego dokumentom i głównej wizji projektu"
+      ],
+      "notIdealWhen": [
+        "głównym celem jest analiza AI jako narzędzia",
+        "masz grupę, która potrzebuje najpierw szerokiego tła o systemie, a nie osi jednej postaci"
+      ],
+      "recommendedPreset": "preset-90-full",
+      "defaultProjectionMode": "full-chapter",
+      "recommendedKnowledgeCards": [
+        "kc-pilecki",
+        "kc-raport"
+      ],
+      "teacherOpening": {
+        "microScript": [
+          "Dzisiaj punktem centralnym będzie nie legenda, lecz świadectwo.",
+          "Będziemy patrzeć na Pileckiego przede wszystkim jako na człowieka raportu, ryzyka i odpowiedzialności przekazu.",
+          "To ważne, żeby nie zamienić tej historii w prosty pomnik."
+        ],
+        "maxLengthSec": 45,
+        "toneInstruction": "Godnie i spokojnie, ale bez szkolnego patosu."
+      },
+      "teacherClosure": {
+        "microScript": [
+          "Rocznica ma sens tylko wtedy, gdy nie kończy się na geście.",
+          "Najważniejsze pytanie brzmi nie tylko, co pamiętamy, ale co robimy z tym świadectwem dalej.",
+          "Na tym opiera się sens raportu."
+        ],
+        "goal": "Domknąć dział w duchu odpowiedzialności, nie w duchu pomnikowej dekoracji."
+      },
+      "recommendedQuestionId": "q-pilecki-01",
+      "sectionQuestions": [
+        {
+          "id": "q-pilecki-01",
+          "text": "Co sprawia, że świadectwo Pileckiego pozostaje ważne nie tylko jako dokument historyczny, ale także jako pytanie skierowane do odbiorcy?",
+          "recommended": true,
+          "useWhen": "Najmocniejsze pytanie podstawowe dla działu rocznicowego.",
+          "avoidWhen": "Nie dawaj go bez krótkiego osadzenia, jeśli grupa pierwszy raz słyszy o raporcie.",
+          "followUps": [
+            "Czy raport kończy historię, czy ją otwiera?",
+            "Co w tym świadectwie jest informacją, a co zadaniem dla odbiorcy?"
+          ]
+        },
+        {
+          "id": "q-pilecki-02",
+          "text": "Dlaczego raport nie jest tylko zapisem wydarzeń, ale także formą odpowiedzialności?",
+          "recommended": false,
+          "useWhen": "Dobre przejście od projekcji do raportu ucznia.",
+          "avoidWhen": "Nie dawaj, jeśli spotkanie ma bardzo ogólny charakter i mało czasu.",
+          "followUps": [
+            "Za co odpowiada autor świadectwa?",
+            "Za co odpowiada jego późniejszy odbiorca?"
+          ]
+        },
+        {
+          "id": "q-pilecki-03",
+          "text": "Jak mówić o Pileckim uczciwie, nie upraszczając jego historii do jednej etykiety?",
+          "recommended": false,
+          "useWhen": "Mocne pytanie dla liceum i uczelni.",
+          "avoidWhen": "Nie zaczynaj od niego w klasach, które potrzebują najpierw prostszego wejścia.",
+          "followUps": [
+            "Co tracimy, gdy zostaje tylko pomnikowy obraz?",
+            "Co zyskujemy, gdy wracamy do świadectwa i raportu?"
+          ]
+        },
+        {
+          "id": "q-pilecki-04",
+          "text": "Dlaczego rocznicowe upamiętnienie bez pracy z treścią świadectwa może okazać się zbyt łatwe?",
+          "recommended": false,
+          "useWhen": "Świetne na zamknięcie wydarzenia rocznicowego.",
+          "avoidWhen": "Nie używaj jako pierwszego pytania otwierającego dla młodszej grupy.",
+          "followUps": [
+            "Co odróżnia pamięć od samego rytuału?",
+            "Jak zachować wagę rocznicy bez pustej formuły?"
+          ]
+        },
+        {
+          "id": "q-pilecki-05",
+          "text": "Co w tej historii najmocniej pokazuje, że raport był próbą przekazania czegoś dalej, poza własne doświadczenie?",
+          "recommended": false,
+          "useWhen": "Dobre pytanie po pełnym rozdziale lub przy krótszym fragmencie dokumentalnym.",
+          "avoidWhen": "Nie dawaj, jeśli grupa jeszcze nie złapała sensu samego słowa 'raport'.",
+          "followUps": [
+            "Dlaczego przekazanie świadectwa nie jest tym samym co jego zapisanie?",
+            "Kiedy raport staje się relacją z faktów, a kiedy zadaniem dla innych?"
+          ]
+        }
+      ],
+      "teacherGuide": {
+        "whatToEmphasize": [
+          "Pilecki jako rdzeń projektu",
+          "raport jako świadectwo",
+          "odpowiedzialność przekazu",
+          "rocznicę jako żywe pytanie, nie tylko gest"
+        ],
+        "whatNotToOverclaim": [
+          "że każda interpretacja da się zamknąć jednym zdaniem o bohaterstwie",
+          "że wystarczy powtórzyć biografię, by uruchomić sens projektu",
+          "że rocznica sama z siebie gwarantuje głębokie przeżycie"
+        ],
+        "doNotSay": [
+          "Dzisiaj po prostu oddamy hołd i na tym skończymy.",
+          "To historia, którą można streścić jednym wielkim słowem.",
+          "Najważniejsze jest tylko to, żeby pamiętać nazwisko."
+        ],
+        "sourceClarifier": "W tym dziale raport i świadectwo są ważniejsze niż pomnikowy ton. Trzymaj się źródła, funkcji raportu i odpowiedzialności odbioru.",
+        "metaphorClarifier": "Jeśli materiał używa mocnego języka wzniosłości, niech nauczyciel dopowiada jego sens przez dokument, świadectwo i decyzję, a nie przez dalsze podbijanie patosu.",
+        "discussionTip": "Gdy rozmowa staje się zbyt pomnikowa, zapytaj: 'Co dokładnie zostało tu przekazane dalej — i komu?'"
+      }
+    },
+    {
+      "id": "section-auschwitz",
+      "title": "Auschwitz — miejsce, świadectwo, pamięć",
+      "navShort": "Auschwitz",
+      "oneSentencePurpose": "Ten dział pomaga prowadzić rozmowę o Auschwitz jako miejscu, przestrzeni świadectwa i pamięci, bez redukowania go do jednego obrazu lub jednego skrótu emocjonalnego.",
+      "forWhom": [
+        "liceum",
+        "uczelnia",
+        "instytucje",
+        "grupy przygotowane"
+      ],
+      "bestUsedWhen": [
+        "chcesz pracować na relacji między miejscem, świadectwem i pamięcią",
+        "grupa potrzebuje wejścia przez przestrzeń i materialny wymiar historii",
+        "zajęcia są osadzone w kontekście muzealnym, rocznicowym lub studyjnym"
+      ],
+      "notIdealWhen": [
+        "celem jest głównie rozmowa o współczesnych decyzjach i sumieniu",
+        "to bardzo pierwsze spotkanie z projektem bez żadnego przygotowania"
+      ],
+      "recommendedPreset": "preset-90-full",
+      "defaultProjectionMode": "full-chapter",
+      "recommendedKnowledgeCards": [
+        "kc-auschwitz",
+        "kc-raport"
+      ],
+      "teacherOpening": {
+        "microScript": [
+          "To spotkanie nie ma służyć szybkiemu wstrząsowi, ale uważnemu wejściu w miejsce, świadectwo i pamięć.",
+          "Spróbujemy nie upraszczać ani przestrzeni, ani źródła, ani doświadczenia odbioru.",
+          "To wymaga spokoju i precyzji."
+        ],
+        "maxLengthSec": 50,
+        "toneInstruction": "Powściągliwie, bez podbijania grozy słowami."
+      },
+      "teacherClosure": {
+        "microScript": [
+          "Nie każde miejsce można potraktować jak tło do emocji.",
+          "Czasem najważniejsze jest to, by nauczyć się odbierać je odpowiedzialnie.",
+          "To także forma pamięci."
+        ],
+        "goal": "Zamknąć rozmowę w duchu odpowiedzialnej pamięci, nie efektownego wstrząsu."
+      },
+      "recommendedQuestionId": "q-auschwitz-01",
+      "sectionQuestions": [
+        {
+          "id": "q-auschwitz-01",
+          "text": "Co zmienia się w odbiorze historii, kiedy patrzymy nie tylko na wydarzenie, ale także na miejsce, jego przestrzeń i świadectwa z nim związane?",
+          "recommended": true,
+          "useWhen": "Najlepsze pytanie podstawowe dla tego działu.",
+          "avoidWhen": "Nie dawaj bez krótkiego wyjaśnienia, jeśli grupa myśli o Auschwitz wyłącznie jako jednym haśle historycznym.",
+          "followUps": [
+            "Czy miejsce jest tylko tłem?",
+            "Jaką rolę odgrywa świadectwo wobec przestrzeni?"
+          ]
+        },
+        {
+          "id": "q-auschwitz-02",
+          "text": "Dlaczego pamięć o Auschwitz wymaga rozróżnienia między emocją odbiorcy a odpowiedzialną pracą z historią?",
+          "recommended": false,
+          "useWhen": "Dobre dla starszych grup i uczelni.",
+          "avoidWhen": "Nie zaczynaj od niego w grupie, która potrzebuje najpierw bardziej konkretnego wejścia.",
+          "followUps": [
+            "Czy silna emocja zawsze pomaga rozumieć lepiej?",
+            "Co chroni pamięć przed uproszczeniem?"
+          ]
+        },
+        {
+          "id": "q-auschwitz-03",
+          "text": "Jak mówić o miejscu tak, żeby nie antropomorfizować go, a jednocześnie nie zgubić jego ciężaru historycznego?",
+          "recommended": false,
+          "useWhen": "Bardzo dobre pytanie dla nauczyciela świadomie pracującego z językiem.",
+          "avoidWhen": "Nie dawaj jako jedynego pytania dla młodszej grupy.",
+          "followUps": [
+            "Czego unikać w języku o miejscu pamięci?",
+            "Jak zachować wagę bez patosu?"
+          ]
+        },
+        {
+          "id": "q-auschwitz-04",
+          "text": "Co wnosi świadectwo tam, gdzie sama przestrzeń nie wystarcza do zrozumienia historii?",
+          "recommended": false,
+          "useWhen": "Dobre po fragmencie dotyczącym raportu lub relacji.",
+          "avoidWhen": "Nie dawaj zbyt wcześnie, jeśli grupa jeszcze nie rozumie różnicy między śladem a źródłem.",
+          "followUps": [
+            "Czy przestrzeń sama wszystko wyjaśnia?",
+            "Dlaczego źródło pozostaje konieczne?"
+          ]
+        },
+        {
+          "id": "q-auschwitz-05",
+          "text": "Jak uniknąć zamiany pamięci o Auschwitz w gest, który działa mocno, ale nie prowadzi do głębszego rozumienia?",
+          "recommended": false,
+          "useWhen": "Mocne pytanie kończące dla wydarzeń rocznicowych lub studyjnych.",
+          "avoidWhen": "Nie dawaj jako pierwszego pytania w krótkiej jednostce.",
+          "followUps": [
+            "Co odróżnia pamięć od efektu?",
+            "Jak rozpoznać, że forma zaczyna dominować nad treścią?"
+          ]
+        }
+      ],
+      "teacherGuide": {
+        "whatToEmphasize": [
+          "miejsce jako część historii",
+          "świadectwo jako niezbędne doprecyzowanie",
+          "pamięć jako odpowiedzialny odbiór",
+          "powściągliwość języka"
+        ],
+        "whatNotToOverclaim": [
+          "że przestrzeń sama 'mówi wszystko'",
+          "że emocja wystarcza do odpowiedzialnego zrozumienia",
+          "że jedno ujęcie miejsca daje pełnię sensu"
+        ],
+        "doNotSay": [
+          "Wystarczy spojrzeć na to miejsce, żeby wszystko zrozumieć.",
+          "Tu nie trzeba już żadnych źródeł ani komentarza.",
+          "Najważniejsze jest, żeby widz był wstrząśnięty."
+        ],
+        "sourceClarifier": "Miejsce i ślad są ważne, ale bez świadectwa i źródła łatwo popaść w uproszczenie albo pustą symbolikę.",
+        "metaphorClarifier": "Jeżeli w materiale pojawia się obraz muru, bramy, ciszy albo przestrzeni, traktuj to jako wejście interpretacyjne, nie jako samowystarczalne wyjaśnienie historii.",
+        "discussionTip": "Gdy rozmowa idzie za bardzo w stronę emocjonalnego skrótu, wróć do pytania: 'Co tu wiemy z materiału, a co dopowiadamy sami?'"
+      }
+    },
+    {
+      "id": "section-ai-historia",
+      "title": "AI i historia — odpowiedzialna forma",
+      "navShort": "AI i historia",
+      "oneSentencePurpose": "Ten dział pokazuje, jak pracować z historią i formą generatywną odpowiedzialnie, bez udawania źródła i bez mylenia technologii z prawdą historyczną.",
+      "forWhom": [
+        "liceum",
+        "uczelnia",
+        "warsztaty medialne",
+        "instytucje edukacyjne"
+      ],
+      "bestUsedWhen": [
+        "chcesz rozmawiać o metodzie tworzenia projektu",
+        "grupa pyta, jak łączyć nową technologię z odpowiedzialnością historyczną",
+        "prowadzisz spotkanie o AI, edukacji i pamięci"
+      ],
+      "notIdealWhen": [
+        "spotkanie ma mieć wyłącznie charakter rocznicowy",
+        "grupa potrzebuje najpierw mocniejszego historycznego wejścia niż rozmowy o formie"
+      ],
+      "recommendedPreset": "preset-45-curated",
+      "defaultProjectionMode": "curated-segment",
+      "recommendedKnowledgeCards": [
+        "kc-ai",
+        "kc-raport"
+      ],
+      "teacherOpening": {
+        "microScript": [
+          "To spotkanie nie jest o zachwycie technologią.",
+          "Jest o tym, jak używać formy tak, żeby nie udawała źródła i nie spłycała historii.",
+          "Technologia może pomagać, ale nie może zwalniać z odpowiedzialności."
+        ],
+        "maxLengthSec": 45,
+        "toneInstruction": "Rzeczowo, bez marketingowego entuzjazmu."
+      },
+      "teacherClosure": {
+        "microScript": [
+          "Nowoczesna forma nie jest jeszcze dowodem odpowiedzialności.",
+          "Odpowiedzialność zaczyna się tam, gdzie twórca umie odróżnić źródło od interpretacji.",
+          "I umie to jasno zakomunikować odbiorcy."
+        ],
+        "goal": "Pokazać, że AI jest narzędziem, nie legitymizacją."
+      },
+      "recommendedQuestionId": "q-ai-01",
+      "sectionQuestions": [
+        {
+          "id": "q-ai-01",
+          "text": "Jak używać AI w pracy z historią tak, żeby forma pomagała zrozumieć, a nie udawała źródła?",
+          "recommended": true,
+          "useWhen": "Najlepsze pytanie otwierające dla tego działu.",
+          "avoidWhen": "Nie dawaj go bez żadnego przykładu materiału lub procesu.",
+          "followUps": [
+            "Jak odbiorca powinien wiedzieć, z czym ma do czynienia?",
+            "Gdzie kończy się narzędzie, a zaczyna odpowiedzialność twórcy?"
+          ]
+        },
+        {
+          "id": "q-ai-02",
+          "text": "Jak odróżnić artystyczną interpretację historyczną od wrażenia, że oglądamy coś źródłowego lub dosłownie prawdziwego?",
+          "recommended": false,
+          "useWhen": "Bardzo mocne pytanie dla liceum i uczelni.",
+          "avoidWhen": "Nie dawaj, jeśli grupa nie miała jeszcze kontaktu z samym materiałem.",
+          "followUps": [
+            "Jakie sygnały powinny być jasne dla odbiorcy?",
+            "Co jest uczciwe wobec widza?"
+          ]
+        },
+        {
+          "id": "q-ai-03",
+          "text": "Czy nowoczesna forma pomaga wejść w historię, czy czasem grozi przykryciem jej ciężaru?",
+          "recommended": false,
+          "useWhen": "Dobre do dyskusji po pokazie fragmentów.",
+          "avoidWhen": "Nie zaczynaj od niego, jeśli grupa jest nastawiona wyłącznie technicznie.",
+          "followUps": [
+            "Kiedy forma naprawdę pomaga?",
+            "Po czym poznać, że zaczyna dominować nad treścią?"
+          ]
+        },
+        {
+          "id": "q-ai-04",
+          "text": "Jakie obowiązki ma twórca, który korzysta z AI przy materiale historycznym?",
+          "recommended": false,
+          "useWhen": "Dobre na warsztatach i rozmowach metodologicznych.",
+          "avoidWhen": "Nie używaj jako jedynego pytania w bardzo krótkiej jednostce.",
+          "followUps": [
+            "Czy wystarczy dobra intencja?",
+            "Jak komunikować granice materiału?"
+          ]
+        },
+        {
+          "id": "q-ai-05",
+          "text": "Dlaczego w pracy z historią nie wystarczy, że coś wygląda przekonująco?",
+          "recommended": false,
+          "useWhen": "Bardzo dobre pytanie zamykające.",
+          "avoidWhen": "Nie dawaj bez wcześniejszego dotknięcia problemu źródła i interpretacji.",
+          "followUps": [
+            "Czym różni się wiarygodność wizualna od odpowiedzialności historycznej?",
+            "Jak odbiorca powinien czytać taki materiał?"
+          ]
+        }
+      ],
+      "teacherGuide": {
+        "whatToEmphasize": [
+          "rozróżnienie źródło / interpretacja / forma",
+          "uczciwość wobec odbiorcy",
+          "AI jako narzędzie, nie argument",
+          "odpowiedzialność twórcy"
+        ],
+        "whatNotToOverclaim": [
+          "że technologia sama podnosi wartość edukacyjną materiału",
+          "że realizm wizualny oznacza prawdę historyczną",
+          "że AI da się traktować neutralnie bez wpływu na odbiór"
+        ],
+        "doNotSay": [
+          "To jest prawie jak autentyczne źródło.",
+          "Skoro wygląda realistycznie, to działa najlepiej.",
+          "Technologia sama rozwiązuje problem dotarcia do młodych."
+        ],
+        "sourceClarifier": "Twórczość generatywna nie zastępuje źródeł. Może tworzyć formę wejścia, ale nie może udawać świadectwa.",
+        "metaphorClarifier": "Jeżeli obrazy lub sceny są stylizowane albo syntetyczne, nauczyciel powinien powiedzieć jasno: to interpretacja formy, nie materiał źródłowy.",
+        "discussionTip": "Gdy grupa wpada w zachwyt techniczny, zapytaj: 'Dobrze — ale co tutaj jest źródłem, a co formą stworzoną później?'"
+      }
+    },
+    {
+      "id": "section-polonia",
+      "title": "Historia dla Polonii za granicą",
+      "navShort": "Polonia",
+      "oneSentencePurpose": "Ten dział pomaga przenosić ciężar polskiego doświadczenia historycznego do odbiorcy zagranicznego lub dwujęzycznego bez redukowania go do prostego skrótu tożsamościowego.",
+      "forWhom": [
+        "Polonia",
+        "grupy dwujęzyczne",
+        "szkoły polskie za granicą",
+        "odbiorca międzynarodowy z kontekstem polskim"
+      ],
+      "bestUsedWhen": [
+        "grupa ma nierówny poziom znajomości polskiego kontekstu historycznego",
+        "chcesz połączyć Pileckiego, II wojnę światową i temat totalitaryzmu w sposób komunikatywny",
+        "potrzebujesz mostu między pamięcią polską a odbiorem międzynarodowym"
+      ],
+      "notIdealWhen": [
+        "masz w pełni jednorodną grupę dobrze osadzoną w polskim kontekście i chcesz wejść od razu głębiej",
+        "spotkanie ma być czysto metodologiczne o AI"
+      ],
+      "recommendedPreset": "preset-90-full",
+      "defaultProjectionMode": "full-chapter",
+      "recommendedKnowledgeCards": [
+        "kc-polonia",
+        "kc-pilecki",
+        "kc-raport"
+      ],
+      "teacherOpening": {
+        "microScript": [
+          "Dzisiaj będziemy szukać języka, który nie uprości polskiego doświadczenia, ale pozwoli je naprawdę przekazać dalej.",
+          "To znaczy: mniej zakładania wspólnej wiedzy, więcej precyzji i odpowiedzialności.",
+          "Pytanie brzmi nie tylko co pamiętamy, ale jak to przekazujemy."
+        ],
+        "maxLengthSec": 50,
+        "toneInstruction": "Przystępnie, ale bez infantylizowania historii."
+      },
+      "teacherClosure": {
+        "microScript": [
+          "Jeśli coś ma zostać przeniesione dalej, nie może zostać spłaszczone do jednego sloganu.",
+          "Dobra pamięć działa jak most, ale most zbudowany starannie.",
+          "To także odpowiedzialność języka."
+        ],
+        "goal": "Domknąć dział jako most między pamięcią a przekazem."
+      },
+      "recommendedQuestionId": "q-polonia-01",
+      "sectionQuestions": [
+        {
+          "id": "q-polonia-01",
+          "text": "Jak opowiadać historię zakorzenioną w polskim doświadczeniu tak, żeby była zrozumiała poza Polską, ale nie została uproszczona?",
+          "recommended": true,
+          "useWhen": "Najlepsze pytanie główne dla tego działu.",
+          "avoidWhen": "Nie dawaj bez krótkiego osadzenia, jeśli grupa nie rozumie jeszcze, co jest specyficzne dla polskiego kontekstu.",
+          "followUps": [
+            "Co trzeba dopowiedzieć, a czego nie wolno spłaszczyć?",
+            "Jak zachować ciężar historii przy zmianie języka odbioru?"
+          ]
+        },
+        {
+          "id": "q-polonia-02",
+          "text": "Który element historii Pileckiego może działać jako most do odbiorcy międzynarodowego — i dlaczego właśnie ten?",
+          "recommended": false,
+          "useWhen": "Dobre po projekcji, szczególnie w grupach mieszanych kulturowo.",
+          "avoidWhen": "Nie dawaj jako pierwszego pytania, jeśli grupa nie zna jeszcze podstaw osi projektu.",
+          "followUps": [
+            "Czy mostem jest postać, raport, decyzja czy doświadczenie systemu?",
+            "Co naprawdę da się przełożyć między kontekstami?"
+          ]
+        },
+        {
+          "id": "q-polonia-03",
+          "text": "Jak uniknąć zamiany historii w prostą narrację tożsamościową wtedy, gdy chcemy ją przekazywać dalej?",
+          "recommended": false,
+          "useWhen": "Mocne pytanie dla starszych grup i nauczycieli świadomych napięcia między pamięcią a reprezentacją.",
+          "avoidWhen": "Nie dawaj bardzo młodej grupie jako jedynego pytania.",
+          "followUps": [
+            "Kiedy pamięć staje się sloganem?",
+            "Jak odróżnić dumę z pamięci od jej uproszczenia?"
+          ]
+        },
+        {
+          "id": "q-polonia-04",
+          "text": "Co trzeba zachować z polskiego kontekstu historycznego, żeby opowieść nie straciła swojego sensu?",
+          "recommended": false,
+          "useWhen": "Dobre do rozmowy po fragmencie i teacher guide.",
+          "avoidWhen": "Nie dawaj bez elementarnego wprowadzenia do realiów.",
+          "followUps": [
+            "Których pojęć nie da się po prostu pominąć?",
+            "Jak odróżnić potrzebne dopowiedzenie od przeciążenia informacją?"
+          ]
+        },
+        {
+          "id": "q-polonia-05",
+          "text": "Dlaczego raport może być dobrą formą łączenia doświadczenia lokalnego z odbiorem międzynarodowym?",
+          "recommended": false,
+          "useWhen": "Świetne pytanie spinające dział z osią całego projektu.",
+          "avoidWhen": "Nie dawaj, jeśli grupa nie weszła jeszcze w sens raportu jako świadectwa.",
+          "followUps": [
+            "Co raport przenosi dalej?",
+            "Dlaczego raport jest czymś więcej niż zwykłym streszczeniem historii?"
+          ]
+        }
+      ],
+      "teacherGuide": {
+        "whatToEmphasize": [
+          "potrzebę mostu kulturowego",
+          "Pileckiego jako rdzeń czytelny międzynarodowo",
+          "raport jako forma przekazu ponad kontekst lokalny",
+          "ostrożność wobec sloganu tożsamościowego"
+        ],
+        "whatNotToOverclaim": [
+          "że każdy odbiorca od razu zrozumie ciężar polskich odniesień",
+          "że wystarczy przetłumaczyć słowa, aby przenieść sens",
+          "że historia staje się uniwersalna dopiero po uproszczeniu"
+        ],
+        "doNotSay": [
+          "Oni i tak tego nie zrozumieją bez skrótu.",
+          "Wystarczy ogólny motyw wojny i cierpienia.",
+          "Najważniejsze, żeby brzmiało dumnie i jasno."
+        ],
+        "sourceClarifier": "Dział dla Polonii nie służy odcięciu historii od polskiego kontekstu, tylko jego odpowiedzialnemu przeniesieniu dalej.",
+        "metaphorClarifier": "Jeżeli w materiale pojawiają się motywy mostu, pamięci, raportu albo przekazu, należy je łączyć z konkretem historycznym, nie z samą emocją emigracyjnej identyfikacji.",
+        "discussionTip": "Gdy grupa zbyt szybko przechodzi w ogólniki, wróć do pytania: 'Co dokładnie w tej historii jest szczególnie polskim punktem wyjścia?'"
+      }
+    },
+    {
+      "id": "section-sumienie-raport",
+      "title": "Sumienie i znaczenie raportu",
+      "navShort": "Sumienie",
+      "oneSentencePurpose": "Ten dział prowadzi od historii raportu ku pytaniu o odpowiedzialność odbiorcy, decyzję podjętą we właściwym czasie i sens osobistej reakcji tu i teraz.",
+      "forWhom": [
+        "liceum",
+        "uczelnia",
+        "grupy refleksyjne",
+        "spotkania domykające cykl"
+      ],
+      "bestUsedWhen": [
+        "chcesz spiąć historię z teraźniejszością bez taniego moralizowania",
+        "chcesz domknąć pracę pytaniem o odpowiedzialność odbiorcy",
+        "grupa jest gotowa na bardziej osobiste, ale nadal ostrożne przejście ku współczesności"
+      ],
+      "notIdealWhen": [
+        "grupa nie przeszła jeszcze przez podstawowe osadzenie historyczne",
+        "spotkanie ma mieć wyłącznie charakter faktograficzny"
+      ],
+      "recommendedPreset": "preset-90-full",
+      "defaultProjectionMode": "full-chapter",
+      "recommendedKnowledgeCards": [
+        "kc-sumienie",
+        "kc-raport",
+        "kc-pilecki"
+      ],
+      "teacherOpening": {
+        "microScript": [
+          "To spotkanie nie będzie o ocenianiu cudzych sumień.",
+          "Będzie o tym, co robi z nami świadectwo wtedy, gdy dociera do nas naprawdę.",
+          "Raport ma sens tylko wtedy, gdy coś z nim robimy."
+        ],
+        "maxLengthSec": 45,
+        "toneInstruction": "Uważnie, bez kaznodziejstwa, bez moralnego tonu wyższości."
+      },
+      "teacherClosure": {
+        "microScript": [
+          "Nie zawsze mamy wpływ na wszystko.",
+          "Ale często mamy wpływ na to, czy zareagujemy, kiedy jeszcze jest czas.",
+          "I być może właśnie tu zaczyna się sens raportu."
+        ],
+        "goal": "Przenieść rozmowę do współczesności bez infantylizacji i bez taniego 'bądź dobry'."
+      },
+      "recommendedQuestionId": "q-sumienie-01",
+      "sectionQuestions": [
+        {
+          "id": "q-sumienie-01",
+          "text": "Co znaczy, że raport nie jest tylko o przeszłości, ale także o odpowiedzialności tego, kto go odbiera?",
+          "recommended": true,
+          "useWhen": "Najmocniejsze pytanie spinające dział i cały projekt.",
+          "avoidWhen": "Nie dawaj go bez wcześniejszego wejścia w sens raportu.",
+          "followUps": [
+            "Czy odbiorca też ponosi odpowiedzialność?",
+            "W którym momencie pamięć staje się zadaniem?"
+          ]
+        },
+        {
+          "id": "q-sumienie-02",
+          "text": "Dlaczego niektóre decyzje mają sens tylko wtedy, gdy zostaną podjęte na czas?",
+          "recommended": false,
+          "useWhen": "Bardzo dobre pytanie do przejścia ku teraźniejszości.",
+          "avoidWhen": "Nie dawaj zbyt wcześnie, jeśli grupa nie przeszła jeszcze przez materiał historyczny.",
+          "followUps": [
+            "Co dzieje się, gdy decyzja przychodzi za późno?",
+            "Jak rozpoznać moment, w którym jeszcze można coś zrobić?"
+          ]
+        },
+        {
+          "id": "q-sumienie-03",
+          "text": "Jak rozmawiać o sumieniu tak, żeby nie zamienić go w slogan ani w osąd innych ludzi?",
+          "recommended": false,
+          "useWhen": "Mocne pytanie dla starszych grup.",
+          "avoidWhen": "Nie dawaj młodszej grupie jako jedynego pytania końcowego.",
+          "followUps": [
+            "Czy sumienie jest bardziej pytaniem czy odpowiedzią?",
+            "Jak uniknąć taniego moralizowania?"
+          ]
+        },
+        {
+          "id": "q-sumienie-04",
+          "text": "Co w tej historii zostawia nas nie z gotową odpowiedzią, ale z koniecznością uczciwej reakcji?",
+          "recommended": false,
+          "useWhen": "Dobre po pełnym rozdziale i przed raportem ucznia.",
+          "avoidWhen": "Nie dawaj, jeśli grupa oczekuje tylko faktograficznego podsumowania.",
+          "followUps": [
+            "Czy uczciwa reakcja zawsze musi być wielka?",
+            "Od czego zaczyna się realna odpowiedzialność?"
+          ]
+        },
+        {
+          "id": "q-sumienie-05",
+          "text": "Jak połączyć historyczny sens raportu z małymi decyzjami współczesności, nie popadając w banalne porównania?",
+          "recommended": false,
+          "useWhen": "Świetne pytanie do delikatnego domknięcia lekcji.",
+          "avoidWhen": "Nie używaj, jeśli nauczyciel ma tendencję do zbyt łatwych analogii.",
+          "followUps": [
+            "Jakie współczesne wybory są małe, ale realne?",
+            "Co odróżnia sensowne odniesienie od banalizacji historii?"
+          ]
+        }
+      ],
+      "teacherGuide": {
+        "whatToEmphasize": [
+          "raport jako wezwanie do odbioru",
+          "sumienie jako pytanie o własną reakcję",
+          "znaczenie czasu decyzji",
+          "przejście do teraźniejszości bez banalnych analogii"
+        ],
+        "whatNotToOverclaim": [
+          "że dzisiejsze sytuacje są prostym odpowiednikiem historii totalitaryzmu",
+          "że każde codzienne zaniedbanie ma tę samą wagę co historia ekstremalna",
+          "że sumienie daje zawsze jedną prostą odpowiedź"
+        ],
+        "doNotSay": [
+          "To dokładnie to samo, co dziś w twoim życiu.",
+          "Każdy brak reakcji jest równy wielkim winom historii.",
+          "Po tej lekcji już wiesz, jak zawsze postępować."
+        ],
+        "sourceClarifier": "Przejście do współczesności ma mieć charakter odpowiedzialnego echa, nie prostego porównania jeden do jednego.",
+        "metaphorClarifier": "Jeśli pojawiają się odniesienia do decyzji podjętej na czas albo za późno, traktuj je jako narzędzie refleksji nad odpowiedzialnością, nie jako dosłowny ekwiwalent historii obozowej.",
+        "discussionTip": "Gdy rozmowa staje się zbyt kaznodziejska, wróć do pytania: 'Jakie małe, realne formy uczciwej reakcji są w ogóle możliwe dziś?'"
+      }
+    }
+  ],
+  "advancedContext": {
+    "collapsedByDefault": true,
+    "teacherOnly": true,
+    "items": [
+      {
+        "id": "adv-cyrankiewicz",
+        "title": "Kontekst rozszerzony: Cyrankiewicz",
+        "visibility": [
+          "uczelnia",
+          "advanced-teacher-only"
+        ],
+        "rule": "Nie pokazuj jako osobnego działu podstawowego. Nie uruchamiaj w ścieżce ucznia. Możliwy tylko jako nota nauczycielska o trudności interpretacyjnej, pamięci powojennej i niebezpieczeństwie uproszczeń.",
+        "safeUseQuestion": "Co zmienia się w interpretacji historii, gdy pamięć powojenna nie układa się w prostą opowieść o jednym typie postawy?",
+        "doNotSay": [
+          "To druga główna postać projektu.",
+          "Projekt jest zbudowany na prostym kontraście dwóch ludzi.",
+          "Wystarczy zestawić nazwiska i wszystko stanie się jasne."
+        ]
+      },
+      {
+        "id": "adv-nazizm-komunizm",
+        "title": "Porównanie systemów: nazizm i komunizm wczesny / stalinizm",
+        "visibility": [
+          "liceum",
+          "uczelnia",
+          "advanced-teacher-only"
+        ],
+        "rule": "Porównuj tylko mechanizmy przemocy, kontroli, nacisku i organizacji życia społecznego. Nie sprowadzaj całej historii do prostego zdania 'to było to samo'.",
+        "safeUseQuestion": "Jakie mechanizmy nacisku systemowego można porównać, a gdzie trzeba zachować ostrożność wobec różnic historycznych?",
+        "doNotSay": [
+          "To dokładnie to samo.",
+          "Wszystkie systemy przemocy działają identycznie.",
+          "Nie trzeba rozróżniać kontekstu historycznego."
+        ]
+      },
+      {
+        "id": "adv-prl-jazz",
+        "title": "Ciekawostka kulturowa: jazz w PRL",
+        "visibility": [
+          "optional"
+        ],
+        "rule": "Może działać jako lekki kontekst kulturowy w rozmowie o wolności, kontroli i kulturze, ale nigdy nie powinien rozbijać osi głównej lekcji.",
+        "safeUseQuestion": "Co kultura potrafi ujawnić o napięciu między kontrolą a wolnością w systemie politycznym?",
+        "doNotSay": [
+          "To równie ważne jak główna oś projektu.",
+          "Na tym można oprzeć sens całej lekcji."
+        ]
+      }
+    ]
+  },
+  "teacherDecisionAid": {
+    "ifFirstTimeUse": {
+      "recommendedSectionOrder": [
+        "section-pilecki-rocznicowy",
+        "section-auschwitz",
+        "section-totalitaryzm-wybor",
+        "section-sumienie-raport",
+        "section-polonia",
+        "section-ai-historia"
+      ],
+      "recommendedFirstSection": "section-pilecki-rocznicowy",
+      "recommendedReason": "Najbliższy osi projektu, najbardziej spójny z dokumentami i najłatwiejszy do poprowadzenia dla nauczyciela pierwszego kontaktu."
+    },
+    "ifTeacherHasOnlyOneSession": {
+      "recommendedSection": "section-pilecki-rocznicowy",
+      "fallbackSection": "section-sumienie-raport"
+    },
+    "ifTeacherNeedsMostAccessibleDiscussion": {
+      "recommendedSection": "section-pilecki-rocznicowy"
+    },
+    "ifTeacherNeedsMostInterpretiveDiscussion": {
+      "recommendedSection": "section-totalitaryzm-wybor"
+    },
+    "ifTeacherNeedsMethodAndMediaDiscussion": {
+      "recommendedSection": "section-ai-historia"
+    },
+    "ifTeacherNeedsBridgeForInternationalAudience": {
+      "recommendedSection": "section-polonia"
+    }
+  },
+  "successCriteria": {
+    "teacherSuccess": [
+      "Nauczyciel potrafi wybrać dział i jedno pytanie w mniej niż 2 minuty.",
+      "Nauczyciel nie musi rozwijać więcej niż jednego panelu naraz.",
+      "Nauczyciel dostaje gotowe otwarcie, zamknięcie i listę zdań, których ma unikać.",
+      "Nauczyciel nie gubi się w funkcjach technicznych przed projekcją.",
+      "Nauczyciel rozumie, gdzie kończy się materiał podstawowy, a gdzie zaczyna kontekst rozszerzony."
+    ],
+    "studentSuccess": [
+      "Uczeń widzi jedno pytanie główne.",
+      "Uczeń nie musi obsługiwać wielu ekranów podczas projekcji.",
+      "Uczeń może po zajęciach spokojnie zapisać własny raport.",
+      "Raport może zostać anonimowo w archiwum bez podawania danych osobowych."
+    ]
+  }
+        }
