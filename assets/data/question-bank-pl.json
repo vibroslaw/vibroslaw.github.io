@@ -1,0 +1,1052 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "question-bank",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "designIntent": "Dostarczyć nauczycielowi gotowy bank pytań dla sześciu działów edukacyjnych, tak aby nie musiał budować lekcji od zera i mógł łatwo dobrać jedno pytanie główne do całej sesji.",
+  "questionModel": {
+    "defaultSelectionMode": "one-active-question-per-session",
+    "teacherMayOverrideWithCustomQuestion": true,
+    "activeQuestionMustBeVisibleInProjectorMode": true,
+    "activeQuestionMayBeTransferredToStudentReport": true,
+    "recommendedCountPerSection": 1,
+    "alternativeCountPerSection": 4
+  },
+  "globalRules": {
+    "core": [
+      "Jedno pytanie ma otwierać myślenie, a nie zamykać odpowiedź.",
+      "Pytanie nie może prowadzić ucznia do prostego wyroku moralnego.",
+      "Pytanie ma być spójne z działem i z osią projektu: świadectwo, raport, odpowiedzialność odbioru.",
+      "Pytanie nie może zamieniać zajęć w ranking postaci historycznych.",
+      "Pytanie powinno umożliwiać odpowiedź uczciwą, krótką albo pogłębioną."
+    ],
+    "mustAvoid": [
+      "kto był lepszy a kto gorszy",
+      "czy ktoś był bohaterem albo zdrajcą w prostym sensie",
+      "czy dziś jesteśmy lepsi od ludzi z tamtych czasów",
+      "czy jedno źródło rozstrzyga wszystko",
+      "czy system całkowicie zwalnia człowieka z odpowiedzialności"
+    ],
+    "teacherInstruction": "Na jedną sesję wybieraj jedno pytanie główne. Pozostałe traktuj jako pomocnicze tylko wtedy, gdy naprawdę są potrzebne.",
+    "studentTransferRule": "Aktywne pytanie może zostać wpisane do raportu ucznia jako pytanie końcowe lub pytanie otwierające część refleksyjną."
+  },
+  "sections": [
+    {
+      "sectionId": "section-pilecki-rocznicowy",
+      "slug": "pilecki-rocznicowy",
+      "title": "Pilecki — dział rocznicowy i historyczny",
+      "shortPurpose": "Dział do pracy wokół postaci Witolda Pileckiego, znaczenia raportu, świadectwa oraz odpowiedzialności pamięci.",
+      "bestFor": [
+        "rocznice związane z Witoldem Pileckim",
+        "szkoły średnie",
+        "uczelnie",
+        "instytucje pamięci",
+        "projekcje pełnego rozdziału"
+      ],
+      "defaultQuestionId": "q-pilecki-01",
+      "questions": [
+        {
+          "id": "q-pilecki-01",
+          "tier": "recommended",
+          "text": "Co sprawia, że świadectwo jednej osoby może po latach działać mocniej niż sama ogólna wiedza o historii?",
+          "whyThisQuestion": "To pytanie najczyściej otwiera rdzeń projektu: przejście od historii jako informacji do historii jako spotkania ze świadectwem.",
+          "bestUsedWhen": [
+            "pełny rozdział 65 minut",
+            "projekcja rocznicowa",
+            "pierwsze spotkanie nauczyciela z materiałem"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Nie pytajmy dziś najpierw, co wiemy o Pileckim. Zapytajmy raczej, co zmienia spotkanie z czyimś świadectwem.",
+          "studentReportFollowup": "Jakie znaczenie ma dla ciebie świadectwo konkretnego człowieka wobec historii, którą znasz już z podręcznika lub ogólnej opowieści?",
+          "avoidBecause": "Nie należy od razu przechodzić do pomnikowego języka o bohaterstwie. Najpierw trzeba uruchomić relację między świadectwem a odbiorem.",
+          "doNotTurnInto": [
+            "czy Pilecki był największym bohaterem",
+            "czy dziś ktoś byłby zdolny do tego samego",
+            "jednoznaczny test patriotyzmu"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-pilecki-02",
+          "tier": "strong-alternative",
+          "text": "Dlaczego zapisanie i przekazanie raportu może być równie ważne jak samo doświadczenie, z którego ten raport wyrasta?",
+          "whyThisQuestion": "Silnie wiąże projekt z ideą raportu jako aktu odpowiedzialności, a nie tylko dokumentu.",
+          "bestUsedWhen": [
+            "rocznica Pileckiego",
+            "dział raportu i świadectwa",
+            "nauczyciel chce mocniej podkreślić sens dokumentu"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Samo doświadczenie nie wystarcza, jeśli nie zostanie przekazane. Zastanówmy się, co oznacza decyzja o zapisaniu raportu.",
+          "studentReportFollowup": "Dlaczego raport nie jest tylko zapisem faktów, ale też formą odpowiedzialności?",
+          "avoidBecause": "Nie wolno zamienić tego pytania w automatyczną heroizację każdego aktu pisania lub dokumentowania.",
+          "doNotTurnInto": [
+            "każde zapisanie świadectwa jest automatycznie bohaterstwem",
+            "dokument rozwiązuje wszystkie problemy pamięci"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-pilecki-03",
+          "tier": "strong-alternative",
+          "text": "Co zostaje z historii, kiedy przestaje być tylko datą i nazwiskiem, a zaczyna być czyimś przekazanym doświadczeniem?",
+          "whyThisQuestion": "Dobre dla odbiorcy, który zna już podstawowe fakty, ale trzeba go wprowadzić głębiej w sens projektu.",
+          "bestUsedWhen": [
+            "liceum",
+            "wydarzenie szkolne",
+            "spotkanie rocznicowe o bardziej refleksyjnym tonie"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35"
+          ],
+          "recommendedFor": [
+            "7-8",
+            "liceum",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Daty i nazwiska są potrzebne. Ale dziś spróbujmy zobaczyć, co zostaje z historii, kiedy przechodzi przez doświadczenie człowieka.",
+          "studentReportFollowup": "Co w tej historii przestało być dla ciebie tylko informacją?",
+          "avoidBecause": "Nie należy rozmyć konkretu historycznego w czystej emocjonalności.",
+          "doNotTurnInto": [
+            "historia to tylko emocje",
+            "fakty są mniej ważne niż przeżycie"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-pilecki-04",
+          "tier": "optional",
+          "text": "Jak odpowiedzialnie pamiętać o człowieku historycznym, nie zamieniając go ani w pomnik, ani w wygodny slogan?",
+          "whyThisQuestion": "Bardzo dobre pytanie dla nauczyciela świadomego ryzyka patosu i uproszczenia.",
+          "bestUsedWhen": [
+            "uczelnie",
+            "instytucje",
+            "seminarium",
+            "świadoma praca rocznicowa"
+          ],
+          "recommendedModes": [
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "Pamięć może być uczciwa albo wygodna. Dziś zapytajmy, jak nie zamienić człowieka historycznego w hasło.",
+          "studentReportFollowup": "Co pomaga pamiętać uczciwie, a co grozi uproszczeniem?",
+          "avoidBecause": "Za trudne jako pytanie pierwszego kontaktu dla młodszej grupy.",
+          "doNotTurnInto": [
+            "czy pomniki są złe",
+            "czy pamięć publiczna zawsze fałszuje historię"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-pilecki-05",
+          "tier": "optional",
+          "text": "Jaką odpowiedzialność bierze na siebie odbiorca, kiedy spotyka się z raportem i świadectwem po wielu latach od ich powstania?",
+          "whyThisQuestion": "Mocno domyka projekt w stronę współczesnego odbiorcy i sensu pracy edukacyjnej.",
+          "bestUsedWhen": [
+            "zakończenie projekcji",
+            "uczelnia",
+            "instytucje",
+            "grupa refleksyjna"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Raport nie kończy się na swoim autorze. Zaczyna działać dalej w odbiorcy. Co to od nas wymaga?",
+          "studentReportFollowup": "Za co odpowiada odbiorca świadectwa?",
+          "avoidBecause": "Nie należy zaczynać od tego pytania bez wcześniejszego zbudowania relacji z samym materiałem.",
+          "doNotTurnInto": [
+            "czy wszyscy jesteśmy winni pamięci",
+            "moralny egzamin współczesności"
+          ],
+          "reportWeight": "high"
+        }
+      ]
+    },
+    {
+      "sectionId": "section-totalitaryzm-wybor",
+      "slug": "totalitaryzm-wybor",
+      "title": "Totalitaryzm i wybory pod presją",
+      "shortPurpose": "Dział do rozmowy o systemie, nacisku, ograniczeniach decyzji i ostrożności w ocenianiu ludzkich wyborów.",
+      "bestFor": [
+        "liceum",
+        "uczelnie",
+        "lekcje o systemach totalitarnych",
+        "pełny rozdział lub seminarium"
+      ],
+      "defaultQuestionId": "q-totalitaryzm-01",
+      "questions": [
+        {
+          "id": "q-totalitaryzm-01",
+          "tier": "recommended",
+          "text": "Jak system totalitarny wpływa na ludzkie decyzje, zanim jeszcze człowiek zdąży je nazwać własnym wyborem?",
+          "whyThisQuestion": "To pytanie nie upraszcza odpowiedzialności, ale pokazuje, że decyzja nie rodzi się w próżni.",
+          "bestUsedWhen": [
+            "dział totalitaryzm",
+            "rozmowa o mechanizmach nacisku",
+            "pełny rozdział"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Zanim zapytamy o winę albo odwagę, zapytajmy najpierw, co system robi z samym polem możliwej decyzji.",
+          "studentReportFollowup": "W jaki sposób system wpływał na warunki ludzkiego wyboru?",
+          "avoidBecause": "Nie można dopuścić, by uczniowie odczytali to pytanie jako usprawiedliwienie wszystkiego systemem.",
+          "doNotTurnInto": [
+            "człowiek nie odpowiada za nic w systemie",
+            "system decyduje zawsze za wszystkich"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-totalitaryzm-02",
+          "tier": "strong-alternative",
+          "text": "Dlaczego ocena decyzji podejmowanych pod skrajną presją wymaga większej ostrożności niż szybki sąd z bezpiecznej perspektywy?",
+          "whyThisQuestion": "To bardzo dobre pytanie przeciw uproszczonym osądom i przeciw łatwej pewności moralnej odbiorcy.",
+          "bestUsedWhen": [
+            "rozmowa po projekcji",
+            "liceum rozszerzone",
+            "seminarium"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Łatwo oceniać decyzje z dystansu. Trudniej uczciwie zapytać, w jakich warunkach te decyzje były podejmowane.",
+          "studentReportFollowup": "Co sprawia, że ludzki wybór pod presją wymaga ostrożniejszego języka?",
+          "avoidBecause": "Nie wolno użyć tego pytania do relatywizowania przemocy i odpowiedzialności.",
+          "doNotTurnInto": [
+            "nikogo nie wolno oceniać nigdy",
+            "każdy wybór pod presją jest moralnie neutralny"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-totalitaryzm-03",
+          "tier": "strong-alternative",
+          "text": "W którym momencie system przestaje być tylko tłem wydarzeń, a staje się aktywną siłą nacisku na codzienne życie człowieka?",
+          "whyThisQuestion": "Dobrze otwiera obserwację konkretu: przestrzeni, ciała, organizacji codzienności, dokumentu, klasyfikacji.",
+          "bestUsedWhen": [
+            "po fragmencie wizualnym",
+            "praca na obiektach",
+            "nauczyciel chce zejść z abstrakcji do konkretu"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35"
+          ],
+          "recommendedFor": [
+            "7-8",
+            "liceum"
+          ],
+          "teacherOpeningLine": "Nie myślmy o systemie tylko jako o wielkiej idei. Zobaczmy, kiedy zaczyna działać na ciało, ruch, język i codzienność.",
+          "studentReportFollowup": "Gdzie w materiale było widać działanie systemu najmocniej?",
+          "avoidBecause": "Nie należy abstrahować od konkretnych realiów historycznych.",
+          "doNotTurnInto": [
+            "system jest wszędzie i we wszystkim",
+            "każda instytucja to totalitaryzm"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-totalitaryzm-04",
+          "tier": "optional",
+          "text": "Jak rozmawiać o odpowiedzialności człowieka, nie zapominając jednocześnie o przemocy systemu, który zawężał pole decyzji?",
+          "whyThisQuestion": "Mocne pytanie dla dojrzałej grupy, która potrafi utrzymać napięcie bez binarnych odpowiedzi.",
+          "bestUsedWhen": [
+            "uczelnie",
+            "seminaria",
+            "grupa z dobrą kulturą dyskusji"
+          ],
+          "recommendedModes": [
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum rozszerzone",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Spróbujmy utrzymać dwa poziomy jednocześnie: odpowiedzialność człowieka i przemoc systemu.",
+          "studentReportFollowup": "Jak połączyć myślenie o odpowiedzialności z myśleniem o nacisku systemowym?",
+          "avoidBecause": "Za trudne jako pytanie podstawowe dla pierwszego kontaktu.",
+          "doNotTurnInto": [
+            "czy system jest winny bardziej niż człowiek",
+            "prosty bilans winy"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-totalitaryzm-05",
+          "tier": "optional",
+          "text": "Czy współczesny odbiorca ma prawo do szybkiego osądu, jeśli nie potrafi najpierw uczciwie opisać warunków, w których działał człowiek pod presją?",
+          "whyThisQuestion": "Dobrze łączy historię z odpowiedzialnością odbiorcy, ale wymaga skupienia i ostrożnego prowadzenia.",
+          "bestUsedWhen": [
+            "końcowa rozmowa",
+            "seminarium",
+            "grupa dojrzała"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Zanim wydamy sąd, zapytajmy, czy naprawdę opisaliśmy warunki działania uczciwie.",
+          "studentReportFollowup": "Jakiej ostrożności wymaga od ciebie rola współczesnego odbiorcy historii?",
+          "avoidBecause": "Nie nadaje się jako pytanie na otwarcie z młodszą grupą.",
+          "doNotTurnInto": [
+            "nikt nie ma prawa do oceny historii",
+            "współczesny odbiorca ma tylko milczeć"
+          ],
+          "reportWeight": "medium"
+        }
+      ]
+    },
+    {
+      "sectionId": "section-auschwitz",
+      "slug": "auschwitz",
+      "title": "Auschwitz — miejsce, system, świadectwo",
+      "shortPurpose": "Dział do pracy wokół Auschwitz jako miejsca historycznego, systemu przemocy, przestrzeni i świadectwa.",
+      "bestFor": [
+        "szkoły średnie",
+        "uczelnie",
+        "instytucje",
+        "projekcje edukacyjne"
+      ],
+      "defaultQuestionId": "q-auschwitz-01",
+      "questions": [
+        {
+          "id": "q-auschwitz-01",
+          "tier": "recommended",
+          "text": "Co zmienia się w rozumieniu Auschwitz, gdy patrzymy nie tylko na nazwę i datę, ale na przestrzeń, ślad i świadectwo?",
+          "whyThisQuestion": "To pytanie porządkuje cały dział i pozwala uniknąć redukcji Auschwitz do samego symbolu albo samej wiedzy encyklopedycznej.",
+          "bestUsedWhen": [
+            "pierwsze wejście w dział Auschwitz",
+            "projekcja pełnego rozdziału",
+            "praca w szkole i instytucji"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "7-8",
+            "liceum",
+            "uczelnia",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Auschwitz nie jest tylko nazwą miejsca. Spróbujmy zobaczyć, co wnosi przestrzeń, ślad i świadectwo do rozumienia historii.",
+          "studentReportFollowup": "Co w tym dziale przestało być dla ciebie tylko wiedzą ogólną o Auschwitz?",
+          "avoidBecause": "Nie wolno zamienić tego pytania w emocjonalną abstrakcję oderwaną od źródła i materialności miejsca.",
+          "doNotTurnInto": [
+            "Auschwitz mówi samo za siebie",
+            "wystarczy emocjonalna reakcja"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-auschwitz-02",
+          "tier": "strong-alternative",
+          "text": "Jak przestrzeń zorganizowana przez system może wpływać na ludzkie doświadczenie bardziej, niż widać to z samego opisu wydarzeń?",
+          "whyThisQuestion": "Bardzo dobrze działa przy pracy z miejscem, architekturą, granicą i organizacją przestrzeni obozowej.",
+          "bestUsedWhen": [
+            "po wizualnym fragmencie",
+            "przy pracy na obiekcie miejsca",
+            "gdy nauczyciel chce mocniej wejść w temat przestrzeni"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Miejsce nie jest tylko tłem. Zastanówmy się, jak przestrzeń może działać na człowieka jako część systemu.",
+          "studentReportFollowup": "Jaką rolę odegrała przestrzeń w tym, co zobaczyłeś lub usłyszałeś?",
+          "avoidBecause": "Nie należy antropomorfizować miejsca ani mówić, że przestrzeń sama opowiada historię.",
+          "doNotTurnInto": [
+            "miejsce pamięta zamiast ludzi",
+            "architektura wyjaśnia wszystko"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-auschwitz-03",
+          "tier": "strong-alternative",
+          "text": "Dlaczego materialny detal — przedmiot, fragment przestrzeni, dokument — bywa ważny dla rozumienia Auschwitz tak samo jak wielkie fakty historyczne?",
+          "whyThisQuestion": "Dobre pytanie do wejścia przez obiekt i do pracy mniej abstrakcyjnej.",
+          "bestUsedWhen": [
+            "młodsza grupa",
+            "nauczyciel chce zacząć od rzeczy konkretnej",
+            "praca na obiekcie pamięci"
+          ],
+          "recommendedModes": [
+            "curated-35",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "7-8",
+            "liceum",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Czasem detal nie zastępuje historii, ale pozwala ją naprawdę zobaczyć. Zatrzymajmy się przy tym, co materialne.",
+          "studentReportFollowup": "Który detal najmocniej uruchomił twoje rozumienie historii?",
+          "avoidBecause": "Nie można zamieniać pojedynczego detalu w pełny skrót całego doświadczenia obozowego.",
+          "doNotTurnInto": [
+            "jeden obiekt mówi wszystko o Auschwitz",
+            "detal jest ważniejszy od źródła"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-auschwitz-04",
+          "tier": "optional",
+          "text": "Jak zachować powagę wobec miejsca i świadectwa, a jednocześnie nie upraszczać historii do samego symbolu grozy?",
+          "whyThisQuestion": "Bardzo dobre dla nauczyciela, który chce uniknąć patosu i symbolicznego skrótu.",
+          "bestUsedWhen": [
+            "uczelnie",
+            "instytucje",
+            "seminarium"
+          ],
+          "recommendedModes": [
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "Powaga nie musi oznaczać uproszczenia. Spróbujmy zobaczyć, jak nie zamieniać historii w sam symbol.",
+          "studentReportFollowup": "Co pomaga zachować powagę bez popadania w uproszczenie?",
+          "avoidBecause": "To pytanie wymaga już pewnej dojrzałości interpretacyjnej.",
+          "doNotTurnInto": [
+            "czy symbole są złe",
+            "czy emocja jest nieważna"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-auschwitz-05",
+          "tier": "optional",
+          "text": "Co w pracy z Auschwitz powinno zostać nazwane ostrożnie, żeby nie pomylić źródła, interpretacji i własnej reakcji odbiorcy?",
+          "whyThisQuestion": "Bardzo dobre do domknięcia pracy w stronę odpowiedzialnego języka.",
+          "bestUsedWhen": [
+            "zakończenie zajęć",
+            "nauczyciel chce podsumować sposób mówienia",
+            "grupa bardziej refleksyjna"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Nie wszystko, co silnie działa, wolno od razu nazywać dowolnym słowem. Zastanówmy się, gdzie potrzebna jest największa ostrożność.",
+          "studentReportFollowup": "Jakiego języka wymaga odpowiedzialna rozmowa o Auschwitz?",
+          "avoidBecause": "Nie nadaje się jako pierwsze pytanie otwierające.",
+          "doNotTurnInto": [
+            "zakaz emocji",
+            "zakaz osobistej odpowiedzi"
+          ],
+          "reportWeight": "high"
+        }
+      ]
+    },
+    {
+      "sectionId": "section-ai-historia",
+      "slug": "ai-historia",
+      "title": "AI i historia",
+      "shortPurpose": "Dział do rozmowy o odpowiedzialnym użyciu AI w pracy z materiałem historycznym, źródłem, formą i interpretacją.",
+      "bestFor": [
+        "liceum",
+        "uczelnie",
+        "warsztaty",
+        "instytucje",
+        "spotkania o procesie twórczym"
+      ],
+      "defaultQuestionId": "q-ai-01",
+      "questions": [
+        {
+          "id": "q-ai-01",
+          "tier": "recommended",
+          "text": "Jak używać narzędzi AI w pracy z historią tak, żeby forma nie zaczęła udawać źródła?",
+          "whyThisQuestion": "To najczystsze pytanie dla tego działu: proste, odpowiedzialne i mocno spójne z Twoją metodą.",
+          "bestUsedWhen": [
+            "dział AI i historia",
+            "warsztaty edukacyjne",
+            "spotkanie o procesie tworzenia"
+          ],
+          "recommendedModes": [
+            "curated-35",
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "AI może pomóc w formie, ale nie może podszywać się pod źródło. To napięcie jest dziś jednym z najważniejszych pytań pracy z historią.",
+          "studentReportFollowup": "Jak odróżnić formę stworzoną przy użyciu AI od źródła historycznego?",
+          "avoidBecause": "Nie należy sprowadzać rozmowy do technofobii albo zachwytu technologią.",
+          "doNotTurnInto": [
+            "AI jest dobre albo złe",
+            "AI zastąpi historię",
+            "AI nie ma żadnego miejsca w edukacji"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-ai-02",
+          "tier": "strong-alternative",
+          "text": "Gdzie przebiega granica między odpowiedzialną interpretacją historii a jej efektownym, ale mylącym przetworzeniem?",
+          "whyThisQuestion": "Świetne do rozmowy o granicy estetyki, emocji i odpowiedzialności.",
+          "bestUsedWhen": [
+            "uczelnie",
+            "liceum rozszerzone",
+            "warsztat z nauczycielami"
+          ],
+          "recommendedModes": [
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "Nie wszystko, co porusza, jest jeszcze uczciwą interpretacją. Spróbujmy znaleźć granicę.",
+          "studentReportFollowup": "Po czym poznajesz, że forma pomaga historii, a nie ją fałszuje?",
+          "avoidBecause": "Za szerokie dla grupy, która nie ma jeszcze kontaktu z podstawowymi pojęciami źródła i interpretacji.",
+          "doNotTurnInto": [
+            "estetyka jest zawsze podejrzana",
+            "emocja zawsze szkodzi historii"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-ai-03",
+          "tier": "strong-alternative",
+          "text": "Jak zachować uczciwość wobec materiału historycznego, kiedy korzysta się z narzędzi, które potrafią tworzyć bardzo przekonujące obrazy i narracje?",
+          "whyThisQuestion": "Bardzo praktyczne i dobrze działa z młodszą grupą lub z nauczycielami.",
+          "bestUsedWhen": [
+            "warsztat praktyczny",
+            "pierwsze wejście w temat AI",
+            "rozmowa o odpowiedzialności twórczej"
+          ],
+          "recommendedModes": [
+            "curated-35",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Im bardziej przekonująca forma, tym większa odpowiedzialność twórcy i odbiorcy.",
+          "studentReportFollowup": "Co musi zrobić twórca, żeby odbiorca nie pomylił formy ze źródłem?",
+          "avoidBecause": "Nie należy sprowadzać uczciwości wyłącznie do technicznego oznaczenia 'to AI'.",
+          "doNotTurnInto": [
+            "wystarczy dopisać, że to AI i problem znika",
+            "każdy obraz AI jest manipulacją"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-ai-04",
+          "tier": "optional",
+          "text": "Czy nowoczesna forma może pomóc współczesnemu odbiorcy wejść w historię głębiej, czy raczej grozi jej spłyceniem?",
+          "whyThisQuestion": "Dobre pytanie otwarte, ale wymaga nauczyciela, który potrafi utrzymać równowagę w rozmowie.",
+          "bestUsedWhen": [
+            "spotkania autorskie",
+            "warsztaty z twórczością",
+            "grupa zainteresowana formą"
+          ],
+          "recommendedModes": [
+            "curated-35",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Nowoczesna forma może być mostem albo zasłoną. Zastanówmy się, od czego to zależy.",
+          "studentReportFollowup": "Czy forma pomogła ci wejść głębiej w temat, czy raczej groziła uproszczeniem?",
+          "avoidBecause": "Nie może to być rozmowa o gustach estetycznych oderwana od odpowiedzialności historycznej.",
+          "doNotTurnInto": [
+            "nowoczesne znaczy płytkie",
+            "tradycyjne znaczy uczciwe"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-ai-05",
+          "tier": "optional",
+          "text": "Jakiej odpowiedzialności wymaga dziś od odbiorcy rozpoznanie, co jest źródłem, co interpretacją, a co współczesnym narzędziem przekazu?",
+          "whyThisQuestion": "Świetne pytanie domykające dla działu AI i historia.",
+          "bestUsedWhen": [
+            "zakończenie warsztatu",
+            "uczelnie",
+            "nauczyciele",
+            "instytucje"
+          ],
+          "recommendedModes": [
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "Odpowiedzialność nie leży już tylko po stronie twórcy. Coraz więcej zależy także od uważności odbiorcy.",
+          "studentReportFollowup": "Co powinien umieć rozpoznać odpowiedzialny odbiorca materiału historycznego tworzonego dziś?",
+          "avoidBecause": "Za trudne jako pytanie otwierające dla początkującej grupy.",
+          "doNotTurnInto": [
+            "odbiorca odpowiada za wszystko",
+            "wystarczy nie ufać niczemu"
+          ],
+          "reportWeight": "high"
+        }
+      ]
+    },
+    {
+      "sectionId": "section-polonia",
+      "slug": "polonia",
+      "title": "Polonia — historia Pileckiego, II wojna światowa, totalitaryzm",
+      "shortPurpose": "Dział do pracy z odbiorcą zagranicznym lub polonijnym, który potrzebuje pomostu między polskim doświadczeniem historycznym a szerszym kontekstem międzynarodowym.",
+      "bestFor": [
+        "szkoły polonijne",
+        "odbiorcy dwujęzyczni",
+        "międzynarodowe grupy edukacyjne",
+        "projekcje kontekstowe"
+      ],
+      "defaultQuestionId": "q-polonia-01",
+      "questions": [
+        {
+          "id": "q-polonia-01",
+          "tier": "recommended",
+          "text": "Jak opowiadać o polskim doświadczeniu wojny i totalitaryzmu tak, żeby nie stracić jego ciężaru, ale też nie zamknąć go tylko w lokalnym kontekście?",
+          "whyThisQuestion": "To najpełniejsze pytanie dla Polonii: zachowuje polskość doświadczenia, ale otwiera je na odbiorcę międzynarodowego.",
+          "bestUsedWhen": [
+            "Polonia",
+            "grupa dwujęzyczna",
+            "międzynarodowe spotkanie edukacyjne"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "Polonia",
+            "liceum",
+            "uczelnia",
+            "instytucje zagraniczne"
+          ],
+          "teacherOpeningLine": "To doświadczenie jest głęboko polskie, ale nie powinno pozostać niezrozumiałe poza polskim kontekstem. Poszukajmy uczciwego mostu.",
+          "studentReportFollowup": "Co w tym materiale działa jako most między polskim doświadczeniem a szerszym odbiorcą?",
+          "avoidBecause": "Nie wolno redukować polskiego doświadczenia do prostego sloganu narodowego ani do bezbarwnej uniwersalności.",
+          "doNotTurnInto": [
+            "czy polska historia jest lepsza lub ważniejsza",
+            "czy trzeba wszystko uprościć dla zagranicy"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-polonia-02",
+          "tier": "strong-alternative",
+          "text": "Który element tej historii wydaje się najbardziej czytelny także poza polskim kontekstem — i dlaczego właśnie on?",
+          "whyThisQuestion": "Bardzo dobre pytanie dla grup mieszanych i dla krótszej projekcji.",
+          "bestUsedWhen": [
+            "krótszy moduł",
+            "pierwsze spotkanie z zagranicznym odbiorcą",
+            "grupa mieszana językowo"
+          ],
+          "recommendedModes": [
+            "curated-35",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "Polonia",
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Nie wszystko od razu działa równie mocno w innym kontekście kulturowym. Zobaczmy, co tu niesie sens najczytelniej.",
+          "studentReportFollowup": "Który element tej historii najmocniej otwierał się na odbiorcę międzynarodowego?",
+          "avoidBecause": "Nie należy wybierać tylko tego, co najbardziej efektowne emocjonalnie.",
+          "doNotTurnInto": [
+            "co najlepiej sprzedać odbiorcy zagranicznemu",
+            "co jest najbardziej uniwersalne za wszelką cenę"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-polonia-03",
+          "tier": "strong-alternative",
+          "text": "Jak mówić o Pileckim i polskim doświadczeniu wojny bez tłumaczenia wszystkiego do poziomu uproszczonej legendy?",
+          "whyThisQuestion": "Chroni dział przed przesunięciem w stronę łatwego mitu eksportowego.",
+          "bestUsedWhen": [
+            "wydarzenie polonijne",
+            "nauczyciel boi się uproszczenia",
+            "grupa starsza"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "Polonia",
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Gdy historia wychodzi poza swój lokalny język, łatwo zrobić z niej legendę zamiast świadectwa. Spróbujmy tego uniknąć.",
+          "studentReportFollowup": "Co pomaga opowiadać tę historię uczciwie także poza Polską?",
+          "avoidBecause": "Nie można zamienić pytania w spór o marketing pamięci.",
+          "doNotTurnInto": [
+            "jak zrobić z Pileckiego markę",
+            "czy trzeba wszystko upraszczać dla świata"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-polonia-04",
+          "tier": "optional",
+          "text": "Co w tej historii wymaga dopowiedzenia kontekstu, a co może działać bez wielu wyjaśnień nawet w międzynarodowym odbiorze?",
+          "whyThisQuestion": "Bardzo praktyczne pytanie dla nauczyciela pracującego z grupą dwujęzyczną.",
+          "bestUsedWhen": [
+            "warsztaty polonijne",
+            "praca translatorska",
+            "nauczyciel chce sprawdzić, co grupa naprawdę rozumie"
+          ],
+          "recommendedModes": [
+            "curated-35",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "Polonia",
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Nie wszystko trzeba tłumaczyć od razu tak samo. Zobaczmy, co wymaga kontekstu, a co działa już przez samo świadectwo.",
+          "studentReportFollowup": "Które elementy wymagały dla ciebie dopowiedzenia kontekstu?",
+          "avoidBecause": "Nie wolno sprowadzić tej rozmowy do zwykłego testu wiedzy.",
+          "doNotTurnInto": [
+            "kto zna historię lepiej",
+            "czy bez kontekstu historia nie działa wcale"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-polonia-05",
+          "tier": "optional",
+          "text": "Jak połączyć pamięć historyczną z językiem zrozumiałym dla współczesnego odbiorcy, nie gubiąc powagi i złożoności materiału?",
+          "whyThisQuestion": "Dobre pytanie zamykające lub warsztatowe.",
+          "bestUsedWhen": [
+            "podsumowanie",
+            "spotkanie autorskie",
+            "warsztat edukacyjny"
+          ],
+          "recommendedModes": [
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "Polonia",
+            "liceum",
+            "uczelnia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "Współczesny język nie musi zdradzać historii. Ale wymaga ogromnej odpowiedzialności. Zastanówmy się, od czego to zależy.",
+          "studentReportFollowup": "Jak mówić współcześnie o historii, nie spłycając jej sensu?",
+          "avoidBecause": "Zbyt meta jako pierwsze pytanie.",
+          "doNotTurnInto": [
+            "czy młodzi rozumieją tylko nowoczesny język",
+            "czy tradycyjny język jest zawsze lepszy"
+          ],
+          "reportWeight": "medium"
+        }
+      ]
+    },
+    {
+      "sectionId": "section-sumienie-raport",
+      "slug": "sumienie-raport",
+      "title": "Sumienie i znaczenie raportu",
+      "shortPurpose": "Dział spinający projekt z teraźniejszością: decyzja, czas, odpowiedzialność, samotność wyboru i sens raportu jako śladu sumienia.",
+      "bestFor": [
+        "liceum",
+        "uczelnie",
+        "spotkania refleksyjne",
+        "domknięcie pracy z rozdziałem"
+      ],
+      "defaultQuestionId": "q-sumienie-01",
+      "questions": [
+        {
+          "id": "q-sumienie-01",
+          "tier": "recommended",
+          "text": "Co znaczy raport wtedy, gdy przestaje być tylko dokumentem, a zaczyna być śladem decyzji, odpowiedzialności i sumienia?",
+          "whyThisQuestion": "To najpełniejsze pytanie dla działu domykającego. Łączy raport, człowieka, decyzję i współczesnego odbiorcę.",
+          "bestUsedWhen": [
+            "domknięcie pełnego rozdziału",
+            "zajęcia refleksyjne",
+            "seminarium",
+            "zakończenie pracy z projektem"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "Polonia",
+            "instytucje"
+          ],
+          "teacherOpeningLine": "Raport można czytać jako dokument. Ale można też zapytać, co zostaje w nim z decyzji, odpowiedzialności i sumienia.",
+          "studentReportFollowup": "Co w twoim odbiorze znaczy dziś raport jako ślad sumienia?",
+          "avoidBecause": "Nie wolno robić z tego pytania moralizującego kazania.",
+          "doNotTurnInto": [
+            "czy wszyscy mamy obowiązek być bohaterami",
+            "czy sumienie zawsze mówi jasno"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-sumienie-02",
+          "tier": "strong-alternative",
+          "text": "Dlaczego niektóre decyzje można podjąć tylko wtedy, kiedy jeszcze jest na nie czas — a później zostaje już tylko świadomość spóźnienia?",
+          "whyThisQuestion": "To pytanie dobrze łączy warstwę historyczną z Twoją współczesną osią o decyzji, czasie i odpowiedzialności.",
+          "bestUsedWhen": [
+            "dział sumienie",
+            "po zakończeniu projekcji",
+            "rozmowa z młodzieżą o teraźniejszości"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Niektóre decyzje są trudne nie tylko dlatego, że kosztują, ale dlatego, że mają swój moment. Po nim zostaje już tylko pytanie, czemu było za późno.",
+          "studentReportFollowup": "Co mówi ci historia o decyzjach, które trzeba podjąć, zanim będzie za późno?",
+          "avoidBecause": "Nie należy od razu spychać rozmowy w czysto prywatną psychologię.",
+          "doNotTurnInto": [
+            "motywacyjny coaching",
+            "prosty morał o tym, żeby zawsze działać natychmiast"
+          ],
+          "reportWeight": "high"
+        },
+        {
+          "id": "q-sumienie-03",
+          "tier": "strong-alternative",
+          "text": "Czy odpowiedzialność zawsze polega na wielkim czynie, czy czasem zaczyna się od małej uczciwości wobec tego, co mamy zrobić teraz?",
+          "whyThisQuestion": "Bardzo dobre do przejścia od wielkiej historii do codzienności ucznia bez infantylizacji projektu.",
+          "bestUsedWhen": [
+            "zakończenie lekcji",
+            "grupa szkolna",
+            "nauczyciel chce połączyć historię z teraźniejszością"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "curated-35"
+          ],
+          "recommendedFor": [
+            "7-8",
+            "liceum"
+          ],
+          "teacherOpeningLine": "Historia nie musi kończyć się tylko na wielkich czynach. Czasem wraca do nas przez pytanie o małą uczciwość w tym, co robimy teraz.",
+          "studentReportFollowup": "Jak rozumiesz dziś odpowiedzialność po tej pracy z materiałem?",
+          "avoidBecause": "Nie wolno banalizować historii do poziomu prostego hasła wychowawczego.",
+          "doNotTurnInto": [
+            "nie pisz SMS-ów na lekcji i to jest to samo",
+            "codzienna dyscyplina jest równoważna doświadczeniu historycznemu"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-sumienie-04",
+          "tier": "optional",
+          "text": "Co zostaje człowiekowi, kiedy decyzji nie da się już cofnąć i trzeba zostać samemu z jej konsekwencją?",
+          "whyThisQuestion": "Mocne, ale bardzo dojrzałe. Dobre dla starszych grup i refleksyjnego zamknięcia.",
+          "bestUsedWhen": [
+            "uczelnie",
+            "liceum rozszerzone",
+            "zakończenie seminarium"
+          ],
+          "recommendedModes": [
+            "seminar-extended",
+            "full-65"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia"
+          ],
+          "teacherOpeningLine": "Nie każdą decyzję można odwrócić. Czasem po wszystkim zostaje tylko odpowiedzialność za to, co już się wydarzyło.",
+          "studentReportFollowup": "Jak rozumiesz ciężar decyzji, której nie da się cofnąć?",
+          "avoidBecause": "Nie nadaje się jako pytanie otwierające dla młodszej albo niestabilnej emocjonalnie grupy.",
+          "doNotTurnInto": [
+            "psychologiczna spowiedź",
+            "prywatne rozliczenia uczniów"
+          ],
+          "reportWeight": "medium"
+        },
+        {
+          "id": "q-sumienie-05",
+          "tier": "optional",
+          "text": "Jaką rolę może dziś pełnić raport: zapis faktów, ślad decyzji czy wezwanie do odpowiedzialnego odbioru?",
+          "whyThisQuestion": "Świetnie domyka całość projektu i może być używane także w instytucjach.",
+          "bestUsedWhen": [
+            "domknięcie całego programu",
+            "spotkanie autorskie",
+            "instytucje",
+            "uczelnie"
+          ],
+          "recommendedModes": [
+            "full-65",
+            "seminar-extended"
+          ],
+          "recommendedFor": [
+            "liceum",
+            "uczelnia",
+            "instytucje",
+            "Polonia"
+          ],
+          "teacherOpeningLine": "Raport może znaczyć dziś więcej niż tylko dokument. Spróbujmy nazwać, jak działa teraz wobec odbiorcy.",
+          "studentReportFollowup": "Która z tych ról raportu wydaje ci się dziś najważniejsza i dlaczego?",
+          "avoidBecause": "Za mało konkretne jako pytanie na sam początek.",
+          "doNotTurnInto": [
+            "czysto akademicką definicję raportu",
+            "techniczne pytanie o dokument"
+          ],
+          "reportWeight": "high"
+        }
+      ]
+    }
+  ],
+  "teacherCustomQuestionPolicy": {
+    "enabled": true,
+    "title": "Własne pytanie nauczyciela",
+    "description": "Nauczyciel może wpisać własne pytanie dla danej sesji. Powinno ono pozostać spójne z działem, nie prowadzić do prostego wyroku moralnego i nie rozsadzać sensu projektu.",
+    "validationRules": {
+      "minLength": 18,
+      "maxLength": 240,
+      "mustNotContain": [
+        "kto był lepszy",
+        "kto był gorszy",
+        "zdrajca",
+        "największy bohater",
+        "czy miał rację moralnie"
+      ],
+      "shouldPrefer": [
+        "jak",
+        "co sprawia",
+        "dlaczego",
+        "w jaki sposób",
+        "co zmienia się"
+      ]
+    },
+    "teacherReminder": "Własne pytanie ma otwierać myślenie, nie wymuszać tezy.",
+    "studentTransfer": {
+      "allowed": true,
+      "label": "Pytanie od nauczyciela",
+      "placementInReport": "top-reflection-block"
+    }
+  },
+  "uiBindings": {
+    "defaultSectionCardsUse": "defaultQuestionId",
+    "recommendedQuestionCardUses": "question.tier=recommended",
+    "otherQuestionsAccordionUses": [
+      "question.tier=strong-alternative",
+      "question.tier=optional"
+    ],
+    "projectorQuestionViewUses": "activeQuestion.text",
+    "discussionPauseViewUses": [
+      "activeQuestion.text",
+      "activeQuestion.teacherOpeningLine"
+    ],
+    "studentReportUses": [
+      "activeQuestion.text",
+      "activeQuestion.studentReportFollowup"
+    ],
+    "teacherGuideMayReference": [
+      "question.whyThisQuestion",
+      "question.avoidBecause",
+      "question.doNotTurnInto"
+    ]
+  },
+  "cleanupFromPreviousPromptModel": {
+    "replace": [
+      "promptGroups dzielone według opening/observational/source/interpretive/reflective",
+      "rozsiane pytania po krokach lesson flow",
+      "wymuszanie wielu pytań w jednej sesji"
+    ],
+    "keepAsBackgroundOnly": [
+      "metodologia z promptów",
+      "report policy",
+      "named persons policy",
+      "forbidden framings"
+    ],
+    "newTeacherFacingLogic": [
+      "nauczyciel wybiera dział",
+      "nauczyciel wybiera jedno pytanie główne",
+      "to pytanie prowadzi projekcję i raport"
+    ]
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel rozumie od razu, które pytanie jest rekomendowane.",
+      "Nie musi czytać wszystkich pytań, żeby zacząć zajęcia.",
+      "Jednym kliknięciem może przenieść pytanie do sesji i raportu ucznia."
+    ],
+    "project": [
+      "Pytania są spójne z dokumentami projektu.",
+      "Pytania nie łamią zasad powściągliwości interpretacyjnej.",
+      "Pytania trzymają centrum projektu: świadectwo, raport, odpowiedzialność odbioru."
+    ]
+  }
+}
