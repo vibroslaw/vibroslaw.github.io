@@ -109,9 +109,10 @@
             </div>
 
             <div class="live-session-actions">
-              <button class="btn btn-secondary" type="button" id="prevStepButton">Poprzedni krok</button>
-              <button class="btn btn-primary" type="button" id="nextStepButton">Następny krok</button>
-            </div>
+  <button class="btn btn-secondary" type="button" id="prevStepButton">Poprzedni krok</button>
+  <button class="btn btn-secondary" type="button" id="presentationModeButton">Tryb prezentacji</button>
+  <button class="btn btn-primary" type="button" id="nextStepButton">Następny krok</button>
+</div>
           </div>
 
           <div class="live-session-body">
@@ -226,6 +227,121 @@
         </div>
       </section>
     </div>
+
+    <div class="lab-present" id="labPresent" hidden aria-hidden="true">
+  <div class="lab-present-shell">
+    <header class="lab-present-topbar">
+      <div class="lab-present-brand">
+        <div class="lab-present-kicker">Laboratorium Sumienia</div>
+        <div class="lab-present-session" id="labPresentSessionLabel">Tryb prezentacji</div>
+      </div>
+
+      <div class="lab-present-controls">
+        <div class="lab-present-mode-tabs" id="labPresentModeTabs"></div>
+
+        <button class="lab-present-icon" id="labPresentFullscreenToggle" type="button" aria-label="Pełny ekran">
+          ⤢
+        </button>
+
+        <button class="lab-present-icon" id="labPresentClose" type="button" aria-label="Zamknij tryb prezentacji">
+          ×
+        </button>
+      </div>
+    </header>
+
+    <main class="lab-present-stage">
+      <section class="lab-present-view is-active" id="labPresentPromptView" data-view="prompt">
+        <div class="lab-present-center">
+          <div class="lab-present-meta">
+            <span class="lab-present-step" id="labPresentPromptStep">Krok 1</span>
+            <span class="lab-present-type" id="labPresentPromptType">Wejście</span>
+          </div>
+
+          <h1 class="lab-present-title" id="labPresentPromptTitle">Wejście</h1>
+          <p class="lab-present-subtitle" id="labPresentPromptInstruction">
+            Nie wprowadzaj jeszcze pełnego kontekstu historycznego.
+          </p>
+
+          <blockquote class="lab-present-question" id="labPresentPromptQuestion">
+            Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="lab-present-view" id="labPresentObjectView" data-view="object">
+        <div class="lab-present-object-grid">
+          <div class="lab-present-object-media">
+            <div class="lab-present-object-image" id="labPresentObjectImage"></div>
+          </div>
+
+          <div class="lab-present-object-copy">
+            <div class="lab-present-meta">
+              <span class="lab-present-step" id="labPresentObjectStep">Krok 2</span>
+              <span class="lab-present-type">Obiekt pamięci</span>
+            </div>
+
+            <h2 class="lab-present-object-title" id="labPresentObjectTitle">Obiekt pamięci</h2>
+            <p class="lab-present-object-text" id="labPresentObjectText">
+              Opis obiektu.
+            </p>
+
+            <blockquote class="lab-present-object-quote" id="labPresentObjectQuote">
+              Cytat obiektu.
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-present-view" id="labPresentQrView" data-view="qr">
+        <div class="lab-present-qr-grid">
+          <div class="lab-present-qr-frame">
+            <div class="lab-present-qr-wrap" id="labPresentQrWrap"></div>
+          </div>
+
+          <div class="lab-present-qr-copy">
+            <div class="lab-present-meta">
+              <span class="lab-present-step" id="labPresentQrStep">Aktywna sesja</span>
+              <span class="lab-present-type" id="labPresentQrType">Tryb ucznia</span>
+            </div>
+
+            <h2 class="lab-present-object-title" id="labPresentQrTitle">Zeskanuj, aby wejść</h2>
+            <p class="lab-present-object-text" id="labPresentQrText">
+              Użyj telefonu, aby otworzyć aktywną ścieżkę ucznia.
+            </p>
+
+            <div class="lab-present-link" id="labPresentQrLink">
+              —
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-present-view" id="labPresentFocusView" data-view="focus">
+        <div class="lab-present-focus-center">
+          <div class="lab-present-focus-kicker">Focus</div>
+          <blockquote class="lab-present-focus-quote" id="labPresentFocusQuote">
+            Świadectwo nie istnieje po to, by wywołać efekt. Istnieje po to, by zostać potraktowane poważnie.
+          </blockquote>
+          <div class="lab-present-focus-note" id="labPresentFocusNote">
+            Użyj tego widoku, gdy chcesz zatrzymać grupę na jednym zdaniu lub jednym napięciu interpretacyjnym.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="lab-present-footer">
+      <div class="lab-present-footer-left">
+        <span id="labPresentFooterLesson">Raport odbioru — świadectwo</span>
+      </div>
+
+      <div class="lab-present-footer-right">
+        <button class="btn btn-secondary" type="button" id="labPresentPrevView">Poprzedni widok</button>
+        <button class="btn btn-primary" type="button" id="labPresentNextView">Następny widok</button>
+      </div>
+    </footer>
+  </div>
+</div>
+  
   </main>
 
   <footer class="site-footer">
@@ -289,5 +405,6 @@
 <script src="https://unpkg.com/qr-code-styling@1.8.3/lib/qr-code-styling.js"></script>
 <script src="/assets/js/lab-qr.js"></script>
 <script src="/assets/js/lab-teacher.js"></script>
+<script src="/assets/js/lab-presentation.js"></script>
 </body>
 </html>
