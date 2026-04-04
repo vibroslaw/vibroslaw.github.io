@@ -1,0 +1,613 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "teacher-console-config",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "consolePhilosophy": {
+    "mainPurpose": "Panel nauczyciela ma upraszczać prowadzenie zajęć, a nie dodawać nowej warstwy technicznego stresu.",
+    "teacherGoal": "Nauczyciel ma w kilka sekund uruchomić właściwy dział, ustawić pytanie przewodnie, prowadzić pokaz i zatrzymywać rozmowę w dobrym momencie.",
+    "studentGoal": "Uczeń ma otrzymać jasny rytm pracy: materiał, pytanie, rozmowa, raport.",
+    "producerGoal": "System ma być możliwy do utrzymania bez nadmiaru ciężkich funkcji, interaktywnych obrazów i skomplikowanej logiki wdrożeniowej.",
+    "projectGoal": "Panel ma wzmacniać sens projektu: świadectwo, raport, odpowiedzialność odbioru, ostrożność interpretacyjną i powściągliwość wobec historii.",
+    "mustNotBecome": [
+      "technicznym kokpitem z dziesięcioma trybami naraz",
+      "przeładowanym CMS-em edukacyjnym",
+      "narzędziem do improwizowanego moralizowania",
+      "panelem wymagającym szkolenia przed pierwszą lekcją",
+      "systemem zależnym od zbyt wielu zasobów trudnych do przygotowania"
+    ]
+  },
+  "experienceModel": {
+    "primaryMode": "teacher-first-simple-control",
+    "consoleDensity": "low-to-medium",
+    "defaultUseCase": "pierwsze użycie bez wcześniejszego szkolenia",
+    "teacherJourney": [
+      "wybierz dział",
+      "wybierz pytanie",
+      "uruchom pokaz",
+      "zatrzymaj rozmowę w wybranym momencie",
+      "pokaż QR raportu",
+      "domknij lekcję archiwum lub pobraniem raportów"
+    ],
+    "defaultLessonLogic": "full-screening-first",
+    "defaultRecommendedRuntimeMin": 90,
+    "advancedModeAvailable": true,
+    "advancedModeHiddenByDefault": true
+  },
+  "layoutModel": {
+    "mode": "single-primary-console",
+    "singlePageCore": true,
+    "teacherShouldSeeImmediately": [
+      "wybrany dział",
+      "wybrane pytanie",
+      "przycisk startu pełnego pokazu",
+      "pauzę / wznowienie",
+      "pełny ekran / projector mode",
+      "QR raportu",
+      "teacher guide",
+      "archiwum klasy"
+    ],
+    "secondaryElementsCollapsedByDefault": [
+      "noty rozszerzone",
+      "karty kontekstowe",
+      "tryb pracy wyrywkowej",
+      "ustawienia zaawansowane"
+    ],
+    "removedComplexity": [
+      "QR dla wielu niezależnych trybów na starcie",
+      "interaktywne hotspoty obrazów",
+      "rozbudowane przeglądanie obiektów jako osobny rdzeń lekcji",
+      "mailing do uczniów",
+      "identyfikacja uczniów",
+      "wielowarstwowe sterowanie kilkoma ekranami naraz"
+    ],
+    "primaryPanels": [
+      {
+        "id": "section-launcher",
+        "label": "Dział i pytanie"
+      },
+      {
+        "id": "live-control",
+        "label": "Prowadzenie na żywo"
+      },
+      {
+        "id": "teacher-guide",
+        "label": "Teacher guide"
+      },
+      {
+        "id": "report-qr",
+        "label": "QR raportu"
+      },
+      {
+        "id": "class-archive",
+        "label": "Archiwum klasy"
+      }
+    ]
+  },
+  "screeningModes": {
+    "default": "full-work",
+    "available": [
+      {
+        "id": "full-work",
+        "label": "Pełny pokaz",
+        "recommended": true,
+        "durationMin": 90,
+        "description": "Tryb rekomendowany. Obejmuje wprowadzenie, pełny materiał około 65 minut, pauzy na rozmowę i domknięcie raportem.",
+        "teacherDifficulty": "low"
+      },
+      {
+        "id": "guided-fragments",
+        "label": "Fragmenty prowadzone",
+        "recommended": false,
+        "durationMin": 45,
+        "description": "Tryb tylko dla nauczyciela, który zna materiał i świadomie wybiera wybrane fragmenty zamiast pełnego pokazu.",
+        "teacherDifficulty": "high"
+      }
+    ],
+    "policy": {
+      "fullWorkIsDefault": true,
+      "fragmentModeShouldNotBeDefault": true,
+      "reason": "Pełna forma projektu zachowuje spójność narracyjną i sens audiowizualny. Tryb wyrywkowy może działać, ale wymaga większej świadomości nauczyciela."
+    }
+  },
+  "launchFlow": {
+    "steps": [
+      {
+        "id": "pick-section",
+        "label": "Wybierz dział",
+        "required": true,
+        "teacherInstruction": "Zacznij od działu tematycznego, nie od techniki.",
+        "systemBehavior": "Po wyborze działu panel pokazuje opis, rekomendowane pytania i teacher guide."
+      },
+      {
+        "id": "pick-question",
+        "label": "Ustaw pytanie przewodnie",
+        "required": true,
+        "teacherInstruction": "Wybierz jedno pytanie z puli albo wpisz własne.",
+        "systemBehavior": "Wybrane pytanie staje się aktywnym pytaniem dla widoku ucznia i raportu."
+      },
+      {
+        "id": "choose-screening-mode",
+        "label": "Ustaw tryb pracy",
+        "required": true,
+        "teacherInstruction": "Domyślnie system proponuje pełny pokaz.",
+        "systemBehavior": "Tryb pełny jest domyślny. Tryb fragmentów jest schowany jako opcja zaawansowana."
+      },
+      {
+        "id": "open-guide",
+        "label": "Otwórz teacher guide",
+        "required": false,
+        "teacherInstruction": "Przed startem możesz szybko sprawdzić sens działu, źródła i sugerowane momenty pauzy.",
+        "systemBehavior": "Guide otwiera się w prostych zakładkach bez opuszczania głównego widoku."
+      },
+      {
+        "id": "start-session",
+        "label": "Uruchom sesję",
+        "required": true,
+        "teacherInstruction": "Przejdź do trybu prowadzenia na żywo.",
+        "systemBehavior": "Aktywuje się panel z pauzą, timerem, fullscreenem i QR raportu."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-totalitaryzm-wybor",
+      "label": "Totalitaryzm i wybory pod presją",
+      "shortLabel": "Totalitaryzm i wybór",
+      "description": "Dział skupiony na mechanizmach nacisku systemu, presji, warunkach decyzji i ostrożności w ocenianiu wyborów podejmowanych pod przymusem.",
+      "projectRole": "Pozwala połączyć warstwę historyczną z pytaniem o odpowiedzialność i warunki ludzkiego działania.",
+      "recommendedAudiences": [
+        "liceum",
+        "uczelnia",
+        "starsze grupy Polonii"
+      ],
+      "defaultQuestionSource": "section-totalitaryzm-wybor",
+      "defaultQuestionIndex": 0,
+      "defaultScreeningMode": "full-work",
+      "teacherOpeningLine": "Dziś nie pytamy najpierw, kto miał rację. Pytamy, jak działa system, który naciska na ludzką decyzję.",
+      "teacherOutcome": "Uczniowie mają zobaczyć, że odpowiedzialność nie znika, ale jej ocena wymaga ostrożności wobec warunków, w których działa człowiek."
+    },
+    {
+      "id": "section-pilecki-rocznicowy",
+      "label": "Pilecki — dział rocznicowy i historyczny",
+      "shortLabel": "Pilecki",
+      "description": "Dział rocznicowy skupiony na świadectwie, raporcie, odpowiedzialności przekazu i historycznym sensie postaci Witolda Pileckiego bez hagiografii.",
+      "projectRole": "Utrzymuje zgodność z osią projektu: Pilecki, świadectwo, raport, odpowiedzialność odbiorcy.",
+      "recommendedAudiences": [
+        "szkoła podstawowa 7-8",
+        "liceum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionSource": "section-pilecki-rocznicowy",
+      "defaultQuestionIndex": 0,
+      "defaultScreeningMode": "full-work",
+      "teacherOpeningLine": "Nie zaczynamy od pomnika. Zaczynamy od pytania, co znaczy świadectwo i dlaczego raport ma taką wagę.",
+      "teacherOutcome": "Uczniowie mają rozumieć Pileckiego przez funkcję świadectwa i odpowiedzialności przekazu, a nie przez prosty patos."
+    },
+    {
+      "id": "section-auschwitz",
+      "label": "Auschwitz — miejsce, ślad, świadectwo",
+      "shortLabel": "Auschwitz",
+      "description": "Dział skupiony na śladzie historycznym, miejscu, dokumencie i materialności historii bez zatrzymywania się wyłącznie na symbolu.",
+      "projectRole": "Pozwala pracować z pamięcią i historią przez konkret: miejsce, raport, ślad, warunki systemu.",
+      "recommendedAudiences": [
+        "szkoła podstawowa 7-8",
+        "liceum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionSource": "section-auschwitz",
+      "defaultQuestionIndex": 0,
+      "defaultScreeningMode": "full-work",
+      "teacherOpeningLine": "Nie zatrzymujemy się dziś na samym symbolu. Patrzymy na ślad, miejsce i świadectwo.",
+      "teacherOutcome": "Uczniowie mają odróżniać znak historyczny od własnej interpretacji i widzieć wagę konkretu."
+    },
+    {
+      "id": "section-ai-historia",
+      "label": "AI i historia — forma, źródło, odpowiedzialność",
+      "shortLabel": "AI i historia",
+      "description": "Dział o granicy między formą artystyczną, źródłem historycznym i odpowiedzialnym wykorzystaniem AI w pracy z historią.",
+      "projectRole": "Domyka współczesny wymiar projektu i pokazuje, że nowoczesna forma nie może zastąpić źródła.",
+      "recommendedAudiences": [
+        "liceum",
+        "uczelnia",
+        "Polonia"
+      ],
+      "defaultQuestionSource": "section-ai-historia",
+      "defaultQuestionIndex": 0,
+      "defaultScreeningMode": "full-work",
+      "teacherOpeningLine": "Nowoczesna forma może pomóc w odbiorze historii, ale nie staje się sama z siebie dowodem.",
+      "teacherOutcome": "Uczniowie mają zrozumieć, że sugestywność obrazu nie zastępuje odpowiedzialności wobec źródła."
+    },
+    {
+      "id": "section-polonia",
+      "label": "Historia dla Polonii — Pilecki, wojna, totalitaryzm",
+      "shortLabel": "Polonia",
+      "description": "Dział pomostowy dla odbiorców poza Polską. Łączy temat Pileckiego, II wojny światowej i totalitaryzmu z potrzebą wyjaśnienia kontekstu.",
+      "projectRole": "Tworzy most między doświadczeniem polskim a odbiorcą zagranicznym bez utraty ciężaru historii.",
+      "recommendedAudiences": [
+        "Polonia",
+        "grupy dwujęzyczne",
+        "odbiorcy międzynarodowi"
+      ],
+      "defaultQuestionSource": "section-polonia",
+      "defaultQuestionIndex": 0,
+      "defaultScreeningMode": "full-work",
+      "teacherOpeningLine": "Dziś pytamy, jak opowiadać historię zakorzenioną w polskim doświadczeniu tak, by nie zgubić jej ciężaru.",
+      "teacherOutcome": "Uczniowie mają zobaczyć, co w tej historii jest czytelne szeroko, a co wymaga odpowiedzialnego dopowiedzenia kontekstu."
+    },
+    {
+      "id": "section-sumienie-raport",
+      "label": "Sumienie i znaczenie raportu",
+      "shortLabel": "Sumienie i raport",
+      "description": "Dział skupiony na pytaniu o decyzję, czas, odpowiedzialność i to, co raport lub świadectwo zostawia współczesnemu odbiorcy.",
+      "projectRole": "Najmocniej spina historię z teraźniejszością i z pytaniem o sens odpowiedzialnego odbioru.",
+      "recommendedAudiences": [
+        "liceum",
+        "uczelnia",
+        "Polonia",
+        "grupy refleksyjne"
+      ],
+      "defaultQuestionSource": "section-sumienie-raport",
+      "defaultQuestionIndex": 0,
+      "defaultScreeningMode": "full-work",
+      "teacherOpeningLine": "Nie pytamy tylko o przeszłość. Pytamy, co dziś znaczy odpowiedzialność wobec czasu, decyzji i świadectwa.",
+      "teacherOutcome": "Uczniowie mają wyjść z jednym prawdziwym pytaniem o odpowiedzialność, a nie z gotowym morałem."
+    }
+  ],
+  "questionHandling": {
+    "mode": "teacher-selects-one",
+    "questionSource": "student-report-section-question-sources",
+    "teacherCanSelectFromSectionPool": true,
+    "teacherCanWriteCustomQuestion": true,
+    "customQuestionOverridesDefault": true,
+    "studentSeesOnlyOneActiveQuestion": true,
+    "defaultBehavior": "System po wyborze działu ustawia domyślnie pytanie nr 1, jeśli nauczyciel nie wybierze innego.",
+    "teacherPreviewVisible": true,
+    "questionLockAfterSessionStart": false,
+    "recommendedPractice": "Najlepiej pracować z jednym pytaniem przewodnim na jedną sesję."
+  },
+  "teacherGuide": {
+    "enabled": true,
+    "label": "Teacher guide",
+    "purpose": "Ma wspierać prowadzenie zajęć, a nie zastępować nauczyciela gotowym wykładem.",
+    "tabs": [
+      {
+        "id": "guide-section-sense",
+        "label": "Sens działu"
+      },
+      {
+        "id": "guide-how-to-lead",
+        "label": "Jak prowadzić"
+      },
+      {
+        "id": "guide-pause-moments",
+        "label": "Pauzy i rozmowa"
+      },
+      {
+        "id": "guide-sources",
+        "label": "Źródła i ostrożność"
+      },
+      {
+        "id": "guide-song-notes",
+        "label": "Objaśnienia utworów"
+      },
+      {
+        "id": "guide-context-cards",
+        "label": "Karty kontekstowe"
+      }
+    ],
+    "tabBehavior": {
+      "openInline": true,
+      "stayOnSamePage": true,
+      "printFriendly": true
+    },
+    "defaultVisibleBlocks": [
+      "sens działu",
+      "jak prowadzić",
+      "3 pytania otwierające",
+      "na co uważać"
+    ],
+    "advancedBlocksCollapsedByDefault": [
+      "noty rozszerzone",
+      "konteksty poboczne",
+      "karty dodatkowe",
+      "uwagi metodologiczne dla starszych grup"
+    ]
+  },
+  "teacherGuideContentModel": {
+    "eachSectionMustContain": [
+      "krótki sens działu",
+      "jak otworzyć rozmowę",
+      "jak nie zgubić osi projektu",
+      "na co uważać",
+      "3 pytania otwierające",
+      "krótkie domknięcie"
+    ],
+    "optionalBlocks": [
+      "opis utworów krok po kroku",
+      "co w materiale jest metaforą artystyczną",
+      "co jest oparte na źródłach i ustaleniach historycznych",
+      "karty kontekstowe dla starszych grup"
+    ],
+    "teacherGuideTone": "clear-source-aware-calm",
+    "mustAvoid": [
+      "nadmiar akademickiego języka w pierwszym widoku",
+      "ściany tekstu bez hierarchii",
+      "noty poboczne ważniejsze niż główny sens działu"
+    ]
+  },
+  "contextCards": {
+    "enabled": true,
+    "collapsedByDefault": true,
+    "purpose": "Dodatkowe karty mają wspierać nauczyciela, gdy grupa potrzebuje szybkiego kontekstu, ale nie mogą przeciążać podstawowego przebiegu lekcji.",
+    "cards": [
+      {
+        "id": "card-pilecki",
+        "label": "Pilecki",
+        "visibility": "default"
+      },
+      {
+        "id": "card-totalitaryzm",
+        "label": "Totalitaryzm",
+        "visibility": "default"
+      },
+      {
+        "id": "card-nazizm",
+        "label": "Nazizm",
+        "visibility": "default"
+      },
+      {
+        "id": "card-stalinizm",
+        "label": "Stalinizm",
+        "visibility": "default"
+      },
+      {
+        "id": "card-prl",
+        "label": "PRL",
+        "visibility": "optional"
+      },
+      {
+        "id": "card-cyrankiewicz-context",
+        "label": "Cyrankiewicz — kontekst poboczny",
+        "visibility": "advanced-only"
+      },
+      {
+        "id": "card-jazz-prl",
+        "label": "Jazz w PRL",
+        "visibility": "optional"
+      }
+    ],
+    "policy": {
+      "cyrankiewiczCardStudentDefault": false,
+      "cyrankiewiczCardTeacherOnlyByDefault": true,
+      "cyrankiewiczCardUseCase": "wyłącznie jako poboczny kontekst dla starszych grup, nigdy jako oś podstawowej lekcji"
+    }
+  },
+  "liveControl": {
+    "enabled": true,
+    "purpose": "Prowadzenie sesji w czasie rzeczywistym bez konieczności przechodzenia między wieloma ekranami.",
+    "mustShow": [
+      "nazwa działu",
+      "aktywne pytanie",
+      "status sesji",
+      "pauza / wznowienie",
+      "pełny ekran",
+      "teacher guide",
+      "QR raportu"
+    ],
+    "controls": [
+      {
+        "id": "start-session",
+        "label": "Rozpocznij sesję"
+      },
+      {
+        "id": "pause-session",
+        "label": "Pauza"
+      },
+      {
+        "id": "resume-session",
+        "label": "Wznów"
+      },
+      {
+        "id": "open-fullscreen",
+        "label": "Pełny ekran / projector"
+      },
+      {
+        "id": "show-teacher-guide",
+        "label": "Teacher guide"
+      },
+      {
+        "id": "show-report-qr",
+        "label": "Pokaż QR raportu"
+      },
+      {
+        "id": "open-archive",
+        "label": "Archiwum klasy"
+      }
+    ],
+    "timerModel": {
+      "showRuntimeClock": true,
+      "showStepClock": false,
+      "reason": "W uproszczonej wersji nauczyciel bardziej potrzebuje kontroli przebiegu niż mikrozarządzania etapami co kilka minut."
+    }
+  },
+  "fullscreenProjectorMode": {
+    "enabled": true,
+    "label": "Projector mode",
+    "purpose": "Czytelne prowadzenie materiału na sali bez rozpraszających elementów panelu.",
+    "showOnProjector": [
+      "tytuł działu",
+      "aktywne pytanie",
+      "pauza rozmowy",
+      "QR raportu na końcu"
+    ],
+    "hideOnProjector": [
+      "ustawienia techniczne",
+      "archiwum",
+      "rozbudowane noty nauczyciela",
+      "elementy administracyjne"
+    ],
+    "teacherRemoteLogic": {
+      "keyboardShortcuts": true,
+      "singleTapSafeControls": true,
+      "escapeReturnsToConsole": true
+    }
+  },
+  "qrPolicy": {
+    "defaultMode": "report-only",
+    "purpose": "QR ma prowadzić ucznia bezpośrednio do raportu lub prostego trybu ucznia, bez mnożenia wariantów na starcie.",
+    "availableQrModes": [
+      {
+        "id": "qr-report",
+        "label": "QR raportu",
+        "default": true
+      }
+    ],
+    "disabledForPhase1": [
+      "osobne QR dla obiektów",
+      "osobne QR dla kart kontekstowych",
+      "osobne QR dla wielu mikroetapów"
+    ],
+    "studentFlowAfterScan": "Uczeń przechodzi do prostego widoku raportu powiązanego z działem i aktywnym pytaniem ustawionym przez nauczyciela."
+  },
+  "archiveModel": {
+    "enabled": true,
+    "mode": "anonymous-class-archive",
+    "purpose": "Archiwum ma pomagać nauczycielowi domknąć rozmowę i wracać do odpowiedzi klasy bez zbierania papieru.",
+    "teacherSees": [
+      "anonimowe raporty",
+      "dział",
+      "aktywne pytanie",
+      "czas zapisu",
+      "najczęściej wracające pytania",
+      "najczęściej wybierane punkty ciężkości"
+    ],
+    "teacherCan": [
+      "usunąć pojedynczy wpis",
+      "wyczyścić archiwum klasy",
+      "sortować od najnowszych",
+      "filtrować po dziale"
+    ],
+    "teacherCannotByDefault": [
+      "przypisać raportu do konkretnego ucznia",
+      "wymusić danych osobowych",
+      "edytować treści raportu"
+    ]
+  },
+  "sourceIntegrity": {
+    "coreRule": "Panel nauczyciela ma stale przypominać o różnicy między źródłem, interpretacją i formą artystyczną.",
+    "mustSupport": [
+      "powściągliwość interpretacyjną",
+      "źródłowe myślenie",
+      "oddzielenie faktu od artystycznej metafory",
+      "brak prostego moralizowania"
+    ],
+    "mustWarnAgainst": [
+      "nadpisywanie źródła przez emocję",
+      "upraszczanie ludzi do etykiet",
+      "budowanie lekcji na pobocznych figurach zamiast na osi projektu",
+      "traktowanie sugestywnego obrazu jako dowodu historycznego"
+    ],
+    "namedPersonsPolicy": {
+      "pilecki": {
+        "role": "central",
+        "defaultVisibility": "high",
+        "notes": "Pilecki pozostaje osią projektu i głównym punktem odniesienia tam, gdzie dział tego wymaga."
+      },
+      "cyrankiewicz": {
+        "role": "secondary-context-only",
+        "defaultVisibility": "off",
+        "notes": "Może pojawić się wyłącznie jako poboczny kontekst dla starszych grup. Nie przejmuje głównego nurtu projektu."
+      }
+    }
+  },
+  "teacherQuickActions": {
+    "mustBeVisible": [
+      "wybierz dział",
+      "wybierz pytanie",
+      "rozpocznij sesję",
+      "pauza",
+      "pełny ekran",
+      "pokaż QR raportu",
+      "otwórz teacher guide",
+      "otwórz archiwum"
+    ],
+    "niceToHaveCollapsed": [
+      "tryb fragmentów",
+      "karty kontekstowe",
+      "druk guide",
+      "eksport archiwum"
+    ]
+  },
+  "accessibilityAndPerformance": {
+    "teacherFirstUseSafe": true,
+    "largeTapTargets": true,
+    "keyboardAccessible": true,
+    "highContrastReady": true,
+    "reducedMotionSafe": true,
+    "lowBandwidthSafe": true,
+    "noHeavyInteractiveImagesRequired": true,
+    "noLargeAssetDependencyForCoreFlow": true
+  },
+  "implementationPriority": {
+    "phase1-mustHave": [
+      "section selector",
+      "question selector",
+      "custom teacher question",
+      "full screening start",
+      "pause and resume",
+      "fullscreen projector mode",
+      "teacher guide basic tabs",
+      "QR report",
+      "archive class view"
+    ],
+    "phase2-optional": [
+      "guided fragments mode",
+      "context cards",
+      "archive export",
+      "song-by-song expanded notes"
+    ],
+    "phase3-later": [
+      "cross-section comparison",
+      "institution presets",
+      "multi-session teaching dashboard"
+    ]
+  },
+  "consistencyWithProjectDocs": {
+    "mustSupport": [
+      "Pilecki jako rdzeń głównej osi projektu",
+      "świadectwo i raport jako centralne pojęcia",
+      "powściągliwość wobec historii",
+      "ostrożność interpretacyjną",
+      "instytucjonalno-edukacyjny charakter projektu"
+    ],
+    "mustAvoid": [
+      "rozjazd między stroną a dokumentami projektowymi",
+      "przesunięcie ciężaru z raportu na gadżety techniczne",
+      "dominację wątków pobocznych nad osią główną",
+      "przypadkowe przeładowanie nauczyciela funkcjami"
+    ],
+    "teacherExperienceGoal": "Nauczyciel ma czuć, że strona pomaga mu prowadzić projekt zgodnie z jego sensem, a nie tworzy osobny produkt oderwany od wizji Rap-Ortu.",
+    "projectExperienceGoal": "Strona ma wyglądać jak naturalne rozwinięcie dokumentów projektu: premium, spokojne, źródłowo świadome, instytucjonalnie wiarygodne."
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel rozumie główny panel w mniej niż 30 sekund.",
+      "Nauczyciel potrafi uruchomić sesję bez czytania instrukcji technicznej.",
+      "Nauczyciel nie musi tłumaczyć uczniom więcej niż dwóch ruchów: oglądamy / skanujemy QR i zapisujemy raport."
+    ],
+    "student": [
+      "Uczeń trafia z QR od razu tam, gdzie trzeba.",
+      "Uczeń nie musi wybierać między wieloma trybami pracy.",
+      "Raport domyka lekcję bez chaosu."
+    ],
+    "production": [
+      "Pierwsza wersja działa bez interaktywnych zdjęć i ciężkich assetów.",
+      "Pierwsza wersja nie wymaga logowania ani zbierania danych osobowych.",
+      "Najważniejszy sens projektu pozostaje czytelny także w wersji uproszczonej."
+    ]
+  }
+}
