@@ -1,0 +1,500 @@
+{
+  "version": "2.0.1",
+  "lang": "pl",
+  "fileRole": "student-report-config",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "reportPhilosophy": {
+    "mainPurpose": "Raport ucznia ma być krótkim, uczciwym zapisem odbioru, a nie testem wiedzy ani egzaminem moralnym.",
+    "studentGoal": "Uczeń ma zatrzymać jedno pytanie, jeden ślad i jedną własną odpowiedź.",
+    "teacherGoal": "Nauczyciel ma dostać prosty, porównywalny materiał do domknięcia rozmowy bez konieczności ręcznego zbierania kartek.",
+    "projectGoal": "Raport ma przedłużać sens projektu: świadectwo, odpowiedzialność odbioru, ostrożność interpretacyjną i osobiste spotkanie z materiałem.",
+    "mustNotBecome": [
+      "sprawdzianem z dat",
+      "rankingiem moralnym",
+      "testem na jedną poprawną odpowiedź",
+      "przeładowanym formularzem szkolnym",
+      "narzędziem do oceniania światopoglądu ucznia"
+    ]
+  },
+  "coreModel": {
+    "mode": "phone-first-minimal",
+    "entryMethod": "qr-from-teacher",
+    "completionTargetMinutes": 4,
+    "reportLengthTarget": "krótki i konkretny",
+    "saveModel": "autosave",
+    "defaultIdentityMode": "anonymous",
+    "teacherSees": [
+      "treść raportu",
+      "czas zapisu",
+      "dział",
+      "wybrane pytanie"
+    ],
+    "teacherDoesNotSeeByDefault": [
+      "imię i nazwisko ucznia",
+      "numer urządzenia",
+      "dane pozwalające łatwo zidentyfikować konkretną osobę"
+    ]
+  },
+  "dataPrivacy": {
+    "collectsPersonalData": false,
+    "storesPersonalData": false,
+    "studentIdentificationRequired": false,
+    "notes": "System nie zbiera danych osobowych ucznia. Raport działa w trybie anonimowym."
+  },
+  "reportModes": {
+    "default": "raport-ucznia-standard",
+    "available": [
+      {
+        "id": "raport-ucznia-standard",
+        "label": "Raport ucznia",
+        "description": "Najprostsza i podstawowa forma zapisu po pracy z materiałem."
+      },
+      {
+        "id": "raport-ucznia-extended",
+        "label": "Raport ucznia — rozszerzony",
+        "description": "Wersja dla starszych grup lub pracy seminaryjnej. Używać tylko wtedy, gdy nauczyciel świadomie ją wybierze."
+      }
+    ]
+  },
+  "uiModel": {
+    "singleColumn": true,
+    "showOneQuestionAtATime": true,
+    "stickyProgressBar": true,
+    "showEstimatedTime": true,
+    "showSaveState": true,
+    "showTeacherName": false,
+    "showLessonMetadata": true,
+    "maxFieldsOnSingleScreen": 3,
+    "primaryButtonLabel": "Zapisz raport",
+    "secondaryButtonLabel": "Pobierz PDF",
+    "finalStateLabel": "Raport zapisany",
+    "tone": "quiet-clear-minimal"
+  },
+  "flow": {
+    "steps": [
+      {
+        "id": "step-intro",
+        "type": "intro",
+        "label": "Wejście",
+        "required": true,
+        "studentText": "To nie jest test. Zostaw krótki, uczciwy zapis tego, co w tobie zostało po pracy z materiałem.",
+        "teacherUse": "Nie czytaj tego w całości. Wystarczy zdanie: Zostawcie krótki zapis własnego odbioru."
+      },
+      {
+        "id": "step-question",
+        "type": "question-context",
+        "label": "Pytanie przewodnie",
+        "required": true,
+        "studentText": "Pracujesz z pytaniem wybranym przez nauczyciela dla tego działu.",
+        "teacherUse": "Uczeń nie wybiera pytania z długiej listy. Dostaje to, które zostało ustawione dla grupy."
+      },
+      {
+        "id": "step-response",
+        "type": "short-response",
+        "label": "Twoja odpowiedź",
+        "required": true,
+        "studentText": "Napisz krótko, co było dla ciebie najważniejsze, najtrudniejsze albo najbardziej niepokojące w tym materiale."
+      },
+      {
+        "id": "step-anchor",
+        "type": "anchor-choice",
+        "label": "Punkt ciężkości",
+        "required": true,
+        "studentText": "Wybierz, co najmocniej zostało z tobą po tej pracy."
+      },
+      {
+        "id": "step-open-question",
+        "type": "open-question",
+        "label": "Pytanie, które zostaje",
+        "required": true,
+        "studentText": "Wybierz albo wpisz pytanie, które zostaje z tobą po tej pracy."
+      },
+      {
+        "id": "step-submit",
+        "type": "submit",
+        "label": "Zapis",
+        "required": true,
+        "studentText": "Twój raport może zostać zapisany anonimowo w archiwum klasy i pobrany jako PDF."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "reportMainResponse",
+      "type": "textarea",
+      "label": "Twoja odpowiedź",
+      "placeholder": "Napisz krótko, co najmocniej zostało z tobą po pracy z tym materiałem…",
+      "required": true,
+      "minLength": 120,
+      "recommendedLength": 280,
+      "maxLength": 900,
+      "rowsMobile": 6,
+      "rowsDesktop": 7,
+      "helpText": "Nie streszczaj wszystkiego. Wybierz to, co naprawdę zostało z tobą po pracy z materiałem.",
+      "validationMessage": {
+        "required": "To pole jest wymagane.",
+        "tooShort": "Napisz trochę więcej, żeby raport miał sens jako zapis odbioru."
+      },
+      "qualityHints": [
+        "pisz konkretnie",
+        "nie musisz brzmieć oficjalnie",
+        "nie szukaj jednej poprawnej odpowiedzi"
+      ]
+    },
+    {
+      "id": "reportAnchor",
+      "type": "single-select",
+      "label": "Co zostało z tobą najmocniej?",
+      "required": true,
+      "options": [
+        {
+          "id": "anchor-question",
+          "label": "Pytanie"
+        },
+        {
+          "id": "anchor-image",
+          "label": "Obraz / scena"
+        },
+        {
+          "id": "anchor-line",
+          "label": "Wers / zdanie"
+        },
+        {
+          "id": "anchor-document",
+          "label": "Raport / świadectwo"
+        },
+        {
+          "id": "anchor-object",
+          "label": "Motyw / ślad historyczny"
+        },
+        {
+          "id": "anchor-tension",
+          "label": "Napięcie moralne lub decyzja"
+        }
+      ],
+      "helpText": "Nie wybieraj tego, co 'powinno' zostać. Wybierz to, co naprawdę zadziałało."
+    },
+    {
+      "id": "reportOpenQuestionMode",
+      "type": "single-select",
+      "label": "Jak chcesz zostawić pytanie końcowe?",
+      "required": true,
+      "defaultValue": "preset",
+      "options": [
+        {
+          "id": "preset",
+          "label": "Wybieram z gotowych pytań"
+        },
+        {
+          "id": "custom",
+          "label": "Piszę własne pytanie"
+        }
+      ]
+    },
+    {
+      "id": "reportOpenQuestionPreset",
+      "type": "single-select",
+      "label": "Wybierz pytanie końcowe",
+      "requiredWhen": {
+        "field": "reportOpenQuestionMode",
+        "equals": "preset"
+      },
+      "optionsSource": "teacher-selected-section-question-bank",
+      "helpText": "To pytania przypisane do działu, który prowadzi nauczyciel."
+    },
+    {
+      "id": "reportOpenQuestionCustom",
+      "type": "textarea",
+      "label": "Twoje własne pytanie",
+      "placeholder": "Jakie pytanie zostaje z tobą po tej pracy?",
+      "requiredWhen": {
+        "field": "reportOpenQuestionMode",
+        "equals": "custom"
+      },
+      "minLength": 20,
+      "recommendedLength": 90,
+      "maxLength": 240,
+      "rowsMobile": 4,
+      "rowsDesktop": 4,
+      "helpText": "Nie pisz odpowiedzi. Zostaw pytanie."
+    }
+  ],
+  "questionBankBinding": {
+    "mode": "teacher-selected",
+    "studentCanSeeAllSectionQuestions": false,
+    "studentReceives": "one-active-question",
+    "teacherMayInjectCustomQuestion": true,
+    "customQuestionPriority": "override-default",
+    "fallbackPolicy": "Jeśli nauczyciel nie wybierze pytania ręcznie, system ustawia domyślnie pytanie nr 1 dla danego działu."
+  },
+  "sectionQuestionSources": {
+    "section-totalitaryzm-wybor": [
+      "Jak system naciska na pole ludzkiej decyzji?",
+      "Co w materiale pokazuje presję, a nie tylko sam wybór?",
+      "Dlaczego ostrożność jest ważna, kiedy oceniamy decyzje podejmowane pod przymusem?",
+      "Który moment najmocniej pokazał ci działanie systemu?",
+      "Czy można mówić o odpowiedzialności, nie upraszczając warunków, w których działa człowiek?"
+    ],
+    "section-pilecki-rocznicowy": [
+      "Co w tym materiale działa najmocniej jako świadectwo, a nie tylko informacja o postaci?",
+      "Dlaczego raport i świadectwo są tu tak ważne?",
+      "Co w rocznicowym ujęciu otwiera rozmowę, zamiast ją zamykać?",
+      "Który moment najmocniej zbliżył cię do sensu tego rozdziału?",
+      "Jak rozumiesz odpowiedzialność wobec świadectwa?"
+    ],
+    "section-auschwitz": [
+      "Co zmienia się, gdy patrzysz na historię przez ślad, miejsce albo dokument?",
+      "Dlaczego nie wystarczy zatrzymać się na samym symbolu Auschwitz?",
+      "Który detal lub motyw działał tu najmocniej i dlaczego?",
+      "Co było dla ciebie najtrudniejsze do pominięcia po tym materiale?",
+      "Jak odróżnić ślad historyczny od własnej interpretacji tego śladu?"
+    ],
+    "section-ai-historia": [
+      "Gdzie widzisz granicę między formą a źródłem?",
+      "Co daje nowoczesna forma, a jakie niesie ryzyko dla odbioru historii?",
+      "Dlaczego sugestywny obraz nie staje się automatycznie dowodem historycznym?",
+      "Co w tym materiale było dla ciebie bardziej przekonujące: źródło czy forma?",
+      "Jak rozumiesz odpowiedzialne użycie AI w pracy z historią?"
+    ],
+    "section-polonia": [
+      "Co w tym materiale działa jako most między polskim doświadczeniem a szerszym odbiorcą?",
+      "Który element wymagał dodatkowego kontekstu, żeby był naprawdę zrozumiały?",
+      "Jak zachować ciężar historii, nie zamykając jej tylko w lokalnym odbiorze?",
+      "Co było w tym materiale najbardziej czytelne ponad językiem i kontekstem?",
+      "Co twoim zdaniem nie powinno zostać uproszczone?"
+    ],
+    "section-sumienie-raport": [
+      "Jakie pytanie o odpowiedzialność zostaje z tobą po tej pracy?",
+      "Czy są decyzje, których nie da się nadrobić po czasie?",
+      "Co w tym materiale najmocniej łączy historię z pytaniem o współczesnego odbiorcę?",
+      "Co znaczy dla ciebie uczciwy odbiór takiego świadectwa?",
+      "Z czym zostajesz po zakończeniu tego rozdziału: odpowiedzią czy pytaniem?"
+    ]
+  },
+  "reportAssembly": {
+    "defaultTemplate": "student-report-minimal",
+    "templates": [
+      {
+        "id": "student-report-minimal",
+        "label": "Raport minimalny",
+        "sections": [
+          "header",
+          "activeQuestion",
+          "mainResponse",
+          "anchor",
+          "openQuestion",
+          "footer"
+        ]
+      },
+      {
+        "id": "student-report-extended",
+        "label": "Raport rozszerzony",
+        "sections": [
+          "header",
+          "activeQuestion",
+          "mainResponse",
+          "anchor",
+          "openQuestion",
+          "teacherSectionLabel",
+          "footer"
+        ]
+      }
+    ],
+    "headerFields": [
+      "projectName",
+      "sectionLabel",
+      "reportDate"
+    ],
+    "footerFields": [
+      "anonymousArchiveStatus",
+      "pdfAvailableStatus"
+    ]
+  },
+  "archivePolicy": {
+    "defaultMode": "anonymous-class-archive",
+    "studentCanOptOutOfArchive": true,
+    "archiveConsentLabel": "Zgadzam się na anonimowy zapis mojego raportu w archiwum klasy.",
+    "archiveConsentDefault": true,
+    "storedFields": [
+      "reportMainResponse",
+      "reportAnchor",
+      "reportOpenQuestionPreset",
+      "reportOpenQuestionCustom",
+      "sectionId",
+      "activeQuestionText",
+      "createdAt"
+    ],
+    "notStoredFields": [
+      "imię",
+      "nazwisko",
+      "telefon",
+      "adres",
+      "adres e-mail"
+    ],
+    "teacherArchiveView": {
+      "grouping": "by-section",
+      "sortDefault": "newest-first",
+      "highlight": [
+        "najczęściej wracające pytania",
+        "najczęściej wybierane punkty ciężkości",
+        "ostatnio zapisane raporty"
+      ]
+    },
+    "moderationRules": {
+      "teacherMayDeleteSingleEntry": true,
+      "teacherMayClearClassArchive": true,
+      "studentMayDeleteAfterSubmit": false,
+      "badFaithProtection": "manual-teacher-review"
+    }
+  },
+  "pdfPolicy": {
+    "enabled": true,
+    "studentCanDownloadImmediately": true,
+    "downloadButtonVisibleAfterSubmit": true,
+    "pdfStyle": "archival-clean-minimal",
+    "pdfFilenamePattern": "raport-ucznia__{sectionSlug}__{date}__{shortId}.pdf",
+    "pdfContains": [
+      "projectName",
+      "sectionLabel",
+      "activeQuestionText",
+      "reportMainResponse",
+      "reportAnchorLabel",
+      "finalOpenQuestion",
+      "date"
+    ],
+    "pdfDoesNotContain": [
+      "teacher private notes",
+      "internal ids",
+      "device info",
+      "dane osobowe"
+    ],
+    "downloadLabel": "Pobierz",
+    "downloadTone": "quiet-minimal"
+  },
+  "teacherControls": {
+    "teacherCanChoose": [
+      "dział",
+      "aktywne pytanie",
+      "czy pytanie własne nadpisuje domyślne",
+      "czy archiwum jest włączone",
+      "czy PDF jest dostępny"
+    ],
+    "teacherCannotByDefault": [
+      "edytować raportów uczniów",
+      "dopisywać autorów do anonimowych raportów",
+      "wymuszać ujawnienia danych osobowych"
+    ],
+    "teacherQuickActions": [
+      {
+        "id": "open-report-qr",
+        "label": "Pokaż QR raportu"
+      },
+      {
+        "id": "pause-before-report",
+        "label": "Zatrzymaj i porozmawiaj"
+      },
+      {
+        "id": "show-report-preview",
+        "label": "Pokaż wzór raportu na ekranie"
+      },
+      {
+        "id": "open-archive",
+        "label": "Otwórz archiwum klasy"
+      }
+    ]
+  },
+  "validation": {
+    "blockEmptySubmit": true,
+    "blockIfNoAnchorChosen": true,
+    "blockIfNoQuestionChosenOrWritten": true,
+    "trimWhitespace": true,
+    "normalizeNewlines": true,
+    "warnOnVeryShortResponse": true,
+    "warnThresholds": {
+      "mainResponseChars": 120,
+      "customQuestionChars": 20
+    },
+    "antiSpam": {
+      "blockRepeatedCharacters": true,
+      "blockEmptyLikePatterns": [
+        "xd",
+        ".",
+        "...",
+        "nie wiem",
+        "ok"
+      ],
+      "teacherMayOverrideInReview": false
+    }
+  },
+  "studentCopy": {
+    "introShort": "Zostaw krótki zapis własnego odbioru.",
+    "saveHint": "Twoje odpowiedzi zapisują się automatycznie.",
+    "archiveHint": "Raport może zostać zapisany anonimowo w archiwum klasy.",
+    "pdfHint": "Po zapisaniu możesz pobrać PDF.",
+    "completionMessage": "Raport został zapisany.",
+    "completionSubmessage": "Dziękujemy za uczciwy zapis odbioru."
+  },
+  "reducedMotionAndAccessibility": {
+    "phoneFirst": true,
+    "largeTapTargets": true,
+    "autosaveVisible": true,
+    "keyboardAccessible": true,
+    "screenReaderLabelsRequired": true,
+    "reducedMotionSafe": true,
+    "highContrastReady": true
+  },
+  "implementationPriority": {
+    "phase1-mustHave": [
+      "teacher selects section",
+      "teacher selects active question",
+      "student opens QR",
+      "student fills report",
+      "anonymous archive save",
+      "PDF download"
+    ],
+    "phase2-optional": [
+      "student custom question override analytics",
+      "teacher section comparison view"
+    ],
+    "phase3-later": [
+      "cross-session archive insights",
+      "institution dashboards"
+    ]
+  },
+  "consistencyWithProjectDocs": {
+    "mustSupport": [
+      "świadectwo",
+      "raport",
+      "odpowiedzialność odbioru",
+      "powściągliwość interpretacyjna",
+      "brak prostego moralizowania"
+    ],
+    "mustAvoid": [
+      "patos zamiast refleksji",
+      "test wiedzy zamiast odbioru",
+      "przeładowanie funkcjami",
+      "zbędne dane osobowe",
+      "wymuszanie jednej poprawnej odpowiedzi"
+    ],
+    "teacherExperienceGoal": "Nauczyciel ma uruchomić raport jednym QR i nie tłumaczyć dziesięciu funkcji.",
+    "studentExperienceGoal": "Uczeń ma wejść, napisać, zapisać i pobrać PDF bez zagubienia."
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel uruchamia raport w mniej niż 20 sekund.",
+      "Nie musi tłumaczyć więcej niż dwóch kroków uczniom.",
+      "Archiwum klasy porządkuje odpowiedzi bez ręcznej pracy."
+    ],
+    "student": [
+      "Uczeń rozumie formularz od pierwszego wejścia.",
+      "Raport da się wypełnić na telefonie bez frustracji.",
+      "Uczeń może wyjść z zajęć z własnym PDF-em."
+    ],
+    "production": [
+      "Pierwsza wersja nie wymaga mailingu ani logowania.",
+      "System działa bez obrazów interaktywnych i ciężkich zasobów.",
+      "Raport pozostaje najmocniejszym i najprostszym modułem całej ścieżki."
+    ]
+  }
+}
