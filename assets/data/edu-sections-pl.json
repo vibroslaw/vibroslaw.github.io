@@ -1,0 +1,562 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "collection": "Działy edukacyjne",
+  "designGoal": "Każdy dział ma być natychmiast zrozumiały dla nauczyciela pierwszego kontaktu i możliwy do uruchomienia bez szkolenia technicznego.",
+  "teacherUsePrinciple": "Nauczyciel wybiera jeden dział, jedno pytanie główne i prowadzi całość w prostym układzie: wprowadzenie, projekcja, rozmowa, raport.",
+  "projectionPolicy": {
+    "defaultMode": "full-chapter",
+    "defaultModeLabel": "Pełny rozdział",
+    "defaultModeDescription": "Domyślny i rekomendowany tryb pracy. Cały materiał audiowizualny buduje sens najlepiej jako zamknięta całość.",
+    "selectedFragmentsAllowed": true,
+    "selectedFragmentsWarning": "Praca na fragmentach jest możliwa, ale tylko wtedy, gdy nauczyciel świadomie dobiera materiał do celu zajęć. Fragment nie może udawać pełni sensu całego rozdziału.",
+    "fullChapterTiming": {
+      "videoMinutes": 65,
+      "minimumSessionMinutes": 90,
+      "recommendedSessionMinutes": 100
+    },
+    "shortSessionPolicy": "Krótsze zajęcia powinny być oparte na wyraźnie nazwanym celu tematycznym, nie na przypadkowym wyborze scen."
+  },
+  "sectionSelectionAdvice": {
+    "ifTeacherIsNew": "Najbezpieczniej zacząć od działu rocznicowego Pilecki albo od działu Sumienie i znaczenie raportu.",
+    "ifAudienceIsHistoryFocused": "Najpierw wybierz dział Pilecki rocznicowo, Auschwitz lub Totalitaryzm i wybory pod presją.",
+    "ifAudienceIsMethodologyFocused": "Najpierw wybierz AI i historia albo Sumienie i znaczenie raportu.",
+    "ifAudienceIsInternationalOrDiaspora": "Najpierw wybierz dział Polonia i pamięć przenoszona."
+  },
+  "sections": [
+    {
+      "id": "section-totalitaryzm-wybor",
+      "slug": "totalitaryzm-i-wybory-pod-presja",
+      "order": 1,
+      "title": "Totalitaryzm i wybory pod presją",
+      "shortTitle": "Totalitaryzm i wybór",
+      "tagline": "Jak system naciska na człowieka i utrudnia uczciwą ocenę decyzji.",
+      "corePurpose": "Dział służy do pracy nad mechanizmami działania systemu totalitarnego oraz nad ostrożnością w ocenianiu decyzji podejmowanych pod presją przemocy, strachu, izolacji i ograniczonej wiedzy.",
+      "whyItExists": "Ten dział spina centralną oś projektu: nie chodzi o prosty sąd nad człowiekiem, lecz o zrozumienie warunków, w których człowiek działa.",
+      "bestFor": [
+        "liceum",
+        "uczelnia",
+        "zaawansowane klasy 7-8"
+      ],
+      "recommendedContexts": [
+        "lekcja historii",
+        "lekcja WOS lub etyki",
+        "zajęcia rocznicowe",
+        "dyskusja o mechanizmach systemu"
+      ],
+      "projectionRecommendation": {
+        "preferredMode": "full-chapter",
+        "preferredReason": "Pełny rozdział najlepiej pokazuje napięcie między jednostką, systemem i świadectwem.",
+        "fragmentModeAllowed": true,
+        "fragmentModeUseOnlyIf": "Nauczyciel chce omówić konkretnie nacisk systemu, warunki decyzji lub porównanie nazistowskich i komunistycznych mechanizmów przemocy bez udawania pełnego obrazu całego projektu."
+      },
+      "teacherGuide": {
+        "forWhom": "Dla nauczyciela, który chce prowadzić rozmowę o systemie, presji i odpowiedzialności interpretacyjnej bez wchodzenia w prosty moralny werdykt.",
+        "howToLead": [
+          "Zacznij od pytania o warunki decyzji, nie od pytania kto miał rację.",
+          "Po projekcji wracaj do pojęć: presja, ograniczenie, ryzyko, system, źródło.",
+          "Pilnuj, by uczniowie odróżniali ocenę decyzji od wiedzy o warunkach, w których ta decyzja zapadała.",
+          "Jeśli pojawi się porównanie nazizmu i komunizmu, prowadź je przez mechanizmy systemowe, nie przez publicystyczny skrót."
+        ],
+        "watchOuts": [
+          "Nie zamieniaj lekcji w ranking bohaterów i winnych.",
+          "Nie wymuszaj na uczniach szybkiego osądu osób historycznych.",
+          "Nie przechodź do współczesnej polityki partyjnej.",
+          "Nie używaj uproszczeń typu 'wystarczyło zrobić właściwą rzecz'."
+        ],
+        "teacherClosingDirection": "Domknij lekcję pytaniem o to, co utrudnia uczciwe ocenianie decyzji z przeszłości."
+      },
+      "teacherNotes": {
+        "metaphorHandling": "Jeżeli w materiale pojawiają się metafory nacisku, ciszy, zamknięcia lub muru, prowadź je jako narzędzia odbioru, a nie jako samodzielne dowody historyczne.",
+        "historicalNotes": [
+          "Można odnieść temat do nazizmu i stalinizmu jako systemów przemocy i kontroli.",
+          "Można ostrożnie wprowadzić PRL jako późniejszą przestrzeń pamięci, presji i interpretacji, ale nie jako główny temat działu."
+        ],
+        "advancedOptionalContext": [
+          "W starszych grupach można pokazać, że proste porównania między ludźmi działającymi w skrajnych warunkach bywają metodologicznie nieuczciwe."
+        ]
+      },
+      "reportMode": "raport-interpretacyjny",
+      "studentOutcome": "Uczeń powinien wyjść z większą ostrożnością wobec prostych ocen oraz z lepszym rozumieniem nacisku systemowego.",
+      "questions": [
+        {
+          "id": "twp-q1",
+          "text": "Jak system totalitarny zmienia warunki podejmowania decyzji przez człowieka?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "twp-q2",
+          "text": "Dlaczego ocena ludzkich decyzji podejmowanych pod presją wymaga szczególnej ostrożności?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "twp-q3",
+          "text": "Które mechanizmy systemu widać tu najmocniej: kontrolę, strach, izolację, podporządkowanie czy coś jeszcze?",
+          "type": "analytical",
+          "recommended": false
+        },
+        {
+          "id": "twp-q4",
+          "text": "Co jest bardziej niebezpieczne: sama przemoc systemu czy przyzwyczajenie człowieka do jego logiki?",
+          "type": "reflective",
+          "recommended": false
+        },
+        {
+          "id": "twp-q5",
+          "text": "Jak mówić o wyborze pod presją tak, żeby nie uprościć historii i nie skrzywdzić prawdy o ludzkiej sytuacji?",
+          "type": "advanced",
+          "recommended": false
+        }
+      ]
+    },
+    {
+      "id": "section-pilecki-rocznicowy",
+      "slug": "pilecki-rocznicowo",
+      "order": 2,
+      "title": "Pilecki — dział rocznicowy i historyczny",
+      "shortTitle": "Pilecki rocznicowo",
+      "tagline": "Świadectwo, raport i odpowiedzialność pamięci wokół postaci Witolda Pileckiego.",
+      "corePurpose": "Dział przeznaczony do pracy rocznicowej, szkolnej i instytucjonalnej wokół postaci Witolda Pileckiego, jego świadectwa, raportu i znaczenia pamięci historycznej.",
+      "whyItExists": "To najbardziej bezpośrednie połączenie strony edukacyjnej z główną osią projektu i dokumentami opisującymi jego sens.",
+      "bestFor": [
+        "szkoła podstawowa 7-8",
+        "liceum",
+        "uczelnia",
+        "instytucje",
+        "uroczystości rocznicowe"
+      ],
+      "recommendedContexts": [
+        "25 maja",
+        "14 czerwca",
+        "lekcja rocznicowa",
+        "spotkanie szkolne",
+        "wydarzenie instytucjonalne"
+      ],
+      "projectionRecommendation": {
+        "preferredMode": "full-chapter",
+        "preferredReason": "Pełny materiał najlepiej oddaje wagę świadectwa i drogę od doświadczenia do raportu.",
+        "fragmentModeAllowed": true,
+        "fragmentModeUseOnlyIf": "Zajęcia mają charakter krótkiego bloku rocznicowego i nauczyciel świadomie pracuje tylko na fragmencie dotyczącym świadectwa, raportu albo odpowiedzialności pamięci."
+      },
+      "teacherGuide": {
+        "forWhom": "Dla nauczyciela lub instytucji, która chce zorganizować zajęcia rocznicowe bez popadania w pomnikowy ton i bez banalizacji postaci.",
+        "howToLead": [
+          "Prowadź rozmowę przez pojęcia świadectwa, raportu, ryzyka i odpowiedzialności odbioru.",
+          "Pokazuj Pileckiego jako centralną postać rozdziału, ale nie zamieniaj lekcji w prostą hagiografię.",
+          "Podkreślaj znaczenie raportu jako dokumentu i formy przekazania wiedzy.",
+          "Jeżeli to wydarzenie rocznicowe, możesz zacząć krótkim wprowadzeniem historycznym, ale nie przeciążaj pierwszych minut faktografią."
+        ],
+        "watchOuts": [
+          "Nie sprowadzaj sensu działu tylko do 'bohaterstwa' rozumianego sloganowo.",
+          "Nie używaj tonu szkolnej akademii oderwanej od źródła.",
+          "Nie przestawiaj punktu ciężkości na poboczne postaci.",
+          "Nie zamykaj lekcji jednym morałem patriotycznym."
+        ],
+        "teacherClosingDirection": "Domknij pytaniem o to, co dziś znaczy odpowiedzialny odbiór świadectwa."
+      },
+      "teacherNotes": {
+        "metaphorHandling": "Metafory ognia, ciszy, śladu, muru czy raportu powinny być objaśniane jako środki formy, nie jako zamienniki historii.",
+        "historicalNotes": [
+          "To dział najściślej związany z postacią Witolda Pileckiego i osią projektu.",
+          "Najlepiej działa w formule: krótkie wprowadzenie, projekcja, rozmowa, raport."
+        ],
+        "advancedOptionalContext": [
+          "W grupach starszych można dodać notę o tym, że świadectwo zapisane nie kończy interpretacji, tylko ją otwiera."
+        ]
+      },
+      "reportMode": "raport-odbioru",
+      "studentOutcome": "Uczeń powinien lepiej rozumieć, że pamięć o Pileckim nie polega wyłącznie na nazwaniu go bohaterem, lecz także na uczciwym odbiorze świadectwa.",
+      "questions": [
+        {
+          "id": "pr-q1",
+          "text": "Co sprawia, że świadectwo Witolda Pileckiego pozostaje ważne także dziś?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "pr-q2",
+          "text": "Jaką odpowiedzialność bierze na siebie człowiek, który nie tylko przeżywa historię, ale decyduje się ją opisać?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "pr-q3",
+          "text": "Co odróżnia pamięć rocznicową od prawdziwie uważnego spotkania ze świadectwem?",
+          "type": "reflective",
+          "recommended": false
+        },
+        {
+          "id": "pr-q4",
+          "text": "Dlaczego raport nie jest tylko dokumentem historycznym, ale również zadaniem dla późniejszego odbiorcy?",
+          "type": "analytical",
+          "recommended": false
+        },
+        {
+          "id": "pr-q5",
+          "text": "Jak mówić o Pileckim uczciwie: z szacunkiem, ale bez uproszczenia jego historii do pomnikowej formuły?",
+          "type": "advanced",
+          "recommended": false
+        }
+      ]
+    },
+    {
+      "id": "section-auschwitz",
+      "slug": "auschwitz-swiadectwo-miejsce",
+      "order": 3,
+      "title": "Auschwitz — świadectwo, miejsce, pamięć",
+      "shortTitle": "Auschwitz",
+      "tagline": "Jak pracować z miejscem, świadectwem i pamięcią bez uproszczeń i bez sensacyjności.",
+      "corePurpose": "Dział przeznaczony do rozmowy o Auschwitz jako miejscu historycznym, przestrzeni świadectwa, źródła i pamięci, z zachowaniem powściągliwości i precyzji.",
+      "whyItExists": "To dział potrzebny wtedy, gdy nauczyciel lub instytucja chce pracować nad relacją między miejscem, historią, pamięcią i odpowiedzialnością odbioru.",
+      "bestFor": [
+        "liceum",
+        "uczelnia",
+        "zaawansowane klasy 7-8",
+        "instytucje kultury"
+      ],
+      "recommendedContexts": [
+        "lekcja historii XX wieku",
+        "zajęcia muzealne lub okołomuzealne",
+        "lekcja o pamięci historycznej",
+        "wydarzenie rocznicowe"
+      ],
+      "projectionRecommendation": {
+        "preferredMode": "full-chapter",
+        "preferredReason": "Pełny rozdział lepiej utrzymuje powściągliwość i nie redukuje miejsca do jednego efektownego obrazu.",
+        "fragmentModeAllowed": true,
+        "fragmentModeUseOnlyIf": "Nauczyciel pracuje ściśle nad tematem miejsca, świadectwa lub przestrzeni pamięci i potrafi jasno nazwać ograniczenie wybranego fragmentu."
+      },
+      "teacherGuide": {
+        "forWhom": "Dla prowadzących, którzy chcą pracować z tematem Auschwitz uczciwie, bez sensacji i bez estetyzacji cierpienia.",
+        "howToLead": [
+          "Prowadź rozmowę przez pojęcia miejsce, świadectwo, źródło, pamięć i odpowiedzialność odbioru.",
+          "Zachowuj powściągliwość w komentarzu i w emocjonalnym tonie zajęć.",
+          "Jeśli mówisz o przestrzeni, pilnuj różnicy między miejscem a interpretacją miejsca.",
+          "Pozwalaj uczniom zatrzymać się przy jednym mocnym pytaniu, zamiast mnożyć obrazy i efekty."
+        ],
+        "watchOuts": [
+          "Nie antropomorfizuj miejsca.",
+          "Nie używaj estetyki grozy jako głównego środka lekcji.",
+          "Nie sprowadzaj Auschwitz do jednego symbolu, obrazu albo skrótu.",
+          "Nie traktuj emocjonalnego wstrząsu jako dowodu zrozumienia historii."
+        ],
+        "teacherClosingDirection": "Domknij lekcję pytaniem o to, jak odpowiedzialnie pamiętać miejsce, którego ciężaru nie da się sprowadzić do jednego obrazu."
+      },
+      "teacherNotes": {
+        "metaphorHandling": "Mury, brama, drut, cisza czy ślad mogą działać jako narzędzia skupienia uwagi, ale nie zastępują źródeł historycznych.",
+        "historicalNotes": [
+          "To dział o miejscu i pamięci, nie o wizualnej intensywności.",
+          "Nadaje się do pracy nad rozróżnieniem między przestrzenią historyczną a późniejszym odbiorem tej przestrzeni."
+        ],
+        "advancedOptionalContext": [
+          "W starszych grupach można dodać temat relacji między muzealizacją miejsca a odbiorem świadectwa."
+        ]
+      },
+      "reportMode": "raport-interpretacyjny",
+      "studentOutcome": "Uczeń powinien lepiej rozumieć, że miejsce historyczne wymaga zarówno pamięci, jak i interpretacyjnej ostrożności.",
+      "questions": [
+        {
+          "id": "au-q1",
+          "text": "Jak rozmawiać o Auschwitz tak, żeby nie uprościć ani historii, ani pamięci tego miejsca?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "au-q2",
+          "text": "Co wnosi do rozumienia historii spotkanie z miejscem, a nie tylko z datą lub podręcznikowym opisem?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "au-q3",
+          "text": "Dlaczego emocjonalna siła obrazu nie wystarcza jeszcze do odpowiedzialnego odbioru historii?",
+          "type": "analytical",
+          "recommended": false
+        },
+        {
+          "id": "au-q4",
+          "text": "Jak odróżnić pamięć miejsca od własnej interpretacji tego, co w nim widzimy i czujemy?",
+          "type": "reflective",
+          "recommended": false
+        },
+        {
+          "id": "au-q5",
+          "text": "Jakie ryzyko niesie używanie zbyt mocnych symboli lub skrótów w opowiadaniu o Auschwitz?",
+          "type": "advanced",
+          "recommended": false
+        }
+      ]
+    },
+    {
+      "id": "section-ai-historia",
+      "slug": "ai-i-historia",
+      "order": 4,
+      "title": "AI i historia — odpowiedzialna praca z pamięcią",
+      "shortTitle": "AI i historia",
+      "tagline": "Jak tworzyć i odbierać materiał historyczny z użyciem AI odpowiedzialnie, bez fałszu i bez efekciarstwa.",
+      "corePurpose": "Dział służy do rozmowy o tym, jak korzystać z narzędzi AI w pracy z historią, pamięcią i świadectwem oraz gdzie przebiega granica między formą a nadużyciem.",
+      "whyItExists": "Ten dział najmocniej wyróżnia projekt jako współczesny, ale odpowiedzialny sposób pracy z materiałem historycznym i edukacyjnym.",
+      "bestFor": [
+        "liceum",
+        "uczelnia",
+        "nauczyciele",
+        "instytucje",
+        "warsztaty medialne"
+      ],
+      "recommendedContexts": [
+        "lekcja o mediach",
+        "lekcja o współczesnych narzędziach kultury",
+        "warsztaty nauczycielskie",
+        "zajęcia metodologiczne"
+      ],
+      "projectionRecommendation": {
+        "preferredMode": "full-chapter",
+        "preferredReason": "Pełny rozdział pokazuje, że AI jest tu narzędziem formy, a nie zamiennikiem historii.",
+        "fragmentModeAllowed": true,
+        "fragmentModeUseOnlyIf": "Prowadzący omawia proces twórczy, metafory, odpowiedzialność za obraz i różnicę między źródłem a interpretacją audiowizualną."
+      },
+      "teacherGuide": {
+        "forWhom": "Dla prowadzących, którzy chcą pokazać uczniom lub odbiorcom, że AI może służyć pamięci historycznej tylko wtedy, gdy jest trzymane w ryzach metodologii i odpowiedzialności.",
+        "howToLead": [
+          "Zacznij od wyjaśnienia, że AI nie zastępuje źródła historycznego ani badania.",
+          "Pokaż różnicę między materiałem źródłowym, interpretacją artystyczną i warstwą wygenerowaną.",
+          "Mów o odpowiedzialności za to, co obraz sugeruje, a czego nie wolno mu udawać.",
+          "Prowadź rozmowę nie o 'czy AI jest dobre', ale o tym, jak pracować z nim uczciwie."
+        ],
+        "watchOuts": [
+          "Nie reklamuj technologii jako głównego sensu projektu.",
+          "Nie sugeruj, że realizm wizualny jest dowodem historycznej prawdy.",
+          "Nie sprowadzaj lekcji do zachwytu nad narzędziem.",
+          "Nie ukrywaj, że forma może zarówno pomóc, jak i zniekształcić odbiór."
+        ],
+        "teacherClosingDirection": "Domknij zajęcia pytaniem o to, gdzie kończy się pomoc narzędzia, a zaczyna odpowiedzialność twórcy i odbiorcy."
+      },
+      "teacherNotes": {
+        "metaphorHandling": "To dobry dział do objaśniania, co w materiale jest metaforą, syntezą lub kompozycją, a co opiera się na źródłach i badaniu.",
+        "historicalNotes": [
+          "Dział nie zastępuje historycznego rdzenia projektu, lecz pokazuje warstwę odpowiedzialnego tworzenia.",
+          "Najlepiej działa przy starszych grupach lub w formule nauczycielskiej."
+        ],
+        "advancedOptionalContext": [
+          "Można poruszyć temat granicy między rekonstrukcją a estetyzacją przeszłości."
+        ]
+      },
+      "reportMode": "raport-interpretacyjny",
+      "studentOutcome": "Uczeń powinien lepiej rozumieć, że nowoczesna forma nie zwalnia z odpowiedzialności za prawdę, źródło i sposób pokazywania historii.",
+      "questions": [
+        {
+          "id": "ai-q1",
+          "text": "Jak korzystać z AI w pracy z historią tak, żeby nie zgubić odpowiedzialności za prawdę i źródło?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "ai-q2",
+          "text": "Co odróżnia odpowiedzialną interpretację historyczną od efektownej, ale mylącej wizualizacji?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "ai-q3",
+          "text": "Czy realistyczny obraz generowany przez AI może sprawiać wrażenie większej prawdy, niż rzeczywiście niesie?",
+          "type": "analytical",
+          "recommended": false
+        },
+        {
+          "id": "ai-q4",
+          "text": "Gdzie przebiega granica między pomocą narzędzia a nadużyciem formy wobec historii?",
+          "type": "reflective",
+          "recommended": false
+        },
+        {
+          "id": "ai-q5",
+          "text": "Jak twórca powinien objaśniać odbiorcy, co w dziele jest źródłem, a co interpretacją lub metaforą?",
+          "type": "advanced",
+          "recommended": false
+        }
+      ]
+    },
+    {
+      "id": "section-polonia",
+      "slug": "polonia-i-pamiec-przenoszona",
+      "order": 5,
+      "title": "Polonia — Pilecki, II wojna światowa, totalitaryzm i pamięć przenoszona",
+      "shortTitle": "Polonia i pamięć",
+      "tagline": "Jak mówić o polskim doświadczeniu historycznym do odbiorcy żyjącego poza Polską, nie tracąc ciężaru sensu.",
+      "corePurpose": "Dział służy do pracy z odbiorcą polonijnym lub międzynarodowym wokół Pileckiego, II wojny światowej, totalitaryzmu i odpowiedzialnego przekładu pamięci między językami oraz kontekstami kulturowymi.",
+      "whyItExists": "To dział, który najlepiej łączy polski rdzeń projektu z jego potencjałem zagranicznym i edukacyjnym.",
+      "bestFor": [
+        "Polonia",
+        "grupy dwujęzyczne",
+        "szkoły sobotnie",
+        "instytucje polonijne",
+        "liceum",
+        "uczelnia"
+      ],
+      "recommendedContexts": [
+        "szkoła polonijna",
+        "spotkanie rocznicowe za granicą",
+        "lekcja o polskim doświadczeniu wojny",
+        "praca międzykulturowa"
+      ],
+      "projectionRecommendation": {
+        "preferredMode": "full-chapter",
+        "preferredReason": "Pełny materiał pomaga utrzymać ciężar doświadczenia i nie redukuje polskiej historii do krótkiego skrótu eksportowego.",
+        "fragmentModeAllowed": true,
+        "fragmentModeUseOnlyIf": "Zajęcia mają charakter pomostowy i skupiają się na jednym temacie: Pilecki, świadectwo, totalitaryzm albo pamięć przenoszona między kulturami."
+      },
+      "teacherGuide": {
+        "forWhom": "Dla nauczyciela lub prowadzącego, który chce mówić do odbiorcy polonijnego bez nadmiernych założeń o znajomości kontekstu historycznego.",
+        "howToLead": [
+          "Nazwij podstawowy kontekst jasno i bez przeciążenia faktami.",
+          "Traktuj dział jako most między polskim doświadczeniem a szerszym odbiorcą.",
+          "Wyjaśniaj pojęcia, które w Polsce bywają oczywiste, ale poza Polską nie muszą takie być.",
+          "Pilnuj, by sens historyczny nie został zastąpiony samą emocją tożsamościową."
+        ],
+        "watchOuts": [
+          "Nie zakładaj pełnej wspólnoty odniesień kulturowych.",
+          "Nie zamieniaj lekcji w ogólną opowieść o dumie narodowej bez źródła i świadectwa.",
+          "Nie upraszczaj polskiej historii do jednego hasła eksportowego.",
+          "Nie używaj zbyt lokalnych skrótów bez objaśnienia."
+        ],
+        "teacherClosingDirection": "Domknij zajęcia pytaniem o to, jak przenosić pamięć historyczną między językami i krajami, nie tracąc jej sensu."
+      },
+      "teacherNotes": {
+        "metaphorHandling": "To dobry dział do pokazania, że język i obraz muszą być tłumaczone odpowiedzialnie, a nie tylko atrakcyjnie.",
+        "historicalNotes": [
+          "Najlepiej pracować tu przez trzy pojęcia: świadectwo, przekład sensu, odpowiedzialność pamięci.",
+          "Dział nadaje się do pracy wokół Pileckiego, II wojny światowej i totalitaryzmu w szerszym kontekście odbiorcy zagranicznego."
+        ],
+        "advancedOptionalContext": [
+          "Można dodać refleksję o tym, że pamięć narodowa poza krajem często działa inaczej niż pamięć lokalna i szkolna."
+        ]
+      },
+      "reportMode": "raport-odbioru",
+      "studentOutcome": "Uczeń lub uczestnik powinien lepiej rozumieć, jak mówić o polskiej historii za granicą bez utraty prawdy, ciężaru i kontekstu.",
+      "questions": [
+        {
+          "id": "po-q1",
+          "text": "Jak mówić o polskim doświadczeniu wojny i totalitaryzmu do odbiorcy żyjącego poza Polską, nie upraszczając sensu?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "po-q2",
+          "text": "Który element tej historii może działać jako most między pamięcią polską a odbiorcą międzynarodowym?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "po-q3",
+          "text": "Co najłatwiej zgubić, kiedy próbujemy opowiadać polską historię w skrócie lub w innym języku?",
+          "type": "reflective",
+          "recommended": false
+        },
+        {
+          "id": "po-q4",
+          "text": "Jak zachować ciężar świadectwa, kiedy odbiorca nie zna wszystkich realiów historycznych?",
+          "type": "analytical",
+          "recommended": false
+        },
+        {
+          "id": "po-q5",
+          "text": "Jak odróżnić odpowiedzialny przekład pamięci od uproszczonej wersji historii przeznaczonej tylko do szybkiego zrozumienia?",
+          "type": "advanced",
+          "recommended": false
+        }
+      ]
+    },
+    {
+      "id": "section-sumienie-raport",
+      "slug": "sumienie-i-znaczenie-raportu",
+      "order": 6,
+      "title": "Sumienie i znaczenie raportu",
+      "shortTitle": "Sumienie i raport",
+      "tagline": "Co znaczy zostawić po sobie świadectwo i jaką odpowiedzialność bierze na siebie późniejszy odbiorca.",
+      "corePurpose": "Dział służy do pracy nad pojęciem sumienia, znaczenia raportu oraz nad tym, co pozostaje po człowieku, gdy czas decyzji mija albo gdy decyzja nie zostaje podjęta.",
+      "whyItExists": "To dział najmocniej spinający historyczny rdzeń projektu z pytaniem o współczesnego odbiorcę i jego odpowiedzialność.",
+      "bestFor": [
+        "szkoła podstawowa 7-8",
+        "liceum",
+        "uczelnia",
+        "etyka",
+        "religia",
+        "zajęcia wychowawcze"
+      ],
+      "recommendedContexts": [
+        "lekcja o odpowiedzialności",
+        "lekcja wychowawcza",
+        "lekcja rocznicowa z mocnym domknięciem osobistym",
+        "zajęcia o decyzji i czasie"
+      ],
+      "projectionRecommendation": {
+        "preferredMode": "full-chapter",
+        "preferredReason": "Pełny rozdział najlepiej prowadzi od historii do pytania o sumienie i znaczenie raportu.",
+        "fragmentModeAllowed": true,
+        "fragmentModeUseOnlyIf": "Prowadzący chce pracować nad jednym pojęciem: raport, odpowiedzialność, decyzja, brak decyzji albo znaczenie późnego zrozumienia."
+      },
+      "teacherGuide": {
+        "forWhom": "Dla nauczyciela, który chce przejść od historii do pytania o współczesnego człowieka bez banalnych morałów i bez taniej aktualizacji.",
+        "howToLead": [
+          "Prowadź rozmowę przez pojęcia raportu, decyzji, czasu, odpowiedzialności i samotności odbiorcy.",
+          "Pozwól uczniom zobaczyć, że raport nie kończy historii, lecz zostawia zadanie.",
+          "Jeżeli wprowadzasz współczesne odniesienia, rób to ostrożnie i przez analogię odpowiedzialności, nie przez proste porównanie wydarzeń.",
+          "Możesz przejść do pytania o decyzję podjętą na czas i decyzję spóźnioną, ale bez taniego moralizowania."
+        ],
+        "watchOuts": [
+          "Nie zamieniaj działu w coaching motywacyjny.",
+          "Nie przechodź od razu do banału 'telefon albo SMS na lekcji to też wybór' bez sensownego osadzenia.",
+          "Nie używaj współczesnych przykładów tak, jakby były równoważne doświadczeniu historycznemu.",
+          "Nie kończ lekcji prostym hasłem zamiast pytania."
+        ],
+        "teacherClosingDirection": "Najlepsze zamknięcie to nie gotowa odpowiedź, tylko pytanie: co dziś znaczy zostawić po sobie uczciwy raport własnych decyzji?"
+      },
+      "teacherNotes": {
+        "metaphorHandling": "To dział, w którym metafory decyzji, czasu, zbyt późnego zrozumienia, samotności i pozostawionego raportu mogą być objaśniane najpełniej.",
+        "historicalNotes": [
+          "Dział powinien wracać do historycznego sensu raportu, a dopiero potem przechodzić do współczesnego odbiorcy.",
+          "Nadaje się do delikatnych odniesień do dzisiejszych sytuacji życiowych, ale tylko jako echo odpowiedzialności, nie jako proste porównanie z historią wojny czy obozu."
+        ],
+        "advancedOptionalContext": [
+          "Można ostrożnie użyć motywu decyzji podjętej na czas i decyzji spóźnionej jako pomostu do rozmowy o odpowiedzialności we współczesności."
+        ]
+      },
+      "reportMode": "raport-odbioru",
+      "studentOutcome": "Uczeń powinien wyjść z pytaniem o własną odpowiedzialność za to, co widzi, rozumie i co zostawia po sobie innym.",
+      "questions": [
+        {
+          "id": "sr-q1",
+          "text": "Co znaczy zostawić po sobie raport, który nie jest tylko zapisem faktów, ale także zadaniem dla późniejszego odbiorcy?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "sr-q2",
+          "text": "Dlaczego czas decyzji bywa ważniejszy niż sama świadomość, że decyzja była potrzebna?",
+          "type": "core",
+          "recommended": true
+        },
+        {
+          "id": "sr-q3",
+          "text": "Czy brak decyzji też jest formą decyzji — i jak mówić o tym uczciwie?",
+          "type": "reflective",
+          "recommended": false
+        },
+        {
+          "id": "sr-q4",
+          "text": "Co zostaje z człowieka w historii: czyn, zapis, świadectwo, pamięć odbiorcy czy coś jeszcze?",
+          "type": "analytical",
+          "recommended": false
+        },
+        {
+          "id": "sr-q5",
+          "text": "Jak przejść od historii raportu do pytania o własne sumienie, nie banalizując przeszłości?",
+          "type": "advanced",
+          "recommended": false
+        }
+      ]
+    }
+  ]
+    }
