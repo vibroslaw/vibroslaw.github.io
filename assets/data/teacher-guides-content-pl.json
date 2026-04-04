@@ -1,0 +1,616 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "teacher-guides-content",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "guideModel": {
+    "purpose": "Teacher Guide ma dawać nauczycielowi gotowy sens działu, spokojne wejście w rozmowę, minimalny potrzebny kontekst historyczny i jasne rozróżnienie między metaforą artystyczną a warstwą historyczną.",
+    "tone": "quiet-clear-institutional",
+    "teacherUseMode": "quick-reference-during-lesson",
+    "mustBeReadableFast": true,
+    "mustAvoid": [
+      "akademickiego przeładowania",
+      "moralizatorskiego tonu",
+      "zbyt długich bloków tekstu bez hierarchii",
+      "wielu równorzędnych interpretacji na pierwszym ekranie",
+      "przejęcia głównej osi projektu przez poboczne konteksty"
+    ]
+  },
+  "guides": [
+    {
+      "id": "guide-totalitaryzm",
+      "sectionId": "section-totalitaryzm-wybor",
+      "label": "Totalitaryzm i wybory pod presją",
+      "firstScreenSummary": "Ten dział nie pyta najpierw o to, kto był dobry albo zły. Pyta, jak działa system nacisku, jak zawęża pole decyzji i dlaczego łatwy osąd historyczny bywa nieuczciwy.",
+      "teacherOneSentence": "Prowadź rozmowę o warunkach decyzji, nie o szybkim wyroku na człowieka.",
+      "senseOfSection": {
+        "coreMeaning": "Najważniejsze jest tu pokazanie, że totalitaryzm działa nie tylko przez wielkie wydarzenia, ale przez organizację nacisku, strachu, ograniczenia i podporządkowania.",
+        "projectConnection": "Dział spina projekt z pytaniem o odpowiedzialność odbioru: zanim ocenimy decyzję, musimy rozumieć warunki, w jakich była podejmowana.",
+        "whyItMatters": "Bez tej ostrożności historia bardzo łatwo zamienia się w uproszczoną opowieść o bohaterach i winnych, zamiast w uczciwe spotkanie z rzeczywistością systemu."
+      },
+      "openingConversation": {
+        "recommendedTeacherTone": "Spokojny, rzeczowy, bez podnoszenia stawki na wejściu.",
+        "openingLines": [
+          "Zanim zapytamy o ocenę, spróbujmy zobaczyć warunki, w których człowiek musiał działać.",
+          "Nie zaczynamy dziś od bohaterstwa ani winy. Zaczynamy od pytania, jak działa nacisk systemu.",
+          "Spróbujmy najpierw zobaczyć presję, a dopiero później zastanowić się nad decyzją."
+        ],
+        "openingQuestions": [
+          "Jak system naciska na pole ludzkiej decyzji?",
+          "Co w materiale pokazuje presję, a nie tylko sam wybór?",
+          "Dlaczego ostrożność jest ważna, kiedy oceniamy decyzje podejmowane pod przymusem?"
+        ],
+        "doNotOpenWith": [
+          "Czy ta postać była bohaterem czy tchórzem?",
+          "Czy wy bylibyście lepsi?",
+          "Kto tu miał rację moralnie?"
+        ]
+      },
+      "fragmentWork": {
+        "mainUse": "Fragmenty w tym dziale mają pokazać mechanizm działania systemu i atmosferę nacisku, nie służą do prostego emocjonalnego szoku.",
+        "recommendedFragmentSlots": [
+          {
+            "slot": "fragment-otwierajacy",
+            "role": "ustawia logikę nacisku systemu",
+            "teacherInstruction": "Po fragmencie nie komentuj od razu. Najpierw zbierz jedno słowo albo jedno zdanie od uczniów."
+          },
+          {
+            "slot": "fragment-centralny",
+            "role": "pokazuje moment zawężenia pola decyzji",
+            "teacherInstruction": "Zatrzymaj po nim rozmowę na pytaniu: co tu działało najmocniej jako presja?"
+          },
+          {
+            "slot": "fragment-domykajacy",
+            "role": "przenosi ciężar z historii na odpowiedzialność interpretacji",
+            "teacherInstruction": "Nie kończ nim lekcji morałem. Zostaw pytanie otwarte."
+          }
+        ],
+        "whatStudentsShouldHear": [
+          "nacisk systemu",
+          "ograniczenie pola wyboru",
+          "różnicę między decyzją a warunkami decyzji"
+        ],
+        "whatNotToOverExplain": [
+          "że każdy wybór jest z góry moralnie rozstrzygnięty",
+          "że materiał daje prostą ocenę człowieka",
+          "że jedna scena wystarcza do domknięcia interpretacji"
+        ]
+      },
+      "metaphorVsHistory": {
+        "metaphorElements": [
+          "zabiegi wzmacniające poczucie nacisku, osaczenia albo powtarzalności systemu",
+          "kompozycje obrazu i dźwięku budujące atmosferę zniewolenia",
+          "skróty artystyczne używane do pokazania mechanizmu, a nie dokumentalnej całości"
+        ],
+        "sourceGroundedElements": [
+          "istnienie systemowego nacisku w realiach totalitaryzmu",
+          "rola kontroli, przemocy instytucjonalnej i podporządkowania jednostki",
+          "historyczna konieczność ostrożności przy ocenie decyzji podejmowanych pod presją"
+        ],
+        "howToExplainDifference": [
+          "Powiedz uczniom: forma pomaga nam wejść w sens sytuacji, ale nie zastępuje źródła.",
+          "Podkreśl: materiał artystyczny pokazuje napięcie, a nie pełny protokół wydarzeń.",
+          "Dopowiedz: uczciwy odbiór polega na odróżnieniu atmosfery od dowodu historycznego."
+        ]
+      },
+      "minimumHistoricalContext": [
+        "Totalitaryzm to system, który próbuje podporządkować nie tylko działania, ale także przestrzeń decyzji człowieka.",
+        "Presja nie działa wyłącznie przez jawny terror; działa też przez organizację codzienności, kontroli i lęku.",
+        "W takich warunkach ocena ludzkich decyzji wymaga większej ostrożności niż w zwykłych realiach życia."
+      ],
+      "optionalExtendedContext": [
+        "Krótki kontrast między nazistowskim i komunistycznym modelem przemocy systemowej.",
+        "Rozmowa o tym, jak system wpływa na język, pamięć i późniejszy zapis historii.",
+        "Dla starszych grup można dodać krótką notę o tym, że nie każda dokumentacja systemu jest neutralna."
+      ],
+      "teacherCautions": [
+        "Nie prowadź klasy do prostego moralnego werdyktu.",
+        "Nie zamieniaj lekcji w ranking postaw.",
+        "Nie dopowiadaj uczniom, jaka odpowiedź jest moralnie wyższa.",
+        "Jeżeli pojawia się mocna opinia, wróć do pytania o warunki, źródło i mechanizm systemu."
+      ],
+      "closureOptions": [
+        "Co po tej pracy wydaje ci się trudniejsze do ocenienia niż przedtem?",
+        "Czy można mówić o odpowiedzialności bez upraszczania warunków, w których działał człowiek?",
+        "Jak dzisiejszy odbiorca powinien pracować z historią, żeby nie zamienić jej w prosty osąd?"
+      ],
+      "reportBridge": "Na końcu przypomnij, że raport ucznia nie ma oceniać ludzi, lecz uczciwie zapisać to, co zostało po spotkaniu z pytaniem o system i decyzję."
+    },
+    {
+      "id": "guide-pilecki",
+      "sectionId": "section-pilecki-rocznicowy",
+      "label": "Pilecki — wymiar rocznicowy i historyczny",
+      "firstScreenSummary": "Ten dział nie ma być wyłącznie opowieścią pomnikową. Ma prowadzić do świadectwa, raportu i pytania, co znaczy odpowiedzialny odbiór postaci historycznej.",
+      "teacherOneSentence": "Prowadź uczniów przez świadectwo i raport, nie przez samą formułę bohaterstwa.",
+      "senseOfSection": {
+        "coreMeaning": "Pilecki pozostaje osią projektu jako człowiek związany ze świadectwem, raportem i odpowiedzialnością za przekazanie wiedzy o rzeczywistości obozowej.",
+        "projectConnection": "To najbardziej centralny dział wobec całego Rap-Ortu: łączy historię, świadectwo, raport i pytanie skierowane do współczesnego odbiorcy.",
+        "whyItMatters": "Rocznica nie ma tu zamykać rozmowy pomnikiem, lecz otwierać pytanie o sens zapisu, ryzyko przekazu i odpowiedzialność pamięci."
+      },
+      "openingConversation": {
+        "recommendedTeacherTone": "Poważny, ale nie patetyczny. Uważny, bez tonu akademii rocznicowej.",
+        "openingLines": [
+          "Dziś nie chcemy tylko wspomnieć postaci. Chcemy zapytać, co znaczy świadectwo, które po niej zostaje.",
+          "Nie zaczynajmy od pomnika. Zacznijmy od pytania, co znaczy raport i dlaczego nadal działa.",
+          "Spróbujmy zobaczyć Pileckiego nie tylko jako postać historyczną, ale jako punkt spotkania z dokumentem i odpowiedzialnością."
+        ],
+        "openingQuestions": [
+          "Co w tym materiale działa najmocniej jako świadectwo, a nie tylko informacja o postaci?",
+          "Dlaczego raport i świadectwo są tu tak ważne?",
+          "Jak rozumiesz odpowiedzialność wobec świadectwa?"
+        ],
+        "doNotOpenWith": [
+          "Czy Pilecki był największym bohaterem?",
+          "Czy dzisiaj ktoś byłby taki jak on?",
+          "Czy można go po prostu uznać za idealny wzór?"
+        ]
+      },
+      "fragmentWork": {
+        "mainUse": "Fragmenty mają prowadzić od postaci do świadectwa. Nie chodzi o samą legendę, lecz o sens raportu, zapisu i przekazu.",
+        "recommendedFragmentSlots": [
+          {
+            "slot": "fragment-rocznicowy",
+            "role": "ustawia godność tonu i historyczne zakorzenienie",
+            "teacherInstruction": "Nie komentuj go jako 'hołdu'. Komentuj go jako wejście w świadectwo."
+          },
+          {
+            "slot": "fragment-raportu",
+            "role": "przenosi ciężar z postaci na dokument i zapis",
+            "teacherInstruction": "Po tym fragmencie zapytaj: co tu działa bardziej — człowiek czy pozostawione świadectwo?"
+          },
+          {
+            "slot": "fragment-domykajacy",
+            "role": "otwiera pytanie do współczesnego odbiorcy",
+            "teacherInstruction": "Nie kończ odpowiedzią. Zostaw uczniów z jednym pytaniem."
+          }
+        ],
+        "whatStudentsShouldHear": [
+          "znaczenie raportu",
+          "odpowiedzialność przekazania świadectwa",
+          "różnicę między pamięcią a pomnikowym skrótem"
+        ],
+        "whatNotToOverExplain": [
+          "że każda mocna forma artystyczna jest dowodem historycznym",
+          "że rocznicowy ton wystarcza za interpretację",
+          "że postać historyczna ma zostać zamknięta w jednej etykiecie"
+        ]
+      },
+      "metaphorVsHistory": {
+        "metaphorElements": [
+          "obrazy wzmacniające samotność misji, ciężar decyzji albo odpowiedzialność zapisu",
+          "rytm muzyczny budujący wagę świadectwa",
+          "skróty artystyczne, które kondensują sens, a nie rekonstruują każdej sytuacji literalnie"
+        ],
+        "sourceGroundedElements": [
+          "centralna rola raportu i świadectwa w odbiorze postaci Pileckiego",
+          "historyczne znaczenie przekazania wiedzy o obozie",
+          "fakt, że dokument i świadectwo są osią interpretacji projektu"
+        ],
+        "howToExplainDifference": [
+          "Powiedz: materiał artystyczny nie zastępuje dokumentu, ale pomaga wejść w jego ciężar.",
+          "Podkreśl: nie wszystko, co działa najmocniej emocjonalnie, jest dosłownym zapisem wydarzenia.",
+          "Dopowiedz: najważniejsze jest to, że forma prowadzi do pytania o odpowiedzialność odbioru."
+        ]
+      },
+      "minimumHistoricalContext": [
+        "Pilecki w tym projekcie jest osią związku między doświadczeniem, raportem i pamięcią.",
+        "Najważniejsze nie jest tu wyliczanie dat, ale sens świadectwa i jego późniejszego odczytania.",
+        "Rocznicowość ma porządkować pamięć, a nie zamykać rozmowę w gotowym pomniku."
+      ],
+      "optionalExtendedContext": [
+        "Krótka nota o tym, jak funkcjonuje świadectwo historyczne po latach.",
+        "Dla starszych grup można dodać rozmowę o ryzyku uproszczenia postaci przez kulturę pamięci.",
+        "Można dopowiedzieć, że dokument i forma artystyczna nie działają na tym samym poziomie."
+      ],
+      "teacherCautions": [
+        "Nie przechodź zbyt szybko do hagiografii.",
+        "Nie zastępuj rozmowy o świadectwie samą narracją o bohaterstwie.",
+        "Nie pozwól, by poboczne postacie przejęły środek ciężkości tego działu.",
+        "Nie używaj rocznicowego tonu jako zamiennika za sens rozmowy."
+      ],
+      "closureOptions": [
+        "Co w tej postaci działa dziś najmocniej: legenda czy świadectwo?",
+        "Dlaczego raport może mieć większy ciężar niż samo wspomnienie o postaci?",
+        "Jak pamiętać odpowiedzialnie, a nie tylko uroczyście?"
+      ],
+      "reportBridge": "W raporcie ucznia ważniejsze od etykiety postaci jest to, czy uczeń uchwycił sens świadectwa, raportu i odpowiedzialności odbioru."
+    },
+    {
+      "id": "guide-auschwitz",
+      "sectionId": "section-auschwitz",
+      "label": "Auschwitz — miejsce, ślad, świadectwo",
+      "firstScreenSummary": "Ten dział ma prowadzić od symbolu do konkretu: miejsca, śladu, dokumentu i świadectwa. Nie zatrzymujemy się na samym słowie Auschwitz.",
+      "teacherOneSentence": "Prowadź od symbolu do uważnego czytania miejsca, śladu i źródła.",
+      "senseOfSection": {
+        "coreMeaning": "Najważniejsze jest tu zobaczenie, że historia nie istnieje tylko jako wielki symbol, ale także jako konkret miejsca, materialnego śladu i dokumentu.",
+        "projectConnection": "Dział chroni cały projekt przed zbyt łatwym symbolicznym skrótem i przywraca wagę świadectwu oraz źródłu.",
+        "whyItMatters": "Bez tego łatwo zamienić odbiór w gotową emocjonalną reakcję bez pracy na materiale historycznym."
+      },
+      "openingConversation": {
+        "recommendedTeacherTone": "Cichy, skupiony, bez przeciążania patosem.",
+        "openingLines": [
+          "Dziś nie zatrzymujemy się na samym symbolu. Spróbujemy zobaczyć ślad, miejsce i dokument.",
+          "Samo słowo Auschwitz jest ogromnym skrótem. Spróbujmy zejść niżej, do konkretu.",
+          "Zacznijmy od pytania, co zmienia się, kiedy patrzymy nie na symbol, ale na ślad i świadectwo."
+        ],
+        "openingQuestions": [
+          "Co zmienia się, gdy patrzysz na historię przez ślad, miejsce albo dokument?",
+          "Dlaczego nie wystarczy zatrzymać się na samym symbolu Auschwitz?",
+          "Jak odróżnić ślad historyczny od własnej interpretacji tego śladu?"
+        ],
+        "doNotOpenWith": [
+          "Czy to miejsce samo mówi wszystko?",
+          "Czy Auschwitz jest symbolem absolutnego zła i to wystarczy?",
+          "Czy wystarczy jedno mocne skojarzenie, by rozumieć historię tego miejsca?"
+        ]
+      },
+      "fragmentWork": {
+        "mainUse": "Fragmenty mają prowadzić do uważności, nie do przeciążenia. Mają otwierać czytanie konkretu, a nie jedynie wzmacniać emocję symbolu.",
+        "recommendedFragmentSlots": [
+          {
+            "slot": "fragment-miejsca",
+            "role": "uruchamia uwagę na przestrzeń i ślad",
+            "teacherInstruction": "Po fragmencie zapytaj o detal, nie o ogólne wrażenie."
+          },
+          {
+            "slot": "fragment-swiadectwa",
+            "role": "przenosi rozmowę z miejsca na zapis i głos",
+            "teacherInstruction": "Pytaj, co tu wynika ze źródła, a co z naszej interpretacji."
+          },
+          {
+            "slot": "fragment-domkniecia",
+            "role": "wiąże miejsce z odpowiedzialnością współczesnego odbiorcy",
+            "teacherInstruction": "Nie kończ wzniosłym zdaniem. Zostaw uczniom pytanie."
+          }
+        ],
+        "whatStudentsShouldHear": [
+          "różnicę między symbolem a konkretem",
+          "znaczenie śladu i dokumentu",
+          "potrzebę ostrożności interpretacyjnej"
+        ],
+        "whatNotToOverExplain": [
+          "że każde miejsce samo 'mówi'",
+          "że symbol zastępuje źródło",
+          "że jedna scena jest wystarczającym obrazem całości"
+        ]
+      },
+      "metaphorVsHistory": {
+        "metaphorElements": [
+          "kadry wzmacniające ciężar przestrzeni i ciszy",
+          "skróty budujące atmosferę pamięci i obecności śladu",
+          "artystyczne kondensacje detalu"
+        ],
+        "sourceGroundedElements": [
+          "rzeczywistość miejsca jako konkretu historycznego",
+          "rola śladu i dokumentu w pracy z historią Auschwitz",
+          "konieczność odróżnienia symbolu od materiału źródłowego"
+        ],
+        "howToExplainDifference": [
+          "Powiedz: forma pomaga zatrzymać uwagę, ale nie zastępuje wiedzy źródłowej.",
+          "Podkreśl: miejsce nie mówi samo — to my czytamy jego ślady i dokumenty.",
+          "Dopowiedz: uczciwa rozmowa zaczyna się tam, gdzie odróżniamy ślad od własnego dopowiedzenia."
+        ]
+      },
+      "minimumHistoricalContext": [
+        "Auschwitz w tym dziale nie jest tylko symbolem, ale przestrzenią pracy ze śladem, świadectwem i dokumentem.",
+        "W odbiorze tego miejsca ważne jest odróżnienie emocji symbolicznej od uważnej pracy na materiale.",
+        "Ślad materialny i zapis historyczny nie znaczą tego samego, ale razem mogą otwierać uczciwszą rozmowę."
+      ],
+      "optionalExtendedContext": [
+        "Dla starszych grup można dodać rozmowę o muzealnym i edukacyjnym sposobie pracy z miejscem pamięci.",
+        "Można krótko dopowiedzieć różnicę między widzeniem miejsca a rozumieniem jego historii.",
+        "Można odwołać się do pytania, jak współczesna forma wizualna pracuje z miejscem pamięci."
+      ],
+      "teacherCautions": [
+        "Nie antropomorfizuj miejsca.",
+        "Nie zatrzymuj lekcji na samym ciężarze symbolu.",
+        "Nie używaj patosu jako głównego narzędzia prowadzenia klasy.",
+        "Nie pozwól, by uczniowie zostali tylko z emocją bez pytania o źródło i ślad."
+      ],
+      "closureOptions": [
+        "Co było dziś bardziej znaczące: symbol, ślad czy świadectwo?",
+        "Jak zmienia się rozmowa o historii, kiedy schodzimy z poziomu hasła do poziomu konkretu?",
+        "Jak pamiętać miejsce, nie upraszczając go do jednego obrazu?"
+      ],
+      "reportBridge": "W raporcie ucznia najważniejsze jest to, czy potrafił uchwycić różnicę między symbolem, śladem i własną interpretacją."
+    },
+    {
+      "id": "guide-ai",
+      "sectionId": "section-ai-historia",
+      "label": "AI i historia — odpowiedzialna forma",
+      "firstScreenSummary": "Ten dział pokazuje, że sugestywna forma nie jest jeszcze źródłem. Prowadzi do pytania, jak odpowiedzialnie używać AI w pracy z historią.",
+      "teacherOneSentence": "Prowadź od zachwytu formą do pytania o granicę między obrazem, źródłem i odpowiedzialnością.",
+      "senseOfSection": {
+        "coreMeaning": "Dział nie ma promować technologii samej w sobie, ale pokazać, że nowoczesna forma może wspierać odbiór historii tylko wtedy, gdy nie podszywa się pod źródło.",
+        "projectConnection": "To bardzo ważny most między procesem tworzenia Rap-Ortu a etyczną i edukacyjną odpowiedzialnością projektu.",
+        "whyItMatters": "Bez tego rozróżnienia łatwo uznać sugestywność obrazu za historyczną prawdę, a to byłoby nieuczciwe wobec materiału."
+      },
+      "openingConversation": {
+        "recommendedTeacherTone": "Nowoczesny, ale powściągliwy. Bez technofascynacji i bez lękowego tonu.",
+        "openingLines": [
+          "Dziś pytamy nie tylko o historię, ale też o to, jak ją pokazujemy i co wtedy ryzykujemy.",
+          "AI może wzmocnić odbiór, ale nie może udawać źródła. To jest punkt wyjścia tej rozmowy.",
+          "Spróbujmy zobaczyć, gdzie kończy się forma, a zaczyna odpowiedzialność wobec historii."
+        ],
+        "openingQuestions": [
+          "Gdzie widzisz granicę między formą a źródłem?",
+          "Co daje nowoczesna forma, a jakie niesie ryzyko dla odbioru historii?",
+          "Dlaczego sugestywny obraz nie staje się automatycznie dowodem historycznym?"
+        ],
+        "doNotOpenWith": [
+          "Czy AI jest lepsze od tradycyjnej edukacji?",
+          "Czy teraz można historię zrobić szybciej i mocniej?",
+          "Czy skoro coś wygląda prawdziwie, to można to uznać za historycznie pewne?"
+        ]
+      },
+      "fragmentWork": {
+        "mainUse": "Fragmenty w tym dziale są jednocześnie materiałem interpretacyjnym i przykładem odpowiedzialnej formy. Nie pokazujemy ich jako dowodu, tylko jako sposób wejścia w temat.",
+        "recommendedFragmentSlots": [
+          {
+            "slot": "fragment-formy",
+            "role": "pokazuje siłę nowoczesnego języka wizualnego",
+            "teacherInstruction": "Po fragmencie zapytaj: co było formą, a co było sensem?"
+          },
+          {
+            "slot": "fragment-zrodla",
+            "role": "przypomina, że fundamentem pozostaje dokument, świadectwo i historia",
+            "teacherInstruction": "Zderz go z pytaniem o to, czego forma nie może zastąpić."
+          },
+          {
+            "slot": "fragment-domkniecia",
+            "role": "przenosi rozmowę na odpowiedzialność twórcy i odbiorcy",
+            "teacherInstruction": "Nie kończ technologicznie. Kończ etycznie."
+          }
+        ],
+        "whatStudentsShouldHear": [
+          "że forma może otwierać odbiór",
+          "że forma nie zastępuje źródła",
+          "że AI wymaga odpowiedzialności, nie tylko sprawności"
+        ],
+        "whatNotToOverExplain": [
+          "szczegółów technicznych narzędzi, jeśli nie są potrzebne",
+          "że projekt 'udowadnia' historię przez obraz",
+          "że technologia jest neutralna sama z siebie"
+        ]
+      },
+      "metaphorVsHistory": {
+        "metaphorElements": [
+          "większość warstwy obrazowej zbudowanej po to, by poruszyć odbiór i ułożyć sens",
+          "zabiegi wizualne wzmacniające nastrój, pamięć lub napięcie",
+          "kondensacje czasu, miejsca i emocji"
+        ],
+        "sourceGroundedElements": [
+          "oparcie projektu na świadectwach, raportach i materiale historycznym",
+          "cel edukacyjny polegający na prowadzeniu do odpowiedzialnego odbioru",
+          "konieczność odróżnienia dokumentu od artystycznej reprezentacji"
+        ],
+        "howToExplainDifference": [
+          "Powiedz: to jest forma interpretacyjna oparta na historii, a nie archiwalny zapis wydarzeń.",
+          "Podkreśl: sugestywność obrazu nie czyni z niego źródła.",
+          "Dopowiedz: uczciwość polega na tym, że twórca i odbiorca wiedzą, gdzie kończy się dokument, a zaczyna forma."
+        ]
+      },
+      "minimumHistoricalContext": [
+        "W tym dziale historia pozostaje ważniejsza niż narzędzie.",
+        "AI jest tu środkiem formy, nie źródłem prawdy historycznej.",
+        "Odpowiedzialna praca z historią wymaga jawnego rozróżnienia między dokumentem a artystycznym przedstawieniem."
+      ],
+      "optionalExtendedContext": [
+        "Można krótko opowiedzieć o pracy twórczej bez wymieniania wszystkich narzędzi.",
+        "Dla starszych grup można dodać rozmowę o etyce reprezentacji historii w nowych mediach.",
+        "Można poruszyć pytanie, kiedy nowoczesna forma pomaga, a kiedy zaczyna zasłaniać źródło."
+      ],
+      "teacherCautions": [
+        "Nie zamieniaj lekcji w prezentację software'u.",
+        "Nie pozwól, by uczniowie uznali obraz za samodzielny dowód historyczny.",
+        "Nie buduj fałszywego konfliktu: technologia albo historia.",
+        "Nie uciekaj od pytania o odpowiedzialność twórcy i odbiorcy."
+      ],
+      "closureOptions": [
+        "Co po tej pracy wydaje ci się ważniejsze: forma czy źródło?",
+        "Jak rozumiesz odpowiedzialne użycie AI w pracy z historią?",
+        "Gdzie twoim zdaniem przebiega granica między uczciwą reprezentacją a nadmiarem formy?"
+      ],
+      "reportBridge": "W raporcie ucznia najważniejsze jest rozpoznanie, że sugestywna forma może pomagać, ale nie zastępuje źródła ani odpowiedzialnego odbioru."
+    },
+    {
+      "id": "guide-polonia",
+      "sectionId": "section-polonia",
+      "label": "Historia dla Polonii i odbiorcy zagranicznego",
+      "firstScreenSummary": "Ten dział ma działać jak most: zachować ciężar polskiego doświadczenia i jednocześnie uczynić jego sens czytelnym dla odbiorcy, który nie ma pełnego kontekstu.",
+      "teacherOneSentence": "Prowadź od mostu znaczeń, nie od założenia, że wszyscy już rozumieją polski kontekst.",
+      "senseOfSection": {
+        "coreMeaning": "Najważniejsze jest tu odpowiedzialne przekładanie sensu: nie spłycanie historii, ale też nie zamykanie jej w kodzie zrozumiałym wyłącznie dla odbiorcy lokalnego.",
+        "projectConnection": "Dział rozwija międzynarodowy wymiar Rap-Ortu i pokazuje, że świadectwo Pileckiego może działać szerzej, jeśli prowadzi się je uczciwie.",
+        "whyItMatters": "Bez tego łatwo albo uprościć polski kontekst, albo uczynić go zbyt hermetycznym."
+      },
+      "openingConversation": {
+        "recommendedTeacherTone": "Jasny, tłumaczący, ale nie protekcjonalny.",
+        "openingLines": [
+          "Spróbujmy dziś zobaczyć, co w tym materiale działa ponad językiem i ponad lokalnym kontekstem, a co potrzebuje dopowiedzenia.",
+          "Nie wszystko tutaj będzie oczywiste bez polskiego tła. To część tej rozmowy, nie problem do ukrycia.",
+          "Ten dział pyta, jak zachować ciężar historii, kiedy opowiadamy ją szerzej."
+        ],
+        "openingQuestions": [
+          "Co w tym materiale działa jako most między polskim doświadczeniem a szerszym odbiorcą?",
+          "Który element wymaga dodatkowego kontekstu, żeby był naprawdę zrozumiały?",
+          "Co twoim zdaniem nie powinno zostać uproszczone?"
+        ],
+        "doNotOpenWith": [
+          "Czy zagraniczny odbiorca to zrozumie bez problemu?",
+          "Czy trzeba wszystko uprościć, żeby było czytelne?",
+          "Czy polski kontekst nie jest zbyt trudny dla innych?"
+        ]
+      },
+      "fragmentWork": {
+        "mainUse": "Fragmenty mają działać jako most interpretacyjny: pokazywać to, co czytelne szerzej, i ujawniać to, co wymaga kontekstu.",
+        "recommendedFragmentSlots": [
+          {
+            "slot": "fragment-most",
+            "role": "pokazuje element czytelny ponad kontekstem lokalnym",
+            "teacherInstruction": "Zapytaj, co było zrozumiałe bez dodatkowego tłumaczenia."
+          },
+          {
+            "slot": "fragment-kontekst",
+            "role": "pokazuje punkt, w którym potrzebna jest wiedza historyczna",
+            "teacherInstruction": "Dopowiedz krótki kontekst, ale nie zamieniaj lekcji w wykład."
+          },
+          {
+            "slot": "fragment-domkniecia",
+            "role": "łączy świadectwo z odpowiedzialnością międzynarodowego odbioru",
+            "teacherInstruction": "Zapytaj, czego nie wolno uprościć."
+          }
+        ],
+        "whatStudentsShouldHear": [
+          "które elementy działają uniwersalnie",
+          "które elementy wymagają polskiego tła",
+          "że odpowiedzialny przekład sensu nie oznacza uproszczenia wszystkiego"
+        ],
+        "whatNotToOverExplain": [
+          "całej historii Polski w jednym wejściu",
+          "wszystkich niuansów politycznych naraz",
+          "że uniwersalność oznacza usunięcie lokalnego ciężaru doświadczenia"
+        ]
+      },
+      "metaphorVsHistory": {
+        "metaphorElements": [
+          "mostowe obrazy i skróty, które mają ułatwić wejście odbiorcy spoza polskiego kontekstu",
+          "artystyczne kondensacje sensu historycznego",
+          "emocjonalne punkty styku między doświadczeniem polskim a odbiorem uniwersalnym"
+        ],
+        "sourceGroundedElements": [
+          "centralność świadectwa Pileckiego i doświadczenia II wojny światowej",
+          "zakorzenienie materiału w polskim doświadczeniu totalitaryzmu i przemocy systemowej",
+          "potrzeba ostrożnego tłumaczenia kontekstu zamiast jego kasowania"
+        ],
+        "howToExplainDifference": [
+          "Powiedz: forma może pomóc wejść w sens, ale nie zastępuje kontekstu historycznego.",
+          "Podkreśl: nie wszystko jest od razu czytelne bez polskiego tła, i to jest uczciwe.",
+          "Dopowiedz: most nie oznacza uproszczenia wszystkiego do jednego wspólnego mianownika."
+        ]
+      },
+      "minimumHistoricalContext": [
+        "Oś działu pozostaje związana z Pileckim, II wojną światową i doświadczeniem totalitaryzmu.",
+        "Nie każdy odbiorca zna polskie realia historyczne, więc krótki kontekst bywa konieczny.",
+        "Celem nie jest uproszczenie historii, lecz uczynienie jej sensu czytelnym bez utraty ciężaru."
+      ],
+      "optionalExtendedContext": [
+        "Można dodać krótką notę o polskim doświadczeniu okupacji i późniejszego zniewolenia systemowego.",
+        "Dla bardziej zaawansowanych grup można poruszyć problem przekładalności pamięci historycznej.",
+        "Można zestawić pytanie o lokalność pamięci z pytaniem o odpowiedzialność odbiorcy międzynarodowego."
+      ],
+      "teacherCautions": [
+        "Nie zakładaj pełnej znajomości polskiego kontekstu.",
+        "Nie uprość historii tylko po to, by była natychmiast wygodna w odbiorze.",
+        "Nie przechodź w ton dumy narodowej zamiast pracy ze świadectwem.",
+        "Nie pozwól, by uniwersalność wyparła konkret polskiego doświadczenia."
+      ],
+      "closureOptions": [
+        "Co w tym materiale działało jako most, a co wymagało dopowiedzenia?",
+        "Jak zachować ciężar lokalnej historii, kiedy mówimy do szerszego odbiorcy?",
+        "Czego nie powinno się upraszczać, nawet jeśli chcemy być bardziej zrozumiali?"
+      ],
+      "reportBridge": "W raporcie ucznia ważne jest zapisanie, co było czytelne ponad kontekstem, a co wymagało dopowiedzenia i dlaczego."
+    },
+    {
+      "id": "guide-sumienie",
+      "sectionId": "section-sumienie-raport",
+      "label": "Sumienie i znaczenie raportu",
+      "firstScreenSummary": "To najbardziej refleksyjny dział. Łączy historię z pytaniem o współczesnego odbiorcę, decyzję podjętą na czas, brak decyzji i znaczenie raportu dzisiaj.",
+      "teacherOneSentence": "Prowadź od historii do pytania o odpowiedzialność współczesnego odbiorcy, ale bez banału i bez coachingowego tonu.",
+      "senseOfSection": {
+        "coreMeaning": "Ten dział nie pyta już tylko o przeszłość, ale o to, co świadectwo robi z nami dzisiaj: czy zostawia pytanie, decyzję, napięcie albo odpowiedzialność, której nie można odłożyć bez końca.",
+        "projectConnection": "To najmocniejsze domknięcie osi Rap-Ortu: raport, sumienie, decyzja i odpowiedzialność odbioru zostają połączone z teraźniejszością.",
+        "whyItMatters": "Bez tego projekt mógłby zostać wyłącznie historią o przeszłości. Ten dział przypomina, że pytanie wraca do nas."
+      },
+      "openingConversation": {
+        "recommendedTeacherTone": "Skupiony, osobisty w sensie refleksji, ale nie terapeutyczny.",
+        "openingLines": [
+          "Dziś pytanie wraca bardziej do nas niż do przeszłości.",
+          "Nie chodzi o to, żeby porównać siebie do historii, ale żeby zobaczyć, co z tej historii zostaje jako pytanie.",
+          "Spróbujmy zobaczyć, czy są decyzje, których nie da się nadrobić po czasie."
+        ],
+        "openingQuestions": [
+          "Jakie pytanie o odpowiedzialność zostaje z tobą po tej pracy?",
+          "Czy są decyzje, których nie da się nadrobić po czasie?",
+          "Co w tym materiale najmocniej łączy historię z pytaniem o współczesnego odbiorcę?"
+        ],
+        "doNotOpenWith": [
+          "Czy wy byście dali radę?",
+          "Czy dzisiejsze problemy są takie same jak wtedy?",
+          "Czy każdy z nas ma dziś własnego Pileckiego?"
+        ]
+      },
+      "fragmentWork": {
+        "mainUse": "Fragmenty w tym dziale mają przenosić środek ciężkości z historii ku współczesnemu sumieniu odbiorcy, ale bez taniego aktualizowania wszystkiego na siłę.",
+        "recommendedFragmentSlots": [
+          {
+            "slot": "fragment-otwierajacy",
+            "role": "pokazuje, że raport i świadectwo nie kończą się w czasie swojego powstania",
+            "teacherInstruction": "Po fragmencie zapytaj: co z tego zostało dzisiaj jako pytanie?"
+          },
+          {
+            "slot": "fragment-napiecia",
+            "role": "ustawia motyw decyzji podjętej na czas albo zbyt późno",
+            "teacherInstruction": "Nie przerabiaj tego na coaching. Zostań przy odpowiedzialności i czasie."
+          },
+          {
+            "slot": "fragment-domkniecia",
+            "role": "wiąże raport z pytaniem skierowanym do ucznia",
+            "teacherInstruction": "Tu najlepiej przejść prosto do raportu ucznia."
+          }
+        ],
+        "whatStudentsShouldHear": [
+          "że raport jest czymś więcej niż dokumentem z przeszłości",
+          "że odpowiedzialność odbioru dotyczy także współczesności",
+          "że nie każdą decyzję da się nadrobić po czasie"
+        ],
+        "whatNotToOverExplain": [
+          "prostych analogii między historią a codziennością",
+          "że każdy wybór ucznia ma wagę historyczną",
+          "że materiał daje gotową odpowiedź o współczesnym sumieniu"
+        ]
+      },
+      "metaphorVsHistory": {
+        "metaphorElements": [
+          "zestawienia czasu, samotności, spóźnienia albo decyzji użyte do otwarcia współczesnej refleksji",
+          "skrótowe obrazy pokazujące, że pytanie z historii wraca dzisiaj",
+          "artystyczne napięcia między przeszłością a teraźniejszością"
+        ],
+        "sourceGroundedElements": [
+          "znaczenie raportu jako świadectwa i dokumentu",
+          "fakt, że odbiór świadectwa pociąga za sobą odpowiedzialność interpretacyjną",
+          "historyczna waga pytania o to, co zostaje po spotkaniu z materiałem źródłowym"
+        ],
+        "howToExplainDifference": [
+          "Powiedz: nie porównujemy wprost naszej sytuacji do tamtej, ale pytamy, co z tamtego świadectwa zostaje dla nas jako odpowiedzialność odbioru.",
+          "Podkreśl: metafora pomaga przenieść pytanie, ale nie zaciera różnicy między historią a teraźniejszością.",
+          "Dopowiedz: chodzi o uczciwość wobec pytania, nie o wielkie deklaracje."
+        ]
+      },
+      "minimumHistoricalContext": [
+        "Raport w tym projekcie nie jest tylko historycznym dokumentem, ale osią pytania o świadectwo i jego późniejszy odbiór.",
+        "Historia nie zostaje tu przeniesiona dosłownie do współczesności, lecz otwiera pytanie o odpowiedzialność odbiorcy.",
+        "Najważniejsze jest nie podobieństwo sytuacji, ale uczciwość wobec pytania, które zostaje."
+      ],
+      "optionalExtendedContext": [
+        "Dla starszych grup można dodać motyw decyzji podjętej na czas i decyzji, której zabrakło.",
+        "Można ostrożnie odwołać się do współczesnego życia ucznia, ale bez tanich analogii historycznych.",
+        "Można dodać krótką rozmowę o tym, że samotność decyzji nie zawsze jest widoczna z zewnątrz."
+      ],
+      "teacherCautions": [
+        "Nie zamieniaj tego działu w coaching albo moralną pogadankę.",
+        "Nie rób prostych porównań między historią a codziennymi drobiazgami.",
+        "Nie kończ wielkim hasłem motywacyjnym.",
+        "Nie wymuszaj na uczniach osobistych zwierzeń."
+      ],
+      "closureOptions": [
+        "Z czym zostajesz po tej pracy: z odpowiedzią czy z pytaniem?",
+        "Co znaczy dla ciebie uczciwy odbiór świadectwa?",
+        "Czy raport kończy historię, czy dopiero uruchamia odpowiedzialność odbiorcy?"
+      ],
+      "reportBridge": "To najlepszy dział do bezpośredniego przejścia do raportu ucznia, bo sam raport staje się tu dalszym ciągiem sensu lekcji, a nie dodatkiem technicznym."
+    }
+  ]
+}
