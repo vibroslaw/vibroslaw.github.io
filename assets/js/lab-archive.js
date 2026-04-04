@@ -72,7 +72,48 @@
     return sorted[0]?.savedAt ? formatSavedAt(sorted[0].savedAt) : "—";
   }
 
+  function recomputeArchiveSummary(reports) {
+    const quoteCount = new Map();
+    const objectCount = new Map();
+
+    reports.forEach((entry) => {
+      if (entry?.selectedQuote) {
+        quoteCount.set(entry.selectedQuote, (quoteCount.get(entry.selectedQuote) || 0) + 1);
+      }
+      if (entry?.selectedObject) {
+        objectCount.set(entry.selectedObject, (objectCount.get(entry.selectedObject) || 0) + 1);
+      }
+    });
+
+    const topQuote = [...quoteCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "";
+    const topObject = [...objectCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "";
+
+    return {
+      reportsCount: reports.length,
+      topQuote,
+      topObject,
+      reports
+    };
+  }
+
+  function getActiveFilters() {
+    return {
+      search: DOM.archiveSearchInput?.value?.trim().toLowerCase() || "",
+      lesson: DOM.archiveLessonFilter?.value || "",
+      object: DOM.archiveObjectFilter?.value || "",
+      institution: DOM.archiveInstitutionFilter?.value || ""
+    };
+  }
+
+  function restoreFilterValues(previous = {}) {
+    if (DOM.archiveSearchInput) DOM.archiveSearchInput.value = previous.search || "";
+    if (DOM.archiveLessonFilter) DOM.archiveLessonFilter.value = previous.lesson || "";
+    if (DOM.archiveObjectFilter) DOM.archiveObjectFilter.value = previous.object || "";
+    if (DOM.archiveInstitutionFilter) DOM.archiveInstitutionFilter.value = previous.institution || "";
+  }
+
   function fillFilterOptions() {
+    const previous = getActiveFilters();
     const reports = getReports();
 
     const lessonSet = new Set();
@@ -106,6 +147,8 @@
       labelKey: "text",
       placeholder: "Wszystkie"
     });
+
+    restoreFilterValues(previous);
   }
 
   function renderStats() {
@@ -116,15 +159,6 @@
     window.LabCore.setText(DOM.archiveTopQuoteLarge, archive?.topQuote || "—");
     window.LabCore.setText(DOM.archiveTopObjectLarge, archive?.topObject || "—");
     window.LabCore.setText(DOM.archiveLastSaved, computeLastSaved(reports));
-  }
-
-  function getActiveFilters() {
-    return {
-      search: DOM.archiveSearchInput?.value?.trim().toLowerCase() || "",
-      lesson: DOM.archiveLessonFilter?.value || "",
-      object: DOM.archiveObjectFilter?.value || "",
-      institution: DOM.archiveInstitutionFilter?.value || ""
-    };
   }
 
   function matchesSearch(report, search) {
@@ -183,7 +217,7 @@
 
       <div class="archive-item-meta">
         <span class="archive-chip">${report.selectedObject || "Brak obiektu"}</span>
-        <span class="archive-chip">${report.reportTemplate || "Raport"}</span>
+        <span class="archive-chip">${report.reportTemplateLabel || report.reportTemplate || "Raport"}</span>
         <span class="archive-chip">${report.institution || "Bez instytucji"}</span>
       </div>
 
@@ -205,11 +239,12 @@
     DOM.archiveList.innerHTML = "";
 
     if (!runtime.filteredReports.length) {
-      DOM.archiveEmptyState.hidden = false;
+      if (DOM.archiveEmptyState) DOM.archiveEmptyState.hidden = false;
       return;
     }
 
-    DOM.archiveEmptyState.hidden = true;
+    if (DOM.archiveEmptyState) DOM.archiveEmptyState.hidden = true;
+
     runtime.filteredReports.forEach((report) => {
       DOM.archiveList.appendChild(buildArchiveItem(report));
     });
@@ -251,7 +286,7 @@
     window.LabCore.setText(DOM.archiveDetailSessionId, report.sessionId || "—");
     window.LabCore.setText(
       DOM.archiveDetailLesson,
-      `${report.lessonTitle || "—"}${report.reportTemplate ? ` · ${report.reportTemplate}` : ""}`
+      `${report.lessonTitle || "—"}${report.reportTemplateLabel || report.reportTemplate ? ` · ${report.reportTemplateLabel || report.reportTemplate}` : ""}`
     );
     window.LabCore.setText(
       DOM.archiveDetailInstitution,
@@ -288,9 +323,7 @@
     if (DOM.archiveObjectFilter) DOM.archiveObjectFilter.value = "";
     if (DOM.archiveInstitutionFilter) DOM.archiveInstitutionFilter.value = "";
 
-    filterReports();
-    renderArchiveList();
-    renderDetail();
+    rerenderAll();
 
     window.LabCore.showStatusMessage(
       DOM.archiveStatusMessage,
@@ -337,31 +370,11 @@
 
     const reports = getReports().filter((item) => item.sessionId !== selected.sessionId);
 
-    const quoteCount = new Map();
-    const objectCount = new Map();
-
-    reports.forEach((entry) => {
-      if (entry.selectedQuote) {
-        quoteCount.set(entry.selectedQuote, (quoteCount.get(entry.selectedQuote) || 0) + 1);
-      }
-      if (entry.selectedObject) {
-        objectCount.set(entry.selectedObject, (objectCount.get(entry.selectedObject) || 0) + 1);
-      }
-    });
-
-    const topQuote = [...quoteCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "";
-    const topObject = [...objectCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "";
-
-    runtime.archive = {
-      reportsCount: reports.length,
-      topQuote,
-      topObject,
-      reports
-    };
-
+    runtime.archive = recomputeArchiveSummary(reports);
     window.LabCore.saveArchiveState(runtime.archive);
 
     runtime.selectedSessionId = reports[0]?.sessionId || null;
+
     fillFilterOptions();
     rerenderAll();
 
@@ -397,41 +410,20 @@
   }
 
   function bindEvents() {
-    [
-      DOM.archiveSearchInput,
-      DOM.archiveLessonFilter,
-      DOM.archiveObjectFilter,
-      DOM.archiveInstitutionFilter
-    ]
+    [DOM.archiveSearchInput].filter(Boolean).forEach((element) => {
+      element.addEventListener("input", rerenderAll);
+    });
+
+    [DOM.archiveLessonFilter, DOM.archiveObjectFilter, DOM.archiveInstitutionFilter]
       .filter(Boolean)
       .forEach((element) => {
-        element.addEventListener("input", () => {
-          filterReports();
-          renderArchiveList();
-          renderDetail();
-        });
-        element.addEventListener("change", () => {
-          filterReports();
-          renderArchiveList();
-          renderDetail();
-        });
+        element.addEventListener("change", rerenderAll);
       });
 
-    if (DOM.archiveClearFiltersButton) {
-      DOM.archiveClearFiltersButton.addEventListener("click", clearFilters);
-    }
-
-    if (DOM.archiveExportButton) {
-      DOM.archiveExportButton.addEventListener("click", exportArchiveJson);
-    }
-
-    if (DOM.archiveDeleteOneButton) {
-      DOM.archiveDeleteOneButton.addEventListener("click", removeSelectedReport);
-    }
-
-    if (DOM.archiveClearAllButton) {
-      DOM.archiveClearAllButton.addEventListener("click", clearAllArchive);
-    }
+    DOM.archiveClearFiltersButton?.addEventListener("click", clearFilters);
+    DOM.archiveExportButton?.addEventListener("click", exportArchiveJson);
+    DOM.archiveDeleteOneButton?.addEventListener("click", removeSelectedReport);
+    DOM.archiveClearAllButton?.addEventListener("click", clearAllArchive);
   }
 
   function initializeArchivePage() {
@@ -459,6 +451,11 @@
   document.addEventListener("DOMContentLoaded", () => {
     init().catch((error) => {
       console.error("[LabArchive] Błąd inicjalizacji:", error);
+      window.LabCore?.showStatusMessage?.(
+        DOM.archiveStatusMessage,
+        "Nie udało się uruchomić archiwum klasy.",
+        "warning"
+      );
     });
   });
 })();
