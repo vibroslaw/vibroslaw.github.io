@@ -48,17 +48,55 @@
       "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/barbed-wire"
     },
     {
-      "id": "striped-uniform",
-      "slug": "fragment-pasiaka",
-      "title": "Fragment pasiaka",
-      "category": "tozsamosc",
-      "image": {
-        "primary": "/assets/img/objects/striped-uniform/main.webp",
-        "fallback": "/assets/img/objects/striped-uniform/main.jpg",
-        "placeholder": "/assets/img/objects/striped-uniform/placeholder.webp",
-        "focusX": 47,
-        "focusY": 44
-      },
+      {
+  "id": "fragment-pasiaka",
+  "title": "Fragment pasiaka",
+  "shortText": "Materiał obozowego ubrania jako ślad systemu redukującego człowieka do numeru i funkcji.",
+  "historicalMeaning": "Pasiak był częścią systemu odczłowieczania i porządkowania więźniów według logiki obozu.",
+  "humanMeaning": "Dotyka tego, jak ciało, godność i codzienność zostały podporządkowane przemocy systemu.",
+  "primaryQuestion": "Co zmienia się w rozumieniu człowieka, gdy nawet ubranie staje się elementem kontroli?",
+  "quote": "Nie wszystko, co zostaje po człowieku, jest jego głosem. Czasem zostaje tylko ślad nacisku systemu.",
+  "image": {
+    "primary": "/assets/images/objects/pasiak-detail.jpg",
+    "fallback": "/assets/images/objects/pasiak-detail.jpg",
+    "focusX": 48,
+    "focusY": 42
+  },
+  "hotspots": [
+    {
+      "id": "szew",
+      "label": "Szew",
+      "x": 36,
+      "y": 41,
+      "title": "Szew i dyscyplina formy",
+      "text": "Detal materiału pozwala zobaczyć, że przemoc systemu nie działała tylko przez wielkie wydarzenia, ale przez codzienne narzucenie formy i porządku.",
+      "significance": "To nie dekoracja, lecz ślad podporządkowania ciała logice obozu.",
+      "humanMeaning": "Uświadamia, że nawet najbliższa warstwa człowieka mogła zostać przejęta przez system.",
+      "prompt": "Czy detal codzienności może mówić o przemocy równie mocno jak wielkie wydarzenie?",
+      "zoom": {
+        "scale": 1.75,
+        "x": -36,
+        "y": 10
+      }
+    },
+    {
+      "id": "pas",
+      "label": "Pas materiału",
+      "x": 58,
+      "y": 54,
+      "title": "Powtarzalność i redukcja",
+      "text": "Rytm pasów można czytać jako wizualny znak zunifikowania i odebrania indywidualności.",
+      "significance": "Ubiór stawał się częścią aparatu rozpoznania, klasyfikacji i kontroli.",
+      "humanMeaning": "Pokazuje, jak system próbował zastąpić osobę schematem.",
+      "prompt": "W którym momencie forma przestaje być tylko formą, a staje się narzędziem przemocy?",
+      "zoom": {
+        "scale": 1.55,
+        "x": 14,
+        "y": -8
+      }
+    }
+  ]
+},
       "ui": {
         "enterPreset": "slow-reveal",
         "focusPreset": "detail-drift",
