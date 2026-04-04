@@ -1,0 +1,583 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "appName": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "runtimeGoal": "Uproszczony, nauczycielski system prowadzenia zajęć z minimalnym obciążeniem obsługi i maksymalną przejrzystością pierwszego użycia.",
+  "experienceModel": {
+    "teacherFirst": true,
+    "studentMobileSecondary": true,
+    "projectorPrimary": true,
+    "defaultFlow": "teacher-selects-section -> teacher-selects-question -> projection -> discussion -> student-report -> archive",
+    "firstUsePriority": [
+      "wybór działu",
+      "jedno pytanie główne",
+      "teacher guide",
+      "projekcja",
+      "raport ucznia"
+    ]
+  },
+  "globalUiPolicy": {
+    "maxPrimaryActionsPerScreen": 3,
+    "maxExpandedPanelsAtOnce": 1,
+    "maxTeacherGuideCardsVisibleByDefault": 2,
+    "showAdvancedOptionsByDefault": false,
+    "studentInterfaceShouldFeel": "minimal-and-safe",
+    "teacherInterfaceShouldFeel": "calm-clear-controlled"
+  },
+  "enabledModules": {
+    "sectionSelector": true,
+    "teacherGuide": true,
+    "questionPicker": true,
+    "customTeacherQuestion": true,
+    "projectionConsole": true,
+    "projectorFullscreen": true,
+    "studentQrEntry": true,
+    "studentReportFlow": true,
+    "anonymousArchive": true,
+    "pdfExport": true,
+    "emailExport": false,
+    "teacherArchiveView": true,
+    "signedProtectedVideo": true,
+    "curatedSegmentMode": true,
+    "fullChapterMode": true
+  },
+  "disabledModules": {
+    "interactiveObjectHotspots": {
+      "enabled": false,
+      "reason": "Za duży koszt przygotowania materiałów wizualnych względem realnej wartości pierwszej wersji."
+    },
+    "mandatoryObjectImages": {
+      "enabled": false,
+      "reason": "Zdjęcia obiektów i ich perfekcyjne opracowanie zajmują zbyt dużo czasu na etapie MVP premium."
+    },
+    "studentLiveSecondScreenDuringProjection": {
+      "enabled": false,
+      "reason": "Podczas projekcji pełnego materiału telefon nie powinien odciągać uwagi."
+    },
+    "automaticStudentEmailPdf": {
+      "enabled": false,
+      "reason": "Wymaga dodatkowego zaplecza, zgód i logiki wysyłki; można dodać w etapie drugim."
+    },
+    "complexMultiLayerLessonBuilder": {
+      "enabled": false,
+      "reason": "Nauczyciel pierwszego kontaktu nie powinien budować lekcji zbyt wieloma przełącznikami."
+    }
+  },
+  "primarySections": [
+    {
+      "id": "section-totalitaryzm-wybor",
+      "label": "Totalitaryzm i wybory pod presją",
+      "navShort": "Totalitaryzm",
+      "default": false,
+      "questionPoolSize": 5,
+      "teacherGuideRequired": true,
+      "recommendedKnowledgeCards": [
+        "kc-totalitaryzm",
+        "kc-nazizm"
+      ],
+      "defaultProjectionMode": "full-chapter",
+      "allowedProjectionModes": [
+        "full-chapter",
+        "curated-segment"
+      ]
+    },
+    {
+      "id": "section-pilecki-rocznicowy",
+      "label": "Pilecki — wymiar rocznicowy i historyczny",
+      "navShort": "Pilecki",
+      "default": true,
+      "questionPoolSize": 5,
+      "teacherGuideRequired": true,
+      "recommendedKnowledgeCards": [
+        "kc-pilecki",
+        "kc-raport"
+      ],
+      "defaultProjectionMode": "full-chapter",
+      "allowedProjectionModes": [
+        "full-chapter",
+        "curated-segment"
+      ]
+    },
+    {
+      "id": "section-auschwitz",
+      "label": "Auschwitz — miejsce, świadectwo, pamięć",
+      "navShort": "Auschwitz",
+      "default": false,
+      "questionPoolSize": 5,
+      "teacherGuideRequired": true,
+      "recommendedKnowledgeCards": [
+        "kc-auschwitz",
+        "kc-raport"
+      ],
+      "defaultProjectionMode": "full-chapter",
+      "allowedProjectionModes": [
+        "full-chapter",
+        "curated-segment"
+      ]
+    },
+    {
+      "id": "section-ai-historia",
+      "label": "AI i historia — odpowiedzialna forma",
+      "navShort": "AI i historia",
+      "default": false,
+      "questionPoolSize": 5,
+      "teacherGuideRequired": true,
+      "recommendedKnowledgeCards": [
+        "kc-ai",
+        "kc-raport"
+      ],
+      "defaultProjectionMode": "curated-segment",
+      "allowedProjectionModes": [
+        "curated-segment",
+        "full-chapter"
+      ]
+    },
+    {
+      "id": "section-polonia",
+      "label": "Historia dla Polonii za granicą",
+      "navShort": "Polonia",
+      "default": false,
+      "questionPoolSize": 5,
+      "teacherGuideRequired": true,
+      "recommendedKnowledgeCards": [
+        "kc-polonia",
+        "kc-pilecki"
+      ],
+      "defaultProjectionMode": "full-chapter",
+      "allowedProjectionModes": [
+        "full-chapter",
+        "curated-segment"
+      ]
+    },
+    {
+      "id": "section-sumienie-raport",
+      "label": "Sumienie i znaczenie raportu",
+      "navShort": "Sumienie",
+      "default": false,
+      "questionPoolSize": 5,
+      "teacherGuideRequired": true,
+      "recommendedKnowledgeCards": [
+        "kc-sumienie",
+        "kc-raport"
+      ],
+      "defaultProjectionMode": "full-chapter",
+      "allowedProjectionModes": [
+        "full-chapter",
+        "curated-segment"
+      ]
+    }
+  ],
+  "deliveryModes": {
+    "full-chapter": {
+      "label": "Pełny rozdział",
+      "isPrimary": true,
+      "screeningMin": 65,
+      "recommendedSessionLengths": [90, 120],
+      "teacherMessage": "To jest domyślny i preferowany tryb pracy. Rozdział działa jako pełna całość audiowizualna.",
+      "studentPhoneDuringProjection": "locked-minimal",
+      "notes": [
+        "Telefon ucznia służy głównie do wejścia i raportu.",
+        "W trakcie projekcji uczeń nie powinien klikać między ekranami."
+      ]
+    },
+    "curated-segment": {
+      "label": "Wybrane fragmenty",
+      "isPrimary": false,
+      "screeningMinRange": [12, 28],
+      "recommendedSessionLengths": [45, 60, 90],
+      "teacherMessage": "Tryb pomocniczy. Używaj tylko wtedy, gdy świadomie wybierasz fragment pod konkretny temat.",
+      "studentPhoneDuringProjection": "locked-minimal",
+      "notes": [
+        "Ten tryb nie powinien udawać pełnego doświadczenia rozdziału.",
+        "W teacher guide musi być jasno opisane, dlaczego wybrano właśnie ten fragment."
+      ]
+    }
+  },
+  "sessionPresets": [
+    {
+      "id": "preset-90-full",
+      "label": "90 minut — pełny rozdział",
+      "default": true,
+      "deliveryMode": "full-chapter",
+      "structure": {
+        "introMin": 7,
+        "screeningMin": 65,
+        "discussionMin": 13,
+        "reportMin": 5
+      }
+    },
+    {
+      "id": "preset-120-full",
+      "label": "120 minut — pełny rozdział + pogłębiona rozmowa",
+      "default": false,
+      "deliveryMode": "full-chapter",
+      "structure": {
+        "introMin": 10,
+        "screeningMin": 65,
+        "discussionMin": 30,
+        "reportMin": 15
+      }
+    },
+    {
+      "id": "preset-45-curated",
+      "label": "45 minut — fragment kuratorowany",
+      "default": false,
+      "deliveryMode": "curated-segment",
+      "structure": {
+        "introMin": 5,
+        "screeningMin": 18,
+        "discussionMin": 15,
+        "reportMin": 7
+      }
+    }
+  ],
+  "teacherConsole": {
+    "layout": "single-focus-console",
+    "defaultOpenPanel": "section-overview",
+    "panelOrder": [
+      "section-overview",
+      "question-picker",
+      "teacher-guide",
+      "projection-control",
+      "student-access",
+      "report-status"
+    ],
+    "sectionOverview": {
+      "show": [
+        "sectionTitle",
+        "oneSentencePurpose",
+        "recommendedQuestion",
+        "recommendedCards"
+      ],
+      "hideByDefault": [
+        "advancedContext",
+        "sideNotes",
+        "restrictedPersons"
+      ]
+    },
+    "questionPicker": {
+      "mode": "teacher-selects-one",
+      "defaultSelection": "recommended",
+      "showQuestionCount": true,
+      "allowOwnQuestion": true,
+      "ownQuestionMaxLength": 220,
+      "teacherOwnQuestionOverridesDefault": true
+    },
+    "teacherGuide": {
+      "defaultCardCount": 2,
+      "allowExpandAdvanced": true,
+      "showMicroScripts": true,
+      "showDoNotSay": true,
+      "showMetaphorExplanations": true,
+      "showSongContext": true,
+      "showSourceNote": true
+    },
+    "projectionControl": {
+      "showTransport": true,
+      "showSceneMarkers": true,
+      "showPauseForDiscussion": true,
+      "showFullscreen": true,
+      "showProjectorMode": true,
+      "showTeacherNotesOverlay": false,
+      "pauseButtonLabel": "Zatrzymaj i rozmawiaj",
+      "discussionPauseMode": "clean-freeze"
+    },
+    "studentAccess": {
+      "primaryEntryMode": "qr-student",
+      "secondaryEntryMode": "manual-link",
+      "reportQrEnabled": true,
+      "showShortInstruction": true,
+      "instructionText": "Uczniowie wchodzą telefonem do własnego raportu. W czasie projekcji nie przechodzą między ekranami."
+    },
+    "reportStatus": {
+      "showLiveCount": true,
+      "showArchiveReady": true,
+      "showPdfReady": true,
+      "showAnonymousMode": true
+    },
+    "quickActions": [
+      "open-fullscreen",
+      "pause-for-discussion",
+      "show-student-qr",
+      "open-report-archive"
+    ]
+  },
+  "studentExperience": {
+    "mode": "minimal-report-first",
+    "entryPoints": [
+      "qr-student",
+      "signed-link"
+    ],
+    "stages": [
+      {
+        "id": "join",
+        "label": "Wejście",
+        "required": true
+      },
+      {
+        "id": "question",
+        "label": "Pytanie prowadzące",
+        "required": true
+      },
+      {
+        "id": "projection-lock",
+        "label": "Tryb projekcji",
+        "required": true
+      },
+      {
+        "id": "report",
+        "label": "Mój raport",
+        "required": true
+      },
+      {
+        "id": "finish",
+        "label": "Zapis i pamiątka",
+        "required": true
+      }
+    ],
+    "projectionLock": {
+      "enabled": true,
+      "showOnly": [
+        "selectedQuestion",
+        "saveState",
+        "returnToReportAfterTeacherEndsProjection"
+      ],
+      "hideDuringProjection": [
+        "extraCards",
+        "navigationTabs",
+        "archivePreview",
+        "multi-stepExploration"
+      ],
+      "message": "Teraz pracujemy uczciwie z pytaniem i projekcją. Telefon nie jest drugim ekranem rozrywki."
+    },
+    "reportMode": {
+      "type": "individual-private-before-submit",
+      "allowAnonymousArchiveSubmit": true,
+      "allowStudentPdfDownload": true,
+      "allowStudentEmailSend": false,
+      "requireName": false,
+      "requireEmail": false,
+      "defaultArchiveChoice": "anonymous-opt-in",
+      "studentFinishMessage": "Możesz zachować raport jako własną pamiątkę albo anonimowo zostawić go w archiwum zajęć."
+    },
+    "ethicsPrompt": {
+      "enabled": true,
+      "placement": "finish-screen",
+      "text": "Dziś twoim wyborem było pracować uczciwie z telefonem jako narzędziem refleksji, a nie rozproszenia. To też jest mała decyzja."
+    }
+  },
+  "studentReportTemplate": {
+    "id": "student-report-standard",
+    "label": "Mój raport",
+    "fields": [
+      {
+        "id": "main-question",
+        "type": "locked-display",
+        "required": true
+      },
+      {
+        "id": "strongest-moment",
+        "type": "textarea",
+        "required": true,
+        "maxLength": 600
+      },
+      {
+        "id": "what-stayed",
+        "type": "textarea",
+        "required": true,
+        "maxLength": 600
+      },
+      {
+        "id": "open-question-left",
+        "type": "textarea",
+        "required": true,
+        "maxLength": 500
+      },
+      {
+        "id": "present-day-echo",
+        "type": "textarea",
+        "required": false,
+        "maxLength": 400
+      }
+    ],
+    "tone": "calm-archival-personal",
+    "teacherReadMode": "reflection-not-test"
+  },
+  "archive": {
+    "mode": "anonymous-class-archive",
+    "enabled": true,
+    "storeStudentIdentity": false,
+    "storeTeacherSessionId": true,
+    "storeSectionId": true,
+    "storeSelectedQuestion": true,
+    "storeTimestamp": true,
+    "storeProjectionMode": true,
+    "storeInstitutionLabel": true,
+    "storeClassLabel": true,
+    "allowTeacherDeleteSingle": true,
+    "allowTeacherExportJson": true,
+    "allowTeacherExportPdfBundle": false,
+    "archivePurpose": "Ślad odbioru grupy, nie baza danych osobowych.",
+    "teacherArchiveView": {
+      "defaultGrouping": "session",
+      "filters": [
+        "section",
+        "date",
+        "projectionMode",
+        "institution"
+      ],
+      "detailPanelShows": [
+        "section",
+        "question",
+        "studentReport",
+        "timestamp"
+      ]
+    }
+  },
+  "pdf": {
+    "enabled": true,
+    "style": "archival-clean",
+    "studentPdfDownload": true,
+    "teacherPdfExport": true,
+    "watermark": "PRAWDA SUMIENIA",
+    "footerNote": "Raport wygenerowany w ramach ścieżki edukacyjnej projektu Rap-Ort: Prawda Sumienia.",
+    "filenamePattern": "raport-{section}-{date}-{sessionId}"
+  },
+  "email": {
+    "enabled": false,
+    "studentSelfSendPdf": false,
+    "teacherBulkSend": false,
+    "reason": "Etap drugi. Najpierw stabilny system PDF i archiwum anonimowego."
+  },
+  "qr": {
+    "enabled": true,
+    "primaryModes": [
+      {
+        "id": "qr-student",
+        "label": "Wejście ucznia",
+        "default": true,
+        "purpose": "Otwiera indywidualny raport ucznia dla bieżącej sesji."
+      },
+      {
+        "id": "qr-report",
+        "label": "Powrót do raportu",
+        "default": false,
+        "purpose": "Pozwala wrócić bezpośrednio do formularza raportu."
+      }
+    ],
+    "teacherRules": [
+      "Na ekranie głównym pokazuj tylko jeden dominujący QR naraz.",
+      "Nie pokazuj uczniowi wielu konkurencyjnych wejść.",
+      "QR ma prowadzić do działania, nie do eksploracji strony."
+    ]
+  },
+  "protectedMedia": {
+    "enabled": true,
+    "deliveryMode": "signed-hls-stream",
+    "allowDirectDownload": false,
+    "allowRightClickSave": false,
+    "tokenPolicy": {
+      "availableDurations": [
+        "1d",
+        "7d",
+        "30d"
+      ],
+      "defaultDuration": "7d",
+      "teacherCanChooseDuration": true
+    },
+    "securityNotes": [
+      "Chronione wideo nie powinno być osadzane jako zwykły publiczny plik MP4.",
+      "Frontend powinien dostawać podpisany URL czasowy.",
+      "Materiał ma być odtwarzany strumieniowo, nie przez statyczny publiczny link."
+    ],
+    "teacherFacingExplanation": "Materiał projekcyjny działa na czasowym dostępie. To nie jest link publiczny do pobrania."
+  },
+  "projection": {
+    "fullscreenEnabled": true,
+    "teacherRemoteStyle": "local-control-console",
+    "discussionPauses": {
+      "enabled": true,
+      "mode": "manual",
+      "showPauseLabelOnProjector": false
+    },
+    "visibleControlsOnProjector": {
+      "minimal": true,
+      "showProgress": false,
+      "showNotes": false,
+      "showTeacherOnlyText": false
+    },
+    "teacherSecondaryInfo": {
+      "showCurrentSection": true,
+      "showCurrentQuestion": true,
+      "showCurrentTrackNote": true,
+      "showMetaphorExplanation": true,
+      "showSourceClarifier": true
+    }
+  },
+  "trackGuideRuntime": {
+    "enabled": true,
+    "perTrackGuideRequired": true,
+    "guideFields": [
+      "trackTitle",
+      "roleInSection",
+      "whatTeacherMaySayBefore",
+      "whatTeacherShouldNotOverclaim",
+      "metaphorClarification",
+      "historicalClarification",
+      "oneDiscussionPrompt"
+    ],
+    "teacherDefaultDisplay": "collapsed-list",
+    "expandOneAtATime": true
+  },
+  "sectionLogic": {
+    "teacherMustChoose": [
+      "sectionId",
+      "onePrimaryQuestion"
+    ],
+    "teacherMayOptionallyChoose": [
+      "customQuestion",
+      "projectionMode",
+      "sessionPreset"
+    ],
+    "teacherShouldNotNeedToChoose": [
+      "multiple student flows",
+      "multiple archive schemas",
+      "multiple complex lesson engines"
+    ]
+  },
+  "firstUseSafeguards": {
+    "wizardEnabled": true,
+    "wizardSteps": [
+      "Wybierz dział",
+      "Wybierz pytanie",
+      "Sprawdź teacher guide",
+      "Uruchom projekcję",
+      "Pokaż QR uczniom"
+    ],
+    "showAdvancedAfterFirstSession": true,
+    "defaultHideRestrictedTopics": true,
+    "defaultHideCyrankiewicz": true
+  },
+  "adminRealityCheck": {
+    "buildPriorityOrder": [
+      "sekcje i pytania",
+      "teacher guide",
+      "panel nauczyciela",
+      "projekcja fullscreen",
+      "qr ucznia",
+      "raport ucznia",
+      "archiwum anonimowe",
+      "pdf",
+      "chronione wideo",
+      "opcje rozszerzone"
+    ],
+    "doNotBuildFirst": [
+      "interaktywne obiekty ze zdjęciami i hotspotami",
+      "mailing PDF do uczniów",
+      "zbyt rozbudowany builder lekcji",
+      "nadmiar bocznych kart i ciekawostek"
+    ],
+    "successDefinitionV1": "Nauczyciel pierwszy raz wchodzi na stronę, w mniej niż 3 minuty wybiera dział, pytanie, uruchamia projekcję, pokazuje QR i zbiera raporty bez zagubienia."
+  }
+}
