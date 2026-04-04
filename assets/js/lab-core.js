@@ -19,7 +19,13 @@
     group: "",
     archiveEnabled: true,
     startedAt: null,
+    lastActivityAt: null,
+    heartbeatAt: null,
     currentStepIndex: 0,
+    timerState: {
+      running: false,
+      remainingSeconds: 0
+    },
     responses: {
       openingResponse: "",
       objectResponse: "",
@@ -32,13 +38,21 @@
     }
   };
 
+  const DEFAULT_ARCHIVE = {
+    reportsCount: 0,
+    topQuote: "",
+    topObject: "",
+    reports: []
+  };
+
   const state = {
     ui: null,
     lessons: null,
     prompts: null,
     objects: null,
     loaded: false,
-    loadingPromise: null
+    loadingPromise: null,
+    bootstrapped: false
   };
 
   function qs(selector, root = document) {
@@ -58,7 +72,10 @@
   }
 
   function deepClone(value) {
-    return structuredClone ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+    if (typeof structuredClone === "function") {
+      return structuredClone(value);
+    }
+    return JSON.parse(JSON.stringify(value));
   }
 
   function slugify(value) {
@@ -69,6 +86,39 @@
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 80);
+  }
+
+  function normalizeNumber(value, fallback = 0) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function normalizeTimerState(timerState = {}) {
+    return {
+      running: Boolean(timerState?.running),
+      remainingSeconds: Math.max(0, normalizeNumber(timerState?.remainingSeconds, 0))
+    };
+  }
+
+  function normalizeResponses(responses = {}) {
+    return {
+      ...deepClone(DEFAULT_SESSION.responses),
+      ...(responses || {})
+    };
+  }
+
+  function normalizeSession(raw = {}) {
+    const base = deepClone(DEFAULT_SESSION);
+
+    return {
+      ...base,
+      ...(raw || {}),
+      durationMin: normalizeNumber(raw?.durationMin, 0),
+      currentStepIndex: Math.max(0, normalizeNumber(raw?.currentStepIndex, 0)),
+      archiveEnabled: raw?.archiveEnabled ?? true,
+      timerState: normalizeTimerState(raw?.timerState),
+      responses: normalizeResponses(raw?.responses)
+    };
   }
 
   function generateSessionId(prefix = "PS-PL") {
@@ -102,7 +152,7 @@
     const response = await fetch(url, {
       credentials: "same-origin",
       headers: {
-        "Accept": "application/json"
+        Accept: "application/json"
       }
     });
 
@@ -134,15 +184,16 @@
       fetchJson(objectsUrl)
     ])
       .then(([ui, lessons, prompts, objects]) => {
-        state.ui = ui;
-        state.lessons = lessons;
-        state.prompts = prompts;
-        state.objects = objects;
+        state.ui = ui || {};
+        state.lessons = lessons || {};
+        state.prompts = prompts || {};
+        state.objects = objects || {};
         state.loaded = true;
         return state;
       })
       .catch((error) => {
         console.error("[LabCore] Błąd ładowania danych:", error);
+        state.loadingPromise = null;
         throw error;
       });
 
@@ -150,19 +201,19 @@
   }
 
   function getUiConfig() {
-    return state.ui;
+    return state.ui || {};
   }
 
   function getLessonsConfig() {
-    return state.lessons;
+    return state.lessons || {};
   }
 
   function getPromptsConfig() {
-    return state.prompts;
+    return state.prompts || {};
   }
 
   function getObjectsConfig() {
-    return state.objects;
+    return state.objects || {};
   }
 
   function getLessons() {
@@ -186,10 +237,13 @@
   }
 
   function getPromptById(id) {
+    if (!id) return null;
+
     const groups = getPromptGroups();
 
     for (const group of Object.values(groups)) {
       if (!group || typeof group !== "object") continue;
+
       for (const bucket of Object.values(group)) {
         if (!Array.isArray(bucket)) continue;
         const match = bucket.find((prompt) => prompt.id === id);
@@ -227,19 +281,19 @@
     const labels = {
       "4-6": "Klasy 4–6",
       "7-8": "Klasy 7–8",
-      "liceum": "Liceum / technikum",
-      "uczelnia": "Uczelnia",
-      "polonia": "Polonia / grupa dwujęzyczna"
+      liceum: "Liceum / technikum",
+      uczelnia: "Uczelnia",
+      polonia: "Polonia / grupa dwujęzyczna"
     };
     return labels[ageGroup] || ageGroup || "—";
   }
 
   function mapAxisLabel(axis) {
     const labels = {
-      "swiadectwo": "Świadectwo",
-      "system": "System",
-      "wybor": "Wybór",
-      "pamiec": "Pamięć"
+      swiadectwo: "Świadectwo",
+      system: "System",
+      wybor: "Wybór",
+      pamiec: "Pamięć"
     };
     return labels[axis] || axis || "—";
   }
@@ -252,11 +306,6 @@
       "raport-sumienia": "Raport sumienia"
     };
     return labels[reportId] || reportId || "—";
-  }
-
-  function normalizeNumber(value, fallback = 0) {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : fallback;
   }
 
   function getQueryParams() {
@@ -313,79 +362,85 @@
   }
 
   function buildSessionFromLesson(lesson, overrides = {}) {
-    const base = deepClone(DEFAULT_SESSION);
     const institution = String(overrides.institution || "").trim();
     const group = String(overrides.group || "").trim();
+    const currentStepIndex = Math.max(0, normalizeNumber(overrides.currentStepIndex, 0));
 
-    return {
-      ...base,
+    const defaultRemainingSeconds =
+      Number(lesson?.steps?.[currentStepIndex]?.durationMin || 0) * 60;
+
+    return normalizeSession({
+      ...deepClone(DEFAULT_SESSION),
       sessionId: overrides.sessionId || generateSessionId("PS-PL"),
-      lessonId: lesson.id,
-      lessonTitle: lesson.title || "",
-      ageGroup: lesson.ageGroup || "",
-      durationMin: lesson.durationMin || 0,
-      axis: lesson.axis || "",
-      reportTemplate: overrides.reportTemplate || lesson.reportTemplate || "raport-odbioru",
+      lessonId: lesson?.id || "",
+      lessonTitle: lesson?.title || "",
+      ageGroup: lesson?.ageGroup || "",
+      durationMin: normalizeNumber(lesson?.durationMin, 0),
+      axis: lesson?.axis || "",
+      reportTemplate: overrides.reportTemplate || lesson?.reportTemplate || "raport-odbioru",
       institution,
       group,
       archiveEnabled: overrides.archiveEnabled ?? true,
       startedAt: overrides.startedAt || null,
-      currentStepIndex: normalizeNumber(overrides.currentStepIndex, 0),
-      responses: {
-        ...base.responses,
-        ...(overrides.responses || {})
-      }
-    };
+      lastActivityAt: overrides.lastActivityAt || null,
+      heartbeatAt: overrides.heartbeatAt || null,
+      currentStepIndex,
+      timerState: overrides.timerState || {
+        running: false,
+        remainingSeconds: defaultRemainingSeconds
+      },
+      responses: normalizeResponses(overrides.responses)
+    });
   }
 
   function saveSessionState(session) {
-    return saveToStorage(STORAGE_KEYS.sessionState, session);
+    return saveToStorage(STORAGE_KEYS.sessionState, normalizeSession(session));
   }
 
   function loadSessionState() {
     const raw = loadFromStorage(STORAGE_KEYS.sessionState, null);
     if (!raw) return deepClone(DEFAULT_SESSION);
-
-    return {
-      ...deepClone(DEFAULT_SESSION),
-      ...raw,
-      responses: {
-        ...deepClone(DEFAULT_SESSION).responses,
-        ...(raw.responses || {})
-      }
-    };
+    return normalizeSession(raw);
   }
 
   function updateSessionState(patch = {}) {
     const current = loadSessionState();
-    const next = {
+    const next = normalizeSession({
       ...current,
       ...patch,
-      responses: {
-        ...current.responses,
-        ...(patch.responses || {})
-      }
-    };
+      timerState: patch.timerState
+        ? { ...current.timerState, ...patch.timerState }
+        : current.timerState,
+      responses: patch.responses
+        ? { ...current.responses, ...patch.responses }
+        : current.responses
+    });
+
     saveSessionState(next);
     return next;
   }
 
   function resetSessionState() {
-    saveSessionState(deepClone(DEFAULT_SESSION));
-    return deepClone(DEFAULT_SESSION);
+    const next = deepClone(DEFAULT_SESSION);
+    saveSessionState(next);
+    return next;
   }
 
   function getArchiveState() {
-    return loadFromStorage(STORAGE_KEYS.archiveState, {
-      reportsCount: 0,
-      topQuote: "",
-      topObject: "",
-      reports: []
-    });
+    const raw = loadFromStorage(STORAGE_KEYS.archiveState, DEFAULT_ARCHIVE);
+    return {
+      ...deepClone(DEFAULT_ARCHIVE),
+      ...(raw || {}),
+      reports: Array.isArray(raw?.reports) ? raw.reports : []
+    };
   }
 
   function saveArchiveState(archive) {
-    return saveToStorage(STORAGE_KEYS.archiveState, archive);
+    return saveToStorage(STORAGE_KEYS.archiveState, {
+      ...deepClone(DEFAULT_ARCHIVE),
+      ...(archive || {}),
+      reports: Array.isArray(archive?.reports) ? archive.reports : []
+    });
   }
 
   function addReportToArchive(reportEntry) {
@@ -397,10 +452,10 @@
     const objectCount = new Map();
 
     nextReports.forEach((entry) => {
-      if (entry.selectedQuote) {
+      if (entry?.selectedQuote) {
         quoteCount.set(entry.selectedQuote, (quoteCount.get(entry.selectedQuote) || 0) + 1);
       }
-      if (entry.selectedObject) {
+      if (entry?.selectedObject) {
         objectCount.set(entry.selectedObject, (objectCount.get(entry.selectedObject) || 0) + 1);
       }
     });
@@ -421,15 +476,9 @@
 
   function getBestMatchingLesson(criteria = {}) {
     const lessons = getLessons().filter((lesson) => lesson.enabled !== false);
-
     if (!lessons.length) return null;
 
-    const {
-      lessonId,
-      ageGroup,
-      durationMin,
-      axis
-    } = criteria;
+    const { lessonId, ageGroup, durationMin, axis } = criteria;
 
     if (lessonId) {
       const exact = lessons.find((lesson) => lesson.id === lessonId);
@@ -457,21 +506,20 @@
   function getCurrentLessonFromContext() {
     const dataset = getBodyDataset();
     const params = getQueryParams();
+    const storedSession = loadSessionState();
 
     const lessonId =
       params.get("lessonId") ||
       params.get("lesson") ||
       dataset.defaultLesson ||
-      loadSessionState().lessonId;
+      storedSession.lessonId;
 
-    const lesson = getBestMatchingLesson({
+    return getBestMatchingLesson({
       lessonId,
-      ageGroup: params.get("ageGroup") || loadSessionState().ageGroup,
-      durationMin: params.get("duration") || loadSessionState().durationMin,
-      axis: params.get("axis") || loadSessionState().axis
+      ageGroup: params.get("ageGroup") || storedSession.ageGroup,
+      durationMin: params.get("duration") || storedSession.durationMin,
+      axis: params.get("axis") || storedSession.axis
     });
-
-    return lesson;
   }
 
   function getCurrentStep(lesson, stepIndex) {
@@ -510,7 +558,7 @@
         : selectorOrElement;
 
     if (!el) return;
-    el.textContent = value || fallback;
+    el.textContent = value ?? fallback;
   }
 
   function setHtml(selectorOrElement, value, fallback = "—") {
@@ -520,10 +568,10 @@
         : selectorOrElement;
 
     if (!el) return;
-    el.innerHTML = value || fallback;
+    el.innerHTML = value ?? fallback;
   }
 
-  function populateSelect(selectElement, items, options = {}) {
+  function populateSelect(selectElement, items = [], options = {}) {
     if (!selectElement) return;
 
     const {
@@ -543,8 +591,8 @@
 
     items.forEach((item) => {
       const option = document.createElement("option");
-      option.value = item[valueKey];
-      option.textContent = item[labelKey];
+      option.value = item?.[valueKey] ?? "";
+      option.textContent = item?.[labelKey] ?? "";
       selectElement.appendChild(option);
     });
   }
@@ -642,10 +690,14 @@
   }
 
   async function bootstrapCore() {
+    if (state.bootstrapped) return state;
+    state.bootstrapped = true;
+
     applyReducedMotionPreference();
     initRevealObserver();
     initProgressBar();
     await loadLabData();
+    return state;
   }
 
   const LabCore = {
@@ -699,7 +751,9 @@
     showStatusMessage,
     setReducedMotion,
     bootstrapCore,
-    slugify
+    slugify,
+    clearStorageKey,
+    normalizeSession
   };
 
   window.LabCore = LabCore;
