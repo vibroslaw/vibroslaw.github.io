@@ -105,26 +105,27 @@
 
           <div class="live-session-topbar">
             <div class="live-session-statusbar">
-  <div class="session-status-pill" id="sessionLiveStatus">Gotowe</div>
-  <div class="session-status-text" id="sessionStatusText">
-    Sesja gotowa do prowadzenia.
-  </div>
-  <div class="session-status-meta" id="sessionLastSaved">
-    Ostatni zapis: —
-  </div>
-</div>
+              <div class="session-status-pill" id="sessionLiveStatus">Gotowe</div>
+              <div class="session-status-text" id="sessionStatusText">
+                Sesja gotowa do prowadzenia.
+              </div>
+              <div class="session-status-meta" id="sessionLastSaved">
+                Ostatni zapis: —
+              </div>
+            </div>
+
             <div class="live-session-clock">
               <span class="clock-label">Pozostały czas kroku</span>
               <strong class="clock-value" id="stepCountdown">03:00</strong>
             </div>
 
             <div class="live-session-actions">
-  <button class="btn btn-secondary" type="button" id="prevStepButton">Poprzedni krok</button>
-  <button class="btn btn-secondary" type="button" id="pauseTimerButton">Pauza</button>
-  <button class="btn btn-secondary" type="button" id="resetTimerButton">Reset</button>
-  <button class="btn btn-secondary" type="button" id="presentationModeButton">Tryb prezentacji</button>
-  <button class="btn btn-primary" type="button" id="nextStepButton">Następny krok</button>
-</div>
+              <button class="btn btn-secondary" type="button" id="prevStepButton">Poprzedni krok</button>
+              <button class="btn btn-secondary" type="button" id="pauseTimerButton">Pauza</button>
+              <button class="btn btn-secondary" type="button" id="resetTimerButton">Reset</button>
+              <button class="btn btn-secondary" type="button" id="presentationModeButton">Tryb prezentacji</button>
+              <button class="btn btn-primary" type="button" id="nextStepButton">Następny krok</button>
+            </div>
           </div>
 
           <div class="live-session-body">
@@ -134,15 +135,6 @@
                   <span class="step-kicker" id="currentStepType">Wejście</span>
                   <span class="step-index" id="currentStepIndex">Krok 1</span>
                 </div>
-                <div class="live-session-statusbar">
-  <div class="session-status-pill" id="sessionLiveStatus">Gotowe</div>
-  <div class="session-status-text" id="sessionStatusText">
-    Sesja gotowa do prowadzenia.
-  </div>
-  <div class="session-status-meta" id="sessionLastSaved">
-    Ostatni zapis: —
-  </div>
-</div>
 
                 <h2 class="step-title" id="currentStepTitle">Wejście</h2>
 
@@ -162,8 +154,10 @@
                 <div class="panel-topline">Akcje szybkiego dostępu</div>
                 <div class="cta-row compact">
                   <button class="btn btn-secondary" type="button" id="openObjectButton">Pokaż obiekt pamięci</button>
+                  <button class="btn btn-secondary" type="button" id="openObjectDetailModeTeacher">Tryb detalu</button>
                   <button class="btn btn-secondary" type="button" id="triggerQrButton">Uruchom QR</button>
                   <button class="btn btn-secondary" type="button" id="openReportBuilderButton">Przejdź do raportu</button>
+                  <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/teacher-pack.html" id="openTeacherPackButton">Teacher Pack</a>
                 </div>
               </div>
             </div>
@@ -244,144 +238,143 @@
           <div class="cta-row compact">
             <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/archive.html">Otwórz archiwum</a>
             <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/report.html">Podejrzyj raport</a>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/teacher-pack.html">Teacher Pack</a>
           </div>
         </div>
       </section>
     </div>
 
     <div class="lab-present" id="labPresent" hidden aria-hidden="true">
-  <div class="lab-present-shell">
-    <header class="lab-present-topbar">
-      <div class="lab-present-brand">
-        <div class="lab-present-kicker">Laboratorium Sumienia</div>
-        <div class="lab-present-session" id="labPresentSessionLabel">Tryb prezentacji</div>
-      </div>
-
-      <div class="lab-present-controls">
-  <div class="lab-present-mode-tabs" id="labPresentModeTabs"></div>
-
-  <button class="lab-present-icon" id="labPresentBlackoutToggle" type="button" aria-label="Blackout ekranu">
-    ●
-  </button>
-
-  <button class="lab-present-icon" id="labPresentFullscreenToggle" type="button" aria-label="Pełny ekran">
-    ⤢
-  </button>
-
-  <button class="lab-present-icon" id="labPresentClose" type="button" aria-label="Zamknij tryb prezentacji">
-    ×
-  </button>
-</div>
-    </header>
-
-    <main class="lab-present-stage">
-      <section class="lab-present-view is-active" id="labPresentPromptView" data-view="prompt">
-        <div class="lab-present-center">
-          <div class="lab-present-meta">
-            <span class="lab-present-step" id="labPresentPromptStep">Krok 1</span>
-            <span class="lab-present-type" id="labPresentPromptType">Wejście</span>
+      <div class="lab-present-shell">
+        <header class="lab-present-topbar">
+          <div class="lab-present-brand">
+            <div class="lab-present-kicker">Laboratorium Sumienia</div>
+            <div class="lab-present-session" id="labPresentSessionLabel">Tryb prezentacji</div>
           </div>
 
-          <h1 class="lab-present-title" id="labPresentPromptTitle">Wejście</h1>
-          <p class="lab-present-subtitle" id="labPresentPromptInstruction">
-            Nie wprowadzaj jeszcze pełnego kontekstu historycznego.
-          </p>
+          <div class="lab-present-controls">
+            <div class="lab-present-mode-tabs" id="labPresentModeTabs"></div>
 
-          <blockquote class="lab-present-question" id="labPresentPromptQuestion">
-            Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?
-          </blockquote>
-        </div>
-      </section>
+            <button class="lab-present-icon" id="labPresentBlackoutToggle" type="button" aria-label="Blackout ekranu">
+              ●
+            </button>
 
-      <section class="lab-present-view" id="labPresentObjectView" data-view="object">
-        <div class="lab-present-object-grid">
-          <div class="lab-present-object-media">
-            <div class="lab-present-object-image" id="labPresentObjectImage"></div>
+            <button class="lab-present-icon" id="labPresentFullscreenToggle" type="button" aria-label="Pełny ekran">
+              ⤢
+            </button>
+
+            <button class="lab-present-icon" id="labPresentClose" type="button" aria-label="Zamknij tryb prezentacji">
+              ×
+            </button>
           </div>
+        </header>
 
-          <div class="lab-present-object-copy">
-            <div class="lab-present-meta">
-              <span class="lab-present-step" id="labPresentObjectStep">Krok 2</span>
-              <span class="lab-present-type">Obiekt pamięci</span>
+        <main class="lab-present-stage">
+          <section class="lab-present-view is-active" id="labPresentPromptView" data-view="prompt">
+            <div class="lab-present-center">
+              <div class="lab-present-meta">
+                <span class="lab-present-step" id="labPresentPromptStep">Krok 1</span>
+                <span class="lab-present-type" id="labPresentPromptType">Wejście</span>
+              </div>
+
+              <h1 class="lab-present-title" id="labPresentPromptTitle">Wejście</h1>
+              <p class="lab-present-subtitle" id="labPresentPromptInstruction">
+                Nie wprowadzaj jeszcze pełnego kontekstu historycznego.
+              </p>
+
+              <blockquote class="lab-present-question" id="labPresentPromptQuestion">
+                Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?
+              </blockquote>
             </div>
+          </section>
 
-            <h2 class="lab-present-object-title" id="labPresentObjectTitle">Obiekt pamięci</h2>
-            <p class="lab-present-object-text" id="labPresentObjectText">
-              Opis obiektu.
-            </p>
+          <section class="lab-present-view" id="labPresentObjectView" data-view="object">
+            <div class="lab-present-object-grid">
+              <div class="lab-present-object-media">
+                <div class="lab-present-object-image" id="labPresentObjectImage"></div>
+              </div>
 
-            <blockquote class="lab-present-object-quote" id="labPresentObjectQuote">
-              Cytat obiektu.
-            </blockquote>
-          </div>
-        </div>
-      </section>
+              <div class="lab-present-object-copy">
+                <div class="lab-present-meta">
+                  <span class="lab-present-step" id="labPresentObjectStep">Krok 2</span>
+                  <span class="lab-present-type">Obiekt pamięci</span>
+                </div>
 
-      <section class="lab-present-view" id="labPresentQrView" data-view="qr">
-        <div class="lab-present-qr-grid">
-          <div class="lab-present-qr-frame">
-            <div class="lab-present-qr-wrap" id="labPresentQrWrap"></div>
-          </div>
+                <h2 class="lab-present-object-title" id="labPresentObjectTitle">Obiekt pamięci</h2>
+                <p class="lab-present-object-text" id="labPresentObjectText">
+                  Opis obiektu.
+                </p>
 
-          <div class="lab-present-qr-copy">
-            <div class="lab-present-meta">
-              <span class="lab-present-step" id="labPresentQrStep">Aktywna sesja</span>
-              <span class="lab-present-type" id="labPresentQrType">Tryb ucznia</span>
+                <blockquote class="lab-present-object-quote" id="labPresentObjectQuote">
+                  Cytat obiektu.
+                </blockquote>
+              </div>
             </div>
+          </section>
 
-            <h2 class="lab-present-object-title" id="labPresentQrTitle">Zeskanuj, aby wejść</h2>
-            <p class="lab-present-object-text" id="labPresentQrText">
-              Użyj telefonu, aby otworzyć aktywną ścieżkę ucznia.
-            </p>
+          <section class="lab-present-view" id="labPresentQrView" data-view="qr">
+            <div class="lab-present-qr-grid">
+              <div class="lab-present-qr-frame">
+                <div class="lab-present-qr-wrap" id="labPresentQrWrap"></div>
+              </div>
 
-            <div class="lab-present-link" id="labPresentQrLink">
-              —
+              <div class="lab-present-qr-copy">
+                <div class="lab-present-meta">
+                  <span class="lab-present-step" id="labPresentQrStep">Aktywna sesja</span>
+                  <span class="lab-present-type" id="labPresentQrType">Tryb ucznia</span>
+                </div>
+
+                <h2 class="lab-present-object-title" id="labPresentQrTitle">Zeskanuj, aby wejść</h2>
+                <p class="lab-present-object-text" id="labPresentQrText">
+                  Użyj telefonu, aby otworzyć aktywną ścieżkę ucznia.
+                </p>
+
+                <div class="lab-present-link" id="labPresentQrLink">—</div>
+              </div>
             </div>
+          </section>
+
+          <section class="lab-present-view" id="labPresentFocusView" data-view="focus">
+            <div class="lab-present-focus-center">
+              <div class="lab-present-focus-kicker">Focus</div>
+              <blockquote class="lab-present-focus-quote" id="labPresentFocusQuote">
+                Świadectwo nie istnieje po to, by wywołać efekt. Istnieje po to, by zostać potraktowane poważnie.
+              </blockquote>
+              <div class="lab-present-focus-note" id="labPresentFocusNote">
+                Użyj tego widoku, gdy chcesz zatrzymać grupę na jednym zdaniu lub jednym napięciu interpretacyjnym.
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer class="lab-present-footer">
+          <div class="lab-present-footer-left">
+            <span id="labPresentFooterLesson">Raport odbioru — świadectwo</span>
+          </div>
+
+          <div class="lab-present-footer-right">
+            <button class="btn btn-secondary" type="button" id="labPresentPrevView">Poprzedni widok</button>
+            <button class="btn btn-primary" type="button" id="labPresentNextView">Następny widok</button>
+          </div>
+        </footer>
+
+        <div class="lab-present-transition" id="labPresentTransition" aria-hidden="true">
+          <div class="lab-present-transition-inner">
+            <div class="lab-present-transition-kicker">Laboratorium Sumienia</div>
+            <div class="lab-present-transition-title" id="labPresentTransitionTitle">Prompt</div>
+            <div class="lab-present-transition-line"></div>
           </div>
         </div>
-      </section>
 
-      <section class="lab-present-view" id="labPresentFocusView" data-view="focus">
-        <div class="lab-present-focus-center">
-          <div class="lab-present-focus-kicker">Focus</div>
-          <blockquote class="lab-present-focus-quote" id="labPresentFocusQuote">
-            Świadectwo nie istnieje po to, by wywołać efekt. Istnieje po to, by zostać potraktowane poważnie.
-          </blockquote>
-          <div class="lab-present-focus-note" id="labPresentFocusNote">
-            Użyj tego widoku, gdy chcesz zatrzymać grupę na jednym zdaniu lub jednym napięciu interpretacyjnym.
+        <div class="lab-present-blackout" id="labPresentBlackout" hidden aria-hidden="true">
+          <div class="lab-present-blackout-inner">
+            <div class="lab-present-blackout-mark">●</div>
+            <div class="lab-present-blackout-text">Blackout aktywny</div>
+            <div class="lab-present-blackout-subtext">Naciśnij B, aby wrócić</div>
           </div>
         </div>
-      </section>
-    </main>
-
-    <footer class="lab-present-footer">
-      <div class="lab-present-footer-left">
-        <span id="labPresentFooterLesson">Raport odbioru — świadectwo</span>
       </div>
-
-      <div class="lab-present-footer-right">
-        <button class="btn btn-secondary" type="button" id="labPresentPrevView">Poprzedni widok</button>
-        <button class="btn btn-primary" type="button" id="labPresentNextView">Następny widok</button>
-      </div>
-    </footer>
-    <div class="lab-present-transition" id="labPresentTransition" aria-hidden="true">
-  <div class="lab-present-transition-inner">
-    <div class="lab-present-transition-kicker">Laboratorium Sumienia</div>
-    <div class="lab-present-transition-title" id="labPresentTransitionTitle">Prompt</div>
-    <div class="lab-present-transition-line"></div>
-  </div>
-</div>
-
-<div class="lab-present-blackout" id="labPresentBlackout" hidden aria-hidden="true">
-  <div class="lab-present-blackout-inner">
-    <div class="lab-present-blackout-mark">●</div>
-    <div class="lab-present-blackout-text">Blackout aktywny</div>
-    <div class="lab-present-blackout-subtext">Naciśnij B, aby wrócić</div>
-  </div>
-</div>
-  </div>
-</div>
-  
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -390,160 +383,149 @@
       <div>Wersja polska</div>
     </div>
   </footer>
+
   <div class="lab-qr-modal" id="labQrModal" hidden aria-hidden="true">
-  <div class="lab-qr-backdrop" data-qr-close></div>
+    <div class="lab-qr-backdrop" data-qr-close></div>
 
-  <div class="lab-qr-dialog" role="dialog" aria-modal="true" aria-labelledby="labQrTitle">
-    <button class="lab-qr-close" id="labQrClose" type="button" aria-label="Zamknij generator QR">
-      ×
-    </button>
+    <div class="lab-qr-dialog" role="dialog" aria-modal="true" aria-labelledby="labQrTitle">
+      <button class="lab-qr-close" id="labQrClose" type="button" aria-label="Zamknij generator QR">×</button>
 
-    <div class="lab-qr-head">
-      <div class="panel-topline">Generator QR</div>
-      <h2 id="labQrTitle" class="lab-qr-title">Udostępnij wejście do sesji</h2>
-      <p class="lab-qr-subtitle" id="labQrSubtitle">
-        Wybierz tryb i pokaż uczniom kod do zeskanowania.
-      </p>
-    </div>
-
-    <div class="lab-qr-modes" id="labQrModes"></div>
-
-    <div class="lab-qr-stage">
-      <div class="lab-qr-frame">
-        <div class="lab-qr-canvas-wrap" id="labQrCanvasWrap"></div>
-      </div>
-
-      <div class="lab-qr-meta">
-        <div class="lab-qr-meta-block">
-          <span class="lab-qr-label">Aktywny tryb</span>
-          <strong class="lab-qr-value" id="labQrActiveMode">—</strong>
-        </div>
-
-        <div class="lab-qr-meta-block">
-          <span class="lab-qr-label">Link</span>
-          <div class="lab-qr-link-row">
-            <input class="lab-qr-link-input" id="labQrLinkInput" type="text" readonly value="" />
-          </div>
-        </div>
-
-        <div class="cta-row compact">
-          <button class="btn btn-primary" id="labQrCopyButton" type="button">Kopiuj link</button>
-          <button class="btn btn-secondary" id="labQrOpenButton" type="button">Otwórz</button>
-          <button class="btn btn-secondary" id="labQrDownloadButton" type="button">Pobierz PNG</button>
-          <button class="btn btn-secondary" type="button" id="openObjectDetailModeTeacher">
-  Tryb detalu
-</button>
-        </div>
-
-        <div class="lab-qr-note" id="labQrNote">
-          QR został zoptymalizowany pod czytelność i szybkie skanowanie.
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  <script src="/assets/js/main.js"></script>
-<script src="/assets/js/transitions.js"></script>
-<script src="/assets/js/lab-core.js"></script>
-<script src="https://unpkg.com/qr-code-styling@1.8.3/lib/qr-code-styling.js"></script>
-<script src="/assets/js/lab-qr.js"></script>
-<script src="/assets/js/lab-teacher.js"></script>
-<script src="/assets/js/lab-presentation.js"></script>
-  <div class="object-detail-modal" id="objectDetailModal" hidden aria-hidden="true">
-  <div class="object-detail-backdrop" data-object-detail-close></div>
-
-  <div class="object-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="objectDetailTitle">
-    <header class="object-detail-topbar">
-      <div class="object-detail-head">
-        <div class="object-detail-kicker">Tryb detalu obiektu</div>
-        <h2 class="object-detail-title" id="objectDetailTitle">Obiekt pamięci</h2>
-        <p class="object-detail-subtitle" id="objectDetailSubtitle">
-          Warstwowe wejście w detal, znaczenie i napięcie interpretacyjne.
+      <div class="lab-qr-head">
+        <div class="panel-topline">Generator QR</div>
+        <h2 id="labQrTitle" class="lab-qr-title">Udostępnij wejście do sesji</h2>
+        <p class="lab-qr-subtitle" id="labQrSubtitle">
+          Wybierz tryb i pokaż uczniom kod do zeskanowania.
         </p>
       </div>
 
-      <div class="object-detail-controls">
-        <button class="object-detail-icon" id="objectDetailFullscreen" type="button" aria-label="Pełny ekran">⤢</button>
-        <button class="object-detail-icon" id="objectDetailClose" type="button" aria-label="Zamknij">×</button>
-        <button class="btn btn-secondary" type="button" id="openObjectDetailModeTeacher">
-  Tryb detalu
-</button>
+      <div class="lab-qr-modes" id="labQrModes"></div>
+
+      <div class="lab-qr-stage">
+        <div class="lab-qr-frame">
+          <div class="lab-qr-canvas-wrap" id="labQrCanvasWrap"></div>
+        </div>
+
+        <div class="lab-qr-meta">
+          <div class="lab-qr-meta-block">
+            <span class="lab-qr-label">Aktywny tryb</span>
+            <strong class="lab-qr-value" id="labQrActiveMode">—</strong>
+          </div>
+
+          <div class="lab-qr-meta-block">
+            <span class="lab-qr-label">Link</span>
+            <div class="lab-qr-link-row">
+              <input class="lab-qr-link-input" id="labQrLinkInput" type="text" readonly value="" />
+            </div>
+          </div>
+
+          <div class="cta-row compact">
+            <button class="btn btn-primary" id="labQrCopyButton" type="button">Kopiuj link</button>
+            <button class="btn btn-secondary" id="labQrOpenButton" type="button">Otwórz</button>
+            <button class="btn btn-secondary" id="labQrDownloadButton" type="button">Pobierz PNG</button>
+          </div>
+
+          <div class="lab-qr-note" id="labQrNote">
+            QR został zoptymalizowany pod czytelność i szybkie skanowanie.
+          </div>
+        </div>
       </div>
-    </header>
+    </div>
+  </div>
 
-    <div class="object-detail-main">
-      <section class="object-detail-stage">
-        <div class="object-detail-toolbar">
-          <div class="object-detail-toolbar-left">
-            <span class="object-detail-zoom-label">Powiększenie</span>
-            <strong class="object-detail-zoom-value" id="objectDetailZoomValue">100%</strong>
-          </div>
+  <div class="object-detail-modal" id="objectDetailModal" hidden aria-hidden="true">
+    <div class="object-detail-backdrop" data-object-detail-close></div>
 
-          <div class="object-detail-toolbar-right">
-            <button class="object-detail-btn" id="objectDetailZoomOut" type="button">−</button>
-            <button class="object-detail-btn" id="objectDetailZoomReset" type="button">Reset</button>
-            <button class="object-detail-btn" id="objectDetailZoomIn" type="button">+</button>
-            <button class="btn btn-secondary" type="button" id="openObjectDetailModeTeacher">
-  Tryb detalu
-</button>
-          </div>
-        </div>
-
-        <div class="object-detail-viewport" id="objectDetailViewport">
-          <div class="object-detail-canvas" id="objectDetailCanvas">
-            <div class="object-detail-image" id="objectDetailImage"></div>
-            <div class="object-detail-hotspots" id="objectDetailHotspots"></div>
-          </div>
-        </div>
-
-        <div class="object-detail-stage-note" id="objectDetailStageNote">
-          Kliknij hotspot albo użyj klawiatury do przechodzenia między detalami.
-        </div>
-      </section>
-
-      <aside class="object-detail-side">
-        <div class="object-detail-summary">
-          <h3 class="object-detail-summary-title" id="objectDetailSummaryTitle">Obiekt pamięci</h3>
-          <p class="object-detail-summary-text" id="objectDetailSummaryText">Opis obiektu.</p>
-          <blockquote class="object-detail-quote" id="objectDetailSummaryQuote">Cytat obiektu.</blockquote>
-        </div>
-
-        <div class="object-detail-active">
-          <div class="object-detail-active-topline">Aktywny detal</div>
-          <h3 class="object-detail-active-title" id="objectDetailActiveTitle">Wybierz hotspot</h3>
-          <p class="object-detail-active-text" id="objectDetailActiveText">
-            Po kliknięciu hotspotu zobaczysz rozwinięcie znaczenia tego miejsca.
+    <div class="object-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="objectDetailTitle">
+      <header class="object-detail-topbar">
+        <div class="object-detail-head">
+          <div class="object-detail-kicker">Tryb detalu obiektu</div>
+          <h2 class="object-detail-title" id="objectDetailTitle">Obiekt pamięci</h2>
+          <p class="object-detail-subtitle" id="objectDetailSubtitle">
+            Warstwowe wejście w detal, znaczenie i napięcie interpretacyjne.
           </p>
         </div>
 
-        <div class="object-detail-active-meta">
-          <div class="object-detail-block">
-            <span class="object-detail-block-label">Znaczenie historyczne</span>
-            <p class="object-detail-block-value" id="objectDetailMeaning">—</p>
-          </div>
-
-          <div class="object-detail-block">
-            <span class="object-detail-block-label">Znaczenie ludzkie</span>
-            <p class="object-detail-block-value" id="objectDetailHumanMeaning">—</p>
-          </div>
-
-          <div class="object-detail-block">
-            <span class="object-detail-block-label">Pytanie pomocnicze</span>
-            <p class="object-detail-block-value" id="objectDetailPrompt">—</p>
-          </div>
+        <div class="object-detail-controls">
+          <button class="object-detail-icon" id="objectDetailFullscreen" type="button" aria-label="Pełny ekran">⤢</button>
+          <button class="object-detail-icon" id="objectDetailClose" type="button" aria-label="Zamknij">×</button>
         </div>
+      </header>
 
-        <div class="object-detail-nav">
-          <button class="object-detail-btn" id="objectDetailPrevHotspot" type="button">Poprzedni detal</button>
-          <button class="object-detail-btn" id="objectDetailNextHotspot" type="button">Następny detal</button>
-          <button class="btn btn-secondary" type="button" id="openObjectDetailModeTeacher">
-  Tryb detalu
-</button>
-        </div>
-      </aside>
+      <div class="object-detail-main">
+        <section class="object-detail-stage">
+          <div class="object-detail-toolbar">
+            <div class="object-detail-toolbar-left">
+              <span class="object-detail-zoom-label">Powiększenie</span>
+              <strong class="object-detail-zoom-value" id="objectDetailZoomValue">100%</strong>
+            </div>
+
+            <div class="object-detail-toolbar-right">
+              <button class="object-detail-btn" id="objectDetailZoomOut" type="button">−</button>
+              <button class="object-detail-btn" id="objectDetailZoomReset" type="button">Reset</button>
+              <button class="object-detail-btn" id="objectDetailZoomIn" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="object-detail-viewport" id="objectDetailViewport">
+            <div class="object-detail-canvas" id="objectDetailCanvas">
+              <div class="object-detail-image" id="objectDetailImage"></div>
+              <div class="object-detail-hotspots" id="objectDetailHotspots"></div>
+            </div>
+          </div>
+
+          <div class="object-detail-stage-note" id="objectDetailStageNote">
+            Kliknij hotspot albo użyj klawiatury do przechodzenia między detalami.
+          </div>
+        </section>
+
+        <aside class="object-detail-side">
+          <div class="object-detail-summary">
+            <h3 class="object-detail-summary-title" id="objectDetailSummaryTitle">Obiekt pamięci</h3>
+            <p class="object-detail-summary-text" id="objectDetailSummaryText">Opis obiektu.</p>
+            <blockquote class="object-detail-quote" id="objectDetailSummaryQuote">Cytat obiektu.</blockquote>
+          </div>
+
+          <div class="object-detail-active">
+            <div class="object-detail-active-topline">Aktywny detal</div>
+            <h3 class="object-detail-active-title" id="objectDetailActiveTitle">Wybierz hotspot</h3>
+            <p class="object-detail-active-text" id="objectDetailActiveText">
+              Po kliknięciu hotspotu zobaczysz rozwinięcie znaczenia tego miejsca.
+            </p>
+          </div>
+
+          <div class="object-detail-active-meta">
+            <div class="object-detail-block">
+              <span class="object-detail-block-label">Znaczenie historyczne</span>
+              <p class="object-detail-block-value" id="objectDetailMeaning">—</p>
+            </div>
+
+            <div class="object-detail-block">
+              <span class="object-detail-block-label">Znaczenie ludzkie</span>
+              <p class="object-detail-block-value" id="objectDetailHumanMeaning">—</p>
+            </div>
+
+            <div class="object-detail-block">
+              <span class="object-detail-block-label">Pytanie pomocnicze</span>
+              <p class="object-detail-block-value" id="objectDetailPrompt">—</p>
+            </div>
+          </div>
+
+          <div class="object-detail-nav">
+            <button class="object-detail-btn" id="objectDetailPrevHotspot" type="button">Poprzedni detal</button>
+            <button class="object-detail-btn" id="objectDetailNextHotspot" type="button">Następny detal</button>
+          </div>
+        </aside>
+      </div>
     </div>
   </div>
-</div>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="https://unpkg.com/qr-code-styling@1.8.3/lib/qr-code-styling.js"></script>
+  <script src="/assets/js/lab-qr.js"></script>
+  <script src="/assets/js/lab-presentation.js"></script>
   <script src="/assets/js/lab-object-detail.js"></script>
+  <script src="/assets/js/lab-teacher.js"></script>
 </body>
 </html>
