@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laboratorium Sumienia — Archiwum klasy</title>
+  <meta name="description" content="Archiwum klasy dla Laboratorium Sumienia — zapisane raporty, statystyki sesji i przegląd odpowiedzi." />
+  <meta name="theme-color" content="#090909" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/lab-core.css" />
+  <link rel="stylesheet" href="/assets/css/lab-teacher.css" />
+
+  <style>
+    .archive-shell{
+      position:relative;
+      z-index:1;
+      padding:34px 0 80px;
+    }
+
+    .archive-hero{
+      margin-bottom:24px;
+    }
+
+    .archive-hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+      gap:24px;
+      align-items:start;
+    }
+
+    .archive-stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .archive-filter-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .archive-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(360px,.9fr);
+      gap:24px;
+      align-items:start;
+      margin-top:24px;
+    }
+
+    .archive-list-panel,
+    .archive-detail-panel{
+      min-height:560px;
+    }
+
+    .archive-list{
+      display:grid;
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .archive-item{
+      border:1px solid var(--lab-line);
+      border-radius:22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.02)),
+        radial-gradient(circle at top right, rgba(203,176,138,.07), transparent 34%);
+      padding:18px 18px 16px;
+      transition:
+        transform var(--lab-fast) ease,
+        border-color var(--lab-fast) ease,
+        background var(--lab-fast) ease;
+      cursor:pointer;
+    }
+
+    .archive-item:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.048), rgba(255,255,255,.025)),
+        radial-gradient(circle at top right, rgba(203,176,138,.10), transparent 34%);
+    }
+
+    .archive-item.is-active{
+      border-color:rgba(203,176,138,.34);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.028)),
+        radial-gradient(circle at top right, rgba(203,176,138,.14), transparent 34%);
+    }
+
+    .archive-item-top{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:flex-start;
+      margin-bottom:12px;
+    }
+
+    .archive-item-title{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.6rem;
+      line-height:.98;
+    }
+
+    .archive-item-date{
+      color:var(--lab-soft);
+      font-size:.85rem;
+      white-space:nowrap;
+      padding-top:4px;
+    }
+
+    .archive-item-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .archive-chip{
+      border:1px solid var(--lab-line);
+      background:rgba(255,255,255,.02);
+      color:var(--lab-soft);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.74rem;
+      letter-spacing:.02em;
+    }
+
+    .archive-item-text{
+      margin:0;
+      color:var(--lab-muted);
+      line-height:1.78;
+      font-size:.95rem;
+    }
+
+    .archive-detail-head{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
+
+    .archive-detail-title{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:2rem;
+      line-height:.95;
+    }
+
+    .archive-detail-grid{
+      display:grid;
+      gap:14px;
+    }
+
+    .archive-detail-block{
+      padding:16px 16px 14px;
+      border-radius:18px;
+      border:1px solid var(--lab-line);
+      background:rgba(255,255,255,.02);
+    }
+
+    .archive-detail-label{
+      display:block;
+      color:var(--lab-soft);
+      font-size:.76rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .archive-detail-value{
+      color:var(--lab-text);
+      line-height:1.8;
+      font-size:.98rem;
+      margin:0;
+      white-space:pre-wrap;
+    }
+
+    .archive-empty{
+      margin-top:18px;
+      padding:28px 20px;
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius:22px;
+      color:var(--lab-muted);
+      line-height:1.8;
+      text-align:center;
+    }
+
+    .archive-toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .archive-status{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid var(--lab-line);
+      background:rgba(255,255,255,.03);
+      color:var(--lab-muted);
+      line-height:1.75;
+    }
+
+    .archive-status[data-status="success"]{
+      border-color:rgba(203,176,138,.22);
+      color:var(--lab-text);
+      background:rgba(203,176,138,.08);
+    }
+
+    .archive-status[data-status="warning"]{
+      border-color:rgba(180,120,80,.18);
+      background:rgba(180,120,80,.08);
+    }
+
+    @media (max-width:1100px){
+      .archive-hero-grid,
+      .archive-layout,
+      .archive-filter-grid,
+      .archive-stats-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .archive-shell{
+        padding:24px 0 64px;
+      }
+
+      .archive-item-top,
+      .archive-detail-head{
+        flex-direction:column;
+      }
+
+      .archive-detail-title{
+        font-size:1.75rem;
+      }
+    }
+  </style>
+</head>
+<body
+  data-page="lab-archive"
+  data-lang="pl"
+  data-ui="/assets/data/lab-ui-pl.json"
+  data-lessons="/assets/data/lab-lessons-pl.json"
+  data-prompts="/assets/data/lab-prompts-pl.json"
+  data-objects="/assets/data/lab-objects-pl.json"
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header lab-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/lab/pl/" aria-label="Powrót do Laboratorium Sumienia">
+        <div class="brand-name ps-brand">Laboratorium Sumienia</div>
+        <div class="brand-sub">Archiwum klasy</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Nawigacja archiwum">
+        <a href="#archiveStats">Statystyki</a>
+        <a href="#archiveListSection">Raporty</a>
+        <a href="/rap-ort/prawda-sumienia/lab/pl/teacher.html">Konsola nauczyciela</a>
+        <a href="/rap-ort/prawda-sumienia/pl/">Rozdział</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="archive-shell">
+    <section class="archive-hero">
+      <div class="wrap archive-hero-grid">
+        <div class="content-panel reveal">
+          <div class="panel-topline">Archiwum sesji</div>
+          <h1>Raporty zapisane w klasie</h1>
+          <p>
+            To jest przestrzeń przeglądu raportów wygenerowanych w ramach aktywnych sesji Laboratorium Sumienia.
+            Możesz filtrować wpisy, przeglądać szczegóły, eksportować dane i czyścić archiwum lokalne.
+          </p>
+        </div>
+
+        <aside class="content-panel reveal">
+          <div class="panel-topline">Tryb pracy</div>
+          <p class="panel-quote">Dokument. Odczyt. Ślad.</p>
+          <p class="panel-text">
+            Archiwum nie służy ocenianiu uczniów według jednego klucza. Służy śledzeniu tego,
+            jak pracowali ze świadectwem, obiektem i pytaniem końcowym.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="archiveStats">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Statystyki</div>
+            <h2>Przegląd archiwum</h2>
+          </div>
+          <div class="section-note">
+            Zbiorcze wskaźniki pomagają zobaczyć skalę pracy klasy i dominujące wybory, bez redukowania odpowiedzi do prostych ocen.
+          </div>
+        </div>
+
+        <div class="archive-stats-grid reveal">
+          <div class="archive-metric">
+            <span class="archive-metric-label">Liczba raportów</span>
+            <strong class="archive-metric-value" id="archiveReportsCountLarge">0</strong>
+          </div>
+          <div class="archive-metric">
+            <span class="archive-metric-label">Najczęstszy cytat</span>
+            <strong class="archive-metric-value archive-metric-block" id="archiveTopQuoteLarge">—</strong>
+          </div>
+          <div class="archive-metric">
+            <span class="archive-metric-label">Najczęstszy obiekt</span>
+            <strong class="archive-metric-value" id="archiveTopObjectLarge">—</strong>
+          </div>
+          <div class="archive-metric">
+            <span class="archive-metric-label">Ostatni zapis</span>
+            <strong class="archive-metric-value" id="archiveLastSaved">—</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="archiveListSection">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Raporty</div>
+            <h2>Lista zapisanych dokumentów</h2>
+          </div>
+          <div class="section-note">
+            Możesz filtrować wpisy po lekcji, obiekcie lub instytucji. Kliknięcie wpisu otwiera jego pełny podgląd po prawej stronie.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <div class="panel-topline">Filtry</div>
+
+          <div class="archive-filter-grid">
+            <label class="field">
+              <span class="field-label">Szukaj</span>
+              <input type="text" id="archiveSearchInput" placeholder="Np. liceum, cytat, obiekt, instytucja..." />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Lekcja</span>
+              <select id="archiveLessonFilter">
+                <option value="">Wszystkie</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Obiekt</span>
+              <select id="archiveObjectFilter">
+                <option value="">Wszystkie</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Instytucja</span>
+              <select id="archiveInstitutionFilter">
+                <option value="">Wszystkie</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="archive-toolbar">
+            <button class="btn btn-secondary" type="button" id="archiveExportButton">Eksportuj JSON</button>
+            <button class="btn btn-secondary" type="button" id="archiveClearFiltersButton">Wyczyść filtry</button>
+            <button class="btn btn-tertiary" type="button" id="archiveClearAllButton">Wyczyść całe archiwum</button>
+          </div>
+
+          <div class="archive-status" id="archiveStatusMessage" aria-live="polite">
+            Archiwum gotowe do przeglądania.
+          </div>
+        </div>
+
+        <div class="archive-layout">
+          <section class="content-panel archive-list-panel reveal" aria-labelledby="archiveListTitle">
+            <div class="panel-topline">Lista wpisów</div>
+            <h3 id="archiveListTitle">Raporty</h3>
+
+            <div class="archive-list" id="archiveList"></div>
+            <div class="archive-empty" id="archiveEmptyState" hidden>
+              Brak raportów spełniających bieżące kryteria filtrowania.
+            </div>
+          </section>
+
+          <aside class="content-panel archive-detail-panel reveal" aria-labelledby="archiveDetailTitle">
+            <div class="panel-topline">Podgląd szczegółowy</div>
+            <div class="archive-detail-head">
+              <h3 class="archive-detail-title" id="archiveDetailTitle">Wybierz raport z listy</h3>
+              <div class="archive-item-date" id="archiveDetailDate">—</div>
+            </div>
+
+            <div class="archive-detail-grid">
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Sesja</span>
+                <p class="archive-detail-value" id="archiveDetailSessionId">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Lekcja</span>
+                <p class="archive-detail-value" id="archiveDetailLesson">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Instytucja / grupa</span>
+                <p class="archive-detail-value" id="archiveDetailInstitution">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Wybrany cytat</span>
+                <p class="archive-detail-value" id="archiveDetailQuote">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Wybrany obiekt</span>
+                <p class="archive-detail-value" id="archiveDetailObject">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Najważniejszy moment</span>
+                <p class="archive-detail-value" id="archiveDetailKeyMoment">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Odpowiedź końcowa</span>
+                <p class="archive-detail-value" id="archiveDetailFinalResponse">—</p>
+              </div>
+
+              <div class="archive-detail-block">
+                <span class="archive-detail-label">Pytanie, które zostaje</span>
+                <p class="archive-detail-value" id="archiveDetailOpenQuestion">—</p>
+              </div>
+            </div>
+
+            <div class="cta-row compact">
+              <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/report.html" id="archiveOpenReportButton">Otwórz raport</a>
+              <button class="btn btn-secondary" type="button" id="archiveDeleteOneButton">Usuń ten wpis</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>Laboratorium Sumienia · Archiwum klasy</div>
+      <div>Wersja polska</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="/assets/js/lab-archive.js"></script>
+</body>
+</html>
