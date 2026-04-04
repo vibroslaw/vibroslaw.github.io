@@ -1,0 +1,414 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "context-cards",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "cardSystemPhilosophy": {
+    "mainPurpose": "Karty kontekstowe mają dawać nauczycielowi szybkie, uporządkowane wsparcie bez konieczności sięgania do rozbudowanych notatek w trakcie lekcji.",
+    "teacherGoal": "Nauczyciel ma w kilka sekund zobaczyć najważniejszy kontekst, czego trzymać się w rozmowie i czego nie upraszczać.",
+    "studentGoal": "Uczeń ma dostać tylko taki kontekst, który pomaga wejść w materiał, a nie odciąga od osi świadectwa, raportu i odpowiedzialności odbioru.",
+    "mustNotBecome": [
+      "mini-podręcznikiem historii na ekranie",
+      "rozbudowaną encyklopedią postaci",
+      "zastępnikiem dla samego dzieła",
+      "narzędziem do zbaczania z osi projektu",
+      "miejscem, w którym poboczne figury przejmują główny sens lekcji"
+    ]
+  },
+  "uiRules": {
+    "defaultDisplayMode": "compact-cards",
+    "teacherDefaultView": "summary-first",
+    "studentDefaultView": "hidden",
+    "allowTeacherExpand": true,
+    "maxPrimaryCardsVisibleAtOnce": 3,
+    "maxTextLinesInCollapsedView": 4,
+    "showSectionFit": true,
+    "showLevelBadge": true,
+    "showCautionBlock": true
+  },
+  "visibilityPolicy": {
+    "studentVisibleByDefault": false,
+    "teacherVisibleByDefault": true,
+    "advancedOnlyCardsNeedExplicitReveal": true,
+    "studentMaySeeOnlyIfTeacherOpens": true
+  },
+  "cardLevels": [
+    {
+      "id": "core",
+      "label": "Podstawowa"
+    },
+    {
+      "id": "supporting",
+      "label": "Uzupełniająca"
+    },
+    {
+      "id": "advanced",
+      "label": "Rozszerzona"
+    }
+  ],
+  "cards": [
+    {
+      "id": "card-pilecki",
+      "title": "Witold Pilecki",
+      "shortTitle": "Pilecki",
+      "level": "core",
+      "category": "postac-historyczna",
+      "defaultVisibility": "teacher-and-student-when-needed",
+      "sectionFit": [
+        "section-pilecki-rocznicowy",
+        "section-auschwitz",
+        "section-sumienie-raport",
+        "section-polonia",
+        "section-ai-historia"
+      ],
+      "oneSentenceSense": "Pilecki pozostaje centralną osią projektu jako świadek, autor raportu i figura odpowiedzialności przekazu.",
+      "corePoints": [
+        "W projekcie najważniejszy jest nie tylko sam Pilecki jako postać, ale także znaczenie raportu i świadectwa.",
+        "Nie należy prowadzić rozmowy wyłącznie przez pomnikową narrację o bohaterstwie.",
+        "Pilecki w tej ścieżce działa przede wszystkim jako punkt wejścia do rozmowy o świadectwie, raporcie i odpowiedzialnym odbiorze historii."
+      ],
+      "teacherUse": "Użyj tej karty, gdy chcesz szybko ustawić oś lekcji i przypomnieć, że centrum projektu stanowi świadectwo, a nie sama legenda postaci.",
+      "studentSafeUse": "Można pokazać uczniowi jako krótkie osadzenie sensu działu rocznicowego lub świadectwowego.",
+      "teacherCaution": "Nie zamieniaj karty w skrót całej biografii. W lekcji ma prowadzić do raportu i świadectwa, nie do pełnej opowieści biograficznej.",
+      "doNotSay": [
+        "Najważniejsze jest tylko to, że był wielkim bohaterem.",
+        "Ta lekcja jest wyłącznie o podziwie dla postaci.",
+        "Raport jest tylko dodatkiem do legendy."
+      ],
+      "bridgeQuestions": [
+        "Co w tym materiale działa najmocniej jako świadectwo, a nie tylko informacja o postaci?",
+        "Dlaczego raport jest tak ważny dla sensu całego projektu?"
+      ]
+    },
+    {
+      "id": "card-totalitaryzm",
+      "title": "Totalitaryzm",
+      "shortTitle": "Totalitaryzm",
+      "level": "core",
+      "category": "pojecie-historyczne",
+      "defaultVisibility": "teacher-and-student-when-needed",
+      "sectionFit": [
+        "section-totalitaryzm-wybor",
+        "section-auschwitz",
+        "section-polonia",
+        "section-sumienie-raport"
+      ],
+      "oneSentenceSense": "Totalitaryzm to nie tylko ideologia, ale także system nacisku organizujący życie, przestrzeń, decyzję i podporządkowanie człowieka.",
+      "corePoints": [
+        "W tej ścieżce totalitaryzm rozumiemy jako system, który działa przez kontrolę, przymus, organizację warunków i ograniczenie pola decyzji.",
+        "Nie chodzi tylko o wielkie hasła polityczne, ale także o codzienną logikę podporządkowania.",
+        "To pojęcie pomaga zrozumieć, dlaczego ocena ludzkich decyzji podejmowanych pod presją wymaga ostrożności."
+      ],
+      "teacherUse": "Użyj, gdy chcesz ustawić rozmowę na poziomie systemu, a nie wyłącznie jednostkowego czynu.",
+      "studentSafeUse": "Dobrze działa jako krótka karta wprowadzająca przed pytaniem o nacisk systemu i wybór pod presją.",
+      "teacherCaution": "Nie sprowadzaj pojęcia do abstrakcyjnej definicji. Pokaż jego działanie na materiale, śladzie, miejscu albo decyzji.",
+      "doNotSay": [
+        "Totalitaryzm to po prostu zło i tyle.",
+        "Wystarczy nazwać system, żeby wszystko było zrozumiałe.",
+        "Każda trudna sytuacja to totalitaryzm."
+      ],
+      "bridgeQuestions": [
+        "Jak system naciska na pole ludzkiej decyzji?",
+        "Co w materiale pokazuje mechanizm, a nie tylko pojedynczy czyn?"
+      ]
+    },
+    {
+      "id": "card-nazizm",
+      "title": "Nazizm",
+      "shortTitle": "Nazizm",
+      "level": "supporting",
+      "category": "kontekst-historyczny",
+      "defaultVisibility": "teacher-and-student-when-needed",
+      "sectionFit": [
+        "section-auschwitz",
+        "section-totalitaryzm-wybor",
+        "section-polonia"
+      ],
+      "oneSentenceSense": "Nazizm stanowi kontekst dla obozowego systemu przemocy, rasistowskiej ideologii i podporządkowania człowieka machinie państwa.",
+      "corePoints": [
+        "W tej ścieżce nazizm jest potrzebny jako kontekst historyczny dla Auschwitz i systemu przemocy, nie jako osobna wykładowa oś.",
+        "Najważniejsze pozostaje to, jak ten system działał wobec człowieka, miejsca i świadectwa.",
+        "Karta ma pomóc w osadzeniu materiału, ale nie ma przejąć centrum rozmowy."
+      ],
+      "teacherUse": "Użyj, kiedy grupa potrzebuje prostego dopowiedzenia, czym był system, w którego ramach działał obóz i logika przemocy.",
+      "studentSafeUse": "Można pokazać w krótkiej wersji jako karta osadzająca.",
+      "teacherCaution": "Nie zamieniaj tej karty w ogólny wykład o II wojnie światowej. Trzymaj ją blisko materiału i jego sensu.",
+      "doNotSay": [
+        "Ta karta tłumaczy wszystko o Auschwitz.",
+        "Wystarczy nazwać nazizm i nie trzeba już pracować na śladzie ani świadectwie.",
+        "To osobny główny temat ważniejszy niż raport i świadectwo."
+      ],
+      "bridgeQuestions": [
+        "Co zmienia się, gdy patrzymy na historię przez miejsce, ślad i dokument, a nie tylko przez wielkie pojęcie?",
+        "Dlaczego sam symbol nie wystarcza do odpowiedzialnego odbioru?"
+      ]
+    },
+    {
+      "id": "card-stalinizm",
+      "title": "Stalinizm / wczesny komunizm powojenny",
+      "shortTitle": "Stalinizm",
+      "level": "supporting",
+      "category": "kontekst-historyczny",
+      "defaultVisibility": "teacher-only-unless-opened",
+      "sectionFit": [
+        "section-totalitaryzm-wybor",
+        "section-polonia",
+        "section-sumienie-raport"
+      ],
+      "oneSentenceSense": "Karta pomaga pokazać, że logika przemocy i nacisku systemowego nie kończy się automatycznie wraz z końcem jednego totalitaryzmu.",
+      "corePoints": [
+        "W projekcie karta nie służy do prostego zrównania różnych systemów, tylko do rozmowy o ich odmiennych formach nacisku i kontroli.",
+        "Może być użyta wtedy, gdy nauczyciel chce pokazać ciągłość pytania o system, władzę i decyzję pod presją.",
+        "Nie jest osią lekcji podstawowej dla młodszych grup."
+      ],
+      "teacherUse": "Najlepiej używać tylko wtedy, gdy grupa jest starsza i potrzebuje szerszego kontekstu porównawczego.",
+      "studentSafeUse": "Dla ucznia tylko w krótkiej, bardzo kontrolowanej formie.",
+      "teacherCaution": "Nie rób z tej karty prostego zestawienia: system A równa się system B. Utrzymuj ostrożność i różnicowanie.",
+      "doNotSay": [
+        "To dokładnie to samo co nazizm.",
+        "Wszystkie totalitaryzmy są identyczne w każdym wymiarze.",
+        "Ta karta ma rozstrzygnąć spór polityczny."
+      ],
+      "bridgeQuestions": [
+        "Jak mówić o różnych systemach przemocy bez sztucznego zrównywania ich w każdej warstwie?",
+        "Co zostaje wspólne na poziomie nacisku systemu na człowieka?"
+      ]
+    },
+    {
+      "id": "card-prl",
+      "title": "PRL jako późniejszy kontekst pamięci i przekazu",
+      "shortTitle": "PRL",
+      "level": "supporting",
+      "category": "kontekst-powojenny",
+      "defaultVisibility": "teacher-only-unless-opened",
+      "sectionFit": [
+        "section-polonia",
+        "section-sumienie-raport",
+        "section-totalitaryzm-wybor"
+      ],
+      "oneSentenceSense": "PRL może pojawić się jako kontekst tego, jak pamięć, przekaz i kultura funkcjonowały po wojnie w państwie podporządkowanym systemowi komunistycznemu.",
+      "corePoints": [
+        "Ta karta nie jest osią projektu, ale może pomóc w rozszerzonej rozmowie o tym, jak później funkcjonowała pamięć, kultura i przekaz.",
+        "Warto używać jej tylko wtedy, gdy naprawdę wspiera sens działu, a nie odciąga od głównej osi.",
+        "Dobrze pracuje w grupach starszych, zwłaszcza przy pytaniu o pamięć i kulturę po doświadczeniu wojny."
+      ],
+      "teacherUse": "Użyj jako kontekst uzupełniający, nie jako główną trasę lekcji.",
+      "studentSafeUse": "Dla uczniów tylko po wyraźnym decyzji nauczyciela i najlepiej w grupach starszych.",
+      "teacherCaution": "Nie rozbudowuj tej karty do osobnego bloku o historii PRL, jeśli główny temat pozostaje gdzie indziej.",
+      "doNotSay": [
+        "Teraz przechodzimy już właściwie do innego projektu.",
+        "Ta karta jest ważniejsza od osi raportu i świadectwa.",
+        "PRL wyjaśnia sens całej wcześniejszej historii."
+      ],
+      "bridgeQuestions": [
+        "Jak pamięć i przekaz funkcjonują później w systemie, który też narzuca własne ramy?",
+        "Co dzieje się ze świadectwem, gdy wchodzi w późniejszy porządek polityczny i kulturowy?"
+      ]
+    },
+    {
+      "id": "card-jazz-prl",
+      "title": "Jazz w PRL",
+      "shortTitle": "Jazz w PRL",
+      "level": "advanced",
+      "category": "kontekst-kulturowy",
+      "defaultVisibility": "teacher-only",
+      "sectionFit": [
+        "section-sumienie-raport",
+        "section-polonia",
+        "section-ai-historia"
+      ],
+      "oneSentenceSense": "To karta pomocnicza pokazująca, że kultura w realiach PRL mogła być miejscem napięcia, swobody, ograniczeń i niejednoznaczności.",
+      "corePoints": [
+        "Karta nie jest niezbędna do podstawowego prowadzenia lekcji.",
+        "Może być użyta jako ciekawostka lub kontekst kulturowy dla starszych grup, jeśli pomaga zrozumieć napięcie między systemem a przestrzenią ekspresji.",
+        "Ma sens tylko jako krótkie rozszerzenie, nigdy jako główna oś pracy."
+      ],
+      "teacherUse": "Wyłącznie opcjonalnie, dla grup dojrzałych i tylko wtedy, gdy wspiera rozmowę o kulturze pod systemową presją.",
+      "studentSafeUse": "Nie pokazywać domyślnie.",
+      "teacherCaution": "Ta karta jest dodatkiem. Jeżeli nie wnosi realnej wartości do konkretnej lekcji, pomiń ją.",
+      "doNotSay": [
+        "To klucz do zrozumienia całego projektu.",
+        "Bez tej karty lekcja będzie niepełna.",
+        "Jazz wyjaśnia wszystko o PRL i o pamięci."
+      ],
+      "bridgeQuestions": [
+        "Czy kultura może działać jako przestrzeń napięcia wewnątrz systemu?",
+        "Jak mówić o kulturze pod naciskiem systemu bez prostych schematów?"
+      ]
+    },
+    {
+      "id": "card-auschwitz",
+      "title": "Auschwitz jako miejsce, ślad i świadectwo",
+      "shortTitle": "Auschwitz",
+      "level": "core",
+      "category": "miejsce-historyczne",
+      "defaultVisibility": "teacher-and-student-when-needed",
+      "sectionFit": [
+        "section-auschwitz",
+        "section-pilecki-rocznicowy",
+        "section-polonia"
+      ],
+      "oneSentenceSense": "Karta przypomina, że Auschwitz nie powinno być redukowane wyłącznie do symbolu, lecz czytane także przez miejsce, ślad, dokument i świadectwo.",
+      "corePoints": [
+        "W tej ścieżce ważne jest przejście od samego symbolu do konkretu historycznego i materialnego.",
+        "Miejsce, ślad i świadectwo nie są tym samym, ale wspólnie pomagają wejść w odpowiedzialny odbiór historii.",
+        "Ta karta porządkuje język nauczyciela i chroni przed zbyt szybkim uproszczeniem."
+      ],
+      "teacherUse": "Dobra jako karta ustawiająca ton przed wejściem w dział Auschwitz.",
+      "studentSafeUse": "Tak, w wersji skróconej.",
+      "teacherCaution": "Nie antropomorfizuj miejsca i nie zamieniaj go w samowystarczalny nośnik pełnej prawdy.",
+      "doNotSay": [
+        "To miejsce samo mówi wszystko.",
+        "Wystarczy sam symbol, nie trzeba już pracować na materiale.",
+        "Jedno miejsce zastępuje całe rozumienie historii."
+      ],
+      "bridgeQuestions": [
+        "Co zmienia się, gdy patrzymy na historię przez ślad, miejsce albo dokument?",
+        "Dlaczego nie wystarczy zatrzymać się tylko na symbolu?"
+      ]
+    },
+    {
+      "id": "card-raport-swiadectwo",
+      "title": "Raport i świadectwo",
+      "shortTitle": "Raport",
+      "level": "core",
+      "category": "os-projektu",
+      "defaultVisibility": "teacher-and-student-when-needed",
+      "sectionFit": [
+        "section-pilecki-rocznicowy",
+        "section-sumienie-raport",
+        "section-ai-historia",
+        "section-polonia"
+      ],
+      "oneSentenceSense": "Raport i świadectwo są osią projektu, bo nie tylko zapisują historię, ale przenoszą jej ciężar na późniejszego odbiorcę.",
+      "corePoints": [
+        "Raport nie jest dodatkiem do historii — jest jednym z centralnych sposobów jej przekazania.",
+        "Świadectwo wymaga nie tylko emocjonalnej reakcji, ale także odpowiedzialnego odczytania.",
+        "Ta karta pomaga spiąć dział rocznicowy, refleksyjny i metodologiczny w jedną oś sensu."
+      ],
+      "teacherUse": "Pokazuj zawsze, gdy chcesz wrócić do najważniejszego rdzenia całej ścieżki.",
+      "studentSafeUse": "Tak, szczególnie jako domknięcie sensu działu.",
+      "teacherCaution": "Nie traktuj raportu tylko jako dokumentu technicznego albo wyłącznie historycznej ciekawostki.",
+      "doNotSay": [
+        "Raport jest tylko tłem do opowieści.",
+        "Najważniejsze są emocje, raport to szczegół.",
+        "Świadectwo działa samo i nie wymaga odpowiedzialnego odbioru."
+      ],
+      "bridgeQuestions": [
+        "Co odróżnia źródło od jego późniejszego uproszczenia?",
+        "Co znaczy odpowiedzialny odbiór świadectwa?"
+      ]
+    },
+    {
+      "id": "card-cyrankiewicz-context",
+      "title": "Cyrankiewicz — kontekst rozszerzony",
+      "shortTitle": "Cyrankiewicz",
+      "level": "advanced",
+      "category": "postac-poboczna",
+      "defaultVisibility": "teacher-only",
+      "sectionFit": [
+        "section-totalitaryzm-wybor",
+        "section-polonia"
+      ],
+      "oneSentenceSense": "To karta wyłącznie rozszerzona, używana jako przykład trudności interpretacyjnej i powojennego kontekstu, nigdy jako główna oś projektu.",
+      "corePoints": [
+        "W podstawowej ścieżce ucznia Cyrankiewicz nie powinien przejmować centrum rozmowy.",
+        "Może pojawić się wyłącznie u starszych grup jako poboczny kontekst pokazujący, jak złożone bywają powojenne losy, pamięć i interpretacja.",
+        "Karta ma przypominać nauczycielowi, że ten wątek należy prowadzić bardzo ostrożnie i tylko wtedy, gdy realnie wspiera sens działu."
+      ],
+      "teacherUse": "Wyłącznie dla starszych grup i wyłącznie jako notatka rozszerzona.",
+      "studentSafeUse": "Nie pokazywać domyślnie uczniom.",
+      "teacherCaution": "Nie buduj na tej karcie alternatywnej osi projektu. Nie przesuwaj środka ciężkości z Pileckiego, raportu i świadectwa.",
+      "doNotSay": [
+        "To druga główna postać projektu.",
+        "Na tej lekcji porównamy, kto był lepszy, a kto gorszy.",
+        "Ta karta ma rozstrzygnąć moralnie całą historię."
+      ],
+      "bridgeQuestions": [
+        "Dlaczego niektóre postacie historyczne wymagają większej ostrożności interpretacyjnej niż szybkiego osądu?",
+        "Jak prowadzić trudny kontekst poboczny, żeby nie przejął sensu głównej osi projektu?"
+      ]
+    }
+  ],
+  "teacherQuickSets": [
+    {
+      "id": "set-pilecki-basic",
+      "label": "Pilecki — zestaw podstawowy",
+      "cards": [
+        "card-pilecki",
+        "card-raport-swiadectwo"
+      ]
+    },
+    {
+      "id": "set-auschwitz-basic",
+      "label": "Auschwitz — zestaw podstawowy",
+      "cards": [
+        "card-auschwitz",
+        "card-nazizm",
+        "card-raport-swiadectwo"
+      ]
+    },
+    {
+      "id": "set-totalitaryzm-extended",
+      "label": "Totalitaryzm — zestaw rozszerzony",
+      "cards": [
+        "card-totalitaryzm",
+        "card-nazizm",
+        "card-stalinizm"
+      ]
+    },
+    {
+      "id": "set-polonia-bridge",
+      "label": "Polonia — zestaw most",
+      "cards": [
+        "card-pilecki",
+        "card-totalitaryzm",
+        "card-auschwitz",
+        "card-raport-swiadectwo"
+      ]
+    },
+    {
+      "id": "set-advanced-context",
+      "label": "Kontekst rozszerzony",
+      "cards": [
+        "card-prl",
+        "card-jazz-prl",
+        "card-cyrankiewicz-context"
+      ]
+    }
+  ],
+  "consistencyRules": {
+    "mustSupport": [
+      "świadectwo",
+      "raport",
+      "ostrożność interpretacyjną",
+      "brak prostego moralizowania",
+      "centralność Pileckiego tam, gdzie dział dotyczy osi projektu"
+    ],
+    "mustAvoid": [
+      "przejęcie projektu przez poboczne konteksty",
+      "przeciążenie nauczyciela zbyt wieloma kartami naraz",
+      "student-facing overload",
+      "patos zamiast precyzji",
+      "karty ważniejsze niż samo dzieło"
+    ]
+  },
+  "implementationPriority": {
+    "phase1-mustHave": [
+      "card-pilecki",
+      "card-totalitaryzm",
+      "card-auschwitz",
+      "card-raport-swiadectwo",
+      "card-nazizm"
+    ],
+    "phase2-goodToHave": [
+      "card-stalinizm",
+      "card-prl"
+    ],
+    "phase3-optional": [
+      "card-jazz-prl",
+      "card-cyrankiewicz-context"
+    ]
+  }
+}
