@@ -1,0 +1,664 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "track-guide",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "guidePhilosophy": {
+    "mainPurpose": "Track Guide ma pomagać nauczycielowi prowadzić materiał audio-wideo bez zagubienia i bez konieczności samodzielnego tłumaczenia całej warstwy artystycznej.",
+    "teacherGoal": "Nauczyciel ma w jednym miejscu widzieć: sens działu, sens materiału, granicę między źródłem a formą, możliwe miejsca zatrzymania i kilka bezpiecznych pytań otwierających rozmowę.",
+    "studentGoal": "Uczeń nie ma dostawać nadmiaru objaśnień, lecz wejść w materiał przez pytanie, fragment i własną odpowiedź.",
+    "projectGoal": "Guide ma przedłużać logikę projektu: świadectwo, raport, odpowiedzialność odbioru, ostrożność interpretacyjną i powściągliwość wobec patosu.",
+    "mustNotBecome": [
+      "encyklopedią całego projektu",
+      "przeładowaną bazą interpretacji",
+      "gotowym moralnym kluczem do każdej sceny",
+      "notatnikiem pełnym dygresji pobocznych",
+      "warstwą konkurującą z samym materiałem audio-wideo"
+    ]
+  },
+  "coreDesign": {
+    "mode": "section-first-teacher-simple",
+    "defaultUseModel": "nauczyciel wybiera dział, uruchamia materiał, zatrzymuje w wybranych miejscach, prowadzi rozmowę i domyka raportem",
+    "primaryUnit": "dział tematyczny",
+    "secondaryUnit": "materiał audio-wideo przypisany do działu",
+    "defaultPlaybackStrategy": "full-section-or-curated-fragment",
+    "teacherSees": [
+      "sens działu",
+      "rola materiału",
+      "co jest historycznie zakorzenione",
+      "co jest skrótem artystycznym",
+      "czego nie upraszczać",
+      "3 pytania startowe",
+      "opcjonalne miejsca zatrzymania"
+    ],
+    "teacherDoesNotNeed": [
+      "ręcznie budować interpretacji od zera",
+      "pamiętać wszystkich źródeł na pamięć",
+      "obsługiwać wielu trybów technicznych naraz",
+      "korzystać z interaktywnych obrazów, jeśli nie są gotowe"
+    ]
+  },
+  "playbackPolicy": {
+    "fullWorkDefault": true,
+    "fullWorkRecommendedWhen": [
+      "grupa pracuje 90 minut lub dłużej",
+      "celem jest doświadczenie pełnej dramaturgii dzieła",
+      "nauczyciel chce pracować z napięciem narastającym w czasie"
+    ],
+    "fragmentModeAllowed": true,
+    "fragmentModeRecommendedWhen": [
+      "nauczyciel pracuje tylko na jednym dziale tematycznym",
+      "czas zajęć jest ograniczony",
+      "lekcja ma być wejściem do projektu, a nie pełnym przejściem przez całość"
+    ],
+    "fragmentModeRules": [
+      "fragment musi mieć własny sens dydaktyczny",
+      "fragment nie może niszczyć głównej logiki projektu",
+      "fragment powinien być poprzedzony jednym zdaniem kontekstu",
+      "fragment powinien kończyć się pytaniem albo raportem, nie przypadkowym urwaniem"
+    ],
+    "doNotDo": [
+      "nie skacz po przypadkowych momentach tylko dlatego, że są najmocniejsze wizualnie",
+      "nie buduj lekcji wyłącznie z najbardziej efektownych scen",
+      "nie zastępuj sensu działu samym emocjonalnym uderzeniem"
+    ]
+  },
+  "sourceAndFormPolicy": {
+    "teacherMustDistinguish": [
+      "co w materiale opiera się na źródłach, świadectwach lub znanym kontekście historycznym",
+      "co jest skrótem artystycznym, metaforą lub kompozycją sceniczną",
+      "co jest pytaniem stawianym odbiorcy, a nie tezą historyczną"
+    ],
+    "teacherMustNotSay": [
+      "to dokładnie wydarzyło się właśnie tak, jeśli materiał jest syntetyczny lub metaforyczny",
+      "forma artystyczna jest sama w sobie dowodem historycznym",
+      "jedna scena rozstrzyga całą złożoność historii"
+    ],
+    "studentFacingRule": "Uczeń ma widzieć sens i napięcie materiału, ale nie wolno mu podawać uproszczeń udających pełną prawdę historyczną."
+  },
+  "namedPersonsPolicy": {
+    "pilecki": {
+      "status": "central",
+      "studentFacing": true,
+      "teacherUse": "rdzeń projektu i główna oś odpowiedzialności odbioru",
+      "framing": "świadectwo, raport, decyzja, odpowiedzialność odbiorcy",
+      "avoid": [
+        "hagiografia",
+        "patetyczne uproszczenie",
+        "redukcja do jednego heroicznego sloganu"
+      ]
+    },
+    "cyrankiewicz": {
+      "status": "secondary-restricted",
+      "studentFacing": false,
+      "teacherUse": "wyłącznie kontekst rozszerzony dla starszych grup, jeśli nauczyciel prowadzi świadomie temat systemu, pamięci i sporów interpretacyjnych",
+      "framing": "trudność interpretacyjna, nie główna postać lekcji",
+      "avoid": [
+        "budowanie lekcji wokół niego",
+        "ustawianie go jako równoległej osi projektu",
+        "sprowadzanie rozmowy do prostego sądu personalnego"
+      ]
+    },
+    "otherFigures": {
+      "status": "support-only",
+      "studentFacing": "only-when-section-requires",
+      "rule": "osoby poboczne pojawiają się tylko wtedy, gdy naprawdę wspierają sens działu"
+    }
+  },
+  "teacherCardModel": {
+    "oneCardPerSection": true,
+    "teacherCardIncludes": [
+      "krótkie ujęcie sensu działu",
+      "rola materiału audio-wideo",
+      "co jest zakorzenione historycznie",
+      "co ma charakter artystycznego skrótu lub metafory",
+      "na co uważać",
+      "3 pytania startowe",
+      "2-3 możliwe momenty zatrzymania",
+      "krótki most do raportu ucznia"
+    ],
+    "teacherCardMustBeReadableIn": "under-60-seconds",
+    "teacherCardTone": "clear-restrained-professional"
+  },
+  "sections": [
+    {
+      "id": "section-totalitaryzm-wybor",
+      "label": "Totalitaryzm i wybory pod presją",
+      "shortLabel": "System i decyzja",
+      "priority": 1,
+      "default": true,
+      "teacherOneSentence": "Ten dział nie pyta: kto był prostszo bohaterem lub winowajcą, ale pokazuje, jak system naciska na ludzkie decyzje i jak ostrożnie trzeba o nich mówić.",
+      "sectionGoal": "Uczeń ma zobaczyć, że ocena decyzji podejmowanych pod przymusem wymaga ostrożności, kontekstu i rozróżnienia między presją systemu a wolną decyzją.",
+      "materialRole": "Materiał audio-wideo ma budować napięcie między człowiekiem a systemem, nie między 'dobrym' i 'złym bohaterem' w prostym sensie.",
+      "historicalCore": [
+        "totalitaryzm jako system nacisku na ciało, ruch, wybór i język",
+        "presja instytucjonalna i ograniczone pole działania człowieka",
+        "ostrożność wobec łatwego osądu decyzji podejmowanych pod przymusem"
+      ],
+      "formLayer": [
+        "montaż może wzmacniać napięcie silniej niż pojedynczy dokument",
+        "obraz może syntetyzować wiele doświadczeń w jednym motywie",
+        "muzyka buduje ciężar decyzji, ale nie zastępuje źródła"
+      ],
+      "whatIsSourceBased": [
+        "istnienie systemowego nacisku i przemocy instytucjonalnej",
+        "materialne warunki podporządkowania i kontroli",
+        "konieczność ostrożności przy ocenie decyzji historycznych podejmowanych pod przymusem"
+      ],
+      "whatIsArtisticCompression": [
+        "łączenie kilku napięć historycznych w jeden ciąg dramaturgiczny",
+        "symboliczne zestawienie przestrzeni, przedmiotu i decyzji",
+        "emocjonalne zagęszczenie czasu"
+      ],
+      "doNotReduceTo": [
+        "proste pytanie: kto miał rację",
+        "lekcję o jednym wzorcu bohaterstwa",
+        "ranking ludzkich postaw"
+      ],
+      "teacherWarnings": [
+        "Nie pozwól, by rozmowa zeszła do prostego sądu personalnego.",
+        "Nie pytaj od razu: co ty byś zrobił, jeśli grupa nie przeszła jeszcze przez materiał źródłowy.",
+        "Nie porównuj realiów szkolnych wprost do totalitaryzmu."
+      ],
+      "safeContemporaryBridge": "Dopiero po pracy z historią można zapytać, jak działa presja grupy, czasu albo sytuacji w dzisiejszym życiu, ale bez zacierania różnicy między współczesnością a totalitaryzmem.",
+      "openingQuestions": [
+        "Jak system naciska na pole ludzkiej decyzji?",
+        "Co w materiale pokazuje presję, a nie tylko sam wybór?",
+        "Dlaczego ostrożność jest ważna, kiedy oceniamy decyzje podejmowane pod przymusem?"
+      ],
+      "pauseMoments": [
+        {
+          "id": "pause-totalitaryzm-01",
+          "label": "Po pierwszym wyraźnym sygnale działania systemu",
+          "teacherUse": "Zatrzymaj i zapytaj, co uczniowie zobaczyli jako mechanizm, nie jako symbol."
+        },
+        {
+          "id": "pause-totalitaryzm-02",
+          "label": "Po scenie najmocniejszego napięcia decyzji",
+          "teacherUse": "Zatrzymaj i zapytaj, jakie warunki trzeba znać, zanim wyda się ocenę."
+        },
+        {
+          "id": "pause-totalitaryzm-03",
+          "label": "Przed raportem końcowym",
+          "teacherUse": "Zatrzymaj i nazwij różnicę między presją systemu a gotowym moralnym hasłem."
+        }
+      ],
+      "reportBridge": "W raporcie uczeń nie ma oceniać człowieka jednym słowem. Ma uchwycić, co w materiale pokazało mu nacisk systemu i trudność decyzji."
+    },
+    {
+      "id": "section-pilecki-rocznicowy",
+      "label": "Pilecki — dział rocznicowy / historyczny",
+      "shortLabel": "Pilecki i świadectwo",
+      "priority": 2,
+      "default": false,
+      "teacherOneSentence": "Ten dział ma prowadzić do spotkania z Pileckim przez świadectwo, raport i odpowiedzialność odbioru, a nie przez sam pomnikowy ton.",
+      "sectionGoal": "Uczeń ma zrozumieć, że znaczenie Pileckiego nie sprowadza się do jednego symbolu, lecz wiąże się z raportem, świadectwem i ryzykiem przekazania prawdy.",
+      "materialRole": "Materiał audio-wideo ma pomóc przejść od wiedzy o postaci do spotkania ze świadectwem i jego ciężarem.",
+      "historicalCore": [
+        "Pilecki jako centralna postać projektu",
+        "raport jako świadectwo i dokument",
+        "ryzyko związane z zapisaniem i przekazaniem świadectwa"
+      ],
+      "formLayer": [
+        "forma artystyczna wzmacnia odbiór świadectwa, ale nie jest dowodem historycznym sama w sobie",
+        "emocjonalna dramaturgia ma otwierać pytanie, nie zamykać je pomnikiem",
+        "skrót artystyczny może porządkować odbiór, ale nie zastępuje źródeł"
+      ],
+      "whatIsSourceBased": [
+        "centralność raportu i świadectwa",
+        "znaczenie przekazania informacji poza miejsce doświadczenia",
+        "historyczna waga Pileckiego jako osi rozdziału"
+      ],
+      "whatIsArtisticCompression": [
+        "łączenie różnych poziomów doświadczenia w jeden ruch sceniczny",
+        "syntetyczne obrazy pamięci, odwagi i napięcia",
+        "emocjonalna koncentracja na kilku znakach zamiast pełnego ciągu faktów"
+      ],
+      "doNotReduceTo": [
+        "samej lekcji rocznicowej o bohaterze",
+        "patetycznej akademii ku czci",
+        "jednego sloganu o odwadze"
+      ],
+      "teacherWarnings": [
+        "Nie zaczynaj od wysokiego tonu pomnikowego.",
+        "Nie zamieniaj całego działu w prostą opowieść heroizującą.",
+        "Nie ustawiaj postaci pobocznych jako przeciwwagi dla Pileckiego w trybie podstawowym."
+      ],
+      "safeContemporaryBridge": "Współczesny most powinien dotyczyć odpowiedzialności odbiorcy wobec świadectwa, a nie prób budowania łatwych analogii historycznych.",
+      "openingQuestions": [
+        "Co w tym materiale działa najmocniej jako świadectwo, a nie tylko informacja o postaci?",
+        "Dlaczego raport i świadectwo są tu tak ważne?",
+        "Jak rozumiesz odpowiedzialność wobec świadectwa?"
+      ],
+      "pauseMoments": [
+        {
+          "id": "pause-pilecki-01",
+          "label": "Po pierwszym wyraźnym motywie raportu",
+          "teacherUse": "Zatrzymaj i nazwij różnicę między postacią historyczną a świadectwem, które po niej zostaje."
+        },
+        {
+          "id": "pause-pilecki-02",
+          "label": "Po momencie największego ciężaru przekazu",
+          "teacherUse": "Zatrzymaj i zapytaj, co w tym fragmencie ma charakter źródła, a co formy artystycznej."
+        },
+        {
+          "id": "pause-pilecki-03",
+          "label": "Przed domknięciem",
+          "teacherUse": "Zatrzymaj i zapytaj, z czym uczniowie zostają: z hasłem czy z pytaniem."
+        }
+      ],
+      "reportBridge": "W raporcie uczeń ma zatrzymać nie pomnikowy slogan, lecz to, co w materiale otworzyło pytanie o świadectwo, raport i odpowiedzialność odbiorcy."
+    },
+    {
+      "id": "section-auschwitz",
+      "label": "Auschwitz — miejsce, ślad, świadectwo",
+      "shortLabel": "Auschwitz",
+      "priority": 3,
+      "default": false,
+      "teacherOneSentence": "Ten dział nie ma zatrzymać ucznia na samym symbolu Auschwitz, ale przeprowadzić go przez ślad, miejsce, dokument i ostrożność interpretacyjną.",
+      "sectionGoal": "Uczeń ma odróżnić symboliczny ciężar miejsca od odpowiedzialnej pracy ze śladem historycznym, przestrzenią i dokumentem.",
+      "materialRole": "Materiał audio-wideo ma działać jako wejście w pytanie o miejsce, ślad, dokument i świadectwo, nie jako zamknięta definicja Auschwitz.",
+      "historicalCore": [
+        "Auschwitz jako miejsce historyczne i przestrzeń przemocy instytucjonalnej",
+        "znaczenie śladu, obiektu i dokumentu",
+        "konieczność odróżnienia miejsca od własnej interpretacji miejsca"
+      ],
+      "formLayer": [
+        "obraz miejsca może wzmacniać odbiór bardziej niż suchy opis",
+        "symboliczny detal może kierować uwagę na materialność historii",
+        "forma artystyczna może kondensować ślad i pamięć"
+      ],
+      "whatIsSourceBased": [
+        "znaczenie miejsca, dokumentu i materialnego śladu",
+        "konieczność ostrożności wobec uproszczeń",
+        "rola świadectwa i raportu w rozumieniu historii Auschwitz"
+      ],
+      "whatIsArtisticCompression": [
+        "scalanie miejsca, pamięci i emocji w jednym obrazie",
+        "łączenie kilku poziomów doświadczenia w jednym motywie wizualnym",
+        "wzmacnianie ciężaru symbolicznego przez muzykę i montaż"
+      ],
+      "doNotReduceTo": [
+        "samego symbolu oderwanego od historii",
+        "jednego obrazu, który ma rzekomo wyjaśnić wszystko",
+        "estetyzacji miejsca"
+      ],
+      "teacherWarnings": [
+        "Nie pozwól, by rozmowa zatrzymała się na samym 'mocnym obrazie'.",
+        "Nie antropomorfizuj miejsca.",
+        "Nie używaj wielkich formuł, jeśli grupa nie przeszła jeszcze przez konkret."
+      ],
+      "safeContemporaryBridge": "Most współczesny może dotyczyć odpowiedzialności pamięci i odbioru, ale bez banalizowania historycznej wyjątkowości miejsca.",
+      "openingQuestions": [
+        "Co zmienia się, gdy patrzysz na historię przez ślad, miejsce albo dokument?",
+        "Dlaczego nie wystarczy zatrzymać się na samym symbolu Auschwitz?",
+        "Jak odróżnić ślad historyczny od własnej interpretacji tego śladu?"
+      ],
+      "pauseMoments": [
+        {
+          "id": "pause-auschwitz-01",
+          "label": "Po pierwszym mocnym obrazie miejsca lub śladu",
+          "teacherUse": "Zatrzymaj i zapytaj, co uczniowie naprawdę widzą, zanim zaczną interpretować."
+        },
+        {
+          "id": "pause-auschwitz-02",
+          "label": "Po wejściu dokumentu lub raportu",
+          "teacherUse": "Zatrzymaj i pokaż różnicę między śladem, miejscem i świadectwem."
+        },
+        {
+          "id": "pause-auschwitz-03",
+          "label": "Przed raportem",
+          "teacherUse": "Zatrzymaj i przypomnij, że mocny obraz nie zamyka historii."
+        }
+      ],
+      "reportBridge": "W raporcie uczeń ma zapisać, który ślad, dokument albo motyw otworzył mu najważniejsze pytanie — nie ma streszczać całej historii Auschwitz."
+    },
+    {
+      "id": "section-ai-historia",
+      "label": "AI i historia — forma, źródło, odpowiedzialność",
+      "shortLabel": "AI i historia",
+      "priority": 4,
+      "default": false,
+      "teacherOneSentence": "Ten dział nie promuje technologii dla niej samej, ale pyta, jak pracować z historią odpowiedzialnie, kiedy używa się nowoczesnej formy.",
+      "sectionGoal": "Uczeń ma zrozumieć, że sugestywność obrazu nie czyni go automatycznie źródłem, a forma musi być rozliczana z odpowiedzialności wobec historii.",
+      "materialRole": "Materiał audio-wideo staje się tutaj przykładem negocjacji między źródłem, interpretacją i nowoczesną formą.",
+      "historicalCore": [
+        "historia wymaga źródeł, rozróżnień i odpowiedzialności",
+        "świadectwo i raport pozostają ważniejsze niż sama atrakcyjność formy",
+        "AI może być narzędziem pracy, ale nie zastępuje prawdy historycznej"
+      ],
+      "formLayer": [
+        "obraz generowany lub stylizowany może poruszać, ale nie staje się automatycznie dokumentem",
+        "muzyka i montaż mogą budować sens odbioru, lecz nie mogą udawać źródła",
+        "forma może pomóc wejść w temat, jeśli jasno odróżnia się ją od materiału źródłowego"
+      ],
+      "whatIsSourceBased": [
+        "konieczność pracy na źródłach i rozróżnieniach",
+        "wymóg ostrożności interpretacyjnej",
+        "potrzeba jawnego oddzielenia świadectwa od jego artystycznego opracowania"
+      ],
+      "whatIsArtisticCompression": [
+        "cała warstwa wizualnego i muzycznego przetworzenia",
+        "łączenie kilku poziomów znaczeń w jednej formie",
+        "użycie stylizacji dla zwiększenia siły odbioru"
+      ],
+      "doNotReduceTo": [
+        "dyskusji o tym, czy AI jest fajne lub niefajne",
+        "sporu technicznego zamiast rozmowy o odpowiedzialności",
+        "twierdzenia, że technologia sama rozwiązuje problem pamięci"
+      ],
+      "teacherWarnings": [
+        "Nie pozwól, by temat historii zniknął pod rozmową o narzędziu.",
+        "Nie używaj sformułowań sugerujących, że obraz wygenerowany jest dowodem historycznym.",
+        "Nie myl realizmu estetycznego z wiarygodnością źródłową."
+      ],
+      "safeContemporaryBridge": "Można zapytać, jak dziś rozpoznawać różnicę między wiarygodnym przekazem a sugestywną formą, ale nie wolno gubić konkretu historycznego.",
+      "openingQuestions": [
+        "Gdzie widzisz granicę między formą a źródłem?",
+        "Dlaczego sugestywny obraz nie staje się automatycznie dowodem historycznym?",
+        "Jak rozumiesz odpowiedzialne użycie AI w pracy z historią?"
+      ],
+      "pauseMoments": [
+        {
+          "id": "pause-ai-01",
+          "label": "Po pierwszym fragmencie o najwyższej sile wizualnej",
+          "teacherUse": "Zatrzymaj i zapytaj, co w tym fragmencie jest formą, a co odnosi się do źródła."
+        },
+        {
+          "id": "pause-ai-02",
+          "label": "Po wejściu motywu raportu lub świadectwa",
+          "teacherUse": "Zatrzymaj i nazwij wyraźnie granicę między świadectwem a jego opracowaniem."
+        },
+        {
+          "id": "pause-ai-03",
+          "label": "Przed raportem ucznia",
+          "teacherUse": "Zatrzymaj i poproś, by uczniowie zapisali nie opinię o narzędziu, lecz pytanie o odpowiedzialność formy."
+        }
+      ],
+      "reportBridge": "W raporcie uczeń ma zostawić krótką odpowiedź o relacji między formą i źródłem, a nie recenzję technologii."
+    },
+    {
+      "id": "section-polonia",
+      "label": "Historia dla Polonii i odbiorcy zagranicznego",
+      "shortLabel": "Polonia / odbiorca zagraniczny",
+      "priority": 5,
+      "default": false,
+      "teacherOneSentence": "Ten dział pomaga przenosić polskie doświadczenie historyczne do szerszego odbiorcy bez utraty ciężaru i bez redukowania wszystkiego do jednego skrótu tożsamościowego.",
+      "sectionGoal": "Uczeń lub odbiorca zagraniczny ma zobaczyć, które elementy są czytelne ponad językiem, a które wymagają uważnego kontekstu.",
+      "materialRole": "Materiał audio-wideo pełni rolę mostu między pamięcią polską a odbiorcą, który nie zna całego kontekstu.",
+      "historicalCore": [
+        "Pilecki jako punkt wejścia do polskiego doświadczenia wojny, świadectwa i odpowiedzialności",
+        "znaczenie raportu i pamięci historycznej",
+        "ostrożność wobec uproszczeń w przekładzie sensu"
+      ],
+      "formLayer": [
+        "obraz i muzyka pomagają przejść ponad językiem",
+        "forma może budować most, ale nie może zastąpić kontekstu",
+        "skrót artystyczny pomaga wejść w temat, lecz wymaga dopowiedzenia"
+      ],
+      "whatIsSourceBased": [
+        "historyczne zakorzenienie postaci, raportu i doświadczenia wojny",
+        "realność polskiego doświadczenia totalitaryzmów i okupacji",
+        "waga pamięci i świadectwa"
+      ],
+      "whatIsArtisticCompression": [
+        "upraszczanie ciągu wydarzeń w celu czytelności dla nowego odbiorcy",
+        "łączenie motywów w jedną bardziej komunikatywną strukturę",
+        "emocjonalne wzmacnianie przekazu ponad dosłowną chronologię"
+      ],
+      "doNotReduceTo": [
+        "ogólnej opowieści o cierpieniu bez konkretu",
+        "czystej narracji patriotycznej bez źródła",
+        "lokalnej historii podanej bez mostu do odbiorcy"
+      ],
+      "teacherWarnings": [
+        "Nie zakładaj pełnej znajomości realiów.",
+        "Nie upraszczaj polskiego doświadczenia do kilku haseł.",
+        "Nie wyjaśniaj wszystkiego naraz; dawkuj kontekst tylko tam, gdzie jest naprawdę potrzebny."
+      ],
+      "safeContemporaryBridge": "Most może dotyczyć odpowiedzialnego tłumaczenia historii innym, ale nie może rozmywać jej specyfiki.",
+      "openingQuestions": [
+        "Co w tym materiale działa jako most między polskim doświadczeniem a szerszym odbiorcą?",
+        "Który element wymagał dodatkowego kontekstu, żeby był naprawdę zrozumiały?",
+        "Co twoim zdaniem nie powinno zostać uproszczone?"
+      ],
+      "pauseMoments": [
+        {
+          "id": "pause-polonia-01",
+          "label": "Po pierwszym fragmencie zrozumiałym ponad językiem",
+          "teacherUse": "Zatrzymaj i zapytaj, co zadziałało bez dodatkowego komentarza."
+        },
+        {
+          "id": "pause-polonia-02",
+          "label": "Po motywie wymagającym polskiego kontekstu",
+          "teacherUse": "Zatrzymaj i dodaj tylko tyle wyjaśnienia, ile trzeba."
+        },
+        {
+          "id": "pause-polonia-03",
+          "label": "Przed raportem",
+          "teacherUse": "Zatrzymaj i nazwij, że dobry most nie upraszcza wszystkiego."
+        }
+      ],
+      "reportBridge": "W raporcie uczeń ma zapisać, co było czytelne ponad językiem oraz co wymagało dopowiedzenia, ale nie powinno zostać spłycone."
+    },
+    {
+      "id": "section-sumienie-raport",
+      "label": "Sumienie, raport i odpowiedzialność dziś",
+      "shortLabel": "Sumienie i raport",
+      "priority": 6,
+      "default": false,
+      "teacherOneSentence": "Ten dział nie porównuje wprost współczesności z totalitaryzmem, ale pyta, co dziś znaczy odpowiedzialność odbioru, decyzja na czas i uczciwość wobec tego, co już wiemy.",
+      "sectionGoal": "Uczeń ma zobaczyć, że raport i świadectwo nie są tylko historią minioną, lecz otwierają pytanie o dzisiejszą odpowiedzialność za decyzję, uwagę i reakcję.",
+      "materialRole": "Materiał audio-wideo ma domknąć drogę od historii do pytania o odbiorcę dzisiaj, bez banalizowania przeszłości.",
+      "historicalCore": [
+        "raport jako zapis odpowiedzialności wobec prawdy",
+        "świadectwo jako coś, co zostaje przekazane dalej",
+        "odbiorca jako ktoś, kto nie jest poza odpowiedzialnością"
+      ],
+      "formLayer": [
+        "artystyczne przejście od historii do współczesnego pytania",
+        "motyw czasu, decyzji i samotności jako rama refleksyjna",
+        "celowe przeniesienie napięcia z przeszłości do odbiorcy"
+      ],
+      "whatIsSourceBased": [
+        "znaczenie raportu i świadectwa",
+        "waga decyzji podejmowanej wtedy, kiedy jeszcze jest na nią czas",
+        "odpowiedzialność odbiorcy wobec materiału historycznego"
+      ],
+      "whatIsArtisticCompression": [
+        "łączenie historii z dzisiejszym pytaniem egzystencjalnym",
+        "symboliczne użycie samotności, czasu i utraconego momentu decyzji",
+        "zestawienie historycznego raportu z osobistą współczesną refleksją"
+      ],
+      "doNotReduceTo": [
+        "motywacyjnego banału",
+        "psychologicznego poradnika oderwanego od historii",
+        "fałszywej analogii między codziennym problemem a totalitaryzmem"
+      ],
+      "teacherWarnings": [
+        "Nie używaj współczesności do unieważnienia ciężaru historii.",
+        "Nie mów, że dzisiejsza szkolna nieuwaga jest tym samym co historyczna odpowiedzialność.",
+        "Most współczesny ma dotyczyć decyzji, czasu i uczciwości odbioru — nie prostego zrównania sytuacji."
+      ],
+      "safeContemporaryBridge": "Można mówić o decyzjach, które trzeba podejmować wtedy, gdy jeszcze jest na nie czas, ale zawsze z zachowaniem różnicy między historią ekstremalną a codziennością.",
+      "openingQuestions": [
+        "Jakie pytanie o odpowiedzialność zostaje z tobą po tej pracy?",
+        "Czy są decyzje, których nie da się nadrobić po czasie?",
+        "Co znaczy dla ciebie uczciwy odbiór takiego świadectwa?"
+      ],
+      "pauseMoments": [
+        {
+          "id": "pause-sumienie-01",
+          "label": "Po pierwszym przejściu z historii do współczesnego pytania",
+          "teacherUse": "Zatrzymaj i nazwij, że to nie analogia 1:1, tylko pytanie o odbiorcę."
+        },
+        {
+          "id": "pause-sumienie-02",
+          "label": "Po motywie czasu i decyzji",
+          "teacherUse": "Zatrzymaj i zapytaj, co znaczy decyzja wtedy, kiedy jeszcze da się ją podjąć."
+        },
+        {
+          "id": "pause-sumienie-03",
+          "label": "Przed raportem końcowym",
+          "teacherUse": "Zatrzymaj i poproś o jedną uczciwą odpowiedź, nie wielki morał."
+        }
+      ],
+      "reportBridge": "W raporcie uczeń ma zostawić własne pytanie o odpowiedzialność odbioru, a nie deklarację ideologiczną."
+    }
+  ],
+  "teacherSupportCards": [
+    {
+      "id": "support-pilecki",
+      "label": "Karta postaci — Witold Pilecki",
+      "type": "person-card",
+      "availability": [
+        "section-pilecki-rocznicowy",
+        "section-polonia",
+        "section-sumienie-raport"
+      ],
+      "purpose": "Krótki kontekst dla nauczyciela i opcjonalnie dla ucznia, jeśli potrzebne jest jedno uporządkowane wprowadzenie do postaci centralnej.",
+      "mustContain": [
+        "rola Pileckiego w projekcie",
+        "związek z raportem i świadectwem",
+        "dlaczego jest osią rozdziału"
+      ],
+      "mustAvoid": [
+        "przeładowana biografia",
+        "język hagiograficzny",
+        "poboczne spory odrywające od sensu działu"
+      ]
+    },
+    {
+      "id": "support-cyrankiewicz-restricted",
+      "label": "Nota rozszerzona — Cyrankiewicz",
+      "type": "restricted-context-note",
+      "availability": [
+        "teacher-only-advanced"
+      ],
+      "purpose": "Wyłącznie dla nauczyciela prowadzącego starszą grupę i świadomie otwierającego problem napięć interpretacyjnych.",
+      "mustContain": [
+        "status poboczny wobec osi projektu",
+        "zakaz wprowadzania jako głównej figury lekcji podstawowej",
+        "ostrzeżenie przed prostym sądem personalnym"
+      ],
+      "mustAvoid": [
+        "dominacja nad Pileckim",
+        "uczniowska ścieżka podstawowa",
+        "logika kontrbohatera projektu"
+      ]
+    },
+    {
+      "id": "support-totalitarianism",
+      "label": "Karta kontekstu — totalitaryzm",
+      "type": "concept-card",
+      "availability": [
+        "section-totalitaryzm-wybor",
+        "section-auschwitz",
+        "section-polonia"
+      ],
+      "purpose": "Krótka karta pojęciowa dla nauczyciela: czym jest system nacisku, jak o nim mówić bez upraszczania i bez przesadnych analogii.",
+      "mustContain": [
+        "nacisk systemu na wybór, ciało, język i przestrzeń",
+        "ostrożność wobec prostych porównań",
+        "związek z materiałem projektu"
+      ],
+      "mustAvoid": [
+        "współczesne skróty polityczne",
+        "publicystykę zamiast dydaktyki",
+        "zastępowanie historii bieżącą debatą"
+      ]
+    },
+    {
+      "id": "support-ai-history",
+      "label": "Karta kontekstu — AI i historia",
+      "type": "method-card",
+      "availability": [
+        "section-ai-historia"
+      ],
+      "purpose": "Krótka nota wyjaśniająca, jak mówić o formie generatywnej bez mylenia jej ze źródłem.",
+      "mustContain": [
+        "różnica między materiałem źródłowym a jego opracowaniem",
+        "odpowiedzialność twórcy",
+        "odpowiedzialność odbiorcy"
+      ],
+      "mustAvoid": [
+        "technologiczny zachwyt zamiast pytania o odpowiedzialność",
+        "sugerowanie, że estetyczny realizm daje prawdę historyczną",
+        "debatę czysto narzędziową"
+      ]
+    },
+    {
+      "id": "support-prl-jazz-optional",
+      "label": "Ciekawostka kontekstowa — jazz w PRL",
+      "type": "optional-context-note",
+      "availability": [
+        "teacher-only-optional"
+      ],
+      "purpose": "Lekki materiał uzupełniający do rozmów o kulturze, systemie i napięciu między oficjalnością a przestrzenią wolności.",
+      "mustContain": [
+        "status wyłącznie opcjonalny",
+        "krótkie powiązanie z kulturą i systemem",
+        "informację, że nie jest to rdzeń projektu"
+      ],
+      "mustAvoid": [
+        "przejęcie lekcji przez ciekawostkę",
+        "rozbicie głównej osi świadectwa i raportu",
+        "zastąpienie materiału głównego dygresją"
+      ]
+    }
+  ],
+  "teacherQuickUse": {
+    "defaultTeacherFlow": [
+      "wybierz dział",
+      "wybierz jedno pytanie aktywne",
+      "uruchom materiał pełny albo fragment",
+      "zatrzymaj raz lub dwa w punktach naprawdę potrzebnych",
+      "domknij raportem ucznia"
+    ],
+    "ifTeacherUsesPlatformFirstTime": [
+      "nie musi otwierać wszystkich kart kontekstowych",
+      "wystarczy dział, pytanie, materiał, raport",
+      "teacher guide ma być dodatkiem pomocniczym, nie obowiązkowym panelem do przeczytania w całości"
+    ],
+    "recommendedMaxStopsPerLesson": 3,
+    "recommendedMinStopsPerLesson": 1,
+    "defaultEndMove": "report"
+  },
+  "consistencyWithProjectDocs": {
+    "mustSupport": [
+      "Pilecki jako rdzeń projektu",
+      "świadectwo i raport jako oś pracy",
+      "ostrożność interpretacyjną",
+      "brak prostego moralizowania",
+      "powściągliwość wobec patosu",
+      "instytucjonalną czytelność"
+    ],
+    "mustAvoid": [
+      "przejęcie projektu przez postacie poboczne",
+      "rozmycie osi Pileckiego",
+      "nadmiar funkcji technicznych",
+      "nauczycielski chaos",
+      "przeciążenie stroną zamiast materiałem"
+    ],
+    "teacherExperienceGoal": "Nauczyciel ma uruchomić dział i prowadzić rozmowę bez poczucia, że musi studiować cały system.",
+    "productionGoal": "System ma działać bez interaktywnych obrazów i bez ciężkich zasobów dodatkowych."
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel rozumie sens działu w mniej niż minutę.",
+      "Wie, co jest źródłem, a co formą, bez szukania po wielu zakładkach.",
+      "Potrafi zatrzymać materiał we właściwym momencie i przejść do raportu."
+    ],
+    "student": [
+      "Uczeń nie dostaje nadmiaru komentarza przed materiałem.",
+      "Uczeń kończy pracę z jednym pytaniem, jednym śladem i jedną własną odpowiedzią.",
+      "Raport domyka doświadczenie bez wrażenia testu."
+    ],
+    "project": [
+      "Strona pozostaje spójna z dokumentami projektu.",
+      "Pilecki nie zostaje umniejszony ani wyparty przez konteksty poboczne.",
+      "Forma edukacyjna wzmacnia projekt zamiast go rozpraszać."
+    ]
+  }
+      }
