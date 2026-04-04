@@ -989,3 +989,115 @@ body.lab-present-open{
     align-items:flex-start;
   }
 }
+/* ===== PREMIUM SESSION POLISH ===== */
+
+.live-session-statusbar{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:14px;
+  align-items:center;
+  padding:14px 0 0;
+}
+
+.session-status-pill{
+  min-height:34px;
+  padding:0 12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  border:1px solid var(--lab-line);
+  background:rgba(255,255,255,.03);
+  color:var(--lab-text);
+  font-size:.8rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.session-status-pill[data-state="live"]{
+  background:rgba(203,176,138,.12);
+  border-color:rgba(203,176,138,.34);
+}
+
+.session-status-pill[data-state="paused"]{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.14);
+}
+
+.session-status-pill[data-state="saved"]{
+  background:rgba(203,176,138,.08);
+  border-color:rgba(203,176,138,.22);
+}
+
+.session-status-text,
+.session-status-meta{
+  color:var(--lab-muted);
+  font-size:.93rem;
+  line-height:1.7;
+}
+
+.student-savebar{
+  position:sticky;
+  top:var(--lab-nav-h);
+  z-index:90;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  background:rgba(8,8,8,.62);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.student-savebar-inner{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.student-save-pill{
+  min-height:32px;
+  padding:0 12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  border:1px solid var(--lab-line);
+  background:rgba(255,255,255,.03);
+  color:var(--lab-text);
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.student-save-pill[data-state="saving"]{
+  background:rgba(255,255,255,.06);
+}
+
+.student-save-pill[data-state="saved"]{
+  background:rgba(203,176,138,.10);
+  border-color:rgba(203,176,138,.30);
+}
+
+.student-save-text{
+  color:var(--lab-muted);
+  font-size:.92rem;
+  line-height:1.7;
+}
+
+@media (max-width:760px){
+  .live-session-statusbar{
+    grid-template-columns:1fr;
+    align-items:flex-start;
+  }
+
+  .student-savebar{
+    top:0;
+  }
+
+  .student-savebar-inner{
+    min-height:auto;
+    padding:10px 0;
+    align-items:flex-start;
+  }
+}
