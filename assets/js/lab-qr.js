@@ -6,11 +6,17 @@
     qrInstance: null,
     payload: null,
     activeItem: null,
-    initialized: false
+    initialized: false,
+    previousBodyOverflow: ""
   };
 
   function qs(id) {
     return document.getElementById(id);
+  }
+
+  function setText(node, value) {
+    if (!node) return;
+    node.textContent = value ?? "";
   }
 
   function cacheDom() {
@@ -68,6 +74,8 @@
   }
 
   function mountQrInstance() {
+    if (!ensureLibrary()) return;
+
     if (!runtime.qrInstance) {
       runtime.qrInstance = buildQrInstance();
     }
@@ -78,9 +86,9 @@
     runtime.qrInstance.append(DOM.canvasWrap);
   }
 
-  function normalizeItem(item) {
+  function normalizeItem(item = {}) {
     return {
-      id: item.id,
+      id: item.id || `mode-${Math.random().toString(36).slice(2, 8)}`,
       label: item.label || item.id || "Tryb",
       note: item.note || "QR został zoptymalizowany pod czytelność i szybkie skanowanie.",
       url: item.url || "",
@@ -89,28 +97,34 @@
     };
   }
 
+  function getRenderedModeButtons() {
+    return Array.from(DOM.modes?.querySelectorAll(".lab-qr-mode") || []);
+  }
+
+  function setButtonsDisabledState(disabled) {
+    if (DOM.copyButton) DOM.copyButton.disabled = disabled;
+    if (DOM.openButton) DOM.openButton.disabled = disabled;
+    if (DOM.downloadButton) DOM.downloadButton.disabled = disabled;
+  }
+
   function setActiveItem(item) {
     runtime.activeItem = normalizeItem(item);
 
-    if (DOM.activeMode) {
-      DOM.activeMode.textContent = runtime.activeItem.title;
-    }
-
+    setText(DOM.activeMode, runtime.activeItem.title);
     if (DOM.linkInput) {
       DOM.linkInput.value = runtime.activeItem.url;
     }
+    setText(DOM.note, runtime.activeItem.note);
 
-    if (DOM.note) {
-      DOM.note.textContent = runtime.activeItem.note;
-    }
+    setButtonsDisabledState(!runtime.activeItem.url);
 
-    if (runtime.qrInstance) {
+    if (runtime.qrInstance && runtime.activeItem.url) {
       runtime.qrInstance.update({
         data: runtime.activeItem.url
       });
     }
 
-    Array.from(DOM.modes?.querySelectorAll(".lab-qr-mode") || []).forEach((button) => {
+    getRenderedModeButtons().forEach((button) => {
       button.classList.toggle("is-active", button.dataset.qrId === runtime.activeItem.id);
     });
   }
@@ -137,34 +151,59 @@
 
   function showModal() {
     if (!DOM.modal) return;
+
+    runtime.previousBodyOverflow = document.body.style.overflow || "";
+    document.body.style.overflow = "hidden";
+
     DOM.modal.hidden = false;
     DOM.modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
   }
 
   function hideModal() {
     if (!DOM.modal) return;
+
     DOM.modal.hidden = true;
     DOM.modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+    document.body.style.overflow = runtime.previousBodyOverflow;
+  }
+
+  async function fallbackCopyText(text) {
+    const input = DOM.linkInput;
+    if (!input) return false;
+
+    input.focus();
+    input.select();
+    input.setSelectionRange(0, input.value.length);
+
+    try {
+      return document.execCommand("copy");
+    } catch {
+      return false;
+    }
   }
 
   async function copyActiveLink() {
     if (!runtime.activeItem?.url) return;
 
+    let copied = false;
+
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(runtime.activeItem.url);
-        if (DOM.copyButton) {
-          const original = DOM.copyButton.textContent;
-          DOM.copyButton.textContent = "Skopiowano";
-          window.setTimeout(() => {
-            DOM.copyButton.textContent = original;
-          }, 1600);
-        }
+        copied = true;
+      } else {
+        copied = await fallbackCopyText(runtime.activeItem.url);
       }
-    } catch (error) {
-      console.warn("[LabQR] Copy failed:", error);
+    } catch {
+      copied = await fallbackCopyText(runtime.activeItem.url);
+    }
+
+    if (copied && DOM.copyButton) {
+      const original = DOM.copyButton.textContent;
+      DOM.copyButton.textContent = "Skopiowano";
+      window.setTimeout(() => {
+        DOM.copyButton.textContent = original;
+      }, 1600);
     }
   }
 
@@ -174,7 +213,7 @@
   }
 
   function downloadActiveQr() {
-    if (!runtime.qrInstance || !runtime.activeItem) return;
+    if (!runtime.qrInstance || !runtime.activeItem?.url) return;
 
     runtime.qrInstance.download({
       name: runtime.activeItem.filename || "qr",
@@ -199,8 +238,28 @@
     DOM.downloadButton?.addEventListener("click", downloadActiveQr);
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && DOM.modal && !DOM.modal.hidden) {
+      if (!DOM.modal || DOM.modal.hidden) return;
+
+      if (event.key === "Escape") {
         hideModal();
+      }
+
+      if (event.key === "ArrowRight" || event.key === "]") {
+        const buttons = getRenderedModeButtons();
+        if (!buttons.length || !runtime.activeItem) return;
+
+        const currentIndex = buttons.findIndex((btn) => btn.dataset.qrId === runtime.activeItem.id);
+        const nextIndex = (currentIndex + 1) % buttons.length;
+        buttons[nextIndex]?.click();
+      }
+
+      if (event.key === "ArrowLeft" || event.key === "[") {
+        const buttons = getRenderedModeButtons();
+        if (!buttons.length || !runtime.activeItem) return;
+
+        const currentIndex = buttons.findIndex((btn) => btn.dataset.qrId === runtime.activeItem.id);
+        const prevIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+        buttons[prevIndex]?.click();
       }
     });
 
@@ -220,12 +279,15 @@
 
     runtime.payload = payload;
 
-    if (DOM.title) DOM.title.textContent = payload.title || "Generator QR";
-    if (DOM.subtitle) DOM.subtitle.textContent = payload.subtitle || "Wybierz tryb i zeskanuj kod.";
+    setText(DOM.title, payload.title || "Generator QR");
+    setText(DOM.subtitle, payload.subtitle || "Wybierz tryb i zeskanuj kod.");
 
     renderModes(payload.items);
     mountQrInstance();
-    setActiveItem(payload.items[0]);
+
+    const firstItem = normalizeItem(payload.items[0]);
+    setActiveItem(firstItem);
+
     bindEvents();
     showModal();
   }
