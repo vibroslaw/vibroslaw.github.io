@@ -7,17 +7,41 @@
     views: ["prompt", "object", "qr", "focus"],
     qrInstance: null,
     teacherState: null,
-    initialized: false
+    initialized: false,
+    transitionRunning: false,
+    blackoutActive: false
+  };
+
+  const VIEW_LABELS = {
+    prompt: "Prompt",
+    object: "Obiekt pamięci",
+    qr: "Kod wejścia",
+    focus: "Focus"
+  };
+
+  const TRANSITION_DURATIONS = {
+    intro: 240,
+    midpoint: 250,
+    outro: 260
   };
 
   function qs(id) {
     return document.getElementById(id);
   }
 
+  function isReducedMotion() {
+    return document.body.classList.contains("reduced-motion");
+  }
+
+  function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   function cacheDom() {
     DOM.root = qs("labPresent");
     DOM.close = qs("labPresentClose");
     DOM.fullscreenToggle = qs("labPresentFullscreenToggle");
+    DOM.blackoutToggle = qs("labPresentBlackoutToggle");
     DOM.modeTabs = qs("labPresentModeTabs");
     DOM.prevView = qs("labPresentPrevView");
     DOM.nextView = qs("labPresentNextView");
@@ -50,6 +74,11 @@
     DOM.focusView = qs("labPresentFocusView");
     DOM.focusQuote = qs("labPresentFocusQuote");
     DOM.focusNote = qs("labPresentFocusNote");
+
+    DOM.transition = qs("labPresentTransition");
+    DOM.transitionTitle = qs("labPresentTransitionTitle");
+
+    DOM.blackout = qs("labPresentBlackout");
   }
 
   function ensureQrLibrary() {
@@ -128,17 +157,19 @@
 
   function buildFocusNote(state) {
     const guardrails = Array.isArray(state?.lesson?.guardrails) ? state.lesson.guardrails : [];
-    if (guardrails.length) {
-      return guardrails[0];
-    }
+    if (guardrails.length) return guardrails[0];
+    return "Użyj tego widoku, aby zatrzymać grupę na jednym zdaniu, napięciu albo jednym pytaniu.";
+  }
 
-    return "Użyj tego widoku, gdy chcesz zatrzymać grupę na jednym napięciu interpretacyjnym.";
+  function getStepPrefix(state) {
+    const index = typeof state?.currentIndex === "number" ? state.currentIndex + 1 : 1;
+    return `Krok ${index}`;
   }
 
   function renderPromptView(state) {
     if (!state) return;
 
-    DOM.promptStep.textContent = `Krok ${state.currentIndex + 1}`;
+    DOM.promptStep.textContent = getStepPrefix(state);
     DOM.promptType.textContent = state.stepTypeLabel || "Etap";
     DOM.promptTitle.textContent = state.step?.title || "Etap";
     DOM.promptInstruction.textContent = state.step?.teacherInstruction || "Brak instrukcji dla tego etapu.";
@@ -149,12 +180,12 @@
   function renderObjectView(state) {
     const object = state?.linkedObject;
 
-    DOM.objectStep.textContent = `Krok ${state?.currentIndex + 1 || 1}`;
+    DOM.objectStep.textContent = getStepPrefix(state);
 
     if (!object) {
       DOM.objectTitle.textContent = "Brak aktywnego obiektu";
       DOM.objectText.textContent = "W bieżącym kroku nie ma przypisanego obiektu pamięci.";
-      DOM.objectQuote.textContent = "Przełącz widok albo przejdź do kroku z obiektem pamięci.";
+      DOM.objectQuote.textContent = "Przejdź do kroku z obiektem pamięci albo przełącz widok.";
       DOM.objectImage.style.backgroundImage =
         "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
       DOM.objectImage.style.backgroundPosition = "center";
@@ -214,29 +245,22 @@
     if (!DOM.modeTabs) return;
     DOM.modeTabs.innerHTML = "";
 
-    const labels = {
-      prompt: "Prompt",
-      object: "Obiekt",
-      qr: "QR",
-      focus: "Focus"
-    };
-
     runtime.views.forEach((view) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `lab-present-tab${runtime.activeView === view ? " is-active" : ""}`;
-      button.textContent = labels[view] || view;
+      button.textContent = VIEW_LABELS[view] || view;
       button.dataset.view = view;
 
       button.addEventListener("click", () => {
-        setActiveView(view);
+        transitionToView(view);
       });
 
       DOM.modeTabs.appendChild(button);
     });
   }
 
-  function setActiveView(view) {
+  function setActiveViewInstant(view) {
     if (!runtime.views.includes(view)) return;
     runtime.activeView = view;
 
@@ -247,6 +271,51 @@
     });
 
     renderTabs();
+  }
+
+  function showTransitionLabel(view) {
+    if (!DOM.transition || !DOM.transitionTitle) return;
+    DOM.transitionTitle.textContent = VIEW_LABELS[view] || "Widok";
+    DOM.transition.classList.add("is-visible");
+  }
+
+  async function hideTransitionLabel() {
+    if (!DOM.transition) return;
+    DOM.transition.classList.remove("is-visible");
+    await wait(TRANSITION_DURATIONS.outro);
+  }
+
+  async function transitionToView(view, options = {}) {
+    if (!runtime.views.includes(view)) return;
+    if (runtime.transitionRunning) return;
+    if (runtime.activeView === view && !options.force) return;
+
+    const reduced = isReducedMotion();
+    runtime.transitionRunning = true;
+
+    if (reduced) {
+      setActiveViewInstant(view);
+      runtime.transitionRunning = false;
+      return;
+    }
+
+    showTransitionLabel(view);
+    await wait(TRANSITION_DURATIONS.intro);
+
+    setActiveViewInstant(view);
+
+    await wait(TRANSITION_DURATIONS.midpoint);
+    await hideTransitionLabel();
+
+    runtime.transitionRunning = false;
+  }
+
+  function toggleBlackout(force) {
+    if (!DOM.blackout || !DOM.blackoutToggle) return;
+
+    runtime.blackoutActive = typeof force === "boolean" ? force : !runtime.blackoutActive;
+    DOM.blackout.hidden = !runtime.blackoutActive;
+    DOM.blackoutToggle.classList.toggle("is-active", runtime.blackoutActive);
   }
 
   function show() {
@@ -261,7 +330,7 @@
     DOM.root.setAttribute("aria-hidden", "false");
     document.body.classList.add("lab-present-open");
 
-    setActiveView(runtime.activeView);
+    setActiveViewInstant(runtime.activeView);
   }
 
   async function enterFullscreen() {
@@ -282,6 +351,8 @@
   async function hide() {
     if (!DOM.root) return;
 
+    toggleBlackout(false);
+
     DOM.root.hidden = true;
     DOM.root.setAttribute("aria-hidden", "true");
     document.body.classList.remove("lab-present-open");
@@ -298,13 +369,13 @@
   function nextView() {
     const index = runtime.views.indexOf(runtime.activeView);
     const next = runtime.views[(index + 1) % runtime.views.length];
-    setActiveView(next);
+    transitionToView(next);
   }
 
   function prevView() {
     const index = runtime.views.indexOf(runtime.activeView);
     const prev = runtime.views[(index - 1 + runtime.views.length) % runtime.views.length];
-    setActiveView(prev);
+    transitionToView(prev);
   }
 
   function bindEvents() {
@@ -312,6 +383,7 @@
 
     DOM.close?.addEventListener("click", hide);
     DOM.fullscreenToggle?.addEventListener("click", enterFullscreen);
+    DOM.blackoutToggle?.addEventListener("click", () => toggleBlackout());
     DOM.nextView?.addEventListener("click", nextView);
     DOM.prevView?.addEventListener("click", prevView);
 
@@ -333,12 +405,26 @@
       if (event.key.toLowerCase() === "f") {
         enterFullscreen();
       }
+
+      if (event.key.toLowerCase() === "b") {
+        toggleBlackout();
+      }
+
+      if (event.key === "1") transitionToView("prompt");
+      if (event.key === "2") transitionToView("object");
+      if (event.key === "3") transitionToView("qr");
+      if (event.key === "4") transitionToView("focus");
     });
 
-    window.addEventListener("lab:teacherStepRendered", (event) => {
+    window.addEventListener("lab:teacherStepRendered", async (event) => {
       const detail = event.detail;
       if (!detail) return;
+
       renderAll(detail);
+
+      if (!DOM.root?.hidden) {
+        await transitionToView(runtime.activeView, { force: true });
+      }
     });
 
     runtime.initialized = true;
@@ -360,7 +446,8 @@
     sync() {
       const state = readTeacherState();
       if (state) renderAll(state);
-    }
+    },
+    transitionToView
   };
 
   document.addEventListener("DOMContentLoaded", init);
