@@ -450,25 +450,55 @@
     }
 
     if (DOM.triggerQrButton) {
-      DOM.triggerQrButton.onclick = async () => {
-        const url = window.LabCore.buildStudentLaunchUrl(runtime.session);
+  DOM.triggerQrButton.onclick = () => {
+    const studentUrl = window.LabCore.buildStudentLaunchUrl(runtime.session);
+    const reportUrl = window.LabCore.buildReportUrl(runtime.session);
 
-        try {
-          if (navigator.clipboard?.writeText) {
-            await navigator.clipboard.writeText(url);
-            DOM.triggerQrButton.textContent = "Link ucznia skopiowany";
-            window.setTimeout(() => {
-              DOM.triggerQrButton.textContent = "Uruchom QR";
-            }, 1800);
-          } else {
-            window.open(url, "_blank", "noopener,noreferrer");
-          }
-        } catch (error) {
-          console.warn("[LabTeacher] Nie udało się skopiować linku ucznia.", error);
-          window.open(url, "_blank", "noopener,noreferrer");
-        }
-      };
+    const items = [
+      {
+        id: "student",
+        label: "Tryb ucznia",
+        title: "Wejście ucznia",
+        url: studentUrl,
+        filename: `qr-student-${runtime.session.sessionId}`,
+        note: "Najczystsze wejście do aktywnej ścieżki ucznia."
+      }
+    ];
+
+    if (runtime.currentStep?.objectId) {
+      const object = window.LabCore.getObjectById(runtime.currentStep.objectId);
+      const objectUrl = new URL(studentUrl);
+      objectUrl.searchParams.set("stage", "object");
+      objectUrl.searchParams.set("objectId", runtime.currentStep.objectId);
+
+      items.push({
+        id: "object",
+        label: "Obiekt pamięci",
+        title: object?.title || "Obiekt pamięci",
+        url: objectUrl.toString(),
+        filename: `qr-object-${runtime.currentStep.objectId}-${runtime.session.sessionId}`,
+        note: "Bezpośrednie wejście do aktualnego obiektu pamięci."
+      });
     }
+
+    items.push({
+      id: "report",
+      label: "Raport",
+      title: "Podgląd raportu",
+      url: reportUrl,
+      filename: `qr-report-${runtime.session.sessionId}`,
+      note: "Wejście do podglądu raportu tej sesji."
+    });
+
+    if (window.LabQR?.open) {
+      window.LabQR.open({
+        title: "Generator QR sesji",
+        subtitle: "Wybierz tryb, który chcesz udostępnić klasie.",
+        items
+      });
+    }
+  };
+}
   }
 
   function persistCurrentStepIndex(index) {
