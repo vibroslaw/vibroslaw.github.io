@@ -1,0 +1,231 @@
+{
+  "version": "1.2.0",
+  "collection": "Obiekty pamięci",
+  "lang": "pl",
+  "methodology": {
+    "commentaryModeDefault": "minimal-source-tight",
+    "avoidPoeticOverstatement": true,
+    "avoidAnthropomorphizingPlaces": true,
+    "avoidHeroizingNamedPersons": true,
+    "objectsAre": "narzędzia wejścia w materiał i refleksję",
+    "objectsAreNot": "samodzielne tezy historyczne"
+  },
+  "objects": [
+    {
+      "id": "barbed-wire",
+      "slug": "drut-kolczasty",
+      "title": "Drut kolczasty",
+      "category": "granica",
+      "image": {
+        "primary": "/assets/img/objects/barbed-wire/main.webp",
+        "fallback": "/assets/img/objects/barbed-wire/main.jpg",
+        "placeholder": "/assets/img/objects/barbed-wire/placeholder.webp",
+        "focusX": 52,
+        "focusY": 38
+      },
+      "ui": {
+        "enterPreset": "veil-rise",
+        "focusPreset": "micro-zoom",
+        "ambience": "quiet-resonance"
+      },
+      "shortLabel": "Granica i kontrola",
+      "shortText": "Element materialnej organizacji przestrzeni obozowej, związany z izolacją, kontrolą i przemocą systemu.",
+      "historicalMeaning": "Drut kolczasty pełnił funkcję praktyczną i symboliczną: wyznaczał granicę, ograniczał ruch i wzmacniał działanie systemu kontroli.",
+      "humanMeaning": "Pozwala mówić o doświadczeniu zamknięcia, oddzielenia oraz podporządkowania ludzkiego ciała i ruchu regułom narzuconym z zewnątrz.",
+      "quote": "Granica może działać nie tylko w przestrzeni, ale również w sposobie organizowania ludzkiego życia.",
+      "primaryQuestion": "Jaką rolę pełni granica, gdy jest narzędziem kontroli, a nie zwykłym podziałem przestrzeni?",
+      "secondaryQuestion": "Co zmienia się w odbiorze historii, gdy patrzymy na jej materialny detal?",
+      "teacherCaution": "Nie używaj języka sugerującego, że sam przedmiot 'mówi prawdę'. Podkreśl, że jest punktem wejścia do rozmowy o systemie i doświadczeniu.",
+      "doNotSay": [
+        "Drut sam pamięta.",
+        "Drut opowiada historię lepiej niż źródła.",
+        "To symbol absolutnego zła."
+      ],
+      "commentaryMode": "minimal-source-tight",
+      "sensitivityLevel": "medium",
+      "ageGroups": ["7-8", "liceum", "uczelnia", "polonia"],
+      "tags": ["granica", "izolacja", "system", "kontrola"],
+      "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/barbed-wire"
+    },
+    {
+      "id": "striped-uniform",
+      "slug": "fragment-pasiaka",
+      "title": "Fragment pasiaka",
+      "category": "tozsamosc",
+      "image": {
+        "primary": "/assets/img/objects/striped-uniform/main.webp",
+        "fallback": "/assets/img/objects/striped-uniform/main.jpg",
+        "placeholder": "/assets/img/objects/striped-uniform/placeholder.webp",
+        "focusX": 47,
+        "focusY": 44
+      },
+      "ui": {
+        "enterPreset": "slow-reveal",
+        "focusPreset": "detail-drift",
+        "ambience": "archival-air"
+      },
+      "shortLabel": "Oznaczenie i klasyfikacja",
+      "shortText": "Element ubioru więźniarskiego, związany z porządkiem obozowym, oznaczeniem i podporządkowaniem ciała systemowi.",
+      "historicalMeaning": "Pasiak był częścią systemu organizacji obozowej i widzialnego oznaczenia więźniów.",
+      "humanMeaning": "Pozwala rozmawiać o tym, jak instytucja przemocy oddziałuje na codzienność, widzialność i poczucie podmiotowości człowieka.",
+      "quote": "Ciało może zostać podporządkowane systemowi także przez to, jak zostaje oznaczone i widziane.",
+      "primaryQuestion": "Co oznacza sytuacja, w której ciało człowieka zostaje podporządkowane klasyfikacji i oznaczeniu?",
+      "secondaryQuestion": "Jak zmienia się odbiór historii, gdy patrzymy na materialny ślad codzienności, a nie tylko na wielkie wydarzenia?",
+      "teacherCaution": "Nie przechodź od razu do języka o 'odebraniu człowieczeństwa' bez pracy na źródle i kontekście.",
+      "doNotSay": [
+        "Pasiak odbierał człowiekowi wszystko.",
+        "Ten obiekt mówi wszystko o obozie.",
+        "To pełny obraz doświadczenia więźnia."
+      ],
+      "commentaryMode": "minimal-source-tight",
+      "sensitivityLevel": "high",
+      "ageGroups": ["7-8", "liceum", "uczelnia", "polonia"],
+      "tags": ["tozsamosc", "oznaczenie", "ciało", "klasyfikacja"],
+      "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/striped-uniform"
+    },
+    {
+      "id": "wooden-clogs",
+      "slug": "drewniaki",
+      "title": "Drewniaki",
+      "category": "codziennosc",
+      "image": {
+        "primary": "/assets/img/objects/wooden-clogs/main.webp",
+        "fallback": "/assets/img/objects/wooden-clogs/main.jpg",
+        "placeholder": "/assets/img/objects/wooden-clogs/placeholder.webp",
+        "focusX": 49,
+        "focusY": 58
+      },
+      "ui": {
+        "enterPreset": "veil-rise",
+        "focusPreset": "micro-zoom",
+        "ambience": "low-room-tone"
+      },
+      "shortLabel": "Codzienność i warunki życia",
+      "shortText": "Przedmiot związany z materialną codziennością obozową i fizycznym doświadczeniem dnia.",
+      "historicalMeaning": "Drewniaki należą do przedmiotów codziennego użytku, które pomagają mówić o warunkach życia, ruchu i przymusie.",
+      "humanMeaning": "Pozwalają wejść w historię od strony zwykłego doświadczenia ciała, zmęczenia, niewygody i rytmu codzienności.",
+      "quote": "Niektóre przedmioty pozwalają zobaczyć historię od strony dnia powszedniego, a nie tylko wyjątkowego wydarzenia.",
+      "primaryQuestion": "Co przedmiot codzienny może wnieść do rozumienia historii, czego nie widać od razu w wielkich datach i wydarzeniach?",
+      "secondaryQuestion": "Dlaczego warunki codziennego życia są ważne dla rozumienia systemu przemocy?",
+      "teacherCaution": "Nie zamieniaj obiektu w 'symbol wszystkiego'. Utrzymuj go jako punkt wejścia do rozmowy o materialności doświadczenia.",
+      "doNotSay": [
+        "Ten drobny przedmiot mówi więcej niż cała historia.",
+        "W drewniakach zawiera się cały obóz.",
+        "To najlepszy skrót całego doświadczenia."
+      ],
+      "commentaryMode": "minimal-source-tight",
+      "sensitivityLevel": "medium",
+      "ageGroups": ["7-8", "liceum", "uczelnia", "polonia"],
+      "tags": ["codziennosc", "materialnosc", "warunki", "ciało"],
+      "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/wooden-clogs"
+    },
+    {
+      "id": "gate-fragment",
+      "slug": "fragment-bramy",
+      "title": "Fragment bramy",
+      "category": "wejscie",
+      "image": {
+        "primary": "/assets/img/objects/gate-fragment/main.webp",
+        "fallback": "/assets/img/objects/gate-fragment/main.jpg",
+        "placeholder": "/assets/img/objects/gate-fragment/placeholder.webp",
+        "focusX": 50,
+        "focusY": 30
+      },
+      "ui": {
+        "enterPreset": "slow-reveal",
+        "focusPreset": "detail-drift",
+        "ambience": "quiet-resonance"
+      },
+      "shortLabel": "Próg i przestrzeń",
+      "shortText": "Element przestrzeni obozowej, który pozwala rozmawiać o progu, wejściu i zmianie warunków życia pod władzą systemu.",
+      "historicalMeaning": "Brama jest częścią zorganizowanej przestrzeni obozowej i pomaga myśleć o sposobie działania miejsca jako systemu.",
+      "humanMeaning": "Ułatwia rozmowę o doświadczeniu przekroczenia progu i wejścia do przestrzeni podporządkowanej przemocy instytucjonalnej.",
+      "quote": "Przestrzeń nie jest tylko tłem historii. Bywa częścią sposobu, w jaki historia działa na człowieka.",
+      "primaryQuestion": "Jak przestrzeń może wpływać na ludzkie doświadczenie, kiedy zostaje podporządkowana przemocy instytucjonalnej?",
+      "secondaryQuestion": "Co wnosi do interpretacji historii spojrzenie na miejsce, a nie tylko na wydarzenie?",
+      "teacherCaution": "Nie antropomorfizuj miejsca. Mów o funkcji przestrzeni i organizacji systemu, nie o 'mówiącej bramie'.",
+      "doNotSay": [
+        "Brama sama opowiada historię.",
+        "To miejsce mówi za wszystkich.",
+        "Wystarczy spojrzeć na bramę, by wszystko zrozumieć."
+      ],
+      "commentaryMode": "minimal-source-tight",
+      "sensitivityLevel": "medium",
+      "ageGroups": ["7-8", "liceum", "uczelnia", "polonia"],
+      "tags": ["próg", "miejsce", "architektura", "system"],
+      "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/gate-fragment"
+    },
+    {
+      "id": "brick-wall",
+      "slug": "mur-cegla",
+      "title": "Mur i cegła",
+      "category": "miejsce",
+      "image": {
+        "primary": "/assets/img/objects/brick-wall/main.webp",
+        "fallback": "/assets/img/objects/brick-wall/main.jpg",
+        "placeholder": "/assets/img/objects/brick-wall/placeholder.webp",
+        "focusX": 51,
+        "focusY": 48
+      },
+      "ui": {
+        "enterPreset": "archival-fade",
+        "focusPreset": "micro-zoom",
+        "ambience": "archival-air"
+      },
+      "shortLabel": "Materialność miejsca",
+      "shortText": "Element przestrzeni, który pozwala myśleć o trwałości miejsca i jego związku z historią.",
+      "historicalMeaning": "Mur i cegła są częścią materialnej struktury miejsca, a więc także częścią warunków, w jakich rozgrywała się historia.",
+      "humanMeaning": "Pozwalają rozmawiać o tym, jak przestrzeń może zachowywać ślady wydarzeń i doświadczeń także po zakończeniu ich bezpośredniego przebiegu.",
+      "quote": "Przestrzeń może zachowywać ślady historii także wtedy, gdy nie towarzyszy jej bezpośredni głos świadka.",
+      "primaryQuestion": "Jakie znaczenie może mieć materialna przestrzeń dla pamięci historycznej?",
+      "secondaryQuestion": "Co zmienia się, gdy próbujemy czytać historię również przez miejsce i jego strukturę?",
+      "teacherCaution": "Unikaj sformułowań o 'pamiętającym murze'. Zachowuj rozróżnienie między miejscem, śladem i interpretacją człowieka.",
+      "doNotSay": [
+        "Mur pamięta lepiej niż ludzie.",
+        "Miejsce samo przechowuje pełną prawdę.",
+        "Wystarczy przestrzeń, źródła nie są potrzebne."
+      ],
+      "commentaryMode": "minimal-source-tight",
+      "sensitivityLevel": "medium",
+      "ageGroups": ["7-8", "liceum", "uczelnia", "polonia"],
+      "tags": ["miejsce", "mur", "przestrzeń", "ślad"],
+      "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/brick-wall"
+    },
+    {
+      "id": "report-document",
+      "slug": "raport-dokument",
+      "title": "Raport i dokument",
+      "category": "swiadectwo",
+      "image": {
+        "primary": "/assets/img/objects/report-document/main.webp",
+        "fallback": "/assets/img/objects/report-document/main.jpg",
+        "placeholder": "/assets/img/objects/report-document/placeholder.webp",
+        "focusX": 54,
+        "focusY": 46
+      },
+      "ui": {
+        "enterPreset": "veil-rise",
+        "focusPreset": "detail-drift",
+        "ambience": "quiet-resonance"
+      },
+      "shortLabel": "Świadectwo zapisane",
+      "shortText": "Dokument jako forma przekazania informacji, doświadczenia i świadectwa poza miejsce jego powstania.",
+      "historicalMeaning": "Raport i dokument mają znaczenie źródłowe: utrwalają informacje oraz umożliwiają ich dalszy obieg i interpretację.",
+      "humanMeaning": "Pozwalają mówić o odpowiedzialności związanej z zapisem, przekazem i późniejszym odczytaniem świadectwa.",
+      "quote": "Zapis świadectwa nie zamyka historii. Otwiera możliwość dalszego odczytania, interpretacji i odpowiedzialności odbiorcy.",
+      "primaryQuestion": "Jakie ryzyko i jaka odpowiedzialność mogły wiązać się z zapisaniem oraz przekazaniem świadectwa?",
+      "secondaryQuestion": "Co odróżnia źródło od jego późniejszego uproszczenia lub skrótu?",
+      "teacherCaution": "Nie przechodź od razu do tezy o bohaterstwie. Najpierw pracuj na ryzyku, funkcji źródła i odpowiedzialności przekazu.",
+      "doNotSay": [
+        "Sam dokument rozstrzyga wszystkie spory.",
+        "Zapisanie świadectwa zawsze jest jednoznacznie bohaterskie.",
+        "Źródło nie wymaga interpretacyjnej ostrożności."
+      ],
+      "commentaryMode": "minimal-source-tight",
+      "sensitivityLevel": "high",
+      "ageGroups": ["7-8", "liceum", "uczelnia", "polonia"],
+      "tags": ["raport", "dokument", "źródło", "świadectwo"],
+      "qrPath": "/rap-ort/prawda-sumienia/lab/pl/objects/report-document"
+    }
+  ]
+}
