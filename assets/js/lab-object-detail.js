@@ -26,6 +26,15 @@
     return document.getElementById(id);
   }
 
+  function setText(node, value) {
+    if (!node) return;
+    node.textContent = value ?? "";
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
   function cacheDom() {
     DOM.modal = qs("objectDetailModal");
     DOM.close = qs("objectDetailClose");
@@ -62,12 +71,14 @@
     return Array.isArray(runtime.object?.hotspots) ? runtime.object.hotspots : [];
   }
 
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
+  function getModalHotspotNodes() {
+    if (!DOM.modal) return [];
+    return Array.from(DOM.modal.querySelectorAll(".object-detail-hotspot"));
   }
 
   function applyTransform() {
     if (!DOM.canvas) return;
+
     DOM.canvas.style.transform = `translate(${runtime.translateX}px, ${runtime.translateY}px) scale(${runtime.scale})`;
 
     if (DOM.zoomValue) {
@@ -102,20 +113,20 @@
 
     runtime.activeHotspotIndex = index;
 
-    document.querySelectorAll(".object-detail-hotspot").forEach((el, i) => {
+    getModalHotspotNodes().forEach((el, i) => {
       el.classList.toggle("is-active", i === index);
     });
 
-    DOM.activeTitle.textContent = hotspot.title || hotspot.label || "Detal";
-    DOM.activeText.textContent = hotspot.text || "Brak opisu detalu.";
-    DOM.blockMeaning.textContent = hotspot.significance || runtime.object?.historicalMeaning || "—";
-    DOM.blockHuman.textContent = hotspot.humanMeaning || runtime.object?.humanMeaning || "—";
-    DOM.blockPrompt.textContent = hotspot.prompt || runtime.object?.primaryQuestion || "—";
+    setText(DOM.activeTitle, hotspot.title || hotspot.label || "Detal");
+    setText(DOM.activeText, hotspot.text || "Brak opisu detalu.");
+    setText(DOM.blockMeaning, hotspot.significance || runtime.object?.historicalMeaning || "—");
+    setText(DOM.blockHuman, hotspot.humanMeaning || runtime.object?.humanMeaning || "—");
+    setText(DOM.blockPrompt, hotspot.prompt || runtime.object?.primaryQuestion || "—");
 
     if (hotspot.zoom) {
       runtime.scale = clamp(hotspot.zoom.scale || 1.5, SCALE.min, SCALE.max);
-      runtime.translateX = hotspot.zoom.x || 0;
-      runtime.translateY = hotspot.zoom.y || 0;
+      runtime.translateX = Number(hotspot.zoom.x || 0);
+      runtime.translateY = Number(hotspot.zoom.y || 0);
       applyTransform();
     }
   }
@@ -127,11 +138,11 @@
     const hotspots = getHotspots();
 
     if (!hotspots.length) {
-      DOM.activeTitle.textContent = "Brak hotspotów";
-      DOM.activeText.textContent = "Ten obiekt nie ma jeszcze przygotowanych warstw detalicznych.";
-      DOM.blockMeaning.textContent = runtime.object?.historicalMeaning || "—";
-      DOM.blockHuman.textContent = runtime.object?.humanMeaning || "—";
-      DOM.blockPrompt.textContent = runtime.object?.primaryQuestion || "—";
+      setText(DOM.activeTitle, "Brak hotspotów");
+      setText(DOM.activeText, "Ten obiekt nie ma jeszcze przygotowanych warstw detalicznych.");
+      setText(DOM.blockMeaning, runtime.object?.historicalMeaning || "—");
+      setText(DOM.blockHuman, runtime.object?.humanMeaning || "—");
+      setText(DOM.blockPrompt, runtime.object?.primaryQuestion || "—");
       return;
     }
 
@@ -161,19 +172,29 @@
   function renderObject() {
     if (!runtime.object) return;
 
-    DOM.title.textContent = runtime.object.title || "Obiekt pamięci";
-    DOM.subtitle.textContent = runtime.object.shortText || "Tryb detalu pozwala pracować na warstwach obrazu i znaczenia.";
-    DOM.summaryTitle.textContent = runtime.object.title || "Obiekt pamięci";
-    DOM.summaryText.textContent = runtime.object.shortText || runtime.object.historicalMeaning || "—";
-    DOM.summaryQuote.textContent = runtime.object.quote || runtime.object.primaryQuestion || "—";
+    setText(DOM.title, runtime.object.title || "Obiekt pamięci");
+    setText(
+      DOM.subtitle,
+      runtime.object.shortText || "Tryb detalu pozwala pracować na warstwach obrazu i znaczenia."
+    );
 
-    DOM.stageNote.textContent = "Kliknij hotspot, użyj strzałek lub przejdź klawiszami [ i ]. Możesz też przybliżać obraz i przesuwać go kursorem.";
+    setText(DOM.summaryTitle, runtime.object.title || "Obiekt pamięci");
+    setText(DOM.summaryText, runtime.object.shortText || runtime.object.historicalMeaning || "—");
+    setText(DOM.summaryQuote, runtime.object.quote || runtime.object.primaryQuestion || "—");
+
+    setText(
+      DOM.stageNote,
+      "Kliknij hotspot, użyj strzałek lub przejdź klawiszami [ i ]. Możesz też przybliżać obraz i przesuwać go kursorem."
+    );
+
     const imageUrl = runtime.object.image?.primary || runtime.object.image?.fallback || "";
-
     if (DOM.image) {
       DOM.image.style.backgroundImage = imageUrl
         ? `linear-gradient(180deg, rgba(8,8,8,.10), rgba(8,8,8,.34)), url('${imageUrl}')`
         : "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
+
+      DOM.image.style.backgroundSize = "cover";
+      DOM.image.style.backgroundRepeat = "no-repeat";
       DOM.image.style.backgroundPosition = `${runtime.object.image?.focusX || 50}% ${runtime.object.image?.focusY || 50}%`;
     }
 
@@ -181,22 +202,39 @@
     renderHotspots();
   }
 
+  function resetRuntimeState() {
+    runtime.object = null;
+    runtime.activeHotspotIndex = 0;
+    runtime.scale = 1;
+    runtime.translateX = 0;
+    runtime.translateY = 0;
+    runtime.dragging = false;
+    runtime.dragStartX = 0;
+    runtime.dragStartY = 0;
+    runtime.dragOriginX = 0;
+    runtime.dragOriginY = 0;
+  }
+
   function openById(objectId, meta = {}) {
     const object = window.LabCore?.getObjectById?.(objectId);
-    if (!object) return;
+    if (!object) {
+      console.warn("[ObjectDetail] Nie znaleziono obiektu:", objectId);
+      return;
+    }
     open(object, meta);
   }
 
   function open(object, meta = {}) {
+    if (!DOM.modal || !object) return;
+
     runtime.object = object;
     runtime.activeHotspotIndex = 0;
-
-    if (!DOM.modal) return;
 
     renderObject();
 
     if (meta.contextLabel && DOM.subtitle) {
-      DOM.subtitle.textContent = `${object.shortText || ""} ${meta.contextLabel ? "· " + meta.contextLabel : ""}`.trim();
+      const baseText = object.shortText || "Tryb detalu pozwala pracować na warstwach obrazu i znaczenia.";
+      DOM.subtitle.textContent = `${baseText} · ${meta.contextLabel}`;
     }
 
     DOM.modal.hidden = false;
@@ -206,9 +244,11 @@
 
   async function close() {
     if (!DOM.modal) return;
+
     DOM.modal.hidden = true;
     DOM.modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("object-detail-open");
+    resetRuntimeState();
 
     try {
       if (document.fullscreenElement && document.exitFullscreen) {
@@ -220,8 +260,10 @@
   }
 
   async function toggleFullscreen() {
+    if (!DOM.modal) return;
+
     try {
-      if (!document.fullscreenElement && DOM.modal?.requestFullscreen) {
+      if (!document.fullscreenElement && DOM.modal.requestFullscreen) {
         await DOM.modal.requestFullscreen();
       } else if (document.fullscreenElement && document.exitFullscreen) {
         await document.exitFullscreen();
@@ -234,6 +276,7 @@
   function nextHotspot() {
     const hotspots = getHotspots();
     if (!hotspots.length) return;
+
     const nextIndex = (runtime.activeHotspotIndex + 1) % hotspots.length;
     focusHotspot(nextIndex);
   }
@@ -241,21 +284,28 @@
   function prevHotspot() {
     const hotspots = getHotspots();
     if (!hotspots.length) return;
-    const nextIndex = (runtime.activeHotspotIndex - 1 + hotspots.length) % hotspots.length;
-    focusHotspot(nextIndex);
+
+    const prevIndex = (runtime.activeHotspotIndex - 1 + hotspots.length) % hotspots.length;
+    focusHotspot(prevIndex);
   }
 
   function onPointerDown(event) {
     if (!DOM.viewport || !DOM.viewport.contains(event.target)) return;
+
     runtime.dragging = true;
     runtime.dragStartX = event.clientX;
     runtime.dragStartY = event.clientY;
     runtime.dragOriginX = runtime.translateX;
     runtime.dragOriginY = runtime.translateY;
+
+    if (DOM.viewport) {
+      DOM.viewport.style.cursor = "grabbing";
+    }
   }
 
   function onPointerMove(event) {
     if (!runtime.dragging) return;
+
     runtime.translateX = runtime.dragOriginX + (event.clientX - runtime.dragStartX);
     runtime.translateY = runtime.dragOriginY + (event.clientY - runtime.dragStartY);
     applyTransform();
@@ -263,11 +313,16 @@
 
   function onPointerUp() {
     runtime.dragging = false;
+
+    if (DOM.viewport) {
+      DOM.viewport.style.cursor = "";
+    }
   }
 
   function onWheel(event) {
     if (!DOM.viewport || !DOM.viewport.contains(event.target)) return;
     event.preventDefault();
+
     const delta = event.deltaY > 0 ? -SCALE.step : SCALE.step;
     zoomTo(runtime.scale + delta);
   }
