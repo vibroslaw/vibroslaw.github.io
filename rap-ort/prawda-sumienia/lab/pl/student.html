@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laboratorium Sumienia — Tryb ucznia</title>
+  <meta name="description" content="Tryb ucznia dla Laboratorium Sumienia — wejście w ścieżkę, obiekty pamięci, pytania i raport końcowy." />
+  <meta name="theme-color" content="#090909" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/lab-core.css" />
+  <link rel="stylesheet" href="/assets/css/lab-student.css" />
+</head>
+<body
+  data-page="lab-student"
+  data-lang="pl"
+  data-ui="/assets/data/lab-ui-pl.json"
+  data-lessons="/assets/data/lab-lessons-pl.json"
+  data-prompts="/assets/data/lab-prompts-pl.json"
+  data-objects="/assets/data/lab-objects-pl.json"
+  data-default-lesson="ps-pl-45-liceum-swiadectwo"
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+
+  <header class="student-header">
+    <div class="wrap student-header-inner">
+      <div class="student-brand">
+        <div class="brand-name ps-brand">Laboratorium Sumienia</div>
+        <div class="brand-sub">Tryb ucznia · Prawda Sumienia</div>
+      </div>
+
+      <div class="student-progress-meta">
+        <span class="progress-label">Postęp</span>
+        <strong class="progress-value" id="studentProgressLabel">1 / 8</strong>
+      </div>
+    </div>
+  </header>
+
+  <main class="student-shell">
+    <section class="student-stage is-visible" id="studentEntryStage" data-stage="entry">
+      <div class="student-stage-bg" aria-hidden="true">
+        <div class="student-stage-image student-stage-image-entry"></div>
+        <div class="student-stage-fade"></div>
+      </div>
+
+      <div class="wrap student-stage-content">
+        <div class="student-stage-inner reveal">
+          <div class="eyebrow">Wejście do sesji</div>
+          <h1 class="student-stage-title" id="studentLessonTitle">Raport odbioru — świadectwo</h1>
+
+          <p class="student-stage-lead">
+            Ta ścieżka nie wymaga szybkiej odpowiedzi. Wymaga uważności.
+            Najpierw wejdziesz przez pytanie, potem przez obiekt pamięci i materiał rozdziału,
+            a na końcu zbudujesz własny raport odbioru.
+          </p>
+
+          <div class="cta-row compact">
+            <button class="btn btn-primary" type="button" id="startStudentFlowButton">Wejdź</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-stage" id="studentPromptStage" data-stage="prompt" hidden>
+      <div class="wrap student-stage-narrow">
+        <div class="student-card reveal">
+          <div class="panel-topline">Pytanie aktywne</div>
+          <h2 class="student-question" id="studentPromptText">
+            Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?
+          </h2>
+
+          <label class="field student-response-field">
+            <span class="field-label">Twoja odpowiedź</span>
+            <textarea id="studentPromptResponse" rows="6" placeholder="Zapisz jedną odpowiedź, od której chcesz zacząć."></textarea>
+          </label>
+
+          <div class="cta-row compact">
+            <button class="btn btn-secondary" type="button" id="studentBackFromPrompt">Wstecz</button>
+            <button class="btn btn-primary" type="button" id="studentNextFromPrompt">Dalej</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-stage" id="studentObjectStage" data-stage="object" hidden>
+      <div class="wrap student-object-layout">
+        <div class="student-object-visual reveal">
+          <div class="object-visual-frame">
+            <div class="object-visual-image" id="objectVisualImage"></div>
+          </div>
+        </div>
+
+        <div class="student-object-copy reveal">
+          <div class="panel-topline">Obiekt pamięci</div>
+          <h2 class="object-title" id="objectTitle">Drut kolczasty</h2>
+          <p class="object-short" id="objectShortText">
+            Element materialnej organizacji przestrzeni obozowej, związany z izolacją, kontrolą i przemocą systemu.
+          </p>
+
+          <div class="object-meta-grid">
+            <div class="object-meta-card">
+              <h3>Znaczenie historyczne</h3>
+              <p id="objectHistoricalMeaning">—</p>
+            </div>
+            <div class="object-meta-card">
+              <h3>Znaczenie ludzkie</h3>
+              <p id="objectHumanMeaning">—</p>
+            </div>
+          </div>
+
+          <blockquote class="object-quote" id="objectQuote">
+            Granica może działać nie tylko w przestrzeni, ale również w sposobie organizowania ludzkiego życia.
+          </blockquote>
+
+          <label class="field student-response-field">
+            <span class="field-label" id="objectQuestionLabel">Pytanie</span>
+            <textarea id="objectResponse" rows="5" placeholder="Zapisz swoją odpowiedź."></textarea>
+          </label>
+
+          <div class="cta-row compact">
+            <button class="btn btn-secondary" type="button" id="studentBackFromObject">Wstecz</button>
+            <button class="btn btn-primary" type="button" id="studentNextFromObject">Dalej</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-stage" id="studentReflectionStage" data-stage="reflection" hidden>
+      <div class="wrap student-stage-narrow">
+        <div class="student-card reveal">
+          <div class="panel-topline">Refleksja po fragmencie</div>
+          <h2 class="student-question" id="reflectionQuestionText">
+            Co w tym fragmencie wydaje się najtrudniejsze do pominięcia?
+          </h2>
+
+          <label class="field student-response-field">
+            <span class="field-label">Odpowiedź</span>
+            <textarea id="reflectionResponse" rows="6" placeholder="Zapisz krótko, co zostało z tobą najmocniej."></textarea>
+          </label>
+
+          <div class="cta-row compact">
+            <button class="btn btn-secondary" type="button" id="studentBackFromReflection">Wstecz</button>
+            <button class="btn btn-primary" type="button" id="studentNextFromReflection">Dalej</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-stage" id="studentReportStage" data-stage="report" hidden>
+      <div class="wrap student-stage-narrow">
+        <div class="student-card reveal">
+          <div class="panel-topline">Raport odbioru</div>
+          <h2>Złóż swój dokument końcowy</h2>
+
+          <div class="report-builder-grid">
+            <label class="field">
+              <span class="field-label">Wybierz cytat</span>
+              <select id="selectedQuote"></select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Wybierz obiekt</span>
+              <select id="selectedObject"></select>
+            </label>
+
+            <label class="field field-full">
+              <span class="field-label">Najważniejszy moment</span>
+              <textarea id="keyMomentResponse" rows="4" placeholder="Co było dla ciebie punktem ciężkości tej pracy?"></textarea>
+            </label>
+
+            <label class="field field-full">
+              <span class="field-label">Odpowiedź końcowa</span>
+              <textarea id="finalResponse" rows="5" placeholder="Co zostaje z tobą po tej ścieżce i dlaczego?"></textarea>
+            </label>
+
+            <label class="field field-full">
+              <span class="field-label">Pytanie, które zostaje</span>
+              <select id="openQuestionSelect"></select>
+            </label>
+          </div>
+
+          <div class="cta-row compact">
+            <button class="btn btn-secondary" type="button" id="studentBackFromReport">Wstecz</button>
+            <a class="btn btn-primary" href="/rap-ort/prawda-sumienia/lab/pl/report.html" id="openReportPreviewButton">Zobacz raport</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="student-footer">
+    <div class="wrap footer-inner">
+      <div>Laboratorium Sumienia · Tryb ucznia</div>
+      <div>Wersja polska</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="/assets/js/lab-student.js"></script>
+</body>
+</html>
