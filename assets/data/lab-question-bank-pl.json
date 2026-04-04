@@ -1,0 +1,236 @@
+{
+  "version": "3.0.0",
+  "lang": "pl",
+  "fileRole": "lab-question-bank-config",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "questionPhilosophy": {
+    "mainGoal": "Pytania mają otwierać uczciwą rozmowę i porządkować odbiór materiału, a nie prowadzić ucznia do jednej poprawnej odpowiedzi.",
+    "teacherGoal": "Nauczyciel ma szybko wybrać jedno pytanie, które najlepiej pasuje do działu, grupy i celu spotkania.",
+    "studentGoal": "Uczeń ma pracować z jednym realnym pytaniem, a nie z długą listą poleceń.",
+    "projectGoal": "Pytania mają utrzymywać oś projektu: świadectwo, raport, odpowiedzialność odbioru, ostrożność interpretacyjną i napięcie między historią a współczesnym odbiorcą.",
+    "mustAvoid": [
+      "pytania rankingowe",
+      "pytania sugerujące gotowy wyrok moralny",
+      "pytania wymuszające patetyczną odpowiedź",
+      "pytania zbyt szerokie i ogólne",
+      "pytania odrywające rozmowę od materiału"
+    ]
+  },
+  "teacherUsageModel": {
+    "selectionMode": "one-active-question",
+    "teacherSelectsFromSectionOnly": true,
+    "teacherCanWriteOwnQuestion": true,
+    "teacherCustomQuestionOverridesDefault": true,
+    "studentSeesOnlyOneQuestion": true,
+    "maxRecommendedQuestionCountPerSection": 5,
+    "fallbackPolicy": "Jeśli nauczyciel nie wybierze pytania ręcznie, system ustawia pytanie domyślne dla działu."
+  },
+  "customQuestionRules": {
+    "enabled": true,
+    "minLength": 12,
+    "maxLength": 220,
+    "placeholder": "Wpisz własne pytanie dla tej grupy…",
+    "teacherHint": "Pytanie własne powinno być krótkie, konkretne i otwierające rozmowę, a nie zamykające ją z góry.",
+    "validation": {
+      "mustEndAsQuestionOrOpenPrompt": true,
+      "mustNotContain": [
+        "kto był lepszy",
+        "kto był gorszy",
+        "czy był bohaterem",
+        "czy był zdrajcą",
+        "kto miał rację moralnie"
+      ],
+      "warnIfTooLong": true,
+      "warnIfBinaryLanguageDetected": true
+    }
+  },
+  "teacherQuickView": {
+    "show": [
+      "label",
+      "text",
+      "bestFor",
+      "tone"
+    ],
+    "hideByDefault": [
+      "fullMethodNote",
+      "extendedPedagogicalUse"
+    ]
+  },
+  "sections": [
+    {
+      "sectionId": "section-totalitaryzm-wybor",
+      "sectionLabel": "Totalitaryzm i wybory pod presją",
+      "defaultQuestionId": "q-totalitaryzm-01",
+      "teacherSectionIntro": "W tym dziale pytania mają prowadzić do rozmowy o presji systemu, warunkach decyzji i ostrożności wobec oceniania człowieka działającego pod przymusem.",
+      "questions": [
+        {
+          "id": "q-totalitaryzm-01",
+          "order": 1,
+          "label": "Presja systemu",
+          "text": "Jak system naciska na pole ludzkiej decyzji?",
+          "tone": "analityczne",
+          "bestFor": [
+            "wejście do działu",
+            "lekcja historyczna",
+            "liceum",
+            "technikum"
+          ],
+          "useWhen": "Gdy chcesz najpierw pokazać mechanizm nacisku, a dopiero później przejść do rozmowy o wyborze.",
+          "avoidWhen": "Nie używaj jako pytania końcowego domykającego lekcję.",
+          "teacherNote": "Najbardziej uniwersalne pytanie działu."
+        },
+        {
+          "id": "q-totalitaryzm-02",
+          "order": 2,
+          "label": "Warunki wyboru",
+          "text": "Co w materiale pokazuje presję, a nie tylko sam wybór?",
+          "tone": "obserwacyjne",
+          "bestFor": [
+            "praca po projekcji fragmentu",
+            "klasy 7-8",
+            "liceum"
+          ],
+          "useWhen": "Gdy chcesz zatrzymać uczniów na konkretach materiału, a nie na abstrakcyjnych ocenach.",
+          "avoidWhen": "Nie używaj jako jedynego pytania w grupie akademickiej, jeśli chcesz wejść głębiej metodologicznie.",
+          "teacherNote": "Dobre po obejrzeniu fragmentu lub po zatrzymaniu sceny."
+        },
+        {
+          "id": "q-totalitaryzm-03",
+          "order": 3,
+          "label": "Ostrożność oceny",
+          "text": "Dlaczego ostrożność jest ważna, kiedy oceniamy decyzje podejmowane pod przymusem?",
+          "tone": "refleksyjne",
+          "bestFor": [
+            "domknięcie rozmowy",
+            "liceum",
+            "uczelnia"
+          ],
+          "useWhen": "Gdy chcesz przejść od opisu systemu do odpowiedzialności odbiorcy.",
+          "avoidWhen": "Nie zaczynaj od tego pytania w młodszej grupie bez wcześniejszego kontekstu.",
+          "teacherNote": "Najmocniej chroni przed prostym moralizowaniem."
+        },
+        {
+          "id": "q-totalitaryzm-04",
+          "order": 4,
+          "label": "Moment nacisku",
+          "text": "Który moment najmocniej pokazał ci działanie systemu?",
+          "tone": "konkretne",
+          "bestFor": [
+            "krótsza rozmowa",
+            "praca po konkretnym fragmencie",
+            "klasy 7-8",
+            "liceum"
+          ],
+          "useWhen": "Gdy chcesz uzyskać szybkie, konkretne odpowiedzi zakorzenione w materiale.",
+          "avoidWhen": "Nie używaj jako jedynego pytania przy seminarium akademickim.",
+          "teacherNote": "Bardzo dobre do pierwszego zatrzymania rozmowy."
+        },
+        {
+          "id": "q-totalitaryzm-05",
+          "order": 5,
+          "label": "Odpowiedzialność bez uproszczeń",
+          "text": "Czy można mówić o odpowiedzialności, nie upraszczając warunków, w których działa człowiek?",
+          "tone": "pogłębione",
+          "bestFor": [
+            "domknięcie działu",
+            "liceum",
+            "uczelnia",
+            "grupy refleksyjne"
+          ],
+          "useWhen": "Gdy chcesz połączyć historię z pytaniem o współczesnego odbiorcę.",
+          "avoidWhen": "Nie używaj jako pierwszego pytania bez osadzenia w materiale.",
+          "teacherNote": "Najmocniejsze pytanie spinające sens całego działu."
+        }
+      ]
+    },
+    {
+      "sectionId": "section-pilecki-rocznicowy",
+      "sectionLabel": "Pilecki — rozdział rocznicowy",
+      "defaultQuestionId": "q-pilecki-01",
+      "teacherSectionIntro": "W tym dziale pytania mają utrzymać Pileckiego jako rdzeń projektu: świadectwo, raport, przekazanie prawdy i odpowiedzialność odbiorcy.",
+      "questions": [
+        {
+          "id": "q-pilecki-01",
+          "order": 1,
+          "label": "Świadectwo a informacja",
+          "text": "Co w tym materiale działa najmocniej jako świadectwo, a nie tylko informacja o postaci?",
+          "tone": "rdzeniowe",
+          "bestFor": [
+            "dział rocznicowy",
+            "lekcja główna",
+            "liceum",
+            "Polonia"
+          ],
+          "useWhen": "Gdy chcesz od razu ustawić właściwą oś projektu.",
+          "avoidWhen": "Nie używaj tylko wtedy, gdy grupa nie ma jeszcze żadnego kontaktu z pojęciem świadectwa i potrzebuje prostszego wejścia.",
+          "teacherNote": "Najbardziej zgodne z wizją projektu."
+        },
+        {
+          "id": "q-pilecki-02",
+          "order": 2,
+          "label": "Znaczenie raportu",
+          "text": "Dlaczego raport i świadectwo są tu tak ważne?",
+          "tone": "klarowne",
+          "bestFor": [
+            "klasy 7-8",
+            "liceum",
+            "lekcja rocznicowa",
+            "praca po projekcji"
+          ],
+          "useWhen": "Gdy chcesz ustawić raport jako centralny element sensu projektu.",
+          "avoidWhen": "Nie używaj jako jedynego pytania w grupie bardzo zaawansowanej, gdy chcesz wejść głębiej w metodologię.",
+          "teacherNote": "Najprostsze pytanie rocznicowe, bardzo bezpieczne."
+        },
+        {
+          "id": "q-pilecki-03",
+          "order": 3,
+          "label": "Rocznica, która nie zamyka",
+          "text": "Co w rocznicowym ujęciu otwiera rozmowę, zamiast ją zamykać?",
+          "tone": "refleksyjne",
+          "bestFor": [
+            "domknięcie wydarzenia",
+            "szkoła",
+            "instytucja",
+            "uczelnia"
+          ],
+          "useWhen": "Gdy chcesz uniknąć pomnikowego tonu i zostawić żywe pytanie.",
+          "avoidWhen": "Nie zaczynaj od niego bez pokazania materiału.",
+          "teacherNote": "Bardzo dobre przy wydarzeniach publicznych."
+        },
+        {
+          "id": "q-pilecki-04",
+          "order": 4,
+          "label": "Moment sensu",
+          "text": "Który moment najmocniej zbliżył cię do sensu tego rozdziału?",
+          "tone": "konkretne",
+          "bestFor": [
+            "krótsze domknięcie",
+            "klasy 7-8",
+            "liceum"
+          ],
+          "useWhen": "Gdy chcesz zebrać szybkie odpowiedzi po pokazie materiału.",
+          "avoidWhen": "Nie używaj jako pytania jedynego, gdy chcesz mocniej wybrzmieć raport i odpowiedzialność przekazu.",
+          "teacherNote": "Najłatwiejsze wejście dla młodszych grup."
+        },
+        {
+          "id": "q-pilecki-05",
+          "order": 5,
+          "label": "Odpowiedzialność odbiorcy",
+          "text": "Jak rozumiesz odpowiedzialność wobec świadectwa?",
+          "tone": "najmocniejsze",
+          "bestFor": [
+            "domknięcie lekcji",
+            "liceum",
+            "uczelnia",
+            "Polonia"
+          ],
+          "useWhen": "Gdy chcesz spiąć Pileckiego z pytaniem o współczesnego odbiorcę.",
+          "avoidWhen": "Nie zaczynaj od tego bez wcześniejszego kontaktu z materiałem.",
+          "teacherNote": "Najlepsze pytanie końcowe dla całego działu."
+        }
+      ]
+    },
+    {
+      "sectionId": "section-auschwitz",
+      "sectionLabel": "Auschwitz
