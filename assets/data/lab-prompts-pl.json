@@ -1,0 +1,383 @@
+{
+  "version": "1.2.0",
+  "lang": "pl",
+  "methodology": {
+    "corePrinciples": [
+      "Oddzielaj fakt, interpretację i odpowiedź osobistą ucznia.",
+      "Nie przypisuj intencji osobom historycznym bez wyraźnego oparcia w źródle.",
+      "Nie prowadź ucznia do prostego wyroku moralnego.",
+      "Nie utożsamiaj siły emocjonalnej odbioru z prawem do uproszczenia historii.",
+      "Nie porównuj postaci historycznych w formule 'kto lepszy, kto gorszy'.",
+      "Nie przekształcaj lekcji w dyskusję rankingową o bohaterstwie."
+    ],
+    "forbiddenFramings": [
+      "Czy ktoś był głupi, słaby albo zły?",
+      "Kto miał rację moralnie w prostym sensie?",
+      "Czy jedna postać była bohaterem, a druga zdrajcą?",
+      "Czy wystarczy jeden dokument, by zamknąć interpretację?"
+    ],
+    "namedPersonsPolicy": {
+      "pilecki": {
+        "role": "rdzeń rozdziału",
+        "studentFacing": true,
+        "teacherFacing": true,
+        "notes": "Oś projektu pozostaje zbudowana wokół świadectwa, raportu i odpowiedzialności."
+      },
+      "cyrankiewicz": {
+        "role": "kontekst poboczny",
+        "studentFacing": false,
+        "teacherFacing": "advanced-only",
+        "notes": "Nie stanowi osi lekcji podstawowej. Nie jest równoległym nurtem projektu. Może pojawić się wyłącznie w notach rozszerzonych dla starszych grup jako przykład trudności interpretacyjnej, nigdy jako dominująca figura."
+      },
+      "kolbe": {
+        "role": "kontekst uzupełniający",
+        "studentFacing": false,
+        "teacherFacing": "optional",
+        "notes": "Wyłącznie jako kontekst uzupełniający, poza osią podstawowej ścieżki."
+      }
+    },
+    "reportPolicy": {
+      "allowAutoMoralSummary": false,
+      "allowHeroicLabelGeneration": false,
+      "allowBinaryVerdictLanguage": false,
+      "requireOpenQuestionInFinalReport": true
+    }
+  },
+  "availability": {
+    "4-6": {
+      "enabled": false,
+      "reason": "Pełna warstwa Prawda Sumienia nie jest rekomendowana jako moduł podstawowy dla tego poziomu. Należy przygotować osobny moduł wprowadzający oparty na śladzie, przedmiocie i pamięci, bez pełnej osi rozdziału."
+    },
+    "7-8": {
+      "enabled": true
+    },
+    "liceum": {
+      "enabled": true
+    },
+    "uczelnia": {
+      "enabled": true
+    },
+    "polonia": {
+      "enabled": true
+    }
+  },
+  "promptGroups": {
+    "7-8": {
+      "opening": [
+        {
+          "id": "p-78-open-01",
+          "type": "opening",
+          "text": "Jakie znaczenie może mieć świadectwo wiele lat po jego powstaniu?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        },
+        {
+          "id": "p-78-open-02",
+          "type": "opening",
+          "text": "Dlaczego materialny ślad lub dokument może pomóc w rozumieniu historii?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        }
+      ],
+      "observational": [
+        {
+          "id": "p-78-obs-01",
+          "type": "observational",
+          "text": "Co w tym fragmencie lub obiekcie zwraca twoją uwagę najmocniej?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        },
+        {
+          "id": "p-78-obs-02",
+          "type": "observational",
+          "text": "Który detal wydaje się tu najważniejszy i dlaczego?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        }
+      ],
+      "reflective": [
+        {
+          "id": "p-78-ref-01",
+          "type": "reflective",
+          "text": "Co zmienia się w odbiorze historii, gdy pracujemy nie tylko z datą, ale także ze śladem i świadectwem?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        },
+        {
+          "id": "p-78-ref-02",
+          "type": "reflective",
+          "text": "Jakie pytanie zostaje z tobą po tej lekcji?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        }
+      ]
+    },
+    "liceum": {
+      "opening": [
+        {
+          "id": "p-l-open-01",
+          "type": "opening",
+          "axis": "swiadectwo",
+          "text": "Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        },
+        {
+          "id": "p-l-open-02",
+          "type": "opening",
+          "axis": "pamiec",
+          "text": "Co dzieje się ze świadectwem, kiedy przechodzi z momentu doświadczenia do późniejszego odczytania i interpretacji?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        }
+      ],
+      "observational": [
+        {
+          "id": "p-l-obs-01",
+          "type": "observational",
+          "text": "Co w tym fragmencie wydaje się najtrudniejsze do pominięcia?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        },
+        {
+          "id": "p-l-obs-02",
+          "type": "observational",
+          "text": "Jaki detal działa tutaj mocniej niż szeroki obraz i dlaczego?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        }
+      ],
+      "source": [
+        {
+          "id": "p-l-src-01",
+          "type": "source",
+          "text": "Co można powiedzieć na podstawie świadectwa lub raportu, a czego nie należy dopowiadać bez dodatkowych podstaw źródłowych?",
+          "responseMode": "long-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "high"
+        },
+        {
+          "id": "p-l-src-02",
+          "type": "source",
+          "text": "Co odróżnia źródło historyczne od późniejszego skrótu, interpretacji albo uproszczenia?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "high"
+        }
+      ],
+      "interpretive": [
+        {
+          "id": "p-l-int-01",
+          "type": "interpretive",
+          "axis": "system",
+          "text": "Jakie mechanizmy działania systemu można rozpoznać w materiale, z którym pracujemy?",
+          "responseMode": "long-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        },
+        {
+          "id": "p-l-int-02",
+          "type": "interpretive",
+          "axis": "wybor",
+          "text": "Jakie warunki sprawiają, że ocena ludzkich decyzji podejmowanych pod presją systemu wymaga szczególnej ostrożności?",
+          "responseMode": "long-text",
+          "riskLevel": "medium",
+          "interpretiveTightness": "high"
+        },
+        {
+          "id": "p-l-int-03",
+          "type": "interpretive",
+          "axis": "swiadectwo",
+          "text": "Które elementy tego rozdziału pokazują różnicę między ogólną wiedzą o historii a spotkaniem ze świadectwem?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        }
+      ],
+      "reflective": [
+        {
+          "id": "p-l-ref-01",
+          "type": "reflective",
+          "text": "Jakie pytania wobec współczesnego odbiorcy otwiera to świadectwo?",
+          "responseMode": "long-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        },
+        {
+          "id": "p-l-ref-02",
+          "type": "reflective",
+          "text": "Co pozostało z tobą po zakończeniu tej pracy i dlaczego właśnie to?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        },
+        {
+          "id": "p-l-ref-03",
+          "type": "reflective",
+          "text": "Jak zmienia się twoje rozumienie milczenia, gdy patrzysz na nie przez pryzmat źródła i świadectwa?",
+          "responseMode": "short-text",
+          "riskLevel": "medium",
+          "interpretiveTightness": "moderate"
+        }
+      ]
+    },
+    "uczelnia": {
+      "opening": [
+        {
+          "id": "p-u-open-01",
+          "type": "opening",
+          "text": "Jakie ryzyko metodologiczne i etyczne wiąże się z próbą przekształcenia świadectwa w dzieło audiowizualne?",
+          "responseMode": "long-text",
+          "riskLevel": "medium",
+          "interpretiveTightness": "high"
+        }
+      ],
+      "source": [
+        {
+          "id": "p-u-src-01",
+          "type": "source",
+          "text": "Jakie ograniczenia interpretacyjne należy zachować wobec źródła i wobec ludzkich decyzji podejmowanych pod presją systemu?",
+          "responseMode": "long-text",
+          "riskLevel": "medium",
+          "interpretiveTightness": "high"
+        }
+      ],
+      "interpretive": [
+        {
+          "id": "p-u-int-01",
+          "type": "interpretive",
+          "text": "Jak dzieło negocjuje granicę między świadectwem, formą artystyczną i odpowiedzialnością interpretacyjną?",
+          "responseMode": "long-text",
+          "riskLevel": "medium",
+          "interpretiveTightness": "high"
+        },
+        {
+          "id": "p-u-int-02",
+          "type": "interpretive",
+          "text": "W jaki sposób ta forma zachowuje powściągliwość wobec materiału źródłowego, a gdzie pojawia się ryzyko nadmiaru znaczenia?",
+          "responseMode": "long-text",
+          "riskLevel": "medium",
+          "interpretiveTightness": "high"
+        }
+      ],
+      "reflective": [
+        {
+          "id": "p-u-ref-01",
+          "type": "reflective",
+          "text": "Co oznacza odpowiedzialny odbiór świadectwa w przestrzeni publicznej, edukacyjnej i instytucjonalnej?",
+          "responseMode": "long-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        }
+      ]
+    },
+    "polonia": {
+      "opening": [
+        {
+          "id": "p-pol-open-01",
+          "type": "opening",
+          "text": "Jak przenosić pamięć zakorzenioną w polskim doświadczeniu do szerszej przestrzeni językowej i kulturowej, nie redukując jej ciężaru?",
+          "responseMode": "long-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "moderate"
+        }
+      ],
+      "reflective": [
+        {
+          "id": "p-pol-ref-01",
+          "type": "reflective",
+          "text": "Który element tego rozdziału działa jako most między pamięcią polską a odbiorcą międzynarodowym?",
+          "responseMode": "short-text",
+          "riskLevel": "low",
+          "interpretiveTightness": "open"
+        }
+      ]
+    }
+  },
+  "reportTemplates": {
+    "raport-odbioru": {
+      "title": "Raport odbioru",
+      "tone": "neutral-archival",
+      "sections": [
+        "sessionMeta",
+        "selectedQuote",
+        "selectedObject",
+        "midReflection",
+        "finalResponse",
+        "openQuestion",
+        "date"
+      ],
+      "rules": {
+        "allowBinaryMoralConclusion": false,
+        "allowHeroLabel": false,
+        "allowVillainLabel": false
+      }
+    },
+    "raport-interpretacyjny": {
+      "title": "Raport interpretacyjny",
+      "tone": "academic-archival",
+      "sections": [
+        "sessionMeta",
+        "selectedQuote",
+        "selectedObject",
+        "keyMoment",
+        "interpretiveResponse",
+        "personalResponse",
+        "openQuestion",
+        "date"
+      ],
+      "rules": {
+        "allowBinaryMoralConclusion": false,
+        "requireSourceDistinction": true,
+        "allowHeroLabel": false,
+        "allowVillainLabel": false
+      }
+    }
+  },
+  "quoteOptions": [
+    {
+      "id": "q-01",
+      "text": "Świadectwo wymaga uważnego odczytania."
+    },
+    {
+      "id": "q-02",
+      "text": "Źródło i interpretacja nie są tym samym."
+    },
+    {
+      "id": "q-03",
+      "text": "Zapis nie zamyka historii; otwiera dalsze odczytanie."
+    },
+    {
+      "id": "q-04",
+      "text": "Milczenie może być faktem historycznym i problemem interpretacyjnym."
+    },
+    {
+      "id": "q-05",
+      "text": "Ostrożność interpretacyjna jest częścią odpowiedzialnego odbioru."
+    }
+  ],
+  "openQuestionOptions": [
+    {
+      "id": "oq-01",
+      "text": "Jak pamiętać odpowiedzialnie?"
+    },
+    {
+      "id": "oq-02",
+      "text": "Jak odróżniać źródło od uproszczenia?"
+    },
+    {
+      "id": "oq-03",
+      "text": "Co pozostaje nierozstrzygnięte nawet po uważnym odbiorze?"
+    }
+  ]
+}
