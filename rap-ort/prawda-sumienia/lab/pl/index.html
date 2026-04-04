@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laboratorium Sumienia — Tryb nauczyciela</title>
+  <meta name="description" content="Licencjonowana warstwa edukacyjna rozdziału Prawda Sumienia — tryb nauczyciela, wybór lekcji i prowadzenie pracy z grupą." />
+  <meta name="theme-color" content="#090909" />
+
+  <meta property="og:title" content="Laboratorium Sumienia — Tryb nauczyciela" />
+  <meta property="og:description" content="Zamknięta warstwa edukacyjna do pracy z rozdziałem Prawda Sumienia." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://piotrlichwala.com/rap-ort/prawda-sumienia/lab/pl/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
+  <link rel="stylesheet" href="/assets/css/lab-core.css" />
+  <link rel="stylesheet" href="/assets/css/lab-teacher.css" />
+</head>
+<body
+  data-page="lab-launcher"
+  data-lang="pl"
+  data-ui="/assets/data/lab-ui-pl.json"
+  data-lessons="/assets/data/lab-lessons-pl.json"
+  data-prompts="/assets/data/lab-prompts-pl.json"
+  data-objects="/assets/data/lab-objects-pl.json"
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header lab-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/pl/" aria-label="Powrót do Prawda Sumienia">
+        <div class="brand-name ps-brand">Laboratorium Sumienia</div>
+        <div class="brand-sub">Prawda Sumienia · Tryb nauczyciela</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Główna nawigacja">
+        <a href="#launcher">Uruchom</a>
+        <a href="#modes">Tryby</a>
+        <a href="#methodology">Metodyka</a>
+        <a href="#access">Dostęp</a>
+        <a href="/rap-ort/prawda-sumienia/pl/">Rozdział</a>
+      </nav>
+
+      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Otwórz menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero hero-lab-launcher">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-image"></div>
+        <div class="hero-light"></div>
+        <div class="hero-fade"></div>
+      </div>
+
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">Licencjonowana warstwa edukacyjna</div>
+          <h1 class="hero-title">Laboratorium Sumienia</h1>
+
+          <p class="hero-lead">
+            Środowisko pracy z rozdziałem <strong>Prawda Sumienia</strong> przygotowane dla nauczycieli,
+            prowadzących, instytucji i grup edukacyjnych. System łączy tryb lekcji,
+            obiekty pamięci, pracę na świadectwie oraz generowanie raportów odbioru.
+          </p>
+
+          <div class="hero-statement">
+            To nie jest zestaw materiałów do pobrania. To narzędzie prowadzenia uważnej pracy z dziełem.
+          </div>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#launcher">Uruchom lekcję</a>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Powrót do rozdziału</a>
+          </div>
+        </div>
+
+        <div class="hero-side reveal">
+          <aside class="glass-panel">
+            <div class="panel-label">Tryb pracy</div>
+            <p class="panel-quote">Źródło. Odbiór. Odpowiedzialność.</p>
+            <p class="panel-text">
+              Ta warstwa została zbudowana do pracy prowadzonej — z zachowaniem
+              rozróżnienia między źródłem, interpretacją i odpowiedzią ucznia.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="launcher">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Uruchomienie sesji</div>
+            <h2>Wybierz tryb pracy</h2>
+          </div>
+          <div class="section-note">
+            Najpierw wybierz poziom grupy, długość zajęć i oś prowadzenia. System zbuduje sesję
+            na podstawie licencjonowanych danych i poprowadzi Cię krok po kroku.
+          </div>
+        </div>
+
+        <div class="lab-launcher-grid">
+          <section class="content-panel reveal" aria-labelledby="sessionBuilderTitle">
+            <div class="panel-topline">Konfigurator lekcji</div>
+            <h3 id="sessionBuilderTitle">Nowa sesja</h3>
+
+            <form class="lab-form" id="lessonBuilderForm">
+              <div class="form-row">
+                <label class="field">
+                  <span class="field-label">Poziom grupy</span>
+                  <select id="ageGroupSelect" name="ageGroup">
+                    <option value="7-8">Klasy 7–8</option>
+                    <option value="liceum" selected>Liceum / technikum</option>
+                    <option value="uczelnia">Uczelnia</option>
+                    <option value="polonia">Polonia / grupa dwujęzyczna</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Czas trwania</span>
+                  <select id="durationSelect" name="duration">
+                    <option value="45" selected>45 minut</option>
+                    <option value="90">90 minut</option>
+                    <option value="120">120 minut</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label class="field">
+                  <span class="field-label">Oś prowadzenia</span>
+                  <select id="axisSelect" name="axis">
+                    <option value="swiadectwo" selected>Świadectwo</option>
+                    <option value="system">System</option>
+                    <option value="wybor">Wybór</option>
+                    <option value="pamiec">Pamięć</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Tryb raportu</span>
+                  <select id="reportModeSelect" name="reportMode">
+                    <option value="raport-odbioru" selected>Raport odbioru</option>
+                    <option value="raport-interpretacyjny">Raport interpretacyjny</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-row form-row-single">
+                <label class="field checkbox-field">
+                  <input type="checkbox" id="archiveToggle" name="archiveEnabled" checked />
+                  <span>Włącz archiwum klasy dla tej sesji</span>
+                </label>
+              </div>
+
+              <div class="session-meta-grid">
+                <label class="field">
+                  <span class="field-label">Nazwa instytucji</span>
+                  <input type="text" id="institutionInput" name="institution" placeholder="Np. Liceum Ogólnokształcące nr 1" />
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Nazwa grupy</span>
+                  <input type="text" id="groupInput" name="group" placeholder="Np. 2A / seminarium / grupa sobotnia" />
+                </label>
+              </div>
+
+              <div class="cta-row compact">
+                <button class="btn btn-primary" type="submit" id="launchLessonButton">Uruchom lekcję</button>
+                <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/teacher.html">Otwórz konsolę nauczyciela</a>
+                <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/student.html">Podejrzyj tryb ucznia</a>
+              </div>
+            </form>
+          </section>
+
+          <aside class="content-panel reveal" aria-labelledby="sessionPreviewTitle">
+            <div class="panel-topline">Podgląd sesji</div>
+            <h3 id="sessionPreviewTitle">Aktywna konfiguracja</h3>
+
+            <div class="session-preview" id="sessionPreview">
+              <div class="preview-row">
+                <span class="preview-label">Tytuł ścieżki</span>
+                <span class="preview-value" id="previewLessonTitle">Raport odbioru — świadectwo</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-label">Poziom</span>
+                <span class="preview-value" id="previewAgeGroup">Liceum / technikum</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-label">Czas</span>
+                <span class="preview-value" id="previewDuration">45 minut</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-label">Oś</span>
+                <span class="preview-value" id="previewAxis">Świadectwo</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-label">Raport</span>
+                <span class="preview-value" id="previewReportMode">Raport odbioru</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-label">Guardrails</span>
+                <span class="preview-value preview-value-block" id="previewGuardrails">
+                  Oddzielaj źródło, interpretację i odpowiedź osobistą. Nie prowadź uczniów do prostego wyroku moralnego.
+                </span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="modes">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Tryby systemu</div>
+            <h2>Jak działa Laboratorium</h2>
+          </div>
+          <div class="section-note">
+            To środowisko pracy składa się z konsoli prowadzącego, ścieżki ucznia,
+            obiektów pamięci, raportu końcowego i archiwum sesji.
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card mini-card reveal">
+            <div>
+              <h3>Konsola nauczyciela</h3>
+              <p>
+                Prowadzenie krok po kroku: etapy lekcji, instrukcje, pytania, guardrails i przejścia
+                między trybem klasy a trybem ucznia.
+              </p>
+            </div>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/teacher.html">Otwórz konsolę</a>
+          </article>
+
+          <article class="card mini-card reveal">
+            <div>
+              <h3>Tryb ucznia</h3>
+              <p>
+                Wejście w ścieżkę, praca z pytaniami, obiektami pamięci oraz końcowe wygenerowanie raportu odbioru.
+              </p>
+            </div>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/student.html">Otwórz tryb ucznia</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="methodology">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Metodyka</div>
+            <h2>Ramy bezpieczeństwa interpretacyjnego</h2>
+          </div>
+          <div class="section-note">
+            System został zaprojektowany tak, by nie prowadzić do uproszczeń,
+            nie zamieniać pracy w ranking postaci i nie rozmywać osi rozdziału.
+          </div>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card mini-card reveal">
+            <div>
+              <h3>Źródło</h3>
+              <p>
+                Każda ścieżka oddziela to, co wynika ze źródła, od tego, co jest interpretacją
+                lub osobistą odpowiedzią odbiorcy.
+              </p>
+            </div>
+          </article>
+
+          <article class="card mini-card reveal">
+            <div>
+              <h3>Powściągliwość</h3>
+              <p>
+                Pytania nie narzucają prostych wyroków moralnych i nie budują domyślnego klucza heroizacji.
+              </p>
+            </div>
+          </article>
+
+          <article class="card mini-card reveal">
+            <div>
+              <h3>Oś projektu</h3>
+              <p>
+                Pilecki pozostaje rdzeniem rozdziału. Wątki poboczne nie przejmują narracji i nie dominują ścieżki.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="access">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Dostęp i sesje</div>
+            <h2>Środowisko licencyjne</h2>
+          </div>
+          <div class="section-note">
+            Warstwa edukacyjna działa jako środowisko zamknięte i sesyjne. Użytkownik nie otrzymuje tylko materiałów,
+            lecz pełny tryb pracy z rozdziałem.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <h3>Co dzieje się po uruchomieniu</h3>
+          <p>
+            Po wybraniu trybu system zbuduje sesję prowadzenia, otworzy odpowiedni model lekcji
+            oraz przygotuje tryb ucznia, raport końcowy i archiwum klasy zgodnie z ustawieniami wybranymi przez nauczyciela.
+          </p>
+
+          <div class="cta-row compact">
+            <a class="btn btn-primary" href="/rap-ort/prawda-sumienia/lab/pl/teacher.html">Przejdź do konsoli</a>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/pl/">Powrót do Prawda Sumienia</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>Laboratorium Sumienia · Prawda Sumienia · Piotr Lichwała (Vibrosław)</div>
+      <div>Tryb nauczyciela · Wersja polska</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="/assets/js/lab-teacher.js"></script>
+</body>
+</html>
