@@ -74,6 +74,7 @@
     DOM.openObjectButton = document.getElementById("openObjectButton");
     DOM.triggerQrButton = document.getElementById("triggerQrButton");
     DOM.openReportBuilderButton = document.getElementById("openReportBuilderButton");
+    DOM.presentationModeButton = document.getElementById("presentationModeButton");
 
     DOM.guardrailsList = document.getElementById("guardrailsList");
     DOM.linkedObjectPreview = document.getElementById("linkedObjectPreview");
@@ -585,12 +586,52 @@
     runtime.session = buildOrRecoverTeacherSession(lesson);
     window.LabCore.saveSessionState(runtime.session);
 
+    function buildPresentationState() {
+  const lesson = runtime.lesson;
+  const session = runtime.session;
+  const step = runtime.currentStep;
+  const currentIndex = session?.currentStepIndex || 0;
+
+  return {
+    lesson,
+    session,
+    step,
+    currentIndex,
+    stepTypeLabel: mapStepTypeLabel(step?.type),
+    currentPromptText: buildPromptText(step),
+    linkedObject: step?.objectId ? window.LabCore.getObjectById(step.objectId) : null
+  };
+}
+
     renderTeacherSessionMeta();
     renderGuardrails(lesson);
     renderTeacherArchivePanel();
     renderCurrentStep();
     syncTeacherUrls();
     bindTeacherControls();
+    if (DOM.presentationModeButton) {
+  DOM.presentationModeButton.addEventListener("click", () => {
+    if (window.LabPresentation?.open) {
+      window.LabPresentation.open();
+    }
+  });
+}
+
+};
+
+  window.LabTeacherPresentationBridge = {
+  getState: buildPresentationState
+};
+
+window.dispatchEvent(new CustomEvent("lab:teacherStepRendered", {
+  detail: buildPresentationState()
+}));
+
+window.dispatchEvent(new CustomEvent("lab:teacherStepRendered", {
+  detail: buildPresentationState()
+}));
+
+    
   }
 
   async function init() {
