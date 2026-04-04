@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laboratorium Sumienia — Pakiet nauczyciela</title>
+  <meta name="description" content="Pakiet nauczyciela dla Laboratorium Sumienia — scenariusz prowadzenia, warianty lekcji, guardrails, pytania, obiekty i materiały pomocnicze." />
+  <meta name="theme-color" content="#090909" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/lab-core.css" />
+  <link rel="stylesheet" href="/assets/css/lab-teacher.css" />
+
+  <style>
+    .teacher-pack-shell{
+      position:relative;
+      z-index:1;
+      padding:34px 0 84px;
+    }
+
+    .teacher-pack-hero{
+      margin-bottom:24px;
+    }
+
+    .teacher-pack-hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
+      gap:24px;
+      align-items:start;
+    }
+
+    .teacher-pack-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .teacher-pack-status{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid var(--lab-line);
+      background:rgba(255,255,255,.03);
+      color:var(--lab-muted);
+      line-height:1.75;
+    }
+
+    .teacher-pack-status[data-status="success"]{
+      border-color:rgba(203,176,138,.22);
+      color:var(--lab-text);
+      background:rgba(203,176,138,.08);
+    }
+
+    .teacher-pack-status[data-status="warning"]{
+      border-color:rgba(180,120,80,.18);
+      background:rgba(180,120,80,.08);
+    }
+
+    .teacher-pack-overview-grid{
+      display:grid;
+      grid-template-columns:repeat(5, minmax(0,1fr));
+      gap:14px;
+      margin-top:22px;
+    }
+
+    .teacher-pack-metric{
+      border:1px solid var(--lab-line);
+      border-radius:20px;
+      padding:18px 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.022)),
+        radial-gradient(circle at top right, rgba(203,176,138,.08), transparent 38%);
+    }
+
+    .teacher-pack-metric-label{
+      display:block;
+      color:var(--lab-soft);
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:10px;
+    }
+
+    .teacher-pack-metric-value{
+      display:block;
+      color:var(--lab-text);
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.6rem;
+      line-height:1;
+    }
+
+    .teacher-pack-filter-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+      margin-top:20px;
+    }
+
+    .teacher-pack-variants{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:18px;
+      margin-top:22px;
+    }
+
+    .teacher-pack-variant{
+      border:1px solid var(--lab-line);
+      border-radius:24px;
+      padding:20px 18px 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.022)),
+        radial-gradient(circle at top right, rgba(203,176,138,.08), transparent 38%);
+      transition:
+        transform var(--lab-fast) ease,
+        border-color var(--lab-fast) ease,
+        background var(--lab-fast) ease;
+      cursor:pointer;
+    }
+
+    .teacher-pack-variant:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.048), rgba(255,255,255,.026)),
+        radial-gradient(circle at top right, rgba(203,176,138,.12), transparent 38%);
+    }
+
+    .teacher-pack-variant.is-active{
+      border-color:rgba(203,176,138,.34);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.052), rgba(255,255,255,.028)),
+        radial-gradient(circle at top right, rgba(203,176,138,.16), transparent 38%);
+    }
+
+    .teacher-pack-variant-title{
+      margin:0 0 12px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.8rem;
+      line-height:.95;
+    }
+
+    .teacher-pack-variant-text{
+      margin:0;
+      color:var(--lab-muted);
+      line-height:1.8;
+      font-size:.96rem;
+    }
+
+    .teacher-pack-chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .teacher-pack-chip{
+      border:1px solid var(--lab-line);
+      background:rgba(255,255,255,.02);
+      color:var(--lab-soft);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.74rem;
+      letter-spacing:.02em;
+    }
+
+    .teacher-pack-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);
+      gap:24px;
+      align-items:start;
+      margin-top:24px;
+    }
+
+    .teacher-pack-stack{
+      display:grid;
+      gap:24px;
+    }
+
+    .teacher-pack-step-list,
+    .teacher-pack-note-list,
+    .teacher-pack-object-list,
+    .teacher-pack-checklist{
+      display:grid;
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .teacher-pack-step,
+    .teacher-pack-note,
+    .teacher-pack-object,
+    .teacher-pack-check{
+      border:1px solid var(--lab-line);
+      border-radius:20px;
+      padding:16px 16px 14px;
+      background:rgba(255,255,255,.02);
+    }
+
+    .teacher-pack-step-top{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+
+    .teacher-pack-step-title{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.5rem;
+      line-height:.95;
+    }
+
+    .teacher-pack-step-meta{
+      color:var(--lab-soft);
+      font-size:.84rem;
+      white-space:nowrap;
+      padding-top:3px;
+    }
+
+    .teacher-pack-step-text,
+    .teacher-pack-note-text,
+    .teacher-pack-object-text,
+    .teacher-pack-check-text{
+      margin:0;
+      color:var(--lab-muted);
+      line-height:1.8;
+      font-size:.96rem;
+      white-space:pre-wrap;
+    }
+
+    .teacher-pack-note-title,
+    .teacher-pack-object-title,
+    .teacher-pack-check-title{
+      display:block;
+      color:var(--lab-text);
+      font-weight:600;
+      margin-bottom:8px;
+      font-size:.98rem;
+    }
+
+    .teacher-pack-empty{
+      margin-top:18px;
+      padding:24px 18px;
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius:20px;
+      color:var(--lab-muted);
+      line-height:1.8;
+      text-align:center;
+    }
+
+    .teacher-pack-two-col{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .teacher-pack-mini{
+      border:1px solid var(--lab-line);
+      border-radius:20px;
+      padding:18px 16px;
+      background:rgba(255,255,255,.02);
+    }
+
+    .teacher-pack-mini h3{
+      margin:0 0 10px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.5rem;
+      line-height:.95;
+    }
+
+    .teacher-pack-mini p{
+      margin:0;
+      color:var(--lab-muted);
+      line-height:1.8;
+      font-size:.95rem;
+      white-space:pre-wrap;
+    }
+
+    @media (max-width:1100px){
+      .teacher-pack-hero-grid,
+      .teacher-pack-layout,
+      .teacher-pack-overview-grid,
+      .teacher-pack-filter-grid,
+      .teacher-pack-variants,
+      .teacher-pack-two-col{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .teacher-pack-shell{
+        padding:24px 0 64px;
+      }
+
+      .teacher-pack-step-top{
+        flex-direction:column;
+      }
+
+      .teacher-pack-actions{
+        flex-direction:column;
+      }
+
+      .teacher-pack-actions .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body
+  data-page="lab-teacher-pack"
+  data-lang="pl"
+  data-ui="/assets/data/lab-ui-pl.json"
+  data-lessons="/assets/data/lab-lessons-pl.json"
+  data-prompts="/assets/data/lab-prompts-pl.json"
+  data-objects="/assets/data/lab-objects-pl.json"
+  data-default-lesson="ps-pl-45-liceum-swiadectwo"
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header lab-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/lab/pl/" aria-label="Powrót do Laboratorium Sumienia">
+        <div class="brand-name ps-brand">Laboratorium Sumienia</div>
+        <div class="brand-sub">Pakiet nauczyciela</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Nawigacja pakietu">
+        <a href="#packOverview">Przegląd</a>
+        <a href="#packVariants">Warianty</a>
+        <a href="#packScenario">Scenariusz</a>
+        <a href="#packMaterials">Materiały</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="teacher-pack-shell">
+    <section class="teacher-pack-hero">
+      <div class="wrap teacher-pack-hero-grid">
+        <div class="content-panel reveal">
+          <div class="panel-topline">Pakiet prowadzącego</div>
+          <h1>Scenariusz gotowy do pracy z klasą</h1>
+          <p>
+            Ten moduł porządkuje lekcję przed wejściem do konsoli nauczyciela. Pozwala wybrać wariant,
+            zobaczyć pełną sekwencję pracy, guardrails interpretacyjne, pytania aktywne, obiekty pamięci
+            i szybkie wskazówki prowadzenia — bez chaosu i bez improwizowania całej struktury od zera.
+          </p>
+
+          <div class="teacher-pack-actions">
+            <button class="btn btn-primary" type="button" id="openTeacherConsoleButton">Otwórz konsolę nauczyciela</button>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/archive.html" id="openArchiveButton">Otwórz archiwum</a>
+            <button class="btn btn-secondary" type="button" id="printPackButton">Drukuj pakiet</button>
+            <button class="btn btn-secondary" type="button" id="exportPackJsonButton">Eksportuj JSON</button>
+          </div>
+
+          <div class="teacher-pack-status" id="teacherPackStatusMessage" aria-live="polite">
+            Pakiet nauczyciela gotowy do pracy.
+          </div>
+        </div>
+
+        <aside class="content-panel reveal">
+          <div class="panel-topline">Rama pracy</div>
+          <p class="panel-quote">Nie prowadź do wyroku. Prowadź do uważności.</p>
+          <p class="panel-text">
+            Pakiet został pomyślany jako narzędzie porządkujące przebieg lekcji wokół świadectwa,
+            napięcia interpretacyjnego i odpowiedzialności odbiorcy. Nie służy uproszczeniu materiału,
+            lecz jego czytelnemu i odpowiedzialnemu prowadzeniu.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="packOverview">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Przegląd aktywnego wariantu</div>
+            <h2>Metryka lekcji</h2>
+          </div>
+          <div class="section-note">
+            Ten panel pokazuje aktualnie wybrany wariant pracy i jego podstawowe parametry.
+          </div>
+        </div>
+
+        <div class="teacher-pack-overview-grid reveal">
+          <div class="teacher-pack-metric">
+            <span class="teacher-pack-metric-label">Lekcja</span>
+            <strong class="teacher-pack-metric-value" id="packLessonTitle">—</strong>
+          </div>
+          <div class="teacher-pack-metric">
+            <span class="teacher-pack-metric-label">Poziom</span>
+            <strong class="teacher-pack-metric-value" id="packAgeGroup">—</strong>
+          </div>
+          <div class="teacher-pack-metric">
+            <span class="teacher-pack-metric-label">Czas</span>
+            <strong class="teacher-pack-metric-value" id="packDuration">—</strong>
+          </div>
+          <div class="teacher-pack-metric">
+            <span class="teacher-pack-metric-label">Oś</span>
+            <strong class="teacher-pack-metric-value" id="packAxis">—</strong>
+          </div>
+          <div class="teacher-pack-metric">
+            <span class="teacher-pack-metric-label">Raport</span>
+            <strong class="teacher-pack-metric-value" id="packReportType">—</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packVariants">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Warianty</div>
+            <h2>Wybierz scenariusz lekcji</h2>
+          </div>
+          <div class="section-note">
+            Możesz zawęzić listę wariantów filtrem, a następnie kliknąć konkretny scenariusz, by przeładować cały pakiet.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <div class="panel-topline">Filtry wariantów</div>
+
+          <div class="teacher-pack-filter-grid">
+            <label class="field">
+              <span class="field-label">Poziom</span>
+              <select id="packAgeFilter">
+                <option value="">Wszystkie</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Czas</span>
+              <select id="packDurationFilter">
+                <option value="">Wszystkie</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Oś</span>
+              <select id="packAxisFilter">
+                <option value="">Wszystkie</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="teacher-pack-variants" id="packVariantList"></div>
+          <div class="teacher-pack-empty" id="packVariantEmpty" hidden>
+            Brak wariantów spełniających aktualne kryteria.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packScenario">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Scenariusz</div>
+            <h2>Pełna struktura prowadzenia</h2>
+          </div>
+          <div class="section-note">
+            Ten obszar porządkuje przebieg lekcji: kroki, guardrails, pytania i obiekty pamięci.
+          </div>
+        </div>
+
+        <div class="teacher-pack-layout">
+          <div class="teacher-pack-stack">
+            <div class="content-panel reveal">
+              <div class="panel-topline">Timeline lekcji</div>
+              <h3>Przebieg krok po kroku</h3>
+              <div class="teacher-pack-step-list" id="packTimeline"></div>
+              <div class="teacher-pack-empty" id="packTimelineEmpty" hidden>
+                Ten wariant nie zawiera kroków do wyświetlenia.
+              </div>
+            </div>
+
+            <div class="content-panel reveal">
+              <div class="panel-topline">Pytania aktywne</div>
+              <h3>Bank pytań dla tego wariantu</h3>
+              <div class="teacher-pack-note-list" id="packPromptBank"></div>
+              <div class="teacher-pack-empty" id="packPromptEmpty" hidden>
+                Brak pytań przypisanych do tego wariantu.
+              </div>
+            </div>
+          </div>
+
+          <div class="teacher-pack-stack">
+            <div class="content-panel reveal">
+              <div class="panel-topline">Guardrails</div>
+              <h3>Ramy interpretacyjne</h3>
+              <div class="teacher-pack-note-list" id="packGuardrails"></div>
+              <div class="teacher-pack-empty" id="packGuardrailsEmpty" hidden>
+                Brak dodatkowych guardrails dla tego wariantu.
+              </div>
+            </div>
+
+            <div class="content-panel reveal">
+              <div class="panel-topline">Obiekty pamięci</div>
+              <h3>Obiekty uruchamiane w lekcji</h3>
+              <div class="teacher-pack-object-list" id="packObjectList"></div>
+              <div class="teacher-pack-empty" id="packObjectsEmpty" hidden>
+                Ten wariant nie uruchamia obiektu pamięci.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packMaterials">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Materiały pomocnicze</div>
+            <h2>Przygotowanie i prowadzenie</h2>
+          </div>
+          <div class="section-note">
+            Zwięzły zestaw wskazówek przed wejściem do lekcji i podczas samej pracy z klasą.
+          </div>
+        </div>
+
+        <div class="teacher-pack-layout">
+          <div class="teacher-pack-stack">
+            <div class="content-panel reveal">
+              <div class="panel-topline">Checklist</div>
+              <h3>Co przygotować przed lekcją</h3>
+              <div class="teacher-pack-checklist" id="packChecklist"></div>
+            </div>
+          </div>
+
+          <div class="teacher-pack-stack">
+            <div class="content-panel reveal">
+              <div class="panel-topline">Adnotacje prowadzącego</div>
+              <div class="teacher-pack-two-col">
+                <div class="teacher-pack-mini">
+                  <h3>Adaptacja do poziomu</h3>
+                  <p id="packAgeAdaptation">—</p>
+                </div>
+                <div class="teacher-pack-mini">
+                  <h3>Notatka metodyczna</h3>
+                  <p id="packTeacherNote">—</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-panel reveal">
+              <div class="panel-topline">Przejście dalej</div>
+              <div class="teacher-pack-two-col">
+                <div class="teacher-pack-mini">
+                  <h3>Po lekcji</h3>
+                  <p id="packAfterLesson">—</p>
+                </div>
+                <div class="teacher-pack-mini">
+                  <h3>Powiązane moduły</h3>
+                  <p id="packNextModules">—</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>Laboratorium Sumienia · Pakiet nauczyciela</div>
+      <div>Wersja polska</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="/assets/js/lab-teacher-pack.js"></script>
+</body>
+</html>
