@@ -1,0 +1,685 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "project": {
+    "id": "prawda-sumienia-edu",
+    "brand": "Prawda Sumienia",
+    "productName": "Pakiet edukacyjny Prawda Sumienia",
+    "seriesName": "Rap-Ort",
+    "authorCredit": "Projekt autorski Piotra Lichwały (Vibrosław)",
+    "mode": "institutional-education",
+    "primaryAudience": [
+      "szkoła podstawowa 7-8",
+      "liceum",
+      "uczelnia",
+      "Polonia",
+      "instytucje kultury"
+    ],
+    "corePromise": "Pakiet umożliwia prowadzenie pracy edukacyjnej z materiałem audiowizualnym poprzez wybór działu, pytania przewodniego, projekcję, pracę ucznia przez QR oraz końcowy raport.",
+    "publicPositioning": "Pakiet edukacyjny oparty na rozdziale audiowizualnym, służący pracy z historią, świadectwem, pamięcią, odpowiedzialnością odbioru oraz relacją między źródłem a interpretacją.",
+    "internalPositioning": "Narzędzie dla nauczyciela pierwszego kontaktu: ma być proste, natychmiast zrozumiałe, możliwe do uruchomienia bez szkolenia i bez rozbudowanej konfiguracji."
+  },
+  "productStrategy": {
+    "uxPriority": "clarity-over-complexity",
+    "teacherFirst": true,
+    "studentMobileFirst": true,
+    "singlePrimaryFlow": true,
+    "featureRestraint": true,
+    "defaultSessionModel": "choose-section-choose-question-project-qr-report",
+    "targetTeacherLearningCurve": "under-5-minutes",
+    "whatThisProductIs": [
+      "pakietem edukacyjnym",
+      "panelem prowadzącego",
+      "narzędziem do pracy z raportem ucznia",
+      "warstwą towarzyszącą projekcji materiału audiowizualnego"
+    ],
+    "whatThisProductIsNot": [
+      "grą edukacyjną",
+      "rozbudowaną platformą LMS",
+      "encyklopedią historyczną dla ucznia",
+      "efektownym demem interaktywnych funkcji"
+    ]
+  },
+  "simplificationRules": {
+    "removeComplexInteractiveObjects": true,
+    "removeMultiQrModes": true,
+    "removeTeacherTimelineComplexity": true,
+    "removeHotspotRequirement": true,
+    "removeAdvancedStageEngineFromUI": true,
+    "removeMultiplePresentationViewsAsDefault": true,
+    "teacherShouldAlwaysSee": [
+      "dział",
+      "opis działu",
+      "jak prowadzić",
+      "na co uważać",
+      "5 gotowych pytań",
+      "pole własnego pytania",
+      "przycisk fullscreen",
+      "przycisk QR dla ucznia",
+      "archiwum raportów"
+    ],
+    "teacherShouldNotNeed": [
+      "czytać dokumentacji technicznej",
+      "konfigurować wielu trybów",
+      "obsługiwać wielu warstw obiektów",
+      "rozumieć logiki sesji i kroków",
+      "klikać przez wiele ekranów przed startem"
+    ]
+  },
+  "pedagogicalFramework": {
+    "coreAxes": [
+      "świadectwo",
+      "źródło",
+      "pamięć",
+      "totalitaryzm",
+      "wybór pod presją",
+      "odpowiedzialność odbioru"
+    ],
+    "teachingPosture": "restrained-guided",
+    "studentExperience": "focused-reflective",
+    "teacherExperience": "guided-curatorial",
+    "methodologicalRules": [
+      "Oddzielaj fakt, interpretację i odpowiedź osobistą.",
+      "Nie wymuszaj prostego wyroku moralnego.",
+      "Nie prowadź lekcji jako rankingu bohaterów i winnych.",
+      "Nie utożsamiaj emocjonalnej siły dzieła z pełnią źródła historycznego.",
+      "Nie przypisuj intencji osobom historycznym bez wyraźnych podstaw.",
+      "Nie zamieniaj pracy edukacyjnej w publicystyczny komentarz."
+    ],
+    "studentFacingTone": "clear-minimal-respectful",
+    "teacherFacingTone": "controlled-precise-source-aware"
+  },
+  "historicalIntegrity": {
+    "pilecki": {
+      "status": "core",
+      "studentFacing": true,
+      "teacherFacing": true,
+      "notes": "Pilecki pozostaje centralną figurą osi projektu, ale bez hagiografii i bez uproszczeń."
+    },
+    "cyrankiewicz": {
+      "status": "advanced-context-only",
+      "studentFacing": false,
+      "teacherFacing": true,
+      "defaultVisibility": "hidden",
+      "notes": "Cyrankiewicz nie pojawia się w podstawowej ścieżce ucznia. Może wystąpić wyłącznie w nauczycielskich notach rozszerzonych jako kontekst interpretacyjny lub historyczny."
+    },
+    "nazism": {
+      "status": "allowed",
+      "studentFacing": true,
+      "teacherFacing": true
+    },
+    "stalinism": {
+      "status": "allowed",
+      "studentFacing": true,
+      "teacherFacing": true
+    },
+    "prl": {
+      "status": "allowed",
+      "studentFacing": true,
+      "teacherFacing": true
+    },
+    "namedPersonComparisons": {
+      "default": "off",
+      "teacherOverrideAllowed": true,
+      "notes": "Porównania osób historycznych nie są osią lekcji; mogą się pojawić tylko jako ostrożny kontekst dla starszych grup."
+    }
+  },
+  "appStructure": {
+    "pages": [
+      {
+        "id": "home",
+        "label": "Pakiet edukacyjny",
+        "path": "/rap-ort/prawda-sumienia/edukacja/pl/index.html",
+        "purpose": "wejście do pakietu, opis, działy, sposób działania"
+      },
+      {
+        "id": "teacher",
+        "label": "Panel nauczyciela",
+        "path": "/rap-ort/prawda-sumienia/edukacja/pl/teacher.html",
+        "purpose": "wybór działu, guide, pytanie, projekcja, QR, archiwum"
+      },
+      {
+        "id": "student",
+        "label": "Raport ucznia",
+        "path": "/rap-ort/prawda-sumienia/edukacja/pl/student.html",
+        "purpose": "mobilny formularz ucznia po zeskanowaniu QR"
+      },
+      {
+        "id": "archive",
+        "label": "Archiwum raportów",
+        "path": "/rap-ort/prawda-sumienia/edukacja/pl/archive.html",
+        "purpose": "anonimowe raporty, eksport, przegląd materiału po zajęciach"
+      }
+    ],
+    "defaultEntryPage": "home",
+    "primaryTeacherEntryPage": "teacher",
+    "primaryStudentEntryPage": "student",
+    "archiveVisibility": "teacher-only"
+  },
+  "navigation": {
+    "topNav": [
+      {
+        "id": "nav-home",
+        "label": "Pakiet",
+        "targetPage": "home"
+      },
+      {
+        "id": "nav-sections",
+        "label": "Działy",
+        "anchor": "#dzialy"
+      },
+      {
+        "id": "nav-how",
+        "label": "Jak to działa",
+        "anchor": "#jak-to-dziala"
+      },
+      {
+        "id": "nav-teacher",
+        "label": "Panel nauczyciela",
+        "targetPage": "teacher",
+        "emphasis": "primary"
+      }
+    ],
+    "teacherTabs": [
+      {
+        "id": "teacher-section",
+        "label": "Dział"
+      },
+      {
+        "id": "teacher-guide",
+        "label": "Teacher Guide"
+      },
+      {
+        "id": "teacher-question",
+        "label": "Pytanie"
+      },
+      {
+        "id": "teacher-projector",
+        "label": "Projekcja"
+      },
+      {
+        "id": "teacher-archive",
+        "label": "Archiwum"
+      }
+    ],
+    "studentTabs": [],
+    "showBreadcrumbs": false
+  },
+  "homePage": {
+    "hero": {
+      "eyebrow": "Pakiet edukacyjny",
+      "title": "Prawda Sumienia",
+      "subtitle": "Historia, świadectwo, pamięć i odpowiedzialność odbioru",
+      "lead": "Pakiet do pracy szkolnej, rocznicowej i instytucjonalnej oparty na rozdziale audiowizualnym. Nauczyciel wybiera dział i pytanie przewodnie, prowadzi projekcję, a uczniowie kończą pracę indywidualnym raportem przez QR.",
+      "primaryCtaLabel": "Wejdź do panelu nauczyciela",
+      "secondaryCtaLabel": "Zobacz działy"
+    },
+    "howItWorks": {
+      "title": "Jak to działa",
+      "steps": [
+        {
+          "id": "how-01",
+          "title": "Wybierz dział",
+          "text": "Dobierz temat do odbiorcy, rocznicy lub celu zajęć."
+        },
+        {
+          "id": "how-02",
+          "title": "Wybierz pytanie",
+          "text": "Skorzystaj z gotowych pytań albo wpisz własne."
+        },
+        {
+          "id": "how-03",
+          "title": "Prowadź projekcję",
+          "text": "Wyświetl pytanie i pracuj z materiałem w trybie pełnoekranowym."
+        },
+        {
+          "id": "how-04",
+          "title": "Zakończ raportem",
+          "text": "Uczniowie skanują QR, odpowiadają na telefonach i zostawiają anonimowy raport."
+        }
+      ]
+    },
+    "teacherExpectation": {
+      "title": "Dla nauczyciela pierwszego kontaktu",
+      "points": [
+        "Nie wymaga szkolenia technicznego.",
+        "Nie wymaga rozbudowanej konfiguracji.",
+        "Nie wymaga osobnego systemu logowania dla ucznia.",
+        "Może działać jako jednorazowa lekcja lub element wydarzenia rocznicowego."
+      ]
+    }
+  },
+  "teacherPanel": {
+    "layout": "single-workspace",
+    "defaultSection": "teacher-section",
+    "showSessionComplexity": false,
+    "showTechnicalSessionId": false,
+    "showOnlyTeacherRelevantActions": true,
+    "mainBlocks": [
+      {
+        "id": "sectionPicker",
+        "title": "Wybierz dział",
+        "required": true
+      },
+      {
+        "id": "teacherGuide",
+        "title": "Teacher Guide",
+        "required": true
+      },
+      {
+        "id": "questionPicker",
+        "title": "Pytanie przewodnie",
+        "required": true
+      },
+      {
+        "id": "projectorControls",
+        "title": "Prowadzenie i projekcja",
+        "required": true
+      },
+      {
+        "id": "archivePanel",
+        "title": "Archiwum raportów",
+        "required": true
+      }
+    ],
+    "sectionPicker": {
+      "mode": "cards",
+      "showShortDescription": true,
+      "showAudienceFit": true,
+      "showRecommendedUseCases": true,
+      "maxVisibleCardsWithoutCollapse": 6
+    },
+    "teacherGuide": {
+      "showAs": "single-scroll-panel",
+      "subBlocks": [
+        {
+          "id": "guide-purpose",
+          "label": "Sens działu"
+        },
+        {
+          "id": "guide-for-whom",
+          "label": "Dla kogo"
+        },
+        {
+          "id": "guide-how-to-run",
+          "label": "Jak prowadzić"
+        },
+        {
+          "id": "guide-watch-outs",
+          "label": "Na co uważać"
+        },
+        {
+          "id": "guide-source-notes",
+          "label": "Źródła i objaśnienia"
+        },
+        {
+          "id": "guide-track-notes",
+          "label": "Noty do materiału"
+        }
+      ],
+      "defaultExpandedBlocks": [
+        "guide-purpose",
+        "guide-how-to-run",
+        "guide-watch-outs"
+      ],
+      "advancedBlocksCollapsedByDefault": true
+    },
+    "questionPicker": {
+      "maxReadyQuestionsPerSection": 5,
+      "teacherCanSelectOnePrimaryQuestion": true,
+      "teacherCanAddOneCustomQuestion": true,
+      "customQuestionOptional": true,
+      "customQuestionMaxLength": 220,
+      "teacherQuestionWarning": "Unikaj pytań wymuszających prosty osąd moralny, ranking postaci albo jednoznaczny werdykt.",
+      "sendSelectedQuestionToStudent": true,
+      "sendCustomQuestionToStudent": true
+    },
+    "projectorControls": {
+      "mode": "simple",
+      "buttons": [
+        {
+          "id": "projector-show-question",
+          "label": "Pokaż pytanie"
+        },
+        {
+          "id": "projector-show-qr",
+          "label": "Pokaż QR"
+        },
+        {
+          "id": "projector-fullscreen",
+          "label": "Pełny ekran"
+        },
+        {
+          "id": "projector-guide-notes",
+          "label": "Notatki prowadzącego"
+        }
+      ],
+      "doNotShowByDefault": [
+        "multi-view-tabs",
+        "timed-stage-engine",
+        "complex-presentation-state",
+        "object-hotspot-modes"
+      ],
+      "teacherNotesVisibleOnlyToTeacher": true
+    }
+  },
+  "projectorMode": {
+    "defaultScreen": "question",
+    "availableScreens": [
+      {
+        "id": "question",
+        "label": "Pytanie"
+      },
+      {
+        "id": "qr",
+        "label": "QR"
+      },
+      {
+        "id": "notes",
+        "label": "Notatki prowadzącego"
+      }
+    ],
+    "showSectionTitle": true,
+    "showPrimaryQuestion": true,
+    "showCustomQuestionIfPresent": true,
+    "showMinimalBranding": true,
+    "allowKeyboardShortcuts": true,
+    "shortcuts": {
+      "question": "1",
+      "qr": "2",
+      "notes": "3",
+      "fullscreen": "f",
+      "close": "Escape"
+    },
+    "visualTone": "dark-institutional-cinematic",
+    "projectorSafe": true,
+    "avoidBusyAnimations": true
+  },
+  "studentExperience": {
+    "entryMode": "qr-only",
+    "mobileFirst": true,
+    "studentNeedsLogin": false,
+    "studentSeesOnly": [
+      "tytuł działu",
+      "pytanie główne",
+      "opcjonalne pytanie nauczyciela",
+      "formularz raportu",
+      "zgodę na zapis anonimowy",
+      "opcję PDF",
+      "opcję wysłania PDF na e-mail"
+    ],
+    "studentDoesNotSee": [
+      "pełnego teacher guide",
+      "rozbudowanych kart źródłowych",
+      "warstw technicznych sesji",
+      "rozbudowanych obiektów interaktywnych",
+      "not nauczyciela"
+    ],
+    "entryScreen": {
+      "titleMode": "section-and-question",
+      "showTeacherQuestionIfPresent": true,
+      "lead": "Pracujesz indywidualnie. Odpowiedz uczciwie i we własnym tempie.",
+      "startButtonLabel": "Przejdź do raportu"
+    }
+  },
+  "reportFlow": {
+    "mode": "single-student-report",
+    "anonymousByDefault": true,
+    "allowPdfExport": true,
+    "allowEmailPdf": true,
+    "emailPdfRequiresOptIn": true,
+    "emailPdfIsMemorialCopy": true,
+    "archiveAnonymousOnly": true,
+    "studentFieldsCountTarget": 4,
+    "reportFieldDesignGoal": "short-clear-reflective",
+    "reportCompletionTimeTargetMinutes": 4,
+    "saveBehavior": {
+      "autoSaveDraft": true,
+      "saveOnFieldBlur": true,
+      "saveOnSubmit": true
+    },
+    "submitFlow": [
+      "walidacja",
+      "zapis raportu",
+      "opcjonalny zapis do archiwum anonimowego",
+      "opcjonalne wygenerowanie PDF",
+      "opcjonalne wysłanie PDF na e-mail"
+    ]
+  },
+  "qr": {
+    "primaryUse": "student-report-entry",
+    "secondaryUsesAllowed": [],
+    "teacherGeneratesQrFor": [
+      "aktywny dział",
+      "wybrane pytanie",
+      "opcjonalne pytanie własne"
+    ],
+    "qrRefreshMode": "on-question-change",
+    "showHumanReadableLinkBelowQr": false,
+    "showShortInstructionNearQr": true,
+    "instructionText": "Zeskanuj kod, aby przejść do indywidualnego raportu."
+  },
+  "archive": {
+    "enabled": true,
+    "mode": "anonymous-student-reports",
+    "teacherOnlyAccess": true,
+    "studentCanSubmitAnonymously": true,
+    "defaultStorageScope": "local-or-project-store",
+    "visibleMetrics": [
+      "liczba raportów",
+      "lista ostatnich raportów"
+    ],
+    "hiddenMetricsForMvp": [
+      "top-quote",
+      "top-object",
+      "complex-analytics",
+      "timeline-heatmaps"
+    ],
+    "teacherActions": [
+      {
+        "id": "archive-export-json",
+        "label": "Eksport JSON"
+      },
+      {
+        "id": "archive-export-pdf-bundle",
+        "label": "Eksport PDF"
+      },
+      {
+        "id": "archive-delete-single",
+        "label": "Usuń wpis"
+      },
+      {
+        "id": "archive-clear-all",
+        "label": "Wyczyść archiwum"
+      }
+    ]
+  },
+  "mediaAccess": {
+    "videoModel": "secure-stream",
+    "preferredDelivery": "signed-expiring-url",
+    "downloadDeterrenceOnly": true,
+    "notes": "Materiał można zabezpieczać czasowymi linkami, ale nie należy obiecywać pełnej niemożliwości pobrania. Celem jest kontrola dostępu, nie gwarancja absolutna.",
+    "tokenDurationsSupported": [
+      "1-day",
+      "7-days",
+      "30-days"
+    ],
+    "teacherAccessProfiles": [
+      {
+        "id": "demo",
+        "label": "Pokaz / 1 dzień",
+        "tokenDuration": "1-day"
+      },
+      {
+        "id": "school-week",
+        "label": "Tydzień roboczy",
+        "tokenDuration": "7-days"
+      },
+      {
+        "id": "institutional-window",
+        "label": "Okno instytucjonalne",
+        "tokenDuration": "30-days"
+      }
+    ],
+    "playerRules": {
+      "nativeControlsAllowed": true,
+      "rightClickDiscouraged": true,
+      "directFileUrlHiddenWhenPossible": true,
+      "signedPlaybackRequired": true
+    }
+  },
+  "screenModes": {
+    "teacher": {
+      "layout": "guided-workspace",
+      "density": "medium",
+      "showSectionSummary": true,
+      "showGuideNotes": true,
+      "showQuestionBank": true,
+      "showProjectorControls": true,
+      "showArchivePanel": true,
+      "showAdvancedControls": false
+    },
+    "projector": {
+      "layout": "single-focus-fullscreen",
+      "density": "low",
+      "showOnePrimaryElementAtTime": true,
+      "showBrandMarkSmall": true
+    },
+    "student": {
+      "layout": "mobile-report",
+      "density": "low",
+      "showOnlyCurrentTask": true,
+      "showProgress": true,
+      "showDistractionFreeFooter": true
+    },
+    "archive": {
+      "layout": "teacher-review",
+      "density": "medium",
+      "showRecentFirst": true
+    }
+  },
+  "contentBoundaries": {
+    "studentFacingAllowed": [
+      "Pilecki",
+      "Auschwitz",
+      "totalitaryzm",
+      "nazizm",
+      "stalinizm",
+      "PRL",
+      "sumienie",
+      "raport",
+      "AI i historia",
+      "Polonia i pamięć"
+    ],
+    "studentFacingRestricted": [
+      "rozbudowane porównania personalne",
+      "noty o Cyrankiewiczu jako osi interpretacyjnej",
+      "zaawansowane spory historiograficzne"
+    ],
+    "teacherFacingAllowed": [
+      "kontekst historyczny",
+      "kontekst metodologiczny",
+      "noty o metaforach",
+      "noty o rozróżnieniu źródło / forma / interpretacja",
+      "kontekst nazizm / stalinizm / PRL",
+      "kontekst AI i odpowiedzialności twórczej"
+    ]
+  },
+  "performance": {
+    "prioritizeFastFirstUse": true,
+    "heavyInteractiveAssetsDisabledByDefault": true,
+    "belowFoldLazyLoad": true,
+    "parallaxAllowedOnlyOnPublicPages": true,
+    "parallaxDisabledInTeacherStudentArchive": true,
+    "preferredAnimationProps": [
+      "opacity",
+      "transform"
+    ],
+    "reducedMotion": {
+      "supported": true,
+      "defaultControlsVisible": true,
+      "disableParallax": true,
+      "disableLongTransitions": true,
+      "replaceWithFade": true
+    }
+  },
+  "accessibility": {
+    "keyboardFirstNavigation": true,
+    "focusVisible": true,
+    "minTapTargetPx": 44,
+    "highContrastReady": true,
+    "projectorReadableTypography": true,
+    "studentMobileReadableTypography": true,
+    "screenReaderLabelsRequired": true
+  },
+  "visualSystem": {
+    "theme": "institutional-dark",
+    "fonts": {
+      "display": "Cinzel",
+      "serif": "Cormorant Garamond",
+      "sans": "Inter"
+    },
+    "colors": {
+      "bg": "#080808",
+      "bgSoft": "#101010",
+      "bgDeeper": "#060606",
+      "panel": "rgba(255,255,255,0.04)",
+      "panelStrong": "rgba(255,255,255,0.06)",
+      "line": "rgba(255,255,255,0.08)",
+      "lineStrong": "rgba(255,255,255,0.14)",
+      "text": "#efe8de",
+      "muted": "rgba(239,232,222,0.74)",
+      "soft": "rgba(239,232,222,0.50)",
+      "accent": "#cbb08a",
+      "accentSoft": "rgba(203,176,138,0.18)"
+    },
+    "surfaces": {
+      "cardRadius": 28,
+      "panelRadius": 24,
+      "buttonRadius": 999
+    },
+    "styleKeywords": [
+      "powściągliwość",
+      "instytucjonalna elegancja",
+      "czytelność",
+      "ciemne tło",
+      "jasna typografia",
+      "minimum ozdobników"
+    ]
+  },
+  "labels": {
+    "teacherPanelTitle": "Panel nauczyciela",
+    "teacherGuideTitle": "Teacher Guide",
+    "questionBankTitle": "Pytania przewodnie",
+    "customQuestionLabel": "Własne pytanie nauczyciela",
+    "projectorTitle": "Tryb projekcji",
+    "showQuestionButton": "Pokaż pytanie",
+    "showQrButton": "Pokaż QR",
+    "fullscreenButton": "Pełny ekran",
+    "teacherNotesButton": "Notatki prowadzącego",
+    "studentReportTitle": "Raport ucznia",
+    "archiveTitle": "Archiwum raportów",
+    "startButton": "Rozpocznij",
+    "savePdfButton": "Pobierz PDF",
+    "sendPdfButton": "Wyślij PDF na e-mail",
+    "submitReportButton": "Zapisz raport",
+    "anonymousConsentLabel": "Zapisz mój raport anonimowo w archiwum",
+    "emailConsentLabel": "Chcę otrzymać pamiątkowy PDF na e-mail"
+  },
+  "microcopy": {
+    "teacherQuestionHint": "Wybierz jedno pytanie główne. Opcjonalnie dodaj jedno własne.",
+    "teacherGuideHint": "To jest wersja skrócona, gotowa do użycia na pierwszych zajęciach.",
+    "qrHint": "Uczniowie przechodzą bez logowania, bezpośrednio do raportu.",
+    "archiveHint": "Raporty są anonimowe i służą refleksji, nie ocenie ucznia.",
+    "studentIntroHint": "Nie szukaj odpowiedzi idealnej. Odpowiedz uczciwie."
+  },
+  "futureFlags": {
+    "advancedObjectMode": false,
+    "multiStepLessonEngineVisible": false,
+    "multipleQrTypes": false,
+    "liveTeacherTimer": false,
+    "studentKnowledgeCards": false,
+    "interactiveImageHotspots": false,
+    "advancedAnalytics": false
+  }
+}
