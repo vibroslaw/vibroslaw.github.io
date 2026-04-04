@@ -20,8 +20,14 @@
   data-page="lab-report"
   data-lang="pl"
   data-ui="/assets/data/lab-ui-pl.json"
+  data-lessons="/assets/data/lab-lessons-pl.json"
   data-prompts="/assets/data/lab-prompts-pl.json"
+  data-objects="/assets/data/lab-objects-pl.json"
+  data-default-lesson="ps-pl-45-liceum-swiadectwo"
 >
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
   <header class="site-header lab-header">
     <div class="wrap header-inner">
       <a class="brand" href="/rap-ort/prawda-sumienia/lab/pl/" aria-label="Powrót do Laboratorium Sumienia">
@@ -52,12 +58,13 @@
         </div>
 
         <div class="report-preview-shell reveal">
-          <article class="report-page" id="reportDocument">
+          <article class="report-page" id="reportDocument" aria-label="Podgląd raportu odbioru">
             <header class="report-page-header">
               <div class="report-stamp">LABORATORIUM SUMIENIA</div>
+
               <div class="report-meta">
                 <div><strong>Rozdział:</strong> Prawda Sumienia</div>
-                <div><strong>Typ raportu:</strong> Raport odbioru</div>
+                <div><strong>Typ raportu:</strong> <span id="reportTypeLabel">Raport odbioru</span></div>
                 <div><strong>Sesja:</strong> <span id="reportSessionId">PS-PL-LIVE</span></div>
               </div>
             </header>
@@ -76,23 +83,17 @@
 
             <section class="report-section">
               <div class="report-section-label">Najważniejszy moment</div>
-              <p class="report-text" id="reportKeyMoment">
-                —
-              </p>
+              <p class="report-text" id="reportKeyMoment">—</p>
             </section>
 
             <section class="report-section">
               <div class="report-section-label">Odpowiedź końcowa</div>
-              <p class="report-text" id="reportFinalResponse">
-                —
-              </p>
+              <p class="report-text" id="reportFinalResponse">—</p>
             </section>
 
             <section class="report-section">
               <div class="report-section-label">Pytanie, które zostaje</div>
-              <p class="report-text" id="reportOpenQuestion">
-                Jak pamiętać odpowiedzialnie?
-              </p>
+              <p class="report-text" id="reportOpenQuestion">Jak pamiętać odpowiedzialnie?</p>
             </section>
 
             <footer class="report-page-footer">
@@ -137,8 +138,8 @@
   </footer>
 
   <script src="/assets/js/lab-core.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<script src="/assets/js/lab-report-builder.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="/assets/js/lab-report-builder.js"></script>
 </body>
 </html>
