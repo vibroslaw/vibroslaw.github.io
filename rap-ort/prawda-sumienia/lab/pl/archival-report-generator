@@ -1,8 +1,685 @@
+   <!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raport — dokument osobisty</title>
+  <meta name="description" content="Generator archiwalnego raportu z eksportem PNG i PDF." />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <style>
+    :root{
+      --bg:#0d0c0a;
+      --panel:#181512;
+      --panel-2:#211d18;
+      --line:rgba(255,255,255,.08);
+      --text:#efe7dc;
+      --muted:rgba(239,231,220,.72);
+      --accent:#c8a97e;
+      --paper-width:780px;
+      --paper-ratio:780 / 1100;
+      --typewriter:"Special Elite","Courier New",monospace;
+      --ui:"Inter",system-ui,sans-serif;
+      --shadow:0 24px 70px rgba(0,0,0,.38);
+      --radius:24px;
+    }
 
-  
-  
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--ui);
+      color:var(--text);
+      background:
+        radial-gradient(circle at top, rgba(200,169,126,.10), transparent 28%),
+        linear-gradient(180deg, #090806 0%, #0c0b09 100%);
+      min-height:100vh;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.012), rgba(255,255,255,.012)),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,.008) 0px,
+          rgba(255,255,255,.008) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      opacity:.12;
+      mix-blend-mode:soft-light;
+    }
+
+    .wrap{
+      width:min(1360px, calc(100% - 28px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    .hero{
+      padding:28px 0 16px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(320px, 420px) minmax(0, 1fr);
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.024)),
+        radial-gradient(circle at top right, rgba(200,169,126,.10), transparent 36%);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .sidebar{
+      padding:22px 20px;
+      position:sticky;
+      top:18px;
+    }
+
+    .kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.72rem;
+      margin-bottom:10px;
+    }
+
+    h1{
+      margin:0;
+      font-size:2.2rem;
+      line-height:.96;
+    }
+
+    .lead{
+      margin:14px 0 0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:.98rem;
+    }
+
+    .field-grid{
+      display:grid;
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+    }
+
+    .field label{
+      color:var(--muted);
+      font-size:.88rem;
+    }
+
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      font:inherit;
+      padding:12px 14px;
+      outline:none;
+    }
+
+    .field textarea{
+      min-height:124px;
+      resize:vertical;
+      line-height:1.7;
+    }
+
+    .toggle-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .actions{
+      display:grid;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .btn{
+      min-height:46px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font:inherit;
+      cursor:pointer;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.18);
+    }
+
+    .btn-primary{
+      background:var(--text);
+      color:#111;
+      border-color:transparent;
+      font-weight:600;
+    }
+
+    .btn-primary:hover{
+      background:#fff7ef;
+    }
+
+    .note{
+      margin-top:14px;
+      color:var(--muted);
+      line-height:1.72;
+      font-size:.9rem;
+    }
+
+    .preview-panel{
+      padding:18px;
+    }
+
+    .preview-topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+    .preview-title{
+      font-size:1rem;
+      color:var(--muted);
+    }
+
+    .status{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .paper-stage{
+      display:grid;
+      place-items:center;
+      padding:16px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(0,0,0,.16);
+      overflow:auto;
+    }
+
+    .paper{
+      position:relative;
+      width:min(100%, var(--paper-width));
+      aspect-ratio:var(--paper-ratio);
+      background:#d9ccb9;
+      box-shadow:0 28px 80px rgba(0,0,0,.34);
+      overflow:hidden;
+      transform-origin:top center;
+    }
+
+    .paper-bg,
+    .paper-overlay,
+    .paper-content{
+      position:absolute;
+      inset:0;
+    }
+
+    .paper-bg{
+      object-fit:cover;
+      width:100%;
+      height:100%;
+      filter:saturate(.84) contrast(1.01) brightness(.98);
+      user-select:none;
+      -webkit-user-drag:none;
+      pointer-events:none;
+    }
+
+    .paper-overlay{
+      background:
+        linear-gradient(180deg, rgba(255,248,235,.02), rgba(0,0,0,.02)),
+        radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,.04) 100%);
+      pointer-events:none;
+    }
+
+    .paper-content{
+      font-family:var(--typewriter);
+      color:#17130f;
+      padding:13.2% 11.8% 12% 11.5%;
+    }
+
+    .report-title{
+      text-align:center;
+      font-size:clamp(1.7rem, 3.2vw, 2.65rem);
+      letter-spacing:.23em;
+      margin:0;
+      line-height:1;
+      font-weight:400;
+    }
+
+    .report-subtitle{
+      margin:10px 0 0;
+      text-align:center;
+      font-size:clamp(1rem, 1.8vw, 1.55rem);
+      line-height:1.15;
+      font-weight:400;
+    }
+
+    .meta{
+      margin-top:11.4%;
+      display:grid;
+      gap:6px;
+      font-size:clamp(1rem, 2vw, 1.5rem);
+      line-height:1.08;
+    }
+
+    .meta-line{
+      display:flex;
+      gap:.55ch;
+      align-items:flex-end;
+      flex-wrap:wrap;
+    }
+
+    .meta-value{
+      min-width:0;
+    }
+
+    .intro{
+      margin-top:13.5%;
+      font-size:clamp(1rem, 1.92vw, 1.45rem);
+      line-height:1.18;
+      white-space:pre-line;
+      max-width:95%;
+    }
+
+    .write-area{
+      margin-top:9.2%;
+      position:relative;
+    }
+
+    .write-lines{
+      display:grid;
+      gap:16px;
+    }
+
+    .write-line{
+      height:2px;
+      background:rgba(89,85,79,.42);
+      width:100%;
+    }
+
+    .write-text{
+      position:absolute;
+      inset:0;
+      padding:2px 0 0;
+      font-size:clamp(1rem, 1.88vw, 1.38rem);
+      line-height:1.7;
+      white-space:pre-wrap;
+      word-break:break-word;
+      max-width:100%;
+    }
+
+    .report-footer{
+      position:absolute;
+      left:11.5%;
+      right:11.8%;
+      bottom:9.8%;
+      font-size:clamp(1rem, 1.9vw, 1.5rem);
+      line-height:1.18;
+    }
+
+    .hidden-audio{
+      position:absolute;
+      width:1px;
+      height:1px;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    @media (max-width:1100px){
+      .hero-grid{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+    }
+
+    @media (max-width:760px){
+      .wrap{
+        width:min(100%, calc(100% - 16px));
+      }
+
+      .hero{
+        padding:16px 0 10px;
+      }
+
+      .preview-panel,
+      .sidebar{
+        padding:16px;
+      }
+
+      .paper-stage{
+        padding:10px;
+      }
+
+      .report-title{
+        letter-spacing:.17em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="hero">
+    <div class="wrap hero-grid">
+      <aside class="panel sidebar">
+        <div class="kicker">Generator archiwalny</div>
+        <h1>Raport osobisty</h1>
+        <p class="lead">
+          Uczestnik skanuje QR, wpisuje datę, miejsce i własny zapis. Tekst układa się bezpośrednio na wgranym obrazie dokumentu i może zostać pobrany jako PNG albo PDF.
+        </p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="backgroundUpload">Tło dokumentu</label>
+            <input id="backgroundUpload" type="file" accept="image/*" />
+          </div>
+
+          <div class="field">
+            <label for="reportDate">Data</label>
+            <input id="reportDate" type="text" placeholder="np. 25 maja" value="25 maja" />
+          </div>
+
+          <div class="field">
+            <label for="reportPlace">Miejsce</label>
+            <input id="reportPlace" type="text" placeholder="np. Oświęcim" value="Oświęcim" />
+          </div>
+
+          <div class="field">
+            <label for="reportIntro">Wprowadzenie</label>
+            <textarea id="reportIntro">Ten dokument nie jest testem wiedzy.
+Jest zapisem chwili, w której historia przestaje być odległa. Jeśli chcesz — zapisz jedną myśl, jedno pytanie lub jedno zdanie, które pozostało po tym doświadczeniu.</textarea>
+          </div>
+
+          <div class="field">
+            <label for="reportBody">Treść raportu</label>
+            <textarea id="reportBody" placeholder="Wpisz własną myśl, pytanie albo jedno zdanie..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="reportFooter">Stopka</label>
+            <input id="reportFooter" type="text" value="dokument pozostaje do Twojej dyspozycji" />
+          </div>
+
+          <div class="toggle-row">
+            <input id="typewriterSoundToggle" type="checkbox" checked />
+            <label for="typewriterSoundToggle">Stuk maszyny podczas pisania</label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="downloadPngButton" type="button">Pobierz PNG</button>
+          <button class="btn" id="downloadPdfButton" type="button">Pobierz PDF</button>
+          <button class="btn" id="printButton" type="button">Drukuj</button>
+          <button class="btn" id="clearBodyButton" type="button">Wyczyść treść</button>
+        </div>
+
+        <p class="note" id="generatorStatus">
+          Font nie będzie identyczny 1:1 bez oryginalnego pliku czcionki, ale ta wersja używa bardzo bliskiego, archiwalnego kroju typu maszyna do pisania.
+        </p>
+      </aside>
+
+      <section class="panel preview-panel">
+        <div class="preview-topbar">
+          <div class="preview-title">Podgląd dokumentu na bazie wgranego obrazu</div>
+          <div class="status" id="previewScaleStatus">Gotowe do eksportu</div>
+        </div>
+
+        <div class="paper-stage">
+          <div class="paper" id="paperDocument">
+            <img class="paper-bg" id="paperBackground" src="/assets/images/reports/raport-template.jpg" alt="Archiwalna karta raportu" />
+            <div class="paper-overlay"></div>
+
+            <div class="paper-content" id="paperContent">
+              <h2 class="report-title">RAPORT</h2>
+              <div class="report-subtitle">(dokument osobisty)</div>
+
+              <div class="meta">
+                <div class="meta-line"><span>Data:</span> <span class="meta-value" id="paperDate">25 maja</span></div>
+                <div class="meta-line"><span>Miejsce:</span> <span class="meta-value" id="paperPlace">Oświęcim</span></div>
+              </div>
+
+              <div class="intro" id="paperIntro">Ten dokument nie jest testem wiedzy.
+Jest zapisem chwili, w której historia przestaje być odległa. Jeśli chcesz — zapisz jedną myśl, jedno pytanie lub jedno zdanie, które pozostało po tym doświadczeniu.</div>
+
+              <div class="write-area">
+                <div class="write-lines" aria-hidden="true">
+                  <div class="write-line"></div>
+                  <div class="write-line"></div>
+                  <div class="write-line"></div>
+                  <div class="write-line"></div>
+                  <div class="write-line"></div>
+                </div>
+                <div class="write-text" id="paperBody"></div>
+              </div>
+
+              <div class="report-footer" id="paperFooter">dokument pozostaje do Twojej dyspozycji</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <audio class="hidden-audio" id="typewriterAudio" preload="auto"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script>
+    const DOM = {
+      backgroundUpload: document.getElementById('backgroundUpload'),
+      reportDate: document.getElementById('reportDate'),
+      reportPlace: document.getElementById('reportPlace'),
+      reportIntro: document.getElementById('reportIntro'),
+      reportBody: document.getElementById('reportBody'),
+      reportFooter: document.getElementById('reportFooter'),
+      typewriterSoundToggle: document.getElementById('typewriterSoundToggle'),
+      paperDate: document.getElementById('paperDate'),
+      paperPlace: document.getElementById('paperPlace'),
+      paperIntro: document.getElementById('paperIntro'),
+      paperBody: document.getElementById('paperBody'),
+      paperFooter: document.getElementById('paperFooter'),
+      paperDocument: document.getElementById('paperDocument'),
+      downloadPngButton: document.getElementById('downloadPngButton'),
+      downloadPdfButton: document.getElementById('downloadPdfButton'),
+      printButton: document.getElementById('printButton'),
+      clearBodyButton: document.getElementById('clearBodyButton'),
+      generatorStatus: document.getElementById('generatorStatus'),
+      previewScaleStatus: document.getElementById('previewScaleStatus'),
+      typewriterAudio: document.getElementById('typewriterAudio')
+    };
+
+    const TYPEWRITER_SOUND_DATA = 'data:audio/wav;base64,UklGRlQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTAAAAAAAP//AAD//wAA//8AAP//AAD//wAA';
+    DOM.typewriterAudio.src = TYPEWRITER_SOUND_DATA;
+
+    let lastTypedLength = 0;
+    let soundThrottle = null;
+
+    function setStatus(text) {
+      DOM.generatorStatus.textContent = text;
+    }
+
+    function playTypewriterSound() {
+      if (!DOM.typewriterSoundToggle.checked) return;
+      if (soundThrottle) return;
+
+      soundThrottle = window.setTimeout(() => {
+        soundThrottle = null;
+      }, 45);
+
+      try {
+        DOM.typewriterAudio.currentTime = 0;
+        DOM.typewriterAudio.play().catch(() => {});
+      } catch (error) {}
+    }
+
+    function syncPreview() {
+      DOM.paperDate.textContent = DOM.reportDate.value.trim() || '—';
+      DOM.paperPlace.textContent = DOM.reportPlace.value.trim() || '—';
+      DOM.paperIntro.textContent = DOM.reportIntro.value.trim() || '—';
+      DOM.paperBody.textContent = DOM.reportBody.value.trim();
+      DOM.paperFooter.textContent = DOM.reportFooter.value.trim() || '—';
+
+      DOM.previewScaleStatus.textContent = `Znaki: ${DOM.reportBody.value.length}`;
+    }
+
+    function handleBodyTyping() {
+      const currentLength = DOM.reportBody.value.length;
+      if (currentLength > lastTypedLength) {
+        playTypewriterSound();
+      }
+      lastTypedLength = currentLength;
+      syncPreview();
+    }
+
+    async function renderCanvas() {
+      await document.fonts.ready;
+      return window.html2canvas(DOM.paperDocument, {
+        scale: Math.min(Math.max(window.devicePixelRatio || 1, 2), 3),
+        useCORS: true,
+        backgroundColor: null,
+        logging: false,
+        imageTimeout: 15000
+      });
+    }
+
+    function sanitizeFileName(text) {
+      return String(text || 'raport')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9-_]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 60) || 'raport';
+    }
+
+    function buildFileName(extension) {
+      const date = sanitizeFileName(DOM.reportDate.value || 'data');
+      const place = sanitizeFileName(DOM.reportPlace.value || 'miejsce');
+      return `raport-osobisty__${date}__${place}.${extension}`;
+    }
+
+    async function downloadPng() {
+      setStatus('Przygotowywanie PNG…');
+      const canvas = await renderCanvas();
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png', 1);
+      link.download = buildFileName('png');
+      link.click();
+      setStatus('PNG został wygenerowany.');
+    }
+
+    async function downloadPdf() {
+      setStatus('Przygotowywanie PDF…');
+      const canvas = await renderCanvas();
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 8;
+      const printableWidth = pageWidth - margin * 2;
+      const printableHeight = pageHeight - margin * 2;
+
+      const imgData = canvas.toDataURL('image/png', 1);
+      const imgWidth = printableWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let positionY = margin;
+
+      pdf.addImage(imgData, 'PNG', margin, positionY, imgWidth, imgHeight, undefined, 'FAST');
+      heightLeft -= printableHeight;
+
+      while (heightLeft > 0) {
+        pdf.addPage();
+        positionY = margin - (imgHeight - heightLeft);
+        pdf.addImage(imgData, 'PNG', margin, positionY, imgWidth, imgHeight, undefined, 'FAST');
+        heightLeft -= printableHeight;
+      }
+
+      pdf.setProperties({
+        title: 'Raport osobisty',
+        subject: 'Archiwalny raport uczestnika',
+        author: 'Generator raportu',
+        creator: 'Generator raportu'
+      });
+
+      pdf.save(buildFileName('pdf'));
+      setStatus('PDF został wygenerowany.');
+    }
+
+    function printDocument() {
+      window.print();
+    }
+
+    function clearBody() {
+      DOM.reportBody.value = '';
+      lastTypedLength = 0;
+      syncPreview();
+      setStatus('Treść została wyczyszczona.');
+    }
+
+    [DOM.reportDate, DOM.reportPlace, DOM.reportIntro, DOM.reportFooter].forEach((el) => {
+      el.addEventListener('input', syncPreview);
+    });
+
+    DOM.backgroundUpload.addEventListener('change', (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        DOM.paperBackground.src = reader.result;
+        setStatus('Nowe tło dokumentu zostało wczytane.');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    DOM.reportBody.addEventListener('input', handleBodyTyping);
+    DOM.downloadPngButton.addEventListener('click', downloadPng);
+    DOM.downloadPdfButton.addEventListener('click', downloadPdf);
+    DOM.printButton.addEventListener('click', printDocument);
+    DOM.clearBodyButton.addEventListener('click', clearBody);
+
+    syncPreview();
+  </script>
+</body>
+</html>
+
   
   
   
