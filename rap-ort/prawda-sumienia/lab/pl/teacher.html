@@ -445,5 +445,91 @@
 <script src="/assets/js/lab-qr.js"></script>
 <script src="/assets/js/lab-teacher.js"></script>
 <script src="/assets/js/lab-presentation.js"></script>
+  <div class="object-detail-modal" id="objectDetailModal" hidden aria-hidden="true">
+  <div class="object-detail-backdrop" data-object-detail-close></div>
+
+  <div class="object-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="objectDetailTitle">
+    <header class="object-detail-topbar">
+      <div class="object-detail-head">
+        <div class="object-detail-kicker">Tryb detalu obiektu</div>
+        <h2 class="object-detail-title" id="objectDetailTitle">Obiekt pamięci</h2>
+        <p class="object-detail-subtitle" id="objectDetailSubtitle">
+          Warstwowe wejście w detal, znaczenie i napięcie interpretacyjne.
+        </p>
+      </div>
+
+      <div class="object-detail-controls">
+        <button class="object-detail-icon" id="objectDetailFullscreen" type="button" aria-label="Pełny ekran">⤢</button>
+        <button class="object-detail-icon" id="objectDetailClose" type="button" aria-label="Zamknij">×</button>
+      </div>
+    </header>
+
+    <div class="object-detail-main">
+      <section class="object-detail-stage">
+        <div class="object-detail-toolbar">
+          <div class="object-detail-toolbar-left">
+            <span class="object-detail-zoom-label">Powiększenie</span>
+            <strong class="object-detail-zoom-value" id="objectDetailZoomValue">100%</strong>
+          </div>
+
+          <div class="object-detail-toolbar-right">
+            <button class="object-detail-btn" id="objectDetailZoomOut" type="button">−</button>
+            <button class="object-detail-btn" id="objectDetailZoomReset" type="button">Reset</button>
+            <button class="object-detail-btn" id="objectDetailZoomIn" type="button">+</button>
+          </div>
+        </div>
+
+        <div class="object-detail-viewport" id="objectDetailViewport">
+          <div class="object-detail-canvas" id="objectDetailCanvas">
+            <div class="object-detail-image" id="objectDetailImage"></div>
+            <div class="object-detail-hotspots" id="objectDetailHotspots"></div>
+          </div>
+        </div>
+
+        <div class="object-detail-stage-note" id="objectDetailStageNote">
+          Kliknij hotspot albo użyj klawiatury do przechodzenia między detalami.
+        </div>
+      </section>
+
+      <aside class="object-detail-side">
+        <div class="object-detail-summary">
+          <h3 class="object-detail-summary-title" id="objectDetailSummaryTitle">Obiekt pamięci</h3>
+          <p class="object-detail-summary-text" id="objectDetailSummaryText">Opis obiektu.</p>
+          <blockquote class="object-detail-quote" id="objectDetailSummaryQuote">Cytat obiektu.</blockquote>
+        </div>
+
+        <div class="object-detail-active">
+          <div class="object-detail-active-topline">Aktywny detal</div>
+          <h3 class="object-detail-active-title" id="objectDetailActiveTitle">Wybierz hotspot</h3>
+          <p class="object-detail-active-text" id="objectDetailActiveText">
+            Po kliknięciu hotspotu zobaczysz rozwinięcie znaczenia tego miejsca.
+          </p>
+        </div>
+
+        <div class="object-detail-active-meta">
+          <div class="object-detail-block">
+            <span class="object-detail-block-label">Znaczenie historyczne</span>
+            <p class="object-detail-block-value" id="objectDetailMeaning">—</p>
+          </div>
+
+          <div class="object-detail-block">
+            <span class="object-detail-block-label">Znaczenie ludzkie</span>
+            <p class="object-detail-block-value" id="objectDetailHumanMeaning">—</p>
+          </div>
+
+          <div class="object-detail-block">
+            <span class="object-detail-block-label">Pytanie pomocnicze</span>
+            <p class="object-detail-block-value" id="objectDetailPrompt">—</p>
+          </div>
+        </div>
+
+        <div class="object-detail-nav">
+          <button class="object-detail-btn" id="objectDetailPrevHotspot" type="button">Poprzedni detal</button>
+          <button class="object-detail-btn" id="objectDetailNextHotspot" type="button">Następny detal</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
 </body>
 </html>
