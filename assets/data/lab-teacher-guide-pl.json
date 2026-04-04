@@ -1,0 +1,674 @@
+{
+  "version": "3.0.0",
+  "lang": "pl",
+  "fileRole": "teacher-guide-config",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "guidePhilosophy": {
+    "mainGoal": "Teacher Guide ma prowadzić nauczyciela przez lekcję w sposób prosty, szybki i spójny z wizją projektu, bez przeciążenia funkcjami i bez konieczności uczenia się złożonego systemu.",
+    "teacherGoal": "Nauczyciel ma uruchomić spotkanie, poprowadzić rozmowę, zatrzymać materiał w odpowiednim momencie i domknąć pracę raportem ucznia bez chaosu organizacyjnego.",
+    "projectGoal": "Guide ma chronić rdzeń projektu: świadectwo, raport, odpowiedzialność odbioru, ostrożność interpretacyjną, centralność Pileckiego i unikanie propagandowego uproszczenia.",
+    "mustSupport": [
+      "proste pierwsze użycie",
+      "jednoznaczne prowadzenie nauczyciela krok po kroku",
+      "pełny pokaz materiału jako domyślny tryb pracy",
+      "pytania otwierające rozmowę",
+      "pauzę i rozmowę w czasie rzeczywistym",
+      "QR do raportu ucznia",
+      "archiwum klasy",
+      "powściągliwość interpretacyjną"
+    ],
+    "mustAvoid": [
+      "przeładowania funkcjami",
+      "zbyt wielu ekranów i zakładek",
+      "konieczności przygotowywania obrazów interaktywnych w wersji podstawowej",
+      "zmuszania nauczyciela do ręcznego tłumaczenia całej logiki systemu",
+      "wrażenia, że projekt zastępuje historię efektowną formą",
+      "umniejszania Pileckiemu przez poboczne wątki"
+    ]
+  },
+  "teacherExperienceModel": {
+    "defaultMode": "simple-guided-console",
+    "firstUseTargetSeconds": 30,
+    "idealTeacherPath": [
+      "wybierz dział",
+      "wybierz pytanie",
+      "uruchom pokaz",
+      "zatrzymaj w wybranym momencie",
+      "zadaj pytanie",
+      "pokaż QR raportu",
+      "zapisz archiwum klasy"
+    ],
+    "defaultTeacherNeedsOnly": [
+      "sekcja",
+      "jedno pytanie aktywne",
+      "krótki guide do prowadzenia",
+      "pauza",
+      "pełny ekran",
+      "QR raportu",
+      "archiwum"
+    ],
+    "advancedFeaturesHiddenByDefault": true,
+    "advancedFeaturesAvailable": [
+      "nota metodologiczna",
+      "rozróżnienie źródło / metafora / interpretacja",
+      "kontekst rozszerzony dla starszych grup",
+      "opcjonalne karty kontekstowe"
+    ]
+  },
+  "playbackPolicy": {
+    "defaultLessonModel": "full-screening-with-thematic-emphasis",
+    "defaultLessonDurationMinutes": 90,
+    "fullMaterialDurationMinutes": 65,
+    "recommendedStructure": {
+      "introMinutes": 8,
+      "fullPlaybackMinutes": 65,
+      "pauseAndDiscussionMinutes": 10,
+      "studentReportMinutes": 5,
+      "closureMinutes": 2
+    },
+    "excerptModeAllowed": true,
+    "excerptModeDefault": false,
+    "excerptModePolicy": "Wyrywkowy tryb pracy jest opcjonalny i nie powinien być pierwszym wariantem dla nauczyciela, ponieważ materiał został zaprojektowany jako spójna całość audiowizualna.",
+    "teacherMessage": "Domyślnie prowadź całość jako pełny pokaz z jednym lub dwoma zatrzymaniami. Nie tnij materiału bez potrzeby."
+  },
+  "simplificationPolicy": {
+    "removedFromCoreVersion": [
+      "obowiązkowe obrazy interaktywne",
+      "obowiązkowe hotspoty na obiektach",
+      "rozbudowane scenariusze wielowariantowe w jednej sesji",
+      "rozproszone QR do wielu osobnych funkcji",
+      "wymaganie danych osobowych ucznia",
+      "wysyłka e-mail w wersji podstawowej"
+    ],
+    "keptInCoreVersion": [
+      "działy tematyczne",
+      "teacher guide",
+      "jedno aktywne pytanie",
+      "pełny ekran / projector mode",
+      "pauza i rozmowa",
+      "QR do raportu ucznia",
+      "anonimowe archiwum klasy",
+      "PDF raportu ucznia"
+    ],
+    "productionPriority": "Najpierw działa prosta, mocna i spójna ścieżka nauczyciel -> pokaz -> pytanie -> raport. Reszta jest dodatkiem później."
+  },
+  "panelStructure": {
+    "defaultLayout": "single-console-with-guide",
+    "primaryBlocks": [
+      {
+        "id": "block-session",
+        "label": "Sesja",
+        "purpose": "Pokazuje dział, aktywne pytanie i status lekcji."
+      },
+      {
+        "id": "block-live-controls",
+        "label": "Sterowanie",
+        "purpose": "Pauza, pełny ekran, pokaz QR raportu, otwarcie archiwum."
+      },
+      {
+        "id": "block-guide",
+        "label": "Teacher Guide",
+        "purpose": "Krótka instrukcja prowadzenia tego działu bez przeładowania tekstem."
+      },
+      {
+        "id": "block-report",
+        "label": "Raport i archiwum",
+        "purpose": "Domknięcie lekcji i zapis efektu pracy uczniów."
+      }
+    ],
+    "hiddenByDefault": [
+      "rozszerzona metodologia",
+      "kontekst rozszerzony",
+      "noty zaawansowane o pobocznych postaciach"
+    ],
+    "mustBeVisibleOnFirstLoad": [
+      "nazwa działu",
+      "aktywne pytanie",
+      "krótki cel lekcji",
+      "przycisk pełny ekran",
+      "przycisk pauza",
+      "przycisk pokaż QR raportu",
+      "przycisk archiwum"
+    ]
+  },
+  "teacherGuideDisplay": {
+    "defaultCardModel": "summary-first",
+    "summaryFields": [
+      "sectionLabel",
+      "sectionPurpose",
+      "openingLine",
+      "whatToEmphasize",
+      "whatToAvoid",
+      "closingMove"
+    ],
+    "advancedExpandableFields": [
+      "sourceBoundary",
+      "metaphorBoundary",
+      "contextExtensions",
+      "historicalCautions"
+    ],
+    "maxVisibleBulletsPerArea": 3,
+    "tone": "quiet-clear-institutional"
+  },
+  "teacherQuickActions": [
+    {
+      "id": "open-fullscreen",
+      "label": "Pełny ekran",
+      "priority": "primary",
+      "purpose": "Uruchamia tryb projektora lub pełnego ekranu do pokazu materiału."
+    },
+    {
+      "id": "pause-and-talk",
+      "label": "Pauza i rozmowa",
+      "priority": "primary",
+      "purpose": "Zatrzymuje pokaz i przełącza nauczyciela w tryb rozmowy w czasie rzeczywistym."
+    },
+    {
+      "id": "show-report-qr",
+      "label": "Pokaż QR raportu",
+      "priority": "primary",
+      "purpose": "Wyświetla uczniom jeden kod QR prowadzący bezpośrednio do raportu ucznia."
+    },
+    {
+      "id": "open-class-archive",
+      "label": "Archiwum klasy",
+      "priority": "secondary",
+      "purpose": "Otwiera zapisane anonimowo raporty uczniów."
+    },
+    {
+      "id": "open-section-notes",
+      "label": "Noty działu",
+      "priority": "secondary",
+      "purpose": "Pokazuje rozszerzone noty dla nauczyciela."
+    },
+    {
+      "id": "show-report-preview",
+      "label": "Podgląd raportu",
+      "priority": "secondary",
+      "purpose": "Pokazuje uczniom wzór raportu przed skanowaniem QR."
+    }
+  ],
+  "teacherFlow": {
+    "startupFlow": [
+      {
+        "step": 1,
+        "label": "Wybór działu",
+        "teacherAction": "Nauczyciel wybiera dział tematyczny dopasowany do odbiorcy i celu spotkania."
+      },
+      {
+        "step": 2,
+        "label": "Wybór pytania",
+        "teacherAction": "Nauczyciel wybiera jedno pytanie aktywne albo wpisuje własne."
+      },
+      {
+        "step": 3,
+        "label": "Uruchomienie materiału",
+        "teacherAction": "Nauczyciel włącza pełny ekran i rozpoczyna pokaz."
+      },
+      {
+        "step": 4,
+        "label": "Zatrzymanie",
+        "teacherAction": "W odpowiednim momencie nauczyciel zatrzymuje materiał i prowadzi krótką rozmowę."
+      },
+      {
+        "step": 5,
+        "label": "Raport ucznia",
+        "teacherAction": "Po rozmowie nauczyciel pokazuje QR do raportu ucznia."
+      },
+      {
+        "step": 6,
+        "label": "Domknięcie",
+        "teacherAction": "Nauczyciel zbiera sens lekcji jednym krótkim ruchem końcowym i może otworzyć archiwum."
+      }
+    ],
+    "teacherShouldNotNeed": [
+      "ręcznego przygotowywania dodatkowych ekranów",
+      "przeskakiwania między wieloma panelami",
+      "tłumaczenia uczniom logiki technologii",
+      "obsługi mailingu lub danych osobowych",
+      "obsługi interaktywnych obrazów w wersji podstawowej"
+    ]
+  },
+  "methodologyBoundaries": {
+    "pileckiCentrality": {
+      "status": "core",
+      "rule": "Pilecki pozostaje centralną osią projektu historycznego i edukacyjnego.",
+      "teacherMeaning": "Guide nie może ustawiać pobocznych figur na równi z Pileckim w podstawowym przebiegu lekcji."
+    },
+    "cyrankiewiczPolicy": {
+      "status": "context-advanced-only",
+      "studentFacing": false,
+      "teacherFacing": "expandable-note-only",
+      "rule": "Cyrankiewicz może pojawić się wyłącznie jako poboczny kontekst interpretacyjny dla starszych grup i nigdy nie może przejąć ciężaru lekcji podstawowej.",
+      "teacherMeaning": "W trybie prostym temat jest wyłączony. W notach rozszerzonych może być użyty tylko ostrożnie i pomocniczo."
+    },
+    "namedPersonComparisons": {
+      "default": "off",
+      "rule": "Teacher Guide nie proponuje pytań rankingowych ani porównań typu kto był lepszy, gorszy, bardziej moralny lub bardziej bohaterski."
+    },
+    "sourceVsArt": {
+      "rule": "Każda sekcja guide musi pomagać odróżnić warstwę historyczną od warstwy artystycznej i od warstwy metaforycznej."
+    }
+  },
+  "sourceAndMetaphorLegend": {
+    "labels": [
+      {
+        "id": "historical-layer",
+        "label": "Warstwa historyczna",
+        "meaning": "To, co opiera się na źródłach, faktach, dokumentach lub potwierdzonym kontekście."
+      },
+      {
+        "id": "artistic-layer",
+        "label": "Warstwa artystyczna",
+        "meaning": "To, co wynika z formy utworu, montażu, kompozycji, prowadzenia emocji i języka dzieła."
+      },
+      {
+        "id": "metaphor-layer",
+        "label": "Warstwa metaforyczna",
+        "meaning": "To, co jest skrótem znaczeniowym, symbolem lub artystycznym zagęszczeniem sensu, a nie literalnym źródłem."
+      }
+    ],
+    "teacherRule": "Nie mieszaj tych warstw w jednym zdaniu bez zaznaczenia przejścia."
+  },
+  "sessionModes": [
+    {
+      "id": "full-90",
+      "label": "Pełne przejście 90 min",
+      "recommended": true,
+      "description": "Domyślny wariant dla szkół i nauczycieli pracujących pierwszy raz z projektem."
+    },
+    {
+      "id": "seminar-120",
+      "label": "Seminarium 120 min",
+      "recommended": true,
+      "description": "Wariant dla uczelni, grup zaawansowanych lub wydarzeń instytucjonalnych."
+    },
+    {
+      "id": "commemorative-90",
+      "label": "Wersja rocznicowa 90 min",
+      "recommended": true,
+      "description": "Wariant pod wydarzenia rocznicowe, szkolne i instytucjonalne."
+    },
+    {
+      "id": "excerpt-45",
+      "label": "Tryb fragmentaryczny 45 min",
+      "recommended": false,
+      "description": "Wariant tylko wtedy, gdy nauczyciel świadomie pracuje na wybranym fragmencie i zna sens całości."
+    }
+  ],
+  "sections": [
+    {
+      "sectionId": "section-totalitaryzm-wybor",
+      "sectionLabel": "Totalitaryzm i wybory pod presją",
+      "recommendedSessionModes": ["full-90", "seminar-120"],
+      "sectionPurpose": "Pokazać, jak system naciska na ludzkie decyzje i dlaczego ocena człowieka działającego pod przymusem wymaga szczególnej ostrożności.",
+      "bestFor": [
+        "liceum",
+        "technikum",
+        "uczelnia",
+        "zajęcia historyczne",
+        "zajęcia wychowawcze z mocnym kontekstem historycznym"
+      ],
+      "openingLine": "Dziś nie pytamy najpierw o prosty osąd człowieka. Najpierw patrzymy, jak działa nacisk systemu.",
+      "teacherOpeningMove": "Przed pokazem powiedz jedno krótkie zdanie otwierające i przejdź do materiału bez długiego wykładu.",
+      "whatToEmphasize": [
+        "presję systemu",
+        "warunki działania człowieka",
+        "ostrożność wobec prostych ocen"
+      ],
+      "whatToAvoid": [
+        "kto był bohaterem, a kto nie",
+        "moralny ranking postaci",
+        "zastępowanie materiału własnym komentarzem"
+      ],
+      "recommendedQuestionIds": [
+        "q-totalitaryzm-01",
+        "q-totalitaryzm-03",
+        "q-totalitaryzm-05"
+      ],
+      "pauseMomentUse": "Zatrzymaj materiał wtedy, gdy wyraźnie widać mechanizm nacisku albo ograniczenie pola decyzji.",
+      "pauseQuestionPrompt": "Nie pytaj od razu: kto miał rację. Zapytaj: co tu pokazuje działanie systemu?",
+      "teacherClosureMove": "Zamknij dział pytaniem o odpowiedzialność bez uproszczeń, nie morałem.",
+      "sourceBoundary": {
+        "historicalLayer": "Rozmawiaj o systemie, przemocy instytucjonalnej, nacisku i ograniczeniach działania na podstawie materiału oraz kontekstu historycznego.",
+        "artisticLayer": "Możesz wskazać, jak forma buduje napięcie i prowadzi odbiór, ale nie nazywaj tego dowodem historycznym.",
+        "metaphorLayer": "Jeżeli pojawia się metafora, zaznacz, że jest ona sposobem kondensacji sensu, a nie dosłownym zapisem źródła."
+      },
+      "historicalCautions": [
+        "Nie rozszerzaj rozmowy na ranking postaci historycznych.",
+        "Nie wprowadzaj pobocznych figur personalnych do centrum lekcji.",
+        "Nie używaj totalitaryzmu jako hasła bez pokazania, jak działa w materiale."
+      ],
+      "successSignal": "Uczniowie zaczynają mówić o warunkach, nacisku i systemie, a nie tylko o prostych sądach moralnych."
+    },
+    {
+      "sectionId": "section-pilecki-rocznicowy",
+      "sectionLabel": "Pilecki — rozdział rocznicowy",
+      "recommendedSessionModes": ["full-90", "commemorative-90", "seminar-120"],
+      "sectionPurpose": "Utrzymać Pileckiego jako rdzeń projektu: świadectwo, raport, przekazanie prawdy i odpowiedzialność wobec źródła.",
+      "bestFor": [
+        "szkoły",
+        "instytucje",
+        "wydarzenia rocznicowe",
+        "Polonia",
+        "uczelnie"
+      ],
+      "openingLine": "Dziś nie pracujemy tylko z biografią postaci. Pracujemy z tym, co znaczy świadectwo i raport.",
+      "teacherOpeningMove": "Przed pokazem ustaw Pileckiego jako oś świadectwa, nie jako pomnikową figurę pozbawioną napięcia i decyzji.",
+      "whatToEmphasize": [
+        "świadectwo",
+        "raport",
+        "odpowiedzialność odbioru"
+      ],
+      "whatToAvoid": [
+        "pomnikowego tonu od pierwszej minuty",
+        "języka automatycznej hagiografii",
+        "rozpraszania działu pobocznymi figurami"
+      ],
+      "recommendedQuestionIds": [
+        "q-pilecki-01",
+        "q-pilecki-02",
+        "q-pilecki-05"
+      ],
+      "pauseMomentUse": "Zatrzymaj materiał wtedy, gdy najmocniej pracuje raport, dokument albo napięcie związane z przekazaniem świadectwa.",
+      "pauseQuestionPrompt": "Zapytaj: co tu działa jako świadectwo, a nie tylko jako informacja o człowieku?",
+      "teacherClosureMove": "Zamknij pytaniem o odpowiedzialność wobec świadectwa.",
+      "sourceBoundary": {
+        "historicalLayer": "Utrzymuj rozmowę przy funkcji raportu, świadectwa, źródła i historycznej roli Pileckiego.",
+        "artisticLayer": "Możesz wskazać, jak forma wzmacnia spotkanie ze świadectwem, ale nie myl formy z samym źródłem.",
+        "metaphorLayer": "Metafory mają tu wzmacniać sens odpowiedzialności odbioru, nie zastępować faktów."
+      },
+      "historicalCautions": [
+        "Nie ustawiaj wątku Cyrankiewicza jako równoległej osi w podstawowej lekcji.",
+        "Nie sprowadzaj Pileckiego do samej legendy bez rozmowy o raporcie i świadectwie.",
+        "Nie zamykaj działu gotową formułą patriotyczną zamiast pytaniem."
+      ],
+      "successSignal": "Uczniowie rozumieją, że rdzeniem działu nie jest sama postać jako symbol, lecz świadectwo, raport i odpowiedzialność odbiorcy."
+    },
+    {
+      "sectionId": "section-auschwitz",
+      "sectionLabel": "Auschwitz — miejsce, ślad, świadectwo",
+      "recommendedSessionModes": ["full-90", "seminar-120"],
+      "sectionPurpose": "Prowadzić rozmowę przez miejsce, ślad, dokument i ograniczenia interpretacji bez redukowania Auschwitz do jednego symbolu.",
+      "bestFor": [
+        "liceum",
+        "uczelnia",
+        "instytucje",
+        "Polonia"
+      ],
+      "openingLine": "Dziś patrzymy nie tylko na symbol, ale na ślad, miejsce i świadectwo.",
+      "teacherOpeningMove": "Ustaw rozmowę tak, aby nie zatrzymała się na jednym znaku ani jednym emocjonalnym skrócie.",
+      "whatToEmphasize": [
+        "miejsce i ślad",
+        "źródło i dokument",
+        "ograniczenia interpretacji"
+      ],
+      "whatToAvoid": [
+        "patetycznego skrótu zamiast pracy z materiałem",
+        "traktowania miejsca jak samodzielnego głosu",
+        "mówienia, że jeden detal tłumaczy wszystko"
+      ],
+      "recommendedQuestionIds": [
+        "q-auschwitz-01",
+        "q-auschwitz-03",
+        "q-auschwitz-05"
+      ],
+      "pauseMomentUse": "Zatrzymaj materiał na detalu, miejscu albo dokumencie, niekoniecznie na najbardziej efektownym emocjonalnie fragmencie.",
+      "pauseQuestionPrompt": "Zapytaj: co zmienia się, gdy patrzymy na historię przez ślad, miejsce albo dokument?",
+      "teacherClosureMove": "Domknij rozmowę pytaniem o różnicę między śladem a interpretacją śladu.",
+      "sourceBoundary": {
+        "historicalLayer": "Rozmawiaj o miejscu, śladzie, dokumencie i warunkach historycznych na podstawie źródeł i materiału.",
+        "artisticLayer": "Wskazuj, że forma może prowadzić uwagę do detalu, ale nie staje się przez to źródłem samym w sobie.",
+        "metaphorLayer": "Jeżeli mówisz o symbolicznej wadze miejsca, zaznacz, że to jest poziom interpretacji, nie literalnego faktu."
+      },
+      "historicalCautions": [
+        "Nie antropomorfizuj miejsca.",
+        "Nie zamieniaj Auschwitz w pusty znak bez źródła i kontekstu.",
+        "Nie używaj jednego detalu jako pełnego skrótu całej historii."
+      ],
+      "successSignal": "Rozmowa przechodzi z poziomu symbolu na poziom uważnego czytania śladu, miejsca i dokumentu."
+    },
+    {
+      "sectionId": "section-ai-historia",
+      "sectionLabel": "AI i historia",
+      "recommendedSessionModes": ["full-90", "seminar-120"],
+      "sectionPurpose": "Pokazać odpowiedzialne użycie AI w pracy z historią: odróżnianie źródła od formy, atrakcyjności od wiarygodności oraz rekonstrukcji od dokumentu.",
+      "bestFor": [
+        "liceum",
+        "uczelnia",
+        "zajęcia medialne",
+        "zajęcia projektowe",
+        "rozmowy o procesie twórczym"
+      ],
+      "openingLine": "Nowoczesna forma może pomagać w odbiorze historii, ale nie zastępuje źródła.",
+      "teacherOpeningMove": "Powiedz jasno, że pracujecie nie nad tym, czy AI jest dobre albo złe, tylko gdzie przebiega granica odpowiedzialnego użycia.",
+      "whatToEmphasize": [
+        "granica między formą a źródłem",
+        "odpowiedzialne użycie narzędzia",
+        "ryzyko sugestywności obrazu"
+      ],
+      "whatToAvoid": [
+        "zachwytu technologią zamiast rozmowy o historii",
+        "prostej tezy, że AI fałszuje wszystko",
+        "mylenia rekonstrukcji z dokumentem"
+      ],
+      "recommendedQuestionIds": [
+        "q-ai-01",
+        "q-ai-03",
+        "q-ai-05"
+      ],
+      "pauseMomentUse": "Zatrzymaj materiał w chwili, gdy forma szczególnie mocno prowadzi emocję lub uwagę.",
+      "pauseQuestionPrompt": "Zapytaj: dlaczego sugestywny obraz nie staje się automatycznie dowodem historycznym?",
+      "teacherClosureMove": "Domknij dział pytaniem o odpowiedzialne użycie AI w historii.",
+      "sourceBoundary": {
+        "historicalLayer": "Wyraźnie oddzielaj to, co opiera się na źródłach i badaniach, od tego, co jest rekonstrukcją wizualną lub artystyczną kompozycją.",
+        "artisticLayer": "Możesz omówić rolę montażu, muzyki, wizualności i tempa w budowaniu odbioru.",
+        "metaphorLayer": "Jeżeli dana scena lub obraz działa metaforycznie, nazwij to wprost jako środek artystyczny."
+      },
+      "historicalCautions": [
+        "Nie pokazuj AI jako nowego źródła historycznego.",
+        "Nie myl jakości wizualnej z wiarygodnością.",
+        "Nie zamieniaj rozmowy w wojnę ideologiczną za albo przeciw technologii."
+      ],
+      "successSignal": "Uczniowie potrafią odróżnić źródło od formy i rozumieją, że atrakcyjny obraz nie jest automatycznie dowodem."
+    },
+    {
+      "sectionId": "section-polonia",
+      "sectionLabel": "Historia dla Polonii",
+      "recommendedSessionModes": ["full-90", "commemorative-90", "seminar-120"],
+      "sectionPurpose": "Budować most między polskim doświadczeniem historycznym a odbiorcą zagranicznym bez redukowania ciężaru i sensu materiału.",
+      "bestFor": [
+        "Polonia",
+        "grupy dwujęzyczne",
+        "wydarzenia międzynarodowe",
+        "szkoły polonijne"
+      ],
+      "openingLine": "Dziś pytamy, jak przenieść ciężar tej historii poza lokalny kontekst, nie upraszczając jej sensu.",
+      "teacherOpeningMove": "Nie zakładaj pełnej wspólnoty odniesień. Daj krótki kontekst pojęć, ale nie przeciążaj wejścia wykładem.",
+      "whatToEmphasize": [
+        "most między pamięcią polską a odbiorcą zagranicznym",
+        "konieczny kontekst",
+        "to, czego nie wolno uprościć"
+      ],
+      "whatToAvoid": [
+        "redukcji historii do ogólnej narracji tożsamościowej",
+        "założenia, że wszyscy rozumieją polskie realia",
+        "przesadnego dopowiadania wszystkiego kosztem odbioru materiału"
+      ],
+      "recommendedQuestionIds": [
+        "q-polonia-01",
+        "q-polonia-02",
+        "q-polonia-05"
+      ],
+      "pauseMomentUse": "Zatrzymaj materiał tam, gdzie pojawia się element wymagający dopowiedzenia kulturowego lub historycznego.",
+      "pauseQuestionPrompt": "Zapytaj: który element wymagał dodatkowego kontekstu, żeby był naprawdę zrozumiały?",
+      "teacherClosureMove": "Zamknij dział pytaniem o to, czego nie wolno uprościć.",
+      "sourceBoundary": {
+        "historicalLayer": "Zaznaczaj, które elementy wynikają z konkretnego polskiego doświadczenia historycznego i źródłowego.",
+        "artisticLayer": "Wyjaśniaj, że forma pomaga przenieść sens, ale nie może zastąpić kontekstu.",
+        "metaphorLayer": "Jeżeli jakaś scena działa jako most symboliczny, wyraźnie zaznacz, że jest to poziom artystycznego przeniesienia sensu."
+      },
+      "historicalCautions": [
+        "Nie redukuj polskiej historii do kilku sloganów.",
+        "Nie zakładaj pełnej znajomości nazw, pojęć i realiów.",
+        "Nie traktuj uniwersalności jako zgody na uproszczenie."
+      ],
+      "successSignal": "Grupa zaczyna rozumieć, co wymaga dopowiedzenia, a co działa ponad językiem i kontekstem."
+    },
+    {
+      "sectionId": "section-sumienie-raport",
+      "sectionLabel": "Sumienie i znaczenie raportu",
+      "recommendedSessionModes": ["full-90", "seminar-120", "commemorative-90"],
+      "sectionPurpose": "Spinać historię z pytaniem o współczesnego odbiorcę: odpowiedzialność, czas decyzji, znaczenie raportu i uczciwość wobec własnego odbioru.",
+      "bestFor": [
+        "liceum",
+        "uczelnia",
+        "lekcje domykające",
+        "spotkania refleksyjne",
+        "wydarzenia autorskie"
+      ],
+      "openingLine": "Dziś pytamy nie tylko o historię, ale o to, co zostaje z nią po stronie współczesnego odbiorcy.",
+      "teacherOpeningMove": "Nie zaczynaj od coachingu ani współczesnych analogii. Najpierw pozwól materiałowi wybrzmieć, potem buduj most do teraźniejszości.",
+      "whatToEmphasize": [
+        "raport jako ślad odpowiedzialności",
+        "czas decyzji",
+        "uczciwy odbiór świadectwa"
+      ],
+      "whatToAvoid": [
+        "psychologicznego moralizowania bez materiału",
+        "banalnych analogii do codzienności",
+        "zamiany działu w ogólną mowę motywacyjną"
+      ],
+      "recommendedQuestionIds": [
+        "q-sumienie-01",
+        "q-sumienie-03",
+        "q-sumienie-04"
+      ],
+      "pauseMomentUse": "Zatrzymaj materiał w punkcie, w którym najsilniej wybrzmiewa raport, wybór albo napięcie między czasem decyzji a czasem zrozumienia.",
+      "pauseQuestionPrompt": "Zapytaj: co w tym materiale najmocniej łączy historię z pytaniem o współczesnego odbiorcę?",
+      "teacherClosureMove": "Na końcu nie dawaj gotowej odpowiedzi. Zostaw pytanie, z którym uczeń przejdzie do raportu.",
+      "sourceBoundary": {
+        "historicalLayer": "Wracaj do raportu, świadectwa, decyzji i warunków działania w materiale historycznym.",
+        "artisticLayer": "Jeśli mówisz o napięciu czasu, samotności albo konsekwencji decyzji, zaznacz rolę formy artystycznej.",
+        "metaphorLayer": "Współczesne odniesienia mogą działać tylko jako most interpretacyjny, nigdy jako podmiana historii."
+      },
+      "historicalCautions": [
+        "Nie zamieniaj lekcji w coaching o życiu.",
+        "Nie wyciągaj zbyt szybkich analogii do współczesności.",
+        "Nie odrywaj pytania o sumienie od raportu i świadectwa."
+      ],
+      "successSignal": "Uczeń kończy lekcję z pytaniem o odpowiedzialność odbioru, a nie z gotowym sloganem."
+    }
+  ],
+  "pauseAndTalkMode": {
+    "purpose": "Umożliwić nauczycielowi zatrzymanie materiału i przejście do rozmowy bez chaosu.",
+    "teacherScreenShows": [
+      "nazwa działu",
+      "aktywne pytanie",
+      "krótki prompt dla nauczyciela",
+      "przycisk wznowienia",
+      "przycisk QR raportu"
+    ],
+    "teacherPauseRule": "W czasie pauzy nauczyciel zadaje jedno pytanie i nie rozbija rozmowy na pięć podwątków.",
+    "maxRecommendedPauseQuestions": 2,
+    "defaultTeacherPrompt": "Zatrzymaj się na jednym pytaniu, jednym ruchu interpretacyjnym i jednym przejściu do raportu."
+  },
+  "trackHandlingPolicy": {
+    "defaultMode": "fragment-supported-by-teacher-note",
+    "teacherNeedsPerFragment": [
+      "krótki sens fragmentu",
+      "co jest historyczne",
+      "co jest artystyczne",
+      "co jest metaforą",
+      "jedno pytanie po fragmencie"
+    ],
+    "separateTrackGuidePlanned": true,
+    "teacherGuideOnlyContains": "logikę prowadzenia działu",
+    "fullTrackNotesWillLiveIn": "lab-track-guide-pl.json"
+  },
+  "contextCardsPolicy": {
+    "enabledInCore": false,
+    "status": "phase-2-optional",
+    "reason": "Żeby nie przeładować pierwszej wersji i nie zwiększać ilości pracy produkcyjnej.",
+    "possibleFutureCards": [
+      "Pilecki",
+      "raport",
+      "Auschwitz jako miejsce i ślad",
+      "totalitaryzm",
+      "nazizm",
+      "stalinizm / wczesny komunizm",
+      "PRL jako kontekst późniejszy"
+    ],
+    "teacherUseRule": "Karty kontekstowe mają wspierać, a nie zastępować główny tok pracy z materiałem."
+  },
+  "reportBinding": {
+    "defaultStudentEntry": "qr-report-only",
+    "teacherShowsQrWhen": "po głównej rozmowie albo w końcowych minutach lekcji",
+    "reportPurposeForTeacher": "Raport ma zbierać efekt odbioru ucznia i ułatwiać domknięcie lekcji bez ręcznego zbierania odpowiedzi.",
+    "reportPurposeForStudent": "Raport ma być prostym, uczciwym śladem odbioru i może zostać pobrany jako PDF.",
+    "archivePurpose": "Archiwum klasy pozwala nauczycielowi zobaczyć, co naprawdę zostało w grupie."
+  },
+  "teacherWarnings": {
+    "common": [
+      "Nie próbuj tłumaczyć wszystkiego przed pokazem.",
+      "Nie używaj więcej niż jednego pytania aktywnego naraz.",
+      "Nie przeciążaj uczniów dodatkową teorią w pierwszym przejściu.",
+      "Nie próbuj domknąć całego sensu projektu jednym zdaniem końcowym.",
+      "Pozwól materiałowi wybrzmieć."
+    ],
+    "projectConsistency": [
+      "Pilecki pozostaje rdzeniem projektu historycznego.",
+      "Raport i świadectwo pozostają głównym nośnikiem sensu.",
+      "Poboczne konteksty nie mogą przejąć ciężaru działu podstawowego.",
+      "Teacher Guide ma prowadzić do refleksji, nie do propagandowego skrótu."
+    ]
+  },
+  "teacherMicroScripts": {
+    "beforeStart": "Za chwilę obejrzymy materiał. Nie szukajcie jednej poprawnej odpowiedzi. Zatrzymajcie to, co naprawdę z was zostanie po tej pracy.",
+    "beforePause": "Zatrzymajmy się na chwilę. Nie odpowiadajcie od razu szeroko. Najpierw nazwijcie, co tu naprawdę działa.",
+    "beforeReport": "Teraz przejdźcie do krótkiego raportu. To nie jest test. Zostawcie uczciwy zapis własnego odbioru.",
+    "beforeClosure": "Nie zamykajmy tego morałem. Zostawmy pytanie, z którym każdy z was wyjdzie dalej."
+  },
+  "consistencyWithProjectDocs": {
+    "mustSupport": [
+      "świadectwo jako rdzeń",
+      "raport jako nośnik sensu",
+      "powściągliwość interpretacyjną",
+      "instytucjonalny ton",
+      "brak moralnego rankingu postaci",
+      "Pileckiego jako centrum projektu"
+    ],
+    "mustAvoid": [
+      "umniejszania Pileckiego",
+      "rozsadzania lekcji pobocznymi wątkami personalnymi",
+      "zbyt wielu warstw technologicznych w pierwszej wersji",
+      "patosu bez źródła",
+      "szkolnego chaosu obsługowego"
+    ],
+    "teacherExperienceGoal": "Nauczyciel ma mieć wszystko pod ręką i nie zgubić się podczas pierwszego użycia.",
+    "productionGoal": "Wersja podstawowa ma działać bez obrazów interaktywnych, bez mailingu i bez ciężkiej produkcji dodatkowych assetów."
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel rozumie działanie panelu po pierwszym wejściu.",
+      "Może poprowadzić lekcję bez czytania długiej instrukcji technicznej.",
+      "Nie potrzebuje więcej niż jednego ekranu roboczego."
+    ],
+    "student": [
+      "Uczeń wie, kiedy ogląda, kiedy rozmawia i kiedy przechodzi do raportu.",
+      "Uczeń nie jest przeciążony dodatkowymi funkcjami.",
+      "Raport jest naturalnym końcem pracy."
+    ],
+    "project": [
+      "Teacher Guide wzmacnia spójność z dokumentami projektu.",
+      "Guide nie osłabia centralności Pileckiego.",
+      "Guide pomaga mówić o historii odpowiedzialnie, bez propagandy i bez uproszczeń."
+    ],
+    "production": [
+      "Pierwsza wersja nie wymaga interaktywnych zdjęć.",
+      "Pierwsza wersja nie wymaga wysyłki maili.",
+      "Pierwsza wersja daje gotowy, mocny i prosty model pracy nauczyciela."
+    ]
+  }
+}
