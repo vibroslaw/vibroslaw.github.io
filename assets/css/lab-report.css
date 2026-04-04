@@ -194,3 +194,46 @@
     opacity:.08;
   }
 }
+/* ===== PDF EXPORT MODE ===== */
+
+body.pdf-export-mode{
+  background:#f7f2eb !important;
+}
+
+body.pdf-export-mode .report-page{
+  box-shadow:none !important;
+  border:1px solid rgba(0,0,0,.08) !important;
+  background:
+    linear-gradient(180deg, rgba(248,244,238,1), rgba(242,236,228,1)) !important;
+}
+
+body.pdf-export-mode .report-page::before{
+  opacity:.14 !important;
+}
+
+body.pdf-export-mode .report-page,
+body.pdf-export-mode .report-page *{
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+body.pdf-export-mode .report-page{
+  width:860px !important;
+  min-height:1120px !important;
+  overflow:visible !important;
+}
+
+body.pdf-export-mode .report-section{
+  break-inside:avoid;
+  page-break-inside:avoid;
+}
+
+body.pdf-export-mode .report-page-header,
+body.pdf-export-mode .report-page-footer{
+  break-inside:avoid;
+  page-break-inside:avoid;
+}
+
+body.pdf-export-mode .report-stamp{
+  background:rgba(255,255,255,.58) !important;
+}
