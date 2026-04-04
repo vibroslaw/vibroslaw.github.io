@@ -5,7 +5,20 @@
   const runtime = {
     lesson: null,
     session: null,
-    reportData: null
+    reportData: null,
+    exportInProgress: false
+  };
+
+  const PDF_CONFIG = {
+    format: "a4",
+    orientation: "p",
+    unit: "mm",
+    marginTop: 8,
+    marginRight: 8,
+    marginBottom: 10,
+    marginLeft: 8,
+    backgroundColor: "#f7f2eb",
+    maxScale: 3
   };
 
   function cacheDom() {
@@ -88,7 +101,6 @@
   function buildResolvedReportData() {
     const session = runtime.session || window.LabCore.loadSessionState();
     const lesson = runtime.lesson;
-
     const responses = session?.responses || {};
 
     const resolved = {
@@ -227,16 +239,197 @@
     }, 120);
   }
 
-  function downloadPdfViaPrintFlow() {
-    window.LabCore.showStatusMessage(
-      DOM.reportStatusMessage,
-      "Uruchamianie eksportu. W oknie druku wybierz „Zapisz jako PDF”.",
-      "info"
+  function ensurePdfLibraries() {
+    const hasHtml2Canvas = typeof window.html2canvas === "function";
+    const hasJsPdf = Boolean(window.jspdf && typeof window.jspdf.jsPDF === "function");
+    return hasHtml2Canvas && hasJsPdf;
+  }
+
+  function sanitizeFilenamePart(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9-_]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 60);
+  }
+
+  function buildPdfFilename(report) {
+    const title = sanitizeFilenamePart(report.lessonTitle || "Prawda-Sumienia");
+    const institution = sanitizeFilenamePart(report.institution || "instytucja");
+    const date = sanitizeFilenamePart(report.date || new Date().toISOString().slice(0, 10));
+    const sessionId = sanitizeFilenamePart(report.sessionId || "sesja");
+    return `${title}__${institution}__${date}__${sessionId}.pdf`;
+  }
+
+  function setButtonsDisabled(disabled) {
+    [DOM.downloadPdfButton, DOM.printReportButton, DOM.saveToArchiveButton]
+      .filter(Boolean)
+      .forEach((button) => {
+        button.disabled = disabled;
+      });
+  }
+
+  function nextFrame() {
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+  }
+
+  async function waitForFontsAndLayout() {
+    if (document.fonts?.ready) {
+      await document.fonts.ready;
+    }
+
+    await nextFrame();
+    await nextFrame();
+  }
+
+  async function renderReportCanvas(reportElement) {
+    const scale = Math.min(Math.max(window.devicePixelRatio || 1, 2), PDF_CONFIG.maxScale);
+
+    return window.html2canvas(reportElement, {
+      scale,
+      useCORS: true,
+      backgroundColor: PDF_CONFIG.backgroundColor,
+      logging: false,
+      imageTimeout: 15000,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+      onclone: (clonedDocument) => {
+        clonedDocument.body.classList.add("pdf-export-mode");
+      }
+    });
+  }
+
+  function addCanvasToPdf(pdf, canvas) {
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const printableWidth = pageWidth - PDF_CONFIG.marginLeft - PDF_CONFIG.marginRight;
+    const printableHeight = pageHeight - PDF_CONFIG.marginTop - PDF_CONFIG.marginBottom;
+
+    const imgData = canvas.toDataURL("image/png", 1.0);
+    const imgWidth = printableWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let positionY = PDF_CONFIG.marginTop;
+
+    pdf.addImage(
+      imgData,
+      "PNG",
+      PDF_CONFIG.marginLeft,
+      positionY,
+      imgWidth,
+      imgHeight,
+      undefined,
+      "FAST"
     );
 
-    window.setTimeout(() => {
-      window.print();
-    }, 120);
+    heightLeft -= printableHeight;
+
+    while (heightLeft > 0) {
+      pdf.addPage();
+      positionY = PDF_CONFIG.marginTop - (imgHeight - heightLeft);
+
+      pdf.addImage(
+        imgData,
+        "PNG",
+        PDF_CONFIG.marginLeft,
+        positionY,
+        imgWidth,
+        imgHeight,
+        undefined,
+        "FAST"
+      );
+
+      heightLeft -= printableHeight;
+    }
+  }
+
+  async function downloadLuxuryPdf() {
+    if (runtime.exportInProgress) return;
+
+    if (!ensurePdfLibraries()) {
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "Biblioteki PDF nie zostały załadowane poprawnie.",
+        "warning"
+      );
+      return;
+    }
+
+    if (!DOM.reportDocument) {
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "Nie odnaleziono dokumentu raportu do eksportu.",
+        "warning"
+      );
+      return;
+    }
+
+    runtime.exportInProgress = true;
+    setButtonsDisabled(true);
+
+    try {
+      renderReportDocument();
+      await waitForFontsAndLayout();
+
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "Przygotowywanie dokumentu do eksportu…",
+        "info"
+      );
+
+      const canvas = await renderReportCanvas(DOM.reportDocument);
+
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "Składanie pliku PDF…",
+        "info"
+      );
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+        orientation: PDF_CONFIG.orientation,
+        unit: PDF_CONFIG.unit,
+        format: PDF_CONFIG.format,
+        compress: true,
+        putOnlyUsedFonts: true
+      });
+
+      const report = runtime.reportData || buildResolvedReportData();
+
+      pdf.setProperties({
+        title: `${report.lessonTitle} — Raport odbioru`,
+        subject: "Laboratorium Sumienia / Prawda Sumienia",
+        author: "Piotr Lichwała (Vibrosław)",
+        creator: "Laboratorium Sumienia",
+        keywords: "Prawda Sumienia, Rap-Ort, Laboratorium Sumienia, raport odbioru, edukacja"
+      });
+
+      addCanvasToPdf(pdf, canvas);
+
+      const filename = buildPdfFilename(report);
+      pdf.save(filename);
+
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "PDF został wygenerowany i pobrany.",
+        "success"
+      );
+    } catch (error) {
+      console.error("[LabReport] PDF export failed:", error);
+
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "Nie udało się wygenerować PDF. Sprawdź konsolę lub spróbuj ponownie.",
+        "warning"
+      );
+    } finally {
+      runtime.exportInProgress = false;
+      setButtonsDisabled(false);
+    }
   }
 
   function bindEvents() {
@@ -245,7 +438,7 @@
     }
 
     if (DOM.downloadPdfButton) {
-      DOM.downloadPdfButton.addEventListener("click", downloadPdfViaPrintFlow);
+      DOM.downloadPdfButton.addEventListener("click", downloadLuxuryPdf);
     }
 
     if (DOM.saveToArchiveButton) {
@@ -276,7 +469,7 @@
 
     window.LabCore.showStatusMessage(
       DOM.reportStatusMessage,
-      "Dokument gotowy do wygenerowania i zapisania.",
+      "Dokument gotowy do wygenerowania, pobrania i zapisania.",
       "neutral"
     );
   }
