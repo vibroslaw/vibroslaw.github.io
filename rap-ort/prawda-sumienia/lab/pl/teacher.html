@@ -103,6 +103,15 @@
           <h1 id="liveSessionTitle">Konsola prowadzenia</h1>
 
           <div class="live-session-topbar">
+            <div class="live-session-statusbar">
+  <div class="session-status-pill" id="sessionLiveStatus">Gotowe</div>
+  <div class="session-status-text" id="sessionStatusText">
+    Sesja gotowa do prowadzenia.
+  </div>
+  <div class="session-status-meta" id="sessionLastSaved">
+    Ostatni zapis: —
+  </div>
+</div>
             <div class="live-session-clock">
               <span class="clock-label">Pozostały czas kroku</span>
               <strong class="clock-value" id="stepCountdown">03:00</strong>
@@ -110,6 +119,8 @@
 
             <div class="live-session-actions">
   <button class="btn btn-secondary" type="button" id="prevStepButton">Poprzedni krok</button>
+  <button class="btn btn-secondary" type="button" id="pauseTimerButton">Pauza</button>
+  <button class="btn btn-secondary" type="button" id="resetTimerButton">Reset</button>
   <button class="btn btn-secondary" type="button" id="presentationModeButton">Tryb prezentacji</button>
   <button class="btn btn-primary" type="button" id="nextStepButton">Następny krok</button>
 </div>
@@ -122,6 +133,15 @@
                   <span class="step-kicker" id="currentStepType">Wejście</span>
                   <span class="step-index" id="currentStepIndex">Krok 1</span>
                 </div>
+                <div class="live-session-statusbar">
+  <div class="session-status-pill" id="sessionLiveStatus">Gotowe</div>
+  <div class="session-status-text" id="sessionStatusText">
+    Sesja gotowa do prowadzenia.
+  </div>
+  <div class="session-status-meta" id="sessionLastSaved">
+    Ostatni zapis: —
+  </div>
+</div>
 
                 <h2 class="step-title" id="currentStepTitle">Wejście</h2>
 
