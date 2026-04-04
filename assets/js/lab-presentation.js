@@ -37,6 +37,11 @@
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  function setText(node, value) {
+    if (!node) return;
+    node.textContent = value ?? "";
+  }
+
   function cacheDom() {
     DOM.root = qs("labPresent");
     DOM.close = qs("labPresentClose");
@@ -116,7 +121,7 @@
   }
 
   function mountQr() {
-    if (!DOM.qrWrap) return;
+    if (!DOM.qrWrap || !ensureQrLibrary()) return;
 
     if (!runtime.qrInstance) {
       runtime.qrInstance = buildQrInstance();
@@ -139,7 +144,7 @@
   }
 
   function buildQrUrl(state) {
-    if (!state?.session) return "";
+    if (!state?.session || !window.LabCore?.buildStudentLaunchUrl) return "";
     return window.LabCore.buildStudentLaunchUrl(state.session);
   }
 
@@ -169,66 +174,76 @@
   function renderPromptView(state) {
     if (!state) return;
 
-    DOM.promptStep.textContent = getStepPrefix(state);
-    DOM.promptType.textContent = state.stepTypeLabel || "Etap";
-    DOM.promptTitle.textContent = state.step?.title || "Etap";
-    DOM.promptInstruction.textContent = state.step?.teacherInstruction || "Brak instrukcji dla tego etapu.";
-    DOM.promptQuestion.textContent =
-      state.currentPromptText || "Ten etap nie uruchamia aktywnego pytania.";
+    setText(DOM.promptStep, getStepPrefix(state));
+    setText(DOM.promptType, state.stepTypeLabel || "Etap");
+    setText(DOM.promptTitle, state.step?.title || "Etap");
+    setText(DOM.promptInstruction, state.step?.teacherInstruction || "Brak instrukcji dla tego etapu.");
+    setText(
+      DOM.promptQuestion,
+      state.currentPromptText || "Ten etap nie uruchamia aktywnego pytania."
+    );
   }
 
   function renderObjectView(state) {
     const object = state?.linkedObject;
 
-    DOM.objectStep.textContent = getStepPrefix(state);
+    setText(DOM.objectStep, getStepPrefix(state));
 
     if (!object) {
-      DOM.objectTitle.textContent = "Brak aktywnego obiektu";
-      DOM.objectText.textContent = "W bieżącym kroku nie ma przypisanego obiektu pamięci.";
-      DOM.objectQuote.textContent = "Przejdź do kroku z obiektem pamięci albo przełącz widok.";
-      DOM.objectImage.style.backgroundImage =
-        "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
-      DOM.objectImage.style.backgroundPosition = "center";
+      setText(DOM.objectTitle, "Brak aktywnego obiektu");
+      setText(DOM.objectText, "W bieżącym kroku nie ma przypisanego obiektu pamięci.");
+      setText(DOM.objectQuote, "Przejdź do kroku z obiektem pamięci albo przełącz widok.");
+
+      if (DOM.objectImage) {
+        DOM.objectImage.style.backgroundImage =
+          "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
+        DOM.objectImage.style.backgroundPosition = "center";
+        DOM.objectImage.style.backgroundSize = "cover";
+        DOM.objectImage.style.backgroundRepeat = "no-repeat";
+      }
       return;
     }
 
-    DOM.objectTitle.textContent = object.title || "Obiekt pamięci";
-    DOM.objectText.textContent = object.shortText || object.historicalMeaning || "—";
-    DOM.objectQuote.textContent = object.quote || object.primaryQuestion || "—";
+    setText(DOM.objectTitle, object.title || "Obiekt pamięci");
+    setText(DOM.objectText, object.shortText || object.historicalMeaning || "—");
+    setText(DOM.objectQuote, object.quote || object.primaryQuestion || "—");
 
     const imageUrl = object.image?.primary || object.image?.fallback || "";
-    DOM.objectImage.style.backgroundImage = imageUrl
-      ? `linear-gradient(180deg, rgba(6,6,6,.12), rgba(6,6,6,.42)), url('${imageUrl}')`
-      : "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
-    DOM.objectImage.style.backgroundSize = "cover";
-    DOM.objectImage.style.backgroundRepeat = "no-repeat";
-    DOM.objectImage.style.backgroundPosition = `${object.image?.focusX || 50}% ${object.image?.focusY || 50}%`;
+    if (DOM.objectImage) {
+      DOM.objectImage.style.backgroundImage = imageUrl
+        ? `linear-gradient(180deg, rgba(6,6,6,.12), rgba(6,6,6,.42)), url('${imageUrl}')`
+        : "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))";
+      DOM.objectImage.style.backgroundSize = "cover";
+      DOM.objectImage.style.backgroundRepeat = "no-repeat";
+      DOM.objectImage.style.backgroundPosition = `${object.image?.focusX || 50}% ${object.image?.focusY || 50}%`;
+    }
   }
 
   function renderQrView(state) {
     const url = buildQrUrl(state);
 
-    DOM.qrStep.textContent = state?.session?.sessionId || "Aktywna sesja";
-    DOM.qrType.textContent = "Tryb ucznia";
-    DOM.qrTitle.textContent = "Zeskanuj, aby wejść";
-    DOM.qrText.textContent = "Użyj telefonu, aby otworzyć aktywną ścieżkę ucznia.";
-    DOM.qrLink.textContent = url || "—";
+    setText(DOM.qrStep, state?.session?.sessionId || "Aktywna sesja");
+    setText(DOM.qrType, "Tryb ucznia");
+    setText(DOM.qrTitle, "Zeskanuj, aby wejść");
+    setText(DOM.qrText, "Użyj telefonu, aby otworzyć aktywną ścieżkę ucznia.");
+    setText(DOM.qrLink, url || "—");
 
     if (runtime.qrInstance && url) {
-      runtime.qrInstance.update({
-        data: url
-      });
+      runtime.qrInstance.update({ data: url });
     }
   }
 
   function renderFocusView(state) {
-    DOM.focusQuote.textContent = buildFocusQuote(state);
-    DOM.focusNote.textContent = buildFocusNote(state);
+    setText(DOM.focusQuote, buildFocusQuote(state));
+    setText(DOM.focusNote, buildFocusNote(state));
   }
 
   function renderChrome(state) {
-    DOM.sessionLabel.textContent = state?.session?.sessionId || "Tryb prezentacji";
-    DOM.footerLesson.textContent = state?.lesson?.title || state?.session?.lessonTitle || "Laboratorium Sumienia";
+    setText(DOM.sessionLabel, state?.session?.sessionId || "Tryb prezentacji");
+    setText(
+      DOM.footerLesson,
+      state?.lesson?.title || state?.session?.lessonTitle || "Laboratorium Sumienia"
+    );
   }
 
   function renderAll(state) {
@@ -239,6 +254,11 @@
     renderObjectView(state);
     renderQrView(state);
     renderFocusView(state);
+  }
+
+  function getViewElement(name) {
+    if (!DOM.root) return null;
+    return DOM.root.querySelector(`.lab-present-view[data-view="${name}"]`);
   }
 
   function renderTabs() {
@@ -265,7 +285,7 @@
     runtime.activeView = view;
 
     runtime.views.forEach((name) => {
-      const el = document.querySelector(`.lab-present-view[data-view="${name}"]`);
+      const el = getViewElement(name);
       if (!el) return;
       el.classList.toggle("is-active", name === view);
     });
@@ -275,7 +295,7 @@
 
   function showTransitionLabel(view) {
     if (!DOM.transition || !DOM.transitionTitle) return;
-    DOM.transitionTitle.textContent = VIEW_LABELS[view] || "Widok";
+    setText(DOM.transitionTitle, VIEW_LABELS[view] || "Widok");
     DOM.transition.classList.add("is-visible");
   }
 
@@ -320,6 +340,8 @@
 
   function show() {
     if (!DOM.root) return;
+
+    mountQr();
 
     const state = readTeacherState();
     if (state) {
