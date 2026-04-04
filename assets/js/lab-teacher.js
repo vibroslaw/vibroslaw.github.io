@@ -19,7 +19,8 @@
     currentStep: null,
     currentStepTimer: null,
     currentStepRemainingSeconds: 0,
-    timerRunning: false
+    timerRunning: false,
+    autosaveTimer: null
   };
 
   function isLauncherPage() {
@@ -62,6 +63,9 @@
     DOM.openStudentView = document.getElementById("openStudentView");
     DOM.prevStepButton = document.getElementById("prevStepButton");
     DOM.nextStepButton = document.getElementById("nextStepButton");
+    DOM.pauseTimerButton = document.getElementById("pauseTimerButton");
+    DOM.resetTimerButton = document.getElementById("resetTimerButton");
+    DOM.presentationModeButton = document.getElementById("presentationModeButton");
 
     DOM.stepCountdown = document.getElementById("stepCountdown");
     DOM.currentStepType = document.getElementById("currentStepType");
@@ -74,7 +78,6 @@
     DOM.openObjectButton = document.getElementById("openObjectButton");
     DOM.triggerQrButton = document.getElementById("triggerQrButton");
     DOM.openReportBuilderButton = document.getElementById("openReportBuilderButton");
-    DOM.presentationModeButton = document.getElementById("presentationModeButton");
 
     DOM.guardrailsList = document.getElementById("guardrailsList");
     DOM.linkedObjectPreview = document.getElementById("linkedObjectPreview");
@@ -83,10 +86,47 @@
     DOM.archiveReportsCount = document.getElementById("archiveReportsCount");
     DOM.archiveTopQuote = document.getElementById("archiveTopQuote");
     DOM.archiveTopObject = document.getElementById("archiveTopObject");
+
+    DOM.sessionLiveStatus = document.getElementById("sessionLiveStatus");
+    DOM.sessionStatusText = document.getElementById("sessionStatusText");
+    DOM.sessionLastSaved = document.getElementById("sessionLastSaved");
   }
 
   function mapStepTypeLabel(type) {
     return STEP_TYPE_LABELS[type] || type || "Etap";
+  }
+
+  function setSessionStatus(state, text) {
+    if (DOM.sessionLiveStatus) {
+      DOM.sessionLiveStatus.dataset.state = state;
+      DOM.sessionLiveStatus.textContent =
+        state === "live" ? "Na żywo" :
+        state === "paused" ? "Pauza" :
+        state === "saved" ? "Zapisano" :
+        "Gotowe";
+    }
+
+    if (DOM.sessionStatusText) {
+      DOM.sessionStatusText.textContent = text || "Sesja gotowa do prowadzenia.";
+    }
+
+    if (DOM.sessionLastSaved && runtime.session?.lastActivityAt) {
+      DOM.sessionLastSaved.textContent = `Ostatni zapis: ${formatDateTime(runtime.session.lastActivityAt)}`;
+    }
+  }
+
+  function formatDateTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+
+    return new Intl.DateTimeFormat("pl-PL", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(date);
   }
 
   function getSelectedLauncherCriteria() {
@@ -119,11 +159,10 @@
     window.LabCore.setText(DOM.previewReportMode, window.LabCore.mapReportLabel(reportTemplate || lesson.reportTemplate));
 
     const guardrails = Array.isArray(lesson.guardrails) ? lesson.guardrails : [];
-    const previewGuardrailsText = guardrails.length
-      ? guardrails.slice(0, 2).join(" ")
-      : "Ta ścieżka nie zawiera dodatkowych guardrails w pliku lekcji.";
-
-    window.LabCore.setText(DOM.previewGuardrails, previewGuardrailsText);
+    window.LabCore.setText(
+      DOM.previewGuardrails,
+      guardrails.length ? guardrails.slice(0, 2).join(" ") : "Ta ścieżka nie zawiera dodatkowych guardrails w pliku lekcji."
+    );
   }
 
   function populateLauncherFromData() {
@@ -185,7 +224,6 @@
 
   function updateLauncherPreview() {
     const criteria = getSelectedLauncherCriteria();
-
     const lesson = window.LabCore.getBestMatchingLesson({
       ageGroup: criteria.ageGroup,
       durationMin: criteria.durationMin,
@@ -216,13 +254,16 @@
       institution: criteria.institution,
       group: criteria.group,
       startedAt: new Date().toISOString(),
-      currentStepIndex: 0
+      currentStepIndex: 0,
+      lastActivityAt: new Date().toISOString(),
+      timerState: {
+        running: false,
+        remainingSeconds: Number(lesson.steps?.[0]?.durationMin || 0) * 60
+      }
     });
 
     window.LabCore.saveSessionState(session);
-
-    const teacherUrl = window.LabCore.buildTeacherLaunchUrl(session);
-    window.location.href = teacherUrl;
+    window.location.href = window.LabCore.buildTeacherLaunchUrl(session);
   }
 
   function bindLauncherEvents() {
@@ -241,9 +282,7 @@
         element.addEventListener("input", updateLauncherPreview);
       });
 
-    if (DOM.lessonBuilderForm) {
-      DOM.lessonBuilderForm.addEventListener("submit", handleLauncherSubmit);
-    }
+    DOM.lessonBuilderForm?.addEventListener("submit", handleLauncherSubmit);
   }
 
   function initializeLauncherPage() {
@@ -266,23 +305,89 @@
     DOM.stepCountdown.textContent = window.LabCore.formatClock(seconds);
   }
 
-  function startCurrentStepTimer(seconds) {
+  function persistSessionPatch(patch = {}, statusState = "saved", statusText = "Sesja została zaktualizowana.") {
+    runtime.session = window.LabCore.updateSessionState({
+      ...patch,
+      lastActivityAt: new Date().toISOString()
+    });
+
+    setSessionStatus(statusState, statusText);
+  }
+
+  function startCurrentStepTimer(seconds, silent = false) {
     clearCurrentStepTimer();
 
     runtime.currentStepRemainingSeconds = Math.max(0, Number(seconds || 0));
     setTimerDisplay(runtime.currentStepRemainingSeconds);
 
-    if (runtime.currentStepRemainingSeconds <= 0) return;
+    if (runtime.currentStepRemainingSeconds <= 0) {
+      persistSessionPatch({
+        timerState: {
+          running: false,
+          remainingSeconds: 0
+        }
+      }, "paused", "Timer osiągnął koniec bieżącego kroku.");
+      return;
+    }
 
     runtime.timerRunning = true;
+
+    persistSessionPatch({
+      timerState: {
+        running: true,
+        remainingSeconds: runtime.currentStepRemainingSeconds
+      }
+    }, silent ? "live" : "live", silent ? "Sesja aktywna." : "Timer kroku został uruchomiony.");
+
     runtime.currentStepTimer = window.setInterval(() => {
       runtime.currentStepRemainingSeconds -= 1;
       setTimerDisplay(runtime.currentStepRemainingSeconds);
 
       if (runtime.currentStepRemainingSeconds <= 0) {
         clearCurrentStepTimer();
+        persistSessionPatch({
+          timerState: {
+            running: false,
+            remainingSeconds: 0
+          }
+        }, "paused", "Czas bieżącego kroku dobiegł końca.");
+        return;
+      }
+
+      if (runtime.currentStepRemainingSeconds % 5 === 0) {
+        persistSessionPatch({
+          timerState: {
+            running: true,
+            remainingSeconds: runtime.currentStepRemainingSeconds
+          }
+        }, "live", "Sesja aktywna.");
       }
     }, 1000);
+  }
+
+  function pauseCurrentStepTimer() {
+    clearCurrentStepTimer();
+    persistSessionPatch({
+      timerState: {
+        running: false,
+        remainingSeconds: runtime.currentStepRemainingSeconds
+      }
+    }, "paused", "Timer został zatrzymany.");
+  }
+
+  function resetCurrentStepTimer() {
+    const step = runtime.currentStep;
+    const defaultSeconds = Number(step?.durationMin || 0) * 60;
+    clearCurrentStepTimer();
+    runtime.currentStepRemainingSeconds = defaultSeconds;
+    setTimerDisplay(defaultSeconds);
+
+    persistSessionPatch({
+      timerState: {
+        running: false,
+        remainingSeconds: defaultSeconds
+      }
+    }, "saved", "Timer kroku został zresetowany.");
   }
 
   function buildPromptText(step) {
@@ -291,11 +396,7 @@
     }
 
     const prompts = window.LabCore.getPromptsByIds(step.promptIds);
-    if (!prompts.length) {
-      return "Brak przypisanego pytania do tego etapu.";
-    }
-
-    return prompts[0].text;
+    return prompts[0]?.text || "Brak przypisanego pytania do tego etapu.";
   }
 
   function buildObjectPreviewHtml(step) {
@@ -324,7 +425,6 @@
     if (!DOM.guardrailsList) return;
 
     const guardrails = Array.isArray(lesson?.guardrails) ? lesson.guardrails : [];
-
     DOM.guardrailsList.innerHTML = "";
 
     if (!guardrails.length) {
@@ -360,13 +460,16 @@
         <div class="timeline-step-meta">${window.LabCore.formatDuration(step.durationMin)}</div>
       `;
 
+      article.addEventListener("click", () => {
+        goToStep(index);
+      });
+
       DOM.lessonTimelineList.appendChild(article);
     });
   }
 
   function renderTeacherArchivePanel() {
     const archive = window.LabCore.getArchiveState();
-
     window.LabCore.setText(DOM.archiveReportsCount, String(archive.reportsCount || 0));
     window.LabCore.setText(DOM.archiveTopQuote, archive.topQuote || "—");
     window.LabCore.setText(DOM.archiveTopObject, archive.topObject || "—");
@@ -382,12 +485,37 @@
     window.LabCore.setText(DOM.teacherAxis, window.LabCore.mapAxisLabel(lesson?.axis));
     window.LabCore.setText(DOM.teacherReportType, window.LabCore.mapReportLabel(session?.reportTemplate || lesson?.reportTemplate));
     window.LabCore.setText(DOM.sessionIdLabel, session?.sessionId || "—");
+
+    if (session?.lastActivityAt) {
+      setSessionStatus(
+        session?.timerState?.running ? "live" : "saved",
+        session?.timerState?.running ? "Przywrócono aktywną sesję." : "Przywrócono zapisany stan sesji."
+      );
+    } else {
+      setSessionStatus("saved", "Sesja gotowa do prowadzenia.");
+    }
+  }
+
+  function buildPresentationState() {
+    const lesson = runtime.lesson;
+    const session = runtime.session;
+    const step = runtime.currentStep;
+    const currentIndex = session?.currentStepIndex || 0;
+
+    return {
+      lesson,
+      session,
+      step,
+      currentIndex,
+      stepTypeLabel: mapStepTypeLabel(step?.type),
+      currentPromptText: buildPromptText(step),
+      linkedObject: step?.objectId ? window.LabCore.getObjectById(step.objectId) : null
+    };
   }
 
   function renderCurrentStep() {
     const lesson = runtime.lesson;
     const session = runtime.session;
-
     if (!lesson || !session) return;
 
     const steps = Array.isArray(lesson.steps) ? lesson.steps : [];
@@ -411,16 +539,28 @@
       DOM.linkedObjectPreview.innerHTML = buildObjectPreviewHtml(step);
     }
 
-    if (DOM.prevStepButton) {
-      DOM.prevStepButton.disabled = currentIndex <= 0;
-    }
-
-    if (DOM.nextStepButton) {
-      DOM.nextStepButton.disabled = currentIndex >= steps.length - 1;
-    }
+    if (DOM.prevStepButton) DOM.prevStepButton.disabled = currentIndex <= 0;
+    if (DOM.nextStepButton) DOM.nextStepButton.disabled = currentIndex >= steps.length - 1;
 
     renderTimeline(lesson, currentIndex);
-    setTimerDisplay(Number(step.durationMin || 0) * 60);
+
+    const restoredSeconds = session?.timerState?.remainingSeconds;
+    const fallbackSeconds = Number(step.durationMin || 0) * 60;
+    const secondsToShow =
+      typeof restoredSeconds === "number" && session.currentStepIndex === currentIndex
+        ? restoredSeconds
+        : fallbackSeconds;
+
+    runtime.currentStepRemainingSeconds = secondsToShow;
+    setTimerDisplay(secondsToShow);
+
+    window.LabTeacherPresentationBridge = {
+      getState: buildPresentationState
+    };
+
+    window.dispatchEvent(new CustomEvent("lab:teacherStepRendered", {
+      detail: buildPresentationState()
+    }));
   }
 
   function syncTeacherUrls() {
@@ -451,61 +591,63 @@
     }
 
     if (DOM.triggerQrButton) {
-  DOM.triggerQrButton.onclick = () => {
-    const studentUrl = window.LabCore.buildStudentLaunchUrl(runtime.session);
-    const reportUrl = window.LabCore.buildReportUrl(runtime.session);
+      DOM.triggerQrButton.onclick = () => {
+        const studentUrl = window.LabCore.buildStudentLaunchUrl(runtime.session);
+        const reportUrl = window.LabCore.buildReportUrl(runtime.session);
 
-    const items = [
-      {
-        id: "student",
-        label: "Tryb ucznia",
-        title: "Wejście ucznia",
-        url: studentUrl,
-        filename: `qr-student-${runtime.session.sessionId}`,
-        note: "Najczystsze wejście do aktywnej ścieżki ucznia."
-      }
-    ];
+        const items = [
+          {
+            id: "student",
+            label: "Tryb ucznia",
+            title: "Wejście ucznia",
+            url: studentUrl,
+            filename: `qr-student-${runtime.session.sessionId}`,
+            note: "Najczystsze wejście do aktywnej ścieżki ucznia."
+          }
+        ];
 
-    if (runtime.currentStep?.objectId) {
-      const object = window.LabCore.getObjectById(runtime.currentStep.objectId);
-      const objectUrl = new URL(studentUrl);
-      objectUrl.searchParams.set("stage", "object");
-      objectUrl.searchParams.set("objectId", runtime.currentStep.objectId);
+        if (runtime.currentStep?.objectId) {
+          const object = window.LabCore.getObjectById(runtime.currentStep.objectId);
+          const objectUrl = new URL(studentUrl);
+          objectUrl.searchParams.set("stage", "object");
+          objectUrl.searchParams.set("objectId", runtime.currentStep.objectId);
 
-      items.push({
-        id: "object",
-        label: "Obiekt pamięci",
-        title: object?.title || "Obiekt pamięci",
-        url: objectUrl.toString(),
-        filename: `qr-object-${runtime.currentStep.objectId}-${runtime.session.sessionId}`,
-        note: "Bezpośrednie wejście do aktualnego obiektu pamięci."
-      });
+          items.push({
+            id: "object",
+            label: "Obiekt pamięci",
+            title: object?.title || "Obiekt pamięci",
+            url: objectUrl.toString(),
+            filename: `qr-object-${runtime.currentStep.objectId}-${runtime.session.sessionId}`,
+            note: "Bezpośrednie wejście do aktualnego obiektu pamięci."
+          });
+        }
+
+        items.push({
+          id: "report",
+          label: "Raport",
+          title: "Podgląd raportu",
+          url: reportUrl,
+          filename: `qr-report-${runtime.session.sessionId}`,
+          note: "Wejście do podglądu raportu tej sesji."
+        });
+
+        window.LabQR?.open?.({
+          title: "Generator QR sesji",
+          subtitle: "Wybierz tryb, który chcesz udostępnić klasie.",
+          items
+        });
+      };
     }
-
-    items.push({
-      id: "report",
-      label: "Raport",
-      title: "Podgląd raportu",
-      url: reportUrl,
-      filename: `qr-report-${runtime.session.sessionId}`,
-      note: "Wejście do podglądu raportu tej sesji."
-    });
-
-    if (window.LabQR?.open) {
-      window.LabQR.open({
-        title: "Generator QR sesji",
-        subtitle: "Wybierz tryb, który chcesz udostępnić klasie.",
-        items
-      });
-    }
-  };
-}
   }
 
   function persistCurrentStepIndex(index) {
-    runtime.session = window.LabCore.updateSessionState({
-      currentStepIndex: index
-    });
+    persistSessionPatch({
+      currentStepIndex: index,
+      timerState: {
+        running: false,
+        remainingSeconds: Number(runtime.lesson?.steps?.[index]?.durationMin || 0) * 60
+      }
+    }, "saved", "Przejście do nowego kroku zostało zapisane.");
   }
 
   function goToStep(index) {
@@ -513,41 +655,71 @@
     if (!lesson?.steps?.length) return;
 
     const safeIndex = Math.max(0, Math.min(index, lesson.steps.length - 1));
+    clearCurrentStepTimer();
     persistCurrentStepIndex(safeIndex);
     renderCurrentStep();
+  }
 
-    const currentStep = runtime.currentStep;
-    const seconds = Number(currentStep?.durationMin || 0) * 60;
-
-    if (runtime.timerRunning) {
-      startCurrentStepTimer(seconds);
-    } else {
-      setTimerDisplay(seconds);
+  function startAutosaveHeartbeat() {
+    if (runtime.autosaveTimer) {
+      clearInterval(runtime.autosaveTimer);
     }
+
+    runtime.autosaveTimer = window.setInterval(() => {
+      if (!runtime.session) return;
+
+      persistSessionPatch({
+        heartbeatAt: new Date().toISOString(),
+        timerState: {
+          running: runtime.timerRunning,
+          remainingSeconds: runtime.currentStepRemainingSeconds
+        }
+      }, runtime.timerRunning ? "live" : "saved", runtime.timerRunning ? "Sesja aktywna." : "Postęp sesji zapisany.");
+    }, 15000);
   }
 
   function bindTeacherControls() {
-    if (DOM.startLiveSession) {
-      DOM.startLiveSession.addEventListener("click", () => {
-        if (!runtime.currentStep) return;
+    DOM.startLiveSession?.addEventListener("click", () => {
+      if (!runtime.currentStep) return;
 
-        const currentSeconds = Number(runtime.currentStep.durationMin || 0) * 60;
-        startCurrentStepTimer(currentSeconds);
-        DOM.startLiveSession.textContent = "Sesja aktywna";
-      });
-    }
+      const currentSeconds = runtime.currentStepRemainingSeconds || Number(runtime.currentStep.durationMin || 0) * 60;
+      startCurrentStepTimer(currentSeconds);
+      DOM.startLiveSession.textContent = "Sesja aktywna";
+    });
 
-    if (DOM.prevStepButton) {
-      DOM.prevStepButton.addEventListener("click", () => {
-        goToStep((runtime.session?.currentStepIndex || 0) - 1);
-      });
-    }
+    DOM.prevStepButton?.addEventListener("click", () => {
+      goToStep((runtime.session?.currentStepIndex || 0) - 1);
+    });
 
-    if (DOM.nextStepButton) {
-      DOM.nextStepButton.addEventListener("click", () => {
-        goToStep((runtime.session?.currentStepIndex || 0) + 1);
-      });
-    }
+    DOM.nextStepButton?.addEventListener("click", () => {
+      goToStep((runtime.session?.currentStepIndex || 0) + 1);
+    });
+
+    DOM.pauseTimerButton?.addEventListener("click", () => {
+      if (runtime.timerRunning) {
+        pauseCurrentStepTimer();
+        DOM.pauseTimerButton.textContent = "Wznów";
+      } else {
+        startCurrentStepTimer(runtime.currentStepRemainingSeconds || Number(runtime.currentStep?.durationMin || 0) * 60, true);
+        DOM.pauseTimerButton.textContent = "Pauza";
+      }
+    });
+
+    DOM.resetTimerButton?.addEventListener("click", resetCurrentStepTimer);
+
+    DOM.presentationModeButton?.addEventListener("click", () => {
+      window.LabPresentation?.open?.();
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (!runtime.session) return;
+      persistSessionPatch({
+        timerState: {
+          running: false,
+          remainingSeconds: runtime.currentStepRemainingSeconds
+        }
+      }, "saved", "Stan sesji został zapisany.");
+    });
   }
 
   function buildOrRecoverTeacherSession(lesson) {
@@ -569,7 +741,12 @@
       group: stored.group || "",
       startedAt: stored.startedAt || null,
       currentStepIndex: stored.currentStepIndex || 0,
-      responses: stored.responses || {}
+      responses: stored.responses || {},
+      lastActivityAt: stored.lastActivityAt || new Date().toISOString(),
+      timerState: stored.timerState || {
+        running: false,
+        remainingSeconds: Number(lesson.steps?.[stored.currentStepIndex || 0]?.durationMin || 0) * 60
+      }
     });
   }
 
@@ -586,52 +763,19 @@
     runtime.session = buildOrRecoverTeacherSession(lesson);
     window.LabCore.saveSessionState(runtime.session);
 
-    function buildPresentationState() {
-  const lesson = runtime.lesson;
-  const session = runtime.session;
-  const step = runtime.currentStep;
-  const currentIndex = session?.currentStepIndex || 0;
-
-  return {
-    lesson,
-    session,
-    step,
-    currentIndex,
-    stepTypeLabel: mapStepTypeLabel(step?.type),
-    currentPromptText: buildPromptText(step),
-    linkedObject: step?.objectId ? window.LabCore.getObjectById(step.objectId) : null
-  };
-}
-
     renderTeacherSessionMeta();
     renderGuardrails(lesson);
     renderTeacherArchivePanel();
     renderCurrentStep();
     syncTeacherUrls();
     bindTeacherControls();
-    if (DOM.presentationModeButton) {
-  DOM.presentationModeButton.addEventListener("click", () => {
-    if (window.LabPresentation?.open) {
-      window.LabPresentation.open();
+    startAutosaveHeartbeat();
+
+    if (runtime.session?.timerState?.running) {
+      startCurrentStepTimer(runtime.session.timerState.remainingSeconds || Number(runtime.currentStep?.durationMin || 0) * 60, true);
+      if (DOM.pauseTimerButton) DOM.pauseTimerButton.textContent = "Pauza";
+      if (DOM.startLiveSession) DOM.startLiveSession.textContent = "Sesja aktywna";
     }
-  });
-}
-
-};
-
-  window.LabTeacherPresentationBridge = {
-  getState: buildPresentationState
-};
-
-window.dispatchEvent(new CustomEvent("lab:teacherStepRendered", {
-  detail: buildPresentationState()
-}));
-
-window.dispatchEvent(new CustomEvent("lab:teacherStepRendered", {
-  detail: buildPresentationState()
-}));
-
-    
   }
 
   async function init() {
