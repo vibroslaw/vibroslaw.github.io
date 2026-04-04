@@ -22,6 +22,7 @@
   };
 
   function cacheDom() {
+    DOM.reportTypeLabel = document.getElementById("reportTypeLabel");
     DOM.reportSessionId = document.getElementById("reportSessionId");
     DOM.reportSelectedQuote = document.getElementById("reportSelectedQuote");
     DOM.reportSelectedObject = document.getElementById("reportSelectedObject");
@@ -56,6 +57,11 @@
     if (!objectId) return "—";
     const object = window.LabCore.getObjectById(objectId);
     return object?.title || objectId || "—";
+  }
+
+  function getFallbackObjectIdFromLesson(lesson) {
+    const step = lesson?.steps?.find((item) => item.type === "object" && item.objectId);
+    return step?.objectId || "";
   }
 
   function getResolvedLesson() {
@@ -94,7 +100,13 @@
       group: stored.group || "",
       startedAt: stored.startedAt || new Date().toISOString(),
       currentStepIndex: stored.currentStepIndex || 0,
-      responses: stored.responses || {}
+      responses: stored.responses || {},
+      lastActivityAt: stored.lastActivityAt || new Date().toISOString(),
+      heartbeatAt: stored.heartbeatAt || null,
+      timerState: stored.timerState || {
+        running: false,
+        remainingSeconds: 0
+      }
     });
   }
 
@@ -103,20 +115,29 @@
     const lesson = runtime.lesson;
     const responses = session?.responses || {};
 
+    const resolvedObjectId = responses.selectedObject || getFallbackObjectIdFromLesson(lesson);
+    const resolvedDate =
+      session?.reportSavedAt ||
+      session?.startedAt ||
+      new Date().toISOString();
+
     const resolved = {
       sessionId: session?.sessionId || "PS-PL-LIVE",
       lessonId: session?.lessonId || "",
       lessonTitle: lesson?.title || session?.lessonTitle || "Prawda Sumienia",
       reportTemplate: session?.reportTemplate || lesson?.reportTemplate || "raport-odbioru",
+      reportTemplateLabel: window.LabCore.mapReportLabel(
+        session?.reportTemplate || lesson?.reportTemplate || "raport-odbioru"
+      ),
       selectedQuoteId: responses.selectedQuote || "",
       selectedQuoteText: getQuoteTextById(responses.selectedQuote),
-      selectedObjectId: responses.selectedObject || "",
-      selectedObjectTitle: getObjectTitleById(responses.selectedObject),
+      selectedObjectId: resolvedObjectId,
+      selectedObjectTitle: getObjectTitleById(resolvedObjectId),
       keyMoment: responses.keyMoment || responses.reflectionResponse || "—",
       finalResponse: responses.finalResponse || "—",
       openQuestionId: responses.openQuestion || "",
       openQuestionText: getOpenQuestionTextById(responses.openQuestion),
-      date: window.LabCore.formatDate(new Date()),
+      date: window.LabCore.formatDate(resolvedDate),
       institution: session?.institution || "—",
       group: session?.group || "—",
       archiveEnabled: Boolean(session?.archiveEnabled),
@@ -130,9 +151,10 @@
   function renderReportDocument() {
     const report = buildResolvedReportData();
 
+    window.LabCore.setText(DOM.reportTypeLabel, report.reportTemplateLabel);
     window.LabCore.setText(DOM.reportSessionId, report.sessionId);
-    window.LabCore.setText(DOM.reportSelectedQuote, report.selectedQuoteText);
-    window.LabCore.setText(DOM.reportSelectedObject, report.selectedObjectTitle);
+    window.LabCore.setText(DOM.reportSelectedQuote, report.selectedQuoteText || "—");
+    window.LabCore.setText(DOM.reportSelectedObject, report.selectedObjectTitle || "—");
     window.LabCore.setText(DOM.reportKeyMoment, report.keyMoment || "—");
     window.LabCore.setText(DOM.reportFinalResponse, report.finalResponse || "—");
     window.LabCore.setText(DOM.reportOpenQuestion, report.openQuestionText || "—");
@@ -148,6 +170,7 @@
       lessonId: report.lessonId,
       lessonTitle: report.lessonTitle,
       reportTemplate: report.reportTemplate,
+      reportTemplateLabel: report.reportTemplateLabel,
       selectedQuote: report.selectedQuoteText,
       selectedQuoteId: report.selectedQuoteId,
       selectedObject: report.selectedObjectTitle,
@@ -168,10 +191,10 @@
     const objectCount = new Map();
 
     reports.forEach((entry) => {
-      if (entry.selectedQuote) {
+      if (entry?.selectedQuote) {
         quoteCount.set(entry.selectedQuote, (quoteCount.get(entry.selectedQuote) || 0) + 1);
       }
-      if (entry.selectedObject) {
+      if (entry?.selectedObject) {
         objectCount.set(entry.selectedObject, (objectCount.get(entry.selectedObject) || 0) + 1);
       }
     });
@@ -197,6 +220,8 @@
       );
       return;
     }
+
+    renderReportDocument();
 
     const archive = window.LabCore.getArchiveState();
     const reports = Array.isArray(archive.reports) ? archive.reports.slice() : [];
@@ -228,6 +253,8 @@
   }
 
   function printReportDocument() {
+    renderReportDocument();
+
     window.LabCore.showStatusMessage(
       DOM.reportStatusMessage,
       "Otwieranie widoku do druku…",
@@ -269,6 +296,11 @@
       .forEach((button) => {
         button.disabled = disabled;
       });
+  }
+
+  function setArchiveButtonAvailability() {
+    if (!DOM.saveToArchiveButton) return;
+    DOM.saveToArchiveButton.disabled = !runtime.session?.archiveEnabled;
   }
 
   function nextFrame() {
@@ -401,7 +433,7 @@
       const report = runtime.reportData || buildResolvedReportData();
 
       pdf.setProperties({
-        title: `${report.lessonTitle} — Raport odbioru`,
+        title: `${report.lessonTitle} - ${report.reportTemplateLabel}`,
         subject: "Laboratorium Sumienia / Prawda Sumienia",
         author: "Piotr Lichwała (Vibrosław)",
         creator: "Laboratorium Sumienia",
@@ -429,21 +461,16 @@
     } finally {
       runtime.exportInProgress = false;
       setButtonsDisabled(false);
+      setArchiveButtonAvailability();
     }
   }
 
   function bindEvents() {
-    if (DOM.printReportButton) {
-      DOM.printReportButton.addEventListener("click", printReportDocument);
-    }
+    DOM.printReportButton?.addEventListener("click", printReportDocument);
+    DOM.downloadPdfButton?.addEventListener("click", downloadLuxuryPdf);
+    DOM.saveToArchiveButton?.addEventListener("click", saveCurrentReportToArchive);
 
-    if (DOM.downloadPdfButton) {
-      DOM.downloadPdfButton.addEventListener("click", downloadLuxuryPdf);
-    }
-
-    if (DOM.saveToArchiveButton) {
-      DOM.saveToArchiveButton.addEventListener("click", saveCurrentReportToArchive);
-    }
+    window.addEventListener("beforeprint", renderReportDocument);
   }
 
   function syncInitialStatus() {
@@ -480,6 +507,11 @@
     const lesson = getResolvedLesson();
     if (!lesson) {
       console.error("[LabReport] Nie znaleziono dopasowanej lekcji.");
+      window.LabCore.showStatusMessage(
+        DOM.reportStatusMessage,
+        "Nie odnaleziono danych lekcji dla tego raportu.",
+        "warning"
+      );
       return;
     }
 
@@ -490,6 +522,7 @@
 
     renderReportDocument();
     bindEvents();
+    setArchiveButtonAvailability();
     syncInitialStatus();
   }
 
@@ -501,6 +534,13 @@
   document.addEventListener("DOMContentLoaded", () => {
     init().catch((error) => {
       console.error("[LabReport] Błąd inicjalizacji:", error);
+      if (DOM.reportStatusMessage) {
+        window.LabCore.showStatusMessage(
+          DOM.reportStatusMessage,
+          "Nie udało się uruchomić generatora raportu.",
+          "warning"
+        );
+      }
     });
   });
 })();
