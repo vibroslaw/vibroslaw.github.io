@@ -1,0 +1,914 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "teacher-console-ui",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "designGoal": "Zbudować panel nauczyciela, który jest intuicyjny przy pierwszym użyciu, nie wymaga budowania lekcji od zera i prowadzi nauczyciela od wyboru działu do projekcji i raportu ucznia bez chaosu.",
+  "supersedes": {
+    "previousModel": [
+      "lesson-builder",
+      "multi-variant-pack",
+      "rozbudowany launcher oparty o wiele filtrów naraz"
+    ],
+    "newModel": "section-first teacher console"
+  },
+  "uxPrinciples": {
+    "primary": [
+      "Najpierw wybór działu, dopiero potem szczegóły.",
+      "Jedna decyzja na ekranie głównym jest ważniejsza niż mnogość narzędzi.",
+      "Nauczyciel musi widzieć rekomendowaną ścieżkę bez wchodzenia w ustawienia.",
+      "Teacher Guide ma pomagać, ale nie może przytłaczać.",
+      "QR dla raportu ucznia ma być prosty i jednoznaczny.",
+      "Zaawansowane opcje są schowane domyślnie."
+    ],
+    "mustAvoid": [
+      "więcej niż jeden główny CTA w jednym bloku",
+      "więcej niż jedno aktywne okno modalne jednocześnie",
+      "osobne ścieżki wejścia, które robią to samo",
+      "filtry pedagogiczne, których nauczyciel nie rozumie przy pierwszym użyciu",
+      "narzędzia techniczne przed wyborem treści"
+    ],
+    "tone": "instytucjonalny, spokojny, premium, bez techno-chaosu"
+  },
+  "informationArchitecture": {
+    "rootScreen": "teacher-console-home",
+    "mainFlow": [
+      "wybór działu",
+      "podgląd działu",
+      "wybór pytania",
+      "wybór trybu projekcji",
+      "uruchomienie projekcji",
+      "pauza i rozmowa",
+      "QR raportu ucznia",
+      "archiwum raportów"
+    ],
+    "secondaryFlow": [
+      "otwarcie teacher guide",
+      "otwarcie not źródłowych",
+      "otwarcie kart pojęć i postaci",
+      "wejście do archiwum",
+      "eksport pojedynczego raportu"
+    ],
+    "hiddenByDefault": [
+      "zaawansowane noty metodologiczne",
+      "konteksty poboczne",
+      "karta Cyrankiewicza",
+      "ustawienia techniczne streamingu",
+      "ustawienia archiwum",
+      "eksporty JSON"
+    ]
+  },
+  "screenLayout": {
+    "desktop": {
+      "type": "two-zone-console",
+      "zones": {
+        "left": {
+          "width": "minmax(320px, 380px)",
+          "purpose": "działy edukacyjne i wybór ścieżki"
+        },
+        "right": {
+          "width": "minmax(0, 1fr)",
+          "purpose": "aktywny dział, pytanie, tryb projekcji, teacher guide, narzędzia prowadzenia"
+        }
+      }
+    },
+    "tablet": {
+      "type": "stacked-console",
+      "order": [
+        "header",
+        "section-selector",
+        "active-section-panel",
+        "teacher-guide-drawer",
+        "archive-entry"
+      ]
+    },
+    "mobile": {
+      "type": "compressed-teacher-console",
+      "allowedUse": "kontrola pomocnicza, nie główne prowadzenie projekcji",
+      "warning": "pełna projekcja i prowadzenie rekomendowane na laptopie lub desktopie"
+    }
+  },
+  "topbar": {
+    "visible": true,
+    "sticky": true,
+    "elements": [
+      {
+        "id": "teacherBrand",
+        "type": "brand",
+        "label": "Laboratorium Sumienia"
+      },
+      {
+        "id": "teacherSessionIndicator",
+        "type": "session-indicator",
+        "label": "Aktywna sesja"
+      },
+      {
+        "id": "teacherProjectorButton",
+        "type": "primary-icon-button",
+        "label": "Tryb projektora",
+        "icon": "projector"
+      },
+      {
+        "id": "teacherReportQrButtonTop",
+        "type": "secondary-button",
+        "label": "QR raportu"
+      },
+      {
+        "id": "teacherArchiveButtonTop",
+        "type": "secondary-button",
+        "label": "Archiwum"
+      },
+      {
+        "id": "teacherHomeButton",
+        "type": "ghost-button",
+        "label": "Działy"
+      }
+    ],
+    "mustNotShow": [
+      "zbyt wielu ikon bez podpisu",
+      "technicznych nazw plików",
+      "osobnych wejść do starych launcherów"
+    ]
+  },
+  "homeScreen": {
+    "id": "teacher-console-home",
+    "title": "Wybierz dział edukacyjny",
+    "subtitle": "Każdy dział prowadzi do własnego pytania, trybu projekcji i raportu ucznia.",
+    "primaryArea": "section-card-grid",
+    "secondaryArea": "quick-start-panel",
+    "showRecommendedPath": true,
+    "quickStartPanel": {
+      "title": "Najprostszy start",
+      "content": [
+        "Wybierz dział.",
+        "Pozostaw pytanie rekomendowane albo wybierz własne.",
+        "Uruchom pełny rozdział.",
+        "Po projekcji pokaż QR do raportu ucznia."
+      ],
+      "defaultRecommendation": {
+        "sectionId": "section-pilecki-rocznicowy",
+        "modeId": "full-65",
+        "questionId": "q-pilecki-01"
+      }
+    }
+  },
+  "sectionCardGrid": {
+    "type": "grid",
+    "columnsDesktop": 2,
+    "columnsTablet": 1,
+    "cardOrder": [
+      "section-pilecki-rocznicowy",
+      "section-totalitaryzm-wybor",
+      "section-auschwitz",
+      "section-ai-historia",
+      "section-polonia",
+      "section-sumienie-raport"
+    ],
+    "cardSchema": {
+      "requiredFields": [
+        "title",
+        "shortPurpose",
+        "recommendedFor",
+        "recommendedMode",
+        "recommendedQuestion",
+        "primaryCta"
+      ],
+      "optionalFields": [
+        "warningNote",
+        "teacherLoadLabel"
+      ]
+    },
+    "cardCtas": {
+      "primary": {
+        "idPattern": "open-section-{sectionId}",
+        "label": "Otwórz dział"
+      },
+      "secondary": {
+        "idPattern": "open-guide-{sectionId}",
+        "label": "Teacher Guide"
+      }
+    }
+  },
+  "activeSectionWorkspace": {
+    "id": "activeSectionWorkspace",
+    "visibleAfterSectionSelect": true,
+    "layout": "stacked-panels",
+    "panelsOrder": [
+      "sectionHeaderPanel",
+      "questionPickerPanel",
+      "projectionModePanel",
+      "liveControlsPanel",
+      "teacherGuidePanel",
+      "reportPanel",
+      "archiveSummaryPanel"
+    ]
+  },
+  "sectionHeaderPanel": {
+    "id": "sectionHeaderPanel",
+    "titleField": "activeSectionTitle",
+    "subtitleField": "activeSectionSubtitle",
+    "showFields": [
+      "sectionPurpose",
+      "forWhom",
+      "bestUsedWhen",
+      "recommendedQuestion",
+      "recommendedMode"
+    ],
+    "primaryActions": [
+      {
+        "id": "startRecommendedFlowButton",
+        "label": "Uruchom rekomendowaną ścieżkę",
+        "style": "primary"
+      },
+      {
+        "id": "openTeacherGuideButton",
+        "label": "Teacher Guide",
+        "style": "secondary"
+      }
+    ],
+    "secondaryActions": [
+      {
+        "id": "showMoreSectionInfoButton",
+        "label": "Więcej informacji",
+        "style": "ghost"
+      }
+    ],
+    "collapsedExtraInfoFields": [
+      "methodologicalWarning",
+      "advancedNotes",
+      "relatedContextCards"
+    ]
+  },
+  "questionPickerPanel": {
+    "id": "questionPickerPanel",
+    "title": "Pytanie prowadzące",
+    "description": "Wybierz jedno pytanie główne dla tej projekcji. To pytanie ma ustawić rozmowę, a nie zamknąć odpowiedź.",
+    "defaultMode": "recommended-first",
+    "visibleElements": [
+      "recommendedQuestionCard",
+      "otherQuestionsAccordion",
+      "customQuestionInputOptional"
+    ],
+    "recommendedQuestionCard": {
+      "show": true,
+      "badge": "Rekomendowane",
+      "fields": [
+        "questionText",
+        "whyThisQuestion",
+        "bestFor"
+      ],
+      "actions": [
+        {
+          "id": "useRecommendedQuestionButton",
+          "label": "Użyj tego pytania",
+          "style": "primary"
+        }
+      ]
+    },
+    "otherQuestionsAccordion": {
+      "defaultOpen": false,
+      "title": "Pozostałe pytania",
+      "selectionMode": "single",
+      "showMaxQuestionsWithoutSearch": 5
+    },
+    "customQuestionInputOptional": {
+      "enabled": true,
+      "defaultOpen": false,
+      "title": "Własne pytanie nauczyciela",
+      "placeholder": "Wpisz własne pytanie, które ma pojawić się także w raporcie ucznia.",
+      "helperText": "Własne pytanie nadpisuje pytanie rekomendowane tylko dla tej sesji.",
+      "actions": [
+        {
+          "id": "saveCustomQuestionButton",
+          "label": "Użyj własnego pytania",
+          "style": "secondary"
+        }
+      ]
+    },
+    "rules": [
+      "Nauczyciel wybiera tylko jedno pytanie aktywne na sesję.",
+      "Pytanie aktywne musi być widoczne później w trybie projektora.",
+      "Pytanie aktywne może zostać przeniesione do raportu ucznia."
+    ]
+  },
+  "projectionModePanel": {
+    "id": "projectionModePanel",
+    "title": "Tryb projekcji",
+    "description": "Domyślnie używaj pełnego rozdziału. Wybór kuratorski tylko tam, gdzie ma to sens dydaktyczny.",
+    "modeCards": [
+      {
+        "modeId": "full-65",
+        "label": "Pełny rozdział",
+        "badge": "Domyślny",
+        "showRuntime": true,
+        "showDiscussionRange": true,
+        "showUseCase": true
+      },
+      {
+        "modeId": "curated-35",
+        "label": "Wybór kuratorski",
+        "badge": "Opcjonalny",
+        "showRuntime": true,
+        "showDiscussionRange": true,
+        "showUseCase": true
+      },
+      {
+        "modeId": "seminar-extended",
+        "label": "Pełny rozdział + seminarium",
+        "badge": "Zaawansowany",
+        "showRuntime": true,
+        "showDiscussionRange": true,
+        "showUseCase": true
+      }
+    ],
+    "defaultSelectionRule": "use-section-default",
+    "selectionBehavior": {
+      "single": true,
+      "immediateUpdate": true,
+      "showCuratedWarningIfNeeded": true
+    },
+    "curatedWarningBox": {
+      "visibleOnlyWhen": "modeId=curated-35",
+      "title": "Uwaga metodologiczna",
+      "text": "Ta wersja działa tylko wtedy, gdy skrót zachowuje sens działu i nie jest przypadkowym cięciem materiału."
+    }
+  },
+  "liveControlsPanel": {
+    "id": "liveControlsPanel",
+    "title": "Prowadzenie projekcji",
+    "description": "Najważniejsze narzędzia podczas zajęć. Tylko to, co naprawdę potrzebne na żywo.",
+    "layout": "primary-actions-row + session-status-row",
+    "primaryButtons": [
+      {
+        "id": "startProjectionButton",
+        "label": "Start projekcji",
+        "style": "primary",
+        "priority": 1
+      },
+      {
+        "id": "pauseProjectionButton",
+        "label": "Pauza i rozmowa",
+        "style": "secondary",
+        "priority": 2
+      },
+      {
+        "id": "projectorModeButton",
+        "label": "Pełny ekran / projektor",
+        "style": "secondary",
+        "priority": 3
+      },
+      {
+        "id": "reportQrButton",
+        "label": "Pokaż QR raportu",
+        "style": "secondary",
+        "priority": 4
+      }
+    ],
+    "secondaryButtons": [
+      {
+        "id": "resumeProjectionButton",
+        "label": "Wznów",
+        "style": "ghost"
+      },
+      {
+        "id": "restartProjectionButton",
+        "label": "Od początku",
+        "style": "ghost"
+      },
+      {
+        "id": "openArchiveInlineButton",
+        "label": "Archiwum raportów",
+        "style": "ghost"
+      }
+    ],
+    "sessionStatusRow": {
+      "show": true,
+      "fields": [
+        "activeSection",
+        "activeQuestion",
+        "activeMode",
+        "projectionStatus",
+        "studentReportStatus"
+      ]
+    },
+    "mustNotInclude": [
+      "licznik zbyt techniczny",
+      "timer kroku jako główna funkcja",
+      "zbyt wiele przycisków diagnostycznych",
+      "debug i eksporty techniczne"
+    ]
+  },
+  "projectorMode": {
+    "id": "teacherProjectorMode",
+    "purpose": "Kontrola projekcji i rozmowy w czasie rzeczywistym z możliwie czystym ekranem dla uczniów.",
+    "views": [
+      {
+        "id": "projector-video",
+        "label": "Projekcja",
+        "default": true
+      },
+      {
+        "id": "projector-question",
+        "label": "Pytanie",
+        "default": false
+      },
+      {
+        "id": "projector-discussion",
+        "label": "Rozmowa",
+        "default": false
+      },
+      {
+        "id": "projector-report-qr",
+        "label": "QR raportu",
+        "default": false
+      }
+    ],
+    "teacherOverlay": {
+      "visibleOnTeacherScreenOnly": true,
+      "controls": [
+        "play-pause",
+        "switch-view",
+        "open-discussion-prompt",
+        "show-qr",
+        "close-projector"
+      ]
+    },
+    "studentFacingScreens": {
+      "projector-video": {
+        "content": [
+          "video-stream",
+          "minimal-title-safe-overlay"
+        ]
+      },
+      "projector-question": {
+        "content": [
+          "jedno pytanie aktywne",
+          "krótka linia pomocnicza"
+        ]
+      },
+      "projector-discussion": {
+        "content": [
+          "nagłówek rozmowy",
+          "pytanie aktywne",
+          "krótka instrukcja: pomyśl, zanotuj, odpowiedz"
+        ]
+      },
+      "projector-report-qr": {
+        "content": [
+          "jeden kod QR",
+          "krótka instrukcja dla ucznia",
+          "informacja o anonimowości"
+        ]
+      }
+    },
+    "projectorSafeRules": [
+      "Nie pokazujemy wielu paneli jednocześnie.",
+      "Nie pokazujemy not nauczyciela na ekranie ucznia.",
+      "Nie pokazujemy archiwum na projektorze.",
+      "Nie pokazujemy zaawansowanych kart pojęć bez świadomego wyboru nauczyciela."
+    ]
+  },
+  "pauseAndDiscussionMode": {
+    "id": "pauseAndDiscussionMode",
+    "entryTrigger": "pauseProjectionButton",
+    "purpose": "Zatrzymać materiał i dać nauczycielowi prosty ekran rozmowy bez szukania pytań w notatkach.",
+    "visibleBlocks": [
+      "activeQuestionBlock",
+      "twoSupportingPromptsOptional",
+      "teacherNoteMini",
+      "resumeButtons"
+    ],
+    "activeQuestionBlock": {
+      "title": "Pytanie główne",
+      "alwaysVisible": true
+    },
+    "twoSupportingPromptsOptional": {
+      "defaultVisible": false,
+      "title": "Dwa pytania pomocnicze",
+      "maxItems": 2
+    },
+    "teacherNoteMini": {
+      "defaultVisible": true,
+      "fields": [
+        "doNotReduceTo",
+        "sourceReminder",
+        "oneSentenceClosureHint"
+      ]
+    },
+    "resumeButtons": [
+      {
+        "id": "discussionResumeButton",
+        "label": "Wróć do projekcji",
+        "style": "primary"
+      },
+      {
+        "id": "discussionShowQrButton",
+        "label": "Przejdź do QR raportu",
+        "style": "secondary"
+      }
+    ]
+  },
+  "teacherGuidePanel": {
+    "id": "teacherGuidePanel",
+    "type": "drawer-inline",
+    "defaultState": "collapsed",
+    "title": "Teacher Guide",
+    "subtitle": "Najważniejsze informacje do prowadzenia tej sesji.",
+    "openBehavior": "single-drawer",
+    "sections": [
+      {
+        "id": "guide-purpose",
+        "label": "Po co ten dział",
+        "defaultOpen": true,
+        "fields": [
+          "oneSentencePurpose",
+          "forWhom",
+          "bestUsedWhen"
+        ]
+      },
+      {
+        "id": "guide-before",
+        "label": "Przed projekcją",
+        "defaultOpen": true,
+        "fields": [
+          "teacherOpening",
+          "howToFrameTheSection",
+          "whatNotToOverExplain"
+        ]
+      },
+      {
+        "id": "guide-during",
+        "label": "W trakcie",
+        "defaultOpen": false,
+        "fields": [
+          "whereToPause",
+          "whereNotToPause",
+          "whatToNameCarefully"
+        ]
+      },
+      {
+        "id": "guide-after",
+        "label": "Po projekcji",
+        "defaultOpen": true,
+        "fields": [
+          "recommendedDiscussionMove",
+          "teacherClosure",
+          "reportTransitionText"
+        ]
+      },
+      {
+        "id": "guide-sources",
+        "label": "Źródła i objaśnienia",
+        "defaultOpen": false,
+        "fields": [
+          "sourceClarifier",
+          "historicalRealityNotes",
+          "metaphorClarifier",
+          "whereFormBecomesInterpretation"
+        ]
+      },
+      {
+        "id": "guide-donot",
+        "label": "Czego nie robić",
+        "defaultOpen": false,
+        "fields": [
+          "doNotSay",
+          "doNotAsk",
+          "avoidFraming"
+        ]
+      },
+      {
+        "id": "guide-advanced",
+        "label": "Warstwa rozszerzona",
+        "defaultOpen": false,
+        "visibility": "advanced-only",
+        "fields": [
+          "optionalContextCards",
+          "advancedNamedPersonNotes",
+          "comparativeSystemNotes"
+        ]
+      }
+    ],
+    "mustBeSimple": [
+      "maksymalnie 6 głównych sekcji widocznych od razu",
+      "żadnych długich ścian tekstu na wejściu",
+      "najpierw użycie praktyczne, potem noty"
+    ]
+  },
+  "reportPanel": {
+    "id": "reportPanel",
+    "title": "Raport ucznia",
+    "subtitle": "Po projekcji uczeń skanuje kod i zostawia własny raport.",
+    "defaultState": "ready-after-projection",
+    "visibleStates": [
+      "pre-session",
+      "during-session",
+      "post-projection"
+    ],
+    "pre-session": {
+      "showBriefInfo": true,
+      "showQr": false,
+      "showPrimaryButton": true,
+      "primaryButtonLabel": "Przygotuj QR raportu"
+    },
+    "during-session": {
+      "showBriefInfo": true,
+      "showQr": false,
+      "showPrimaryButton": true,
+      "primaryButtonLabel": "Pokaż QR po rozmowie"
+    },
+    "post-projection": {
+      "showBriefInfo": true,
+      "showQr": true,
+      "showPrimaryButton": true,
+      "primaryButtonLabel": "Pokaż QR na projektorze"
+    },
+    "briefInfoFields": [
+      "anonymousModeLabel",
+      "pdfSouvenirLabel",
+      "archiveLabel"
+    ],
+    "qrModal": {
+      "title": "QR raportu ucznia",
+      "showOnlyOneQr": true,
+      "mustInclude": [
+        "krótka instrukcja",
+        "informacja o anonimowości",
+        "informacja o możliwości PDF"
+      ]
+    }
+  },
+  "archiveSummaryPanel": {
+    "id": "archiveSummaryPanel",
+    "title": "Archiwum raportów",
+    "defaultState": "collapsed-summary",
+    "summaryFields": [
+      "reportsCount",
+      "topQuote",
+      "lastSavedAt"
+    ],
+    "actions": [
+      {
+        "id": "openArchivePanelButton",
+        "label": "Otwórz archiwum",
+        "style": "secondary"
+      }
+    ],
+    "expandedArchiveView": {
+      "layout": "list + detail",
+      "defaultOpen": false,
+      "listFields": [
+        "sessionId",
+        "sectionTitle",
+        "savedAt",
+        "shortFinalLine"
+      ],
+      "detailFields": [
+        "selectedQuote",
+        "selectedObject",
+        "keyMoment",
+        "finalResponse",
+        "openQuestion"
+      ],
+      "actions": [
+        {
+          "id": "exportSingleReportPdfButton",
+          "label": "PDF raportu",
+          "style": "secondary"
+        },
+        {
+          "id": "exportArchiveButton",
+          "label": "Eksport archiwum",
+          "style": "ghost"
+        }
+      ]
+    }
+  },
+  "teacherConsoleStateMachine": {
+    "states": [
+      "home",
+      "section-selected",
+      "question-selected",
+      "projection-ready",
+      "projection-live",
+      "discussion-paused",
+      "report-qr-open",
+      "archive-open"
+    ],
+    "defaultState": "home",
+    "transitions": [
+      {
+        "from": "home",
+        "to": "section-selected",
+        "trigger": "select-section"
+      },
+      {
+        "from": "section-selected",
+        "to": "question-selected",
+        "trigger": "select-question-or-accept-recommended"
+      },
+      {
+        "from": "question-selected",
+        "to": "projection-ready",
+        "trigger": "select-mode"
+      },
+      {
+        "from": "projection-ready",
+        "to": "projection-live",
+        "trigger": "start-projection"
+      },
+      {
+        "from": "projection-live",
+        "to": "discussion-paused",
+        "trigger": "pause-for-discussion"
+      },
+      {
+        "from": "discussion-paused",
+        "to": "projection-live",
+        "trigger": "resume-projection"
+      },
+      {
+        "from": "discussion-paused",
+        "to": "report-qr-open",
+        "trigger": "show-report-qr"
+      },
+      {
+        "from": "projection-live",
+        "to": "report-qr-open",
+        "trigger": "end-projection-and-show-qr"
+      },
+      {
+        "from": "report-qr-open",
+        "to": "archive-open",
+        "trigger": "open-archive"
+      }
+    ]
+  },
+  "elementRegistry": {
+    "coreIds": [
+      "teacherConsoleRoot",
+      "teacherSectionGrid",
+      "teacherActiveSectionWorkspace",
+      "teacherQuestionPicker",
+      "teacherProjectionModePicker",
+      "teacherLiveControls",
+      "teacherGuideDrawer",
+      "teacherReportPanel",
+      "teacherArchivePanel",
+      "teacherProjectorShell"
+    ],
+    "highPriorityButtons": [
+      "startRecommendedFlowButton",
+      "useRecommendedQuestionButton",
+      "startProjectionButton",
+      "pauseProjectionButton",
+      "reportQrButton",
+      "openTeacherGuideButton"
+    ],
+    "mustExistInHtml": [
+      "teacherBrand",
+      "teacherProjectorButton",
+      "teacherArchiveButtonTop",
+      "teacherHomeButton",
+      "teacherSectionGrid",
+      "teacherGuideDrawer",
+      "teacherReportQrModal",
+      "teacherProjectorShell"
+    ]
+  },
+  "copyDeck": {
+    "labels": {
+      "recommended": "Rekomendowane",
+      "advanced": "Zaawansowane",
+      "optional": "Opcjonalne",
+      "defaultMode": "Tryb domyślny",
+      "activeQuestion": "Pytanie aktywne",
+      "studentReport": "Raport ucznia",
+      "anonymousArchive": "Archiwum anonimowe"
+    },
+    "microcopy": {
+      "homeSubtitle": "Nie budujesz lekcji od zera. Wybierasz dział i uruchamiasz gotową ścieżkę.",
+      "questionHint": "Jedno pytanie główne wystarczy.",
+      "projectionHint": "Pełny rozdział jest najbezpieczniejszym wyborem przy pierwszym użyciu.",
+      "qrHint": "Uczeń pracuje na własnym telefonie dopiero po projekcji lub po Twoim sygnale.",
+      "archiveHint": "Archiwum zbiera odpowiedzi bez przeciążania lekcji."
+    }
+  },
+  "progressiveDisclosure": {
+    "visibleImmediately": [
+      "section cards",
+      "recommended question",
+      "recommended mode",
+      "start projection",
+      "teacher guide button",
+      "report qr button"
+    ],
+    "oneClickAway": [
+      "other questions",
+      "pause and discussion mode",
+      "archive summary",
+      "full screen projector"
+    ],
+    "twoClicksAway": [
+      "advanced notes",
+      "context cards",
+      "single report export",
+      "archive export"
+    ],
+    "mustNeverBeFirstLayer": [
+      "cyrankiewicz advanced note",
+      "comparative political context",
+      "raw JSON export",
+      "technical streaming notes"
+    ]
+  },
+  "accessibility": {
+    "keyboardFlow": [
+      "tab through section cards",
+      "enter selects section",
+      "space or enter selects question",
+      "tab reaches start projection",
+      "esc closes drawer or modal",
+      "arrow keys allowed in projector mode"
+    ],
+    "requiredAria": [
+      "drawer open-close state",
+      "active question indicator",
+      "projection live status",
+      "report qr modal title",
+      "archive list selection"
+    ],
+    "focusManagement": {
+      "returnFocusAfterModalClose": true,
+      "trapFocusInModal": true,
+      "visibleFocusRing": true
+    }
+  },
+  "performance": {
+    "lazyMount": [
+      "archive detail view",
+      "advanced guide section",
+      "report qr canvas",
+      "projector shell"
+    ],
+    "eagerMount": [
+      "section grid",
+      "active workspace shell",
+      "recommended question card"
+    ],
+    "avoid": [
+      "multiple observers for same UI region",
+      "animated layout shifts in teacher workspace",
+      "heavy image loads before section selection"
+    ]
+  },
+  "featureFlags": {
+    "enabled": [
+      "section-first-console",
+      "recommended-question-mode",
+      "single-report-qr",
+      "inline-teacher-guide",
+      "projector-mode",
+      "archive-summary"
+    ],
+    "disabledByDefault": [
+      "multi-qr-switcher",
+      "interactive-object-hotspots",
+      "student-live-monitoring",
+      "advanced-context-cards",
+      "mail-pdf-delivery",
+      "named-person-advanced-layer"
+    ]
+  },
+  "cleanupFromPreviousVersion": {
+    "removeOrHide": [
+      "lessonBuilderForm jako główny start",
+      "rozbudowane filtry czasu i osi jako pierwsza warstwa",
+      "teacher-pack jako osobny podstawowy workflow",
+      "QR modal z wieloma trybami jako domyślny",
+      "live timer jako centralne narzędzie nauczyciela",
+      "obiekt detaliczny jako obowiązkowy element pierwszej sesji"
+    ],
+    "keepButDemote": [
+      "archive export",
+      "teacher pack",
+      "advanced context notes",
+      "object detail modal"
+    ]
+  },
+  "successCriteria": {
+    "teacherFirstUse": [
+      "Nauczyciel rozumie interfejs bez instrukcji technicznej.",
+      "Nauczyciel uruchamia sesję w mniej niż 2 minuty.",
+      "Nauczyciel nie musi wypełniać formularza budowania lekcji.",
+      "Nauczyciel wie od razu, co kliknąć po projekcji."
+    ],
+    "authorMaintenance": [
+      "Strona nie wymaga wielu osobnych assetów na start.",
+      "Teacher Guide przejmuje ciężar objaśnień zamiast osobnych modułów.",
+      "Jeden system sekcji obsługuje większość potrzeb instytucjonalnych.",
+      "Nowe funkcje można dołączać później bez przebudowy rdzenia."
+    ]
+  }
+  }
