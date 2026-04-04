@@ -1,0 +1,483 @@
+{
+  "version": "2.0.0",
+  "lang": "pl",
+  "fileRole": "teacher-guide-notes",
+  "project": "Laboratorium Sumienia",
+  "projectBinding": "Rap-Ort: Prawda Sumienia",
+  "bindingStatus": {
+    "mode": "theme-ready-track-binding-pending",
+    "note": "Plik jest gotowy do użycia już teraz na poziomie działów i sensów pedagogicznych. Gdy powstanie finalna mapa utworów lub timestampów, wystarczy dodać powiązanie cueId -> noteId."
+  },
+  "teacherUsePolicy": {
+    "mainRule": "Noty są pomocą dla nauczyciela, nie dodatkowym wykładem dla ucznia.",
+    "defaultMode": "collapsed",
+    "firstUseMode": "show-core-only",
+    "advancedMode": "allow-extended-notes",
+    "readAloudPolicy": "Nie czytaj całych not uczniom. Używaj tylko krótkiej wersji nauczycielskiej albo pojedynczego zdania porządkującego.",
+    "priorityOrder": [
+      "najpierw pytanie",
+      "potem odbiór uczniów",
+      "dopiero później nota wyjaśniająca"
+    ],
+    "antiOverloadRule": "W jednej sesji nie otwieraj więcej niż 2 not rozszerzonych.",
+    "teacherComfortRule": "Jeśli to pierwsze użycie strony, trzymaj się tylko pola quickTeacherLine i reportBridge."
+  },
+  "globalDistinctions": {
+    "groundedMeaning": "To, co można bezpiecznie powiedzieć jako historycznie lub metodologicznie zakorzenione w projekcie.",
+    "interpretiveMeaning": "To, jak projekt prowadzi odbiór i jakie pytanie otwiera.",
+    "metaphoricMeaning": "To, co należy czytać jako środek artystyczny, a nie jako dosłowny zapis źródła.",
+    "warningMeaning": "To, czego nauczyciel nie powinien robić, żeby nie zgubić spójności projektu."
+  },
+  "notes": [
+    {
+      "id": "note-pilecki-swiadectwo",
+      "sectionId": "section-pilecki-rocznicowy",
+      "title": "Pilecki jako rdzeń świadectwa",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "przed pierwszą rozmową po projekcji",
+        "gdy uczniowie zaczynają mówić wyłącznie o biografii",
+        "gdy rozmowa zbyt szybko idzie w pomnikowy ton"
+      ],
+      "quickTeacherLine": "W tym dziale Pilecki jest ważny nie tylko jako postać historyczna, ale jako rdzeń pytania o świadectwo, raport i odpowiedzialność odbioru.",
+      "groundedCore": [
+        "Projekt buduje swoją główną oś wokół Pileckiego, świadectwa i raportu.",
+        "Raport nie jest tu dodatkiem do biografii, ale jednym z centrów sensu.",
+        "Materiał nie ma działać jak pomnikowa laurka, lecz jak spotkanie ze świadectwem."
+      ],
+      "interpretiveFrame": [
+        "Pytanie nie brzmi tylko: kim był Pilecki, ale także: co robi z odbiorcą spotkanie z raportem.",
+        "Rocznica ma otwierać refleksję, a nie zamykać ją gotowym morałem.",
+        "Siła działu rośnie wtedy, gdy nauczyciel wraca do pojęć świadectwa, zapisu i odpowiedzialności."
+      ],
+      "metaphoricClarifier": [
+        "Jeśli w obrazie lub tekście pojawiają się środki podnoszące ton, nie czytaj ich jako pełnej definicji postaci.",
+        "Metafora ma wzmacniać odbiór, ale nie zastępuje historycznej precyzji."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Dlaczego ten projekt nie mówi tylko o bohaterstwie?",
+          "teacherAnswer": "Bo wtedy zniknąłby sens świadectwa i raportu. Projekt chce pokazać nie tylko postać, ale też odpowiedzialność przekazu i odbioru."
+        },
+        {
+          "question": "Czy raport jest ważniejszy niż biografia?",
+          "teacherAnswer": "Nie chodzi o ważniejsze albo mniej ważne. Chodzi o to, że raport otwiera bardzo konkretną drogę pracy z historią: przez zapis, świadectwo i późniejsze odczytanie."
+        }
+      ],
+      "doNotSay": [
+        "to jest po prostu historia największego bohatera",
+        "tu wszystko jest już moralnie oczywiste",
+        "wystarczy znać biografię, żeby zrozumieć sens projektu"
+      ],
+      "reportBridge": "W raporcie ucznia wracaj do pytania: co w tym materiale zadziałało jako świadectwo, a nie tylko jako informacja o postaci."
+    },
+    {
+      "id": "note-raport-znaczenie",
+      "sectionId": "section-sumienie-raport",
+      "title": "Raport jako dokument i ślad odpowiedzialności",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "przed przejściem do raportu ucznia",
+        "gdy uczniowie pytają, po co w ogóle raport",
+        "gdy rozmowa redukuje raport do zwykłego dokumentu"
+      ],
+      "quickTeacherLine": "Raport jest tu nie tylko dokumentem. Jest także śladem decyzji, przekazu i odpowiedzialności wobec przyszłego odbiorcy.",
+      "groundedCore": [
+        "Raport należy traktować jako formę zapisu i przekazania świadectwa.",
+        "Dokument nie zamyka interpretacji, lecz otwiera dalsze odczytanie.",
+        "Projekt stale wraca do napięcia między zapisem a późniejszym odbiorem."
+      ],
+      "interpretiveFrame": [
+        "Raport można czytać jako miejsce, w którym historia styka się z odpowiedzialnością.",
+        "Uczeń nie ma tylko odnotować treści, ale zobaczyć, że zapis ma konsekwencje dla pamięci i odbioru."
+      ],
+      "metaphoricClarifier": [
+        "Jeśli raport zostaje pokazany jako coś większego niż kartka czy dokument, to jest to wzmocnienie sensu odpowiedzialności, a nie dowód historyczny sam w sobie."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Czy raport zmienia historię?",
+          "teacherAnswer": "Nie zmienia tego, co się wydarzyło, ale zmienia możliwość przekazania i późniejszego odczytania świadectwa."
+        },
+        {
+          "question": "Dlaczego mamy pisać własny raport?",
+          "teacherAnswer": "Nie po to, żeby kopiować historię, ale żeby zostawić ślad własnego uczciwego odbioru."
+        }
+      ],
+      "doNotSay": [
+        "raport mówi wszystko sam",
+        "dokument sam rozwiązuje sens historii",
+        "kto nie rozumie raportu, ten nie rozumie projektu"
+      ],
+      "reportBridge": "Przed raportem ucznia powiedz jasno: to nie jest test wiedzy ani egzamin moralny, tylko zapis uczciwego odbioru."
+    },
+    {
+      "id": "note-system-presja",
+      "sectionId": "section-totalitaryzm-wybor",
+      "title": "System i decyzja pod presją",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "gdy grupa przechodzi za szybko do ocen ludzi",
+        "przed rozmową o wyborze",
+        "po fragmencie pokazującym przestrzeń, kontrolę lub organizację życia"
+      ],
+      "quickTeacherLine": "Ten dział nie służy do prostego osądu ludzi, tylko do zobaczenia, jak system naciska na pole decyzji.",
+      "groundedCore": [
+        "Totalitaryzm działa nie tylko przez wielkie decyzje polityczne, ale także przez organizację codzienności, przestrzeni, ciała i informacji.",
+        "Ocena decyzji podejmowanych pod skrajną presją wymaga ostrożności.",
+        "Ostrożność nie oznacza automatycznego unieważnienia odpowiedzialności."
+      ],
+      "interpretiveFrame": [
+        "Projekt nie pyta najpierw 'kto był dobry albo zły', tylko: jakie warunki decyzji zostały tu pokazane.",
+        "Najuczciwsza rozmowa zaczyna się od warunków, a dopiero potem przechodzi do człowieka."
+      ],
+      "metaphoricClarifier": [
+        "Jeśli materiał używa mocnego obrazu systemu, traktuj go jako pomoc w zobaczeniu mechanizmu, a nie jako dowód wyczerpujący temat."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Czy w takich warunkach człowiek ma w ogóle wybór?",
+          "teacherAnswer": "To właśnie jedno z najtrudniejszych pytań. Dlatego najpierw trzeba zobaczyć nacisk systemu, a dopiero później ostrożnie mówić o odpowiedzialności."
+        },
+        {
+          "question": "Czy system wszystko tłumaczy?",
+          "teacherAnswer": "Nie. Ale bez zobaczenia systemu łatwo zamienić historię w zbyt prosty sąd."
+        }
+      ],
+      "doNotSay": [
+        "system wszystko wyjaśnia",
+        "wszyscy byli tylko ofiarami okoliczności",
+        "teraz już możemy bez problemu osądzić każdą decyzję"
+      ],
+      "reportBridge": "W raporcie ucznia pytaj: co w materiale działało jako nacisk systemu, a co jako przestrzeń ludzkiej decyzji."
+    },
+    {
+      "id": "note-auschwitz-miejsce",
+      "sectionId": "section-auschwitz",
+      "title": "Auschwitz jako miejsce, ślad i system",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "gdy grupa mówi wyłącznie o symbolu Auschwitz",
+        "gdy chcesz wrócić do konkretu przestrzeni, obiektu lub śladu",
+        "po pierwszym mocnym fragmencie"
+      ],
+      "quickTeacherLine": "W tym dziale Auschwitz nie ma być tylko wielkim symbolem. Ma być także miejscem, śladem, przestrzenią i polem świadectwa.",
+      "groundedCore": [
+        "Miejsce, przestrzeń i obiekty pomagają mówić o warunkach działania systemu przemocy.",
+        "Ślad materialny nie zastępuje źródła, ale może być uczciwym wejściem do rozmowy.",
+        "Język wobec Auschwitz powinien być poważny i precyzyjny jednocześnie."
+      ],
+      "interpretiveFrame": [
+        "Projekt chce przejść od abstrakcyjnego symbolu do bardziej odpowiedzialnego widzenia śladu, miejsca i świadectwa.",
+        "Uczniowie mają zobaczyć, że przestrzeń i materiał historyczny nie są tylko tłem."
+      ],
+      "metaphoricClarifier": [
+        "Nie używaj metafory miejsca tak, jakby miejsce samo mówiło pełną prawdę.",
+        "Jeśli obraz wzmacnia odbiór, wracaj do pytania, co w nim jest śladem, a co interpretacją."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Czy miejsce samo może być świadkiem historii?",
+          "teacherAnswer": "Miejsce może zachowywać ślady i warunki historii, ale to człowiek i źródło nadają im sens interpretacyjny."
+        },
+        {
+          "question": "Dlaczego nie wystarczy powiedzieć po prostu Auschwitz?",
+          "teacherAnswer": "Bo sama nazwa łatwo zamienia się w skrót. Edukacja wymaga zobaczenia konkretu, nie tylko symbolu."
+        }
+      ],
+      "doNotSay": [
+        "to miejsce mówi samo za siebie",
+        "wystarczy poczuć ciężar miejsca i już wszystko jasne",
+        "jeden obiekt tłumaczy cały obóz"
+      ],
+      "reportBridge": "W raporcie ucznia wracaj do pytania: co tutaj było śladem, co świadectwem, a co dopiero naszą interpretacją."
+    },
+    {
+      "id": "note-ai-historia",
+      "sectionId": "section-ai-historia",
+      "title": "AI jako forma, nie źródło",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "na początku działu AI",
+        "gdy uczniowie zaczynają traktować obraz jak dowód",
+        "gdy rozmowa schodzi w samą technologię"
+      ],
+      "quickTeacherLine": "AI w tym projekcie jest narzędziem formy. Nie jest źródłem historycznym i nie może udawać źródła.",
+      "groundedCore": [
+        "Nowoczesna technologia może wspierać opowieść i formę przekazu.",
+        "Źródłem historycznym nie staje się obraz tylko dlatego, że wygląda przekonująco.",
+        "Im silniejsza forma wizualna, tym większa odpowiedzialność twórcy i odbiorcy."
+      ],
+      "interpretiveFrame": [
+        "Dział AI nie jest reklamą narzędzi, tylko rozmową o odpowiedzialnym użyciu formy.",
+        "Uczniowie mają nauczyć się odróżniać źródło od sugestywnej rekonstrukcji."
+      ],
+      "metaphoricClarifier": [
+        "Obraz generowany lub wspierany przez AI może wzmacniać sens, ale nie wolno mu przypisywać statusu dowodu samemu z siebie."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Czy skoro to AI, to materiał jest mniej poważny?",
+          "teacherAnswer": "Nie musi być mniej poważny. Poważny staje się wtedy, gdy twórca uczciwie pilnuje granicy między formą a źródłem."
+        },
+        {
+          "question": "Czy AI fałszuje historię?",
+          "teacherAnswer": "Może wprowadzać w błąd, jeśli forma zaczyna udawać źródło. Dlatego tak ważna jest jasna odpowiedzialność metodologiczna."
+        }
+      ],
+      "doNotSay": [
+        "AI rozwiązuje problem edukacji historycznej",
+        "AI automatycznie niszczy wiarygodność projektu",
+        "wystarczy dopisać, że to AI i problem znika"
+      ],
+      "reportBridge": "W raporcie ucznia można dodać pytanie: gdzie według ciebie przebiega granica między formą a źródłem?"
+    },
+    {
+      "id": "note-polonia-most",
+      "sectionId": "section-polonia",
+      "title": "Polonia i przenoszenie sensu historycznego",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "na początku zajęć dla grupy polonijnej",
+        "gdy grupa potrzebuje krótkiego kontekstu",
+        "gdy pojawia się napięcie między lokalnością a uniwersalnością"
+      ],
+      "quickTeacherLine": "Ten dział nie ma upraszczać polskiej historii, tylko budować uczciwy most między polskim doświadczeniem a szerszym odbiorcą.",
+      "groundedCore": [
+        "Nie wszystko w polskim doświadczeniu historycznym jest od razu czytelne poza polskim kontekstem.",
+        "Budowanie mostu nie oznacza uproszczenia sensu do minimum.",
+        "Świadectwo i raport pomagają przenosić ciężar doświadczenia poza lokalny język."
+      ],
+      "interpretiveFrame": [
+        "Projekt pyta, jak opowiadać historię tak, żeby nie zgubić jej ciężaru i jednocześnie nie zamknąć jej tylko dla odbiorcy lokalnego.",
+        "W centrum pozostaje uczciwość wobec sensu, a nie łatwość komunikacyjna za wszelką cenę."
+      ],
+      "metaphoricClarifier": [
+        "Jeśli jakiś obraz działa szerzej i uniwersalnie, nie znaczy to jeszcze, że nie wymaga polskiego dopowiedzenia."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Czy ten materiał da się zrozumieć bez polskiego kontekstu?",
+          "teacherAnswer": "Częściowo tak, ale nie w pełni. Dlatego potrzebny jest most: ani całkowite uproszczenie, ani zamknięcie się wyłącznie w lokalności."
+        },
+        {
+          "question": "Po co zachowywać tyle kontekstu, skoro można uprościć?",
+          "teacherAnswer": "Bo zbyt łatwe uproszczenie zabiera ciężar i odpowiedzialność historii."
+        }
+      ],
+      "doNotSay": [
+        "to trzeba po prostu uprościć dla zagranicy",
+        "polski kontekst nie ma tu większego znaczenia",
+        "to jest po prostu uniwersalna historia o wszystkim"
+      ],
+      "reportBridge": "W raporcie ucznia wracaj do pytania: co zadziałało jako most, a co wymagało dodatkowego kontekstu?"
+    },
+    {
+      "id": "note-sumienie-teraz",
+      "sectionId": "section-sumienie-raport",
+      "title": "Sumienie, czas decyzji i współczesny odbiorca",
+      "level": "core",
+      "teacherWhenToOpen": [
+        "na końcu projekcji",
+        "przed domknięciem zajęć",
+        "gdy chcesz ostrożnie przejść do teraźniejszości"
+      ],
+      "quickTeacherLine": "Współczesne odniesienie ma tu działać jako pytanie o odpowiedzialność i moment decyzji, a nie jako banalne porównanie.",
+      "groundedCore": [
+        "Projekt kończy się pytaniem skierowanym także do współczesnego odbiorcy.",
+        "Nie chodzi o proste przeniesienie historii na codzienność, tylko o pytanie o odpowiedzialność odbioru.",
+        "Motyw decyzji i czasu może być dziś czytelny, ale tylko przy zachowaniu proporcji."
+      ],
+      "interpretiveFrame": [
+        "To dział o tym, że niektóre decyzje mają swój moment i że po czasie zostaje z nimi człowiek sam.",
+        "Współczesność pojawia się tu jako przestrzeń refleksji, nie jako łatwy odpowiednik historyczny."
+      ],
+      "metaphoricClarifier": [
+        "Jeżeli nauczyciel używa współczesnego przykładu, musi jasno zaznaczyć, że nie stawia znaku równości między historią a drobną codziennością."
+      ],
+      "ifStudentAsks": [
+        {
+          "question": "Czy to ma się odnosić do naszego życia dzisiaj?",
+          "teacherAnswer": "Tak, ale nie w prostym sensie. Nie chodzi o porównanie skali, tylko o pytanie, co robimy z odpowiedzialnością po spotkaniu z takim materiałem."
+        },
+        {
+          "question": "Czy można to przełożyć na codzienne wybory?",
+          "teacherAnswer": "Można ostrożnie mówić o decyzji, czasie i odpowiedzialności, ale nie wolno banalizować historii przez zbyt łatwe analogie."
+        }
+      ],
+      "doNotSay": [
+        "twoim wyborem dziś było tylko nie pisać SMS-ów i to jest dokładnie to samo",
+        "ta historia daje prostą receptę na życie",
+        "sumienie zawsze daje jasną odpowiedź"
+      ],
+      "reportBridge": "W raporcie ucznia pytaj raczej: co ten materiał uruchamia dziś w tobie jako pytanie, niż: jaka jest jedyna właściwa lekcja."
+    }
+  ],
+  "advancedOptionalNotes": [
+    {
+      "id": "adv-cyrankiewicz-context",
+      "title": "Cyrankiewicz jako kontekst poboczny",
+      "availability": "teacher-only-advanced",
+      "defaultVisible": false,
+      "useOnlyWhen": [
+        "uczelnia",
+        "starsze liceum w formule rozszerzonej",
+        "spotkanie autorskie lub seminarium metodologiczne"
+      ],
+      "quickTeacherLine": "Jeśli ten wątek się pojawia, traktuj go wyłącznie jako trudny kontekst interpretacyjny, nigdy jako równoległy rdzeń projektu.",
+      "groundedCore": [
+        "Cyrankiewicz nie należy do podstawowej ścieżki uczniowskiej.",
+        "Nie powinien przejmować osi projektu ani rozmowy.",
+        "Może pojawić się jedynie jako poboczna trudność interpretacyjna w pracy nauczycielskiej lub akademickiej."
+      ],
+      "warning": [
+        "Nie otwieraj tego wątku na pierwszej lekcji.",
+        "Nie buduj wokół niego równoległej osi sensu.",
+        "Nie pozwól, by przesłonił Pileckiego, świadectwo i raport."
+      ],
+      "doNotSay": [
+        "ten projekt jest tak samo o Pileckim jak o Cyrankiewiczu",
+        "najważniejsze jest porównanie tych dwóch postaci",
+        "bez tego wątku nie da się zrozumieć projektu"
+      ]
+    },
+    {
+      "id": "adv-nazism-stalinism-comparison",
+      "title": "Porównanie nazizmu i stalinizmu",
+      "availability": "teacher-only-advanced",
+      "defaultVisible": false,
+      "useOnlyWhen": [
+        "lekcja rozszerzona",
+        "uczelnia",
+        "spotkanie tematyczne o totalitaryzmie"
+      ],
+      "quickTeacherLine": "Porównanie ma dotyczyć mechanizmów systemowych, a nie prostego zrównania wszystkiego ze wszystkim.",
+      "groundedCore": [
+        "Można porównywać mechanizmy presji, kontroli, propagandy i podporządkowania życia systemowi.",
+        "Nie wolno spłaszczać różnic historycznych, politycznych i kontekstowych.",
+        "Porównanie powinno służyć rozumieniu systemu, a nie efektownemu skrótowi."
+      ],
+      "warning": [
+        "Nie rób z tego osi podstawowej lekcji.",
+        "Nie używaj porównań jako publicystycznego skrótu.",
+        "Nie mieszaj porządków historycznych bez zaznaczenia różnic."
+      ]
+    },
+    {
+      "id": "adv-prl-jazz-context",
+      "title": "PRL i jazz jako kontekst kulturowy",
+      "availability": "teacher-only-optional",
+      "defaultVisible": false,
+      "useOnlyWhen": [
+        "lekcja rozszerzona o kulturze",
+        "warsztat o pamięci i formie",
+        "spotkanie autorskie"
+      ],
+      "quickTeacherLine": "To może być ciekawy kontekst kulturowy, ale nie powinien przejmować centrum lekcji historycznej.",
+      "groundedCore": [
+        "Motywy kulturowe, takie jak jazz w PRL, mogą pokazywać napięcie między systemem a przestrzeniami wolności, ekspresji lub pęknięcia.",
+        "To jednak nie jest rdzeń podstawowego pakietu szkolnego."
+      ],
+      "warning": [
+        "Nie otwieraj tego wątku kosztem osi świadectwa i raportu.",
+        "Nie zamieniaj lekcji historycznej w dygresję kulturoznawczą."
+      ]
+    },
+    {
+      "id": "adv-decision-time-analogy",
+      "title": "Analogiczny motyw decyzji i czasu",
+      "availability": "teacher-only-optional",
+      "defaultVisible": false,
+      "useOnlyWhen": [
+        "na końcu zajęć",
+        "w starszych grupach",
+        "tylko jeśli nauczyciel umie zachować proporcje"
+      ],
+      "quickTeacherLine": "Można ostrożnie użyć motywu decyzji podjętej na czas albo za późno, ale tylko jako analogii struktury pytania, nigdy jako równania historycznego.",
+      "groundedCore": [
+        "Motyw czasu decyzji może być czytelny także dziś.",
+        "Nie każda decyzja ma tę samą skalę, ale niektóre napięcia odpowiedzialności mogą być porównywane ostrożnie."
+      ],
+      "warning": [
+        "Nie banalizuj historii przez drobny szkolny przykład.",
+        "Nie stawiaj współczesnego życia na jednym poziomie z doświadczeniem totalitaryzmu.",
+        "Używaj tej noty tylko jako końcowego mostu refleksyjnego."
+      ],
+      "badExamples": [
+        "To dokładnie to samo, co wasza codzienna decyzja o telefonie.",
+        "Historia pokazuje wam po prostu, jak być grzecznym."
+      ],
+      "betterExamples": [
+        "Nie chodzi o równanie doświadczeń, ale o pytanie, czy są decyzje, których nie da się odrobić po czasie.",
+        "Nie chodzi o porównanie skali, lecz o napięcie między czasem, decyzją i odpowiedzialnością."
+      ]
+    }
+  ],
+  "teacherGuideNotesUiLogic": {
+    "defaultView": {
+      "showFields": [
+        "title",
+        "quickTeacherLine",
+        "groundedCore",
+        "reportBridge"
+      ],
+      "hideFields": [
+        "interpretiveFrame",
+        "metaphoricClarifier",
+        "ifStudentAsks",
+        "doNotSay"
+      ]
+    },
+    "expandedView": {
+      "showFields": [
+        "groundedCore",
+        "interpretiveFrame",
+        "metaphoricClarifier",
+        "ifStudentAsks",
+        "doNotSay",
+        "reportBridge"
+      ]
+    },
+    "advancedTeacherMode": {
+      "showOptionalGroup": "advancedOptionalNotes"
+    }
+  },
+  "consistencyRules": {
+    "mustSupport": [
+      "świadectwo",
+      "raport",
+      "odpowiedzialność odbioru",
+      "powściągliwość interpretacyjna",
+      "odróżnienie źródła od formy"
+    ],
+    "mustNotIntroduceAsMainAxis": [
+      "Cyrankiewicz",
+      "rozszerzone porównania polityczne",
+      "wątki kulturowe spoza głównego rdzenia",
+      "technologia jako temat sam dla siebie"
+    ],
+    "mustProtectAgainst": [
+      "patos zamiast sensu",
+      "moralizowanie zamiast rozmowy",
+      "banalizacja historii przez codzienne analogie",
+      "traktowanie obrazu jako samodzielnego dowodu"
+    ]
+  },
+  "successCriteria": {
+    "teacher": [
+      "Nauczyciel w kilka sekund widzi krótkie zdanie porządkujące sens działu.",
+      "Nauczyciel może wejść głębiej tylko wtedy, gdy naprawdę tego potrzebuje.",
+      "Noty nie zamieniają prowadzenia lekcji w czytanie dokumentacji."
+    ],
+    "project": [
+      "Warstwa nauczycielska pozostaje spójna z dokumentami projektu.",
+      "Rdzeń projektu nie rozpada się na poboczne wątki.",
+      "Każdy dział można prowadzić bez utraty metodologicznej ostrożności."
+    ],
+    "production": [
+      "Plik nadaje się do wdrożenia bez końcowego track-by-track mapowania.",
+      "Można go później łatwo spiąć z konkretnymi fragmentami materiału.",
+      "Nie wymaga dodatkowych zasobów graficznych ani nowych modułów interaktywnych."
+    ]
+  }
+}
