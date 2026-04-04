@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laboratorium Sumienia — Konsola nauczyciela</title>
+  <meta name="description" content="Konsola prowadzenia lekcji dla rozdziału Prawda Sumienia — kroki, pytania, guardrails i sterowanie sesją." />
+  <meta name="theme-color" content="#090909" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/lab-core.css" />
+  <link rel="stylesheet" href="/assets/css/lab-teacher.css" />
+</head>
+<body
+  data-page="lab-teacher"
+  data-lang="pl"
+  data-ui="/assets/data/lab-ui-pl.json"
+  data-lessons="/assets/data/lab-lessons-pl.json"
+  data-prompts="/assets/data/lab-prompts-pl.json"
+  data-objects="/assets/data/lab-objects-pl.json"
+  data-default-lesson="ps-pl-45-liceum-swiadectwo"
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header lab-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/rap-ort/prawda-sumienia/lab/pl/" aria-label="Powrót do Laboratorium Sumienia">
+        <div class="brand-name ps-brand">Laboratorium Sumienia</div>
+        <div class="brand-sub">Konsola nauczyciela</div>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Nawigacja konsoli">
+        <a href="#liveSession">Sesja</a>
+        <a href="#lessonTimeline">Timeline</a>
+        <a href="#guardrailsPanel">Guardrails</a>
+        <a href="#teacherArchivePanel">Archiwum</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="lab-shell">
+    <div class="wrap lab-shell-grid">
+      <aside class="lab-sidebar reveal" aria-labelledby="lessonMetaTitle">
+        <div class="content-panel sticky-panel">
+          <div class="panel-topline">Aktywna sesja</div>
+          <h2 id="lessonMetaTitle">Metadane lekcji</h2>
+
+          <div class="session-preview session-preview-compact">
+            <div class="preview-row">
+              <span class="preview-label">Lekcja</span>
+              <span class="preview-value" id="teacherLessonTitle">Raport odbioru — świadectwo</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Poziom</span>
+              <span class="preview-value" id="teacherAgeGroup">Liceum</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Czas</span>
+              <span class="preview-value" id="teacherDuration">45 min</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Oś</span>
+              <span class="preview-value" id="teacherAxis">Świadectwo</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Raport</span>
+              <span class="preview-value" id="teacherReportType">Raport odbioru</span>
+            </div>
+          </div>
+
+          <div class="mini-metrics">
+            <div class="metric-card">
+              <span class="metric-label">Krok</span>
+              <strong class="metric-value" id="currentStepNumber">1 / 8</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Czas kroku</span>
+              <strong class="metric-value" id="currentStepDuration">3 min</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Sesja</span>
+              <strong class="metric-value" id="sessionIdLabel">PS-PL-LIVE</strong>
+            </div>
+          </div>
+
+          <div class="cta-row compact">
+            <button class="btn btn-primary" type="button" id="startLiveSession">Rozpocznij sesję</button>
+            <button class="btn btn-secondary" type="button" id="openStudentView">Tryb ucznia</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="lab-main reveal" id="liveSession" aria-labelledby="liveSessionTitle">
+        <div class="content-panel live-session-panel">
+          <div class="panel-topline">Prowadzenie na żywo</div>
+          <h1 id="liveSessionTitle">Konsola prowadzenia</h1>
+
+          <div class="live-session-topbar">
+            <div class="live-session-clock">
+              <span class="clock-label">Pozostały czas kroku</span>
+              <strong class="clock-value" id="stepCountdown">03:00</strong>
+            </div>
+
+            <div class="live-session-actions">
+              <button class="btn btn-secondary" type="button" id="prevStepButton">Poprzedni krok</button>
+              <button class="btn btn-primary" type="button" id="nextStepButton">Następny krok</button>
+            </div>
+          </div>
+
+          <div class="live-session-body">
+            <div class="live-session-column live-session-primary">
+              <div class="step-card step-card-main">
+                <div class="step-meta">
+                  <span class="step-kicker" id="currentStepType">Wejście</span>
+                  <span class="step-index" id="currentStepIndex">Krok 1</span>
+                </div>
+
+                <h2 class="step-title" id="currentStepTitle">Wejście</h2>
+
+                <p class="step-instruction" id="currentStepInstruction">
+                  Nie wprowadzaj jeszcze pełnego kontekstu historycznego. Pozwól klasie wejść przez pytanie.
+                </p>
+              </div>
+
+              <div class="step-card">
+                <div class="panel-topline">Pytanie aktywne</div>
+                <p class="teacher-prompt" id="currentPromptText">
+                  Jakie znaczenie może mieć świadectwo w sytuacji, w której jego przekazanie wiąże się z ryzykiem?
+                </p>
+              </div>
+
+              <div class="step-card">
+                <div class="panel-topline">Akcje szybkiego dostępu</div>
+                <div class="cta-row compact">
+                  <button class="btn btn-secondary" type="button" id="openObjectButton">Pokaż obiekt pamięci</button>
+                  <button class="btn btn-secondary" type="button" id="triggerQrButton">Uruchom QR</button>
+                  <button class="btn btn-secondary" type="button" id="openReportBuilderButton">Przejdź do raportu</button>
+                </div>
+              </div>
+            </div>
+
+            <aside class="live-session-column live-session-secondary">
+              <div class="step-card" id="guardrailsPanel">
+                <div class="panel-topline">Guardrails</div>
+                <ul class="guardrails-list" id="guardrailsList">
+                  <li>Nie prowadź uczniów do prostego wyroku moralnego.</li>
+                  <li>Oddzielaj świadectwo, interpretację i odpowiedź osobistą.</li>
+                  <li>Nie wprowadzaj Cyrankiewicza do trybu podstawowego.</li>
+                  <li>Utrzymuj Pileckiego jako rdzeń rozdziału, ale bez hagiografii.</li>
+                </ul>
+              </div>
+
+              <div class="step-card">
+                <div class="panel-topline">Uwaga prowadzącego</div>
+                <p class="teacher-caution" id="currentStepCaution">
+                  Nie używaj od razu słów typu „bohaterstwo” albo „poświęcenie”.
+                </p>
+              </div>
+
+              <div class="step-card">
+                <div class="panel-topline">Obiekt / źródło w kroku</div>
+                <div class="linked-object-preview" id="linkedObjectPreview">
+                  <strong class="linked-object-title">Brak obiektu w tym kroku</strong>
+                  <p class="linked-object-text">Ten etap nie uruchamia obiektu pamięci ani dokumentu.</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <div class="content-panel lesson-timeline-panel reveal" id="lessonTimeline">
+          <div class="panel-topline">Timeline lekcji</div>
+          <h2>Pełna sekwencja kroków</h2>
+
+          <div class="lesson-timeline" id="lessonTimelineList">
+            <article class="timeline-step is-active">
+              <div class="timeline-step-index">1</div>
+              <div class="timeline-step-body">
+                <h3>Wejście</h3>
+                <p>Nie wprowadzaj jeszcze pełnego kontekstu historycznego. Pozwól klasie wejść przez pytanie.</p>
+              </div>
+              <div class="timeline-step-meta">3 min</div>
+            </article>
+
+            <article class="timeline-step">
+              <div class="timeline-step-index">2</div>
+              <div class="timeline-step-body">
+                <h3>Obiekt pamięci</h3>
+                <p>Wyświetl obiekt. Zostaw chwilę ciszy. Następnie odczytaj krótki opis.</p>
+              </div>
+              <div class="timeline-step-meta">5 min</div>
+            </article>
+          </div>
+        </div>
+
+        <div class="content-panel reveal" id="teacherArchivePanel">
+          <div class="panel-topline">Archiwum sesji</div>
+          <h2>Podgląd klasy</h2>
+
+          <div class="teacher-archive-grid">
+            <div class="archive-metric">
+              <span class="archive-metric-label">Raporty wygenerowane</span>
+              <strong class="archive-metric-value" id="archiveReportsCount">0</strong>
+            </div>
+            <div class="archive-metric">
+              <span class="archive-metric-label">Najczęściej wybierany cytat</span>
+              <strong class="archive-metric-value archive-metric-block" id="archiveTopQuote">—</strong>
+            </div>
+            <div class="archive-metric">
+              <span class="archive-metric-label">Najczęściej wybierany obiekt</span>
+              <strong class="archive-metric-value" id="archiveTopObject">—</strong>
+            </div>
+          </div>
+
+          <div class="cta-row compact">
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/archive.html">Otwórz archiwum</a>
+            <a class="btn btn-secondary" href="/rap-ort/prawda-sumienia/lab/pl/report.html">Podejrzyj raport</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>Laboratorium Sumienia · Konsola nauczyciela</div>
+      <div>Wersja polska</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/lab-core.js"></script>
+  <script src="/assets/js/lab-teacher.js"></script>
+</body>
+</html>
