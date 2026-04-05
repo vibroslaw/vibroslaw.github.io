@@ -9,7 +9,7 @@ body.cinematic-mode::after{
   content:"";
   position:fixed;
   inset:0;
-  z-index:1;
+  z-index:0;
   pointer-events:none;
   background:
     radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 26%),
