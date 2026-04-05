@@ -16,6 +16,25 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+function readReducedMotionPreference() {
+  try {
+    return localStorage.getItem(REDUCED_MOTION_STORAGE_KEY) === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function saveReducedMotionPreference(enabled) {
+  try {
+    localStorage.setItem(
+      REDUCED_MOTION_STORAGE_KEY,
+      enabled ? "true" : "false"
+    );
+  } catch (error) {
+    /* silent fallback */
+  }
+}
+
 function updateReducedMotionButtonLabel() {
   if (!reducedMotionToggle) return;
 
@@ -39,23 +58,12 @@ function updateReducedMotionButtonLabel() {
   );
 }
 
-function applyReducedMotionState(enabled, { persist = true } = {}) {
-  document.body.classList.toggle("reduced-motion", enabled);
-
-  if (persist) {
-    localStorage.setItem(
-      REDUCED_MOTION_STORAGE_KEY,
-      enabled ? "true" : "false"
-    );
-  }
-
-  if (enabled) {
-    document.documentElement.style.setProperty("--hero-parallax", "0px");
-  } else {
-    updateHeroParallax();
-  }
-
-  updateReducedMotionButtonLabel();
+function notifyReducedMotionChange(enabled) {
+  document.dispatchEvent(
+    new CustomEvent("site:reduced-motion-change", {
+      detail: { enabled }
+    })
+  );
 }
 
 function updateHeroParallax() {
@@ -86,17 +94,70 @@ function requestHeroParallaxUpdate() {
   });
 }
 
-function initReducedMotion() {
-  const storedPreference = localStorage.getItem(REDUCED_MOTION_STORAGE_KEY);
-  const shouldReduceMotion = storedPreference === "true";
+function applyReducedMotionState(enabled, options = {}) {
+  const { persist = true, notify = true } = options;
+  const currentState = isReducedMotionEnabled();
 
-  applyReducedMotionState(shouldReduceMotion, { persist: false });
+  if (currentState === enabled) {
+    updateReducedMotionButtonLabel();
 
-  if (!reducedMotionToggle) return;
+    if (enabled) {
+      document.documentElement.style.setProperty("--hero-parallax", "0px");
+    } else {
+      requestHeroParallaxUpdate();
+    }
 
-  reducedMotionToggle.addEventListener("click", () => {
-    applyReducedMotionState(!isReducedMotionEnabled());
+    if (persist) {
+      saveReducedMotionPreference(enabled);
+    }
+
+    return;
+  }
+
+  document.body.classList.toggle("reduced-motion", enabled);
+
+  if (persist) {
+    saveReducedMotionPreference(enabled);
+  }
+
+  if (enabled) {
+    document.documentElement.style.setProperty("--hero-parallax", "0px");
+  } else {
+    requestHeroParallaxUpdate();
+  }
+
+  updateReducedMotionButtonLabel();
+
+  if (notify) {
+    notifyReducedMotionChange(enabled);
+  }
+}
+
+function syncReducedMotionAcrossTabs(event) {
+  if (event.key !== REDUCED_MOTION_STORAGE_KEY) return;
+
+  const shouldReduceMotion = event.newValue === "true";
+  applyReducedMotionState(shouldReduceMotion, {
+    persist: false,
+    notify: true
   });
+}
+
+function initReducedMotion() {
+  const shouldReduceMotion = readReducedMotionPreference();
+
+  applyReducedMotionState(shouldReduceMotion, {
+    persist: false,
+    notify: false
+  });
+
+  if (reducedMotionToggle) {
+    reducedMotionToggle.addEventListener("click", () => {
+      applyReducedMotionState(!isReducedMotionEnabled());
+    });
+  }
+
+  window.addEventListener("storage", syncReducedMotionAcrossTabs);
 }
 
 function initHeroParallax() {
@@ -115,6 +176,7 @@ function initHeroParallax() {
   });
 
   document.addEventListener("site:cinematic-change", requestHeroParallaxUpdate);
+  document.addEventListener("site:reduced-motion-change", requestHeroParallaxUpdate);
 }
 
 initReducedMotion();
