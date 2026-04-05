@@ -67,16 +67,23 @@
         <div class="brand-sub">Vibrosław · Audiovisual Creator</div>
       </a>
 
-      <nav class="desktop-nav desktop-nav-compact" aria-label="Main navigation">
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Site controls">
         <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
 
-        <div class="lang-switch">
+        <div class="lang-switch" aria-label="Language switch">
           <a href="/" class="active">EN</a>
           <span>|</span>
           <a href="/pl/">PL</a>
         </div>
 
-        <button class="mobile-nav-toggle desktop-menu-toggle" id="mobileNavToggle" type="button" aria-label="Open menu">
+        <button
+          class="mobile-nav-toggle desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Open site menu"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -187,10 +194,12 @@
         </div>
 
         <div class="grid grid-2">
-          <a class="card project-card project-link-card reveal track-link"
-             href="/rap-ort/"
-             data-track-title="Rap-Ort"
-             aria-label="Enter Rap-Ort">
+          <a
+            class="card project-card project-link-card reveal track-link"
+            href="/rap-ort/"
+            data-track-title="Rap-Ort"
+            aria-label="Enter Rap-Ort"
+          >
             <div class="project-media" style="background-image:url('/assets/images/hero-raport-main.jpg');"></div>
 
             <div class="project-body">
@@ -214,10 +223,12 @@
             </div>
           </a>
 
-          <a class="card project-card project-link-card reveal track-link"
-             href="/sztab/"
-             data-track-title="SZTAB"
-             aria-label="Enter SZTAB">
+          <a
+            class="card project-card project-link-card reveal track-link"
+            href="/sztab/"
+            data-track-title="SZTAB"
+            aria-label="Enter SZTAB"
+          >
             <div class="project-media" style="background-image:url('/assets/images/hero-sztab-main.jpg');"></div>
 
             <div class="project-body">
@@ -554,4 +565,4 @@
   <script src="/assets/js/quotes.js"></script>
   <script src="/assets/js/home.js"></script>
 </body>
-</html>
+                </html>
