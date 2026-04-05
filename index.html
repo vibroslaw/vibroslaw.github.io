@@ -25,6 +25,8 @@
 <body
   data-page="home"
   data-lang="en"
+  data-hero-main="/assets/images/hero-main.jpg"
+  data-hero-mobile="/assets/images/hero-mobile.jpg"
   data-quotes='[
     "Truth does not need noise. It needs to be heard.",
     "Not everything that matters is immediately visible.",
@@ -38,12 +40,12 @@
 
   <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
     <div class="mobile-menu-panel">
-      <a class="mobile-menu-link" href="#projects">Projects</a>
+      <a class="mobile-menu-link" href="#projects">Core Worlds</a>
       <a class="mobile-menu-link" href="#pathways">How to Enter</a>
-      <a class="mobile-menu-link" href="#timeline">Map</a>
+      <a class="mobile-menu-link" href="#timeline">Narrative Map</a>
       <a class="mobile-menu-link" href="#institutions">Institutions</a>
       <a class="mobile-menu-link" href="#recognition">Recognition</a>
-      <a class="mobile-menu-link" href="#about">About</a>
+      <a class="mobile-menu-link" href="/authorial-profile/">Authorial Profile</a>
       <a class="mobile-menu-link" href="#contact">Contact</a>
 
       <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
@@ -65,15 +67,7 @@
         <div class="brand-sub">Vibrosław · Audiovisual Creator</div>
       </a>
 
-      <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="#projects">Projects</a>
-        <a href="#pathways">How to Enter</a>
-        <a href="#timeline">Map</a>
-        <a href="#institutions">Institutions</a>
-        <a href="#recognition">Recognition</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Main navigation">
         <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
 
         <div class="lang-switch">
@@ -81,13 +75,13 @@
           <span>|</span>
           <a href="/pl/">PL</a>
         </div>
-      </nav>
 
-      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button class="mobile-nav-toggle desktop-menu-toggle" id="mobileNavToggle" type="button" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
     </div>
   </header>
 
@@ -123,8 +117,7 @@
           </div>
 
           <div class="cta-row">
-            <a class="btn btn-primary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Enter Rap-Ort</a>
-            <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Enter SZTAB</a>
+            <a class="btn btn-primary" href="#projects">Explore the Worlds</a>
             <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Enter Cinematic Mode</button>
           </div>
         </div>
@@ -180,6 +173,77 @@
       </div>
     </section>
 
+    <section class="section" id="projects">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Core Worlds</div>
+            <h2>Two primary narrative paths</h2>
+          </div>
+          <div class="section-note">
+            One more institutional and immersive. One more episodic and public-facing.
+            Both belong to a coherent authorial world shaped by history, ethical tension, and cinematic storytelling.
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <a class="card project-card project-link-card reveal track-link"
+             href="/rap-ort/"
+             data-track-title="Rap-Ort"
+             aria-label="Enter Rap-Ort">
+            <div class="project-media" style="background-image:url('/assets/images/hero-raport-main.jpg');"></div>
+
+            <div class="project-body">
+              <div class="chips">
+                <span class="chip">Institutional</span>
+                <span class="chip">Audiovisual Report</span>
+                <span class="chip">65 min</span>
+              </div>
+
+              <h3>Rap-Ort</h3>
+
+              <p>
+                A narrative audiovisual framework built around witness, historical pressure,
+                and the consequences of silence under totalitarian systems. Its central current work
+                is <strong>Rap-Ort: Prawda Sumienia / Conscience Report</strong>.
+              </p>
+
+              <div class="card-link-row">
+                <span class="card-entry">Enter world</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="card project-card project-link-card reveal track-link"
+             href="/sztab/"
+             data-track-title="SZTAB"
+             aria-label="Enter SZTAB">
+            <div class="project-media" style="background-image:url('/assets/images/hero-sztab-main.jpg');"></div>
+
+            <div class="project-body">
+              <div class="chips">
+                <span class="chip">Series</span>
+                <span class="chip">Public-facing</span>
+                <span class="chip">Historical Episodes</span>
+              </div>
+
+              <h3>SZTAB</h3>
+
+              <p>
+                A developing historical series devoted to figures, acts of resistance,
+                and moments of moral weight — conceived for wider reach while preserving seriousness,
+                atmosphere, and narrative depth.
+              </p>
+
+              <div class="card-link-row">
+                <span class="card-entry">Enter world</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="pathways">
       <div class="wrap">
         <div class="section-head reveal">
@@ -197,7 +261,7 @@
             <div>
               <h3>Institutional Entry</h3>
               <p>
-                Enter through Rap-Ort if you are beginning with the longer, denser,
+                Begin with Rap-Ort if you are entering through the longer, denser,
                 more immersive form designed for attentive viewing, screening, and reflective context.
               </p>
             </div>
@@ -208,7 +272,7 @@
             <div>
               <h3>Episode Entry</h3>
               <p>
-                Enter through SZTAB if you prefer a single concentrated episode that opens into
+                Begin with SZTAB if you prefer a concentrated episode that opens into
                 a wider world of figures, missing memory, resistance, and historical tension.
               </p>
             </div>
@@ -219,72 +283,11 @@
             <div>
               <h3>Authorial Entry</h3>
               <p>
-                Enter through the wider body of work if you want to understand the authorial voice
-                beyond the two central project worlds.
+                Enter through the dedicated authorial page if you want to understand
+                the wider voice, method, and artistic logic behind these worlds.
               </p>
             </div>
-            <a class="btn btn-secondary" href="#other">Explore Other Areas</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="projects">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <div class="section-kicker">Core Worlds</div>
-            <h2>Two primary narrative paths</h2>
-          </div>
-          <div class="section-note">
-            One more institutional and immersive. One more episodic and public-facing.
-            Both belong to a coherent authorial world shaped by history, ethical tension, and cinematic storytelling.
-          </div>
-        </div>
-
-        <div class="grid grid-2">
-          <article class="card project-card reveal">
-            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80');"></div>
-            <div class="project-body">
-              <div class="chips">
-                <span class="chip">Institutional</span>
-                <span class="chip">Audiovisual Report</span>
-                <span class="chip">65 min</span>
-              </div>
-
-              <h3>Rap-Ort</h3>
-              <p>
-                A narrative audiovisual framework built around witness, historical pressure,
-                and the consequences of silence under totalitarian systems. Its central current work
-                is <strong>Rap-Ort: Prawda Sumienia / Conscience Report</strong>.
-              </p>
-
-              <div class="card-link">
-                <a class="btn btn-secondary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Enter Rap-Ort</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card project-card reveal">
-            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=80');"></div>
-            <div class="project-body">
-              <div class="chips">
-                <span class="chip">Series</span>
-                <span class="chip">Public-facing</span>
-                <span class="chip">Historical Episodes</span>
-              </div>
-
-              <h3>SZTAB</h3>
-              <p>
-                A developing historical series devoted to figures, acts of resistance,
-                and moments of moral weight — conceived for wider reach while preserving seriousness,
-                atmosphere, and narrative depth.
-              </p>
-
-              <div class="card-link">
-                <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Enter SZTAB</a>
-              </div>
-            </div>
+            <a class="btn btn-secondary" href="/authorial-profile/">Open Authorial Profile</a>
           </article>
         </div>
       </div>
@@ -371,7 +374,7 @@
 
           <div class="cta-row">
             <a class="btn btn-primary" href="#contact">Request Contact</a>
-            <a class="btn btn-secondary" href="/rap-ort/">View Rap-Ort</a>
+            <a class="btn btn-secondary track-link" href="/rap-ort/" data-track-title="Rap-Ort">View Rap-Ort</a>
           </div>
         </div>
       </div>
@@ -450,47 +453,12 @@
             <div>
               <h3>Authorial Profile</h3>
               <p>
-                A concise authorial frame explaining how Vibrosław functions creatively
-                and why these forms come into being.
+                A dedicated page explaining how Vibrosław functions creatively
+                and why these audiovisual forms come into being.
               </p>
             </div>
-            <a class="btn btn-secondary" href="#about">Read More</a>
+            <a class="btn btn-secondary" href="/authorial-profile/">Open Profile</a>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <div class="section-kicker">About</div>
-            <h2>Work at the intersection of memory, history, and responsibility</h2>
-          </div>
-          <div class="section-note">
-            An authorial practice developed through music, image, and audiovisual form — built not for noise, but for attention.
-          </div>
-        </div>
-
-        <div class="grid grid-2">
-          <div class="content-panel reveal">
-            <h3>Piotr Lichwała (Vibrosław)</h3>
-            <p>
-              Piotr Lichwała (Vibrosław) creates original audiovisual works shaped by memory,
-              witness, and the moral tension of history. His practice combines narrative music,
-              cinematic image, and short- or long-form structures developed for attentive viewing —
-              both public and institutional.
-            </p>
-          </div>
-
-          <div class="content-panel reveal">
-            <h3>Why these forms</h3>
-            <p>
-              This body of work unfolds at the intersection of art, history, and responsibility in the telling of the past.
-              Projects such as Rap-Ort and SZTAB do not aim only to reconstruct events,
-              but to restore their weight, human scale, and contemporary resonance.
-            </p>
-          </div>
         </div>
       </div>
     </section>
