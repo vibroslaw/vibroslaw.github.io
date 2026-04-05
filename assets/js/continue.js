@@ -5,14 +5,30 @@ const dismissContinue = document.getElementById("dismissContinue");
 
 const trackedLinks = Array.from(document.querySelectorAll(".track-link"));
 
-const LAST_PROJECT_STORAGE_KEY = "lastVisitedProject";
+const LAST_VISITED_STORAGE_KEY = "lastVisitedProject";
 const DISMISSED_CONTINUE_STORAGE_KEY = "dismissedContinue";
 
 function isPolishLanguage() {
   return document.body.dataset.lang === "pl";
 }
 
-function setLastVisitedProject(title, href) {
+function normalizePath(url) {
+  try {
+    return new URL(url, window.location.origin).pathname.replace(/\/+$/, "") || "/";
+  } catch (error) {
+    return null;
+  }
+}
+
+function isCurrentPage(href) {
+  const currentPath = normalizePath(window.location.pathname);
+  const targetPath = normalizePath(href);
+
+  if (!currentPath || !targetPath) return false;
+  return currentPath === targetPath;
+}
+
+function setLastVisitedPage(title, href) {
   if (!title || !href) return;
 
   const payload = {
@@ -21,11 +37,11 @@ function setLastVisitedProject(title, href) {
     timestamp: Date.now()
   };
 
-  localStorage.setItem(LAST_PROJECT_STORAGE_KEY, JSON.stringify(payload));
+  localStorage.setItem(LAST_VISITED_STORAGE_KEY, JSON.stringify(payload));
 }
 
-function getLastVisitedProject() {
-  const stored = localStorage.getItem(LAST_PROJECT_STORAGE_KEY);
+function getLastVisitedPage() {
+  const stored = localStorage.getItem(LAST_VISITED_STORAGE_KEY);
   if (!stored) return null;
 
   try {
@@ -36,7 +52,7 @@ function getLastVisitedProject() {
 
     return parsed;
   } catch (error) {
-    localStorage.removeItem(LAST_PROJECT_STORAGE_KEY);
+    localStorage.removeItem(LAST_VISITED_STORAGE_KEY);
     return null;
   }
 }
@@ -63,26 +79,26 @@ function showContinuePanel() {
   continuePanel.setAttribute("aria-hidden", "false");
 }
 
-function updateContinuePanel(project) {
-  if (!continuePanel || !continueText || !continueButton || !project) return;
+function updateContinuePanel(page) {
+  if (!continuePanel || !continueText || !continueButton || !page) return;
 
   const isPL = isPolishLanguage();
 
-  continueButton.href = project.href;
+  continueButton.href = page.href;
   continueButton.textContent = isPL
-    ? `Kontynuuj: ${project.title}`
-    : `Continue to ${project.title}`;
+    ? `Kontynuuj: ${page.title}`
+    : `Continue: ${page.title}`;
 
   continueButton.setAttribute(
     "aria-label",
     isPL
-      ? `Kontynuuj do projektu ${project.title}`
-      : `Continue to project ${project.title}`
+      ? `Otwórz ostatnio odwiedzaną stronę Rap-Ort: ${page.title}`
+      : `Open the most recently visited Rap-Ort page: ${page.title}`
   );
 
   continueText.textContent = isPL
-    ? `Wróć do świata ${project.title}, który był ostatnio otwierany.`
-    : `Return to ${project.title}, the last project world you opened.`;
+    ? `Wróć do ostatnio otwieranej strony Rap-Ort: ${page.title}.`
+    : `Return to the most recently opened Rap-Ort page: ${page.title}.`;
 }
 
 function initTrackedLinks() {
@@ -91,7 +107,7 @@ function initTrackedLinks() {
       const title = link.dataset.trackTitle;
       const href = link.getAttribute("href");
 
-      setLastVisitedProject(title, href);
+      setLastVisitedPage(title, href);
     });
   });
 }
@@ -99,14 +115,14 @@ function initTrackedLinks() {
 function initContinuePanel() {
   if (!continuePanel || !continueText || !continueButton) return;
 
-  const project = getLastVisitedProject();
+  const page = getLastVisitedPage();
 
-  if (!project || hasDismissedContinuePanel()) {
+  if (!page || hasDismissedContinuePanel() || isCurrentPage(page.href)) {
     hideContinuePanel();
     return;
   }
 
-  updateContinuePanel(project);
+  updateContinuePanel(page);
   showContinuePanel();
 }
 
