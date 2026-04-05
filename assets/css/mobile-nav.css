@@ -53,22 +53,30 @@
     width .22s ease;
 }
 
-body.mobile-menu-open .mobile-nav-toggle span:nth-child(1){
-  transform:translateY(5.5px) rotate(45deg);
+/* final current trigger */
+#mobileNavToggle,
+.desktop-menu-toggle{
+  display:inline-flex;
 }
 
+/* animate current trigger into X */
+body.mobile-menu-open #mobileNavToggle span:nth-child(1),
+body.mobile-menu-open .desktop-menu-toggle span:nth-child(1),
+body.mobile-menu-open .mobile-nav-toggle span:nth-child(1){
+  transform:translateY(7.5px) rotate(45deg);
+}
+
+body.mobile-menu-open #mobileNavToggle span:nth-child(2),
+body.mobile-menu-open .desktop-menu-toggle span:nth-child(2),
 body.mobile-menu-open .mobile-nav-toggle span:nth-child(2){
   opacity:0;
   transform:scaleX(.4);
 }
 
+body.mobile-menu-open #mobileNavToggle span:nth-child(3),
+body.mobile-menu-open .desktop-menu-toggle span:nth-child(3),
 body.mobile-menu-open .mobile-nav-toggle span:nth-child(3){
-  transform:translateY(-5.5px) rotate(-45deg);
-}
-
-/* desktop compact hamburger must remain visible */
-.desktop-menu-toggle{
-  display:inline-flex;
+  transform:translateY(-7.5px) rotate(-45deg);
 }
 
 /* ---------- OVERLAY ---------- */
@@ -82,13 +90,13 @@ body.mobile-menu-open .mobile-nav-toggle span:nth-child(3){
     linear-gradient(180deg, rgba(9,9,9,.985), rgba(9,9,9,.992));
   opacity:0;
   pointer-events:none;
-  transition:
-    opacity .38s var(--ease),
-    visibility .38s var(--ease);
   visibility:hidden;
   overflow-y:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
+  transition:
+    opacity .38s var(--ease),
+    visibility .38s var(--ease);
 }
 
 .mobile-menu-overlay::before{
@@ -111,7 +119,6 @@ body.mobile-menu-open .mobile-nav-toggle span:nth-child(3){
 
 body.mobile-menu-open{
   overflow:hidden;
-  touch-action:none;
 }
 
 body.mobile-menu-open .mobile-menu-overlay{
@@ -262,7 +269,6 @@ body.mobile-menu-open .mobile-menu-panel{
 
 /* ---------- RESPONSIVE ---------- */
 
-/* mobile-only standalone hamburger, if ever used outside compact desktop nav */
 @media (max-width:760px){
   .mobile-nav-toggle{
     display:flex;
