@@ -47,6 +47,7 @@
 
   <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
     <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="/pl/">Strona główna</a>
       <a class="mobile-menu-link" href="#what">Czym jest</a>
       <a class="mobile-menu-link" href="#chapters">Rozdziały</a>
       <a class="mobile-menu-link" href="#layers">Warstwy</a>
@@ -72,12 +73,8 @@
         <div class="brand-sub">Uniwersum świadectwa, pamięci i odpowiedzialności</div>
       </a>
 
-      <nav class="desktop-nav" aria-label="Główna nawigacja">
-        <a href="#what">Czym jest</a>
-        <a href="#chapters">Rozdziały</a>
-        <a href="#layers">Warstwy</a>
-        <a href="#principles">Założenia</a>
-        <a href="#contact">Kontakt</a>
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Sterowanie stroną">
+        <a href="/pl/" class="nav-button">Strona główna</a>
 
         <button type="button" id="cinematicToggle" class="nav-button">Tryb kinowy</button>
 
@@ -86,20 +83,20 @@
           <span>|</span>
           <a href="/rap-ort/pl/" class="active">PL</a>
         </div>
-      </nav>
 
-      <button
-        class="mobile-nav-toggle"
-        id="mobileNavToggle"
-        type="button"
-        aria-label="Otwórz menu"
-        aria-expanded="false"
-        aria-controls="mobileMenuOverlay"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button
+          class="mobile-nav-toggle desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Otwórz menu"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
     </div>
   </header>
 
