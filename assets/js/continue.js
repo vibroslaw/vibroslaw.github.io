@@ -5,8 +5,8 @@ const dismissContinue = document.getElementById("dismissContinue");
 
 const trackedLinks = Array.from(document.querySelectorAll(".track-link"));
 
-const LAST_VISITED_STORAGE_KEY = "lastVisitedProject";
-const DISMISSED_CONTINUE_STORAGE_KEY = "dismissedContinue";
+const LAST_VISITED_STORAGE_KEY = "lastVisitedRapOrtPage";
+const DISMISSED_CONTINUE_STORAGE_KEY = "dismissedRapOrtContinueForHref";
 
 function isPolishLanguage() {
   return document.body.dataset.lang === "pl";
@@ -14,18 +14,59 @@ function isPolishLanguage() {
 
 function normalizePath(url) {
   try {
-    return new URL(url, window.location.origin).pathname.replace(/\/+$/, "") || "/";
+    const pathname = new URL(url, window.location.origin).pathname;
+    return pathname.replace(/\/+$/, "") || "/";
   } catch (error) {
     return null;
   }
 }
 
 function isCurrentPage(href) {
-  const currentPath = normalizePath(window.location.pathname);
+  const currentPath = normalizePath(window.location.href);
   const targetPath = normalizePath(href);
 
   if (!currentPath || !targetPath) return false;
   return currentPath === targetPath;
+}
+
+function saveToLocalStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    // ignore storage errors
+  }
+}
+
+function readFromLocalStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function removeFromLocalStorage(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    // ignore storage errors
+  }
+}
+
+function saveToSessionStorage(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch (error) {
+    // ignore storage errors
+  }
+}
+
+function readFromSessionStorage(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
 }
 
 function setLastVisitedPage(title, href) {
@@ -37,11 +78,11 @@ function setLastVisitedPage(title, href) {
     timestamp: Date.now()
   };
 
-  localStorage.setItem(LAST_VISITED_STORAGE_KEY, JSON.stringify(payload));
+  saveToLocalStorage(LAST_VISITED_STORAGE_KEY, JSON.stringify(payload));
 }
 
 function getLastVisitedPage() {
-  const stored = localStorage.getItem(LAST_VISITED_STORAGE_KEY);
+  const stored = readFromLocalStorage(LAST_VISITED_STORAGE_KEY);
   if (!stored) return null;
 
   try {
@@ -52,17 +93,18 @@ function getLastVisitedPage() {
 
     return parsed;
   } catch (error) {
-    localStorage.removeItem(LAST_VISITED_STORAGE_KEY);
+    removeFromLocalStorage(LAST_VISITED_STORAGE_KEY);
     return null;
   }
 }
 
-function hasDismissedContinuePanel() {
-  return sessionStorage.getItem(DISMISSED_CONTINUE_STORAGE_KEY) === "true";
+function hasDismissedContinuePanelForHref(href) {
+  return readFromSessionStorage(DISMISSED_CONTINUE_STORAGE_KEY) === href;
 }
 
-function markContinuePanelDismissed() {
-  sessionStorage.setItem(DISMISSED_CONTINUE_STORAGE_KEY, "true");
+function markContinuePanelDismissed(href) {
+  if (!href) return;
+  saveToSessionStorage(DISMISSED_CONTINUE_STORAGE_KEY, href);
 }
 
 function hideContinuePanel() {
@@ -97,8 +139,8 @@ function updateContinuePanel(page) {
   );
 
   continueText.textContent = isPL
-    ? `Wróć do ostatnio otwieranej strony Rap-Ort: ${page.title}.`
-    : `Return to the most recently opened Rap-Ort page: ${page.title}.`;
+    ? `Wróć do ostatnio odwiedzanej strony Rap-Ort: ${page.title}.`
+    : `Return to the most recently visited Rap-Ort page: ${page.title}.`;
 }
 
 function initTrackedLinks() {
@@ -107,6 +149,7 @@ function initTrackedLinks() {
       const title = link.dataset.trackTitle;
       const href = link.getAttribute("href");
 
+      if (!title || !href) return;
       setLastVisitedPage(title, href);
     });
   });
@@ -117,7 +160,17 @@ function initContinuePanel() {
 
   const page = getLastVisitedPage();
 
-  if (!page || hasDismissedContinuePanel() || isCurrentPage(page.href)) {
+  if (!page) {
+    hideContinuePanel();
+    return;
+  }
+
+  if (isCurrentPage(page.href)) {
+    hideContinuePanel();
+    return;
+  }
+
+  if (hasDismissedContinuePanelForHref(page.href)) {
     hideContinuePanel();
     return;
   }
@@ -130,8 +183,13 @@ function initDismissButton() {
   if (!dismissContinue) return;
 
   dismissContinue.addEventListener("click", () => {
+    const page = getLastVisitedPage();
+
     hideContinuePanel();
-    markContinuePanelDismissed();
+
+    if (page?.href) {
+      markContinuePanelDismissed(page.href);
+    }
   });
 }
 
