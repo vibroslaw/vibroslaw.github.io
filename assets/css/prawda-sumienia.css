@@ -256,6 +256,14 @@
   min-height:290px;
 }
 
+.audience-card{
+  min-height:240px;
+}
+
+.principle-card{
+  min-height:250px;
+}
+
 .stage-card:hover,
 .audience-card:hover,
 .principle-card:hover{
@@ -271,6 +279,11 @@
   padding:30px 24px 24px;
 }
 
+.stage-card .chips,
+.principle-card .chips{
+  margin-bottom:14px;
+}
+
 .stage-card h3,
 .audience-card h3,
 .principle-card h3{
@@ -279,6 +292,7 @@
   font-size:2rem;
   line-height:.95;
   font-weight:600;
+  text-wrap:balance;
 }
 
 .stage-card p,
@@ -310,6 +324,10 @@
 
 .desktop-nav a.is-active{
   color:var(--text);
+}
+
+body.reduced-motion .hero-ps .hero-image{
+  transform:none;
 }
 
 /* cinematic mode */
@@ -454,20 +472,14 @@ body.cinematic-mode .hero-ps .hero-light{
     padding-top:22px;
   }
 
+  .brand-sub{
+    max-width:19ch;
+    line-height:1.18;
+  }
+
   body.cinematic-mode .hero-ps .hero-image{
     transform:none;
     filter:saturate(.86) brightness(.82) contrast(1.03);
-  }
-}
-
-@media (max-width:480px){
-  .hero-ps .hero-image{
-    background-position:var(--ps-hero-pos-mobile-tight);
-  }
-
-  .hero-ps .hero-fade{
-    background:
-      linear-gradient(180deg, rgba(6,6,6,.12) 0%, rgba(6,6,6,.22) 32%, rgba(6,6,6,.66) 100%);
   }
 }
 
@@ -486,5 +498,21 @@ body.cinematic-mode .hero-ps .hero-light{
 
   .glass-panel{
     padding:20px 18px;
+  }
+}
+
+@media (max-width:480px){
+  .hero-ps .hero-image{
+    background-position:var(--ps-hero-pos-mobile-tight);
+  }
+
+  .hero-ps .hero-fade{
+    background:
+      linear-gradient(180deg, rgba(6,6,6,.12) 0%, rgba(6,6,6,.22) 32%, rgba(6,6,6,.66) 100%);
+  }
+
+  .brand-sub{
+    max-width:16ch;
+    font-size:.66rem;
   }
 }
