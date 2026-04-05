@@ -256,6 +256,10 @@
   min-height:290px;
 }
 
+.principles-grid .principle-card{
+  min-height:250px;
+}
+
 .stage-card:hover,
 .audience-card:hover,
 .principle-card:hover{
@@ -299,10 +303,6 @@
   margin-top:24px;
 }
 
-.principles-grid .principle-card{
-  min-height:250px;
-}
-
 .related-grid .content-panel p,
 .contact-grid .content-panel p{
   max-width:58ch;
@@ -327,6 +327,10 @@ body.cinematic-mode .hero-cr .hero-fade{
 
 body.cinematic-mode .hero-cr .hero-light{
   opacity:1.02;
+}
+
+body.reduced-motion .hero-cr .hero-image{
+  transform:none;
 }
 
 /* responsive */
@@ -487,4 +491,4 @@ body.cinematic-mode .hero-cr .hero-light{
     background:
       linear-gradient(180deg, rgba(6,6,6,.14) 0%, rgba(6,6,6,.24) 34%, rgba(6,6,6,.70) 100%);
   }
-}
+                    }
