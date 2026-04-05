@@ -326,7 +326,22 @@
   color:var(--text);
 }
 
-body.reduced-motion .hero-ps .hero-image{
+body.reduced-motion .hero-ps .hero-image,
+body.reduced-motion.cinematic-mode .hero-ps .hero-image{
+  transform:none !important;
+}
+
+body.reduced-motion .stage-card,
+body.reduced-motion .audience-card,
+body.reduced-motion .principle-card,
+body.reduced-motion .glass-panel{
+  transition:none;
+}
+
+body.reduced-motion .stage-card:hover,
+body.reduced-motion .audience-card:hover,
+body.reduced-motion .principle-card:hover,
+body.reduced-motion .glass-panel:hover{
   transform:none;
 }
 
