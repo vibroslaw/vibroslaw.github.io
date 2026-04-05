@@ -102,6 +102,8 @@ textarea{
   z-index:1;
 }
 
+/* ---------- TRANSITION / PROGRESS ---------- */
+
 .page-transition{
   position:fixed;
   inset:0;
@@ -131,6 +133,8 @@ textarea{
   transition:width .12s ease-out;
 }
 
+/* ---------- HEADER ---------- */
+
 .site-header{
   position:sticky;
   top:0;
@@ -159,6 +163,7 @@ textarea{
   flex-direction:column;
   gap:4px;
   min-width:0;
+  flex-shrink:0;
 }
 
 .brand-name{
@@ -206,16 +211,48 @@ textarea{
   transform:translateY(-1px);
 }
 
+/* COMPACT DESKTOP HEADER */
+.desktop-nav-compact{
+  gap:18px;
+  flex-wrap:nowrap;
+  margin-left:auto;
+}
+
+.desktop-nav-compact .nav-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:0 14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,0.025);
+  color:var(--muted);
+  transition:
+    color .25s ease,
+    border-color .25s ease,
+    background .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.desktop-nav-compact .nav-button:hover{
+  color:var(--text);
+  border-color:rgba(255,255,255,.14);
+  background:rgba(255,255,255,0.05);
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+
 .lang-switch{
   display:flex;
   align-items:center;
   gap:10px;
-  margin-left:4px;
+  margin-left:2px;
 }
 
 .lang-switch a{
   color:var(--muted);
-  transition:color .25s ease;
+  transition:color .25s ease, opacity .25s ease;
 }
 
 .lang-switch a:hover{
@@ -234,6 +271,45 @@ textarea{
 .nav-button{
   color:var(--muted);
 }
+
+/* DESKTOP HAMBURGER INSIDE COMPACT NAV */
+.desktop-menu-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:54px;
+  height:54px;
+  padding:0;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,0.025);
+  flex-direction:column;
+  gap:6px;
+  transition:
+    transform .28s var(--ease),
+    border-color .28s var(--ease),
+    background .28s var(--ease),
+    box-shadow .28s var(--ease);
+}
+
+.desktop-menu-toggle:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,255,255,.14);
+  background:rgba(255,255,255,0.05);
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+}
+
+.desktop-menu-toggle span{
+  display:block;
+  width:20px;
+  height:1.5px;
+  border-radius:999px;
+  background:var(--text);
+  opacity:.92;
+  transition:transform .25s ease, opacity .25s ease;
+}
+
+/* ---------- TYPO / LAYOUT ---------- */
 
 .section{
   position:relative;
@@ -276,6 +352,8 @@ h2{
   font-size:1rem;
 }
 
+/* ---------- GRID ---------- */
+
 .grid{
   display:grid;
   gap:24px;
@@ -288,6 +366,8 @@ h2{
 .grid-3{
   grid-template-columns:repeat(3, minmax(0, 1fr));
 }
+
+/* ---------- CARDS ---------- */
 
 .card{
   position:relative;
@@ -304,6 +384,91 @@ h2{
     border-color .35s var(--ease),
     background .35s var(--ease),
     box-shadow .35s var(--ease);
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,0.12);
+  box-shadow:var(--shadow-strong);
+}
+
+/* FULLY CLICKABLE PROJECT CARDS */
+.project-link-card{
+  display:flex;
+  flex-direction:column;
+  cursor:pointer;
+  isolation:isolate;
+}
+
+.project-link-card::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background:linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(255,255,255,.06) 50%,
+    transparent 64%,
+    transparent 100%
+  );
+  transform:translateX(-115%);
+  transition:transform 1.15s var(--ease);
+  pointer-events:none;
+  z-index:2;
+}
+
+.project-link-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top right, rgba(201,178,143,.11), transparent 36%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,.035), transparent 30%);
+  opacity:0;
+  transition:opacity .35s var(--ease);
+  pointer-events:none;
+  z-index:1;
+}
+
+.project-link-card:hover::before{
+  transform:translateX(115%);
+}
+
+.project-link-card:hover::after{
+  opacity:1;
+}
+
+.project-link-card .project-body,
+.project-link-card .project-media{
+  position:relative;
+  z-index:3;
+}
+
+.card-link-row{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  padding-top:4px;
+}
+
+.card-entry{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--text);
+  font-size:.96rem;
+  line-height:1;
+}
+
+.card-entry::after{
+  content:"→";
+  transition:transform .3s var(--ease);
+}
+
+.project-link-card:hover .card-entry::after{
+  transform:translateX(5px);
 }
 
 .content-panel{
@@ -340,6 +505,8 @@ h2{
   line-height:1.95;
   max-width:var(--reading-max);
 }
+
+/* ---------- BUTTONS ---------- */
 
 .btn{
   min-height:52px;
@@ -420,6 +587,8 @@ h2{
   margin-top:18px;
 }
 
+/* ---------- CHIPS ---------- */
+
 .chips{
   display:flex;
   flex-wrap:wrap;
@@ -436,6 +605,8 @@ h2{
   letter-spacing:.02em;
 }
 
+/* ---------- REVEAL ---------- */
+
 .reveal{
   opacity:0;
   transform:translateY(22px);
@@ -451,6 +622,8 @@ h2{
   transform:translateY(0);
   filter:blur(0);
 }
+
+/* ---------- FOOTER ---------- */
 
 .site-footer{
   position:relative;
@@ -470,6 +643,8 @@ h2{
   line-height:1.7;
 }
 
+/* ---------- FLOATING TOOLS ---------- */
+
 .floating-tools{
   position:fixed;
   right:18px;
@@ -478,12 +653,13 @@ h2{
   display:flex;
   flex-direction:column;
   gap:10px;
+  align-items:flex-end;
 }
 
 .tool-button{
   min-width:48px;
   min-height:48px;
-  padding:0 14px;
+  padding:0 16px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.08);
   background:rgba(12,12,12,.78);
@@ -496,14 +672,18 @@ h2{
     transform .25s ease,
     background .25s ease,
     border-color .25s ease,
-    opacity .25s ease;
+    opacity .25s ease,
+    box-shadow .25s ease;
 }
 
 .tool-button:hover{
   transform:translateY(-2px);
   background:rgba(18,18,18,.92);
   border-color:rgba(255,255,255,.14);
+  box-shadow:0 14px 28px rgba(0,0,0,.24);
 }
+
+/* ---------- CONTACT ---------- */
 
 .contact-links{
   display:flex;
@@ -551,6 +731,8 @@ h2{
   height:20px;
 }
 
+/* ---------- ACCESSIBILITY ---------- */
+
 body.reduced-motion *,
 body.reduced-motion *::before,
 body.reduced-motion *::after{
@@ -559,6 +741,8 @@ body.reduced-motion *::after{
   scroll-behavior:auto !important;
 }
 
+/* ---------- RESPONSIVE ---------- */
+
 @media (max-width:1100px){
   .grid-3{
     grid-template-columns:1fr;
@@ -566,6 +750,10 @@ body.reduced-motion *::after{
 
   .section-head{
     gap:24px;
+  }
+
+  .desktop-nav-compact{
+    gap:12px;
   }
 }
 
@@ -594,8 +782,21 @@ body.reduced-motion *::after{
     width:min(var(--max), calc(100% - 22px));
   }
 
-  .desktop-nav{
-    display:none;
+  /* KEEP ONLY HAMBURGER ON MOBILE FROM COMPACT NAV */
+  .desktop-nav.desktop-nav-compact{
+    display:flex;
+    align-items:center;
+    gap:0;
+    margin-left:auto;
+  }
+
+  .desktop-nav.desktop-nav-compact > :not(.desktop-menu-toggle){
+    display:none !important;
+  }
+
+  .desktop-menu-toggle{
+    width:56px;
+    height:56px;
   }
 
   .brand-name{
@@ -613,6 +814,12 @@ body.reduced-motion *::after{
   .floating-tools{
     right:10px;
     bottom:10px;
+    gap:8px;
+  }
+
+  .tool-button{
+    min-height:46px;
+    padding:0 14px;
   }
 
   .contact-links{
@@ -641,5 +848,16 @@ body.reduced-motion *::after{
 
   .footer-inner{
     flex-direction:column;
+  }
+
+  .floating-tools{
+    right:8px;
+    bottom:8px;
+  }
+
+  .tool-button{
+    min-width:44px;
+    min-height:44px;
+    font-size:.94rem;
   }
 }
