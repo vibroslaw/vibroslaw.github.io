@@ -38,12 +38,12 @@
 
   <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
     <div class="mobile-menu-panel">
-      <a class="mobile-menu-link" href="#projects">Projekty</a>
+      <a class="mobile-menu-link" href="#projects">Główne światy</a>
       <a class="mobile-menu-link" href="#pathways">Jak wejść</a>
-      <a class="mobile-menu-link" href="#timeline">Mapa</a>
+      <a class="mobile-menu-link" href="#timeline">Mapa narracyjna</a>
       <a class="mobile-menu-link" href="#institutions">Instytucje</a>
       <a class="mobile-menu-link" href="#recognition">Wzmianki</a>
-      <a class="mobile-menu-link" href="#about">O autorze</a>
+      <a class="mobile-menu-link" href="/authorial-profile/">Profil autorski</a>
       <a class="mobile-menu-link" href="#contact">Kontakt</a>
 
       <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
@@ -65,29 +65,28 @@
         <div class="brand-sub">Vibrosław · Twórca audiowizualny</div>
       </a>
 
-      <nav class="desktop-nav" aria-label="Główna nawigacja">
-        <a href="#projects">Projekty</a>
-        <a href="#pathways">Jak wejść</a>
-        <a href="#timeline">Mapa</a>
-        <a href="#institutions">Instytucje</a>
-        <a href="#recognition">Wzmianki</a>
-        <a href="#about">O autorze</a>
-        <a href="#contact">Kontakt</a>
-
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Sterowanie stroną">
         <button type="button" id="cinematicToggle" class="nav-button">Tryb kinowy</button>
 
-        <div class="lang-switch">
+        <div class="lang-switch" aria-label="Zmiana języka">
           <a href="/">EN</a>
           <span>|</span>
           <a href="/pl/" class="active">PL</a>
         </div>
-      </nav>
 
-      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Otwórz menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button
+          class="desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Otwórz menu strony"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
     </div>
   </header>
 
@@ -123,8 +122,7 @@
           </div>
 
           <div class="cta-row">
-            <a class="btn btn-primary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Wejdź do Rap-Ort</a>
-            <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Wejdź do SZTAB</a>
+            <a class="btn btn-primary" href="#projects">Otwórz główne światy</a>
             <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Włącz tryb kinowy</button>
           </div>
         </div>
@@ -145,7 +143,7 @@
 
     <section class="section continue-section" id="continueSection">
       <div class="wrap">
-        <div class="content-panel continue-panel" id="continuePanel">
+        <div class="content-panel continue-panel" id="continuePanel" aria-hidden="true">
           <h3>Kontynuuj od miejsca, w którym skończyłeś</h3>
           <p id="continueText">Wróć do świata projektu, który był ostatnio otwierany.</p>
           <div class="cta-row compact">
@@ -176,6 +174,81 @@
             redukowane są do skrótu, symbolu lub prostego hasła. Nie chodzi tu o rekonstrukcję dla samej rekonstrukcji,
             lecz o ponowne spotkanie ze świadectwem, konsekwencją i pytaniem o to, co przeszłość wciąż mówi teraźniejszości.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Główne światy</div>
+            <h2>Dwie podstawowe ścieżki narracyjne</h2>
+          </div>
+          <div class="section-note">
+            Jedna bardziej instytucjonalna i immersyjna. Druga odcinkowa i bardziej publiczna.
+            Obie należą do jednego, spójnego świata autorskiego budowanego przez historię, napięcie etyczne i filmową narrację.
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <a
+            class="card project-card project-link-card reveal track-link"
+            href="/rap-ort/"
+            data-track-title="Rap-Ort"
+            aria-label="Wejdź do Rap-Ort"
+          >
+            <div class="project-media"></div>
+
+            <div class="project-body">
+              <div class="chips">
+                <span class="chip">Instytucjonalne</span>
+                <span class="chip">Raport audiowizualny</span>
+                <span class="chip">65 min</span>
+              </div>
+
+              <h3>Rap-Ort</h3>
+
+              <p>
+                Narracyjny framework audiowizualny zbudowany wokół świadectwa, presji historii
+                i konsekwencji milczenia w warunkach systemów totalitarnych. Jego centralnym
+                obecnie dziełem jest <strong>Rap-Ort: Prawda Sumienia</strong>.
+              </p>
+
+              <div class="card-link-row">
+                <span class="card-entry">Wejdź do świata</span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            class="card project-card project-link-card reveal track-link"
+            href="/sztab/"
+            data-track-title="SZTAB"
+            aria-label="Wejdź do SZTAB"
+          >
+            <div class="project-media"></div>
+
+            <div class="project-body">
+              <div class="chips">
+                <span class="chip">Seria</span>
+                <span class="chip">Publiczne wejście</span>
+                <span class="chip">Epizody historyczne</span>
+              </div>
+
+              <h3>SZTAB</h3>
+
+              <p>
+                Rozwijana seria historycznych odcinków poświęconych postaciom, aktom oporu
+                i momentom o szczególnym ciężarze moralnym — pomyślana dla szerszego odbiorcy,
+                ale z zachowaniem powagi, atmosfery i głębi narracyjnej.
+              </p>
+
+              <div class="card-link-row">
+                <span class="card-entry">Wejdź do świata</span>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -219,72 +292,11 @@
             <div>
               <h3>Wejście autorskie</h3>
               <p>
-                Wejdź przez szerszy obszar twórczości, jeśli chcesz zrozumieć głos autorski
-                poza dwoma centralnymi światami projektu.
+                Wejdź przez dedykowaną stronę autorską, jeśli chcesz zrozumieć szerszy głos,
+                metodę pracy i logikę twórczą stojącą za tymi światami.
               </p>
             </div>
-            <a class="btn btn-secondary" href="#other">Poznaj inne obszary</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="projects">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <div class="section-kicker">Główne światy</div>
-            <h2>Dwie podstawowe ścieżki narracyjne</h2>
-          </div>
-          <div class="section-note">
-            Jedna bardziej instytucjonalna i immersyjna. Druga odcinkowa i bardziej publiczna.
-            Obie należą do jednego, spójnego świata autorskiego budowanego przez historię, napięcie etyczne i filmową narrację.
-          </div>
-        </div>
-
-        <div class="grid grid-2">
-          <article class="card project-card reveal">
-            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80');"></div>
-            <div class="project-body">
-              <div class="chips">
-                <span class="chip">Instytucjonalne</span>
-                <span class="chip">Raport audiowizualny</span>
-                <span class="chip">65 min</span>
-              </div>
-
-              <h3>Rap-Ort</h3>
-              <p>
-                Narracyjny framework audiowizualny zbudowany wokół świadectwa, presji historii
-                i konsekwencji milczenia w warunkach systemów totalitarnych. Jego centralnym
-                obecnie dziełem jest <strong>Rap-Ort: Prawda Sumienia</strong>.
-              </p>
-
-              <div class="card-link">
-                <a class="btn btn-secondary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Wejdź do Rap-Ort</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card project-card reveal">
-            <div class="project-media" style="background-image:url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=80');"></div>
-            <div class="project-body">
-              <div class="chips">
-                <span class="chip">Seria</span>
-                <span class="chip">Publiczne wejście</span>
-                <span class="chip">Epizody historyczne</span>
-              </div>
-
-              <h3>SZTAB</h3>
-              <p>
-                Rozwijana seria historycznych odcinków poświęconych postaciom, aktom oporu
-                i momentom o szczególnym ciężarze moralnym — pomyślana dla szerszego odbiorcy,
-                ale z zachowaniem powagi, atmosfery i głębi narracyjnej.
-              </p>
-
-              <div class="card-link">
-                <a class="btn btn-secondary track-link" href="/sztab/" data-track-title="SZTAB">Wejdź do SZTAB</a>
-              </div>
-            </div>
+            <a class="btn btn-secondary" href="/authorial-profile/">Otwórz profil autorski</a>
           </article>
         </div>
       </div>
@@ -371,7 +383,7 @@
 
           <div class="cta-row">
             <a class="btn btn-primary" href="#contact">Poproś o kontakt</a>
-            <a class="btn btn-secondary" href="/rap-ort/">Zobacz Rap-Ort</a>
+            <a class="btn btn-secondary track-link" href="/rap-ort/" data-track-title="Rap-Ort">Zobacz Rap-Ort</a>
           </div>
         </div>
       </div>
@@ -450,47 +462,12 @@
             <div>
               <h3>Profil autorski</h3>
               <p>
-                Zwięzła rama autorska wyjaśniająca, jak funkcjonuje Vibrosław
-                i dlaczego powstają właśnie takie formy.
+                Dedykowana strona wyjaśniająca, jak funkcjonuje Vibrosław
+                i dlaczego powstają właśnie takie formy audiowizualne.
               </p>
             </div>
-            <a class="btn btn-secondary" href="#about">Czytaj więcej</a>
+            <a class="btn btn-secondary" href="/authorial-profile/">Otwórz profil</a>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <div class="section-kicker">O autorze</div>
-            <h2>Twórczość na styku pamięci, historii i odpowiedzialności</h2>
-          </div>
-          <div class="section-note">
-            Autorska praktyka rozwijana przez muzykę, obraz i formę audiowizualną — budowana nie dla hałasu, lecz dla uwagi.
-          </div>
-        </div>
-
-        <div class="grid grid-2">
-          <div class="content-panel reveal">
-            <h3>Piotr Lichwała (Vibrosław)</h3>
-            <p>
-              Piotr Lichwała (Vibrosław) tworzy autorskie projekty audiowizualne kształtowane przez pamięć,
-              świadectwo i napięcie moralne historii. Łączy narracyjną muzykę, obraz filmowy
-              i struktury krótkie lub długie rozwijane z myślą o uważnym odbiorze —
-              zarówno publicznym, jak i instytucjonalnym.
-            </p>
-          </div>
-
-          <div class="content-panel reveal">
-            <h3>Dlaczego te formy</h3>
-            <p>
-              Ta twórczość rozwija się na styku sztuki, historii i odpowiedzialności za sposób opowiadania przeszłości.
-              Projekty takie jak Rap-Ort i SZTAB nie służą wyłącznie rekonstrukcji wydarzeń,
-              lecz próbie przywrócenia im ciężaru, ludzkiej skali i współczesnego znaczenia.
-            </p>
-          </div>
         </div>
       </div>
     </section>
@@ -586,4 +563,4 @@
   <script src="/assets/js/quotes.js"></script>
   <script src="/assets/js/home.js"></script>
 </body>
-          </html>
+</html>
