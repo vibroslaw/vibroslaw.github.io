@@ -1,34 +1,155 @@
 document.documentElement.classList.add("js-ready");
 
-const revealItems = document.querySelectorAll(".reveal");
+const revealItems = Array.from(document.querySelectorAll(".reveal"));
+const scrollTopButton = document.getElementById("scrollTopButton");
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-      revealObserver.unobserve(entry.target);
+let progressTicking = false;
+let revealObserver = null;
+
+function isReducedMotionEnabled() {
+  return document.body.classList.contains("reduced-motion");
+}
+
+function isPolishLanguage() {
+  return document.body.dataset.lang === "pl";
+}
+
+function shouldUseSmoothScroll() {
+  return !isReducedMotionEnabled();
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+/* ---------- REVEAL SYSTEM ---------- */
+
+function revealElement(element) {
+  element.classList.add("visible");
+}
+
+function revealAllElements() {
+  revealItems.forEach(revealElement);
+}
+
+function initRevealObserver() {
+  if (revealItems.length === 0) return;
+
+  if (isReducedMotionEnabled() || !("IntersectionObserver" in window)) {
+    revealAllElements();
+    return;
+  }
+
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        revealElement(entry.target);
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -8% 0px"
+    }
+  );
+
+  revealItems.forEach((item) => {
+    if (!item.classList.contains("visible")) {
+      revealObserver.observe(item);
     }
   });
-}, { threshold: 0.12 });
+}
 
-revealItems.forEach((item) => revealObserver.observe(item));
+/* ---------- PROGRESS BAR ---------- */
 
 function updateProgressBar() {
-  const scrollTop = window.scrollY;
+  const scrollTop = window.scrollY || window.pageYOffset || 0;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  const progress = docHeight > 0 ? clamp((scrollTop / docHeight) * 100, 0, 100) : 0;
+
   document.documentElement.style.setProperty("--progress", `${progress}%`);
 }
 
-window.addEventListener("scroll", updateProgressBar, { passive: true });
-updateProgressBar();
+function requestProgressBarUpdate() {
+  if (progressTicking) return;
 
-const scrollTopButton = document.getElementById("scrollTopButton");
-if (scrollTopButton) {
-  scrollTopButton.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: document.body.classList.contains("reduced-motion") ? "auto" : "smooth"
-    });
+  progressTicking = true;
+
+  window.requestAnimationFrame(() => {
+    updateProgressBar();
+    progressTicking = false;
   });
 }
+
+/* ---------- SCROLL TOP BUTTON ---------- */
+
+function updateScrollTopButtonLabel() {
+  if (!scrollTopButton) return;
+
+  const isPL = isPolishLanguage();
+  const label = isPL ? "Wróć na górę strony" : "Back to top";
+
+  scrollTopButton.setAttribute("aria-label", label);
+  scrollTopButton.setAttribute("title", label);
+}
+
+function setScrollTopButtonVisibility(visible) {
+  if (!scrollTopButton) return;
+
+  scrollTopButton.classList.toggle("is-visible", visible);
+  scrollTopButton.style.opacity = visible ? "1" : "0";
+  scrollTopButton.style.pointerEvents = visible ? "auto" : "none";
+  scrollTopButton.style.transform = visible ? "translateY(0)" : "translateY(8px)";
+  scrollTopButton.setAttribute("aria-hidden", visible ? "false" : "true");
+}
+
+function updateScrollTopButtonVisibility() {
+  if (!scrollTopButton) return;
+
+  const scrollTop = window.scrollY || window.pageYOffset || 0;
+  setScrollTopButtonVisibility(scrollTop > 560);
+}
+
+function handleScrollTopClick() {
+  window.scrollTo({
+    top: 0,
+    behavior: shouldUseSmoothScroll() ? "smooth" : "auto"
+  });
+}
+
+/* ---------- GLOBAL REFRESH ---------- */
+
+function refreshMainUI() {
+  requestProgressBarUpdate();
+  updateScrollTopButtonVisibility();
+  updateScrollTopButtonLabel();
+}
+
+/* ---------- INIT ---------- */
+
+if (scrollTopButton) {
+  setScrollTopButtonVisibility(false);
+  updateScrollTopButtonLabel();
+  scrollTopButton.addEventListener("click", handleScrollTopClick);
+}
+
+initRevealObserver();
+refreshMainUI();
+
+window.addEventListener("scroll", () => {
+  requestProgressBarUpdate();
+  updateScrollTopButtonVisibility();
+}, { passive: true });
+
+window.addEventListener("resize", refreshMainUI);
+window.addEventListener("orientationchange", refreshMainUI);
+window.addEventListener("load", refreshMainUI);
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    refreshMainUI();
+  }
+});
+
+document.addEventListener("site:cinematic-change", refreshMainUI);
