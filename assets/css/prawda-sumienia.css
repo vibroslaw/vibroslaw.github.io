@@ -242,13 +242,18 @@
   text-transform:uppercase;
 }
 
-.stage-card{
-  min-height:290px;
+.stage-card,
+.audience-card,
+.principle-card{
   transition:
     transform .35s var(--ease),
     border-color .35s var(--ease),
     background .35s var(--ease),
     box-shadow .35s var(--ease);
+}
+
+.stage-card{
+  min-height:290px;
 }
 
 .stage-card:hover,
@@ -307,6 +312,8 @@
   color:var(--text);
 }
 
+/* cinematic mode */
+
 body.cinematic-mode .hero-ps .hero-image{
   filter:saturate(.80) brightness(.74) contrast(1.04);
   transform:translate3d(0, calc(var(--hero-parallax) * 0.34), 0) scale(1.016);
@@ -321,6 +328,8 @@ body.cinematic-mode .hero-ps .hero-fade{
 body.cinematic-mode .hero-ps .hero-light{
   opacity:1.02;
 }
+
+/* responsive */
 
 @media (max-width:1360px){
   .hero-ps{
