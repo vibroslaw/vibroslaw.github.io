@@ -47,6 +47,7 @@
 
   <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
     <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="/">Homepage</a>
       <a class="mobile-menu-link" href="#what">What It Is</a>
       <a class="mobile-menu-link" href="#chapters">Chapters</a>
       <a class="mobile-menu-link" href="#layers">Layers</a>
@@ -72,12 +73,8 @@
         <div class="brand-sub">A universe of witness, memory, and responsibility</div>
       </a>
 
-      <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="#what">What It Is</a>
-        <a href="#chapters">Chapters</a>
-        <a href="#layers">Layers</a>
-        <a href="#principles">Principles</a>
-        <a href="#contact">Contact</a>
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Site controls">
+        <a href="/" class="nav-button">Homepage</a>
 
         <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
 
@@ -86,20 +83,20 @@
           <span>|</span>
           <a href="/rap-ort/pl/">PL</a>
         </div>
-      </nav>
 
-      <button
-        class="mobile-nav-toggle"
-        id="mobileNavToggle"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-        aria-controls="mobileMenuOverlay"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button
+          class="mobile-nav-toggle desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
     </div>
   </header>
 
@@ -147,7 +144,7 @@
               href="/rap-ort/prawda-sumienia/pl/"
               data-track-title="Prawda Sumienia"
             >
-              Open Prawda Sumienia
+              Enter Prawda Sumienia
             </a>
             <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">
               Enter Cinematic Mode
