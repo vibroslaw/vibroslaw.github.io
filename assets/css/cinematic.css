@@ -1,69 +1,346 @@
 body.cinematic-mode{
-  background:#040404;
-}
-
-body.cinematic-mode .site-header{
-  opacity:.06;
-  transform:translateY(-6px);
-}
-
-body.cinematic-mode .site-footer{
-  opacity:.08;
-}
-
-body.cinematic-mode .floating-tools{
-  opacity:.08;
-}
-
-body.cinematic-mode .hero-fade{
   background:
-    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.95)),
-    linear-gradient(90deg, rgba(0,0,0,.64), rgba(0,0,0,.10));
+    radial-gradient(circle at top, rgba(201,178,143,0.04), transparent 24%),
+    linear-gradient(180deg, #030303 0%, #050505 34%, #020202 100%);
 }
 
-body.cinematic-mode .hero-light{
-  opacity:1.25;
-}
-
-body.cinematic-mode .section{
-  padding:124px 0;
-}
-
-body.cinematic-mode .content-panel,
-body.cinematic-mode .card,
-body.cinematic-mode .glass-panel,
-body.cinematic-mode .timeline-item{
-  border-color:rgba(255,255,255,0.055);
+/* global vignette / immersion layer */
+body.cinematic-mode::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.012)),
-    radial-gradient(circle at top right, rgba(201,178,143,.06), transparent 40%);
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 26%),
+    radial-gradient(circle at center, transparent 44%, rgba(0,0,0,.18) 76%, rgba(0,0,0,.42) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.24));
+  mix-blend-mode:normal;
+  opacity:1;
 }
 
-body.cinematic-mode .section-note,
-body.cinematic-mode p,
-body.cinematic-mode .panel-text,
-body.cinematic-mode .hero-lead,
-body.cinematic-mode .memory-quote-text{
-  color:rgba(242,236,227,.80);
-}
-
-body.cinematic-mode .btn-secondary,
-body.cinematic-mode .btn-tertiary,
-body.cinematic-mode .contact-link,
-body.cinematic-mode .tool-button{
-  opacity:.88;
-}
-
+/* quiet UI, but not unusable */
 body.cinematic-mode .site-header,
 body.cinematic-mode .site-footer,
 body.cinematic-mode .floating-tools{
   transition:
     opacity .45s var(--ease),
-    transform .45s var(--ease);
+    transform .45s var(--ease),
+    background .45s var(--ease),
+    border-color .45s var(--ease),
+    box-shadow .45s var(--ease);
 }
 
+body.cinematic-mode .site-header{
+  opacity:.05;
+  transform:translateY(-8px);
+  background:rgba(4,4,4,.28);
+  border-bottom-color:rgba(255,255,255,.03);
+}
+
+body.cinematic-mode .site-header:hover,
+body.cinematic-mode .site-header:focus-within{
+  opacity:.96;
+  transform:none;
+  background:rgba(8,8,8,.82);
+  border-bottom-color:rgba(255,255,255,.08);
+}
+
+body.cinematic-mode .site-footer{
+  opacity:.06;
+  transform:translateY(8px);
+}
+
+body.cinematic-mode .site-footer:hover,
+body.cinematic-mode .site-footer:focus-within{
+  opacity:.88;
+  transform:none;
+}
+
+body.cinematic-mode .floating-tools{
+  opacity:.08;
+  transform:translateY(6px);
+}
+
+body.cinematic-mode .floating-tools:hover,
+body.cinematic-mode .floating-tools:focus-within{
+  opacity:.96;
+  transform:none;
+}
+
+/* do not dim menu overlay when opened */
+body.cinematic-mode.mobile-menu-open .site-header{
+  opacity:1;
+  transform:none;
+}
+
+/* hero becomes the main stage */
+body.cinematic-mode .hero-home .hero-image{
+  filter:saturate(.96) contrast(1.05) brightness(.78);
+  transform:translate3d(0, calc(var(--hero-parallax) * 0.38), 0) scale(1.018);
+}
+
+body.cinematic-mode .hero-home .hero-light{
+  opacity:.98;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255,255,255,.10), transparent 34%),
+    radial-gradient(circle at 76% 20%, rgba(201,178,143,.16), transparent 20%),
+    radial-gradient(circle at 22% 72%, rgba(201,178,143,.05), transparent 26%);
+}
+
+body.cinematic-mode .hero-home .hero-fade{
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.84) 0%, rgba(0,0,0,.56) 32%, rgba(0,0,0,.14) 66%, rgba(0,0,0,.10) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.14) 48%, rgba(0,0,0,.84) 100%);
+}
+
+body.cinematic-mode .hero-home .hero-copy{
+  text-shadow:0 1px 0 rgba(0,0,0,.2);
+}
+
+body.cinematic-mode .hero-home h1{
+  letter-spacing:-0.036em;
+  max-width:11.6ch;
+}
+
+body.cinematic-mode .hero-statement{
+  color:rgba(242,236,227,.96);
+}
+
+body.cinematic-mode .memory-quote-block{
+  border-top-color:rgba(255,255,255,.12);
+}
+
+/* expand breathing room */
+body.cinematic-mode .section{
+  padding:128px 0;
+}
+
+body.cinematic-mode .continue-section{
+  padding-top:40px;
+  padding-bottom:10px;
+}
+
+/* quieter, richer panels */
+body.cinematic-mode .content-panel,
+body.cinematic-mode .card,
+body.cinematic-mode .glass-panel,
+body.cinematic-mode .timeline-item{
+  border-color:rgba(255,255,255,0.052);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.012)),
+    radial-gradient(circle at top right, rgba(201,178,143,.06), transparent 40%);
+  box-shadow:
+    0 34px 100px rgba(0,0,0,.44),
+    inset 0 1px 0 rgba(255,255,255,.02);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+body.cinematic-mode .content-panel:hover,
+body.cinematic-mode .card:hover,
+body.cinematic-mode .glass-panel:hover,
+body.cinematic-mode .timeline-item:hover{
+  border-color:rgba(255,255,255,0.09);
+  box-shadow:
+    0 44px 120px rgba(0,0,0,.54),
+    inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+/* project cards feel more like portal tabs */
+body.cinematic-mode .project-card{
+  box-shadow:
+    0 38px 110px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+body.cinematic-mode .project-card:hover{
+  transform:translateY(-6px) scale(1.005);
+}
+
+body.cinematic-mode .project-card::after{
+  opacity:.28;
+}
+
+body.cinematic-mode .project-media{
+  filter:saturate(.90) contrast(1.03) brightness(.86);
+}
+
+body.cinematic-mode .project-media::before{
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.26)),
+    radial-gradient(circle at center, rgba(201,178,143,0.12), transparent 45%);
+}
+
+body.cinematic-mode .project-media::after{
+  background:linear-gradient(180deg, transparent 0%, rgba(6,6,6,0.58) 100%);
+}
+
+/* text treatment */
+body.cinematic-mode .section-note,
+body.cinematic-mode p,
+body.cinematic-mode .panel-text,
+body.cinematic-mode .hero-lead,
+body.cinematic-mode .memory-quote-text,
+body.cinematic-mode .timeline-item p,
+body.cinematic-mode .institution-item,
+body.cinematic-mode .recognition-item p,
+body.cinematic-mode .project-body p,
+body.cinematic-mode .mini-card p,
+body.cinematic-mode .content-panel p{
+  color:rgba(242,236,227,.82);
+}
+
+body.cinematic-mode .panel-quote,
+body.cinematic-mode h1,
+body.cinematic-mode h2,
+body.cinematic-mode h3,
+body.cinematic-mode .hero-statement,
+body.cinematic-mode .card-entry{
+  color:rgba(245,239,229,.98);
+}
+
+body.cinematic-mode .section-kicker,
+body.cinematic-mode .panel-label,
+body.cinematic-mode .memory-quote-label,
+body.cinematic-mode .timeline-label,
+body.cinematic-mode .recognition-title{
+  color:rgba(201,178,143,.92);
+}
+
+body.cinematic-mode .chip{
+  border-color:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.018);
+  color:rgba(242,236,227,.62);
+}
+
+/* buttons stay visible but more restrained */
+body.cinematic-mode .btn-secondary,
+body.cinematic-mode .btn-tertiary,
+body.cinematic-mode .contact-link,
+body.cinematic-mode .tool-button{
+  opacity:.94;
+}
+
+body.cinematic-mode .btn-secondary{
+  background:rgba(255,255,255,.028);
+  border-color:rgba(255,255,255,.09);
+}
+
+body.cinematic-mode .btn-secondary:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(255,255,255,.16);
+}
+
+body.cinematic-mode .btn-tertiary{
+  color:rgba(242,236,227,.82);
+}
+
+body.cinematic-mode .btn-tertiary:hover{
+  color:#fff;
+}
+
+body.cinematic-mode .contact-link,
+body.cinematic-mode .tool-button{
+  background:rgba(16,16,16,.72);
+  border-color:rgba(255,255,255,.08);
+}
+
+body.cinematic-mode .contact-link:hover,
+body.cinematic-mode .tool-button:hover{
+  background:rgba(22,22,22,.92);
+  border-color:rgba(255,255,255,.16);
+}
+
+/* timeline gets more gallery-like */
+body.cinematic-mode .timeline::before{
+  background:linear-gradient(180deg, rgba(201,178,143,.26), rgba(255,255,255,.04));
+}
+
+body.cinematic-mode .timeline-item::before{
+  background:rgba(201,178,143,.96);
+  box-shadow:
+    0 0 0 5px rgba(201,178,143,.08),
+    0 0 18px rgba(201,178,143,.12);
+}
+
+/* recognition / institutions */
+body.cinematic-mode .recognition-item{
+  border-left-color:rgba(201,178,143,.28);
+}
+
+body.cinematic-mode .institution-item{
+  background:rgba(255,255,255,.018);
+  border-color:rgba(255,255,255,.07);
+}
+
+/* quote block breathes more */
+body.cinematic-mode .memory-quote-text,
+body.cinematic-mode .panel-quote{
+  text-wrap:balance;
+}
+
+/* overlay menu should still feel premium in cinematic mode */
+body.cinematic-mode .mobile-menu-overlay{
+  background:
+    radial-gradient(circle at top, rgba(201,178,143,.09), transparent 28%),
+    linear-gradient(180deg, rgba(6,6,6,.99), rgba(7,7,7,.995));
+}
+
+/* reduced motion compatibility */
+body.reduced-motion.cinematic-mode .hero-home .hero-image{
+  transform:none;
+}
+
+/* mobile tuning */
 @media (max-width:760px){
+  body.cinematic-mode .site-header{
+    opacity:.18;
+    transform:none;
+    background:rgba(8,8,8,.42);
+  }
+
+  body.cinematic-mode .site-header:hover,
+  body.cinematic-mode .site-header:focus-within{
+    opacity:1;
+    background:rgba(8,8,8,.86);
+  }
+
+  body.cinematic-mode .floating-tools{
+    opacity:.22;
+    transform:none;
+  }
+
+  body.cinematic-mode .site-footer{
+    opacity:.12;
+    transform:none;
+  }
+
   body.cinematic-mode .section{
-    padding:96px 0;
+    padding:98px 0;
+  }
+
+  body.cinematic-mode .hero-home .hero-image{
+    transform:none;
+    filter:saturate(.95) contrast(1.03) brightness(.84);
+  }
+
+  body.cinematic-mode .hero-home .hero-fade{
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.16) 30%, rgba(0,0,0,.62) 100%);
+  }
+
+  body.cinematic-mode .project-card:hover{
+    transform:translateY(-4px);
+  }
+}
+
+@media (max-width:480px){
+  body.cinematic-mode .section{
+    padding:90px 0;
+  }
+
+  body.cinematic-mode .hero-home .hero-image{
+    filter:saturate(.96) contrast(1.03) brightness(.86);
   }
 }
