@@ -6,10 +6,18 @@
 
 .site-header .header-inner{
   gap:18px;
+  min-width:0;
 }
 
 .site-header .brand{
   min-width:0;
+  flex:1 1 auto;
+}
+
+.site-header .brand-name.cr-brand{
+  max-width:18ch;
+  line-height:1.02;
+  text-wrap:balance;
 }
 
 .site-header .brand-sub{
@@ -37,6 +45,19 @@
   inset:0;
   z-index:0;
   overflow:hidden;
+}
+
+.hero-cr .hero-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.08), transparent 26%),
+    radial-gradient(circle at 78% 20%, rgba(203,176,138,.12), transparent 24%),
+    linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.10) 38%, rgba(0,0,0,.28) 100%);
+  transition:opacity .45s var(--ease);
 }
 
 .hero-cr .hero-image{
@@ -340,6 +361,10 @@
 
 /* cinematic mode */
 
+body.cinematic-mode .hero-cr .hero-bg::after{
+  opacity:1;
+}
+
 body.cinematic-mode .hero-cr .hero-image{
   filter:saturate(.98) brightness(.64) contrast(1.10);
   transform:translate3d(0, calc(var(--hero-parallax) * 0.46), 0) scale(1.03);
@@ -417,6 +442,13 @@ body.cinematic-mode .hero-cr .glass-panel{
     flex:1 1 auto;
     min-width:0;
     max-width:calc(100% - 58px);
+  }
+
+  .site-header .brand-name.cr-brand{
+    max-width:12ch;
+    font-size:.98rem;
+    line-height:1.02;
+    letter-spacing:.06em !important;
   }
 
   .site-header .brand-sub{
@@ -544,6 +576,12 @@ body.cinematic-mode .hero-cr .glass-panel{
     max-width:calc(100% - 54px);
   }
 
+  .site-header .brand-name.cr-brand{
+    max-width:10.5ch;
+    font-size:.88rem;
+    letter-spacing:.04em !important;
+  }
+
   .site-header .brand-sub{
     max-width:15ch;
     font-size:.64rem;
@@ -566,6 +604,7 @@ body.reduced-motion.cinematic-mode .hero-cr .hero-image{
   transform:none !important;
 }
 
+body.reduced-motion .hero-cr .hero-bg::after,
 body.reduced-motion .stage-card,
 body.reduced-motion .audience-card,
 body.reduced-motion .principle-card,
