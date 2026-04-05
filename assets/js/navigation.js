@@ -14,15 +14,18 @@ function isMobileMenuOpen() {
 
 function getFocusableElementsInMenu() {
   if (!mobileMenuPanel) return [];
+
   return Array.from(
     mobileMenuPanel.querySelectorAll(
       'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
     )
-  );
+  ).filter((element) => {
+    return !element.hasAttribute("hidden") && element.getAttribute("aria-hidden") !== "true";
+  });
 }
 
 function lockBodyScroll() {
-  scrollPosition = window.scrollY || window.pageYOffset;
+  scrollPosition = window.scrollY || window.pageYOffset || 0;
   document.body.style.top = `-${scrollPosition}px`;
   document.body.style.position = "fixed";
   document.body.style.width = "100%";
@@ -38,7 +41,10 @@ function unlockBodyScroll() {
 function openMobileMenu() {
   if (!mobileNavToggle || !mobileMenuOverlay || isMobileMenuOpen()) return;
 
-  lastFocusedElement = document.activeElement;
+  lastFocusedElement = document.activeElement instanceof HTMLElement
+    ? document.activeElement
+    : null;
+
   lockBodyScroll();
   document.body.classList.add("mobile-menu-open");
   mobileNavToggle.setAttribute("aria-expanded", "true");
@@ -46,7 +52,9 @@ function openMobileMenu() {
 
   const focusable = getFocusableElementsInMenu();
   if (focusable.length > 0) {
-    window.setTimeout(() => focusable[0].focus(), 50);
+    window.setTimeout(() => {
+      focusable[0].focus();
+    }, 50);
   }
 }
 
@@ -58,8 +66,10 @@ function closeMobileMenu({ restoreFocus = true } = {}) {
   mobileMenuOverlay.setAttribute("aria-hidden", "true");
   unlockBodyScroll();
 
-  if (restoreFocus && lastFocusedElement instanceof HTMLElement) {
-    window.setTimeout(() => lastFocusedElement.focus(), 50);
+  if (restoreFocus && lastFocusedElement) {
+    window.setTimeout(() => {
+      lastFocusedElement.focus();
+    }, 50);
   }
 }
 
@@ -69,6 +79,15 @@ function toggleMobileMenu() {
   } else {
     openMobileMenu();
   }
+}
+
+/* expose for cinematic.js and any future shared controls */
+window.openMobileMenu = openMobileMenu;
+window.closeMobileMenu = closeMobileMenu;
+window.toggleMobileMenu = toggleMobileMenu;
+
+if (mobileMenuOverlay && !mobileMenuOverlay.hasAttribute("aria-hidden")) {
+  mobileMenuOverlay.setAttribute("aria-hidden", "true");
 }
 
 if (mobileNavToggle) {
@@ -101,6 +120,7 @@ document.addEventListener("keydown", (event) => {
   if (!isMobileMenuOpen()) return;
 
   if (event.key === "Escape") {
+    event.preventDefault();
     closeMobileMenu();
     return;
   }
@@ -114,12 +134,12 @@ document.addEventListener("keydown", (event) => {
     const active = document.activeElement;
 
     if (event.shiftKey) {
-      if (active === first || !mobileMenuPanel.contains(active)) {
+      if (active === first || !mobileMenuPanel || !mobileMenuPanel.contains(active)) {
         event.preventDefault();
         last.focus();
       }
     } else {
-      if (active === last) {
+      if (active === last || !mobileMenuPanel || !mobileMenuPanel.contains(active)) {
         event.preventDefault();
         first.focus();
       }
