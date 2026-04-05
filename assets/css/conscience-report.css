@@ -494,7 +494,7 @@ body.cinematic-mode .hero-cr .hero-light{
 
 body.reduced-motion .hero-cr .hero-image,
 body.reduced-motion.cinematic-mode .hero-cr .hero-image{
-  transform:none;
+  transform:none !important;
 }
 
 body.reduced-motion .stage-card,
@@ -509,4 +509,4 @@ body.reduced-motion .audience-card:hover,
 body.reduced-motion .principle-card:hover,
 body.reduced-motion .glass-panel:hover{
   transform:none;
-                  }
+}
