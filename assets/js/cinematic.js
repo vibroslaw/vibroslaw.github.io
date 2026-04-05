@@ -23,6 +23,22 @@ function getCinematicLabels() {
   };
 }
 
+function readCinematicPreference() {
+  try {
+    return localStorage.getItem(CINEMATIC_STORAGE_KEY) === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function saveCinematicPreference(active) {
+  try {
+    localStorage.setItem(CINEMATIC_STORAGE_KEY, active ? "true" : "false");
+  } catch (error) {
+    /* silent fallback */
+  }
+}
+
 function updateCinematicLabels() {
   const labels = getCinematicLabels();
   const active = isCinematicModeActive();
@@ -30,33 +46,20 @@ function updateCinematicLabels() {
   if (cinematicToggle) {
     cinematicToggle.textContent = active ? labels.navExit : labels.navEnter;
     cinematicToggle.setAttribute("aria-pressed", active ? "true" : "false");
-    cinematicToggle.setAttribute(
-      "aria-label",
-      active ? labels.navExit : labels.navEnter
-    );
+    cinematicToggle.setAttribute("aria-label", active ? labels.navExit : labels.navEnter);
   }
 
   if (cinematicHeroButton) {
     cinematicHeroButton.textContent = active ? labels.heroExit : labels.heroEnter;
     cinematicHeroButton.setAttribute("aria-pressed", active ? "true" : "false");
-    cinematicHeroButton.setAttribute(
-      "aria-label",
-      active ? labels.heroExit : labels.heroEnter
-    );
+    cinematicHeroButton.setAttribute("aria-label", active ? labels.heroExit : labels.heroEnter);
   }
 
   if (mobileCinematicToggle) {
     mobileCinematicToggle.textContent = active ? labels.heroExit : labels.navEnter;
     mobileCinematicToggle.setAttribute("aria-pressed", active ? "true" : "false");
-    mobileCinematicToggle.setAttribute(
-      "aria-label",
-      active ? labels.heroExit : labels.navEnter
-    );
+    mobileCinematicToggle.setAttribute("aria-label", active ? labels.heroExit : labels.navEnter);
   }
-}
-
-function saveCinematicPreference(active) {
-  localStorage.setItem(CINEMATIC_STORAGE_KEY, active ? "true" : "false");
 }
 
 function notifyCinematicChange(active) {
@@ -68,7 +71,18 @@ function notifyCinematicChange(active) {
 }
 
 function setCinematicMode(active, options = {}) {
-  const { persist = true } = options;
+  const { persist = true, notify = true } = options;
+  const currentState = isCinematicModeActive();
+
+  if (currentState === active) {
+    updateCinematicLabels();
+
+    if (persist) {
+      saveCinematicPreference(active);
+    }
+
+    return;
+  }
 
   document.body.classList.toggle("cinematic-mode", active);
   updateCinematicLabels();
@@ -77,7 +91,9 @@ function setCinematicMode(active, options = {}) {
     saveCinematicPreference(active);
   }
 
-  notifyCinematicChange(active);
+  if (notify) {
+    notifyCinematicChange(active);
+  }
 }
 
 function toggleCinematicMode() {
@@ -85,6 +101,10 @@ function toggleCinematicMode() {
 }
 
 function closeMobileMenuIfOpen() {
+  if (!document.body.classList.contains("mobile-menu-open")) {
+    return;
+  }
+
   if (typeof window.closeMobileMenu === "function") {
     window.closeMobileMenu({ restoreFocus: false });
     return;
@@ -113,11 +133,19 @@ function handleMobileCinematicButtonClick() {
   closeMobileMenuIfOpen();
 }
 
-function initCinematicMode() {
-  const storedPreference = localStorage.getItem(CINEMATIC_STORAGE_KEY);
-  const shouldEnable = storedPreference === "true";
+function syncCinematicModeAcrossTabs(event) {
+  if (event.key !== CINEMATIC_STORAGE_KEY) {
+    return;
+  }
 
-  setCinematicMode(shouldEnable, { persist: false });
+  const shouldEnable = event.newValue === "true";
+  setCinematicMode(shouldEnable, { persist: false, notify: true });
+}
+
+function initCinematicMode() {
+  const shouldEnable = readCinematicPreference();
+
+  setCinematicMode(shouldEnable, { persist: false, notify: false });
 
   if (cinematicToggle) {
     cinematicToggle.addEventListener("click", handleCinematicButtonClick);
@@ -130,6 +158,8 @@ function initCinematicMode() {
   if (mobileCinematicToggle) {
     mobileCinematicToggle.addEventListener("click", handleMobileCinematicButtonClick);
   }
+
+  window.addEventListener("storage", syncCinematicModeAcrossTabs);
 }
 
 initCinematicMode();
