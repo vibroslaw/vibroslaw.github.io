@@ -222,54 +222,7 @@
   min-height:640px;
   display:flex;
   flex-direction:column;
-  position:relative;
-  isolation:isolate;
-}
-
-.project-card::before{
-  content:"";
-  position:absolute;
-  inset:-1px;
-  background:linear-gradient(
-    115deg,
-    transparent 0%,
-    transparent 38%,
-    rgba(255,255,255,.06) 50%,
-    transparent 62%,
-    transparent 100%
-  );
-  transform:translateX(-120%);
-  transition:transform 1.05s var(--ease);
-  pointer-events:none;
-  z-index:2;
-}
-
-.project-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at top right, rgba(201,178,143,.10), transparent 34%),
-    radial-gradient(circle at bottom left, rgba(255,255,255,.03), transparent 24%);
-  opacity:0;
-  transition:opacity .35s var(--ease);
-  pointer-events:none;
-  z-index:1;
-}
-
-.project-card:hover{
-  transform:translateY(-4px);
-  border-color:rgba(255,255,255,0.14);
-  background:linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.03));
-  box-shadow:var(--shadow-strong);
-}
-
-.project-card:hover::before{
-  transform:translateX(120%);
-}
-
-.project-card:hover::after{
-  opacity:1;
+  text-decoration:none;
 }
 
 .project-media{
@@ -278,8 +231,11 @@
   overflow:hidden;
   border-bottom:1px solid rgba(255,255,255,0.05);
   background-size:cover;
-  background-position:center;
+  background-position:center center;
   filter:saturate(.82);
+  transition:
+    transform .6s var(--ease),
+    filter .35s var(--ease);
 }
 
 .project-media::before{
@@ -298,12 +254,18 @@
   background:linear-gradient(180deg, transparent 0%, rgba(7,7,7,0.62) 100%);
 }
 
-#projects .grid-2 > .project-card:nth-child(1) .project-media{
+.project-link-card:hover .project-media{
+  transform:scale(1.018);
+  filter:saturate(.88) brightness(1.01);
+}
+
+/* remove inline background-image in HTML if you want these CSS images to control everything */
+#projects .grid-2 > .project-link-card:nth-child(1) .project-media{
   background-image:url('/assets/images/hero-raport-main.jpg');
   background-position:center center;
 }
 
-#projects .grid-2 > .project-card:nth-child(2) .project-media{
+#projects .grid-2 > .project-link-card:nth-child(2) .project-media{
   background-image:url('/assets/images/hero-sztab-main.jpg');
   background-position:center center;
 }
@@ -367,13 +329,6 @@
   transition:transform 1s var(--ease);
   pointer-events:none;
   z-index:1;
-}
-
-.mini-card:hover{
-  transform:translateY(-3px);
-  border-color:rgba(255,255,255,0.13);
-  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.028));
-  box-shadow:var(--shadow-strong);
 }
 
 .mini-card:hover::before{
@@ -648,6 +603,10 @@
 }
 
 @media (max-width:480px){
+  .hero-home{
+    --home-hero-pos-mobile: var(--home-hero-pos-mobile-tight);
+  }
+
   .hero-home .hero-image{
     background-position:var(--home-hero-pos-mobile-tight);
     filter:saturate(.92) contrast(1.01) brightness(.88);
@@ -684,4 +643,4 @@
   .project-media{
     min-height:270px;
   }
-}
+    }
