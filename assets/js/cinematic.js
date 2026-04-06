@@ -94,6 +94,7 @@ function notifyCinematicChange(active, source = "manual") {
 function setBodyCinematicState(active) {
   document.body.classList.toggle("cinematic-mode", active);
   document.body.dataset.cinematic = active ? "on" : "off";
+  document.documentElement.dataset.cinematic = active ? "on" : "off";
 }
 
 function setCinematicMode(active, options = {}) {
@@ -151,6 +152,14 @@ function closeMobileMenuIfOpen() {
   if (mobileNavToggle) {
     mobileNavToggle.setAttribute("aria-expanded", "false");
   }
+
+  document.body.style.removeProperty("top");
+  document.body.style.removeProperty("position");
+  document.body.style.removeProperty("width");
+  document.body.style.removeProperty("left");
+  document.body.style.removeProperty("right");
+  document.body.style.removeProperty("overflowY");
+  document.body.style.removeProperty("paddingRight");
 }
 
 function handleCinematicButtonClick() {
@@ -197,5 +206,10 @@ function initCinematicMode() {
 
   window.addEventListener("storage", syncCinematicModeAcrossTabs);
 }
+
+/* expose for future use */
+window.setCinematicMode = setCinematicMode;
+window.toggleCinematicMode = toggleCinematicMode;
+window.isCinematicModeActive = isCinematicModeActive;
 
 initCinematicMode();
