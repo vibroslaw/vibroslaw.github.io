@@ -109,7 +109,12 @@ function resetHeroMotionState() {
 
   if (!pageHero) return;
 
-  pageHero.classList.remove("hero-in-view", "hero-near-focus", "hero-out-of-view");
+  pageHero.classList.remove(
+    "hero-in-view",
+    "hero-near-focus",
+    "hero-out-of-view"
+  );
+
   document.body.classList.remove("hero-active", "hero-passive");
 }
 
@@ -122,7 +127,8 @@ function updateHeroMotionState() {
   }
 
   const rect = pageHero.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+  const viewportHeight =
+    window.innerHeight || document.documentElement.clientHeight || 0;
 
   if (!viewportHeight || rect.height <= 0) {
     resetHeroMotionState();
@@ -157,6 +163,7 @@ function updateHeroMotionState() {
 
   const focus = clamp(1 - Math.abs(centerDistanceRatio), 0, 1);
   const motionStrength = isCinematicModeEnabled() ? 34 : 22;
+
   const parallaxOffset = clamp(
     centerDistanceRatio * -motionStrength,
     -motionStrength,
@@ -167,14 +174,17 @@ function updateHeroMotionState() {
     HERO_PARALLAX_CSS_VARIABLE,
     `${parallaxOffset.toFixed(2)}px`
   );
+
   setRootCssVariable(
     HERO_VISIBILITY_CSS_VARIABLE,
     visibilityRatio.toFixed(3)
   );
+
   setRootCssVariable(
     HERO_PROGRESS_CSS_VARIABLE,
     scrollProgress.toFixed(3)
   );
+
   setRootCssVariable(
     HERO_FOCUS_CSS_VARIABLE,
     focus.toFixed(3)
@@ -266,6 +276,24 @@ function handleSystemReducedMotionChange(event) {
   });
 }
 
+function bindSystemReducedMotionListener() {
+  if (!window.matchMedia) return;
+
+  systemReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (typeof systemReducedMotionQuery.addEventListener === "function") {
+    systemReducedMotionQuery.addEventListener(
+      "change",
+      handleSystemReducedMotionChange
+    );
+    return;
+  }
+
+  if (typeof systemReducedMotionQuery.addListener === "function") {
+    systemReducedMotionQuery.addListener(handleSystemReducedMotionChange);
+  }
+}
+
 function initReducedMotion() {
   const shouldReduceMotion = readReducedMotionPreference();
 
@@ -281,16 +309,17 @@ function initReducedMotion() {
   }
 
   window.addEventListener("storage", syncReducedMotionAcrossTabs);
+  bindSystemReducedMotionListener();
+}
 
-  if (window.matchMedia) {
-    systemReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+function initHeroResizeObserver() {
+  if (!pageHero || !window.ResizeObserver) return;
 
-    if (typeof systemReducedMotionQuery.addEventListener === "function") {
-      systemReducedMotionQuery.addEventListener("change", handleSystemReducedMotionChange);
-    } else if (typeof systemReducedMotionQuery.addListener === "function") {
-      systemReducedMotionQuery.addListener(handleSystemReducedMotionChange);
-    }
-  }
+  heroResizeObserver = new ResizeObserver(() => {
+    requestHeroMotionUpdate();
+  });
+
+  heroResizeObserver.observe(pageHero);
 }
 
 function initHeroMotion() {
@@ -313,13 +342,7 @@ function initHeroMotion() {
   document.addEventListener("site:cinematic-change", requestHeroMotionUpdate);
   document.addEventListener("site:reduced-motion-change", requestHeroMotionUpdate);
 
-  if (window.ResizeObserver) {
-    heroResizeObserver = new ResizeObserver(() => {
-      requestHeroMotionUpdate();
-    });
-
-    heroResizeObserver.observe(pageHero);
-  }
+  initHeroResizeObserver();
 
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready
