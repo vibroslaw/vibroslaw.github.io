@@ -144,7 +144,9 @@ function closeMobileMenuIfOpen() {
   const mobileNavToggle = document.getElementById("mobileNavToggle");
 
   const savedTop = document.body.style.top;
-  const restoredScrollY = savedTop ? Math.abs(parseInt(savedTop, 10)) || 0 : 0;
+  const restoredScrollY = savedTop
+    ? Math.abs(parseInt(savedTop, 10)) || 0
+    : 0;
 
   document.body.classList.remove("mobile-menu-open");
 
