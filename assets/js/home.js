@@ -1,8 +1,11 @@
-const homeHero = document.querySelector(".hero-home");
+const pageHero = document.querySelector(".hero-home, .profile-hero");
 const reducedMotionToggle = document.getElementById("reducedMotionToggle");
 
 const REDUCED_MOTION_STORAGE_KEY = "siteReducedMotion";
+const HERO_PARALLAX_CSS_VARIABLE = "--hero-parallax";
+
 let heroParallaxTicking = false;
+let systemReducedMotionQuery = null;
 
 function isPolishLanguage() {
   return document.body.dataset.lang === "pl";
@@ -16,11 +19,22 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+function getSystemReducedMotionPreference() {
+  if (!window.matchMedia) return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 function readReducedMotionPreference() {
   try {
-    return localStorage.getItem(REDUCED_MOTION_STORAGE_KEY) === "true";
+    const stored = localStorage.getItem(REDUCED_MOTION_STORAGE_KEY);
+
+    if (stored === null) {
+      return getSystemReducedMotionPreference();
+    }
+
+    return stored === "true";
   } catch (error) {
-    return false;
+    return getSystemReducedMotionPreference();
   }
 }
 
@@ -66,25 +80,47 @@ function notifyReducedMotionChange(enabled) {
   );
 }
 
-function updateHeroParallax() {
-  if (!homeHero) return;
-
-  if (isReducedMotionEnabled()) {
-    document.documentElement.style.setProperty("--hero-parallax", "0px");
-    return;
-  }
-
-  const rect = homeHero.getBoundingClientRect();
-  const offset = clamp(rect.top * -0.035, -18, 18);
-
+function setHeroParallax(value) {
   document.documentElement.style.setProperty(
-    "--hero-parallax",
-    `${offset.toFixed(2)}px`
+    HERO_PARALLAX_CSS_VARIABLE,
+    `${value.toFixed(2)}px`
   );
 }
 
+function resetHeroParallax() {
+  document.documentElement.style.setProperty(
+    HERO_PARALLAX_CSS_VARIABLE,
+    "0px"
+  );
+}
+
+function updateHeroParallax() {
+  if (!pageHero) return;
+
+  if (isReducedMotionEnabled()) {
+    resetHeroParallax();
+    return;
+  }
+
+  const rect = pageHero.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+  if (rect.bottom <= 0 || rect.top >= viewportHeight) {
+    resetHeroParallax();
+    return;
+  }
+
+  const heroCenter = rect.top + rect.height / 2;
+  const viewportCenter = viewportHeight / 2;
+  const distanceFromCenter = heroCenter - viewportCenter;
+
+  const offset = clamp(distanceFromCenter * -0.045, -26, 26);
+
+  setHeroParallax(offset);
+}
+
 function requestHeroParallaxUpdate() {
-  if (heroParallaxTicking) return;
+  if (!pageHero || heroParallaxTicking) return;
 
   heroParallaxTicking = true;
 
@@ -102,7 +138,7 @@ function applyReducedMotionState(enabled, options = {}) {
     updateReducedMotionButtonLabel();
 
     if (enabled) {
-      document.documentElement.style.setProperty("--hero-parallax", "0px");
+      resetHeroParallax();
     } else {
       requestHeroParallaxUpdate();
     }
@@ -121,7 +157,7 @@ function applyReducedMotionState(enabled, options = {}) {
   }
 
   if (enabled) {
-    document.documentElement.style.setProperty("--hero-parallax", "0px");
+    resetHeroParallax();
   } else {
     requestHeroParallaxUpdate();
   }
@@ -136,11 +172,33 @@ function applyReducedMotionState(enabled, options = {}) {
 function syncReducedMotionAcrossTabs(event) {
   if (event.key !== REDUCED_MOTION_STORAGE_KEY) return;
 
-  const shouldReduceMotion = event.newValue === "true";
+  const shouldReduceMotion =
+    event.newValue === null
+      ? getSystemReducedMotionPreference()
+      : event.newValue === "true";
+
   applyReducedMotionState(shouldReduceMotion, {
     persist: false,
     notify: true
   });
+}
+
+function handleSystemReducedMotionChange(event) {
+  try {
+    const stored = localStorage.getItem(REDUCED_MOTION_STORAGE_KEY);
+
+    if (stored !== null) return;
+
+    applyReducedMotionState(event.matches, {
+      persist: false,
+      notify: true
+    });
+  } catch (error) {
+    applyReducedMotionState(event.matches, {
+      persist: false,
+      notify: true
+    });
+  }
 }
 
 function initReducedMotion() {
@@ -158,10 +216,20 @@ function initReducedMotion() {
   }
 
   window.addEventListener("storage", syncReducedMotionAcrossTabs);
+
+  if (window.matchMedia) {
+    systemReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (typeof systemReducedMotionQuery.addEventListener === "function") {
+      systemReducedMotionQuery.addEventListener("change", handleSystemReducedMotionChange);
+    } else if (typeof systemReducedMotionQuery.addListener === "function") {
+      systemReducedMotionQuery.addListener(handleSystemReducedMotionChange);
+    }
+  }
 }
 
 function initHeroParallax() {
-  if (!homeHero) return;
+  if (!pageHero) return;
 
   requestHeroParallaxUpdate();
 
