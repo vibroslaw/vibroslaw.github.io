@@ -1,6 +1,6 @@
 body.cinematic-mode{
   background:
-    radial-gradient(circle at top, rgba(201,178,143,0.04), transparent 24%),
+    radial-gradient(circle at top, rgba(201,178,143,.04), transparent 24%),
     linear-gradient(180deg, #030303 0%, #050505 34%, #020202 100%);
 }
 
@@ -75,12 +75,19 @@ body.cinematic-mode.mobile-menu-open .site-header{
 }
 
 /* hero becomes the main stage */
-body.cinematic-mode .hero-home .hero-image{
+body.cinematic-mode .hero-home .hero-image,
+body.cinematic-mode .profile-hero .hero-image,
+body.cinematic-mode .hero-ps .hero-image,
+body.cinematic-mode .hero-cr .hero-image,
+body.cinematic-mode .hero-raport .hero-image{
   filter:saturate(.96) contrast(1.05) brightness(.78);
-  transform:translate3d(0, calc(var(--hero-parallax) * 0.38), 0) scale(1.018);
 }
 
-body.cinematic-mode .hero-home .hero-light{
+body.cinematic-mode .hero-home .hero-light,
+body.cinematic-mode .profile-hero .hero-light,
+body.cinematic-mode .hero-ps .hero-light,
+body.cinematic-mode .hero-cr .hero-light,
+body.cinematic-mode .hero-raport .hero-light{
   opacity:.98;
   background:
     radial-gradient(circle at 50% 16%, rgba(255,255,255,.10), transparent 34%),
@@ -88,19 +95,32 @@ body.cinematic-mode .hero-home .hero-light{
     radial-gradient(circle at 22% 72%, rgba(201,178,143,.05), transparent 26%);
 }
 
-body.cinematic-mode .hero-home .hero-fade{
+body.cinematic-mode .hero-home .hero-fade,
+body.cinematic-mode .profile-hero .hero-fade,
+body.cinematic-mode .hero-ps .hero-fade,
+body.cinematic-mode .hero-cr .hero-fade,
+body.cinematic-mode .hero-raport .hero-fade{
   background:
     linear-gradient(90deg, rgba(0,0,0,.84) 0%, rgba(0,0,0,.56) 32%, rgba(0,0,0,.14) 66%, rgba(0,0,0,.10) 100%),
     linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.14) 48%, rgba(0,0,0,.84) 100%);
 }
 
-body.cinematic-mode .hero-home .hero-copy{
-  text-shadow:0 1px 0 rgba(0,0,0,.2);
+body.cinematic-mode .hero-home .hero-copy,
+body.cinematic-mode .profile-hero .hero-copy,
+body.cinematic-mode .hero-ps .hero-copy,
+body.cinematic-mode .hero-cr .hero-copy,
+body.cinematic-mode .hero-raport .hero-copy{
+  text-shadow:
+    0 1px 0 rgba(0,0,0,.2),
+    0 10px 26px rgba(0,0,0,.18);
 }
 
-body.cinematic-mode .hero-home h1{
+body.cinematic-mode .hero-home h1,
+body.cinematic-mode .profile-hero h1,
+body.cinematic-mode .hero-ps h1,
+body.cinematic-mode .hero-cr h1,
+body.cinematic-mode .hero-raport h1{
   letter-spacing:-0.036em;
-  max-width:11.6ch;
 }
 
 body.cinematic-mode .hero-statement{
@@ -288,7 +308,11 @@ body.cinematic-mode .mobile-menu-overlay{
 }
 
 /* reduced motion compatibility */
-body.reduced-motion.cinematic-mode .hero-home .hero-image{
+body.reduced-motion.cinematic-mode .hero-home .hero-image,
+body.reduced-motion.cinematic-mode .profile-hero .hero-image,
+body.reduced-motion.cinematic-mode .hero-ps .hero-image,
+body.reduced-motion.cinematic-mode .hero-cr .hero-image,
+body.reduced-motion.cinematic-mode .hero-raport .hero-image{
   transform:none;
 }
 
@@ -320,12 +344,20 @@ body.reduced-motion.cinematic-mode .hero-home .hero-image{
     padding:98px 0;
   }
 
-  body.cinematic-mode .hero-home .hero-image{
+  body.cinematic-mode .hero-home .hero-image,
+  body.cinematic-mode .profile-hero .hero-image,
+  body.cinematic-mode .hero-ps .hero-image,
+  body.cinematic-mode .hero-cr .hero-image,
+  body.cinematic-mode .hero-raport .hero-image{
     transform:none;
     filter:saturate(.95) contrast(1.03) brightness(.84);
   }
 
-  body.cinematic-mode .hero-home .hero-fade{
+  body.cinematic-mode .hero-home .hero-fade,
+  body.cinematic-mode .profile-hero .hero-fade,
+  body.cinematic-mode .hero-ps .hero-fade,
+  body.cinematic-mode .hero-cr .hero-fade,
+  body.cinematic-mode .hero-raport .hero-fade{
     background:
       linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.16) 30%, rgba(0,0,0,.62) 100%);
   }
@@ -340,7 +372,11 @@ body.reduced-motion.cinematic-mode .hero-home .hero-image{
     padding:90px 0;
   }
 
-  body.cinematic-mode .hero-home .hero-image{
+  body.cinematic-mode .hero-home .hero-image,
+  body.cinematic-mode .profile-hero .hero-image,
+  body.cinematic-mode .hero-ps .hero-image,
+  body.cinematic-mode .hero-cr .hero-image,
+  body.cinematic-mode .hero-raport .hero-image{
     filter:saturate(.96) contrast(1.03) brightness(.86);
   }
 }
