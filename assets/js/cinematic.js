@@ -12,66 +12,97 @@ function isCinematicModeActive() {
   return document.body.classList.contains("cinematic-mode");
 }
 
+function readFromLocalStorage(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveToLocalStorage(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    /* silent fallback */
+  }
+}
+
 function getCinematicLabels() {
   const isPL = isPolishLanguage();
 
   return {
     navEnter: isPL ? "Tryb kinowy" : "Cinematic Mode",
     navExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode",
+
     heroEnter: isPL ? "Włącz tryb kinowy" : "Enter Cinematic Mode",
-    heroExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode"
+    heroExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode",
+
+    mobileEnter: isPL ? "Włącz tryb kinowy" : "Enter Cinematic Mode",
+    mobileExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode"
   };
 }
 
 function readCinematicPreference() {
-  try {
-    return localStorage.getItem(CINEMATIC_STORAGE_KEY) === "true";
-  } catch (error) {
-    return false;
-  }
+  return readFromLocalStorage(CINEMATIC_STORAGE_KEY) === "true";
 }
 
 function saveCinematicPreference(active) {
-  try {
-    localStorage.setItem(CINEMATIC_STORAGE_KEY, active ? "true" : "false");
-  } catch (error) {
-    /* silent fallback */
-  }
+  saveToLocalStorage(CINEMATIC_STORAGE_KEY, active ? "true" : "false");
+}
+
+function updateSingleButton(button, text, pressed) {
+  if (!button) return;
+
+  button.textContent = text;
+  button.setAttribute("aria-pressed", pressed ? "true" : "false");
+  button.setAttribute("aria-label", text);
+  button.setAttribute("title", text);
 }
 
 function updateCinematicLabels() {
   const labels = getCinematicLabels();
   const active = isCinematicModeActive();
 
-  if (cinematicToggle) {
-    cinematicToggle.textContent = active ? labels.navExit : labels.navEnter;
-    cinematicToggle.setAttribute("aria-pressed", active ? "true" : "false");
-    cinematicToggle.setAttribute("aria-label", active ? labels.navExit : labels.navEnter);
-  }
+  updateSingleButton(
+    cinematicToggle,
+    active ? labels.navExit : labels.navEnter,
+    active
+  );
 
-  if (cinematicHeroButton) {
-    cinematicHeroButton.textContent = active ? labels.heroExit : labels.heroEnter;
-    cinematicHeroButton.setAttribute("aria-pressed", active ? "true" : "false");
-    cinematicHeroButton.setAttribute("aria-label", active ? labels.heroExit : labels.heroEnter);
-  }
+  updateSingleButton(
+    cinematicHeroButton,
+    active ? labels.heroExit : labels.heroEnter,
+    active
+  );
 
-  if (mobileCinematicToggle) {
-    mobileCinematicToggle.textContent = active ? labels.heroExit : labels.navEnter;
-    mobileCinematicToggle.setAttribute("aria-pressed", active ? "true" : "false");
-    mobileCinematicToggle.setAttribute("aria-label", active ? labels.heroExit : labels.navEnter);
-  }
+  updateSingleButton(
+    mobileCinematicToggle,
+    active ? labels.mobileExit : labels.mobileEnter,
+    active
+  );
 }
 
-function notifyCinematicChange(active) {
+function notifyCinematicChange(active, source = "manual") {
   document.dispatchEvent(
     new CustomEvent("site:cinematic-change", {
-      detail: { active }
+      detail: { active, source }
     })
   );
 }
 
+function setBodyCinematicState(active) {
+  document.body.classList.toggle("cinematic-mode", active);
+  document.body.dataset.cinematic = active ? "on" : "off";
+}
+
 function setCinematicMode(active, options = {}) {
-  const { persist = true, notify = true } = options;
+  const {
+    persist = true,
+    notify = true,
+    source = "manual"
+  } = options;
+
   const currentState = isCinematicModeActive();
 
   if (currentState === active) {
@@ -84,7 +115,7 @@ function setCinematicMode(active, options = {}) {
     return;
   }
 
-  document.body.classList.toggle("cinematic-mode", active);
+  setBodyCinematicState(active);
   updateCinematicLabels();
 
   if (persist) {
@@ -92,18 +123,16 @@ function setCinematicMode(active, options = {}) {
   }
 
   if (notify) {
-    notifyCinematicChange(active);
+    notifyCinematicChange(active, source);
   }
 }
 
-function toggleCinematicMode() {
-  setCinematicMode(!isCinematicModeActive());
+function toggleCinematicMode(source = "manual") {
+  setCinematicMode(!isCinematicModeActive(), { source });
 }
 
 function closeMobileMenuIfOpen() {
-  if (!document.body.classList.contains("mobile-menu-open")) {
-    return;
-  }
+  if (!document.body.classList.contains("mobile-menu-open")) return;
 
   if (typeof window.closeMobileMenu === "function") {
     window.closeMobileMenu({ restoreFocus: false });
@@ -125,27 +154,34 @@ function closeMobileMenuIfOpen() {
 }
 
 function handleCinematicButtonClick() {
-  toggleCinematicMode();
+  toggleCinematicMode("button");
 }
 
 function handleMobileCinematicButtonClick() {
-  toggleCinematicMode();
+  toggleCinematicMode("mobile-button");
   closeMobileMenuIfOpen();
 }
 
 function syncCinematicModeAcrossTabs(event) {
-  if (event.key !== CINEMATIC_STORAGE_KEY) {
-    return;
-  }
+  if (event.key !== CINEMATIC_STORAGE_KEY) return;
 
   const shouldEnable = event.newValue === "true";
-  setCinematicMode(shouldEnable, { persist: false, notify: true });
+
+  setCinematicMode(shouldEnable, {
+    persist: false,
+    notify: true,
+    source: "storage-sync"
+  });
 }
 
 function initCinematicMode() {
   const shouldEnable = readCinematicPreference();
 
-  setCinematicMode(shouldEnable, { persist: false, notify: false });
+  setCinematicMode(shouldEnable, {
+    persist: false,
+    notify: false,
+    source: "init"
+  });
 
   if (cinematicToggle) {
     cinematicToggle.addEventListener("click", handleCinematicButtonClick);
