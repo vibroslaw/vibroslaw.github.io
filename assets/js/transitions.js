@@ -2,6 +2,7 @@ const pageTransition = document.getElementById("pageTransition");
 
 const PAGE_TRANSITION_ACTIVE_CLASS = "active";
 const PAGE_TRANSITION_DATA_KEY = "pageTransition";
+const MOBILE_BREAKPOINT = 760;
 
 let transitionLocked = false;
 
@@ -23,6 +24,27 @@ function isReducedMotionEnabled() {
   }
 
   return false;
+}
+
+function isMobileViewport() {
+  return window.innerWidth <= MOBILE_BREAKPOINT;
+}
+
+function isSaveDataEnabled() {
+  const connection =
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
+
+  return Boolean(connection && connection.saveData);
+}
+
+function shouldUseMinimalTransition() {
+  return (
+    isReducedMotionEnabled() ||
+    isMobileViewport() ||
+    isSaveDataEnabled()
+  );
 }
 
 function isSameLocation(targetUrl) {
@@ -83,7 +105,9 @@ function shouldHandleFormTransition(form, submitter = null) {
   if (effectiveTarget === "_blank") return false;
 
   const effectiveMethod =
-    (submitter?.getAttribute("formmethod") || form.getAttribute("method") || "get")
+    (submitter?.getAttribute("formmethod") ||
+      form.getAttribute("method") ||
+      "get")
       .trim()
       .toLowerCase();
 
@@ -108,9 +132,8 @@ function activatePageTransition() {
   transitionLocked = true;
 
   pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
-  document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = isReducedMotionEnabled()
-    ? "minimal"
-    : "active";
+  document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] =
+    shouldUseMinimalTransition() ? "minimal" : "active";
 }
 
 function clearPageTransition() {
@@ -127,6 +150,8 @@ window.addEventListener("load", clearPageTransition);
 window.addEventListener("pageshow", clearPageTransition);
 
 document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+
   const link = event.target.closest("a[href]");
   if (!shouldHandleTransition(link)) return;
 
