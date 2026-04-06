@@ -265,9 +265,12 @@ body.mobile-menu-open .mobile-menu-panel > *:nth-child(12){ transition-delay:.36
   content:"";
   position:absolute;
   inset:-1px;
+  opacity:.9;
   background:linear-gradient(120deg, transparent 16%, rgba(255,255,255,.11), transparent 84%);
   transform:translateX(-120%);
-  transition:transform .9s var(--ease);
+  transition:
+    transform .9s var(--ease),
+    opacity .25s ease;
   pointer-events:none;
 }
 
@@ -351,8 +354,8 @@ body.mobile-menu-open .mobile-menu-panel > *:nth-child(12){ transition-delay:.36
 }
 
 .mobile-menu-link.is-active::before{
-  transform:translateX(0);
   opacity:.55;
+  transform:translateX(0);
 }
 
 /* ---------- LANGUAGE ---------- */
