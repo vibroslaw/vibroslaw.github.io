@@ -198,9 +198,7 @@ function updateContinuePanel(entry) {
   if (dismissContinue) {
     dismissContinue.setAttribute(
       "aria-label",
-      isPL
-        ? "Ukryj panel kontynuacji"
-        : "Hide continue panel"
+      isPL ? "Ukryj panel kontynuacji" : "Hide continue panel"
     );
   }
 }
@@ -258,13 +256,7 @@ function initDismissButton() {
 }
 
 function handleStorageChange(event) {
-  if (
-    event.key !== LAST_VISITED_STORAGE_KEY &&
-    event.key !== DISMISSED_CONTINUE_STORAGE_KEY
-  ) {
-    return;
-  }
-
+  if (event.key !== LAST_VISITED_STORAGE_KEY) return;
   refreshContinuePanel();
 }
 
