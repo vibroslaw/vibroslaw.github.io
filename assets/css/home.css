@@ -7,28 +7,66 @@
   --hero-mobile-overlay-strength:.56;
 }
 
-/* ---------- HEADER SAFETY ---------- */
+/* ---------- HEADER SAFETY / RAP-ORT-LIKE LAYOUT ---------- */
 
 .site-header .header-inner{
   gap:18px;
   min-width:0;
+  align-items:center;
 }
 
 .site-header .brand{
   min-width:0;
-  flex:1 1 auto;
+  flex:0 0 auto;
+  width:min(360px, 42vw);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:6px;
 }
 
 .site-header .brand-name{
-  max-width:16ch;
-  line-height:1.02;
-  text-wrap:balance;
+  max-width:none;
+  margin:0;
+  font-size:clamp(2rem, 2.15vw, 2.55rem);
+  line-height:.90;
+  letter-spacing:-.015em;
+  text-wrap:nowrap;
+  white-space:nowrap;
 }
 
 .site-header .brand-sub{
-  max-width:24ch;
-  line-height:1.18;
-  text-wrap:balance;
+  max-width:100%;
+  margin:0;
+  font-size:.72rem;
+  line-height:1.12;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  opacity:.86;
+}
+
+.site-header .desktop-nav.desktop-nav-compact{
+  margin-left:auto;
+  flex:0 1 auto;
+  gap:14px;
+  align-items:center;
+}
+
+.site-header .desktop-nav-compact .nav-button{
+  min-height:44px;
+  padding:0 16px;
+}
+
+.site-header .lang-switch{
+  margin-left:0;
+  gap:12px;
+  flex:0 0 auto;
+}
+
+.site-header .desktop-menu-toggle{
+  flex:0 0 auto;
 }
 
 /* ---------- HERO ---------- */
@@ -709,6 +747,14 @@ body.reduced-motion .glass-panel:hover{
   .hero-home{
     --home-hero-pos-desktop:var(--home-hero-pos-laptop);
   }
+
+  .site-header .brand{
+    width:min(320px, 38vw);
+  }
+
+  .site-header .brand-name{
+    font-size:clamp(1.82rem, 2vw, 2.25rem);
+  }
 }
 
 @media (max-width:1100px){
@@ -730,6 +776,27 @@ body.reduced-motion .glass-panel:hover{
     background-position:var(--home-hero-pos-tablet);
     transform:translate3d(0, calc(var(--hero-parallax) * 0.22), 0) scale(1.004);
   }
+
+  .site-header .brand{
+    width:min(280px, 34vw);
+  }
+
+  .site-header .brand-name{
+    font-size:1.72rem;
+  }
+
+  .site-header .brand-sub{
+    font-size:.68rem;
+    letter-spacing:.20em;
+  }
+
+  .site-header .desktop-nav.desktop-nav-compact{
+    gap:10px;
+  }
+
+  .site-header .desktop-nav-compact .nav-button{
+    padding:0 14px;
+  }
 }
 
 @media (max-width:760px){
@@ -744,20 +811,26 @@ body.reduced-motion .glass-panel:hover{
 
   .site-header .brand{
     flex:1 1 auto;
+    width:auto;
     min-width:0;
     max-width:calc(100% - 58px);
+    gap:4px;
   }
 
   .site-header .brand-name{
     max-width:11ch;
     font-size:1rem;
     line-height:1.02;
+    white-space:normal;
+    text-wrap:balance;
   }
 
   .site-header .brand-sub{
     max-width:17ch;
     font-size:.68rem;
     line-height:1.15;
+    white-space:normal;
+    letter-spacing:.18em;
   }
 
   .desktop-menu-toggle{
@@ -1130,4 +1203,4 @@ body.reduced-motion .glass-panel:hover{
     background:rgba(255,255,255,.08);
     border-color:rgba(255,255,255,.14);
   }
-      }
+}
