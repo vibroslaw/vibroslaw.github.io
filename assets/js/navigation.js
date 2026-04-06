@@ -1,7 +1,3 @@
-const mobileNavToggle = document.getElementById("mobileNavToggle");
-const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
-const mobileMenuPanel = document.querySelector(".mobile-menu-panel");
-
 const MOBILE_BREAKPOINT = 760;
 const MENU_INTERACTIVE_SELECTOR =
   ".mobile-menu-link, .mobile-menu-button, .mobile-lang-switch a";
@@ -10,6 +6,10 @@ const FOCUSABLE_SELECTOR =
 
 const SWIPE_CLOSE_DISTANCE = 72;
 const SWIPE_MAX_HORIZONTAL_DRIFT = 56;
+
+let mobileNavToggle = null;
+let mobileMenuOverlay = null;
+let mobileMenuPanel = null;
 
 let lastFocusedElement = null;
 let scrollPosition = 0;
@@ -20,6 +20,7 @@ let touchStartY = 0;
 let touchCurrentX = 0;
 let touchCurrentY = 0;
 let touchTrackingActive = false;
+let mobileNavigationInitialized = false;
 
 const savedBodyStyles = {
   position: "",
@@ -31,8 +32,19 @@ const savedBodyStyles = {
   paddingRight: ""
 };
 
+function getBody() {
+  return document.body;
+}
+
+function cacheMobileNavigationElements() {
+  mobileNavToggle = document.getElementById("mobileNavToggle");
+  mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+  mobileMenuPanel = document.querySelector(".mobile-menu-panel");
+}
+
 function isMobileMenuOpen() {
-  return document.body.classList.contains("mobile-menu-open");
+  const body = getBody();
+  return !!body && body.classList.contains("mobile-menu-open");
 }
 
 function isMobileViewport() {
@@ -55,7 +67,7 @@ function isVisibleElement(element) {
 }
 
 function getFocusableElementsInMenu() {
-  if (!mobileMenuPanel) return [];
+  if (!(mobileMenuPanel instanceof HTMLElement)) return [];
 
   return Array.from(
     mobileMenuPanel.querySelectorAll(FOCUSABLE_SELECTOR)
@@ -63,27 +75,34 @@ function getFocusableElementsInMenu() {
 }
 
 function saveBodyStyles() {
-  savedBodyStyles.position = document.body.style.position;
-  savedBodyStyles.top = document.body.style.top;
-  savedBodyStyles.left = document.body.style.left;
-  savedBodyStyles.right = document.body.style.right;
-  savedBodyStyles.width = document.body.style.width;
-  savedBodyStyles.overflowY = document.body.style.overflowY;
-  savedBodyStyles.paddingRight = document.body.style.paddingRight;
+  const body = getBody();
+  if (!body) return;
+
+  savedBodyStyles.position = body.style.position;
+  savedBodyStyles.top = body.style.top;
+  savedBodyStyles.left = body.style.left;
+  savedBodyStyles.right = body.style.right;
+  savedBodyStyles.width = body.style.width;
+  savedBodyStyles.overflowY = body.style.overflowY;
+  savedBodyStyles.paddingRight = body.style.paddingRight;
 }
 
 function restoreBodyStyles() {
-  document.body.style.position = savedBodyStyles.position;
-  document.body.style.top = savedBodyStyles.top;
-  document.body.style.left = savedBodyStyles.left;
-  document.body.style.right = savedBodyStyles.right;
-  document.body.style.width = savedBodyStyles.width;
-  document.body.style.overflowY = savedBodyStyles.overflowY;
-  document.body.style.paddingRight = savedBodyStyles.paddingRight;
+  const body = getBody();
+  if (!body) return;
+
+  body.style.position = savedBodyStyles.position;
+  body.style.top = savedBodyStyles.top;
+  body.style.left = savedBodyStyles.left;
+  body.style.right = savedBodyStyles.right;
+  body.style.width = savedBodyStyles.width;
+  body.style.overflowY = savedBodyStyles.overflowY;
+  body.style.paddingRight = savedBodyStyles.paddingRight;
 }
 
 function lockBodyScroll() {
-  if (bodyScrollLocked) return;
+  const body = getBody();
+  if (!body || bodyScrollLocked) return;
 
   scrollPosition = window.scrollY || window.pageYOffset || 0;
 
@@ -94,15 +113,15 @@ function lockBodyScroll() {
 
   saveBodyStyles();
 
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${scrollPosition}px`;
-  document.body.style.left = "0";
-  document.body.style.right = "0";
-  document.body.style.width = "100%";
-  document.body.style.overflowY = "scroll";
+  body.style.position = "fixed";
+  body.style.top = `-${scrollPosition}px`;
+  body.style.left = "0";
+  body.style.right = "0";
+  body.style.width = "100%";
+  body.style.overflowY = "scroll";
 
   if (scrollbarWidth > 0) {
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
+    body.style.paddingRight = `${scrollbarWidth}px`;
   }
 
   bodyScrollLocked = true;
@@ -114,6 +133,14 @@ function unlockBodyScroll() {
   restoreBodyStyles();
   window.scrollTo(0, scrollPosition);
   bodyScrollLocked = false;
+}
+
+function resetTouchTracking() {
+  touchStartX = 0;
+  touchStartY = 0;
+  touchCurrentX = 0;
+  touchCurrentY = 0;
+  touchTrackingActive = false;
 }
 
 function focusFirstMenuItem() {
@@ -140,6 +167,8 @@ function focusFirstMenuItem() {
 }
 
 function openMobileMenu() {
+  cacheMobileNavigationElements();
+
   if (!mobileNavToggle || !mobileMenuOverlay || isMobileMenuOpen()) return;
 
   lastFocusedElement =
@@ -161,13 +190,19 @@ function openMobileMenu() {
 }
 
 function closeMobileMenu({ restoreFocus = true } = {}) {
-  if (!mobileNavToggle || !mobileMenuOverlay || !isMobileMenuOpen()) return;
+  cacheMobileNavigationElements();
+
+  if (!mobileNavToggle || !mobileMenuOverlay || !isMobileMenuOpen()) {
+    resetTouchTracking();
+    return;
+  }
 
   document.body.classList.remove("mobile-menu-open");
   mobileNavToggle.setAttribute("aria-expanded", "false");
   mobileMenuOverlay.setAttribute("aria-hidden", "true");
 
   unlockBodyScroll();
+  resetTouchTracking();
 
   if (restoreFocus && lastFocusedElement instanceof HTMLElement) {
     window.setTimeout(() => {
@@ -278,10 +313,13 @@ function handleResizeLikeEvent() {
 }
 
 function handlePageShow() {
+  cacheMobileNavigationElements();
+
   if (isMobileMenuOpen()) {
     closeMobileMenu({ restoreFocus: false });
   } else {
     unlockBodyScroll();
+    resetTouchTracking();
   }
 }
 
@@ -316,7 +354,7 @@ function handleTouchEnd() {
   const deltaX = touchCurrentX - touchStartX;
   const deltaY = touchCurrentY - touchStartY;
 
-  touchTrackingActive = false;
+  resetTouchTracking();
 
   const movedMostlyVertical =
     Math.abs(deltaY) > Math.abs(deltaX) &&
@@ -351,7 +389,10 @@ function initAccessibilityAttributes() {
 }
 
 function normalizeInitialState() {
-  document.body.classList.remove("mobile-menu-open");
+  const body = getBody();
+  if (!body) return;
+
+  body.classList.remove("mobile-menu-open");
 
   if (mobileMenuOverlay) {
     mobileMenuOverlay.setAttribute("aria-hidden", "true");
@@ -362,19 +403,34 @@ function normalizeInitialState() {
   }
 
   unlockBodyScroll();
+  resetTouchTracking();
 }
 
 function initTouchClose() {
   if (!mobileMenuOverlay) return;
 
-  mobileMenuOverlay.addEventListener("touchstart", handleTouchStart, { passive: true });
-  mobileMenuOverlay.addEventListener("touchmove", handleTouchMove, { passive: true });
-  mobileMenuOverlay.addEventListener("touchend", handleTouchEnd, { passive: true });
-  mobileMenuOverlay.addEventListener("touchcancel", handleTouchEnd, { passive: true });
+  mobileMenuOverlay.addEventListener("touchstart", handleTouchStart, {
+    passive: true
+  });
+  mobileMenuOverlay.addEventListener("touchmove", handleTouchMove, {
+    passive: true
+  });
+  mobileMenuOverlay.addEventListener("touchend", handleTouchEnd, {
+    passive: true
+  });
+  mobileMenuOverlay.addEventListener("touchcancel", handleTouchEnd, {
+    passive: true
+  });
 }
 
 function initMobileNavigation() {
+  if (mobileNavigationInitialized) return;
+
+  cacheMobileNavigationElements();
+
   if (!mobileNavToggle || !mobileMenuOverlay || !mobileMenuPanel) return;
+
+  mobileNavigationInitialized = true;
 
   initAccessibilityAttributes();
   normalizeInitialState();
@@ -398,4 +454,10 @@ window.closeMobileMenu = closeMobileMenu;
 window.toggleMobileMenu = toggleMobileMenu;
 window.isMobileMenuOpen = isMobileMenuOpen;
 
-initMobileNavigation();
+if (document.body) {
+  initMobileNavigation();
+} else {
+  document.addEventListener("DOMContentLoaded", initMobileNavigation, {
+    once: true
+  });
+}
