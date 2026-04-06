@@ -8,10 +8,18 @@ const MENU_INTERACTIVE_SELECTOR =
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
 
+const SWIPE_CLOSE_DISTANCE = 72;
+const SWIPE_MAX_HORIZONTAL_DRIFT = 56;
+
 let lastFocusedElement = null;
 let scrollPosition = 0;
 let bodyScrollLocked = false;
 let resizeFrame = null;
+let touchStartX = 0;
+let touchStartY = 0;
+let touchCurrentX = 0;
+let touchCurrentY = 0;
+let touchTrackingActive = false;
 
 const savedBodyStyles = {
   position: "",
@@ -230,8 +238,9 @@ function handleDocumentKeydown(event) {
 function handleDocumentFocusIn(event) {
   if (!isMobileMenuOpen()) return;
   if (!(event.target instanceof Node)) return;
+  if (!(mobileMenuPanel instanceof HTMLElement)) return;
 
-  if (mobileMenuPanel?.contains(event.target)) return;
+  if (mobileMenuPanel.contains(event.target)) return;
   if (event.target === mobileMenuOverlay) return;
 
   focusFirstMenuItem();
@@ -276,6 +285,48 @@ function handlePageShow() {
   }
 }
 
+function handleTouchStart(event) {
+  if (!isMobileMenuOpen()) return;
+  if (!isMobileViewport()) return;
+  if (!mobileMenuOverlay) return;
+  if (mobileMenuOverlay.scrollTop > 0) return;
+  if (!event.touches || event.touches.length !== 1) return;
+
+  const touch = event.touches[0];
+
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+  touchCurrentX = touch.clientX;
+  touchCurrentY = touch.clientY;
+  touchTrackingActive = true;
+}
+
+function handleTouchMove(event) {
+  if (!touchTrackingActive) return;
+  if (!event.touches || event.touches.length !== 1) return;
+
+  const touch = event.touches[0];
+  touchCurrentX = touch.clientX;
+  touchCurrentY = touch.clientY;
+}
+
+function handleTouchEnd() {
+  if (!touchTrackingActive) return;
+
+  const deltaX = touchCurrentX - touchStartX;
+  const deltaY = touchCurrentY - touchStartY;
+
+  touchTrackingActive = false;
+
+  const movedMostlyVertical =
+    Math.abs(deltaY) > Math.abs(deltaX) &&
+    Math.abs(deltaX) <= SWIPE_MAX_HORIZONTAL_DRIFT;
+
+  if (movedMostlyVertical && deltaY >= SWIPE_CLOSE_DISTANCE) {
+    closeMobileMenu({ restoreFocus: false });
+  }
+}
+
 function initAccessibilityAttributes() {
   if (mobileMenuOverlay) {
     mobileMenuOverlay.setAttribute("aria-hidden", "true");
@@ -313,11 +364,21 @@ function normalizeInitialState() {
   unlockBodyScroll();
 }
 
+function initTouchClose() {
+  if (!mobileMenuOverlay) return;
+
+  mobileMenuOverlay.addEventListener("touchstart", handleTouchStart, { passive: true });
+  mobileMenuOverlay.addEventListener("touchmove", handleTouchMove, { passive: true });
+  mobileMenuOverlay.addEventListener("touchend", handleTouchEnd, { passive: true });
+  mobileMenuOverlay.addEventListener("touchcancel", handleTouchEnd, { passive: true });
+}
+
 function initMobileNavigation() {
   if (!mobileNavToggle || !mobileMenuOverlay || !mobileMenuPanel) return;
 
   initAccessibilityAttributes();
   normalizeInitialState();
+  initTouchClose();
 
   mobileNavToggle.addEventListener("click", toggleMobileMenu);
   mobileMenuOverlay.addEventListener("click", handleOverlayClick);
