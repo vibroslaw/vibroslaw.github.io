@@ -57,6 +57,11 @@ function isSameLocation(targetUrl) {
   );
 }
 
+function hasExternalRel(link) {
+  const rel = (link.getAttribute("rel") || "").toLowerCase();
+  return rel.split(/\s+/).includes("external");
+}
+
 function shouldHandleTransition(link) {
   if (!link) return false;
 
@@ -75,9 +80,7 @@ function shouldHandleTransition(link) {
   if (link.hasAttribute("data-no-transition")) return false;
   if (link.getAttribute("target") === "_blank") return false;
   if (link.getAttribute("aria-disabled") === "true") return false;
-
-  const rel = link.getAttribute("rel") || "";
-  if (rel.includes("external")) return false;
+  if (hasExternalRel(link)) return false;
 
   let targetUrl;
 
@@ -148,6 +151,7 @@ function clearPageTransition() {
 window.addEventListener("DOMContentLoaded", clearPageTransition);
 window.addEventListener("load", clearPageTransition);
 window.addEventListener("pageshow", clearPageTransition);
+window.addEventListener("pagehide", clearPageTransition);
 
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) return;
