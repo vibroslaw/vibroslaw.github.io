@@ -10,6 +10,7 @@ let scrollTopButton = null;
 let scrollUiTicking = false;
 let revealObserver = null;
 let bodyClassObserver = null;
+let mainUiInitialized = false;
 
 function getBody() {
   return document.body;
@@ -162,6 +163,14 @@ function handleScrollTopClick() {
   });
 }
 
+function bindScrollTopButton() {
+  if (!scrollTopButton) return;
+  if (scrollTopButton.dataset.mainUiBound === "true") return;
+
+  scrollTopButton.dataset.mainUiBound = "true";
+  scrollTopButton.addEventListener("click", handleScrollTopClick);
+}
+
 /* ---------- SCROLL-LINKED UI ---------- */
 
 function updateScrollLinkedUi() {
@@ -208,35 +217,35 @@ function initBodyClassObserver() {
 
 /* ---------- GLOBAL REFRESH ---------- */
 
+function cacheUiElements() {
+  revealItems = Array.from(document.querySelectorAll(".reveal"));
+  scrollTopButton = document.getElementById("scrollTopButton");
+}
+
 function refreshMainUI() {
+  cacheUiElements();
+  bindScrollTopButton();
   updateViewportHeightVariable();
   requestScrollLinkedUiUpdate();
   updateScrollTopButtonLabel();
 }
 
 function handleReducedMotionChange() {
+  cacheUiElements();
   initRevealObserver();
   refreshMainUI();
 }
 
 /* ---------- INIT ---------- */
 
-function cacheUiElements() {
-  revealItems = Array.from(document.querySelectorAll(".reveal"));
-  scrollTopButton = document.getElementById("scrollTopButton");
-}
-
-function bindScrollTopButton() {
-  if (!scrollTopButton) return;
-
-  setScrollTopButtonVisibility(false);
-  updateScrollTopButtonLabel();
-  scrollTopButton.addEventListener("click", handleScrollTopClick);
-}
-
 function initMainUi() {
+  if (mainUiInitialized) return;
+  mainUiInitialized = true;
+
   cacheUiElements();
   bindScrollTopButton();
+  setScrollTopButtonVisibility(false);
+  updateScrollTopButtonLabel();
 
   updateViewportHeightVariable();
   initRevealObserver();
@@ -269,6 +278,9 @@ function initMainUi() {
   document.addEventListener("site:cinematic-change", refreshMainUI);
   document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
 }
+
+/* expose for future use */
+window.refreshMainUI = refreshMainUI;
 
 if (document.body) {
   initMainUi();
