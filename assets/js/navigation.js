@@ -227,6 +227,16 @@ function handleDocumentKeydown(event) {
   trapFocusInMenu(event);
 }
 
+function handleDocumentFocusIn(event) {
+  if (!isMobileMenuOpen()) return;
+  if (!(event.target instanceof Node)) return;
+
+  if (mobileMenuPanel?.contains(event.target)) return;
+  if (event.target === mobileMenuOverlay) return;
+
+  focusFirstMenuItem();
+}
+
 function handleOverlayClick(event) {
   if (!mobileMenuOverlay) return;
 
@@ -314,6 +324,8 @@ function initMobileNavigation() {
   mobileMenuPanel.addEventListener("click", handlePanelClick);
 
   document.addEventListener("keydown", handleDocumentKeydown);
+  document.addEventListener("focusin", handleDocumentFocusIn);
+
   window.addEventListener("resize", handleResizeLikeEvent);
   window.addEventListener("orientationchange", handleResizeLikeEvent);
   window.addEventListener("pageshow", handlePageShow);
@@ -323,5 +335,6 @@ function initMobileNavigation() {
 window.openMobileMenu = openMobileMenu;
 window.closeMobileMenu = closeMobileMenu;
 window.toggleMobileMenu = toggleMobileMenu;
+window.isMobileMenuOpen = isMobileMenuOpen;
 
 initMobileNavigation();
