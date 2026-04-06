@@ -1,15 +1,23 @@
-const continuePanel = document.getElementById("continuePanel");
-const continueText = document.getElementById("continueText");
-const continueButton = document.getElementById("continueButton");
-const dismissContinue = document.getElementById("dismissContinue");
-
-const trackedLinks = Array.from(document.querySelectorAll(".track-link"));
-
 const LAST_VISITED_STORAGE_KEY = "lastVisitedSiteEntry";
 const DISMISSED_CONTINUE_STORAGE_KEY = "dismissedSiteContinueForHref";
 
+let continuePanel = null;
+let continueText = null;
+let continueButton = null;
+let dismissContinue = null;
+let trackedLinks = [];
+let continuePanelInitialized = false;
+
+function cacheContinuePanelElements() {
+  continuePanel = document.getElementById("continuePanel");
+  continueText = document.getElementById("continueText");
+  continueButton = document.getElementById("continueButton");
+  dismissContinue = document.getElementById("dismissContinue");
+  trackedLinks = Array.from(document.querySelectorAll(".track-link"));
+}
+
 function isPolishLanguage() {
-  return document.body.dataset.lang === "pl";
+  return document.body?.dataset.lang === "pl";
 }
 
 function resolveAbsoluteUrl(url) {
@@ -200,10 +208,16 @@ function updateContinuePanel(entry) {
       "aria-label",
       isPL ? "Ukryj panel kontynuacji" : "Hide continue panel"
     );
+    dismissContinue.setAttribute(
+      "title",
+      isPL ? "Ukryj panel kontynuacji" : "Hide continue panel"
+    );
   }
 }
 
 function refreshContinuePanel() {
+  cacheContinuePanelElements();
+
   if (!continuePanel || !continueText || !continueButton) return;
 
   const entry = getLastVisitedEntry();
@@ -227,16 +241,20 @@ function refreshContinuePanel() {
   showContinuePanel();
 }
 
+function handleTrackedLinkClick(link) {
+  const href = link.getAttribute("href");
+  const title = (link.dataset.trackTitle || link.textContent || "").trim();
+
+  if (!title || !href) return;
+
+  setLastVisitedEntry(title, href);
+  clearDismissedContinueState();
+}
+
 function initTrackedLinks() {
   trackedLinks.forEach((link) => {
     link.addEventListener("click", () => {
-      const href = link.getAttribute("href");
-      const title = (link.dataset.trackTitle || link.textContent || "").trim();
-
-      if (!title || !href) return;
-
-      setLastVisitedEntry(title, href);
-      clearDismissedContinueState();
+      handleTrackedLinkClick(link);
     });
   });
 }
@@ -261,12 +279,27 @@ function handleStorageChange(event) {
 }
 
 function initContinuePanel() {
+  if (continuePanelInitialized) return;
+
+  continuePanelInitialized = true;
+  cacheContinuePanelElements();
+
+  initTrackedLinks();
+  initDismissButton();
   refreshContinuePanel();
 
   window.addEventListener("pageshow", refreshContinuePanel);
   window.addEventListener("storage", handleStorageChange);
 }
 
-initTrackedLinks();
-initContinuePanel();
-initDismissButton();
+/* expose for future use */
+window.refreshContinuePanel = refreshContinuePanel;
+window.setLastVisitedEntry = setLastVisitedEntry;
+
+if (document.body) {
+  initContinuePanel();
+} else {
+  document.addEventListener("DOMContentLoaded", initContinuePanel, {
+    once: true
+  });
+}
