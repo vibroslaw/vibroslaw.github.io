@@ -358,31 +358,40 @@ function clearSpecialCinematicTransition() {
   }
 }
 
+function navigateWithStandardTransition(targetHref) {
+  activatePageTransition();
+
+  window.setTimeout(() => {
+    window.location.href = targetHref;
+  }, 20);
+}
+
 function runSpecialCinematicCardTransition(link) {
   if (!(link instanceof HTMLAnchorElement)) return;
   if (transitionLocked) return;
 
+  const targetHref = link.href;
   const sourceMedia = link.querySelector(".project-media");
+
   if (!(sourceMedia instanceof HTMLElement)) {
-    window.location.href = link.href;
+    navigateWithStandardTransition(targetHref);
     return;
-  }
-
-  transitionLocked = true;
-
-  document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
-
-  if (document.body) {
-    document.body.classList.add("cinematic-transition-active");
   }
 
   const veil = createCinematicVeil();
   const clone = createCinematicZoomClone(sourceMedia);
 
   if (!clone) {
-    transitionLocked = false;
-    window.location.href = link.href;
+    clearSpecialCinematicTransition();
+    navigateWithStandardTransition(targetHref);
     return;
+  }
+
+  transitionLocked = true;
+  document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
+
+  if (document.body) {
+    document.body.classList.add("cinematic-transition-active");
   }
 
   applyCinematicShellState(link);
@@ -419,7 +428,7 @@ function runSpecialCinematicCardTransition(link) {
   });
 
   window.setTimeout(() => {
-    window.location.href = link.href;
+    window.location.href = targetHref;
   }, Math.max(120, duration - 10));
 }
 
