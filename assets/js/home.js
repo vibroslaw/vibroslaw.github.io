@@ -194,8 +194,11 @@ function requestHeroMotionUpdate() {
   heroMotionTicking = true;
 
   window.requestAnimationFrame(() => {
-    updateHeroMotionState();
-    heroMotionTicking = false;
+    try {
+      updateHeroMotionState();
+    } finally {
+      heroMotionTicking = false;
+    }
   });
 }
 
@@ -318,10 +321,14 @@ function initHeroMotion() {
     heroResizeObserver.observe(pageHero);
   }
 
-  if (document.fonts && typeof document.fonts.ready?.then === "function") {
-    document.fonts.ready.then(() => {
-      requestHeroMotionUpdate();
-    });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready
+      .then(() => {
+        requestHeroMotionUpdate();
+      })
+      .catch(() => {
+        /* silent fallback */
+      });
   }
 }
 
