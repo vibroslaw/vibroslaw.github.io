@@ -32,6 +32,15 @@ function setRootCssVariable(name, value) {
   document.documentElement.style.setProperty(name, value);
 }
 
+function runOnNextFrame(callback) {
+  if (typeof window.requestAnimationFrame === "function") {
+    window.requestAnimationFrame(callback);
+    return;
+  }
+
+  window.setTimeout(callback, 16);
+}
+
 function getSystemReducedMotionPreference() {
   if (!window.matchMedia) return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -203,7 +212,7 @@ function requestHeroMotionUpdate() {
 
   heroMotionTicking = true;
 
-  window.requestAnimationFrame(() => {
+  runOnNextFrame(() => {
     try {
       updateHeroMotionState();
     } finally {
@@ -314,6 +323,10 @@ function initReducedMotion() {
 
 function initHeroResizeObserver() {
   if (!pageHero || !window.ResizeObserver) return;
+
+  if (heroResizeObserver) {
+    heroResizeObserver.disconnect();
+  }
 
   heroResizeObserver = new ResizeObserver(() => {
     requestHeroMotionUpdate();
