@@ -1,10 +1,14 @@
-const pageTransition = document.getElementById("pageTransition");
-
 const PAGE_TRANSITION_ACTIVE_CLASS = "active";
 const PAGE_TRANSITION_DATA_KEY = "pageTransition";
 const MOBILE_BREAKPOINT = 760;
 
+let pageTransition = null;
 let transitionLocked = false;
+let pageTransitionInitialized = false;
+
+function cachePageTransitionElement() {
+  pageTransition = document.getElementById("pageTransition");
+}
 
 function hasModifierKey(event) {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
@@ -15,7 +19,7 @@ function normalizePath(path) {
 }
 
 function isReducedMotionEnabled() {
-  if (document.body.classList.contains("reduced-motion")) {
+  if (document.body && document.body.classList.contains("reduced-motion")) {
     return true;
   }
 
@@ -63,7 +67,7 @@ function hasExternalRel(link) {
 }
 
 function shouldHandleTransition(link) {
-  if (!link) return false;
+  if (!(link instanceof HTMLAnchorElement)) return false;
 
   const href = link.getAttribute("href");
   if (!href) return false;
@@ -97,7 +101,7 @@ function shouldHandleTransition(link) {
 }
 
 function shouldHandleFormTransition(form, submitter = null) {
-  if (!form) return false;
+  if (!(form instanceof HTMLFormElement)) return false;
   if (form.hasAttribute("data-no-transition")) return false;
 
   const effectiveTarget =
@@ -130,16 +134,20 @@ function shouldHandleFormTransition(form, submitter = null) {
 }
 
 function activatePageTransition() {
+  cachePageTransitionElement();
+
   if (!pageTransition || transitionLocked) return;
 
   transitionLocked = true;
-
   pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
+
   document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] =
     shouldUseMinimalTransition() ? "minimal" : "active";
 }
 
 function clearPageTransition() {
+  cachePageTransitionElement();
+
   if (pageTransition) {
     pageTransition.classList.remove(PAGE_TRANSITION_ACTIVE_CLASS);
   }
@@ -148,12 +156,7 @@ function clearPageTransition() {
   transitionLocked = false;
 }
 
-window.addEventListener("DOMContentLoaded", clearPageTransition);
-window.addEventListener("load", clearPageTransition);
-window.addEventListener("pageshow", clearPageTransition);
-window.addEventListener("pagehide", clearPageTransition);
-
-document.addEventListener("click", (event) => {
+function handleDocumentClick(event) {
   if (!(event.target instanceof Element)) return;
 
   const link = event.target.closest("a[href]");
@@ -168,9 +171,9 @@ document.addEventListener("click", (event) => {
   }
 
   activatePageTransition();
-});
+}
 
-document.addEventListener("submit", (event) => {
+function handleDocumentSubmit(event) {
   if (event.defaultPrevented) return;
 
   const form = event.target;
@@ -182,4 +185,31 @@ document.addEventListener("submit", (event) => {
   if (!shouldHandleFormTransition(form, submitter)) return;
 
   activatePageTransition();
-});
+}
+
+function initPageTransition() {
+  if (pageTransitionInitialized) return;
+
+  pageTransitionInitialized = true;
+  cachePageTransitionElement();
+  clearPageTransition();
+
+  window.addEventListener("load", clearPageTransition);
+  window.addEventListener("pageshow", clearPageTransition);
+  window.addEventListener("pagehide", clearPageTransition);
+
+  document.addEventListener("click", handleDocumentClick);
+  document.addEventListener("submit", handleDocumentSubmit);
+}
+
+/* expose for future use */
+window.activatePageTransition = activatePageTransition;
+window.clearPageTransition = clearPageTransition;
+
+if (document.body) {
+  initPageTransition();
+} else {
+  document.addEventListener("DOMContentLoaded", initPageTransition, {
+    once: true
+  });
+}
