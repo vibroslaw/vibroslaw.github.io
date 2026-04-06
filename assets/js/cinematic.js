@@ -210,7 +210,10 @@ function initCinematicMode() {
   }
 
   if (mobileCinematicToggle) {
-    mobileCinematicToggle.addEventListener("click", handleMobileCinematicButtonClick);
+    mobileCinematicToggle.addEventListener(
+      "click",
+      handleMobileCinematicButtonClick
+    );
   }
 
   window.addEventListener("storage", syncCinematicModeAcrossTabs);
