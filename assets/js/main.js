@@ -3,7 +3,9 @@ document.documentElement.classList.add("js-ready");
 const revealItems = Array.from(document.querySelectorAll(".reveal"));
 const scrollTopButton = document.getElementById("scrollTopButton");
 
-let progressTicking = false;
+const SCROLL_TOP_VISIBILITY_THRESHOLD = 560;
+
+let scrollUiTicking = false;
 let revealObserver = null;
 
 function isReducedMotionEnabled() {
@@ -25,6 +27,7 @@ function clamp(value, min, max) {
 /* ---------- REVEAL SYSTEM ---------- */
 
 function revealElement(element) {
+  if (!element) return;
   element.classList.add("visible");
 }
 
@@ -32,7 +35,15 @@ function revealAllElements() {
   revealItems.forEach(revealElement);
 }
 
+function disconnectRevealObserver() {
+  if (!revealObserver) return;
+  revealObserver.disconnect();
+  revealObserver = null;
+}
+
 function initRevealObserver() {
+  disconnectRevealObserver();
+
   if (revealItems.length === 0) return;
 
   if (isReducedMotionEnabled() || !("IntersectionObserver" in window)) {
@@ -40,12 +51,22 @@ function initRevealObserver() {
     return;
   }
 
+  const unrevealedItems = revealItems.filter(
+    (item) => !item.classList.contains("visible")
+  );
+
+  if (unrevealedItems.length === 0) return;
+
   revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
+
         revealElement(entry.target);
-        revealObserver.unobserve(entry.target);
+
+        if (revealObserver) {
+          revealObserver.unobserve(entry.target);
+        }
       });
     },
     {
@@ -54,10 +75,8 @@ function initRevealObserver() {
     }
   );
 
-  revealItems.forEach((item) => {
-    if (!item.classList.contains("visible")) {
-      revealObserver.observe(item);
-    }
+  unrevealedItems.forEach((item) => {
+    revealObserver.observe(item);
   });
 }
 
@@ -66,20 +85,10 @@ function initRevealObserver() {
 function updateProgressBar() {
   const scrollTop = window.scrollY || window.pageYOffset || 0;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = docHeight > 0 ? clamp((scrollTop / docHeight) * 100, 0, 100) : 0;
+  const progress =
+    docHeight > 0 ? clamp((scrollTop / docHeight) * 100, 0, 100) : 0;
 
   document.documentElement.style.setProperty("--progress", `${progress}%`);
-}
-
-function requestProgressBarUpdate() {
-  if (progressTicking) return;
-
-  progressTicking = true;
-
-  window.requestAnimationFrame(() => {
-    updateProgressBar();
-    progressTicking = false;
-  });
 }
 
 /* ---------- SCROLL TOP BUTTON ---------- */
@@ -87,8 +96,9 @@ function requestProgressBarUpdate() {
 function updateScrollTopButtonLabel() {
   if (!scrollTopButton) return;
 
-  const isPL = isPolishLanguage();
-  const label = isPL ? "Wróć na górę strony" : "Back to top";
+  const label = isPolishLanguage()
+    ? "Wróć na górę strony"
+    : "Back to top";
 
   scrollTopButton.setAttribute("aria-label", label);
   scrollTopButton.setAttribute("title", label);
@@ -100,7 +110,9 @@ function setScrollTopButtonVisibility(visible) {
   scrollTopButton.classList.toggle("is-visible", visible);
   scrollTopButton.style.opacity = visible ? "1" : "0";
   scrollTopButton.style.pointerEvents = visible ? "auto" : "none";
-  scrollTopButton.style.transform = visible ? "translateY(0)" : "translateY(8px)";
+  scrollTopButton.style.transform = visible
+    ? "translateY(0)"
+    : "translateY(8px)";
   scrollTopButton.setAttribute("aria-hidden", visible ? "false" : "true");
 }
 
@@ -108,7 +120,7 @@ function updateScrollTopButtonVisibility() {
   if (!scrollTopButton) return;
 
   const scrollTop = window.scrollY || window.pageYOffset || 0;
-  setScrollTopButtonVisibility(scrollTop > 560);
+  setScrollTopButtonVisibility(scrollTop > SCROLL_TOP_VISIBILITY_THRESHOLD);
 }
 
 function handleScrollTopClick() {
@@ -118,12 +130,34 @@ function handleScrollTopClick() {
   });
 }
 
+/* ---------- SCROLL-LINKED UI ---------- */
+
+function updateScrollLinkedUi() {
+  updateProgressBar();
+  updateScrollTopButtonVisibility();
+}
+
+function requestScrollLinkedUiUpdate() {
+  if (scrollUiTicking) return;
+
+  scrollUiTicking = true;
+
+  window.requestAnimationFrame(() => {
+    updateScrollLinkedUi();
+    scrollUiTicking = false;
+  });
+}
+
 /* ---------- GLOBAL REFRESH ---------- */
 
 function refreshMainUI() {
-  requestProgressBarUpdate();
-  updateScrollTopButtonVisibility();
+  requestScrollLinkedUiUpdate();
   updateScrollTopButtonLabel();
+}
+
+function handleReducedMotionChange() {
+  initRevealObserver();
+  refreshMainUI();
 }
 
 /* ---------- INIT ---------- */
@@ -137,14 +171,21 @@ if (scrollTopButton) {
 initRevealObserver();
 refreshMainUI();
 
-window.addEventListener("scroll", () => {
-  requestProgressBarUpdate();
-  updateScrollTopButtonVisibility();
-}, { passive: true });
+window.addEventListener(
+  "scroll",
+  () => {
+    requestScrollLinkedUiUpdate();
+  },
+  { passive: true }
+);
 
 window.addEventListener("resize", refreshMainUI);
 window.addEventListener("orientationchange", refreshMainUI);
 window.addEventListener("load", refreshMainUI);
+window.addEventListener("pageshow", () => {
+  initRevealObserver();
+  refreshMainUI();
+});
 
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
@@ -153,3 +194,4 @@ document.addEventListener("visibilitychange", () => {
 });
 
 document.addEventListener("site:cinematic-change", refreshMainUI);
+document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
