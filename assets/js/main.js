@@ -4,9 +4,12 @@ const revealItems = Array.from(document.querySelectorAll(".reveal"));
 const scrollTopButton = document.getElementById("scrollTopButton");
 
 const SCROLL_TOP_VISIBILITY_THRESHOLD = 560;
+const BODY_CLASS_ATTRIBUTE = "class";
+const VIEWPORT_HEIGHT_CSS_VARIABLE = "--vh";
 
 let scrollUiTicking = false;
 let revealObserver = null;
+let bodyClassObserver = null;
 
 function isReducedMotionEnabled() {
   return document.body.classList.contains("reduced-motion");
@@ -16,12 +19,29 @@ function isPolishLanguage() {
   return document.body.dataset.lang === "pl";
 }
 
+function isMobileMenuOpen() {
+  return document.body.classList.contains("mobile-menu-open");
+}
+
 function shouldUseSmoothScroll() {
   return !isReducedMotionEnabled();
 }
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+/* ---------- VIEWPORT HEIGHT ---------- */
+
+function updateViewportHeightVariable() {
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+
+  if (!viewportHeight) return;
+
+  document.documentElement.style.setProperty(
+    VIEWPORT_HEIGHT_CSS_VARIABLE,
+    `${viewportHeight * 0.01}px`
+  );
 }
 
 /* ---------- REVEAL SYSTEM ---------- */
@@ -120,7 +140,11 @@ function updateScrollTopButtonVisibility() {
   if (!scrollTopButton) return;
 
   const scrollTop = window.scrollY || window.pageYOffset || 0;
-  setScrollTopButtonVisibility(scrollTop > SCROLL_TOP_VISIBILITY_THRESHOLD);
+  const shouldShow =
+    scrollTop > SCROLL_TOP_VISIBILITY_THRESHOLD &&
+    !isMobileMenuOpen();
+
+  setScrollTopButtonVisibility(shouldShow);
 }
 
 function handleScrollTopClick() {
@@ -151,9 +175,33 @@ function requestScrollLinkedUiUpdate() {
   });
 }
 
+/* ---------- BODY CLASS OBSERVER ---------- */
+
+function disconnectBodyClassObserver() {
+  if (!bodyClassObserver) return;
+  bodyClassObserver.disconnect();
+  bodyClassObserver = null;
+}
+
+function initBodyClassObserver() {
+  disconnectBodyClassObserver();
+
+  if (!("MutationObserver" in window) || !document.body) return;
+
+  bodyClassObserver = new MutationObserver(() => {
+    refreshMainUI();
+  });
+
+  bodyClassObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: [BODY_CLASS_ATTRIBUTE]
+  });
+}
+
 /* ---------- GLOBAL REFRESH ---------- */
 
 function refreshMainUI() {
+  updateViewportHeightVariable();
   requestScrollLinkedUiUpdate();
   updateScrollTopButtonLabel();
 }
@@ -171,7 +219,9 @@ if (scrollTopButton) {
   scrollTopButton.addEventListener("click", handleScrollTopClick);
 }
 
+updateViewportHeightVariable();
 initRevealObserver();
+initBodyClassObserver();
 refreshMainUI();
 
 window.addEventListener(
@@ -186,6 +236,7 @@ window.addEventListener("resize", refreshMainUI);
 window.addEventListener("orientationchange", refreshMainUI);
 window.addEventListener("load", refreshMainUI);
 window.addEventListener("pageshow", () => {
+  updateViewportHeightVariable();
   initRevealObserver();
   refreshMainUI();
 });
