@@ -143,8 +143,11 @@ function requestScrollLinkedUiUpdate() {
   scrollUiTicking = true;
 
   window.requestAnimationFrame(() => {
-    updateScrollLinkedUi();
-    scrollUiTicking = false;
+    try {
+      updateScrollLinkedUi();
+    } finally {
+      scrollUiTicking = false;
+    }
   });
 }
 
