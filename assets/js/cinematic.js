@@ -214,6 +214,7 @@ function initCinematicMode() {
   }
 
   window.addEventListener("storage", syncCinematicModeAcrossTabs);
+  window.addEventListener("pageshow", updateCinematicLabels);
 }
 
 /* expose for future use */
