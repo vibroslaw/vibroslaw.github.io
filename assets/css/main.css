@@ -1228,4 +1228,4 @@ body.reduced-motion *::after{
   html[data-page-transition="cinematic"] .page-transition{
     filter:saturate(1.02);
   }
-  }
+}
