@@ -6,7 +6,12 @@ let continueText = null;
 let continueButton = null;
 let dismissContinue = null;
 let trackedLinks = [];
+
 let continuePanelInitialized = false;
+
+function getBody() {
+  return document.body;
+}
 
 function cacheContinuePanelElements() {
   continuePanel = document.getElementById("continuePanel");
@@ -17,7 +22,8 @@ function cacheContinuePanelElements() {
 }
 
 function isPolishLanguage() {
-  return document.body?.dataset.lang === "pl";
+  const body = getBody();
+  return body?.dataset.lang === "pl";
 }
 
 function resolveAbsoluteUrl(url) {
@@ -199,19 +205,24 @@ function updateContinuePanel(entry) {
       : `Open the last world, guide, or work you visited: ${entry.title}`
   );
 
+  continueButton.setAttribute(
+    "title",
+    isPL
+      ? `Kontynuuj: ${entry.title}`
+      : `Continue: ${entry.title}`
+  );
+
   continueText.textContent = isPL
     ? `Wróć do ostatnio odwiedzanego świata, przewodnika lub dzieła: ${entry.title}.`
     : `Return to the last world, guide, or work you visited: ${entry.title}.`;
 
   if (dismissContinue) {
-    dismissContinue.setAttribute(
-      "aria-label",
-      isPL ? "Ukryj panel kontynuacji" : "Hide continue panel"
-    );
-    dismissContinue.setAttribute(
-      "title",
-      isPL ? "Ukryj panel kontynuacji" : "Hide continue panel"
-    );
+    const dismissLabel = isPL
+      ? "Ukryj panel kontynuacji"
+      : "Hide continue panel";
+
+    dismissContinue.setAttribute("aria-label", dismissLabel);
+    dismissContinue.setAttribute("title", dismissLabel);
   }
 }
 
@@ -242,6 +253,8 @@ function refreshContinuePanel() {
 }
 
 function handleTrackedLinkClick(link) {
+  if (!(link instanceof HTMLAnchorElement)) return;
+
   const href = link.getAttribute("href");
   const title = (link.dataset.trackTitle || link.textContent || "").trim();
 
@@ -251,16 +264,26 @@ function handleTrackedLinkClick(link) {
   clearDismissedContinueState();
 }
 
-function initTrackedLinks() {
-  trackedLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      handleTrackedLinkClick(link);
-    });
+function bindTrackedLink(link) {
+  if (!(link instanceof HTMLAnchorElement)) return;
+  if (link.dataset.continueBound === "true") return;
+
+  link.dataset.continueBound = "true";
+
+  link.addEventListener("click", () => {
+    handleTrackedLinkClick(link);
   });
+}
+
+function initTrackedLinks() {
+  trackedLinks.forEach(bindTrackedLink);
 }
 
 function initDismissButton() {
   if (!dismissContinue) return;
+  if (dismissContinue.dataset.continueBound === "true") return;
+
+  dismissContinue.dataset.continueBound = "true";
 
   dismissContinue.addEventListener("click", () => {
     const entry = getLastVisitedEntry();
@@ -278,23 +301,30 @@ function handleStorageChange(event) {
   refreshContinuePanel();
 }
 
+function handlePageShow() {
+  cacheContinuePanelElements();
+  initTrackedLinks();
+  initDismissButton();
+  refreshContinuePanel();
+}
+
 function initContinuePanel() {
   if (continuePanelInitialized) return;
-
   continuePanelInitialized = true;
-  cacheContinuePanelElements();
 
+  cacheContinuePanelElements();
   initTrackedLinks();
   initDismissButton();
   refreshContinuePanel();
 
-  window.addEventListener("pageshow", refreshContinuePanel);
+  window.addEventListener("pageshow", handlePageShow);
   window.addEventListener("storage", handleStorageChange);
 }
 
 /* expose for future use */
 window.refreshContinuePanel = refreshContinuePanel;
 window.setLastVisitedEntry = setLastVisitedEntry;
+window.getLastVisitedEntry = getLastVisitedEntry;
 
 if (document.body) {
   initContinuePanel();
