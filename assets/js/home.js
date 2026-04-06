@@ -1,6 +1,3 @@
-const pageHero = document.querySelector(".hero-home, .profile-hero");
-const reducedMotionToggle = document.getElementById("reducedMotionToggle");
-
 const REDUCED_MOTION_STORAGE_KEY = "siteReducedMotion";
 
 const HERO_PARALLAX_CSS_VARIABLE = "--hero-parallax";
@@ -8,20 +5,37 @@ const HERO_VISIBILITY_CSS_VARIABLE = "--hero-visibility";
 const HERO_PROGRESS_CSS_VARIABLE = "--hero-scroll-progress";
 const HERO_FOCUS_CSS_VARIABLE = "--hero-focus";
 
+let pageHero = null;
+let reducedMotionToggle = null;
+
 let heroMotionTicking = false;
 let systemReducedMotionQuery = null;
 let heroResizeObserver = null;
+let heroMotionInitialized = false;
+let reducedMotionInitialized = false;
+
+function getBody() {
+  return document.body;
+}
+
+function cacheUiElements() {
+  pageHero = document.querySelector(".hero-home, .profile-hero");
+  reducedMotionToggle = document.getElementById("reducedMotionToggle");
+}
 
 function isPolishLanguage() {
-  return document.body.dataset.lang === "pl";
+  const body = getBody();
+  return body?.dataset.lang === "pl";
 }
 
 function isReducedMotionEnabled() {
-  return document.body.classList.contains("reduced-motion");
+  const body = getBody();
+  return !!body && body.classList.contains("reduced-motion");
 }
 
 function isCinematicModeEnabled() {
-  return document.body.classList.contains("cinematic-mode");
+  const body = getBody();
+  return !!body && body.classList.contains("cinematic-mode");
 }
 
 function clamp(value, min, max) {
@@ -116,15 +130,18 @@ function resetHeroMotionState() {
   setRootCssVariable(HERO_PROGRESS_CSS_VARIABLE, "0");
   setRootCssVariable(HERO_FOCUS_CSS_VARIABLE, "0");
 
-  if (!pageHero) return;
+  if (pageHero) {
+    pageHero.classList.remove(
+      "hero-in-view",
+      "hero-near-focus",
+      "hero-out-of-view"
+    );
+  }
 
-  pageHero.classList.remove(
-    "hero-in-view",
-    "hero-near-focus",
-    "hero-out-of-view"
-  );
+  const body = getBody();
+  if (!body) return;
 
-  document.body.classList.remove("hero-active", "hero-passive");
+  body.classList.remove("hero-active", "hero-passive");
 }
 
 function updateHeroMotionState() {
@@ -203,8 +220,11 @@ function updateHeroMotionState() {
   pageHero.classList.toggle("hero-near-focus", focus > 0.72);
   pageHero.classList.toggle("hero-out-of-view", visibilityRatio <= 0.02);
 
-  document.body.classList.toggle("hero-active", visibilityRatio > 0.02);
-  document.body.classList.toggle("hero-passive", visibilityRatio <= 0.02);
+  const body = getBody();
+  if (!body) return;
+
+  body.classList.toggle("hero-active", visibilityRatio > 0.02);
+  body.classList.toggle("hero-passive", visibilityRatio <= 0.02);
 }
 
 function requestHeroMotionUpdate() {
@@ -223,6 +243,10 @@ function requestHeroMotionUpdate() {
 
 function applyReducedMotionState(enabled, options = {}) {
   const { persist = true, notify = true } = options;
+  const body = getBody();
+
+  if (!body) return;
+
   const currentState = isReducedMotionEnabled();
 
   if (currentState === enabled) {
@@ -241,7 +265,7 @@ function applyReducedMotionState(enabled, options = {}) {
     return;
   }
 
-  document.body.classList.toggle("reduced-motion", enabled);
+  body.classList.toggle("reduced-motion", enabled);
 
   if (persist) {
     saveReducedMotionPreference(enabled);
@@ -304,6 +328,11 @@ function bindSystemReducedMotionListener() {
 }
 
 function initReducedMotion() {
+  if (reducedMotionInitialized) return;
+  reducedMotionInitialized = true;
+
+  cacheUiElements();
+
   const shouldReduceMotion = readReducedMotionPreference();
 
   applyReducedMotionState(shouldReduceMotion, {
@@ -335,7 +364,19 @@ function initHeroResizeObserver() {
   heroResizeObserver.observe(pageHero);
 }
 
+function handlePageShow() {
+  cacheUiElements();
+  updateReducedMotionButtonLabel();
+  initHeroResizeObserver();
+  requestHeroMotionUpdate();
+}
+
 function initHeroMotion() {
+  if (heroMotionInitialized) return;
+  heroMotionInitialized = true;
+
+  cacheUiElements();
+
   if (!pageHero) return;
 
   requestHeroMotionUpdate();
@@ -344,7 +385,7 @@ function initHeroMotion() {
   window.addEventListener("resize", requestHeroMotionUpdate);
   window.addEventListener("orientationchange", requestHeroMotionUpdate);
   window.addEventListener("load", requestHeroMotionUpdate);
-  window.addEventListener("pageshow", requestHeroMotionUpdate);
+  window.addEventListener("pageshow", handlePageShow);
 
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
@@ -368,5 +409,21 @@ function initHeroMotion() {
   }
 }
 
-initReducedMotion();
-initHeroMotion();
+/* expose for future use */
+window.applyReducedMotionState = applyReducedMotionState;
+window.requestHeroMotionUpdate = requestHeroMotionUpdate;
+
+function initHeroAndMotionUi() {
+  cacheUiElements();
+  initReducedMotion();
+  initHeroMotion();
+  updateReducedMotionButtonLabel();
+}
+
+if (document.body) {
+  initHeroAndMotionUi();
+} else {
+  document.addEventListener("DOMContentLoaded", initHeroAndMotionUi, {
+    once: true
+  });
+}
