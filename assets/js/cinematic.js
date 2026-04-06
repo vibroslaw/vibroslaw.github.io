@@ -140,10 +140,13 @@ function closeMobileMenuIfOpen() {
     return;
   }
 
-  document.body.classList.remove("mobile-menu-open");
-
   const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
   const mobileNavToggle = document.getElementById("mobileNavToggle");
+
+  const savedTop = document.body.style.top;
+  const restoredScrollY = savedTop ? Math.abs(parseInt(savedTop, 10)) || 0 : 0;
+
+  document.body.classList.remove("mobile-menu-open");
 
   if (mobileMenuOverlay) {
     mobileMenuOverlay.setAttribute("aria-hidden", "true");
@@ -160,6 +163,10 @@ function closeMobileMenuIfOpen() {
   document.body.style.removeProperty("right");
   document.body.style.removeProperty("overflowY");
   document.body.style.removeProperty("paddingRight");
+
+  if (restoredScrollY > 0) {
+    window.scrollTo(0, restoredScrollY);
+  }
 }
 
 function handleCinematicButtonClick() {
