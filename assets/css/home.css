@@ -734,18 +734,18 @@ body.cinematic-mode .hero-home .glass-panel{
 
 /* ---------- CINEMATIC CARD ENTRY ---------- */
 
-body.cinematic-mode .project-link-card{
+body.cinematic-mode .cinematic-entry-card{
   border-color:rgba(255,255,255,.12);
   background:linear-gradient(180deg, rgba(255,255,255,.048), rgba(255,255,255,.026));
   box-shadow:0 24px 70px rgba(0,0,0,.34);
 }
 
-body.cinematic-mode .project-link-card::after{
+body.cinematic-mode .cinematic-entry-card::after{
   opacity:.14;
 }
 
-body.cinematic-mode .project-link-card:hover,
-body.cinematic-mode .project-link-card:focus-visible{
+body.cinematic-mode .cinematic-entry-card:hover,
+body.cinematic-mode .cinematic-entry-card:focus-visible{
   transform:translateY(var(--card-cinematic-lift)) scale(var(--card-cinematic-scale));
   border-color:rgba(201,178,143,.22);
   background:
@@ -756,34 +756,38 @@ body.cinematic-mode .project-link-card:focus-visible{
     0 0 0 1px rgba(201,178,143,.10) inset;
 }
 
-body.cinematic-mode .project-link-card:hover::after,
-body.cinematic-mode .project-link-card:focus-visible::after{
+body.cinematic-mode .cinematic-entry-card:hover::after,
+body.cinematic-mode .cinematic-entry-card:focus-visible::after{
   opacity:.34;
 }
 
-body.cinematic-mode .project-link-card:hover .project-media,
-body.cinematic-mode .project-link-card:focus-visible .project-media{
+body.cinematic-mode .cinematic-entry-card:hover .project-media,
+body.cinematic-mode .cinematic-entry-card:focus-visible .project-media{
   transform:scale(var(--card-cinematic-media-scale));
   filter:saturate(.98) brightness(1.04) contrast(1.04);
 }
 
-body.cinematic-mode .project-link-card:hover .project-media::after,
-body.cinematic-mode .project-link-card:focus-visible .project-media::after{
+body.cinematic-mode .cinematic-entry-card:hover .project-media::after,
+body.cinematic-mode .cinematic-entry-card:focus-visible .project-media::after{
   opacity:.92;
   transform:scale(1.02);
 }
 
-body.cinematic-mode .project-link-card:hover .project-body,
-body.cinematic-mode .project-link-card:focus-visible .project-body{
+body.cinematic-mode .cinematic-entry-card:hover .project-body,
+body.cinematic-mode .cinematic-entry-card:focus-visible .project-body{
   transform:translateY(-2px);
 }
 
-body.cinematic-mode .project-link-card:hover .card-entry::after,
-body.cinematic-mode .project-link-card:focus-visible .card-entry::after{
+body.cinematic-mode .cinematic-entry-card:hover .card-entry::after,
+body.cinematic-mode .cinematic-entry-card:focus-visible .card-entry::after{
   transform:translateX(7px);
 }
 
-body.cinematic-transition-active .project-link-card{
+body.cinematic-transition-active{
+  overflow:hidden;
+}
+
+body.cinematic-transition-active .cinematic-entry-card{
   pointer-events:none;
 }
 
@@ -798,6 +802,7 @@ body.reduced-motion .hero-home .hero-bg::after,
 body.reduced-motion .project-link-card::before,
 body.reduced-motion .project-media,
 body.reduced-motion .project-link-card,
+body.reduced-motion .project-body,
 body.reduced-motion .mini-card::before,
 body.reduced-motion .timeline-item,
 body.reduced-motion .glass-panel{
@@ -1049,12 +1054,12 @@ body.reduced-motion .glass-panel:hover{
       );
   }
 
-  body.cinematic-mode .project-link-card{
+  body.cinematic-mode .cinematic-entry-card{
     border-color:rgba(255,255,255,.11);
     box-shadow:0 20px 56px rgba(0,0,0,.32);
   }
 
-  body.cinematic-mode .project-link-card:active{
+  body.cinematic-mode .cinematic-entry-card:active{
     transform:translateY(-2px) scale(var(--card-cinematic-press-scale));
     border-color:rgba(201,178,143,.24);
     background:
@@ -1065,17 +1070,17 @@ body.reduced-motion .glass-panel:hover{
       0 0 0 1px rgba(201,178,143,.10) inset;
   }
 
-  body.cinematic-mode .project-link-card:active .project-media{
+  body.cinematic-mode .cinematic-entry-card:active .project-media{
     transform:scale(1.035);
     filter:saturate(.95) brightness(1.03) contrast(1.03);
   }
 
-  body.cinematic-mode .project-link-card:active .project-media::after{
+  body.cinematic-mode .cinematic-entry-card:active .project-media::after{
     opacity:.90;
     transform:scale(1.02);
   }
 
-  body.cinematic-mode .project-link-card:active .project-body{
+  body.cinematic-mode .cinematic-entry-card:active .project-body{
     transform:translateY(-1px);
   }
 
@@ -1196,11 +1201,11 @@ body.reduced-motion .glass-panel:hover{
     min-height:232px;
   }
 
-  body.cinematic-mode .project-link-card:active{
+  body.cinematic-mode .cinematic-entry-card:active{
     transform:translateY(-2px) scale(.99);
   }
 
-  body.cinematic-mode .project-link-card:active .project-media{
+  body.cinematic-mode .cinematic-entry-card:active .project-media{
     transform:scale(1.028);
   }
 }
@@ -1320,23 +1325,23 @@ body.reduced-motion .glass-panel:hover{
     border-color:rgba(255,255,255,.14);
   }
 
-  body.cinematic-mode .project-link-card:hover{
+  body.cinematic-mode .cinematic-entry-card:hover{
     transform:none;
     border-color:rgba(255,255,255,.11);
     background:linear-gradient(180deg, rgba(255,255,255,.048), rgba(255,255,255,.026));
     box-shadow:0 20px 56px rgba(0,0,0,.32);
   }
 
-  body.cinematic-mode .project-link-card:hover::after{
+  body.cinematic-mode .cinematic-entry-card:hover::after{
     opacity:.14;
   }
 
-  body.cinematic-mode .project-link-card:hover .project-media{
+  body.cinematic-mode .cinematic-entry-card:hover .project-media{
     transform:none;
     filter:saturate(.82);
   }
 
-  body.cinematic-mode .project-link-card:active{
+  body.cinematic-mode .cinematic-entry-card:active{
     transform:translateY(-2px) scale(var(--card-cinematic-press-scale));
     border-color:rgba(201,178,143,.24);
     background:
@@ -1347,21 +1352,21 @@ body.reduced-motion .glass-panel:hover{
       0 0 0 1px rgba(201,178,143,.10) inset;
   }
 
-  body.cinematic-mode .project-link-card:active::after{
+  body.cinematic-mode .cinematic-entry-card:active::after{
     opacity:.30;
   }
 
-  body.cinematic-mode .project-link-card:active .project-media{
+  body.cinematic-mode .cinematic-entry-card:active .project-media{
     transform:scale(1.035);
     filter:saturate(.95) brightness(1.03) contrast(1.03);
   }
 
-  body.cinematic-mode .project-link-card:active .project-media::after{
+  body.cinematic-mode .cinematic-entry-card:active .project-media::after{
     opacity:.90;
     transform:scale(1.02);
   }
 
-  body.cinematic-mode .project-link-card:active .project-body{
+  body.cinematic-mode .cinematic-entry-card:active .project-body{
     transform:translateY(-1px);
   }
-      }
+}
