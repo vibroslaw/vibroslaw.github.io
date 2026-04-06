@@ -64,7 +64,7 @@ function saveToLocalStorage(key, value) {
   try {
     localStorage.setItem(key, value);
   } catch (error) {
-    // ignore storage errors
+    /* ignore storage errors */
   }
 }
 
@@ -80,7 +80,7 @@ function removeFromLocalStorage(key) {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    // ignore storage errors
+    /* ignore storage errors */
   }
 }
 
@@ -88,7 +88,7 @@ function saveToSessionStorage(key, value) {
   try {
     sessionStorage.setItem(key, value);
   } catch (error) {
-    // ignore storage errors
+    /* ignore storage errors */
   }
 }
 
