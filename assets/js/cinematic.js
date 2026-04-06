@@ -1,15 +1,29 @@
-const cinematicToggle = document.getElementById("cinematicToggle");
-const cinematicHeroButton = document.getElementById("cinematicHeroButton");
-const mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
-
 const CINEMATIC_STORAGE_KEY = "siteCinematicMode";
 
+let cinematicToggle = null;
+let cinematicHeroButton = null;
+let mobileCinematicToggle = null;
+
+let cinematicModeInitialized = false;
+
+function getBody() {
+  return document.body;
+}
+
+function cacheCinematicElements() {
+  cinematicToggle = document.getElementById("cinematicToggle");
+  cinematicHeroButton = document.getElementById("cinematicHeroButton");
+  mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
+}
+
 function isPolishLanguage() {
-  return document.body.dataset.lang === "pl";
+  const body = getBody();
+  return body?.dataset.lang === "pl";
 }
 
 function isCinematicModeActive() {
-  return document.body.classList.contains("cinematic-mode");
+  const body = getBody();
+  return !!body && body.classList.contains("cinematic-mode");
 }
 
 function readFromLocalStorage(key) {
@@ -61,6 +75,8 @@ function updateSingleButton(button, text, pressed) {
 }
 
 function updateCinematicLabels() {
+  cacheCinematicElements();
+
   const labels = getCinematicLabels();
   const active = isCinematicModeActive();
 
@@ -92,8 +108,11 @@ function notifyCinematicChange(active, source = "manual") {
 }
 
 function setBodyCinematicState(active) {
-  document.body.classList.toggle("cinematic-mode", active);
-  document.body.dataset.cinematic = active ? "on" : "off";
+  const body = getBody();
+  if (!body) return;
+
+  body.classList.toggle("cinematic-mode", active);
+  body.dataset.cinematic = active ? "on" : "off";
   document.documentElement.dataset.cinematic = active ? "on" : "off";
 }
 
@@ -103,6 +122,9 @@ function setCinematicMode(active, options = {}) {
     notify = true,
     source = "manual"
   } = options;
+
+  const body = getBody();
+  if (!body) return;
 
   const currentState = isCinematicModeActive();
 
@@ -133,7 +155,8 @@ function toggleCinematicMode(source = "manual") {
 }
 
 function closeMobileMenuIfOpen() {
-  if (!document.body.classList.contains("mobile-menu-open")) return;
+  const body = getBody();
+  if (!body || !body.classList.contains("mobile-menu-open")) return;
 
   if (typeof window.closeMobileMenu === "function") {
     window.closeMobileMenu({ restoreFocus: false });
@@ -143,12 +166,12 @@ function closeMobileMenuIfOpen() {
   const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
   const mobileNavToggle = document.getElementById("mobileNavToggle");
 
-  const savedTop = document.body.style.top;
+  const savedTop = body.style.top;
   const restoredScrollY = savedTop
     ? Math.abs(parseInt(savedTop, 10)) || 0
     : 0;
 
-  document.body.classList.remove("mobile-menu-open");
+  body.classList.remove("mobile-menu-open");
 
   if (mobileMenuOverlay) {
     mobileMenuOverlay.setAttribute("aria-hidden", "true");
@@ -158,13 +181,13 @@ function closeMobileMenuIfOpen() {
     mobileNavToggle.setAttribute("aria-expanded", "false");
   }
 
-  document.body.style.removeProperty("top");
-  document.body.style.removeProperty("position");
-  document.body.style.removeProperty("width");
-  document.body.style.removeProperty("left");
-  document.body.style.removeProperty("right");
-  document.body.style.removeProperty("overflowY");
-  document.body.style.removeProperty("paddingRight");
+  body.style.removeProperty("top");
+  body.style.removeProperty("position");
+  body.style.removeProperty("width");
+  body.style.removeProperty("left");
+  body.style.removeProperty("right");
+  body.style.removeProperty("overflowY");
+  body.style.removeProperty("paddingRight");
 
   if (restoredScrollY > 0) {
     window.scrollTo(0, restoredScrollY);
@@ -192,7 +215,17 @@ function syncCinematicModeAcrossTabs(event) {
   });
 }
 
+function handlePageShow() {
+  cacheCinematicElements();
+  updateCinematicLabels();
+}
+
 function initCinematicMode() {
+  if (cinematicModeInitialized) return;
+  cinematicModeInitialized = true;
+
+  cacheCinematicElements();
+
   const shouldEnable = readCinematicPreference();
 
   setCinematicMode(shouldEnable, {
@@ -217,12 +250,19 @@ function initCinematicMode() {
   }
 
   window.addEventListener("storage", syncCinematicModeAcrossTabs);
-  window.addEventListener("pageshow", updateCinematicLabels);
+  window.addEventListener("pageshow", handlePageShow);
 }
 
 /* expose for future use */
 window.setCinematicMode = setCinematicMode;
 window.toggleCinematicMode = toggleCinematicMode;
 window.isCinematicModeActive = isCinematicModeActive;
+window.updateCinematicLabels = updateCinematicLabels;
 
-initCinematicMode();
+if (document.body) {
+  initCinematicMode();
+} else {
+  document.addEventListener("DOMContentLoaded", initCinematicMode, {
+    once: true
+  });
+}
