@@ -52,7 +52,7 @@ body[data-page="authorial-profile"] .profile-hero .hero-bg::after{
   position:absolute;
   inset:0;
   pointer-events:none;
-  opacity:0;
+  opacity:calc(var(--hero-focus, 0) * .72);
   background:
     radial-gradient(circle at 48% 16%, rgba(255,255,255,.08), transparent 26%),
     radial-gradient(circle at 76% 20%, rgba(201,178,143,.14), transparent 24%),
@@ -70,9 +70,9 @@ body[data-page="authorial-profile"] .profile-hero .hero-image{
   background-repeat:no-repeat;
   background-size:cover;
   background-position:var(--profile-hero-pos-desktop);
-  transform:translate3d(0, calc(var(--hero-parallax) * 0.28), 0) scale(1.01);
+  transform:translate3d(0, calc(var(--hero-parallax, 0px) * .28), 0) scale(calc(1.008 + (var(--hero-visibility, 0) * .012)));
   filter:saturate(.88) contrast(1.01) brightness(.82);
-  will-change:transform;
+  will-change:transform, filter;
 }
 
 body[data-page="authorial-profile"] .profile-hero .hero-light{
@@ -83,7 +83,7 @@ body[data-page="authorial-profile"] .profile-hero .hero-light{
     radial-gradient(circle at 78% 24%, rgba(201,178,143,0.11), transparent 24%),
     radial-gradient(circle at 22% 72%, rgba(201,178,143,0.04), transparent 30%);
   mix-blend-mode:screen;
-  opacity:.72;
+  opacity:calc(.54 + (var(--hero-focus, 0) * .28));
 }
 
 body[data-page="authorial-profile"] .profile-hero .hero-fade{
@@ -109,6 +109,7 @@ body[data-page="authorial-profile"] .hero-grid{
 body[data-page="authorial-profile"] .hero-copy{
   max-width:780px;
   padding-right:18px;
+  transform:translate3d(0, calc(var(--hero-parallax, 0px) * -.06), 0);
 }
 
 body[data-page="authorial-profile"] .eyebrow{
@@ -185,6 +186,7 @@ body[data-page="authorial-profile"] .hero-side{
   display:flex;
   justify-content:flex-end;
   align-items:flex-end;
+  transform:translate3d(0, calc(var(--hero-parallax, 0px) * -.03), 0);
 }
 
 body[data-page="authorial-profile"] .glass-panel{
@@ -202,7 +204,9 @@ body[data-page="authorial-profile"] .glass-panel{
     transform .35s var(--ease),
     border-color .35s var(--ease),
     box-shadow .35s var(--ease),
-    background .35s var(--ease);
+    background .35s var(--ease),
+    opacity .35s var(--ease);
+  opacity:calc(.94 + (var(--hero-focus, 0) * .06));
 }
 
 body[data-page="authorial-profile"] .glass-panel:hover{
@@ -500,12 +504,12 @@ body[data-page="authorial-profile"] #contact .cta-row{
 /* ---------- CINEMATIC MODE ---------- */
 
 body.cinematic-mode[data-page="authorial-profile"] .profile-hero .hero-bg::after{
-  opacity:1;
+  opacity:calc(.42 + (var(--hero-focus, 0) * .52));
 }
 
 body.cinematic-mode[data-page="authorial-profile"] .profile-hero .hero-image{
   filter:saturate(.98) brightness(.64) contrast(1.10);
-  transform:translate3d(0, calc(var(--hero-parallax) * 0.46), 0) scale(1.03);
+  transform:translate3d(0, calc(var(--hero-parallax, 0px) * .46), 0) scale(calc(1.02 + (var(--hero-focus, 0) * .02)));
 }
 
 body.cinematic-mode[data-page="authorial-profile"] .profile-hero .hero-fade{
@@ -515,7 +519,7 @@ body.cinematic-mode[data-page="authorial-profile"] .profile-hero .hero-fade{
 }
 
 body.cinematic-mode[data-page="authorial-profile"] .profile-hero .hero-light{
-  opacity:1.16;
+  opacity:calc(.82 + (var(--hero-focus, 0) * .34));
 }
 
 body.cinematic-mode[data-page="authorial-profile"] .hero-copy{
@@ -594,7 +598,7 @@ body.reduced-motion[data-page="authorial-profile"] .project-card:hover .project-
 
   body[data-page="authorial-profile"] .profile-hero .hero-image{
     background-position:var(--profile-hero-pos-tablet);
-    transform:translate3d(0, calc(var(--hero-parallax) * 0.20), 0) scale(1.004);
+    transform:translate3d(0, calc(var(--hero-parallax, 0px) * .20), 0) scale(1.004);
   }
 }
 
@@ -662,6 +666,7 @@ body.reduced-motion[data-page="authorial-profile"] .project-card:hover .project-
     padding-right:0;
     text-align:center;
     margin:0 auto;
+    transform:none;
   }
 
   body[data-page="authorial-profile"] .eyebrow{
@@ -701,6 +706,7 @@ body.reduced-motion[data-page="authorial-profile"] .project-card:hover .project-
 
   body[data-page="authorial-profile"] .hero-side{
     justify-content:center;
+    transform:none;
   }
 
   body[data-page="authorial-profile"] .glass-panel{
@@ -762,4 +768,4 @@ body.reduced-motion[data-page="authorial-profile"] .project-card:hover .project-
     background:
       linear-gradient(180deg, rgba(8,8,8,0.10) 0%, rgba(8,8,8,0.18) 34%, rgba(8,8,8,0.50) 100%);
   }
-                            }
+}
