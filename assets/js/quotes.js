@@ -10,25 +10,41 @@ function getQuotesFromBodyData() {
 
     if (!Array.isArray(parsedQuotes)) return [];
 
-    return parsedQuotes.filter(
-      (quote) => typeof quote === "string" && quote.trim().length > 0
-    );
+    return parsedQuotes
+      .filter((quote) => typeof quote === "string")
+      .map((quote) => quote.trim())
+      .filter((quote) => quote.length > 0);
   } catch (error) {
     return [];
   }
 }
 
+function getLocalDateKey() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function hashString(value) {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+
+  return hash;
+}
+
 function getDailyQuoteIndex(quotesLength) {
   if (!quotesLength) return 0;
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const startOfYear = new Date(year, 0, 0);
-  const diff = now - startOfYear;
-  const oneDay = 1000 * 60 * 60 * 24;
-  const dayOfYear = Math.floor(diff / oneDay);
+  const dateKey = getLocalDateKey();
+  const hash = hashString(dateKey);
 
-  return dayOfYear % quotesLength;
+  return hash % quotesLength;
 }
 
 function applyDailyQuote() {
@@ -42,6 +58,8 @@ function applyDailyQuote() {
 
   quoteElement.textContent = selectedQuote;
   quoteElement.setAttribute("data-quote-index", String(quoteIndex));
+  quoteElement.setAttribute("data-quote-count", String(quotes.length));
+  quoteElement.setAttribute("title", selectedQuote);
 }
 
 applyDailyQuote();
