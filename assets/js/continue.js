@@ -20,24 +20,26 @@ function resolveAbsoluteUrl(url) {
   }
 }
 
-function normalizePath(url) {
+function normalizeComparableUrl(url) {
   try {
     const absoluteUrl = resolveAbsoluteUrl(url);
     if (!absoluteUrl) return null;
 
-    const pathname = new URL(absoluteUrl).pathname;
-    return pathname.replace(/\/+$/, "") || "/";
+    const parsedUrl = new URL(absoluteUrl);
+    const pathname = parsedUrl.pathname.replace(/\/+$/, "") || "/";
+
+    return `${pathname}${parsedUrl.search}`;
   } catch (error) {
     return null;
   }
 }
 
 function isCurrentPage(href) {
-  const currentPath = normalizePath(window.location.href);
-  const targetPath = normalizePath(href);
+  const currentUrl = normalizeComparableUrl(window.location.href);
+  const targetUrl = normalizeComparableUrl(href);
 
-  if (!currentPath || !targetPath) return false;
-  return currentPath === targetPath;
+  if (!currentUrl || !targetUrl) return false;
+  return currentUrl === targetUrl;
 }
 
 function isTrackableHref(href) {
@@ -100,6 +102,14 @@ function readFromSessionStorage(key) {
   }
 }
 
+function removeFromSessionStorage(key) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch (error) {
+    /* ignore storage errors */
+  }
+}
+
 function setLastVisitedEntry(title, href) {
   if (!title || !href || !isTrackableHref(href)) return;
 
@@ -123,10 +133,14 @@ function getLastVisitedEntry() {
     const parsed = JSON.parse(stored);
 
     if (!parsed || typeof parsed !== "object") return null;
-    if (!parsed.title || !parsed.href) return null;
-    if (!isTrackableHref(parsed.href)) return null;
+    if (typeof parsed.title !== "string" || !parsed.title.trim()) return null;
+    if (typeof parsed.href !== "string" || !isTrackableHref(parsed.href)) return null;
 
-    return parsed;
+    return {
+      title: parsed.title.trim(),
+      href: parsed.href,
+      timestamp: typeof parsed.timestamp === "number" ? parsed.timestamp : null
+    };
   } catch (error) {
     removeFromLocalStorage(LAST_VISITED_STORAGE_KEY);
     return null;
@@ -140,6 +154,10 @@ function hasDismissedContinuePanelForHref(href) {
 function markContinuePanelDismissed(href) {
   if (!href) return;
   saveToSessionStorage(DISMISSED_CONTINUE_STORAGE_KEY, href);
+}
+
+function clearDismissedContinueState() {
+  removeFromSessionStorage(DISMISSED_CONTINUE_STORAGE_KEY);
 }
 
 function hideContinuePanel() {
@@ -176,21 +194,18 @@ function updateContinuePanel(entry) {
   continueText.textContent = isPL
     ? `Wróć do ostatnio odwiedzanego świata, przewodnika lub dzieła: ${entry.title}.`
     : `Return to the last world, guide, or work you visited: ${entry.title}.`;
+
+  if (dismissContinue) {
+    dismissContinue.setAttribute(
+      "aria-label",
+      isPL
+        ? "Ukryj panel kontynuacji"
+        : "Hide continue panel"
+    );
+  }
 }
 
-function initTrackedLinks() {
-  trackedLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      const href = link.getAttribute("href");
-      const title = (link.dataset.trackTitle || link.textContent || "").trim();
-
-      if (!title || !href) return;
-      setLastVisitedEntry(title, href);
-    });
-  });
-}
-
-function initContinuePanel() {
+function refreshContinuePanel() {
   if (!continuePanel || !continueText || !continueButton) return;
 
   const entry = getLastVisitedEntry();
@@ -214,6 +229,20 @@ function initContinuePanel() {
   showContinuePanel();
 }
 
+function initTrackedLinks() {
+  trackedLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const href = link.getAttribute("href");
+      const title = (link.dataset.trackTitle || link.textContent || "").trim();
+
+      if (!title || !href) return;
+
+      setLastVisitedEntry(title, href);
+      clearDismissedContinueState();
+    });
+  });
+}
+
 function initDismissButton() {
   if (!dismissContinue) return;
 
@@ -226,6 +255,24 @@ function initDismissButton() {
       markContinuePanelDismissed(entry.href);
     }
   });
+}
+
+function handleStorageChange(event) {
+  if (
+    event.key !== LAST_VISITED_STORAGE_KEY &&
+    event.key !== DISMISSED_CONTINUE_STORAGE_KEY
+  ) {
+    return;
+  }
+
+  refreshContinuePanel();
+}
+
+function initContinuePanel() {
+  refreshContinuePanel();
+
+  window.addEventListener("pageshow", refreshContinuePanel);
+  window.addEventListener("storage", handleStorageChange);
 }
 
 initTrackedLinks();
