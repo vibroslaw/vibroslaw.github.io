@@ -1,26 +1,33 @@
 document.documentElement.classList.add("js-ready");
 
-const revealItems = Array.from(document.querySelectorAll(".reveal"));
-const scrollTopButton = document.getElementById("scrollTopButton");
-
 const SCROLL_TOP_VISIBILITY_THRESHOLD = 560;
 const BODY_CLASS_ATTRIBUTE = "class";
 const VIEWPORT_HEIGHT_CSS_VARIABLE = "--vh";
+
+let revealItems = [];
+let scrollTopButton = null;
 
 let scrollUiTicking = false;
 let revealObserver = null;
 let bodyClassObserver = null;
 
+function getBody() {
+  return document.body;
+}
+
 function isReducedMotionEnabled() {
-  return document.body.classList.contains("reduced-motion");
+  const body = getBody();
+  return !!body && body.classList.contains("reduced-motion");
 }
 
 function isPolishLanguage() {
-  return document.body.dataset.lang === "pl";
+  const body = getBody();
+  return body?.dataset.lang === "pl";
 }
 
 function isMobileMenuOpen() {
-  return document.body.classList.contains("mobile-menu-open");
+  const body = getBody();
+  return !!body && body.classList.contains("mobile-menu-open");
 }
 
 function shouldUseSmoothScroll() {
@@ -34,7 +41,8 @@ function clamp(value, min, max) {
 /* ---------- VIEWPORT HEIGHT ---------- */
 
 function updateViewportHeightVariable() {
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+  const viewportHeight =
+    window.innerHeight || document.documentElement.clientHeight || 0;
 
   if (!viewportHeight) return;
 
@@ -213,39 +221,57 @@ function handleReducedMotionChange() {
 
 /* ---------- INIT ---------- */
 
-if (scrollTopButton) {
+function cacheUiElements() {
+  revealItems = Array.from(document.querySelectorAll(".reveal"));
+  scrollTopButton = document.getElementById("scrollTopButton");
+}
+
+function bindScrollTopButton() {
+  if (!scrollTopButton) return;
+
   setScrollTopButtonVisibility(false);
   updateScrollTopButtonLabel();
   scrollTopButton.addEventListener("click", handleScrollTopClick);
 }
 
-updateViewportHeightVariable();
-initRevealObserver();
-initBodyClassObserver();
-refreshMainUI();
+function initMainUi() {
+  cacheUiElements();
+  bindScrollTopButton();
 
-window.addEventListener(
-  "scroll",
-  () => {
-    requestScrollLinkedUiUpdate();
-  },
-  { passive: true }
-);
-
-window.addEventListener("resize", refreshMainUI);
-window.addEventListener("orientationchange", refreshMainUI);
-window.addEventListener("load", refreshMainUI);
-window.addEventListener("pageshow", () => {
   updateViewportHeightVariable();
   initRevealObserver();
+  initBodyClassObserver();
   refreshMainUI();
-});
 
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
+  window.addEventListener(
+    "scroll",
+    () => {
+      requestScrollLinkedUiUpdate();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("resize", refreshMainUI);
+  window.addEventListener("orientationchange", refreshMainUI);
+  window.addEventListener("load", refreshMainUI);
+  window.addEventListener("pageshow", () => {
+    cacheUiElements();
+    initRevealObserver();
     refreshMainUI();
-  }
-});
+  });
 
-document.addEventListener("site:cinematic-change", refreshMainUI);
-document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      refreshMainUI();
+    }
+  });
+
+  document.addEventListener("site:cinematic-change", refreshMainUI);
+  document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
+}
+
+if (document.body) {
+  initMainUi();
+} else {
+  document.addEventListener("DOMContentLoaded", initMainUi, { once: true });
+}
