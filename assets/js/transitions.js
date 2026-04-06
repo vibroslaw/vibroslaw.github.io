@@ -1,11 +1,28 @@
 const pageTransition = document.getElementById("pageTransition");
 
+const PAGE_TRANSITION_ACTIVE_CLASS = "active";
+const PAGE_TRANSITION_DATA_KEY = "pageTransition";
+
+let transitionLocked = false;
+
 function hasModifierKey(event) {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
 }
 
 function normalizePath(path) {
   return (path || "").replace(/\/+$/, "") || "/";
+}
+
+function isReducedMotionEnabled() {
+  if (document.body.classList.contains("reduced-motion")) {
+    return true;
+  }
+
+  if (window.matchMedia) {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  return false;
 }
 
 function isSameLocation(targetUrl) {
@@ -35,8 +52,10 @@ function shouldHandleTransition(link) {
   if (link.hasAttribute("download")) return false;
   if (link.hasAttribute("data-no-transition")) return false;
   if (link.getAttribute("target") === "_blank") return false;
-  if (link.getAttribute("rel")?.includes("external")) return false;
   if (link.getAttribute("aria-disabled") === "true") return false;
+
+  const rel = link.getAttribute("rel") || "";
+  if (rel.includes("external")) return false;
 
   let targetUrl;
 
@@ -47,24 +66,33 @@ function shouldHandleTransition(link) {
   }
 
   if (targetUrl.origin !== window.location.origin) return false;
-
-  if (isSameLocation(targetUrl)) {
-    return false;
-  }
+  if (isSameLocation(targetUrl)) return false;
 
   return true;
 }
 
-function shouldHandleFormTransition(form) {
+function shouldHandleFormTransition(form, submitter = null) {
   if (!form) return false;
   if (form.hasAttribute("data-no-transition")) return false;
-  if (form.getAttribute("target") === "_blank") return false;
 
-  const action = form.getAttribute("action");
+  const effectiveTarget =
+    submitter?.getAttribute("formtarget") ||
+    form.getAttribute("target") ||
+    "";
 
-  if (!action || action.trim() === "") {
-    return true;
-  }
+  if (effectiveTarget === "_blank") return false;
+
+  const effectiveMethod =
+    (submitter?.getAttribute("formmethod") || form.getAttribute("method") || "get")
+      .trim()
+      .toLowerCase();
+
+  if (effectiveMethod === "dialog") return false;
+
+  const action =
+    submitter?.getAttribute("formaction") ||
+    form.getAttribute("action") ||
+    window.location.href;
 
   try {
     const actionUrl = new URL(action, window.location.origin);
@@ -75,13 +103,23 @@ function shouldHandleFormTransition(form) {
 }
 
 function activatePageTransition() {
-  if (!pageTransition) return;
-  pageTransition.classList.add("active");
+  if (!pageTransition || transitionLocked) return;
+
+  transitionLocked = true;
+
+  pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
+  document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = isReducedMotionEnabled()
+    ? "minimal"
+    : "active";
 }
 
 function clearPageTransition() {
-  if (!pageTransition) return;
-  pageTransition.classList.remove("active");
+  if (pageTransition) {
+    pageTransition.classList.remove(PAGE_TRANSITION_ACTIVE_CLASS);
+  }
+
+  delete document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY];
+  transitionLocked = false;
 }
 
 window.addEventListener("DOMContentLoaded", clearPageTransition);
@@ -108,7 +146,11 @@ document.addEventListener("submit", (event) => {
 
   const form = event.target;
   if (!(form instanceof HTMLFormElement)) return;
-  if (!shouldHandleFormTransition(form)) return;
+
+  const submitter =
+    event.submitter instanceof HTMLElement ? event.submitter : null;
+
+  if (!shouldHandleFormTransition(form, submitter)) return;
 
   activatePageTransition();
 });
