@@ -10,6 +10,7 @@
     content="Official website of Piotr Lichwała (Vibrosław) — original audiovisual works shaped by memory, witness, history, and responsibility."
   />
   <meta name="theme-color" content="#090909" />
+  <meta name="color-scheme" content="dark" />
 
   <meta property="og:title" content="Piotr Lichwała (Vibrosław) — Official Website | Audiovisual Projects" />
   <meta
@@ -26,10 +27,30 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="/assets/css/main.css?v=7" />
-  <link rel="stylesheet" href="/assets/css/home.css?v=7" />
-  <link rel="stylesheet" href="/assets/css/cinematic.css?v=7" />
-  <link rel="stylesheet" href="/assets/css/mobile-nav.css?v=7" />
+  <link rel="preload" as="image" href="/assets/images/hero-main.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/images/hero-mobile.jpg" media="(max-width: 760px)" />
+  <link rel="preload" as="image" href="/assets/images/hero-raport-main.jpg" />
+  <link rel="preload" as="image" href="/assets/images/hero-sztab-main.jpg" />
+
+  <link rel="stylesheet" href="/assets/css/main.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/home.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css?v=8" />
+
+  <noscript>
+    <style>
+      .reveal{
+        opacity:1 !important;
+        transform:none !important;
+        filter:none !important;
+      }
+
+      .page-transition,
+      .progress-bar{
+        display:none !important;
+      }
+    </style>
+  </noscript>
 </head>
 <body
   data-page="home"
@@ -66,7 +87,12 @@
       </a>
       <a class="mobile-menu-link" href="#contact">Contact</a>
 
-      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+      <button
+        class="mobile-menu-link mobile-menu-button"
+        id="mobileCinematicToggle"
+        type="button"
+        aria-pressed="false"
+      >
         Cinematic Mode
       </button>
 
@@ -89,7 +115,14 @@
         <a href="/rap-ort/" class="nav-button track-link" data-track-title="Rap-Ort">Rap-Ort</a>
         <a href="/sztab/" class="nav-button track-link" data-track-title="SZTAB">SZTAB</a>
 
-        <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
+        <button
+          type="button"
+          id="cinematicToggle"
+          class="nav-button"
+          aria-pressed="false"
+        >
+          Cinematic Mode
+        </button>
 
         <div class="lang-switch" aria-label="Language switch">
           <a href="/" class="active">EN</a>
@@ -147,7 +180,12 @@
 
           <div class="cta-row">
             <a class="btn btn-primary" href="#projects">Open the Core Worlds</a>
-            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">
+            <button
+              class="btn btn-tertiary"
+              id="cinematicHeroButton"
+              type="button"
+              aria-pressed="false"
+            >
               Enter Cinematic Mode
             </button>
           </div>
@@ -574,7 +612,14 @@
   </main>
 
   <div class="floating-tools">
-    <button class="tool-button" id="reducedMotionToggle" type="button">Reduced Motion</button>
+    <button
+      class="tool-button"
+      id="reducedMotionToggle"
+      type="button"
+      aria-pressed="false"
+    >
+      Reduced Motion
+    </button>
     <button class="tool-button" id="scrollTopButton" type="button">Top</button>
   </div>
 
@@ -585,12 +630,12 @@
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=7"></script>
-  <script src="/assets/js/navigation.js?v=7"></script>
-  <script src="/assets/js/transitions.js?v=7"></script>
-  <script src="/assets/js/cinematic.js?v=7"></script>
-  <script src="/assets/js/continue.js?v=7"></script>
-  <script src="/assets/js/quotes.js?v=7"></script>
-  <script src="/assets/js/home.js?v=7"></script>
+  <script src="/assets/js/main.js?v=8"></script>
+  <script src="/assets/js/navigation.js?v=8"></script>
+  <script src="/assets/js/transitions.js?v=8"></script>
+  <script src="/assets/js/cinematic.js?v=8"></script>
+  <script src="/assets/js/continue.js?v=8"></script>
+  <script src="/assets/js/quotes.js?v=8"></script>
+  <script src="/assets/js/home.js?v=8"></script>
 </body>
-</html>
+  </html>
