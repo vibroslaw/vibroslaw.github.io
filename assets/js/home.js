@@ -5,6 +5,15 @@ const HERO_VISIBILITY_CSS_VARIABLE = "--hero-visibility";
 const HERO_PROGRESS_CSS_VARIABLE = "--hero-scroll-progress";
 const HERO_FOCUS_CSS_VARIABLE = "--hero-focus";
 
+const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
+const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
+const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
+const CINEMATIC_ARRIVAL_MAX_AGE = 12000;
+
+const HERO_MOTION_STRENGTH_DEFAULT = 22;
+const HERO_MOTION_STRENGTH_CINEMATIC_DESKTOP = 42;
+const HERO_MOTION_STRENGTH_CINEMATIC_MOBILE = 28;
+
 let pageHero = null;
 let reducedMotionToggle = null;
 
@@ -38,6 +47,20 @@ function isCinematicModeEnabled() {
   return !!body && body.classList.contains("cinematic-mode");
 }
 
+function isCinematicArrivalActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_ARRIVAL_CLASS);
+}
+
+function isCinematicTransitionActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_TRANSITION_CLASS);
+}
+
+function isMobileViewport() {
+  return window.innerWidth <= 760;
+}
+
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
@@ -53,6 +76,12 @@ function runOnNextFrame(callback) {
   }
 
   window.setTimeout(callback, 16);
+}
+
+function runAfterTwoFrames(callback) {
+  runOnNextFrame(() => {
+    runOnNextFrame(callback);
+  });
 }
 
 function getSystemReducedMotionPreference() {
@@ -74,6 +103,97 @@ function saveToLocalStorage(key, value) {
   } catch (error) {
     /* silent fallback */
   }
+}
+
+function readFromSessionStorage(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function removeFromSessionStorage(key) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch (error) {
+    /* silent fallback */
+  }
+}
+
+function normalizePath(path) {
+  return (path || "").replace(/\/+$/, "") || "/";
+}
+
+function normalizeComparableUrl(url) {
+  try {
+    const parsedUrl = new URL(url, window.location.origin);
+    return `${normalizePath(parsedUrl.pathname)}${parsedUrl.search}`;
+  } catch (error) {
+    return null;
+  }
+}
+
+function getPendingCinematicArrival() {
+  const raw = readFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    if (!parsed || typeof parsed !== "object") {
+      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      return null;
+    }
+
+    if (typeof parsed.href !== "string" || !parsed.href.trim()) {
+      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      return null;
+    }
+
+    if (
+      typeof parsed.timestamp === "number" &&
+      Date.now() - parsed.timestamp > CINEMATIC_ARRIVAL_MAX_AGE
+    ) {
+      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      return null;
+    }
+
+    return parsed;
+  } catch (error) {
+    removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+    return null;
+  }
+}
+
+function hasPendingCinematicArrival() {
+  const pending = getPendingCinematicArrival();
+  if (!pending) return false;
+
+  const currentUrl = normalizeComparableUrl(window.location.href);
+  const targetUrl = normalizeComparableUrl(pending.href);
+
+  if (!currentUrl || !targetUrl) {
+    removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+    return false;
+  }
+
+  const matchesCurrentPage = currentUrl === targetUrl;
+
+  if (!matchesCurrentPage) {
+    removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+    return false;
+  }
+
+  return true;
+}
+
+function shouldSuspendHeroMotion() {
+  return (
+    isCinematicArrivalActive() ||
+    isCinematicTransitionActive() ||
+    hasPendingCinematicArrival()
+  );
 }
 
 function readReducedMotionPreference() {
@@ -124,11 +244,25 @@ function notifyReducedMotionChange(enabled) {
   );
 }
 
+function setHeroMotionVariables({
+  parallax = 0,
+  visibility = 0,
+  progress = 0,
+  focus = 0
+} = {}) {
+  setRootCssVariable(HERO_PARALLAX_CSS_VARIABLE, `${parallax}px`);
+  setRootCssVariable(HERO_VISIBILITY_CSS_VARIABLE, String(visibility));
+  setRootCssVariable(HERO_PROGRESS_CSS_VARIABLE, String(progress));
+  setRootCssVariable(HERO_FOCUS_CSS_VARIABLE, String(focus));
+}
+
 function resetHeroMotionState() {
-  setRootCssVariable(HERO_PARALLAX_CSS_VARIABLE, "0px");
-  setRootCssVariable(HERO_VISIBILITY_CSS_VARIABLE, "0");
-  setRootCssVariable(HERO_PROGRESS_CSS_VARIABLE, "0");
-  setRootCssVariable(HERO_FOCUS_CSS_VARIABLE, "0");
+  setHeroMotionVariables({
+    parallax: 0,
+    visibility: 0,
+    progress: 0,
+    focus: 0
+  });
 
   if (pageHero) {
     pageHero.classList.remove(
@@ -144,10 +278,20 @@ function resetHeroMotionState() {
   body.classList.remove("hero-active", "hero-passive");
 }
 
+function getHeroMotionStrength() {
+  if (!isCinematicModeEnabled()) {
+    return HERO_MOTION_STRENGTH_DEFAULT;
+  }
+
+  return isMobileViewport()
+    ? HERO_MOTION_STRENGTH_CINEMATIC_MOBILE
+    : HERO_MOTION_STRENGTH_CINEMATIC_DESKTOP;
+}
+
 function updateHeroMotionState() {
   if (!pageHero) return;
 
-  if (isReducedMotionEnabled()) {
+  if (isReducedMotionEnabled() || shouldSuspendHeroMotion()) {
     resetHeroMotionState();
     return;
   }
@@ -188,7 +332,7 @@ function updateHeroMotionState() {
   );
 
   const focus = clamp(1 - Math.abs(centerDistanceRatio), 0, 1);
-  const motionStrength = isCinematicModeEnabled() ? 34 : 22;
+  const motionStrength = getHeroMotionStrength();
 
   const parallaxOffset = clamp(
     centerDistanceRatio * -motionStrength,
@@ -196,25 +340,12 @@ function updateHeroMotionState() {
     motionStrength
   );
 
-  setRootCssVariable(
-    HERO_PARALLAX_CSS_VARIABLE,
-    `${parallaxOffset.toFixed(2)}px`
-  );
-
-  setRootCssVariable(
-    HERO_VISIBILITY_CSS_VARIABLE,
-    visibilityRatio.toFixed(3)
-  );
-
-  setRootCssVariable(
-    HERO_PROGRESS_CSS_VARIABLE,
-    scrollProgress.toFixed(3)
-  );
-
-  setRootCssVariable(
-    HERO_FOCUS_CSS_VARIABLE,
-    focus.toFixed(3)
-  );
+  setHeroMotionVariables({
+    parallax: Number(parallaxOffset.toFixed(2)),
+    visibility: visibilityRatio.toFixed(3),
+    progress: scrollProgress.toFixed(3),
+    focus: focus.toFixed(3)
+  });
 
   pageHero.classList.toggle("hero-in-view", visibilityRatio > 0.02);
   pageHero.classList.toggle("hero-near-focus", focus > 0.72);
@@ -238,6 +369,12 @@ function requestHeroMotionUpdate() {
     } finally {
       heroMotionTicking = false;
     }
+  });
+}
+
+function refreshHeroMotionSoon() {
+  runAfterTwoFrames(() => {
+    requestHeroMotionUpdate();
   });
 }
 
@@ -274,7 +411,7 @@ function applyReducedMotionState(enabled, options = {}) {
   if (enabled) {
     resetHeroMotionState();
   } else {
-    requestHeroMotionUpdate();
+    refreshHeroMotionSoon();
   }
 
   updateReducedMotionButtonLabel();
@@ -368,7 +505,29 @@ function handlePageShow() {
   cacheUiElements();
   updateReducedMotionButtonLabel();
   initHeroResizeObserver();
-  requestHeroMotionUpdate();
+
+  if (shouldSuspendHeroMotion()) {
+    resetHeroMotionState();
+    return;
+  }
+
+  refreshHeroMotionSoon();
+}
+
+function handleCinematicArrivalStart() {
+  resetHeroMotionState();
+}
+
+function handleCinematicArrivalEnd() {
+  refreshHeroMotionSoon();
+}
+
+function handleCinematicTransitionStart() {
+  resetHeroMotionState();
+}
+
+function handleCinematicTransitionEnd() {
+  refreshHeroMotionSoon();
 }
 
 function initHeroMotion() {
@@ -379,7 +538,11 @@ function initHeroMotion() {
 
   if (!pageHero) return;
 
-  requestHeroMotionUpdate();
+  if (shouldSuspendHeroMotion()) {
+    resetHeroMotionState();
+  } else {
+    requestHeroMotionUpdate();
+  }
 
   window.addEventListener("scroll", requestHeroMotionUpdate, { passive: true });
   window.addEventListener("resize", requestHeroMotionUpdate);
@@ -389,19 +552,23 @@ function initHeroMotion() {
 
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
-      requestHeroMotionUpdate();
+      refreshHeroMotionSoon();
     }
   });
 
-  document.addEventListener("site:cinematic-change", requestHeroMotionUpdate);
-  document.addEventListener("site:reduced-motion-change", requestHeroMotionUpdate);
+  document.addEventListener("site:cinematic-change", refreshHeroMotionSoon);
+  document.addEventListener("site:reduced-motion-change", refreshHeroMotionSoon);
+  document.addEventListener("site:cinematic-arrival-start", handleCinematicArrivalStart);
+  document.addEventListener("site:cinematic-arrival-end", handleCinematicArrivalEnd);
+  document.addEventListener("site:cinematic-transition-start", handleCinematicTransitionStart);
+  document.addEventListener("site:cinematic-transition-end", handleCinematicTransitionEnd);
 
   initHeroResizeObserver();
 
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready
       .then(() => {
-        requestHeroMotionUpdate();
+        refreshHeroMotionSoon();
       })
       .catch(() => {
         /* silent fallback */
@@ -412,6 +579,7 @@ function initHeroMotion() {
 /* expose for future use */
 window.applyReducedMotionState = applyReducedMotionState;
 window.requestHeroMotionUpdate = requestHeroMotionUpdate;
+window.refreshHeroMotionSoon = refreshHeroMotionSoon;
 
 function initHeroAndMotionUi() {
   cacheUiElements();
