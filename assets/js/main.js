@@ -4,6 +4,11 @@ const SCROLL_TOP_VISIBILITY_THRESHOLD = 560;
 const BODY_CLASS_ATTRIBUTE = "class";
 const VIEWPORT_HEIGHT_CSS_VARIABLE = "--vh";
 
+const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
+const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
+const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
+const CINEMATIC_ARRIVAL_MAX_AGE = 12000;
+
 let revealItems = [];
 let scrollTopButton = null;
 
@@ -31,12 +36,97 @@ function isMobileMenuOpen() {
   return !!body && body.classList.contains("mobile-menu-open");
 }
 
+function isCinematicArrivalActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_ARRIVAL_CLASS);
+}
+
+function isCinematicTransitionActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_TRANSITION_CLASS);
+}
+
 function shouldUseSmoothScroll() {
   return !isReducedMotionEnabled();
 }
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function runOnNextFrame(callback) {
+  if (typeof window.requestAnimationFrame === "function") {
+    window.requestAnimationFrame(callback);
+    return;
+  }
+
+  window.setTimeout(callback, 16);
+}
+
+function readFromSessionStorage(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function normalizePath(path) {
+  return (path || "").replace(/\/+$/, "") || "/";
+}
+
+function normalizeComparableUrl(url) {
+  try {
+    const parsedUrl = new URL(url, window.location.origin);
+    return `${normalizePath(parsedUrl.pathname)}${parsedUrl.search}`;
+  } catch (error) {
+    return null;
+  }
+}
+
+function hasPendingCinematicArrival() {
+  const raw = readFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+  if (!raw) return false;
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    if (!parsed || typeof parsed !== "object") return false;
+    if (typeof parsed.href !== "string" || !parsed.href.trim()) return false;
+
+    if (
+      typeof parsed.timestamp === "number" &&
+      Date.now() - parsed.timestamp > CINEMATIC_ARRIVAL_MAX_AGE
+    ) {
+      return false;
+    }
+
+    const currentUrl = normalizeComparableUrl(window.location.href);
+    const targetUrl = normalizeComparableUrl(parsed.href);
+
+    if (!currentUrl || !targetUrl) return false;
+
+    return currentUrl === targetUrl;
+  } catch (error) {
+    return false;
+  }
+}
+
+function shouldDelayRevealObserver() {
+  return (
+    isCinematicArrivalActive() ||
+    isCinematicTransitionActive() ||
+    hasPendingCinematicArrival()
+  );
+}
+
+function shouldSuspendScrollTopButton() {
+  return (
+    isMobileMenuOpen() ||
+    isCinematicArrivalActive() ||
+    isCinematicTransitionActive() ||
+    hasPendingCinematicArrival()
+  );
 }
 
 /* ---------- VIEWPORT HEIGHT ---------- */
@@ -77,6 +167,10 @@ function initRevealObserver() {
 
   if (isReducedMotionEnabled() || !("IntersectionObserver" in window)) {
     revealAllElements();
+    return;
+  }
+
+  if (shouldDelayRevealObserver()) {
     return;
   }
 
@@ -151,7 +245,7 @@ function updateScrollTopButtonVisibility() {
   const scrollTop = window.scrollY || window.pageYOffset || 0;
   const shouldShow =
     scrollTop > SCROLL_TOP_VISIBILITY_THRESHOLD &&
-    !isMobileMenuOpen();
+    !shouldSuspendScrollTopButton();
 
   setScrollTopButtonVisibility(shouldShow);
 }
@@ -183,7 +277,7 @@ function requestScrollLinkedUiUpdate() {
 
   scrollUiTicking = true;
 
-  window.requestAnimationFrame(() => {
+  runOnNextFrame(() => {
     try {
       updateScrollLinkedUi();
     } finally {
@@ -200,13 +294,30 @@ function disconnectBodyClassObserver() {
   bodyClassObserver = null;
 }
 
+function handleBodyClassMutation() {
+  refreshMainUI();
+
+  if (isReducedMotionEnabled()) {
+    revealAllElements();
+    disconnectRevealObserver();
+    return;
+  }
+
+  if (shouldDelayRevealObserver()) {
+    disconnectRevealObserver();
+    return;
+  }
+
+  initRevealObserver();
+}
+
 function initBodyClassObserver() {
   disconnectBodyClassObserver();
 
   if (!("MutationObserver" in window) || !document.body) return;
 
   bodyClassObserver = new MutationObserver(() => {
-    refreshMainUI();
+    handleBodyClassMutation();
   });
 
   bodyClassObserver.observe(document.body, {
@@ -230,10 +341,41 @@ function refreshMainUI() {
   updateScrollTopButtonLabel();
 }
 
-function handleReducedMotionChange() {
+function refreshRevealSystem() {
   cacheUiElements();
   initRevealObserver();
+}
+
+function handleReducedMotionChange() {
+  cacheUiElements();
+
+  if (isReducedMotionEnabled()) {
+    revealAllElements();
+    disconnectRevealObserver();
+  } else {
+    initRevealObserver();
+  }
+
   refreshMainUI();
+}
+
+function handleCinematicArrivalStart() {
+  disconnectRevealObserver();
+  setScrollTopButtonVisibility(false);
+  requestScrollLinkedUiUpdate();
+
+  if (typeof window.requestHeroMotionUpdate === "function") {
+    window.requestHeroMotionUpdate();
+  }
+}
+
+function handleCinematicArrivalEnd() {
+  initRevealObserver();
+  refreshMainUI();
+
+  if (typeof window.requestHeroMotionUpdate === "function") {
+    window.requestHeroMotionUpdate();
+  }
 }
 
 /* ---------- INIT ---------- */
@@ -276,14 +418,27 @@ function initMainUi() {
   });
 
   document.addEventListener("site:cinematic-change", refreshMainUI);
-  document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
+  document.addEventListener(
+    "site:reduced-motion-change",
+    handleReducedMotionChange
+  );
+  document.addEventListener(
+    "site:cinematic-arrival-start",
+    handleCinematicArrivalStart
+  );
+  document.addEventListener(
+    "site:cinematic-arrival-end",
+    handleCinematicArrivalEnd
+  );
 }
 
 /* expose for future use */
 window.refreshMainUI = refreshMainUI;
+window.refreshRevealSystem = refreshRevealSystem;
+window.requestScrollLinkedUiUpdate = requestScrollLinkedUiUpdate;
 
 if (document.body) {
   initMainUi();
 } else {
   document.addEventListener("DOMContentLoaded", initMainUi, { once: true });
-}
+    }
