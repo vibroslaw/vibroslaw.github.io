@@ -2,9 +2,11 @@ const CINEMATIC_STORAGE_KEY = "siteCinematicMode";
 const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
 
 const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
+const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
 const CINEMATIC_ARRIVAL_MAX_AGE = 12000;
 const CINEMATIC_ARRIVAL_DURATION_DESKTOP = 1500;
 const CINEMATIC_ARRIVAL_DURATION_MOBILE = 1180;
+const MOBILE_BREAKPOINT = 760;
 
 let cinematicToggle = null;
 let cinematicHeroButton = null;
@@ -49,7 +51,17 @@ function isReducedMotionEnabled() {
 }
 
 function isMobileViewport() {
-  return window.innerWidth <= 760;
+  return window.innerWidth <= MOBILE_BREAKPOINT;
+}
+
+function isCinematicArrivalActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_ARRIVAL_CLASS);
+}
+
+function isCinematicTransitionActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_TRANSITION_CLASS);
 }
 
 function readFromLocalStorage(key) {
@@ -204,7 +216,10 @@ function clearCinematicArrivalState() {
   if (!body) return;
 
   body.classList.remove(CINEMATIC_ARRIVAL_CLASS);
+  body.style.removeProperty("pointer-events");
   delete body.dataset.cinematicArrival;
+  delete body.dataset.cinematicArrivalKey;
+  delete body.dataset.cinematicArrivalTitle;
 }
 
 function clearCinematicArrivalTimer() {
@@ -220,9 +235,17 @@ function clearCinematicArrivalTimer() {
 }
 
 function finishCinematicArrival(payload = null) {
+  const wasActive =
+    isCinematicArrivalActive() ||
+    cinematicArrivalTimer !== null ||
+    cinematicArrivalFrame !== null;
+
   clearCinematicArrivalTimer();
   clearCinematicArrivalState();
-  notifyCinematicArrivalEnd(payload);
+
+  if (wasActive) {
+    notifyCinematicArrivalEnd(payload);
+  }
 }
 
 function setCinematicMode(active, options = {}) {
@@ -329,21 +352,15 @@ function syncCinematicModeAcrossTabs(event) {
 }
 
 function getArrivalDuration(payload = null) {
-  if (payload && typeof payload.duration === "number" && payload.duration > 0) {
-    return Math.max(
-      700,
-      Math.min(
-        payload.duration + 220,
-        isMobileViewport()
-          ? CINEMATIC_ARRIVAL_DURATION_MOBILE
-          : CINEMATIC_ARRIVAL_DURATION_DESKTOP
-      )
-    );
-  }
-
-  return isMobileViewport()
+  const cap = isMobileViewport()
     ? CINEMATIC_ARRIVAL_DURATION_MOBILE
     : CINEMATIC_ARRIVAL_DURATION_DESKTOP;
+
+  if (payload && typeof payload.duration === "number" && payload.duration > 0) {
+    return Math.max(700, Math.min(payload.duration + 220, cap));
+  }
+
+  return cap;
 }
 
 function readCinematicArrivalPayload() {
@@ -400,16 +417,23 @@ function playCinematicArrival(payload) {
   clearCinematicArrivalState();
 
   body.dataset.cinematicArrival = payload?.key || "entry";
+  body.dataset.cinematicArrivalKey = payload?.key || "entry";
+  body.dataset.cinematicArrivalTitle = payload?.title || "";
 
   cinematicArrivalFrame = window.requestAnimationFrame(() => {
     cinematicArrivalFrame = window.requestAnimationFrame(() => {
       body.classList.add(CINEMATIC_ARRIVAL_CLASS);
-      notifyCinematicArrivalStart(payload);
 
       const duration = getArrivalDuration(payload);
+      const detail = {
+        ...(payload || {}),
+        duration
+      };
+
+      notifyCinematicArrivalStart(detail);
 
       cinematicArrivalTimer = window.setTimeout(() => {
-        finishCinematicArrival(payload);
+        finishCinematicArrival(detail);
       }, duration);
     });
   });
@@ -432,6 +456,10 @@ function handlePageShow() {
   cacheCinematicElements();
   updateCinematicLabels();
   consumeAndApplyCinematicArrival();
+}
+
+function handlePageHide() {
+  clearCinematicArrivalTimer();
 }
 
 function initCinematicMode() {
@@ -465,7 +493,7 @@ function initCinematicMode() {
 
   window.addEventListener("storage", syncCinematicModeAcrossTabs);
   window.addEventListener("pageshow", handlePageShow);
-  window.addEventListener("pagehide", clearCinematicArrivalTimer);
+  window.addEventListener("pagehide", handlePageHide);
 
   consumeAndApplyCinematicArrival();
 }
