@@ -40,6 +40,10 @@
   }
 
   function isMobileMenuOpen() {
+    if (typeof window.isMobileMenuOpen === "function") {
+      return window.isMobileMenuOpen();
+    }
+
     const body = getBody();
     return !!body && body.classList.contains("mobile-menu-open");
   }
@@ -177,6 +181,8 @@
     );
   }
 
+  /* ---------- VIEWPORT HEIGHT ---------- */
+
   function updateViewportHeightVariable() {
     const viewportHeight =
       window.innerHeight || document.documentElement.clientHeight || 0;
@@ -188,6 +194,8 @@
       `${viewportHeight * 0.01}px`
     );
   }
+
+  /* ---------- REVEAL SYSTEM ---------- */
 
   function revealElement(element) {
     if (!element) return;
@@ -247,6 +255,8 @@
     });
   }
 
+  /* ---------- PROGRESS BAR ---------- */
+
   function updateProgressBar() {
     const scrollTop = window.scrollY || window.pageYOffset || 0;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -255,6 +265,8 @@
 
     document.documentElement.style.setProperty("--progress", `${progress}%`);
   }
+
+  /* ---------- SCROLL TOP BUTTON ---------- */
 
   function updateScrollTopButtonLabel() {
     if (!scrollTopButton) return;
@@ -305,6 +317,8 @@
     scrollTopButton.addEventListener("click", handleScrollTopClick);
   }
 
+  /* ---------- SCROLL-LINKED UI ---------- */
+
   function updateScrollLinkedUi() {
     updateProgressBar();
     updateScrollTopButtonVisibility();
@@ -323,6 +337,8 @@
       }
     });
   }
+
+  /* ---------- BODY CLASS OBSERVER ---------- */
 
   function disconnectBodyClassObserver() {
     if (!bodyClassObserver) return;
@@ -361,6 +377,8 @@
       attributeFilter: [BODY_CLASS_ATTRIBUTE]
     });
   }
+
+  /* ---------- GLOBAL REFRESH ---------- */
 
   function cacheUiElements() {
     revealItems = Array.from(document.querySelectorAll(".reveal"));
@@ -429,6 +447,8 @@
   function handleCinematicTransitionEnd() {
     refreshEverythingSoon();
   }
+
+  /* ---------- INIT ---------- */
 
   function initMainUi() {
     if (mainUiInitialized) return;
