@@ -311,13 +311,6 @@
     return title || "Entry";
   }
 
-  function getCardKicker(link) {
-    const chip = link.querySelector(".chip");
-    const text = (chip?.textContent || "").trim();
-
-    return text || "Audiovisual World";
-  }
-
   function createCinematicVeil() {
     const veil = document.createElement("div");
     veil.setAttribute("aria-hidden", "true");
@@ -418,7 +411,6 @@
     const mediaStyle = window.getComputedStyle(sourceMedia);
 
     const title = getCardTitle(sourceLink);
-    const kicker = getCardKicker(sourceLink);
 
     const shell = document.createElement("div");
     shell.setAttribute("aria-hidden", "true");
@@ -502,14 +494,6 @@
     caption.style.filter = "blur(0)";
     caption.style.willChange = "opacity, transform, filter";
 
-    const captionKicker = document.createElement("div");
-    captionKicker.textContent = kicker;
-    captionKicker.style.color = "rgba(201,178,143,.94)";
-    captionKicker.style.fontSize = isMobileViewport() ? ".68rem" : ".74rem";
-    captionKicker.style.letterSpacing = ".18em";
-    captionKicker.style.textTransform = "uppercase";
-    captionKicker.style.marginBottom = "10px";
-
     const captionTitle = document.createElement("div");
     captionTitle.textContent = title;
     captionTitle.style.fontFamily = '"Cormorant Garamond", serif';
@@ -518,13 +502,13 @@
     captionTitle.style.letterSpacing = "-.01em";
     captionTitle.style.fontSize = isMobileViewport() ? "2.2rem" : "3rem";
     captionTitle.style.color = "#f2ece3";
-    captionTitle.style.maxWidth = "14ch";
+    captionTitle.style.maxWidth = "16ch";
 
     const centerTitle = document.createElement("div");
     centerTitle.setAttribute("aria-hidden", "true");
     centerTitle.style.position = "absolute";
     centerTitle.style.left = "50%";
-    centerTitle.style.top = isMobileViewport() ? "44%" : "42%";
+    centerTitle.style.top = isMobileViewport() ? "50%" : "48%";
     centerTitle.style.transform = "translate3d(-50%,22px,0) scale(.92)";
     centerTitle.style.width = isMobileViewport() ? "86vw" : "min(72vw, 980px)";
     centerTitle.style.textAlign = "center";
@@ -537,14 +521,6 @@
     centerTitle.style.textShadow =
       "0 18px 54px rgba(0,0,0,.56), 0 2px 12px rgba(0,0,0,.28)";
 
-    const centerTitleKicker = document.createElement("div");
-    centerTitleKicker.textContent = kicker;
-    centerTitleKicker.style.color = "rgba(201,178,143,.94)";
-    centerTitleKicker.style.fontSize = isMobileViewport() ? ".70rem" : ".78rem";
-    centerTitleKicker.style.letterSpacing = ".22em";
-    centerTitleKicker.style.textTransform = "uppercase";
-    centerTitleKicker.style.marginBottom = "14px";
-
     const centerTitleText = document.createElement("div");
     centerTitleText.textContent = title;
     centerTitleText.style.fontFamily = '"Cormorant Garamond", serif';
@@ -556,10 +532,7 @@
       : "clamp(3.8rem, 6.8vw, 6.4rem)";
     centerTitleText.style.color = "#f2ece3";
 
-    centerTitle.appendChild(centerTitleKicker);
     centerTitle.appendChild(centerTitleText);
-
-    caption.appendChild(captionKicker);
     caption.appendChild(captionTitle);
 
     shell.appendChild(mediaLayer);
