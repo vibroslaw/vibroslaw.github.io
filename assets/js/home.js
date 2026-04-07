@@ -13,6 +13,7 @@ const CINEMATIC_ARRIVAL_MAX_AGE = 12000;
 const HERO_MOTION_STRENGTH_DEFAULT = 22;
 const HERO_MOTION_STRENGTH_CINEMATIC_DESKTOP = 42;
 const HERO_MOTION_STRENGTH_CINEMATIC_MOBILE = 28;
+const MOBILE_BREAKPOINT = 760;
 
 let pageHero = null;
 let reducedMotionToggle = null;
@@ -58,7 +59,7 @@ function isCinematicTransitionActive() {
 }
 
 function isMobileViewport() {
-  return window.innerWidth <= 760;
+  return window.innerWidth <= MOBILE_BREAKPOINT;
 }
 
 function clamp(value, min, max) {
@@ -549,6 +550,7 @@ function initHeroMotion() {
   window.addEventListener("orientationchange", requestHeroMotionUpdate);
   window.addEventListener("load", requestHeroMotionUpdate);
   window.addEventListener("pageshow", handlePageShow);
+  window.addEventListener("pagehide", resetHeroMotionState);
 
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
@@ -594,4 +596,4 @@ if (document.body) {
   document.addEventListener("DOMContentLoaded", initHeroAndMotionUi, {
     once: true
   });
-}
+      }
