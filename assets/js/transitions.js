@@ -311,6 +311,12 @@
     return title || "Entry";
   }
 
+  function getCardKicker(link) {
+    const custom = (link.dataset.cinematicLabel || "").trim();
+    if (custom) return custom;
+    return "";
+  }
+
   function createCinematicVeil() {
     const veil = document.createElement("div");
     veil.setAttribute("aria-hidden", "true");
@@ -411,6 +417,7 @@
     const mediaStyle = window.getComputedStyle(sourceMedia);
 
     const title = getCardTitle(sourceLink);
+    const kicker = getCardKicker(sourceLink);
 
     const shell = document.createElement("div");
     shell.setAttribute("aria-hidden", "true");
@@ -494,6 +501,17 @@
     caption.style.filter = "blur(0)";
     caption.style.willChange = "opacity, transform, filter";
 
+    if (kicker) {
+      const captionKicker = document.createElement("div");
+      captionKicker.textContent = kicker;
+      captionKicker.style.color = "rgba(201,178,143,.94)";
+      captionKicker.style.fontSize = isMobileViewport() ? ".68rem" : ".74rem";
+      captionKicker.style.letterSpacing = ".18em";
+      captionKicker.style.textTransform = "uppercase";
+      captionKicker.style.marginBottom = "10px";
+      caption.appendChild(captionKicker);
+    }
+
     const captionTitle = document.createElement("div");
     captionTitle.textContent = title;
     captionTitle.style.fontFamily = '"Cormorant Garamond", serif';
@@ -502,13 +520,14 @@
     captionTitle.style.letterSpacing = "-.01em";
     captionTitle.style.fontSize = isMobileViewport() ? "2.2rem" : "3rem";
     captionTitle.style.color = "#f2ece3";
-    captionTitle.style.maxWidth = "16ch";
+    captionTitle.style.maxWidth = "14ch";
+    caption.appendChild(captionTitle);
 
     const centerTitle = document.createElement("div");
     centerTitle.setAttribute("aria-hidden", "true");
     centerTitle.style.position = "absolute";
     centerTitle.style.left = "50%";
-    centerTitle.style.top = isMobileViewport() ? "50%" : "48%";
+    centerTitle.style.top = isMobileViewport() ? "44%" : "42%";
     centerTitle.style.transform = "translate3d(-50%,22px,0) scale(.92)";
     centerTitle.style.width = isMobileViewport() ? "86vw" : "min(72vw, 980px)";
     centerTitle.style.textAlign = "center";
@@ -533,7 +552,6 @@
     centerTitleText.style.color = "#f2ece3";
 
     centerTitle.appendChild(centerTitleText);
-    caption.appendChild(captionTitle);
 
     shell.appendChild(mediaLayer);
     shell.appendChild(shellGlow);
