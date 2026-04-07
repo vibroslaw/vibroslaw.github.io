@@ -63,11 +63,25 @@ function runOnNextFrame(callback) {
   window.setTimeout(callback, 16);
 }
 
+function runAfterTwoFrames(callback) {
+  runOnNextFrame(() => {
+    runOnNextFrame(callback);
+  });
+}
+
 function readFromSessionStorage(key) {
   try {
     return sessionStorage.getItem(key);
   } catch (error) {
     return null;
+  }
+}
+
+function removeFromSessionStorage(key) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch (error) {
+    /* silent fallback */
   }
 }
 
@@ -84,32 +98,58 @@ function normalizeComparableUrl(url) {
   }
 }
 
-function hasPendingCinematicArrival() {
+function getPendingCinematicArrival() {
   const raw = readFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
-  if (!raw) return false;
+  if (!raw) return null;
 
   try {
     const parsed = JSON.parse(raw);
 
-    if (!parsed || typeof parsed !== "object") return false;
-    if (typeof parsed.href !== "string" || !parsed.href.trim()) return false;
+    if (!parsed || typeof parsed !== "object") {
+      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      return null;
+    }
+
+    if (typeof parsed.href !== "string" || !parsed.href.trim()) {
+      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      return null;
+    }
 
     if (
       typeof parsed.timestamp === "number" &&
       Date.now() - parsed.timestamp > CINEMATIC_ARRIVAL_MAX_AGE
     ) {
-      return false;
+      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      return null;
     }
 
-    const currentUrl = normalizeComparableUrl(window.location.href);
-    const targetUrl = normalizeComparableUrl(parsed.href);
-
-    if (!currentUrl || !targetUrl) return false;
-
-    return currentUrl === targetUrl;
+    return parsed;
   } catch (error) {
+    removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+    return null;
+  }
+}
+
+function hasPendingCinematicArrival() {
+  const pending = getPendingCinematicArrival();
+  if (!pending) return false;
+
+  const currentUrl = normalizeComparableUrl(window.location.href);
+  const targetUrl = normalizeComparableUrl(pending.href);
+
+  if (!currentUrl || !targetUrl) {
+    removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
     return false;
   }
+
+  const matchesCurrentPage = currentUrl === targetUrl;
+
+  if (!matchesCurrentPage) {
+    removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+    return false;
+  }
+
+  return true;
 }
 
 function shouldDelayRevealObserver() {
@@ -346,6 +386,13 @@ function refreshRevealSystem() {
   initRevealObserver();
 }
 
+function refreshEverythingSoon() {
+  runAfterTwoFrames(() => {
+    refreshMainUI();
+    initRevealObserver();
+  });
+}
+
 function handleReducedMotionChange() {
   cacheUiElements();
 
@@ -370,12 +417,23 @@ function handleCinematicArrivalStart() {
 }
 
 function handleCinematicArrivalEnd() {
-  initRevealObserver();
-  refreshMainUI();
+  refreshEverythingSoon();
 
-  if (typeof window.requestHeroMotionUpdate === "function") {
+  if (typeof window.refreshHeroMotionSoon === "function") {
+    window.refreshHeroMotionSoon();
+  } else if (typeof window.requestHeroMotionUpdate === "function") {
     window.requestHeroMotionUpdate();
   }
+}
+
+function handleCinematicTransitionStart() {
+  disconnectRevealObserver();
+  setScrollTopButtonVisibility(false);
+  requestScrollLinkedUiUpdate();
+}
+
+function handleCinematicTransitionEnd() {
+  refreshEverythingSoon();
 }
 
 /* ---------- INIT ---------- */
@@ -405,9 +463,16 @@ function initMainUi() {
   window.addEventListener("resize", refreshMainUI);
   window.addEventListener("orientationchange", refreshMainUI);
   window.addEventListener("load", refreshMainUI);
+
   window.addEventListener("pageshow", () => {
     cacheUiElements();
-    initRevealObserver();
+
+    if (shouldDelayRevealObserver()) {
+      disconnectRevealObserver();
+    } else {
+      initRevealObserver();
+    }
+
     refreshMainUI();
   });
 
@@ -430,6 +495,14 @@ function initMainUi() {
     "site:cinematic-arrival-end",
     handleCinematicArrivalEnd
   );
+  document.addEventListener(
+    "site:cinematic-transition-start",
+    handleCinematicTransitionStart
+  );
+  document.addEventListener(
+    "site:cinematic-transition-end",
+    handleCinematicTransitionEnd
+  );
 }
 
 /* expose for future use */
@@ -441,4 +514,4 @@ if (document.body) {
   initMainUi();
 } else {
   document.addEventListener("DOMContentLoaded", initMainUi, { once: true });
-    }
+}
