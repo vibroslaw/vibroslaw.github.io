@@ -14,6 +14,7 @@ const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
 let pageTransition = null;
 let transitionLocked = false;
 let pageTransitionInitialized = false;
+let cinematicTransitionEventActive = false;
 
 let cinematicZoomClone = null;
 let cinematicZoomVeil = null;
@@ -166,6 +167,23 @@ function saveToSessionStorage(key, value) {
   } catch (error) {
     /* silent */
   }
+}
+
+function notifyCinematicTransitionChange(active) {
+  if (active === cinematicTransitionEventActive) return;
+
+  cinematicTransitionEventActive = active;
+
+  document.dispatchEvent(
+    new CustomEvent(
+      active
+        ? "site:cinematic-transition-start"
+        : "site:cinematic-transition-end",
+      {
+        detail: { active }
+      }
+    )
+  );
 }
 
 function writeCinematicArrivalState(link, duration) {
@@ -626,6 +644,8 @@ function clearSpecialCinematicTransition() {
   if (document.body) {
     document.body.classList.remove("cinematic-transition-active");
   }
+
+  notifyCinematicTransitionChange(false);
 }
 
 function runSpecialCinematicCardTransition(link) {
@@ -649,10 +669,13 @@ function runSpecialCinematicCardTransition(link) {
     document.body.classList.add("cinematic-transition-active");
   }
 
+  notifyCinematicTransitionChange(true);
+
   const veilBundle = createCinematicVeil();
   const cloneBundle = createCinematicZoomClone(link);
 
   if (!cloneBundle) {
+    notifyCinematicTransitionChange(false);
     transitionLocked = false;
     window.location.href = link.href;
     return;
@@ -895,4 +918,4 @@ if (document.body) {
   document.addEventListener("DOMContentLoaded", initPageTransition, {
     once: true
   });
-    }
+}
