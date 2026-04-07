@@ -1,33 +1,140 @@
-const heroRaport = document.querySelector(".hero-raport");
-
-const desktopSectionLinks = Array.from(
-  document.querySelectorAll('.desktop-nav a[href^="#"]')
-);
-
-const mobileSectionLinks = Array.from(
-  document.querySelectorAll('.mobile-menu-link[href^="#"]')
-);
-
-const allSectionLinks = [...desktopSectionLinks, ...mobileSectionLinks];
-const observedSections = Array.from(
-  document.querySelectorAll("main section[id]")
-);
-
 const RAPORT_HERO_SHIFT_CSS_VARIABLE = "--raport-hero-shift";
+
+const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
+const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
+const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
+const CINEMATIC_ARRIVAL_MAX_AGE = 12000;
+
+const RAPORT_HERO_MOTION_DEFAULT = 28;
+const RAPORT_HERO_MOTION_CINEMATIC = 40;
+
+let heroRaport = null;
+let desktopSectionLinks = [];
+let mobileSectionLinks = [];
+let allSectionLinks = [];
+let observedSections = [];
 
 let heroParallaxTicking = false;
 let sectionStateTicking = false;
+let raportPageUiInitialized = false;
+
+function getBody() {
+  return document.body;
+}
+
+function cacheRaportUiElements() {
+  heroRaport = document.querySelector(".hero-raport");
+
+  desktopSectionLinks = Array.from(
+    document.querySelectorAll('.desktop-nav a[href^="#"]')
+  );
+
+  mobileSectionLinks = Array.from(
+    document.querySelectorAll('.mobile-menu-link[href^="#"]')
+  );
+
+  allSectionLinks = [...desktopSectionLinks, ...mobileSectionLinks];
+
+  observedSections = Array.from(
+    document.querySelectorAll("main section[id]")
+  );
+}
 
 function isReducedMotionEnabled() {
-  return document.body.classList.contains("reduced-motion");
+  const body = getBody();
+  return !!body && body.classList.contains("reduced-motion");
 }
 
 function isCinematicModeEnabled() {
-  return document.body.classList.contains("cinematic-mode");
+  const body = getBody();
+  return !!body && body.classList.contains("cinematic-mode");
+}
+
+function isCinematicArrivalActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_ARRIVAL_CLASS);
+}
+
+function isCinematicTransitionActive() {
+  const body = getBody();
+  return !!body && body.classList.contains(CINEMATIC_TRANSITION_CLASS);
 }
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function normalizePath(path) {
+  return (path || "").replace(/\/+$/, "") || "/";
+}
+
+function normalizeComparableUrl(url) {
+  try {
+    const parsedUrl = new URL(url, window.location.origin);
+    return `${normalizePath(parsedUrl.pathname)}${parsedUrl.search}`;
+  } catch (error) {
+    return null;
+  }
+}
+
+function readFromSessionStorage(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function hasPendingCinematicArrival() {
+  const raw = readFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+  if (!raw) return false;
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    if (!parsed || typeof parsed !== "object") return false;
+    if (typeof parsed.href !== "string" || !parsed.href.trim()) return false;
+
+    if (
+      typeof parsed.timestamp === "number" &&
+      Date.now() - parsed.timestamp > CINEMATIC_ARRIVAL_MAX_AGE
+    ) {
+      return false;
+    }
+
+    const currentUrl = normalizeComparableUrl(window.location.href);
+    const targetUrl = normalizeComparableUrl(parsed.href);
+
+    if (!currentUrl || !targetUrl) return false;
+
+    return currentUrl === targetUrl;
+  } catch (error) {
+    return false;
+  }
+}
+
+function shouldSuspendRaportHeroEffects() {
+  return (
+    isReducedMotionEnabled() ||
+    isCinematicArrivalActive() ||
+    isCinematicTransitionActive() ||
+    hasPendingCinematicArrival()
+  );
+}
+
+function runOnNextFrame(callback) {
+  if (typeof window.requestAnimationFrame === "function") {
+    window.requestAnimationFrame(callback);
+    return;
+  }
+
+  window.setTimeout(callback, 16);
+}
+
+function runAfterTwoFrames(callback) {
+  runOnNextFrame(() => {
+    runOnNextFrame(callback);
+  });
 }
 
 function setRaportHeroShift(value) {
@@ -46,10 +153,16 @@ function resetRaportHeroShift() {
 
 /* ---------- HERO PARALLAX ---------- */
 
+function getRaportHeroMotionStrength() {
+  return isCinematicModeEnabled()
+    ? RAPORT_HERO_MOTION_CINEMATIC
+    : RAPORT_HERO_MOTION_DEFAULT;
+}
+
 function updateHeroParallax() {
   if (!heroRaport) return;
 
-  if (isReducedMotionEnabled()) {
+  if (shouldSuspendRaportHeroEffects()) {
     resetRaportHeroShift();
     return;
   }
@@ -77,7 +190,7 @@ function updateHeroParallax() {
     1.25
   );
 
-  const motionStrength = isCinematicModeEnabled() ? 40 : 28;
+  const motionStrength = getRaportHeroMotionStrength();
 
   const shift = clamp(
     centerDistanceRatio * -motionStrength,
@@ -93,7 +206,7 @@ function requestHeroParallaxUpdate() {
 
   heroParallaxTicking = true;
 
-  window.requestAnimationFrame(() => {
+  runOnNextFrame(() => {
     try {
       updateHeroParallax();
     } finally {
@@ -102,11 +215,25 @@ function requestHeroParallaxUpdate() {
   });
 }
 
+function refreshHeroParallaxSoon() {
+  runAfterTwoFrames(() => {
+    requestHeroParallaxUpdate();
+  });
+}
+
 /* ---------- ACTIVE SECTION LINKS ---------- */
 
 function getHeaderOffset() {
   const header = document.querySelector(".site-header");
   return header ? header.offsetHeight + 24 : 120;
+}
+
+function clearActiveSectionLinks() {
+  if (!allSectionLinks.length) return;
+
+  allSectionLinks.forEach((link) => {
+    link.classList.remove("is-active");
+  });
 }
 
 function setActiveSectionLinks(activeId) {
@@ -121,18 +248,27 @@ function setActiveSectionLinks(activeId) {
 function updateActiveSectionLinks() {
   if (!observedSections.length || !allSectionLinks.length) return;
 
+  if (
+    isCinematicArrivalActive() ||
+    isCinematicTransitionActive() ||
+    hasPendingCinematicArrival()
+  ) {
+    clearActiveSectionLinks();
+    return;
+  }
+
   const headerOffset = getHeaderOffset();
   const scrollPosition = window.scrollY + headerOffset;
 
   const firstSection = observedSections[0];
 
   if (!firstSection) {
-    setActiveSectionLinks(null);
+    clearActiveSectionLinks();
     return;
   }
 
   if (scrollPosition < firstSection.offsetTop - headerOffset * 0.5) {
-    setActiveSectionLinks(null);
+    clearActiveSectionLinks();
     return;
   }
 
@@ -152,7 +288,7 @@ function requestActiveSectionUpdate() {
 
   sectionStateTicking = true;
 
-  window.requestAnimationFrame(() => {
+  runOnNextFrame(() => {
     try {
       updateActiveSectionLinks();
     } finally {
@@ -161,40 +297,115 @@ function requestActiveSectionUpdate() {
   });
 }
 
+function refreshActiveSectionSoon() {
+  runAfterTwoFrames(() => {
+    requestActiveSectionUpdate();
+  });
+}
+
 /* ---------- GLOBAL REFRESH ---------- */
 
 function refreshRaportPageUi() {
+  cacheRaportUiElements();
   requestHeroParallaxUpdate();
   requestActiveSectionUpdate();
 }
 
+function refreshRaportPageUiSoon() {
+  cacheRaportUiElements();
+  refreshHeroParallaxSoon();
+  refreshActiveSectionSoon();
+}
+
+/* ---------- EVENT HANDLERS ---------- */
+
+function handlePageShow() {
+  refreshRaportPageUiSoon();
+}
+
+function handleVisibilityChange() {
+  if (!document.hidden) {
+    refreshRaportPageUiSoon();
+  }
+}
+
+function handleReducedMotionChange() {
+  refreshRaportPageUiSoon();
+}
+
+function handleCinematicModeChange() {
+  refreshRaportPageUiSoon();
+}
+
+function handleCinematicArrivalStart() {
+  resetRaportHeroShift();
+  clearActiveSectionLinks();
+}
+
+function handleCinematicArrivalEnd() {
+  refreshRaportPageUiSoon();
+}
+
+function handleCinematicTransitionStart() {
+  resetRaportHeroShift();
+  clearActiveSectionLinks();
+}
+
+function handleCinematicTransitionEnd() {
+  refreshRaportPageUiSoon();
+}
+
 /* ---------- INIT ---------- */
 
-refreshRaportPageUi();
+function initRaportPageUi() {
+  if (raportPageUiInitialized) return;
+  raportPageUiInitialized = true;
 
-window.addEventListener("scroll", refreshRaportPageUi, { passive: true });
-window.addEventListener("resize", refreshRaportPageUi);
-window.addEventListener("orientationchange", refreshRaportPageUi);
-window.addEventListener("load", refreshRaportPageUi);
-window.addEventListener("pageshow", refreshRaportPageUi);
-window.addEventListener("hashchange", requestActiveSectionUpdate);
+  cacheRaportUiElements();
 
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    refreshRaportPageUi();
+  if (!heroRaport && observedSections.length === 0) {
+    return;
   }
-});
 
-document.addEventListener("site:cinematic-change", requestHeroParallaxUpdate);
-document.addEventListener("site:reduced-motion-change", requestHeroParallaxUpdate);
-document.addEventListener("site:reduced-motion-change", requestActiveSectionUpdate);
+  refreshRaportPageUiSoon();
 
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready
-    .then(() => {
-      refreshRaportPageUi();
-    })
-    .catch(() => {
-      /* silent fallback */
-    });
+  window.addEventListener("scroll", refreshRaportPageUi, { passive: true });
+  window.addEventListener("resize", refreshRaportPageUiSoon);
+  window.addEventListener("orientationchange", refreshRaportPageUiSoon);
+  window.addEventListener("load", refreshRaportPageUiSoon);
+  window.addEventListener("pageshow", handlePageShow);
+  window.addEventListener("hashchange", refreshActiveSectionSoon);
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  document.addEventListener("site:cinematic-change", handleCinematicModeChange);
+  document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
+  document.addEventListener("site:cinematic-arrival-start", handleCinematicArrivalStart);
+  document.addEventListener("site:cinematic-arrival-end", handleCinematicArrivalEnd);
+  document.addEventListener("site:cinematic-transition-start", handleCinematicTransitionStart);
+  document.addEventListener("site:cinematic-transition-end", handleCinematicTransitionEnd);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready
+      .then(() => {
+        refreshRaportPageUiSoon();
+      })
+      .catch(() => {
+        /* silent fallback */
+      });
+  }
 }
+
+/* expose for future use */
+window.refreshRaportPageUi = refreshRaportPageUi;
+window.refreshRaportPageUiSoon = refreshRaportPageUiSoon;
+window.requestHeroParallaxUpdate = requestHeroParallaxUpdate;
+window.requestActiveSectionUpdate = requestActiveSectionUpdate;
+
+if (document.body) {
+  initRaportPageUi();
+} else {
+  document.addEventListener("DOMContentLoaded", initRaportPageUi, {
+    once: true
+  });
+  }
