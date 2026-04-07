@@ -6,9 +6,10 @@ const CINEMATIC_HOME_PAGE = "home";
 const CINEMATIC_CARD_SELECTOR = ".cinematic-entry-card[data-cinematic-entry]";
 const CINEMATIC_CARD_KEYS = new Set(["rap-ort", "sztab"]);
 
-const CINEMATIC_ZOOM_DURATION_DESKTOP = 920;
-const CINEMATIC_ZOOM_DURATION_MOBILE = 720;
-const CINEMATIC_NAVIGATION_OFFSET = 40;
+const CINEMATIC_ZOOM_DURATION_DESKTOP = 1280;
+const CINEMATIC_ZOOM_DURATION_MOBILE = 980;
+const CINEMATIC_NAVIGATION_OFFSET = 90;
+const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
 
 let pageTransition = null;
 let transitionLocked = false;
@@ -17,6 +18,7 @@ let pageTransitionInitialized = false;
 let cinematicZoomClone = null;
 let cinematicZoomVeil = null;
 let cinematicShellSnapshot = [];
+let cinematicTimers = [];
 
 function getBody() {
   return document.body;
@@ -158,6 +160,46 @@ function shouldHandleFormTransition(form, submitter = null) {
   }
 }
 
+function saveToSessionStorage(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch (error) {
+    /* silent */
+  }
+}
+
+function writeCinematicArrivalState(link, duration) {
+  if (!(link instanceof HTMLAnchorElement)) return;
+
+  const payload = {
+    href: link.href,
+    key: (link.dataset.cinematicEntry || "").trim().toLowerCase(),
+    title: getCardTitle(link),
+    timestamp: Date.now(),
+    duration,
+    mobile: isMobileViewport()
+  };
+
+  saveToSessionStorage(
+    CINEMATIC_ARRIVAL_STORAGE_KEY,
+    JSON.stringify(payload)
+  );
+}
+
+function clearCinematicTimers() {
+  cinematicTimers.forEach((timerId) => {
+    window.clearTimeout(timerId);
+  });
+
+  cinematicTimers = [];
+}
+
+function queueCinematicTimer(callback, delay) {
+  const timerId = window.setTimeout(callback, delay);
+  cinematicTimers.push(timerId);
+  return timerId;
+}
+
 /* ---------- CINEMATIC CARD TRANSITION ---------- */
 
 function isHomepage() {
@@ -255,38 +297,88 @@ function snapshotAndStyleElement(element, nextStyle) {
 function createCinematicVeil() {
   const veil = document.createElement("div");
   veil.setAttribute("aria-hidden", "true");
-
   veil.style.position = "fixed";
   veil.style.inset = "0";
   veil.style.zIndex = "10010";
   veil.style.pointerEvents = "none";
   veil.style.opacity = "0";
+  veil.style.overflow = "hidden";
   veil.style.background = [
-    "radial-gradient(circle at 50% 18%, rgba(255,255,255,.04), transparent 14%)",
-    "radial-gradient(circle at 50% 34%, rgba(201,178,143,.18), transparent 24%)",
-    "radial-gradient(circle at 50% 52%, rgba(201,178,143,.12), transparent 42%)",
-    "linear-gradient(180deg, rgba(4,4,4,.10), rgba(6,6,6,.34), rgba(9,9,9,.82))"
+    "radial-gradient(circle at 50% 18%, rgba(255,255,255,.05), transparent 14%)",
+    "radial-gradient(circle at 50% 34%, rgba(201,178,143,.24), transparent 22%)",
+    "radial-gradient(circle at 50% 56%, rgba(201,178,143,.16), transparent 42%)",
+    "linear-gradient(180deg, rgba(3,3,3,.14), rgba(6,6,6,.42), rgba(9,9,9,.90))"
   ].join(", ");
   veil.style.transition = "opacity 420ms cubic-bezier(.22,1,.36,1)";
 
   const sweep = document.createElement("div");
   sweep.setAttribute("aria-hidden", "true");
   sweep.style.position = "absolute";
-  sweep.style.inset = "-12% -32%";
+  sweep.style.inset = "-14% -34%";
   sweep.style.pointerEvents = "none";
   sweep.style.opacity = "0";
-  sweep.style.transform = "translate3d(-18%,0,0)";
+  sweep.style.transform = "translate3d(-20%,0,0)";
   sweep.style.mixBlendMode = "screen";
   sweep.style.background =
-    "linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255,255,255,.12) 50%, transparent 58%, transparent 100%)";
+    "linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255,255,255,.14) 50%, transparent 58%, transparent 100%)";
   sweep.style.transition =
-    "opacity 520ms cubic-bezier(.22,1,.36,1), transform 900ms cubic-bezier(.22,1,.36,1)";
+    "opacity 560ms cubic-bezier(.22,1,.36,1), transform 1100ms cubic-bezier(.22,1,.36,1)";
+
+  const flash = document.createElement("div");
+  flash.setAttribute("aria-hidden", "true");
+  flash.style.position = "absolute";
+  flash.style.inset = "0";
+  flash.style.pointerEvents = "none";
+  flash.style.opacity = "0";
+  flash.style.background =
+    "radial-gradient(circle at 50% 42%, rgba(255,255,255,.14), transparent 22%)";
+  flash.style.transition = "opacity 180ms ease";
+
+  const topShutter = document.createElement("div");
+  topShutter.setAttribute("aria-hidden", "true");
+  topShutter.style.position = "absolute";
+  topShutter.style.top = "0";
+  topShutter.style.left = "0";
+  topShutter.style.right = "0";
+  topShutter.style.height = isMobileViewport() ? "9vh" : "11vh";
+  topShutter.style.pointerEvents = "none";
+  topShutter.style.opacity = "0";
+  topShutter.style.transform = "translate3d(0,-104%,0)";
+  topShutter.style.background =
+    "linear-gradient(180deg, rgba(0,0,0,.96), rgba(0,0,0,.74), transparent)";
+  topShutter.style.transition =
+    "opacity 360ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1)";
+
+  const bottomShutter = document.createElement("div");
+  bottomShutter.setAttribute("aria-hidden", "true");
+  bottomShutter.style.position = "absolute";
+  bottomShutter.style.bottom = "0";
+  bottomShutter.style.left = "0";
+  bottomShutter.style.right = "0";
+  bottomShutter.style.height = isMobileViewport() ? "12vh" : "15vh";
+  bottomShutter.style.pointerEvents = "none";
+  bottomShutter.style.opacity = "0";
+  bottomShutter.style.transform = "translate3d(0,104%,0)";
+  bottomShutter.style.background =
+    "linear-gradient(0deg, rgba(0,0,0,.98), rgba(0,0,0,.78), transparent)";
+  bottomShutter.style.transition =
+    "opacity 360ms cubic-bezier(.22,1,.36,1), transform 820ms cubic-bezier(.22,1,.36,1)";
 
   veil.appendChild(sweep);
+  veil.appendChild(flash);
+  veil.appendChild(topShutter);
+  veil.appendChild(bottomShutter);
   document.body.appendChild(veil);
 
   cinematicZoomVeil = veil;
-  return { veil, sweep };
+
+  return {
+    veil,
+    sweep,
+    flash,
+    topShutter,
+    bottomShutter
+  };
 }
 
 function createCinematicZoomClone(sourceLink) {
@@ -315,9 +407,9 @@ function createCinematicZoomClone(sourceLink) {
   shell.style.overflow = "hidden";
   shell.style.borderRadius = linkStyle.borderRadius || "32px";
   shell.style.background =
-    "linear-gradient(180deg, rgba(8,8,8,.94), rgba(6,6,6,.98))";
+    "linear-gradient(180deg, rgba(8,8,8,.95), rgba(5,5,5,.99))";
   shell.style.border = "1px solid rgba(255,255,255,.08)";
-  shell.style.boxShadow = "0 38px 120px rgba(0,0,0,.46)";
+  shell.style.boxShadow = "0 48px 160px rgba(0,0,0,.52)";
   shell.style.transform = "translate3d(0,0,0) scale(1)";
   shell.style.transformOrigin = "center center";
   shell.style.willChange =
@@ -334,7 +426,7 @@ function createCinematicZoomClone(sourceLink) {
   mediaLayer.style.backgroundPosition = mediaStyle.backgroundPosition;
   mediaLayer.style.backgroundSize = mediaStyle.backgroundSize;
   mediaLayer.style.backgroundRepeat = mediaStyle.backgroundRepeat;
-  mediaLayer.style.filter = "saturate(.90) brightness(.94) contrast(1.02)";
+  mediaLayer.style.filter = "saturate(.94) brightness(.95) contrast(1.03)";
   mediaLayer.style.transform = "translate3d(0,0,0) scale(1)";
   mediaLayer.style.transformOrigin = "center center";
   mediaLayer.style.willChange =
@@ -345,12 +437,13 @@ function createCinematicZoomClone(sourceLink) {
   mediaShade.style.position = "absolute";
   mediaShade.style.inset = "0";
   mediaShade.style.background = [
-    "linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.24))",
+    "linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.22))",
     "radial-gradient(circle at center, rgba(201,178,143,.10), transparent 46%)"
   ].join(", ");
   mediaShade.style.opacity = "1";
+  mediaShade.style.transform = "scale(1)";
   mediaShade.style.transition =
-    "opacity 420ms cubic-bezier(.22,1,.36,1), transform 620ms cubic-bezier(.22,1,.36,1)";
+    "opacity 460ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1)";
 
   mediaLayer.appendChild(mediaShade);
 
@@ -359,12 +452,14 @@ function createCinematicZoomClone(sourceLink) {
   shellGlow.style.position = "absolute";
   shellGlow.style.inset = "0";
   shellGlow.style.pointerEvents = "none";
-  shellGlow.style.opacity = ".46";
+  shellGlow.style.opacity = ".44";
   shellGlow.style.background = [
-    "radial-gradient(circle at top right, rgba(201,178,143,.16), transparent 28%)",
-    "radial-gradient(circle at 50% 34%, rgba(255,255,255,.035), transparent 26%)",
-    "linear-gradient(180deg, transparent 0%, rgba(3,3,3,.16) 40%, rgba(3,3,3,.72) 100%)"
+    "radial-gradient(circle at top right, rgba(201,178,143,.18), transparent 28%)",
+    "radial-gradient(circle at 50% 36%, rgba(255,255,255,.04), transparent 24%)",
+    "linear-gradient(180deg, transparent 0%, rgba(3,3,3,.18) 38%, rgba(3,3,3,.76) 100%)"
   ].join(", ");
+  shellGlow.style.transition =
+    "opacity 520ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1)";
 
   const caption = document.createElement("div");
   caption.setAttribute("aria-hidden", "true");
@@ -372,9 +467,9 @@ function createCinematicZoomClone(sourceLink) {
   caption.style.left = "0";
   caption.style.right = "0";
   caption.style.bottom = "0";
-  caption.style.padding = isMobileViewport() ? "22px 18px 18px" : "28px 24px 24px";
+  caption.style.padding = isMobileViewport() ? "24px 18px 18px" : "30px 26px 24px";
   caption.style.background =
-    "linear-gradient(180deg, transparent 0%, rgba(4,4,4,.74) 46%, rgba(4,4,4,.96) 100%)";
+    "linear-gradient(180deg, transparent 0%, rgba(4,4,4,.62) 34%, rgba(4,4,4,.96) 100%)";
   caption.style.transition =
     "opacity 420ms cubic-bezier(.22,1,.36,1), transform 520ms cubic-bezier(.22,1,.36,1), filter 520ms cubic-bezier(.22,1,.36,1)";
   caption.style.opacity = "1";
@@ -384,8 +479,8 @@ function createCinematicZoomClone(sourceLink) {
 
   const captionKicker = document.createElement("div");
   captionKicker.textContent = kicker;
-  captionKicker.style.color = "rgba(201,178,143,.92)";
-  captionKicker.style.fontSize = isMobileViewport() ? ".68rem" : ".72rem";
+  captionKicker.style.color = "rgba(201,178,143,.94)";
+  captionKicker.style.fontSize = isMobileViewport() ? ".68rem" : ".74rem";
   captionKicker.style.letterSpacing = ".18em";
   captionKicker.style.textTransform = "uppercase";
   captionKicker.style.marginBottom = "10px";
@@ -394,18 +489,57 @@ function createCinematicZoomClone(sourceLink) {
   captionTitle.textContent = title;
   captionTitle.style.fontFamily = '"Cormorant Garamond", serif';
   captionTitle.style.fontWeight = "600";
-  captionTitle.style.lineHeight = ".94";
+  captionTitle.style.lineHeight = ".92";
   captionTitle.style.letterSpacing = "-.01em";
-  captionTitle.style.fontSize = isMobileViewport() ? "2.15rem" : "2.8rem";
+  captionTitle.style.fontSize = isMobileViewport() ? "2.2rem" : "3rem";
   captionTitle.style.color = "#f2ece3";
-  captionTitle.style.textWrap = "balance";
   captionTitle.style.maxWidth = "14ch";
+
+  const centerTitle = document.createElement("div");
+  centerTitle.setAttribute("aria-hidden", "true");
+  centerTitle.style.position = "absolute";
+  centerTitle.style.left = "50%";
+  centerTitle.style.top = isMobileViewport() ? "44%" : "42%";
+  centerTitle.style.transform = "translate3d(-50%,18px,0) scale(.94)";
+  centerTitle.style.width = isMobileViewport() ? "86vw" : "min(72vw, 980px)";
+  centerTitle.style.textAlign = "center";
+  centerTitle.style.opacity = "0";
+  centerTitle.style.filter = "blur(16px)";
+  centerTitle.style.transition =
+    "opacity 520ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1), filter 760ms cubic-bezier(.22,1,.36,1)";
+  centerTitle.style.willChange = "opacity, transform, filter";
+  centerTitle.style.pointerEvents = "none";
+  centerTitle.style.textShadow =
+    "0 16px 42px rgba(0,0,0,.48), 0 2px 10px rgba(0,0,0,.24)";
+
+  const centerTitleKicker = document.createElement("div");
+  centerTitleKicker.textContent = kicker;
+  centerTitleKicker.style.color = "rgba(201,178,143,.92)";
+  centerTitleKicker.style.fontSize = isMobileViewport() ? ".70rem" : ".76rem";
+  centerTitleKicker.style.letterSpacing = ".22em";
+  centerTitleKicker.style.textTransform = "uppercase";
+  centerTitleKicker.style.marginBottom = "14px";
+
+  const centerTitleText = document.createElement("div");
+  centerTitleText.textContent = title;
+  centerTitleText.style.fontFamily = '"Cormorant Garamond", serif';
+  centerTitleText.style.fontWeight = "600";
+  centerTitleText.style.lineHeight = ".90";
+  centerTitleText.style.letterSpacing = "-.02em";
+  centerTitleText.style.fontSize = isMobileViewport()
+    ? "clamp(2.2rem, 9vw, 3.6rem)"
+    : "clamp(3.4rem, 6.4vw, 6rem)";
+  centerTitleText.style.color = "#f2ece3";
+
+  centerTitle.appendChild(centerTitleKicker);
+  centerTitle.appendChild(centerTitleText);
 
   caption.appendChild(captionKicker);
   caption.appendChild(captionTitle);
 
   shell.appendChild(mediaLayer);
   shell.appendChild(shellGlow);
+  shell.appendChild(centerTitle);
   shell.appendChild(caption);
 
   document.body.appendChild(shell);
@@ -414,7 +548,9 @@ function createCinematicZoomClone(sourceLink) {
     shell,
     mediaLayer,
     mediaShade,
-    caption
+    shellGlow,
+    caption,
+    centerTitle
   };
 
   return cinematicZoomClone;
@@ -430,19 +566,19 @@ function applyCinematicShellState(sourceLink) {
 
   snapshotAndStyleElement(header, {
     transition:
-      "opacity 420ms cubic-bezier(.22,1,.36,1), transform 420ms cubic-bezier(.22,1,.36,1), filter 420ms cubic-bezier(.22,1,.36,1)",
+      "opacity 480ms cubic-bezier(.22,1,.36,1), transform 480ms cubic-bezier(.22,1,.36,1), filter 480ms cubic-bezier(.22,1,.36,1)",
     opacity: "0",
-    transform: "translateY(-10px)",
-    filter: "blur(3px)",
+    transform: "translateY(-14px) scale(.985)",
+    filter: "blur(4px)",
     pointerEvents: "none"
   });
 
   snapshotAndStyleElement(main, {
     transition:
-      "opacity 420ms cubic-bezier(.22,1,.36,1), transform 420ms cubic-bezier(.22,1,.36,1), filter 420ms cubic-bezier(.22,1,.36,1)",
-    opacity: ".10",
-    transform: "scale(.982)",
-    filter: "blur(2px)",
+      "opacity 520ms cubic-bezier(.22,1,.36,1), transform 520ms cubic-bezier(.22,1,.36,1), filter 520ms cubic-bezier(.22,1,.36,1)",
+    opacity: ".06",
+    transform: "scale(.975)",
+    filter: "blur(4px)",
     pointerEvents: "none"
   });
 
@@ -450,16 +586,16 @@ function applyCinematicShellState(sourceLink) {
     transition:
       "opacity 320ms cubic-bezier(.22,1,.36,1), transform 320ms cubic-bezier(.22,1,.36,1)",
     opacity: "0",
-    transform: "translateY(10px)",
+    transform: "translateY(12px)",
     pointerEvents: "none"
   });
 
   snapshotAndStyleElement(footer, {
     transition:
-      "opacity 420ms cubic-bezier(.22,1,.36,1), transform 420ms cubic-bezier(.22,1,.36,1), filter 420ms cubic-bezier(.22,1,.36,1)",
-    opacity: ".08",
-    transform: "scale(.985)",
-    filter: "blur(2px)",
+      "opacity 440ms cubic-bezier(.22,1,.36,1), transform 440ms cubic-bezier(.22,1,.36,1), filter 440ms cubic-bezier(.22,1,.36,1)",
+    opacity: ".04",
+    transform: "scale(.98)",
+    filter: "blur(4px)",
     pointerEvents: "none"
   });
 
@@ -471,6 +607,8 @@ function applyCinematicShellState(sourceLink) {
 }
 
 function clearSpecialCinematicTransition() {
+  clearCinematicTimers();
+
   if (cinematicZoomClone?.shell?.parentNode) {
     cinematicZoomClone.shell.parentNode.removeChild(cinematicZoomClone.shell);
   }
@@ -500,6 +638,7 @@ function runSpecialCinematicCardTransition(link) {
   }
 
   transitionLocked = true;
+  writeCinematicArrivalState(link, getCinematicDuration());
 
   document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
 
@@ -519,37 +658,63 @@ function runSpecialCinematicCardTransition(link) {
 
   applyCinematicShellState(link);
 
-  const { veil, sweep } = veilBundle;
-  const { shell, mediaLayer, mediaShade, caption } = cloneBundle;
+  const { veil, sweep, flash, topShutter, bottomShutter } = veilBundle;
+  const {
+    shell,
+    mediaLayer,
+    mediaShade,
+    shellGlow,
+    caption,
+    centerTitle
+  } = cloneBundle;
 
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
       veil.style.opacity = "1";
 
       if (sweep) {
-        sweep.style.opacity = ".88";
-        sweep.style.transform = "translate3d(18%,0,0)";
+        sweep.style.opacity = ".96";
+        sweep.style.transform = "translate3d(24%,0,0)";
+      }
+
+      if (topShutter) {
+        topShutter.style.opacity = "1";
+        topShutter.style.transform = "translate3d(0,0,0)";
+      }
+
+      if (bottomShutter) {
+        bottomShutter.style.opacity = "1";
+        bottomShutter.style.transform = "translate3d(0,0,0)";
+      }
+
+      if (flash) {
+        flash.style.opacity = ".38";
+        queueCinematicTimer(() => {
+          if (flash) {
+            flash.style.opacity = "0";
+          }
+        }, 180);
       }
 
       shell.style.transition = [
-        `left ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `top ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `width ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `height ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `border-radius ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `transform ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `box-shadow ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `opacity ${duration}ms cubic-bezier(.22,1,.36,1)`
+        `left ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `top ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `width ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `height ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `border-radius ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `transform ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `box-shadow ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `opacity ${duration}ms cubic-bezier(.16,1,.30,1)`
       ].join(", ");
 
       mediaLayer.style.transition = [
-        `left ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `top ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `width ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `height ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `transform ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `filter ${duration}ms cubic-bezier(.22,1,.36,1)`,
-        `opacity ${duration}ms cubic-bezier(.22,1,.36,1)`
+        `left ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `top ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `width ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `height ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `transform ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `filter ${duration}ms cubic-bezier(.16,1,.30,1)`,
+        `opacity ${duration}ms cubic-bezier(.16,1,.30,1)`
       ].join(", ");
 
       shell.style.left = "0px";
@@ -557,32 +722,74 @@ function runSpecialCinematicCardTransition(link) {
       shell.style.width = `${window.innerWidth}px`;
       shell.style.height = `${window.innerHeight}px`;
       shell.style.borderRadius = "0px";
-      shell.style.transform = "translate3d(0,0,0) scale(1.008)";
+      shell.style.transform = "translate3d(0,0,0) scale(1.022)";
       shell.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
 
       mediaLayer.style.left = "0px";
       mediaLayer.style.top = "0px";
       mediaLayer.style.width = `${window.innerWidth}px`;
       mediaLayer.style.height = `${window.innerHeight}px`;
-      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.08)";
-      mediaLayer.style.filter = "saturate(1.04) brightness(.76) contrast(1.06)";
+      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.12)";
+      mediaLayer.style.filter = "saturate(1.08) brightness(.70) contrast(1.08)";
 
       if (mediaShade) {
-        mediaShade.style.opacity = ".92";
-        mediaShade.style.transform = "scale(1.04)";
+        mediaShade.style.opacity = ".98";
+        mediaShade.style.transform = "scale(1.06)";
+      }
+
+      if (shellGlow) {
+        shellGlow.style.opacity = ".66";
+        shellGlow.style.transform = "scale(1.03)";
       }
 
       if (caption) {
         caption.style.opacity = "0";
-        caption.style.transform = "translate3d(0,28px,0) scale(.98)";
-        caption.style.filter = "blur(12px)";
+        caption.style.transform = "translate3d(0,34px,0) scale(.96)";
+        caption.style.filter = "blur(16px)";
       }
     });
   });
 
-  window.setTimeout(() => {
+  queueCinematicTimer(() => {
+    if (centerTitle) {
+      centerTitle.style.opacity = ".96";
+      centerTitle.style.transform = "translate3d(-50%,0,0) scale(1)";
+      centerTitle.style.filter = "blur(0)";
+    }
+  }, Math.round(duration * 0.18));
+
+  queueCinematicTimer(() => {
+    if (mediaLayer) {
+      mediaLayer.style.transition =
+        `transform ${Math.round(duration * 0.34)}ms cubic-bezier(.16,1,.30,1), ` +
+        `filter ${Math.round(duration * 0.34)}ms cubic-bezier(.16,1,.30,1)`;
+
+      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.18)";
+      mediaLayer.style.filter = "saturate(1.12) brightness(.64) contrast(1.10)";
+    }
+
+    if (mediaShade) {
+      mediaShade.style.opacity = "1";
+      mediaShade.style.transform = "scale(1.09)";
+    }
+  }, Math.round(duration * 0.42));
+
+  queueCinematicTimer(() => {
+    if (centerTitle) {
+      centerTitle.style.transition =
+        `opacity ${Math.round(duration * 0.16)}ms ease, ` +
+        `transform ${Math.round(duration * 0.16)}ms ease, ` +
+        `filter ${Math.round(duration * 0.16)}ms ease`;
+
+      centerTitle.style.opacity = "0";
+      centerTitle.style.transform = "translate3d(-50%,-10px,0) scale(1.03)";
+      centerTitle.style.filter = "blur(12px)";
+    }
+  }, Math.round(duration * 0.68));
+
+  queueCinematicTimer(() => {
     window.location.href = link.href;
-  }, Math.max(140, duration - CINEMATIC_NAVIGATION_OFFSET));
+  }, Math.max(220, duration - CINEMATIC_NAVIGATION_OFFSET));
 }
 
 /* ---------- STANDARD PAGE TRANSITION ---------- */
@@ -681,4 +888,4 @@ if (document.body) {
   document.addEventListener("DOMContentLoaded", initPageTransition, {
     once: true
   });
-}
+      }
