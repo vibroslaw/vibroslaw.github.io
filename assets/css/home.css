@@ -1,7 +1,7 @@
 .hero-home{
-  --home-hero-pos-desktop:56% 34%;
-  --home-hero-pos-laptop:58% 32%;
-  --home-hero-pos-tablet:60% 24%;
+  --home-hero-pos-desktop:53% 32%;
+  --home-hero-pos-laptop:54% 30%;
+  --home-hero-pos-tablet:56% 22%;
   --home-hero-pos-mobile:50% 10%;
   --home-hero-pos-mobile-tight:50% 6%;
   --hero-mobile-overlay-strength:.56;
@@ -83,7 +83,7 @@
 
 .hero-home.hero{
   position:relative;
-  min-height:calc((var(--vh, 1vh) * 100) - var(--nav-h));
+  min-height:clamp(620px, 74vh, 820px);
   display:flex;
   align-items:center;
   overflow:hidden;
@@ -120,7 +120,7 @@
   background-repeat:no-repeat;
   background-size:cover;
   background-position:var(--home-hero-pos-desktop);
-  transform:translate3d(0, calc(var(--hero-parallax) * 0.32), 0) scale(1.01);
+  transform:translate3d(0, calc(var(--hero-parallax) * 0.16), 0) scale(1.001);
   filter:saturate(.88) contrast(1.01) brightness(.84);
   will-change:transform, filter, opacity;
 }
@@ -733,7 +733,7 @@ body.cinematic-mode .hero-home .hero-bg::after{
 
 body.cinematic-mode .hero-home .hero-image{
   filter:saturate(1.02) contrast(1.10) brightness(.64);
-  transform:translate3d(0, calc(var(--hero-parallax) * 0.46), 0) scale(1.03);
+  transform:translate3d(0, calc(var(--hero-parallax) * 0.22), 0) scale(1.006);
 }
 
 body.cinematic-mode .hero-home .hero-fade{
@@ -936,11 +936,28 @@ body.reduced-motion .glass-panel:hover{
   transform:none;
 }
 
+/* ---------- WIDE / ULTRAWIDE ---------- */
+
+@media (min-width:1101px) and (min-aspect-ratio:21/10){
+  .hero-home.hero{
+    min-height:clamp(600px, 68vh, 760px);
+  }
+
+  .hero-home .hero-image{
+    background-size:100% auto;
+    background-position:var(--home-hero-pos-desktop);
+  }
+
+  body.cinematic-mode .hero-home .hero-image{
+    background-size:100% auto;
+  }
+}
+
 /* ---------- BREAKPOINTS ---------- */
 
 @media (max-width:1360px){
   .hero-home{
-    --home-hero-pos-desktop:58% 34%;
+    --home-hero-pos-desktop:55% 32%;
   }
 }
 
@@ -975,7 +992,7 @@ body.reduced-motion .glass-panel:hover{
 
   .hero-home .hero-image{
     background-position:var(--home-hero-pos-tablet);
-    transform:translate3d(0, calc(var(--hero-parallax) * 0.22), 0) scale(1.004);
+    transform:translate3d(0, calc(var(--hero-parallax) * 0.14), 0) scale(1.001);
   }
 
   .site-header .brand{
@@ -1502,4 +1519,4 @@ body.reduced-motion .glass-panel:hover{
   body.cinematic-mode .cinematic-entry-card:active .project-body{
     transform:translateY(-2px);
   }
-}
+  }
