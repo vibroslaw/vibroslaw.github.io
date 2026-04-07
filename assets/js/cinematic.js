@@ -34,21 +34,6 @@
     mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
   }
 
-  function runOnNextFrame(callback) {
-    if (typeof window.requestAnimationFrame === "function") {
-      window.requestAnimationFrame(callback);
-      return;
-    }
-
-    window.setTimeout(callback, 16);
-  }
-
-  function runAfterTwoFrames(callback) {
-    runOnNextFrame(() => {
-      runOnNextFrame(callback);
-    });
-  }
-
   function isPolishLanguage() {
     const body = getBody();
     return body?.dataset.lang === "pl";
@@ -136,6 +121,15 @@
     return normalizeComparableUrl(window.location.href);
   }
 
+  function runOnNextFrame(callback) {
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(callback);
+      return;
+    }
+
+    window.setTimeout(callback, 16);
+  }
+
   function getCinematicLabels() {
     const isPL = isPolishLanguage();
 
@@ -217,38 +211,6 @@
     );
   }
 
-  function requestCrossModuleRefresh() {
-    if (typeof window.refreshMainUI === "function") {
-      window.refreshMainUI();
-    }
-
-    if (typeof window.refreshRevealSystem === "function") {
-      window.refreshRevealSystem();
-    }
-
-    if (typeof window.requestScrollLinkedUiUpdate === "function") {
-      window.requestScrollLinkedUiUpdate();
-    }
-
-    if (typeof window.refreshHeroMotionSoon === "function") {
-      window.refreshHeroMotionSoon();
-    } else if (typeof window.requestHeroMotionUpdate === "function") {
-      window.requestHeroMotionUpdate();
-    }
-
-    if (typeof window.refreshRaportPageUiSoon === "function") {
-      window.refreshRaportPageUiSoon();
-    } else if (typeof window.refreshRaportPageUi === "function") {
-      window.refreshRaportPageUi();
-    }
-  }
-
-  function requestCrossModuleRefreshSoon() {
-    runAfterTwoFrames(() => {
-      requestCrossModuleRefresh();
-    });
-  }
-
   function setBodyCinematicState(active) {
     const body = getBody();
     if (!body) return;
@@ -293,8 +255,6 @@
     if (wasActive) {
       notifyCinematicArrivalEnd(payload);
     }
-
-    requestCrossModuleRefreshSoon();
   }
 
   function clearCinematicArrivalSilently() {
@@ -302,11 +262,47 @@
     clearCinematicArrivalState();
   }
 
+  function refreshUiAfterCinematicToggle() {
+    updateCinematicLabels();
+
+    if (typeof window.refreshMainUI === "function") {
+      window.refreshMainUI();
+    }
+
+    if (typeof window.requestScrollLinkedUiUpdate === "function") {
+      window.requestScrollLinkedUiUpdate();
+    }
+
+    if (typeof window.refreshHeroMotionSoon === "function") {
+      window.refreshHeroMotionSoon();
+    } else if (typeof window.requestHeroMotionUpdate === "function") {
+      window.requestHeroMotionUpdate();
+    }
+
+    if (typeof window.refreshRaportPageUiSoon === "function") {
+      window.refreshRaportPageUiSoon();
+    } else {
+      if (typeof window.requestHeroParallaxUpdate === "function") {
+        window.requestHeroParallaxUpdate();
+      }
+
+      if (typeof window.requestActiveSectionUpdate === "function") {
+        window.requestActiveSectionUpdate();
+      }
+    }
+
+    runOnNextFrame(() => {
+      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event("scroll"));
+    });
+  }
+
   function setCinematicMode(active, options = {}) {
     const {
       persist = true,
       notify = true,
-      source = "manual"
+      source = "manual",
+      refreshUi = true
     } = options;
 
     const body = getBody();
@@ -321,7 +317,10 @@
         saveCinematicPreference(active);
       }
 
-      requestCrossModuleRefreshSoon();
+      if (refreshUi && source !== "init") {
+        refreshUiAfterCinematicToggle();
+      }
+
       return;
     }
 
@@ -340,12 +339,16 @@
       notifyCinematicChange(active, source);
     }
 
-    requestCrossModuleRefresh();
-    requestCrossModuleRefreshSoon();
+    if (refreshUi && source !== "init") {
+      refreshUiAfterCinematicToggle();
+    }
   }
 
   function toggleCinematicMode(source = "manual") {
-    setCinematicMode(!isCinematicModeActive(), { source });
+    setCinematicMode(!isCinematicModeActive(), {
+      source,
+      refreshUi: true
+    });
   }
 
   function closeMobileMenuIfOpen() {
@@ -388,11 +391,19 @@
     }
   }
 
-  function handleCinematicButtonClick() {
-    toggleCinematicMode("button");
+  function handleCinematicButtonClick(event) {
+    if (event?.currentTarget instanceof HTMLElement) {
+      event.currentTarget.blur();
+    }
+
+    toggleCinematicMode("nav-button");
   }
 
-  function handleMobileCinematicButtonClick() {
+  function handleMobileCinematicButtonClick(event) {
+    if (event?.currentTarget instanceof HTMLElement) {
+      event.currentTarget.blur();
+    }
+
     toggleCinematicMode("mobile-button");
     closeMobileMenuIfOpen();
   }
@@ -494,8 +505,6 @@
         cinematicArrivalTimer = window.setTimeout(() => {
           finishCinematicArrival(detail);
         }, duration);
-
-        requestCrossModuleRefreshSoon();
       });
     });
   }
@@ -507,7 +516,6 @@
 
     if (!shouldPlayCinematicArrival(payload)) {
       clearCinematicArrivalState();
-      requestCrossModuleRefreshSoon();
       return;
     }
 
@@ -518,7 +526,6 @@
     cacheCinematicElements();
     updateCinematicLabels();
     consumeAndApplyCinematicArrival();
-    requestCrossModuleRefreshSoon();
   }
 
   function handlePageHide() {
@@ -536,7 +543,8 @@
     setCinematicMode(shouldEnable, {
       persist: false,
       notify: false,
-      source: "init"
+      source: "init",
+      refreshUi: false
     });
 
     if (cinematicToggle) {
@@ -560,7 +568,6 @@
 
     consumeAndApplyCinematicArrival();
     updateCinematicLabels();
-    requestCrossModuleRefreshSoon();
   }
 
   window.setCinematicMode = setCinematicMode;
