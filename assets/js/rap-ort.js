@@ -40,6 +40,10 @@ function cacheRaportUiElements() {
   );
 }
 
+function hasRaportUiContent() {
+  return !!heroRaport || observedSections.length > 0;
+}
+
 function isReducedMotionEnabled() {
   const body = getBody();
   return !!body && body.classList.contains("reduced-motion");
@@ -116,6 +120,14 @@ function hasPendingCinematicArrival() {
 function shouldSuspendRaportHeroEffects() {
   return (
     isReducedMotionEnabled() ||
+    isCinematicArrivalActive() ||
+    isCinematicTransitionActive() ||
+    hasPendingCinematicArrival()
+  );
+}
+
+function shouldSuspendSectionState() {
+  return (
     isCinematicArrivalActive() ||
     isCinematicTransitionActive() ||
     hasPendingCinematicArrival()
@@ -248,11 +260,7 @@ function setActiveSectionLinks(activeId) {
 function updateActiveSectionLinks() {
   if (!observedSections.length || !allSectionLinks.length) return;
 
-  if (
-    isCinematicArrivalActive() ||
-    isCinematicTransitionActive() ||
-    hasPendingCinematicArrival()
-  ) {
+  if (shouldSuspendSectionState()) {
     clearActiveSectionLinks();
     return;
   }
@@ -261,7 +269,6 @@ function updateActiveSectionLinks() {
   const scrollPosition = window.scrollY + headerOffset;
 
   const firstSection = observedSections[0];
-
   if (!firstSection) {
     clearActiveSectionLinks();
     return;
@@ -275,7 +282,7 @@ function updateActiveSectionLinks() {
   let activeId = firstSection.id;
 
   observedSections.forEach((section) => {
-    if (scrollPosition >= section.offsetTop) {
+    if (scrollPosition >= section.offsetTop - 8) {
       activeId = section.id;
     }
   });
@@ -306,7 +313,6 @@ function refreshActiveSectionSoon() {
 /* ---------- GLOBAL REFRESH ---------- */
 
 function refreshRaportPageUi() {
-  cacheRaportUiElements();
   requestHeroParallaxUpdate();
   requestActiveSectionUpdate();
 }
@@ -319,7 +325,13 @@ function refreshRaportPageUiSoon() {
 
 /* ---------- EVENT HANDLERS ---------- */
 
+function handleScroll() {
+  requestHeroParallaxUpdate();
+  requestActiveSectionUpdate();
+}
+
 function handlePageShow() {
+  cacheRaportUiElements();
   refreshRaportPageUiSoon();
 }
 
@@ -355,6 +367,10 @@ function handleCinematicTransitionEnd() {
   refreshRaportPageUiSoon();
 }
 
+function handleHashChange() {
+  refreshActiveSectionSoon();
+}
+
 /* ---------- INIT ---------- */
 
 function initRaportPageUi() {
@@ -363,18 +379,18 @@ function initRaportPageUi() {
 
   cacheRaportUiElements();
 
-  if (!heroRaport && observedSections.length === 0) {
+  if (!hasRaportUiContent()) {
     return;
   }
 
   refreshRaportPageUiSoon();
 
-  window.addEventListener("scroll", refreshRaportPageUi, { passive: true });
+  window.addEventListener("scroll", handleScroll, { passive: true });
   window.addEventListener("resize", refreshRaportPageUiSoon);
   window.addEventListener("orientationchange", refreshRaportPageUiSoon);
   window.addEventListener("load", refreshRaportPageUiSoon);
   window.addEventListener("pageshow", handlePageShow);
-  window.addEventListener("hashchange", refreshActiveSectionSoon);
+  window.addEventListener("hashchange", handleHashChange);
 
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
@@ -408,4 +424,4 @@ if (document.body) {
   document.addEventListener("DOMContentLoaded", initRaportPageUi, {
     once: true
   });
-  }
+}
