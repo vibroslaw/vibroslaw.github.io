@@ -29,6 +29,15 @@ function cachePageTransitionElement() {
   pageTransition = document.getElementById("pageTransition");
 }
 
+function runOnNextFrame(callback) {
+  if (typeof window.requestAnimationFrame === "function") {
+    window.requestAnimationFrame(callback);
+    return;
+  }
+
+  window.setTimeout(callback, 16);
+}
+
 function hasModifierKey(event) {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
 }
@@ -186,6 +195,22 @@ function notifyCinematicTransitionChange(active) {
   );
 }
 
+function setCinematicTransitionState(active) {
+  const body = getBody();
+
+  if (body) {
+    body.classList.toggle("cinematic-transition-active", active);
+
+    if (active) {
+      body.dataset.cinematicTransition = "on";
+    } else {
+      delete body.dataset.cinematicTransition;
+    }
+  }
+
+  notifyCinematicTransitionChange(active);
+}
+
 function writeCinematicArrivalState(link, duration) {
   if (!(link instanceof HTMLAnchorElement)) return;
 
@@ -251,6 +276,34 @@ function snapshotAndStyleElement(element, nextStyle) {
   Object.keys(nextStyle).forEach((property) => {
     element.style[property] = nextStyle[property];
   });
+}
+
+function cleanupCinematicArtifacts() {
+  clearCinematicTimers();
+
+  if (cinematicZoomClone?.shell?.parentNode) {
+    cinematicZoomClone.shell.parentNode.removeChild(cinematicZoomClone.shell);
+  }
+
+  if (cinematicZoomVeil?.parentNode) {
+    cinematicZoomVeil.parentNode.removeChild(cinematicZoomVeil);
+  }
+
+  cinematicZoomClone = null;
+  cinematicZoomVeil = null;
+
+  clearCinematicShellState();
+  setCinematicTransitionState(false);
+}
+
+function failCinematicTransitionFallback(targetHref = "") {
+  cleanupCinematicArtifacts();
+  transitionLocked = false;
+  delete document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY];
+
+  if (targetHref) {
+    window.location.href = targetHref;
+  }
 }
 
 /* ---------- CINEMATIC CARD TRANSITION ---------- */
@@ -625,29 +678,6 @@ function applyCinematicShellState(sourceLink) {
   });
 }
 
-function clearSpecialCinematicTransition() {
-  clearCinematicTimers();
-
-  if (cinematicZoomClone?.shell?.parentNode) {
-    cinematicZoomClone.shell.parentNode.removeChild(cinematicZoomClone.shell);
-  }
-
-  if (cinematicZoomVeil?.parentNode) {
-    cinematicZoomVeil.parentNode.removeChild(cinematicZoomVeil);
-  }
-
-  cinematicZoomClone = null;
-  cinematicZoomVeil = null;
-
-  clearCinematicShellState();
-
-  if (document.body) {
-    document.body.classList.remove("cinematic-transition-active");
-  }
-
-  notifyCinematicTransitionChange(false);
-}
-
 function runSpecialCinematicCardTransition(link) {
   if (!(link instanceof HTMLAnchorElement)) return;
   if (transitionLocked) return;
@@ -664,20 +694,13 @@ function runSpecialCinematicCardTransition(link) {
   writeCinematicArrivalState(link, duration);
 
   document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
-
-  if (document.body) {
-    document.body.classList.add("cinematic-transition-active");
-  }
-
-  notifyCinematicTransitionChange(true);
+  setCinematicTransitionState(true);
 
   const veilBundle = createCinematicVeil();
   const cloneBundle = createCinematicZoomClone(link);
 
-  if (!cloneBundle) {
-    notifyCinematicTransitionChange(false);
-    transitionLocked = false;
-    window.location.href = link.href;
+  if (!veilBundle || !cloneBundle) {
+    failCinematicTransitionFallback(link.href);
     return;
   }
 
@@ -693,8 +716,8 @@ function runSpecialCinematicCardTransition(link) {
     centerTitle
   } = cloneBundle;
 
-  window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
+  runOnNextFrame(() => {
+    runOnNextFrame(() => {
       veil.style.opacity = "1";
 
       if (sweep) {
@@ -844,7 +867,7 @@ function clearPageTransition() {
   }
 
   delete document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY];
-  clearSpecialCinematicTransition();
+  cleanupCinematicArtifacts();
   transitionLocked = false;
 }
 
