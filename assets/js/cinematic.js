@@ -202,6 +202,36 @@
     );
   }
 
+  function refreshUiAfterCinematicToggle() {
+    if (typeof window.refreshMainUI === "function") {
+      window.refreshMainUI();
+    }
+
+    if (typeof window.requestScrollLinkedUiUpdate === "function") {
+      window.requestScrollLinkedUiUpdate();
+    }
+
+    if (typeof window.refreshHeroMotionSoon === "function") {
+      window.refreshHeroMotionSoon();
+    } else if (typeof window.requestHeroMotionUpdate === "function") {
+      window.requestHeroMotionUpdate();
+    }
+
+    if (typeof window.refreshRaportPageUiSoon === "function") {
+      window.refreshRaportPageUiSoon();
+    } else if (typeof window.refreshRaportPageUi === "function") {
+      window.refreshRaportPageUi();
+    }
+  }
+
+  function scheduleUiRefreshAfterCinematicToggle() {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        refreshUiAfterCinematicToggle();
+      });
+    });
+  }
+
   function setBodyCinematicState(active) {
     const body = getBody();
     if (!body) return;
@@ -289,6 +319,8 @@
     if (notify) {
       notifyCinematicChange(active, source);
     }
+
+    scheduleUiRefreshAfterCinematicToggle();
   }
 
   function toggleCinematicMode(source = "manual") {
