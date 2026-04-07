@@ -6,9 +6,9 @@ const CINEMATIC_HOME_PAGE = "home";
 const CINEMATIC_CARD_SELECTOR = ".cinematic-entry-card[data-cinematic-entry]";
 const CINEMATIC_CARD_KEYS = new Set(["rap-ort", "sztab"]);
 
-const CINEMATIC_ZOOM_DURATION_DESKTOP = 1280;
-const CINEMATIC_ZOOM_DURATION_MOBILE = 980;
-const CINEMATIC_NAVIGATION_OFFSET = 90;
+const CINEMATIC_ZOOM_DURATION_DESKTOP = 1420;
+const CINEMATIC_ZOOM_DURATION_MOBILE = 1120;
+const CINEMATIC_NAVIGATION_OFFSET = 110;
 const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
 
 let pageTransition = null;
@@ -200,6 +200,41 @@ function queueCinematicTimer(callback, delay) {
   return timerId;
 }
 
+function clearCinematicShellState() {
+  cinematicShellSnapshot.forEach((item) => {
+    const { element, style } = item;
+
+    if (!(element instanceof HTMLElement)) return;
+
+    element.style.transition = style.transition;
+    element.style.opacity = style.opacity;
+    element.style.transform = style.transform;
+    element.style.filter = style.filter;
+    element.style.pointerEvents = style.pointerEvents;
+  });
+
+  cinematicShellSnapshot = [];
+}
+
+function snapshotAndStyleElement(element, nextStyle) {
+  if (!(element instanceof HTMLElement)) return;
+
+  cinematicShellSnapshot.push({
+    element,
+    style: {
+      transition: element.style.transition,
+      opacity: element.style.opacity,
+      transform: element.style.transform,
+      filter: element.style.filter,
+      pointerEvents: element.style.pointerEvents
+    }
+  });
+
+  Object.keys(nextStyle).forEach((property) => {
+    element.style[property] = nextStyle[property];
+  });
+}
+
 /* ---------- CINEMATIC CARD TRANSITION ---------- */
 
 function isHomepage() {
@@ -259,41 +294,6 @@ function getCardKicker(link) {
   return text || "Audiovisual World";
 }
 
-function clearCinematicShellState() {
-  cinematicShellSnapshot.forEach((item) => {
-    const { element, style } = item;
-
-    if (!(element instanceof HTMLElement)) return;
-
-    element.style.transition = style.transition;
-    element.style.opacity = style.opacity;
-    element.style.transform = style.transform;
-    element.style.filter = style.filter;
-    element.style.pointerEvents = style.pointerEvents;
-  });
-
-  cinematicShellSnapshot = [];
-}
-
-function snapshotAndStyleElement(element, nextStyle) {
-  if (!(element instanceof HTMLElement)) return;
-
-  cinematicShellSnapshot.push({
-    element,
-    style: {
-      transition: element.style.transition,
-      opacity: element.style.opacity,
-      transform: element.style.transform,
-      filter: element.style.filter,
-      pointerEvents: element.style.pointerEvents
-    }
-  });
-
-  Object.keys(nextStyle).forEach((property) => {
-    element.style[property] = nextStyle[property];
-  });
-}
-
 function createCinematicVeil() {
   const veil = document.createElement("div");
   veil.setAttribute("aria-hidden", "true");
@@ -304,25 +304,26 @@ function createCinematicVeil() {
   veil.style.opacity = "0";
   veil.style.overflow = "hidden";
   veil.style.background = [
-    "radial-gradient(circle at 50% 18%, rgba(255,255,255,.05), transparent 14%)",
-    "radial-gradient(circle at 50% 34%, rgba(201,178,143,.24), transparent 22%)",
-    "radial-gradient(circle at 50% 56%, rgba(201,178,143,.16), transparent 42%)",
-    "linear-gradient(180deg, rgba(3,3,3,.14), rgba(6,6,6,.42), rgba(9,9,9,.90))"
+    "radial-gradient(circle at 50% 10%, rgba(255,255,255,.06), transparent 10%)",
+    "radial-gradient(circle at 50% 24%, rgba(201,178,143,.28), transparent 18%)",
+    "radial-gradient(circle at 50% 46%, rgba(201,178,143,.18), transparent 30%)",
+    "radial-gradient(circle at 50% 68%, rgba(0,0,0,.18), transparent 42%)",
+    "linear-gradient(180deg, rgba(3,3,3,.14), rgba(6,6,6,.42), rgba(9,9,9,.92))"
   ].join(", ");
-  veil.style.transition = "opacity 420ms cubic-bezier(.22,1,.36,1)";
+  veil.style.transition = "opacity 480ms cubic-bezier(.16,1,.30,1)";
 
   const sweep = document.createElement("div");
   sweep.setAttribute("aria-hidden", "true");
   sweep.style.position = "absolute";
-  sweep.style.inset = "-14% -34%";
+  sweep.style.inset = "-16% -38%";
   sweep.style.pointerEvents = "none";
   sweep.style.opacity = "0";
-  sweep.style.transform = "translate3d(-20%,0,0)";
+  sweep.style.transform = "translate3d(-24%,0,0) skewX(-10deg)";
   sweep.style.mixBlendMode = "screen";
   sweep.style.background =
-    "linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255,255,255,.14) 50%, transparent 58%, transparent 100%)";
+    "linear-gradient(110deg, transparent 0%, transparent 40%, rgba(255,255,255,.17) 50%, transparent 60%, transparent 100%)";
   sweep.style.transition =
-    "opacity 560ms cubic-bezier(.22,1,.36,1), transform 1100ms cubic-bezier(.22,1,.36,1)";
+    "opacity 620ms cubic-bezier(.16,1,.30,1), transform 1220ms cubic-bezier(.16,1,.30,1)";
 
   const flash = document.createElement("div");
   flash.setAttribute("aria-hidden", "true");
@@ -331,7 +332,7 @@ function createCinematicVeil() {
   flash.style.pointerEvents = "none";
   flash.style.opacity = "0";
   flash.style.background =
-    "radial-gradient(circle at 50% 42%, rgba(255,255,255,.14), transparent 22%)";
+    "radial-gradient(circle at 50% 40%, rgba(255,255,255,.16), transparent 18%)";
   flash.style.transition = "opacity 180ms ease";
 
   const topShutter = document.createElement("div");
@@ -340,14 +341,14 @@ function createCinematicVeil() {
   topShutter.style.top = "0";
   topShutter.style.left = "0";
   topShutter.style.right = "0";
-  topShutter.style.height = isMobileViewport() ? "9vh" : "11vh";
+  topShutter.style.height = isMobileViewport() ? "10vh" : "12vh";
   topShutter.style.pointerEvents = "none";
   topShutter.style.opacity = "0";
   topShutter.style.transform = "translate3d(0,-104%,0)";
   topShutter.style.background =
-    "linear-gradient(180deg, rgba(0,0,0,.96), rgba(0,0,0,.74), transparent)";
+    "linear-gradient(180deg, rgba(0,0,0,.98), rgba(0,0,0,.78), transparent)";
   topShutter.style.transition =
-    "opacity 360ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1)";
+    "opacity 380ms cubic-bezier(.16,1,.30,1), transform 820ms cubic-bezier(.16,1,.30,1)";
 
   const bottomShutter = document.createElement("div");
   bottomShutter.setAttribute("aria-hidden", "true");
@@ -355,14 +356,14 @@ function createCinematicVeil() {
   bottomShutter.style.bottom = "0";
   bottomShutter.style.left = "0";
   bottomShutter.style.right = "0";
-  bottomShutter.style.height = isMobileViewport() ? "12vh" : "15vh";
+  bottomShutter.style.height = isMobileViewport() ? "13vh" : "16vh";
   bottomShutter.style.pointerEvents = "none";
   bottomShutter.style.opacity = "0";
   bottomShutter.style.transform = "translate3d(0,104%,0)";
   bottomShutter.style.background =
-    "linear-gradient(0deg, rgba(0,0,0,.98), rgba(0,0,0,.78), transparent)";
+    "linear-gradient(0deg, rgba(0,0,0,.99), rgba(0,0,0,.82), transparent)";
   bottomShutter.style.transition =
-    "opacity 360ms cubic-bezier(.22,1,.36,1), transform 820ms cubic-bezier(.22,1,.36,1)";
+    "opacity 380ms cubic-bezier(.16,1,.30,1), transform 860ms cubic-bezier(.16,1,.30,1)";
 
   veil.appendChild(sweep);
   veil.appendChild(flash);
@@ -407,9 +408,9 @@ function createCinematicZoomClone(sourceLink) {
   shell.style.overflow = "hidden";
   shell.style.borderRadius = linkStyle.borderRadius || "32px";
   shell.style.background =
-    "linear-gradient(180deg, rgba(8,8,8,.95), rgba(5,5,5,.99))";
+    "linear-gradient(180deg, rgba(8,8,8,.95), rgba(5,5,5,.995))";
   shell.style.border = "1px solid rgba(255,255,255,.08)";
-  shell.style.boxShadow = "0 48px 160px rgba(0,0,0,.52)";
+  shell.style.boxShadow = "0 52px 180px rgba(0,0,0,.56)";
   shell.style.transform = "translate3d(0,0,0) scale(1)";
   shell.style.transformOrigin = "center center";
   shell.style.willChange =
@@ -426,7 +427,7 @@ function createCinematicZoomClone(sourceLink) {
   mediaLayer.style.backgroundPosition = mediaStyle.backgroundPosition;
   mediaLayer.style.backgroundSize = mediaStyle.backgroundSize;
   mediaLayer.style.backgroundRepeat = mediaStyle.backgroundRepeat;
-  mediaLayer.style.filter = "saturate(.94) brightness(.95) contrast(1.03)";
+  mediaLayer.style.filter = "saturate(.96) brightness(.96) contrast(1.04)";
   mediaLayer.style.transform = "translate3d(0,0,0) scale(1)";
   mediaLayer.style.transformOrigin = "center center";
   mediaLayer.style.willChange =
@@ -437,13 +438,13 @@ function createCinematicZoomClone(sourceLink) {
   mediaShade.style.position = "absolute";
   mediaShade.style.inset = "0";
   mediaShade.style.background = [
-    "linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.22))",
-    "radial-gradient(circle at center, rgba(201,178,143,.10), transparent 46%)"
+    "linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.22))",
+    "radial-gradient(circle at center, rgba(201,178,143,.12), transparent 46%)"
   ].join(", ");
   mediaShade.style.opacity = "1";
   mediaShade.style.transform = "scale(1)";
   mediaShade.style.transition =
-    "opacity 460ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1)";
+    "opacity 460ms cubic-bezier(.16,1,.30,1), transform 760ms cubic-bezier(.16,1,.30,1)";
 
   mediaLayer.appendChild(mediaShade);
 
@@ -454,12 +455,12 @@ function createCinematicZoomClone(sourceLink) {
   shellGlow.style.pointerEvents = "none";
   shellGlow.style.opacity = ".44";
   shellGlow.style.background = [
-    "radial-gradient(circle at top right, rgba(201,178,143,.18), transparent 28%)",
-    "radial-gradient(circle at 50% 36%, rgba(255,255,255,.04), transparent 24%)",
-    "linear-gradient(180deg, transparent 0%, rgba(3,3,3,.18) 38%, rgba(3,3,3,.76) 100%)"
+    "radial-gradient(circle at top right, rgba(201,178,143,.20), transparent 28%)",
+    "radial-gradient(circle at 50% 36%, rgba(255,255,255,.045), transparent 24%)",
+    "linear-gradient(180deg, transparent 0%, rgba(3,3,3,.18) 38%, rgba(3,3,3,.78) 100%)"
   ].join(", ");
   shellGlow.style.transition =
-    "opacity 520ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1)";
+    "opacity 560ms cubic-bezier(.16,1,.30,1), transform 760ms cubic-bezier(.16,1,.30,1)";
 
   const caption = document.createElement("div");
   caption.setAttribute("aria-hidden", "true");
@@ -471,7 +472,7 @@ function createCinematicZoomClone(sourceLink) {
   caption.style.background =
     "linear-gradient(180deg, transparent 0%, rgba(4,4,4,.62) 34%, rgba(4,4,4,.96) 100%)";
   caption.style.transition =
-    "opacity 420ms cubic-bezier(.22,1,.36,1), transform 520ms cubic-bezier(.22,1,.36,1), filter 520ms cubic-bezier(.22,1,.36,1)";
+    "opacity 420ms cubic-bezier(.16,1,.30,1), transform 560ms cubic-bezier(.16,1,.30,1), filter 560ms cubic-bezier(.16,1,.30,1)";
   caption.style.opacity = "1";
   caption.style.transform = "translate3d(0,0,0)";
   caption.style.filter = "blur(0)";
@@ -500,22 +501,22 @@ function createCinematicZoomClone(sourceLink) {
   centerTitle.style.position = "absolute";
   centerTitle.style.left = "50%";
   centerTitle.style.top = isMobileViewport() ? "44%" : "42%";
-  centerTitle.style.transform = "translate3d(-50%,18px,0) scale(.94)";
+  centerTitle.style.transform = "translate3d(-50%,22px,0) scale(.92)";
   centerTitle.style.width = isMobileViewport() ? "86vw" : "min(72vw, 980px)";
   centerTitle.style.textAlign = "center";
   centerTitle.style.opacity = "0";
-  centerTitle.style.filter = "blur(16px)";
+  centerTitle.style.filter = "blur(18px)";
   centerTitle.style.transition =
-    "opacity 520ms cubic-bezier(.22,1,.36,1), transform 760ms cubic-bezier(.22,1,.36,1), filter 760ms cubic-bezier(.22,1,.36,1)";
+    "opacity 560ms cubic-bezier(.16,1,.30,1), transform 820ms cubic-bezier(.16,1,.30,1), filter 820ms cubic-bezier(.16,1,.30,1)";
   centerTitle.style.willChange = "opacity, transform, filter";
   centerTitle.style.pointerEvents = "none";
   centerTitle.style.textShadow =
-    "0 16px 42px rgba(0,0,0,.48), 0 2px 10px rgba(0,0,0,.24)";
+    "0 18px 54px rgba(0,0,0,.56), 0 2px 12px rgba(0,0,0,.28)";
 
   const centerTitleKicker = document.createElement("div");
   centerTitleKicker.textContent = kicker;
-  centerTitleKicker.style.color = "rgba(201,178,143,.92)";
-  centerTitleKicker.style.fontSize = isMobileViewport() ? ".70rem" : ".76rem";
+  centerTitleKicker.style.color = "rgba(201,178,143,.94)";
+  centerTitleKicker.style.fontSize = isMobileViewport() ? ".70rem" : ".78rem";
   centerTitleKicker.style.letterSpacing = ".22em";
   centerTitleKicker.style.textTransform = "uppercase";
   centerTitleKicker.style.marginBottom = "14px";
@@ -524,11 +525,11 @@ function createCinematicZoomClone(sourceLink) {
   centerTitleText.textContent = title;
   centerTitleText.style.fontFamily = '"Cormorant Garamond", serif';
   centerTitleText.style.fontWeight = "600";
-  centerTitleText.style.lineHeight = ".90";
-  centerTitleText.style.letterSpacing = "-.02em";
+  centerTitleText.style.lineHeight = ".89";
+  centerTitleText.style.letterSpacing = "-.025em";
   centerTitleText.style.fontSize = isMobileViewport()
-    ? "clamp(2.2rem, 9vw, 3.6rem)"
-    : "clamp(3.4rem, 6.4vw, 6rem)";
+    ? "clamp(2.3rem, 9.2vw, 3.8rem)"
+    : "clamp(3.8rem, 6.8vw, 6.4rem)";
   centerTitleText.style.color = "#f2ece3";
 
   centerTitle.appendChild(centerTitleKicker);
@@ -566,36 +567,36 @@ function applyCinematicShellState(sourceLink) {
 
   snapshotAndStyleElement(header, {
     transition:
-      "opacity 480ms cubic-bezier(.22,1,.36,1), transform 480ms cubic-bezier(.22,1,.36,1), filter 480ms cubic-bezier(.22,1,.36,1)",
+      "opacity 520ms cubic-bezier(.16,1,.30,1), transform 520ms cubic-bezier(.16,1,.30,1), filter 520ms cubic-bezier(.16,1,.30,1)",
     opacity: "0",
-    transform: "translateY(-14px) scale(.985)",
-    filter: "blur(4px)",
+    transform: "translateY(-16px) scale(.982)",
+    filter: "blur(5px)",
     pointerEvents: "none"
   });
 
   snapshotAndStyleElement(main, {
     transition:
-      "opacity 520ms cubic-bezier(.22,1,.36,1), transform 520ms cubic-bezier(.22,1,.36,1), filter 520ms cubic-bezier(.22,1,.36,1)",
-    opacity: ".06",
-    transform: "scale(.975)",
-    filter: "blur(4px)",
+      "opacity 560ms cubic-bezier(.16,1,.30,1), transform 560ms cubic-bezier(.16,1,.30,1), filter 560ms cubic-bezier(.16,1,.30,1)",
+    opacity: ".05",
+    transform: "scale(.972)",
+    filter: "blur(5px)",
     pointerEvents: "none"
   });
 
   snapshotAndStyleElement(floatingTools, {
     transition:
-      "opacity 320ms cubic-bezier(.22,1,.36,1), transform 320ms cubic-bezier(.22,1,.36,1)",
+      "opacity 340ms cubic-bezier(.16,1,.30,1), transform 340ms cubic-bezier(.16,1,.30,1)",
     opacity: "0",
-    transform: "translateY(12px)",
+    transform: "translateY(14px)",
     pointerEvents: "none"
   });
 
   snapshotAndStyleElement(footer, {
     transition:
-      "opacity 440ms cubic-bezier(.22,1,.36,1), transform 440ms cubic-bezier(.22,1,.36,1), filter 440ms cubic-bezier(.22,1,.36,1)",
-    opacity: ".04",
-    transform: "scale(.98)",
-    filter: "blur(4px)",
+      "opacity 460ms cubic-bezier(.16,1,.30,1), transform 460ms cubic-bezier(.16,1,.30,1), filter 460ms cubic-bezier(.16,1,.30,1)",
+    opacity: ".03",
+    transform: "scale(.978)",
+    filter: "blur(5px)",
     pointerEvents: "none"
   });
 
@@ -638,7 +639,9 @@ function runSpecialCinematicCardTransition(link) {
   }
 
   transitionLocked = true;
-  writeCinematicArrivalState(link, getCinematicDuration());
+
+  const duration = getCinematicDuration();
+  writeCinematicArrivalState(link, duration);
 
   document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
 
@@ -646,7 +649,6 @@ function runSpecialCinematicCardTransition(link) {
     document.body.classList.add("cinematic-transition-active");
   }
 
-  const duration = getCinematicDuration();
   const veilBundle = createCinematicVeil();
   const cloneBundle = createCinematicZoomClone(link);
 
@@ -673,8 +675,8 @@ function runSpecialCinematicCardTransition(link) {
       veil.style.opacity = "1";
 
       if (sweep) {
-        sweep.style.opacity = ".96";
-        sweep.style.transform = "translate3d(24%,0,0)";
+        sweep.style.opacity = ".98";
+        sweep.style.transform = "translate3d(28%,0,0) skewX(-10deg)";
       }
 
       if (topShutter) {
@@ -688,7 +690,7 @@ function runSpecialCinematicCardTransition(link) {
       }
 
       if (flash) {
-        flash.style.opacity = ".38";
+        flash.style.opacity = ".42";
         queueCinematicTimer(() => {
           if (flash) {
             flash.style.opacity = "0";
@@ -697,24 +699,24 @@ function runSpecialCinematicCardTransition(link) {
       }
 
       shell.style.transition = [
-        `left ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `top ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `width ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `height ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `border-radius ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `transform ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `box-shadow ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `opacity ${duration}ms cubic-bezier(.16,1,.30,1)`
+        `left ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `top ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `width ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `height ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `border-radius ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `transform ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `box-shadow ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `opacity ${duration}ms cubic-bezier(.12,1,.28,1)`
       ].join(", ");
 
       mediaLayer.style.transition = [
-        `left ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `top ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `width ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `height ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `transform ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `filter ${duration}ms cubic-bezier(.16,1,.30,1)`,
-        `opacity ${duration}ms cubic-bezier(.16,1,.30,1)`
+        `left ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `top ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `width ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `height ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `transform ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `filter ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `opacity ${duration}ms cubic-bezier(.12,1,.28,1)`
       ].join(", ");
 
       shell.style.left = "0px";
@@ -722,74 +724,79 @@ function runSpecialCinematicCardTransition(link) {
       shell.style.width = `${window.innerWidth}px`;
       shell.style.height = `${window.innerHeight}px`;
       shell.style.borderRadius = "0px";
-      shell.style.transform = "translate3d(0,0,0) scale(1.022)";
+      shell.style.transform = "translate3d(0,0,0) scale(1.03)";
       shell.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
 
       mediaLayer.style.left = "0px";
       mediaLayer.style.top = "0px";
       mediaLayer.style.width = `${window.innerWidth}px`;
       mediaLayer.style.height = `${window.innerHeight}px`;
-      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.12)";
-      mediaLayer.style.filter = "saturate(1.08) brightness(.70) contrast(1.08)";
+      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.14)";
+      mediaLayer.style.filter = "saturate(1.10) brightness(.68) contrast(1.10)";
 
       if (mediaShade) {
         mediaShade.style.opacity = ".98";
-        mediaShade.style.transform = "scale(1.06)";
+        mediaShade.style.transform = "scale(1.07)";
       }
 
       if (shellGlow) {
-        shellGlow.style.opacity = ".66";
-        shellGlow.style.transform = "scale(1.03)";
+        shellGlow.style.opacity = ".68";
+        shellGlow.style.transform = "scale(1.04)";
       }
 
       if (caption) {
         caption.style.opacity = "0";
-        caption.style.transform = "translate3d(0,34px,0) scale(.96)";
-        caption.style.filter = "blur(16px)";
+        caption.style.transform = "translate3d(0,40px,0) scale(.95)";
+        caption.style.filter = "blur(18px)";
       }
     });
   });
 
   queueCinematicTimer(() => {
     if (centerTitle) {
-      centerTitle.style.opacity = ".96";
+      centerTitle.style.opacity = ".98";
       centerTitle.style.transform = "translate3d(-50%,0,0) scale(1)";
       centerTitle.style.filter = "blur(0)";
     }
-  }, Math.round(duration * 0.18));
+  }, Math.round(duration * 0.16));
 
   queueCinematicTimer(() => {
     if (mediaLayer) {
       mediaLayer.style.transition =
-        `transform ${Math.round(duration * 0.34)}ms cubic-bezier(.16,1,.30,1), ` +
-        `filter ${Math.round(duration * 0.34)}ms cubic-bezier(.16,1,.30,1)`;
+        `transform ${Math.round(duration * 0.36)}ms cubic-bezier(.12,1,.28,1), ` +
+        `filter ${Math.round(duration * 0.36)}ms cubic-bezier(.12,1,.28,1)`;
 
-      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.18)";
-      mediaLayer.style.filter = "saturate(1.12) brightness(.64) contrast(1.10)";
+      mediaLayer.style.transform = "translate3d(0,0,0) scale(1.22)";
+      mediaLayer.style.filter = "saturate(1.14) brightness(.60) contrast(1.12)";
     }
 
     if (mediaShade) {
       mediaShade.style.opacity = "1";
-      mediaShade.style.transform = "scale(1.09)";
+      mediaShade.style.transform = "scale(1.10)";
     }
-  }, Math.round(duration * 0.42));
+
+    if (shellGlow) {
+      shellGlow.style.opacity = ".78";
+      shellGlow.style.transform = "scale(1.06)";
+    }
+  }, Math.round(duration * 0.40));
 
   queueCinematicTimer(() => {
     if (centerTitle) {
       centerTitle.style.transition =
-        `opacity ${Math.round(duration * 0.16)}ms ease, ` +
-        `transform ${Math.round(duration * 0.16)}ms ease, ` +
-        `filter ${Math.round(duration * 0.16)}ms ease`;
+        `opacity ${Math.round(duration * 0.18)}ms ease, ` +
+        `transform ${Math.round(duration * 0.18)}ms ease, ` +
+        `filter ${Math.round(duration * 0.18)}ms ease`;
 
       centerTitle.style.opacity = "0";
-      centerTitle.style.transform = "translate3d(-50%,-10px,0) scale(1.03)";
-      centerTitle.style.filter = "blur(12px)";
+      centerTitle.style.transform = "translate3d(-50%,-14px,0) scale(1.04)";
+      centerTitle.style.filter = "blur(14px)";
     }
-  }, Math.round(duration * 0.68));
+  }, Math.round(duration * 0.70));
 
   queueCinematicTimer(() => {
     window.location.href = link.href;
-  }, Math.max(220, duration - CINEMATIC_NAVIGATION_OFFSET));
+  }, Math.max(260, duration - CINEMATIC_NAVIGATION_OFFSET));
 }
 
 /* ---------- STANDARD PAGE TRANSITION ---------- */
@@ -888,4 +895,4 @@ if (document.body) {
   document.addEventListener("DOMContentLoaded", initPageTransition, {
     once: true
   });
-      }
+    }
