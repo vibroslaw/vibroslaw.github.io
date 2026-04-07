@@ -40,7 +40,7 @@
   --reading-max:60ch;
 
   --transition-glow:rgba(201,178,143,.18);
-  --transition-glow-strong:rgba(201,178,143,.28);
+  --transition-glow-strong:rgba(201,178,143,.30);
   --transition-film:rgba(255,255,255,.06);
 }
 
@@ -152,10 +152,53 @@ textarea:focus-visible{
 
 /* ---------- TRANSITION / PROGRESS ---------- */
 
+@keyframes cinematicTransitionPulse{
+  0%{
+    opacity:.34;
+    transform:scale(.94);
+  }
+  45%{
+    opacity:1;
+    transform:scale(1.03);
+  }
+  100%{
+    opacity:.92;
+    transform:scale(1.10);
+  }
+}
+
+@keyframes cinematicTransitionSweep{
+  0%{
+    opacity:0;
+    transform:translate3d(-30%, 0, 0) skewX(-10deg);
+  }
+  18%{
+    opacity:.22;
+  }
+  48%{
+    opacity:.96;
+  }
+  100%{
+    opacity:.18;
+    transform:translate3d(34%, 0, 0) skewX(-10deg);
+  }
+}
+
+@keyframes cinematicTransitionDrift{
+  0%{
+    transform:scale(1.025);
+    filter:saturate(1.02) contrast(1.01);
+  }
+  100%{
+    transform:scale(1);
+    filter:saturate(1.08) contrast(1.04);
+  }
+}
+
 .page-transition{
   position:fixed;
   inset:0;
-  z-index:9999;
+  z-index:10040;
   overflow:hidden;
   background:
     radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 22%),
@@ -258,17 +301,18 @@ html[data-page-transition="minimal"] .page-transition::after{
   transform:none;
 }
 
-/* cinematic — top tier */
+/* cinematic — world class */
 html[data-page-transition="cinematic"] .page-transition{
   background:
-    radial-gradient(circle at 50% 10%, rgba(255,255,255,.055), transparent 12%),
-    radial-gradient(circle at 50% 22%, rgba(255,255,255,.028), transparent 18%),
-    radial-gradient(circle at 50% 34%, rgba(201,178,143,.26), transparent 22%),
-    radial-gradient(circle at 50% 52%, rgba(201,178,143,.18), transparent 38%),
-    radial-gradient(circle at 50% 66%, rgba(0,0,0,.18), transparent 46%),
-    linear-gradient(180deg, rgba(2,2,2,.12) 0%, rgba(4,4,4,.26) 16%, rgba(6,6,6,.56) 44%, rgba(8,8,8,.86) 74%, rgba(9,9,9,.992) 100%);
+    radial-gradient(circle at 50% 9%, rgba(255,255,255,.055), transparent 11%),
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.028), transparent 16%),
+    radial-gradient(circle at 50% 30%, rgba(201,178,143,.28), transparent 18%),
+    radial-gradient(circle at 50% 48%, rgba(201,178,143,.18), transparent 32%),
+    radial-gradient(circle at 50% 68%, rgba(0,0,0,.20), transparent 46%),
+    linear-gradient(180deg, rgba(2,2,2,.10) 0%, rgba(4,4,4,.24) 16%, rgba(6,6,6,.54) 42%, rgba(8,8,8,.86) 74%, rgba(9,9,9,.992) 100%);
   transform:scale(1);
   filter:saturate(1.08) contrast(1.04);
+  animation:cinematicTransitionDrift .92s cubic-bezier(.22,1,.36,1) both;
 }
 
 html[data-page-transition="cinematic"] .page-transition::before{
@@ -279,6 +323,7 @@ html[data-page-transition="cinematic"] .page-transition::before{
     radial-gradient(circle at 50% 18%, rgba(255,255,255,.07), transparent 12%),
     radial-gradient(circle at 50% 58%, rgba(201,178,143,.10), transparent 34%),
     linear-gradient(180deg, rgba(255,255,255,.022), transparent 34%);
+  animation:cinematicTransitionPulse .92s cubic-bezier(.22,1,.36,1) both;
 }
 
 html[data-page-transition="cinematic"] .page-transition::after{
@@ -293,6 +338,7 @@ html[data-page-transition="cinematic"] .page-transition::after{
       transparent 62%,
       transparent 100%
     );
+  animation:cinematicTransitionSweep .96s cubic-bezier(.22,1,.36,1) both;
 }
 
 /* cinematic shell backup */
@@ -309,18 +355,20 @@ body.cinematic-transition-active .site-footer{
 }
 
 body.cinematic-transition-active .progress-bar{
-  opacity:.12;
-  transform:scaleX(.98);
+  opacity:.10;
+  transform:scaleX(.985);
 }
 
 body.reduced-motion .page-transition{
   transform:none;
   filter:none;
+  animation:none !important;
 }
 
 body.reduced-motion .page-transition::before,
 body.reduced-motion .page-transition::after{
   transform:none;
+  animation:none !important;
 }
 
 .progress-bar{
@@ -339,7 +387,11 @@ body.reduced-motion .page-transition::after{
   box-shadow:
     0 0 18px rgba(201,178,143,calc(.20 + (var(--hero-focus, 0) * .20))),
     0 0 34px rgba(242,236,227,calc(.06 + (var(--hero-visibility, 0) * .10)));
-  transition:width .12s ease-out, box-shadow .25s var(--ease-soft), opacity .25s ease, transform .25s ease;
+  transition:
+    width .12s ease-out,
+    box-shadow .25s var(--ease-soft),
+    opacity .25s ease,
+    transform .25s ease;
 }
 
 body.cinematic-mode .progress-bar{
@@ -1246,4 +1298,4 @@ body.reduced-motion *::after{
   html[data-page-transition="cinematic"] .page-transition{
     filter:saturate(1.03);
   }
-      }
+  }
