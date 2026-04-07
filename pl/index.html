@@ -5,22 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Piotr Lichwała (Vibrosław) — Projekty audiowizualne</title>
-  <meta name="description" content="Oficjalna strona Piotra Lichwały (Vibrosław) — autorskie projekty audiowizualne na styku pamięci, historii i odpowiedzialności." />
+  <meta
+    name="description"
+    content="Oficjalna strona Piotra Lichwały (Vibrosław) — autorskie projekty audiowizualne na styku pamięci, historii i odpowiedzialności."
+  />
   <meta name="theme-color" content="#090909" />
+  <meta name="color-scheme" content="dark" />
 
   <meta property="og:title" content="Piotr Lichwała (Vibrosław) — Projekty audiowizualne" />
-  <meta property="og:description" content="Autorskie projekty audiowizualne na styku pamięci, historii i odpowiedzialności." />
+  <meta
+    property="og:description"
+    content="Autorskie projekty audiowizualne na styku pamięci, historii i odpowiedzialności."
+  />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/pl/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-  <link rel="stylesheet" href="/assets/css/main.css" />
-  <link rel="stylesheet" href="/assets/css/home.css" />
-  <link rel="stylesheet" href="/assets/css/cinematic.css" />
-  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
+  <link rel="preload" as="image" href="/assets/images/hero-main.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/images/hero-mobile.jpg" media="(max-width: 760px)" />
+  <link rel="preload" as="image" href="/assets/images/hero-raport-main.jpg" />
+  <link rel="preload" as="image" href="/assets/images/hero-sztab-main.jpg" />
+
+  <link rel="stylesheet" href="/assets/css/main.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/home.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css?v=8" />
+
+  <noscript>
+    <style>
+      .reveal{
+        opacity:1 !important;
+        transform:none !important;
+        filter:none !important;
+      }
+
+      .page-transition,
+      .progress-bar{
+        display:none !important;
+      }
+    </style>
+  </noscript>
 </head>
 <body
   data-page="home"
@@ -40,15 +70,29 @@
 
   <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
     <div class="mobile-menu-panel">
+      <a class="mobile-menu-link track-link" href="/rap-ort/pl/" data-track-title="Rap-Ort">Rap-Ort</a>
+      <a class="mobile-menu-link track-link" href="/sztab/" data-track-title="SZTAB">SZTAB</a>
+
       <a class="mobile-menu-link" href="#projects">Główne światy</a>
       <a class="mobile-menu-link" href="#pathways">Jak wejść</a>
       <a class="mobile-menu-link" href="#timeline">Mapa narracyjna</a>
       <a class="mobile-menu-link" href="#institutions">Instytucje</a>
       <a class="mobile-menu-link" href="#recognition">Wzmianki</a>
-      <a class="mobile-menu-link" href="/authorial-profile/pl/">Profil autorski</a>
+      <a
+        class="mobile-menu-link track-link"
+        href="/authorial-profile/pl/"
+        data-track-title="Profil autorski"
+      >
+        Profil autorski
+      </a>
       <a class="mobile-menu-link" href="#contact">Kontakt</a>
 
-      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+      <button
+        class="mobile-menu-link mobile-menu-button"
+        id="mobileCinematicToggle"
+        type="button"
+        aria-pressed="false"
+      >
         Tryb kinowy
       </button>
 
@@ -62,13 +106,23 @@
 
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="/pl/" aria-label="Strona główna">
+      <a class="brand brand-home-lockup" href="/pl/" aria-label="Strona główna">
         <div class="brand-name">Piotr Lichwała</div>
         <div class="brand-sub">Vibrosław · Twórca audiowizualny</div>
       </a>
 
-      <nav class="desktop-nav desktop-nav-compact" aria-label="Sterowanie stroną">
-        <button type="button" id="cinematicToggle" class="nav-button">Tryb kinowy</button>
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Nawigacja główna i sterowanie stroną">
+        <a href="/rap-ort/pl/" class="nav-button track-link" data-track-title="Rap-Ort">Rap-Ort</a>
+        <a href="/sztab/" class="nav-button track-link" data-track-title="SZTAB">SZTAB</a>
+
+        <button
+          type="button"
+          id="cinematicToggle"
+          class="nav-button"
+          aria-pressed="false"
+        >
+          Tryb kinowy
+        </button>
 
         <div class="lang-switch" aria-label="Zmiana języka">
           <a href="/">EN</a>
@@ -125,7 +179,14 @@
 
           <div class="cta-row">
             <a class="btn btn-primary" href="#projects">Otwórz główne światy</a>
-            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Włącz tryb kinowy</button>
+            <button
+              class="btn btn-tertiary"
+              id="cinematicHeroButton"
+              type="button"
+              aria-pressed="false"
+            >
+              Włącz tryb kinowy
+            </button>
           </div>
         </div>
 
@@ -195,9 +256,10 @@
 
         <div class="grid grid-2">
           <a
-            class="card project-card project-link-card reveal track-link"
+            class="card project-card project-link-card cinematic-entry-card reveal track-link"
             href="/rap-ort/pl/"
             data-track-title="Rap-Ort"
+            data-cinematic-entry="rap-ort"
             aria-label="Wejdź do Rap-Ort"
           >
             <div class="project-media"></div>
@@ -224,9 +286,10 @@
           </a>
 
           <a
-            class="card project-card project-link-card reveal track-link"
+            class="card project-card project-link-card cinematic-entry-card reveal track-link"
             href="/sztab/"
             data-track-title="SZTAB"
+            data-cinematic-entry="sztab"
             aria-label="Wejdź do SZTAB"
           >
             <div class="project-media"></div>
@@ -298,7 +361,7 @@
                 metodę pracy i logikę twórczą stojącą za tymi światami.
               </p>
             </div>
-            <a class="btn btn-secondary" href="/authorial-profile/pl/">Otwórz profil autorski</a>
+            <a class="btn btn-secondary track-link" href="/authorial-profile/pl/" data-track-title="Profil autorski">Otwórz profil autorski</a>
           </article>
         </div>
       </div>
@@ -446,7 +509,7 @@
                 refleksji i twórczości, która pozostaje częścią szerszego głosu autorskiego.
               </p>
             </div>
-            <a class="btn btn-secondary" href="#">Otwórz Manifest</a>
+            <button class="btn btn-secondary" type="button" disabled aria-disabled="true">Planowane rozszerzenie</button>
           </article>
 
           <article class="card mini-card reveal">
@@ -457,7 +520,7 @@
                 które z czasem mogą stać się podstawą kolejnych rozdziałów.
               </p>
             </div>
-            <a class="btn btn-secondary" href="#">Otwórz Archiwum</a>
+            <button class="btn btn-secondary" type="button" disabled aria-disabled="true">Planowane rozszerzenie</button>
           </article>
 
           <article class="card mini-card reveal">
@@ -468,7 +531,7 @@
                 i dlaczego powstają właśnie takie formy audiowizualne.
               </p>
             </div>
-            <a class="btn btn-secondary" href="/authorial-profile/pl/">Otwórz profil</a>
+            <a class="btn btn-secondary track-link" href="/authorial-profile/pl/" data-track-title="Profil autorski">Otwórz profil</a>
           </article>
         </div>
       </div>
@@ -496,7 +559,7 @@
 
           <div class="cta-row compact">
             <a class="btn btn-primary" href="mailto:peter.lichwala@gmail.com">Napisz email</a>
-            <a class="btn btn-secondary" href="/authorial-profile/pl/">Profil autorski</a>
+            <a class="btn btn-secondary track-link" href="/authorial-profile/pl/" data-track-title="Profil autorski">Profil autorski</a>
           </div>
 
           <div class="contact-links">
@@ -551,7 +614,14 @@
   </main>
 
   <div class="floating-tools">
-    <button class="tool-button" id="reducedMotionToggle" type="button">Mniej ruchu</button>
+    <button
+      class="tool-button"
+      id="reducedMotionToggle"
+      type="button"
+      aria-pressed="false"
+    >
+      Mniej ruchu
+    </button>
     <button class="tool-button" id="scrollTopButton" type="button">Góra</button>
   </div>
 
@@ -562,12 +632,12 @@
     </div>
   </footer>
 
-  <script src="/assets/js/main.js"></script>
-  <script src="/assets/js/navigation.js"></script>
-  <script src="/assets/js/transitions.js"></script>
-  <script src="/assets/js/cinematic.js"></script>
-  <script src="/assets/js/continue.js"></script>
-  <script src="/assets/js/quotes.js"></script>
-  <script src="/assets/js/home.js"></script>
+  <script src="/assets/js/main.js?v=8"></script>
+  <script src="/assets/js/navigation.js?v=8"></script>
+  <script src="/assets/js/transitions.js?v=8"></script>
+  <script src="/assets/js/cinematic.js?v=8"></script>
+  <script src="/assets/js/continue.js?v=8"></script>
+  <script src="/assets/js/quotes.js?v=8"></script>
+  <script src="/assets/js/home.js?v=8"></script>
 </body>
 </html>
