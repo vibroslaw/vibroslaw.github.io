@@ -1,7 +1,13 @@
 body.cinematic-mode{
   background:
-    radial-gradient(circle at top, rgba(201,178,143,.04), transparent 24%),
-    linear-gradient(180deg, #030303 0%, #050505 34%, #020202 100%);
+    radial-gradient(circle at top, rgba(201,178,143,.05), transparent 22%),
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,.018), transparent 16%),
+    linear-gradient(180deg, #020202 0%, #050505 34%, #020202 100%);
+}
+
+/* stronger ambient grain already built in main.css */
+body.cinematic-mode::before{
+  opacity:.18;
 }
 
 /* global vignette / immersion layer */
@@ -12,14 +18,29 @@ body.cinematic-mode::after{
   z-index:0;
   pointer-events:none;
   background:
-    radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 26%),
-    radial-gradient(circle at center, transparent 44%, rgba(0,0,0,.18) 76%, rgba(0,0,0,.42) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.24));
+    radial-gradient(circle at 50% 16%, rgba(255,255,255,.035), transparent 22%),
+    radial-gradient(circle at 50% 32%, rgba(201,178,143,.08), transparent 24%),
+    radial-gradient(circle at center, transparent 42%, rgba(0,0,0,.16) 74%, rgba(0,0,0,.46) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.18) 44%, rgba(0,0,0,.28));
   mix-blend-mode:normal;
+  opacity:1;
+  transition:
+    opacity .45s var(--ease),
+    background .45s var(--ease);
+}
+
+/* when cinematic transition is running, deepen the room */
+body.cinematic-transition-active.cinematic-mode::after{
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.04), transparent 18%),
+    radial-gradient(circle at 50% 34%, rgba(201,178,143,.12), transparent 26%),
+    radial-gradient(circle at center, transparent 34%, rgba(0,0,0,.24) 70%, rgba(0,0,0,.64) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.28) 42%, rgba(0,0,0,.46));
   opacity:1;
 }
 
-/* quiet UI, but not unusable */
+/* ---------- QUIETER CHROME, STILL USABLE ---------- */
+
 body.cinematic-mode .site-header,
 body.cinematic-mode .site-footer,
 body.cinematic-mode .floating-tools{
@@ -28,59 +49,97 @@ body.cinematic-mode .floating-tools{
     transform .45s var(--ease),
     background .45s var(--ease),
     border-color .45s var(--ease),
-    box-shadow .45s var(--ease);
+    box-shadow .45s var(--ease),
+    filter .45s var(--ease);
 }
 
-body.cinematic-mode .site-header{
-  opacity:.05;
-  transform:translateY(-8px);
-  background:rgba(4,4,4,.28);
-  border-bottom-color:rgba(255,255,255,.03);
+@media (hover:hover) and (pointer:fine){
+  body.cinematic-mode .site-header{
+    opacity:.18;
+    transform:translateY(-8px);
+    filter:saturate(.92);
+    background:rgba(4,4,4,.34);
+    border-bottom-color:rgba(255,255,255,.03);
+    box-shadow:0 10px 26px rgba(0,0,0,.22);
+  }
+
+  body.cinematic-mode .site-header:hover,
+  body.cinematic-mode .site-header:focus-within{
+    opacity:.98;
+    transform:none;
+    filter:none;
+    background:rgba(8,8,8,.84);
+    border-bottom-color:rgba(255,255,255,.08);
+    box-shadow:0 16px 44px rgba(0,0,0,.30);
+  }
+
+  body.cinematic-mode .site-footer{
+    opacity:.12;
+    transform:translateY(8px);
+  }
+
+  body.cinematic-mode .site-footer:hover,
+  body.cinematic-mode .site-footer:focus-within{
+    opacity:.90;
+    transform:none;
+  }
+
+  body.cinematic-mode .floating-tools{
+    opacity:.16;
+    transform:translateY(6px);
+  }
+
+  body.cinematic-mode .floating-tools:hover,
+  body.cinematic-mode .floating-tools:focus-within{
+    opacity:.98;
+    transform:none;
+  }
 }
 
-body.cinematic-mode .site-header:hover,
-body.cinematic-mode .site-header:focus-within{
-  opacity:.96;
-  transform:none;
-  background:rgba(8,8,8,.82);
-  border-bottom-color:rgba(255,255,255,.08);
+/* do not hide useful chrome too much on touch */
+@media (hover:none), (pointer:coarse){
+  body.cinematic-mode .site-header{
+    opacity:.84;
+    transform:none;
+    background:rgba(8,8,8,.62);
+    border-bottom-color:rgba(255,255,255,.06);
+  }
+
+  body.cinematic-mode .site-footer{
+    opacity:.66;
+    transform:none;
+  }
+
+  body.cinematic-mode .floating-tools{
+    opacity:.84;
+    transform:none;
+  }
 }
 
-body.cinematic-mode .site-footer{
-  opacity:.06;
-  transform:translateY(8px);
-}
-
-body.cinematic-mode .site-footer:hover,
-body.cinematic-mode .site-footer:focus-within{
-  opacity:.88;
-  transform:none;
-}
-
-body.cinematic-mode .floating-tools{
-  opacity:.08;
-  transform:translateY(6px);
-}
-
-body.cinematic-mode .floating-tools:hover,
-body.cinematic-mode .floating-tools:focus-within{
-  opacity:.96;
-  transform:none;
-}
-
-/* do not dim menu overlay when opened */
+/* do not dim menu overlay state */
 body.cinematic-mode.mobile-menu-open .site-header{
   opacity:1;
   transform:none;
+  filter:none;
 }
 
-/* hero becomes the main stage */
+body.cinematic-transition-active .site-header,
+body.cinematic-transition-active .site-footer,
+body.cinematic-transition-active .floating-tools{
+  opacity:0 !important;
+  transform:translateY(-10px);
+  filter:blur(4px);
+  pointer-events:none;
+}
+
+/* ---------- HERO AS MAIN STAGE ---------- */
+
 body.cinematic-mode .hero-home .hero-image,
 body.cinematic-mode .profile-hero .hero-image,
 body.cinematic-mode .hero-ps .hero-image,
 body.cinematic-mode .hero-cr .hero-image,
 body.cinematic-mode .hero-raport .hero-image{
-  filter:saturate(.96) contrast(1.05) brightness(.78);
+  filter:saturate(.98) contrast(1.06) brightness(.76);
 }
 
 body.cinematic-mode .hero-home .hero-light,
@@ -88,10 +147,10 @@ body.cinematic-mode .profile-hero .hero-light,
 body.cinematic-mode .hero-ps .hero-light,
 body.cinematic-mode .hero-cr .hero-light,
 body.cinematic-mode .hero-raport .hero-light{
-  opacity:.98;
+  opacity:1.04;
   background:
-    radial-gradient(circle at 50% 16%, rgba(255,255,255,.10), transparent 34%),
-    radial-gradient(circle at 76% 20%, rgba(201,178,143,.16), transparent 20%),
+    radial-gradient(circle at 50% 16%, rgba(255,255,255,.11), transparent 34%),
+    radial-gradient(circle at 76% 20%, rgba(201,178,143,.18), transparent 20%),
     radial-gradient(circle at 22% 72%, rgba(201,178,143,.05), transparent 26%);
 }
 
@@ -101,8 +160,8 @@ body.cinematic-mode .hero-ps .hero-fade,
 body.cinematic-mode .hero-cr .hero-fade,
 body.cinematic-mode .hero-raport .hero-fade{
   background:
-    linear-gradient(90deg, rgba(0,0,0,.84) 0%, rgba(0,0,0,.56) 32%, rgba(0,0,0,.14) 66%, rgba(0,0,0,.10) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.14) 48%, rgba(0,0,0,.84) 100%);
+    linear-gradient(90deg, rgba(0,0,0,.86) 0%, rgba(0,0,0,.58) 32%, rgba(0,0,0,.14) 66%, rgba(0,0,0,.10) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.14) 48%, rgba(0,0,0,.86) 100%);
 }
 
 body.cinematic-mode .hero-home .hero-copy,
@@ -111,8 +170,9 @@ body.cinematic-mode .hero-ps .hero-copy,
 body.cinematic-mode .hero-cr .hero-copy,
 body.cinematic-mode .hero-raport .hero-copy{
   text-shadow:
-    0 1px 0 rgba(0,0,0,.2),
-    0 10px 26px rgba(0,0,0,.18);
+    0 1px 0 rgba(0,0,0,.22),
+    0 10px 30px rgba(0,0,0,.22),
+    0 0 18px rgba(201,178,143,.03);
 }
 
 body.cinematic-mode .hero-home h1,
@@ -120,20 +180,21 @@ body.cinematic-mode .profile-hero h1,
 body.cinematic-mode .hero-ps h1,
 body.cinematic-mode .hero-cr h1,
 body.cinematic-mode .hero-raport h1{
-  letter-spacing:-0.036em;
+  letter-spacing:-0.038em;
 }
 
 body.cinematic-mode .hero-statement{
-  color:rgba(242,236,227,.96);
+  color:rgba(242,236,227,.97);
 }
 
 body.cinematic-mode .memory-quote-block{
   border-top-color:rgba(255,255,255,.12);
 }
 
-/* expand breathing room */
+/* ---------- BREATHING ROOM ---------- */
+
 body.cinematic-mode .section{
-  padding:128px 0;
+  padding:124px 0;
 }
 
 body.cinematic-mode .continue-section{
@@ -141,12 +202,13 @@ body.cinematic-mode .continue-section{
   padding-bottom:10px;
 }
 
-/* quieter, richer panels */
+/* ---------- PANELS / CARDS ---------- */
+
 body.cinematic-mode .content-panel,
 body.cinematic-mode .card,
 body.cinematic-mode .glass-panel,
 body.cinematic-mode .timeline-item{
-  border-color:rgba(255,255,255,0.052);
+  border-color:rgba(255,255,255,.055);
   background:
     linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.012)),
     radial-gradient(circle at top right, rgba(201,178,143,.06), transparent 40%);
@@ -161,7 +223,7 @@ body.cinematic-mode .content-panel:hover,
 body.cinematic-mode .card:hover,
 body.cinematic-mode .glass-panel:hover,
 body.cinematic-mode .timeline-item:hover{
-  border-color:rgba(255,255,255,0.09);
+  border-color:rgba(255,255,255,.09);
   box-shadow:
     0 44px 120px rgba(0,0,0,.54),
     inset 0 1px 0 rgba(255,255,255,.03);
@@ -174,8 +236,10 @@ body.cinematic-mode .project-card{
     inset 0 1px 0 rgba(255,255,255,.02);
 }
 
-body.cinematic-mode .project-card:hover{
-  transform:translateY(-6px) scale(1.005);
+@media (hover:hover) and (pointer:fine){
+  body.cinematic-mode .project-card:hover{
+    transform:translateY(-7px) scale(1.006);
+  }
 }
 
 body.cinematic-mode .project-card::after{
@@ -196,7 +260,8 @@ body.cinematic-mode .project-media::after{
   background:linear-gradient(180deg, transparent 0%, rgba(6,6,6,0.58) 100%);
 }
 
-/* text treatment */
+/* ---------- TYPOGRAPHY / TEXT ---------- */
+
 body.cinematic-mode .section-note,
 body.cinematic-mode p,
 body.cinematic-mode .panel-text,
@@ -234,12 +299,13 @@ body.cinematic-mode .chip{
   color:rgba(242,236,227,.62);
 }
 
-/* buttons stay visible but more restrained */
+/* ---------- BUTTONS / CONTROLS ---------- */
+
 body.cinematic-mode .btn-secondary,
 body.cinematic-mode .btn-tertiary,
 body.cinematic-mode .contact-link,
 body.cinematic-mode .tool-button{
-  opacity:.94;
+  opacity:.95;
 }
 
 body.cinematic-mode .btn-secondary{
@@ -253,7 +319,7 @@ body.cinematic-mode .btn-secondary:hover{
 }
 
 body.cinematic-mode .btn-tertiary{
-  color:rgba(242,236,227,.82);
+  color:rgba(242,236,227,.84);
 }
 
 body.cinematic-mode .btn-tertiary:hover{
@@ -272,7 +338,8 @@ body.cinematic-mode .tool-button:hover{
   border-color:rgba(255,255,255,.16);
 }
 
-/* timeline gets more gallery-like */
+/* ---------- TIMELINE / LISTS ---------- */
+
 body.cinematic-mode .timeline::before{
   background:linear-gradient(180deg, rgba(201,178,143,.26), rgba(255,255,255,.04));
 }
@@ -284,7 +351,6 @@ body.cinematic-mode .timeline-item::before{
     0 0 18px rgba(201,178,143,.12);
 }
 
-/* recognition / institutions */
 body.cinematic-mode .recognition-item{
   border-left-color:rgba(201,178,143,.28);
 }
@@ -294,20 +360,23 @@ body.cinematic-mode .institution-item{
   border-color:rgba(255,255,255,.07);
 }
 
-/* quote block breathes more */
+/* ---------- SMALL TEXT POLISH ---------- */
+
 body.cinematic-mode .memory-quote-text,
 body.cinematic-mode .panel-quote{
   text-wrap:balance;
 }
 
-/* overlay menu should still feel premium in cinematic mode */
+/* ---------- MOBILE MENU ---------- */
+
 body.cinematic-mode .mobile-menu-overlay{
   background:
     radial-gradient(circle at top, rgba(201,178,143,.09), transparent 28%),
     linear-gradient(180deg, rgba(6,6,6,.99), rgba(7,7,7,.995));
 }
 
-/* reduced motion compatibility */
+/* ---------- REDUCED MOTION ---------- */
+
 body.reduced-motion.cinematic-mode .hero-home .hero-image,
 body.reduced-motion.cinematic-mode .profile-hero .hero-image,
 body.reduced-motion.cinematic-mode .hero-ps .hero-image,
@@ -316,30 +385,9 @@ body.reduced-motion.cinematic-mode .hero-raport .hero-image{
   transform:none;
 }
 
-/* mobile tuning */
+/* ---------- MOBILE TUNING ---------- */
+
 @media (max-width:760px){
-  body.cinematic-mode .site-header{
-    opacity:.18;
-    transform:none;
-    background:rgba(8,8,8,.42);
-  }
-
-  body.cinematic-mode .site-header:hover,
-  body.cinematic-mode .site-header:focus-within{
-    opacity:1;
-    background:rgba(8,8,8,.86);
-  }
-
-  body.cinematic-mode .floating-tools{
-    opacity:.22;
-    transform:none;
-  }
-
-  body.cinematic-mode .site-footer{
-    opacity:.12;
-    transform:none;
-  }
-
   body.cinematic-mode .section{
     padding:98px 0;
   }
