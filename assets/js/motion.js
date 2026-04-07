@@ -6,75 +6,117 @@
   }
   window.__siteMotionModuleInitialized = true;
 
-  const REDUCED_MOTION_STORAGE_KEY = "siteReducedMotion";
+  const CONFIG = {
+    storage: {
+      reducedMotion: "siteReducedMotion",
+      cinematicArrival: "siteCinematicArrival"
+    },
 
-  const HERO_PARALLAX_CSS_VARIABLE = "--hero-parallax";
-  const HERO_VISIBILITY_CSS_VARIABLE = "--hero-visibility";
-  const HERO_PROGRESS_CSS_VARIABLE = "--hero-scroll-progress";
-  const HERO_FOCUS_CSS_VARIABLE = "--hero-focus";
+    classes: {
+      reducedMotion: "reduced-motion",
+      cinematicMode: "cinematic-mode",
+      cinematicArrival: "cinematic-arrival-active",
+      cinematicTransition: "cinematic-transition-active",
+      heroInView: "hero-in-view",
+      heroNearFocus: "hero-near-focus",
+      heroOutOfView: "hero-out-of-view",
+      heroActive: "hero-active",
+      heroPassive: "hero-passive"
+    },
 
-  const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
-  const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
-  const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
-  const CINEMATIC_ARRIVAL_MAX_AGE = 12000;
+    selectors: {
+      hero: ".hero-home, .profile-hero",
+      reducedMotionToggle: "#reducedMotionToggle"
+    },
 
-  const HERO_MOTION_STRENGTH_DEFAULT = 22;
-  const HERO_MOTION_STRENGTH_CINEMATIC_DESKTOP = 42;
-  const HERO_MOTION_STRENGTH_CINEMATIC_MOBILE = 28;
+    cssVars: {
+      heroParallax: "--hero-parallax",
+      heroVisibility: "--hero-visibility",
+      heroProgress: "--hero-scroll-progress",
+      heroFocus: "--hero-focus"
+    },
 
-  let pageHero = null;
-  let reducedMotionToggle = null;
+    breakpoints: {
+      mobile: 760
+    },
 
-  let heroMotionTicking = false;
-  let systemReducedMotionQuery = null;
-  let heroResizeObserver = null;
-  let heroMotionInitialized = false;
-  let reducedMotionInitialized = false;
+    timing: {
+      cinematicArrivalMaxAge: 12000
+    },
+
+    motion: {
+      defaultStrength: 22,
+      cinematicDesktopStrength: 42,
+      cinematicMobileStrength: 28
+    }
+  };
+
+  const state = {
+    pageHero: null,
+    reducedMotionToggle: null,
+
+    heroMotionTicking: false,
+    heroResizeObserver: null,
+    systemReducedMotionQuery: null,
+
+    reducedMotionInitialized: false,
+    heroMotionInitialized: false,
+
+    cachedArrivalRaw: null,
+    cachedArrivalPayload: null
+  };
 
   function getBody() {
     return document.body;
   }
 
+  function getDocumentElement() {
+    return document.documentElement;
+  }
+
+  function hasBodyClass(className) {
+    const body = getBody();
+    return !!body && body.classList.contains(className);
+  }
+
   function cacheUiElements() {
-    pageHero = document.querySelector(".hero-home, .profile-hero");
-    reducedMotionToggle = document.getElementById("reducedMotionToggle");
-  }
-
-  function isPolishLanguage() {
-    const body = getBody();
-    return body?.dataset.lang === "pl";
-  }
-
-  function isReducedMotionEnabled() {
-    const body = getBody();
-    return !!body && body.classList.contains("reduced-motion");
-  }
-
-  function isCinematicModeEnabled() {
-    const body = getBody();
-    return !!body && body.classList.contains("cinematic-mode");
-  }
-
-  function isCinematicArrivalActive() {
-    const body = getBody();
-    return !!body && body.classList.contains(CINEMATIC_ARRIVAL_CLASS);
-  }
-
-  function isCinematicTransitionActive() {
-    const body = getBody();
-    return !!body && body.classList.contains(CINEMATIC_TRANSITION_CLASS);
-  }
-
-  function isMobileViewport() {
-    return window.innerWidth <= 760;
+    state.pageHero = document.querySelector(CONFIG.selectors.hero);
+    state.reducedMotionToggle = document.querySelector(
+      CONFIG.selectors.reducedMotionToggle
+    );
   }
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
   }
 
+  function isMobileViewport() {
+    return window.innerWidth <= CONFIG.breakpoints.mobile;
+  }
+
+  function isPolishLanguage() {
+    const body = getBody();
+    return !!body && body.getAttribute("data-lang") === "pl";
+  }
+
+  function isReducedMotionEnabled() {
+    return hasBodyClass(CONFIG.classes.reducedMotion);
+  }
+
+  function isCinematicModeEnabled() {
+    return hasBodyClass(CONFIG.classes.cinematicMode);
+  }
+
+  function isCinematicArrivalActive() {
+    return hasBodyClass(CONFIG.classes.cinematicArrival);
+  }
+
+  function isCinematicTransitionActive() {
+    return hasBodyClass(CONFIG.classes.cinematicTransition);
+  }
+
   function setRootCssVariable(name, value) {
-    document.documentElement.style.setProperty(name, value);
+    getDocumentElement().style.setProperty(name, value);
   }
 
   function runOnNextFrame(callback) {
@@ -90,11 +132,6 @@
     runOnNextFrame(() => {
       runOnNextFrame(callback);
     });
-  }
-
-  function getSystemReducedMotionPreference() {
-    if (!window.matchMedia) return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
   function readFromLocalStorage(key) {
@@ -129,47 +166,72 @@
     }
   }
 
+  function getSystemReducedMotionPreference() {
+    if (!window.matchMedia) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
   function normalizePath(path) {
     return (path || "").replace(/\/+$/, "") || "/";
   }
 
   function normalizeComparableUrl(url) {
     try {
-      const parsedUrl = new URL(url, window.location.origin);
-      return `${normalizePath(parsedUrl.pathname)}${parsedUrl.search}`;
+      const parsed = new URL(url, window.location.origin);
+      return `${normalizePath(parsed.pathname)}${parsed.search}`;
     } catch (error) {
       return null;
     }
   }
 
+  function invalidateArrivalCache() {
+    state.cachedArrivalRaw = null;
+    state.cachedArrivalPayload = null;
+  }
+
   function getPendingCinematicArrival() {
-    const raw = readFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
-    if (!raw) return null;
+    const raw = readFromSessionStorage(CONFIG.storage.cinematicArrival);
+
+    if (raw === state.cachedArrivalRaw) {
+      return state.cachedArrivalPayload;
+    }
+
+    state.cachedArrivalRaw = raw;
+    state.cachedArrivalPayload = null;
+
+    if (!raw) {
+      return null;
+    }
 
     try {
       const parsed = JSON.parse(raw);
 
       if (!parsed || typeof parsed !== "object") {
-        removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+        removeFromSessionStorage(CONFIG.storage.cinematicArrival);
+        invalidateArrivalCache();
         return null;
       }
 
       if (typeof parsed.href !== "string" || !parsed.href.trim()) {
-        removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+        removeFromSessionStorage(CONFIG.storage.cinematicArrival);
+        invalidateArrivalCache();
         return null;
       }
 
       if (
         typeof parsed.timestamp === "number" &&
-        Date.now() - parsed.timestamp > CINEMATIC_ARRIVAL_MAX_AGE
+        Date.now() - parsed.timestamp > CONFIG.timing.cinematicArrivalMaxAge
       ) {
-        removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+        removeFromSessionStorage(CONFIG.storage.cinematicArrival);
+        invalidateArrivalCache();
         return null;
       }
 
+      state.cachedArrivalPayload = parsed;
       return parsed;
     } catch (error) {
-      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      removeFromSessionStorage(CONFIG.storage.cinematicArrival);
+      invalidateArrivalCache();
       return null;
     }
   }
@@ -182,14 +244,14 @@
     const targetUrl = normalizeComparableUrl(pending.href);
 
     if (!currentUrl || !targetUrl) {
-      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+      removeFromSessionStorage(CONFIG.storage.cinematicArrival);
+      invalidateArrivalCache();
       return false;
     }
 
-    const matchesCurrentPage = currentUrl === targetUrl;
-
-    if (!matchesCurrentPage) {
-      removeFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
+    if (currentUrl !== targetUrl) {
+      removeFromSessionStorage(CONFIG.storage.cinematicArrival);
+      invalidateArrivalCache();
       return false;
     }
 
@@ -204,44 +266,40 @@
     );
   }
 
-  function readReducedMotionPreference() {
-    const stored = readFromLocalStorage(REDUCED_MOTION_STORAGE_KEY);
-
-    if (stored === null) {
-      return getSystemReducedMotionPreference();
+  function getReducedMotionLabels() {
+    if (isPolishLanguage()) {
+      return {
+        inactiveText: "Mniej ruchu",
+        activeText: "Przywróć ruch",
+        inactiveAria: "Ogranicz animacje i ruch",
+        activeAria: "Przywróć animacje i ruch"
+      };
     }
 
-    return stored === "true";
-  }
-
-  function saveReducedMotionPreference(enabled) {
-    saveToLocalStorage(
-      REDUCED_MOTION_STORAGE_KEY,
-      enabled ? "true" : "false"
-    );
+    return {
+      inactiveText: "Reduced Motion",
+      activeText: "Restore Motion",
+      inactiveAria: "Reduce animations and motion",
+      activeAria: "Restore animations and motion"
+    };
   }
 
   function updateReducedMotionButtonLabel() {
-    if (!reducedMotionToggle) return;
+    if (!state.reducedMotionToggle) return;
 
-    const isPL = isPolishLanguage();
     const reduced = isReducedMotionEnabled();
+    const labels = getReducedMotionLabels();
 
-    reducedMotionToggle.textContent = reduced
-      ? (isPL ? "Przywróć ruch" : "Restore Motion")
-      : (isPL ? "Mniej ruchu" : "Reduced Motion");
+    const text = reduced ? labels.activeText : labels.inactiveText;
+    const aria = reduced ? labels.activeAria : labels.inactiveAria;
 
-    reducedMotionToggle.setAttribute(
+    state.reducedMotionToggle.textContent = text;
+    state.reducedMotionToggle.setAttribute(
       "aria-pressed",
       reduced ? "true" : "false"
     );
-
-    reducedMotionToggle.setAttribute(
-      "aria-label",
-      reduced
-        ? (isPL ? "Przywróć animacje i ruch" : "Restore animations and motion")
-        : (isPL ? "Ogranicz animacje i ruch" : "Reduce animations and motion")
-    );
+    state.reducedMotionToggle.setAttribute("aria-label", aria);
+    state.reducedMotionToggle.setAttribute("title", aria);
   }
 
   function notifyReducedMotionChange(enabled) {
@@ -252,16 +310,31 @@
     );
   }
 
-  function setHeroMotionVariables({
-    parallax = 0,
-    visibility = 0,
-    progress = 0,
-    focus = 0
-  } = {}) {
-    setRootCssVariable(HERO_PARALLAX_CSS_VARIABLE, `${parallax}px`);
-    setRootCssVariable(HERO_VISIBILITY_CSS_VARIABLE, String(visibility));
-    setRootCssVariable(HERO_PROGRESS_CSS_VARIABLE, String(progress));
-    setRootCssVariable(HERO_FOCUS_CSS_VARIABLE, String(focus));
+  function setHeroMotionVariables(values) {
+    const nextValues = values || {};
+
+    setRootCssVariable(
+      CONFIG.cssVars.heroParallax,
+      `${nextValues.parallax || 0}px`
+    );
+    setRootCssVariable(
+      CONFIG.cssVars.heroVisibility,
+      String(
+        typeof nextValues.visibility !== "undefined"
+          ? nextValues.visibility
+          : 0
+      )
+    );
+    setRootCssVariable(
+      CONFIG.cssVars.heroProgress,
+      String(
+        typeof nextValues.progress !== "undefined" ? nextValues.progress : 0
+      )
+    );
+    setRootCssVariable(
+      CONFIG.cssVars.heroFocus,
+      String(typeof nextValues.focus !== "undefined" ? nextValues.focus : 0)
+    );
   }
 
   function resetHeroMotionState() {
@@ -272,41 +345,58 @@
       focus: 0
     });
 
-    if (pageHero) {
-      pageHero.classList.remove(
-        "hero-in-view",
-        "hero-near-focus",
-        "hero-out-of-view"
+    if (state.pageHero) {
+      state.pageHero.classList.remove(
+        CONFIG.classes.heroInView,
+        CONFIG.classes.heroNearFocus,
+        CONFIG.classes.heroOutOfView
       );
     }
 
     const body = getBody();
     if (!body) return;
 
-    body.classList.remove("hero-active", "hero-passive");
+    body.classList.remove(
+      CONFIG.classes.heroActive,
+      CONFIG.classes.heroPassive
+    );
   }
 
   function getHeroMotionStrength() {
     if (!isCinematicModeEnabled()) {
-      return HERO_MOTION_STRENGTH_DEFAULT;
+      return CONFIG.motion.defaultStrength;
     }
 
     return isMobileViewport()
-      ? HERO_MOTION_STRENGTH_CINEMATIC_MOBILE
-      : HERO_MOTION_STRENGTH_CINEMATIC_DESKTOP;
+      ? CONFIG.motion.cinematicMobileStrength
+      : CONFIG.motion.cinematicDesktopStrength;
+  }
+
+  function updateHeroBodyState(visibilityRatio) {
+    const body = getBody();
+    if (!body) return;
+
+    body.classList.toggle(
+      CONFIG.classes.heroActive,
+      visibilityRatio > 0.02
+    );
+    body.classList.toggle(
+      CONFIG.classes.heroPassive,
+      visibilityRatio <= 0.02
+    );
   }
 
   function updateHeroMotionState() {
-    if (!pageHero) return;
+    if (!state.pageHero) return;
 
     if (isReducedMotionEnabled() || shouldSuspendHeroMotion()) {
       resetHeroMotionState();
       return;
     }
 
-    const rect = pageHero.getBoundingClientRect();
+    const rect = state.pageHero.getBoundingClientRect();
     const viewportHeight =
-      window.innerHeight || document.documentElement.clientHeight || 0;
+      window.innerHeight || getDocumentElement().clientHeight || 0;
 
     if (!viewportHeight || rect.height <= 0) {
       resetHeroMotionState();
@@ -355,27 +445,32 @@
       focus: focus.toFixed(3)
     });
 
-    pageHero.classList.toggle("hero-in-view", visibilityRatio > 0.02);
-    pageHero.classList.toggle("hero-near-focus", focus > 0.72);
-    pageHero.classList.toggle("hero-out-of-view", visibilityRatio <= 0.02);
+    state.pageHero.classList.toggle(
+      CONFIG.classes.heroInView,
+      visibilityRatio > 0.02
+    );
+    state.pageHero.classList.toggle(
+      CONFIG.classes.heroNearFocus,
+      focus > 0.72
+    );
+    state.pageHero.classList.toggle(
+      CONFIG.classes.heroOutOfView,
+      visibilityRatio <= 0.02
+    );
 
-    const body = getBody();
-    if (!body) return;
-
-    body.classList.toggle("hero-active", visibilityRatio > 0.02);
-    body.classList.toggle("hero-passive", visibilityRatio <= 0.02);
+    updateHeroBodyState(visibilityRatio);
   }
 
   function requestHeroMotionUpdate() {
-    if (!pageHero || heroMotionTicking) return;
+    if (!state.pageHero || state.heroMotionTicking) return;
 
-    heroMotionTicking = true;
+    state.heroMotionTicking = true;
 
     runOnNextFrame(() => {
       try {
         updateHeroMotionState();
       } finally {
-        heroMotionTicking = false;
+        state.heroMotionTicking = false;
       }
     });
   }
@@ -386,10 +481,38 @@
     });
   }
 
-  function applyReducedMotionState(enabled, options = {}) {
-    const { persist = true, notify = true } = options;
-    const body = getBody();
+  function refreshOrResetHeroMotionSoon() {
+    if (isReducedMotionEnabled() || shouldSuspendHeroMotion()) {
+      resetHeroMotionState();
+      return;
+    }
 
+    refreshHeroMotionSoon();
+  }
+
+  function readReducedMotionPreference() {
+    const stored = readFromLocalStorage(CONFIG.storage.reducedMotion);
+
+    if (stored === null) {
+      return getSystemReducedMotionPreference();
+    }
+
+    return stored === "true";
+  }
+
+  function saveReducedMotionPreference(enabled) {
+    saveToLocalStorage(
+      CONFIG.storage.reducedMotion,
+      enabled ? "true" : "false"
+    );
+  }
+
+  function applyReducedMotionState(enabled, options) {
+    const settings = options || {};
+    const persist = settings.persist !== false;
+    const notify = settings.notify !== false;
+
+    const body = getBody();
     if (!body) return;
 
     const currentState = isReducedMotionEnabled();
@@ -400,7 +523,7 @@
       if (enabled) {
         resetHeroMotionState();
       } else {
-        requestHeroMotionUpdate();
+        refreshOrResetHeroMotionSoon();
       }
 
       if (persist) {
@@ -410,7 +533,7 @@
       return;
     }
 
-    body.classList.toggle("reduced-motion", enabled);
+    body.classList.toggle(CONFIG.classes.reducedMotion, enabled);
 
     if (persist) {
       saveReducedMotionPreference(enabled);
@@ -419,7 +542,7 @@
     if (enabled) {
       resetHeroMotionState();
     } else {
-      refreshHeroMotionSoon();
+      refreshOrResetHeroMotionSoon();
     }
 
     updateReducedMotionButtonLabel();
@@ -429,8 +552,23 @@
     }
   }
 
+  function handleReducedMotionButtonClick() {
+    applyReducedMotionState(!isReducedMotionEnabled());
+  }
+
+  function bindReducedMotionToggle() {
+    if (!state.reducedMotionToggle) return;
+    if (state.reducedMotionToggle.dataset.motionBound === "true") return;
+
+    state.reducedMotionToggle.dataset.motionBound = "true";
+    state.reducedMotionToggle.addEventListener(
+      "click",
+      handleReducedMotionButtonClick
+    );
+  }
+
   function syncReducedMotionAcrossTabs(event) {
-    if (event.key !== REDUCED_MOTION_STORAGE_KEY) return;
+    if (event.key !== CONFIG.storage.reducedMotion) return;
 
     const shouldReduceMotion =
       event.newValue === null
@@ -444,7 +582,7 @@
   }
 
   function handleSystemReducedMotionChange(event) {
-    const stored = readFromLocalStorage(REDUCED_MOTION_STORAGE_KEY);
+    const stored = readFromLocalStorage(CONFIG.storage.reducedMotion);
 
     if (stored !== null) return;
 
@@ -457,76 +595,79 @@
   function bindSystemReducedMotionListener() {
     if (!window.matchMedia) return;
 
-    systemReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    state.systemReducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
 
-    if (typeof systemReducedMotionQuery.addEventListener === "function") {
-      systemReducedMotionQuery.addEventListener(
+    if (
+      typeof state.systemReducedMotionQuery.addEventListener === "function"
+    ) {
+      state.systemReducedMotionQuery.addEventListener(
         "change",
         handleSystemReducedMotionChange
       );
       return;
     }
 
-    if (typeof systemReducedMotionQuery.addListener === "function") {
-      systemReducedMotionQuery.addListener(handleSystemReducedMotionChange);
+    if (typeof state.systemReducedMotionQuery.addListener === "function") {
+      state.systemReducedMotionQuery.addListener(
+        handleSystemReducedMotionChange
+      );
     }
   }
 
   function initReducedMotion() {
-    if (reducedMotionInitialized) return;
-    reducedMotionInitialized = true;
+    if (state.reducedMotionInitialized) return;
+    state.reducedMotionInitialized = true;
 
     cacheUiElements();
 
-    const shouldReduceMotion = readReducedMotionPreference();
-
-    applyReducedMotionState(shouldReduceMotion, {
+    applyReducedMotionState(readReducedMotionPreference(), {
       persist: false,
       notify: false
     });
 
-    if (reducedMotionToggle) {
-      reducedMotionToggle.addEventListener("click", () => {
-        applyReducedMotionState(!isReducedMotionEnabled());
-      });
-    }
+    bindReducedMotionToggle();
 
     window.addEventListener("storage", syncReducedMotionAcrossTabs);
     bindSystemReducedMotionListener();
   }
 
   function initHeroResizeObserver() {
-    if (!pageHero || !window.ResizeObserver) return;
+    if (!state.pageHero || !window.ResizeObserver) return;
 
-    if (heroResizeObserver) {
-      heroResizeObserver.disconnect();
+    if (state.heroResizeObserver) {
+      state.heroResizeObserver.disconnect();
     }
 
-    heroResizeObserver = new ResizeObserver(() => {
+    state.heroResizeObserver = new ResizeObserver(() => {
       requestHeroMotionUpdate();
     });
 
-    heroResizeObserver.observe(pageHero);
+    state.heroResizeObserver.observe(state.pageHero);
   }
 
   function handlePageShow() {
+    invalidateArrivalCache();
     cacheUiElements();
+    bindReducedMotionToggle();
     updateReducedMotionButtonLabel();
     initHeroResizeObserver();
+    refreshOrResetHeroMotionSoon();
+  }
 
-    if (shouldSuspendHeroMotion()) {
-      resetHeroMotionState();
-      return;
-    }
-
-    refreshHeroMotionSoon();
+  function handleVisibilityChange() {
+    if (document.hidden) return;
+    refreshOrResetHeroMotionSoon();
   }
 
   function handleCinematicArrivalStart() {
+    invalidateArrivalCache();
     resetHeroMotionState();
   }
 
   function handleCinematicArrivalEnd() {
+    invalidateArrivalCache();
     refreshHeroMotionSoon();
   }
 
@@ -538,45 +679,64 @@
     refreshHeroMotionSoon();
   }
 
+  function handleCinematicModeChange() {
+    refreshOrResetHeroMotionSoon();
+  }
+
+  function handleReducedMotionChange() {
+    refreshOrResetHeroMotionSoon();
+  }
+
   function initHeroMotion() {
-    if (heroMotionInitialized) return;
-    heroMotionInitialized = true;
+    if (state.heroMotionInitialized) return;
+    state.heroMotionInitialized = true;
 
     cacheUiElements();
 
-    if (!pageHero) return;
+    if (!state.pageHero) return;
 
-    if (shouldSuspendHeroMotion()) {
-      resetHeroMotionState();
-    } else {
-      requestHeroMotionUpdate();
-    }
+    refreshOrResetHeroMotionSoon();
 
-    window.addEventListener("scroll", requestHeroMotionUpdate, { passive: true });
+    window.addEventListener("scroll", requestHeroMotionUpdate, {
+      passive: true
+    });
     window.addEventListener("resize", requestHeroMotionUpdate);
     window.addEventListener("orientationchange", requestHeroMotionUpdate);
     window.addEventListener("load", requestHeroMotionUpdate);
     window.addEventListener("pageshow", handlePageShow);
 
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) {
-        refreshHeroMotionSoon();
-      }
-    });
-
-    document.addEventListener("site:cinematic-change", refreshHeroMotionSoon);
-    document.addEventListener("site:reduced-motion-change", refreshHeroMotionSoon);
-    document.addEventListener("site:cinematic-arrival-start", handleCinematicArrivalStart);
-    document.addEventListener("site:cinematic-arrival-end", handleCinematicArrivalEnd);
-    document.addEventListener("site:cinematic-transition-start", handleCinematicTransitionStart);
-    document.addEventListener("site:cinematic-transition-end", handleCinematicTransitionEnd);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener(
+      "site:cinematic-change",
+      handleCinematicModeChange
+    );
+    document.addEventListener(
+      "site:reduced-motion-change",
+      handleReducedMotionChange
+    );
+    document.addEventListener(
+      "site:cinematic-arrival-start",
+      handleCinematicArrivalStart
+    );
+    document.addEventListener(
+      "site:cinematic-arrival-end",
+      handleCinematicArrivalEnd
+    );
+    document.addEventListener(
+      "site:cinematic-transition-start",
+      handleCinematicTransitionStart
+    );
+    document.addEventListener(
+      "site:cinematic-transition-end",
+      handleCinematicTransitionEnd
+    );
 
     initHeroResizeObserver();
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready
         .then(() => {
-          refreshHeroMotionSoon();
+          refreshOrResetHeroMotionSoon();
         })
         .catch(() => {
           /* silent fallback */
