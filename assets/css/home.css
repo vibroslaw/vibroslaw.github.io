@@ -1520,3 +1520,40 @@ body.reduced-motion .glass-panel:hover{
     transform:translateY(-2px);
   }
   }
+
+/* ---------- DESKTOP HERO DE-ZOOM FIX ---------- */
+
+@media (min-width:761px){
+  .hero-home.hero{
+    min-height:clamp(560px, 68vh, 760px);
+  }
+
+  .hero-home .hero-image{
+    background-size:100% auto;
+    background-position:56% 30%;
+    transform:translate3d(0, calc(var(--hero-parallax) * 0.10), 0) scale(1);
+    filter:saturate(.88) contrast(1.01) brightness(.84);
+  }
+
+  body.cinematic-mode .hero-home .hero-image{
+    background-size:100% auto;
+    transform:translate3d(0, calc(var(--hero-parallax) * 0.14), 0) scale(1.004);
+    filter:saturate(1.02) contrast(1.08) brightness(.68);
+  }
+}
+
+@media (min-width:761px) and (min-aspect-ratio:21/10){
+  .hero-home.hero{
+    min-height:clamp(540px, 62vh, 700px);
+  }
+
+  .hero-home .hero-image{
+    background-size:100% auto;
+    background-position:54% 28%;
+  }
+
+  body.cinematic-mode .hero-home .hero-image{
+    background-size:100% auto;
+    background-position:54% 28%;
+  }
+}
