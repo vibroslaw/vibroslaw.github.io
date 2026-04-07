@@ -88,14 +88,6 @@ function readFromSessionStorage(key) {
   }
 }
 
-function saveToSessionStorage(key, value) {
-  try {
-    sessionStorage.setItem(key, value);
-  } catch (error) {
-    /* silent fallback */
-  }
-}
-
 function removeFromSessionStorage(key) {
   try {
     sessionStorage.removeItem(key);
@@ -216,7 +208,6 @@ function clearCinematicArrivalState() {
   if (!body) return;
 
   body.classList.remove(CINEMATIC_ARRIVAL_CLASS);
-  body.style.removeProperty("pointer-events");
   delete body.dataset.cinematicArrival;
   delete body.dataset.cinematicArrivalKey;
   delete body.dataset.cinematicArrivalTitle;
@@ -246,6 +237,11 @@ function finishCinematicArrival(payload = null) {
   if (wasActive) {
     notifyCinematicArrivalEnd(payload);
   }
+}
+
+function clearCinematicArrivalSilently() {
+  clearCinematicArrivalTimer();
+  clearCinematicArrivalState();
 }
 
 function setCinematicMode(active, options = {}) {
@@ -391,6 +387,7 @@ function shouldPlayCinematicArrival(payload) {
   if (!payload) return false;
   if (!isCinematicModeActive()) return false;
   if (isReducedMotionEnabled()) return false;
+  if (isCinematicTransitionActive()) return false;
 
   const currentUrl = getCurrentComparableUrl();
   const targetUrl = normalizeComparableUrl(payload.href);
@@ -459,7 +456,7 @@ function handlePageShow() {
 }
 
 function handlePageHide() {
-  clearCinematicArrivalTimer();
+  clearCinematicArrivalSilently();
 }
 
 function initCinematicMode() {
