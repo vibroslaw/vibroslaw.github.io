@@ -16,40 +16,22 @@
   const CINEMATIC_ARRIVAL_DURATION_MOBILE = 1180;
   const MOBILE_BREAKPOINT = 760;
 
+  let cinematicToggle = null;
+  let cinematicHeroButton = null;
+  let mobileCinematicToggle = null;
+
   let cinematicModeInitialized = false;
   let cinematicArrivalTimer = null;
   let cinematicArrivalFrame = null;
-  let delegatedClickBound = false;
 
   function getBody() {
     return document.body;
   }
 
   function cacheCinematicElements() {
-    return {
-      cinematicToggle: document.getElementById("cinematicToggle"),
-      cinematicHeroButton: document.getElementById("cinematicHeroButton"),
-      mobileCinematicToggle: document.getElementById("mobileCinematicToggle")
-    };
-  }
-
-  function runOnNextFrame(callback) {
-    if (typeof window.requestAnimationFrame === "function") {
-      return window.requestAnimationFrame(callback);
-    }
-
-    return window.setTimeout(callback, 16);
-  }
-
-  function cancelScheduledFrame(frameId) {
-    if (frameId === null) return;
-
-    if (typeof window.cancelAnimationFrame === "function") {
-      window.cancelAnimationFrame(frameId);
-      return;
-    }
-
-    window.clearTimeout(frameId);
+    cinematicToggle = document.getElementById("cinematicToggle");
+    cinematicHeroButton = document.getElementById("cinematicHeroButton");
+    mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
   }
 
   function isPolishLanguage() {
@@ -172,8 +154,7 @@
   }
 
   function updateCinematicLabels() {
-    const { cinematicToggle, cinematicHeroButton, mobileCinematicToggle } =
-      cacheCinematicElements();
+    cacheCinematicElements();
 
     const labels = getCinematicLabels();
     const active = isCinematicModeActive();
@@ -248,7 +229,7 @@
     }
 
     if (cinematicArrivalFrame !== null) {
-      cancelScheduledFrame(cinematicArrivalFrame);
+      window.cancelAnimationFrame(cinematicArrivalFrame);
       cinematicArrivalFrame = null;
     }
   }
@@ -284,6 +265,16 @@
 
     const currentState = isCinematicModeActive();
 
+    if (currentState === active) {
+      updateCinematicLabels();
+
+      if (persist) {
+        saveCinematicPreference(active);
+      }
+
+      return;
+    }
+
     setBodyCinematicState(active);
     updateCinematicLabels();
 
@@ -295,7 +286,7 @@
       saveCinematicPreference(active);
     }
 
-    if (notify && currentState !== active) {
+    if (notify) {
       notifyCinematicChange(active, source);
     }
   }
@@ -435,12 +426,9 @@
     body.dataset.cinematicArrivalKey = payload?.key || "entry";
     body.dataset.cinematicArrivalTitle = payload?.title || "";
 
-    cinematicArrivalFrame = runOnNextFrame(() => {
-      cinematicArrivalFrame = runOnNextFrame(() => {
-        const liveBody = getBody();
-        if (!liveBody) return;
-
-        liveBody.classList.add(CINEMATIC_ARRIVAL_CLASS);
+    cinematicArrivalFrame = window.requestAnimationFrame(() => {
+      cinematicArrivalFrame = window.requestAnimationFrame(() => {
+        body.classList.add(CINEMATIC_ARRIVAL_CLASS);
 
         const duration = getArrivalDuration(payload);
         const detail = {
@@ -471,6 +459,7 @@
   }
 
   function handlePageShow() {
+    cacheCinematicElements();
     updateCinematicLabels();
     consumeAndApplyCinematicArrival();
   }
@@ -479,64 +468,11 @@
     clearCinematicArrivalSilently();
   }
 
-  function handleReducedMotionChange(event) {
-    const reduced = Boolean(event?.detail?.enabled);
-
-    if (reduced) {
-      finishCinematicArrival();
-    }
-
-    updateCinematicLabels();
-  }
-
-  function resolveTriggerFromEventTarget(target) {
-    if (!(target instanceof Element)) return null;
-
-    const trigger = target.closest(
-      "#cinematicToggle, #cinematicHeroButton, #mobileCinematicToggle"
-    );
-
-    if (!(trigger instanceof HTMLElement)) return null;
-
-    if (trigger.id === "cinematicToggle") {
-      return "desktop";
-    }
-
-    if (trigger.id === "cinematicHeroButton") {
-      return "hero";
-    }
-
-    if (trigger.id === "mobileCinematicToggle") {
-      return "mobile";
-    }
-
-    return null;
-  }
-
-  function handleDelegatedDocumentClick(event) {
-    const triggerType = resolveTriggerFromEventTarget(event.target);
-    if (!triggerType) return;
-
-    event.preventDefault();
-
-    if (triggerType === "mobile") {
-      handleMobileCinematicButtonClick();
-      return;
-    }
-
-    handleCinematicButtonClick();
-  }
-
-  function bindDelegatedClicks() {
-    if (delegatedClickBound) return;
-    delegatedClickBound = true;
-
-    document.addEventListener("click", handleDelegatedDocumentClick);
-  }
-
   function initCinematicMode() {
     if (cinematicModeInitialized) return;
     cinematicModeInitialized = true;
+
+    cacheCinematicElements();
 
     const shouldEnable = readCinematicPreference();
 
@@ -546,16 +482,24 @@
       source: "init"
     });
 
-    bindDelegatedClicks();
+    if (cinematicToggle) {
+      cinematicToggle.addEventListener("click", handleCinematicButtonClick);
+    }
+
+    if (cinematicHeroButton) {
+      cinematicHeroButton.addEventListener("click", handleCinematicButtonClick);
+    }
+
+    if (mobileCinematicToggle) {
+      mobileCinematicToggle.addEventListener(
+        "click",
+        handleMobileCinematicButtonClick
+      );
+    }
 
     window.addEventListener("storage", syncCinematicModeAcrossTabs);
     window.addEventListener("pageshow", handlePageShow);
     window.addEventListener("pagehide", handlePageHide);
-
-    document.addEventListener(
-      "site:reduced-motion-change",
-      handleReducedMotionChange
-    );
 
     consumeAndApplyCinematicArrival();
     updateCinematicLabels();
