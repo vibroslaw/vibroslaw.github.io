@@ -514,4 +514,4 @@ if (document.body) {
   initMainUi();
 } else {
   document.addEventListener("DOMContentLoaded", initMainUi, { once: true });
-}
+    }
