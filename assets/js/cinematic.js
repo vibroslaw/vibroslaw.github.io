@@ -34,6 +34,21 @@
     mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
   }
 
+  function runOnNextFrame(callback) {
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(callback);
+      return;
+    }
+
+    window.setTimeout(callback, 16);
+  }
+
+  function runAfterTwoFrames(callback) {
+    runOnNextFrame(() => {
+      runOnNextFrame(callback);
+    });
+  }
+
   function isPolishLanguage() {
     const body = getBody();
     return body?.dataset.lang === "pl";
@@ -202,9 +217,13 @@
     );
   }
 
-  function refreshUiAfterCinematicToggle() {
+  function requestCrossModuleRefresh() {
     if (typeof window.refreshMainUI === "function") {
       window.refreshMainUI();
+    }
+
+    if (typeof window.refreshRevealSystem === "function") {
+      window.refreshRevealSystem();
     }
 
     if (typeof window.requestScrollLinkedUiUpdate === "function") {
@@ -224,11 +243,9 @@
     }
   }
 
-  function scheduleUiRefreshAfterCinematicToggle() {
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        refreshUiAfterCinematicToggle();
-      });
+  function requestCrossModuleRefreshSoon() {
+    runAfterTwoFrames(() => {
+      requestCrossModuleRefresh();
     });
   }
 
@@ -276,6 +293,8 @@
     if (wasActive) {
       notifyCinematicArrivalEnd(payload);
     }
+
+    requestCrossModuleRefreshSoon();
   }
 
   function clearCinematicArrivalSilently() {
@@ -302,6 +321,7 @@
         saveCinematicPreference(active);
       }
 
+      requestCrossModuleRefreshSoon();
       return;
     }
 
@@ -320,7 +340,8 @@
       notifyCinematicChange(active, source);
     }
 
-    scheduleUiRefreshAfterCinematicToggle();
+    requestCrossModuleRefresh();
+    requestCrossModuleRefreshSoon();
   }
 
   function toggleCinematicMode(source = "manual") {
@@ -473,6 +494,8 @@
         cinematicArrivalTimer = window.setTimeout(() => {
           finishCinematicArrival(detail);
         }, duration);
+
+        requestCrossModuleRefreshSoon();
       });
     });
   }
@@ -484,6 +507,7 @@
 
     if (!shouldPlayCinematicArrival(payload)) {
       clearCinematicArrivalState();
+      requestCrossModuleRefreshSoon();
       return;
     }
 
@@ -494,6 +518,7 @@
     cacheCinematicElements();
     updateCinematicLabels();
     consumeAndApplyCinematicArrival();
+    requestCrossModuleRefreshSoon();
   }
 
   function handlePageHide() {
@@ -535,6 +560,7 @@
 
     consumeAndApplyCinematicArrival();
     updateCinematicLabels();
+    requestCrossModuleRefreshSoon();
   }
 
   window.setCinematicMode = setCinematicMode;
