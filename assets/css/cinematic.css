@@ -26,7 +26,8 @@ body.cinematic-mode::after{
   opacity:1;
   transition:
     opacity .45s var(--ease),
-    background .45s var(--ease);
+    background .45s var(--ease),
+    filter .45s var(--ease);
 }
 
 /* when cinematic transition is running, deepen the room */
@@ -37,6 +38,16 @@ body.cinematic-transition-active.cinematic-mode::after{
     radial-gradient(circle at center, transparent 34%, rgba(0,0,0,.24) 70%, rgba(0,0,0,.64) 100%),
     linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.28) 42%, rgba(0,0,0,.46));
   opacity:1;
+  filter:saturate(1.04);
+}
+
+/* subtle landing aura after cinematic transition */
+body.cinematic-arrival-active.cinematic-mode::after{
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255,255,255,.045), transparent 18%),
+    radial-gradient(circle at 50% 28%, rgba(201,178,143,.11), transparent 22%),
+    radial-gradient(circle at center, transparent 42%, rgba(0,0,0,.18) 76%, rgba(0,0,0,.50) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.20) 44%, rgba(0,0,0,.30));
 }
 
 /* ---------- QUIETER CHROME, STILL USABLE ---------- */
@@ -191,6 +202,31 @@ body.cinematic-mode .memory-quote-block{
   border-top-color:rgba(255,255,255,.12);
 }
 
+/* landing pulse after arrival */
+body.cinematic-arrival-active .hero-home .hero-image,
+body.cinematic-arrival-active .profile-hero .hero-image,
+body.cinematic-arrival-active .hero-ps .hero-image,
+body.cinematic-arrival-active .hero-cr .hero-image,
+body.cinematic-arrival-active .hero-raport .hero-image{
+  animation:cinematicArrivalImage 1.12s cubic-bezier(.16,1,.30,1) both;
+}
+
+body.cinematic-arrival-active .hero-home .hero-copy,
+body.cinematic-arrival-active .profile-hero .hero-copy,
+body.cinematic-arrival-active .hero-ps .hero-copy,
+body.cinematic-arrival-active .hero-cr .hero-copy,
+body.cinematic-arrival-active .hero-raport .hero-copy{
+  animation:cinematicArrivalCopy .96s cubic-bezier(.16,1,.30,1) .08s both;
+}
+
+body.cinematic-arrival-active .hero-home .hero-side,
+body.cinematic-arrival-active .profile-hero .hero-side,
+body.cinematic-arrival-active .hero-ps .hero-side,
+body.cinematic-arrival-active .hero-cr .hero-side,
+body.cinematic-arrival-active .hero-raport .hero-side{
+  animation:cinematicArrivalPanel 1s cubic-bezier(.16,1,.30,1) .16s both;
+}
+
 /* ---------- BREATHING ROOM ---------- */
 
 body.cinematic-mode .section{
@@ -258,6 +294,20 @@ body.cinematic-mode .project-media::before{
 
 body.cinematic-mode .project-media::after{
   background:linear-gradient(180deg, transparent 0%, rgba(6,6,6,0.58) 100%);
+}
+
+/* specific polish for the two entry cards */
+body.cinematic-mode .cinematic-entry-card{
+  transform-origin:center center;
+  will-change:transform, box-shadow, filter;
+}
+
+body.cinematic-mode .cinematic-entry-card .project-media{
+  will-change:transform, filter;
+}
+
+body.cinematic-mode .cinematic-entry-card .project-body{
+  will-change:transform, opacity;
 }
 
 /* ---------- TYPOGRAPHY / TEXT ---------- */
@@ -375,6 +425,47 @@ body.cinematic-mode .mobile-menu-overlay{
     linear-gradient(180deg, rgba(6,6,6,.99), rgba(7,7,7,.995));
 }
 
+/* ---------- ARRIVAL KEYFRAMES ---------- */
+
+@keyframes cinematicArrivalImage{
+  0%{
+    opacity:.76;
+    transform:scale(1.08);
+    filter:saturate(1.08) contrast(1.08) brightness(.62);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1);
+    filter:saturate(.98) contrast(1.06) brightness(.76);
+  }
+}
+
+@keyframes cinematicArrivalCopy{
+  0%{
+    opacity:0;
+    transform:translate3d(0,26px,0);
+    filter:blur(14px);
+  }
+  100%{
+    opacity:1;
+    transform:translate3d(0,0,0);
+    filter:blur(0);
+  }
+}
+
+@keyframes cinematicArrivalPanel{
+  0%{
+    opacity:0;
+    transform:translate3d(0,32px,0) scale(.97);
+    filter:blur(16px);
+  }
+  100%{
+    opacity:1;
+    transform:translate3d(0,0,0) scale(1);
+    filter:blur(0);
+  }
+}
+
 /* ---------- REDUCED MOTION ---------- */
 
 body.reduced-motion.cinematic-mode .hero-home .hero-image,
@@ -383,6 +474,24 @@ body.reduced-motion.cinematic-mode .hero-ps .hero-image,
 body.reduced-motion.cinematic-mode .hero-cr .hero-image,
 body.reduced-motion.cinematic-mode .hero-raport .hero-image{
   transform:none;
+}
+
+body.reduced-motion.cinematic-arrival-active .hero-home .hero-image,
+body.reduced-motion.cinematic-arrival-active .profile-hero .hero-image,
+body.reduced-motion.cinematic-arrival-active .hero-ps .hero-image,
+body.reduced-motion.cinematic-arrival-active .hero-cr .hero-image,
+body.reduced-motion.cinematic-arrival-active .hero-raport .hero-image,
+body.reduced-motion.cinematic-arrival-active .hero-home .hero-copy,
+body.reduced-motion.cinematic-arrival-active .profile-hero .hero-copy,
+body.reduced-motion.cinematic-arrival-active .hero-ps .hero-copy,
+body.reduced-motion.cinematic-arrival-active .hero-cr .hero-copy,
+body.reduced-motion.cinematic-arrival-active .hero-raport .hero-copy,
+body.reduced-motion.cinematic-arrival-active .hero-home .hero-side,
+body.reduced-motion.cinematic-arrival-active .profile-hero .hero-side,
+body.reduced-motion.cinematic-arrival-active .hero-ps .hero-side,
+body.reduced-motion.cinematic-arrival-active .hero-cr .hero-side,
+body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
+  animation:none !important;
 }
 
 /* ---------- MOBILE TUNING ---------- */
@@ -412,6 +521,14 @@ body.reduced-motion.cinematic-mode .hero-raport .hero-image{
 
   body.cinematic-mode .project-card:hover{
     transform:translateY(-4px);
+  }
+
+  body.cinematic-arrival-active .hero-home .hero-image,
+  body.cinematic-arrival-active .profile-hero .hero-image,
+  body.cinematic-arrival-active .hero-ps .hero-image,
+  body.cinematic-arrival-active .hero-cr .hero-image,
+  body.cinematic-arrival-active .hero-raport .hero-image{
+    animation:cinematicArrivalImage .96s cubic-bezier(.16,1,.30,1) both;
   }
 }
 
