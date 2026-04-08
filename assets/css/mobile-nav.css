@@ -563,6 +563,14 @@ body.reduced-motion .mobile-menu-panel > *{
     display:inline-flex;
   }
 
+  /* hide Reduced Motion only on mobile */
+  #reducedMotionToggle{
+    display:none !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    visibility:hidden !important;
+  }
+
   .mobile-menu-panel{
     padding-top:calc(var(--nav-h) + 10px + env(safe-area-inset-top, 0px));
   }
