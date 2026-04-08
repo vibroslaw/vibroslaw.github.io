@@ -10,6 +10,7 @@
     content="Rap-Ort is an original audiovisual universe built around witness, memory, responsibility, and the pressure of history. Its central Polish-language work is Prawda Sumienia, while Conscience Report is a separate English-language work developed in parallel."
   />
   <meta name="theme-color" content="#090909" />
+  <meta name="color-scheme" content="dark" />
 
   <meta property="og:title" content="Rap-Ort — A universe of witness, memory, and responsibility" />
   <meta
@@ -26,10 +27,30 @@
     rel="stylesheet"
   />
 
+  <link rel="preload" as="image" href="/assets/images/hero-raport.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/images/hero-raport-mobile.jpg" media="(max-width: 760px)" />
+  <link rel="preload" as="image" href="/assets/images/hero-prawda-sumienia-main.jpg" />
+  <link rel="preload" as="image" href="/assets/images/comingsoon.jpg" />
+
   <link rel="stylesheet" href="/assets/css/main.css" />
   <link rel="stylesheet" href="/assets/css/cinematic.css" />
   <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
   <link rel="stylesheet" href="/assets/css/rap-ort.css" />
+
+  <noscript>
+    <style>
+      .reveal{
+        opacity:1 !important;
+        transform:none !important;
+        filter:none !important;
+      }
+
+      .page-transition,
+      .progress-bar{
+        display:none !important;
+      }
+    </style>
+  </noscript>
 </head>
 <body
   data-page="rap-ort"
@@ -54,7 +75,12 @@
       <a class="mobile-menu-link" href="#principles">Principles</a>
       <a class="mobile-menu-link" href="#contact">Contact</a>
 
-      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+      <button
+        class="mobile-menu-link mobile-menu-button"
+        id="mobileCinematicToggle"
+        type="button"
+        aria-pressed="false"
+      >
         Cinematic Mode
       </button>
 
@@ -76,7 +102,14 @@
       <nav class="desktop-nav desktop-nav-compact" aria-label="Site controls">
         <a href="/" class="nav-button">Homepage</a>
 
-        <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
+        <button
+          type="button"
+          id="cinematicToggle"
+          class="nav-button"
+          aria-pressed="false"
+        >
+          Cinematic Mode
+        </button>
 
         <div class="lang-switch" aria-label="Language switch">
           <a href="/rap-ort/" class="active">EN</a>
@@ -146,7 +179,12 @@
             >
               Open Prawda Sumienia Guide
             </a>
-            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">
+            <button
+              class="btn btn-tertiary"
+              id="cinematicHeroButton"
+              type="button"
+              aria-pressed="false"
+            >
               Enter Cinematic Mode
             </button>
           </div>
@@ -450,8 +488,12 @@
   </main>
 
   <div class="floating-tools">
-    <button class="tool-button" id="reducedMotionToggle" type="button">Reduced Motion</button>
-    <button class="tool-button" id="scrollTopButton" type="button">Top</button>
+    <button class="tool-button" id="reducedMotionToggle" type="button" aria-pressed="false">
+      Reduced Motion
+    </button>
+    <button class="tool-button" id="scrollTopButton" type="button">
+      Top
+    </button>
   </div>
 
   <footer class="site-footer">
@@ -469,4 +511,4 @@
   <script src="/assets/js/quotes.js"></script>
   <script src="/assets/js/rap-ort.js"></script>
 </body>
-</html>
+  </html>
