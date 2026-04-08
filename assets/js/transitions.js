@@ -19,6 +19,9 @@
   const CINEMATIC_NAVIGATION_OFFSET = 110;
   const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
 
+  const MOBILE_CINEMATIC_LINK_TRANSITION_DURATION = 380;
+  const MOBILE_CINEMATIC_LINK_NAVIGATION_DELAY = 250;
+
   let pageTransition = null;
   let transitionLocked = false;
   let pageTransitionInitialized = false;
@@ -26,6 +29,7 @@
 
   let cinematicZoomClone = null;
   let cinematicZoomVeil = null;
+  let genericMobileVeil = null;
   let cinematicShellSnapshot = [];
   let cinematicTimers = [];
 
@@ -74,12 +78,25 @@
     return Boolean(connection && connection.saveData);
   }
 
+  function supportsHaptics() {
+    return typeof navigator !== "undefined" && typeof navigator.vibrate === "function";
+  }
+
+  function triggerHapticFeedback(style = "light") {
+    if (!isMobileViewport()) return;
+    if (!supportsHaptics()) return;
+
+    const duration = style === "firm" ? 16 : 10;
+
+    try {
+      navigator.vibrate(duration);
+    } catch (error) {
+      /* silent */
+    }
+  }
+
   function shouldUseMinimalTransition() {
-    return (
-      isReducedMotionEnabled() ||
-      isMobileViewport() ||
-      isSaveDataEnabled()
-    );
+    return isReducedMotionEnabled() || isSaveDataEnabled() || isMobileViewport();
   }
 
   function isSameLocation(targetUrl) {
@@ -177,7 +194,7 @@
     }
   }
 
-  function notifyCinematicTransitionChange(active) {
+  function notifyCinematicTransitionChange(active, source = "generic") {
     if (active === cinematicTransitionEventActive) return;
 
     cinematicTransitionEventActive = active;
@@ -188,22 +205,64 @@
           ? "site:cinematic-transition-start"
           : "site:cinematic-transition-end",
         {
-          detail: { active }
+          detail: { active, source }
         }
       )
     );
   }
 
-  function writeCinematicArrivalState(link, duration) {
+  function getTransitionTitle(link) {
+    if (!(link instanceof HTMLAnchorElement)) return "Entry";
+
+    const explicitTitle = (link.dataset.trackTitle || "").trim();
+    if (explicitTitle) return explicitTitle;
+
+    const ariaLabel = (link.getAttribute("aria-label") || "").trim();
+    if (ariaLabel) return ariaLabel;
+
+    const heading = link.querySelector("h1, h2, h3, h4");
+    const headingText = (heading?.textContent || "").trim();
+    if (headingText) return headingText;
+
+    const text = (link.textContent || "").replace(/\s+/g, " ").trim();
+    if (text) return text;
+
+    return "Entry";
+  }
+
+  function getTransitionKey(link) {
+    if (!(link instanceof HTMLAnchorElement)) return "entry";
+
+    const explicitKey = (link.dataset.cinematicEntry || "").trim().toLowerCase();
+    if (explicitKey) return explicitKey;
+
+    const trackTitle = (link.dataset.trackTitle || "").trim().toLowerCase();
+    if (trackTitle) {
+      return trackTitle.replace(/\s+/g, "-");
+    }
+
+    const targetUrl = getLinkTargetUrl(link);
+    if (targetUrl) {
+      const pathParts = normalizePath(targetUrl.pathname).split("/").filter(Boolean);
+      if (pathParts.length > 0) {
+        return pathParts[pathParts.length - 1].toLowerCase();
+      }
+    }
+
+    return "entry";
+  }
+
+  function writeCinematicArrivalState(link, duration, source = "cinematic-link") {
     if (!(link instanceof HTMLAnchorElement)) return;
 
     const payload = {
       href: link.href,
-      key: (link.dataset.cinematicEntry || "").trim().toLowerCase(),
-      title: getCardTitle(link),
+      key: getTransitionKey(link),
+      title: getTransitionTitle(link),
       timestamp: Date.now(),
       duration,
-      mobile: isMobileViewport()
+      mobile: isMobileViewport(),
+      source
     };
 
     saveToSessionStorage(
@@ -297,24 +356,115 @@
     return true;
   }
 
+  function shouldRunGenericMobileCinematicTransition(link, event) {
+    if (!(link instanceof HTMLAnchorElement)) return false;
+    if (!isMobileViewport()) return false;
+    if (!isCinematicModeEnabled()) return false;
+    if (isReducedMotionEnabled()) return false;
+    if (isSaveDataEnabled()) return false;
+    if (isSpecialCinematicCardLink(link)) return false;
+
+    if (
+      event.defaultPrevented ||
+      hasModifierKey(event) ||
+      event.button !== 0
+    ) {
+      return false;
+    }
+
+    return shouldHandleTransition(link);
+  }
+
   function getCinematicDuration() {
     return isMobileViewport()
       ? CINEMATIC_ZOOM_DURATION_MOBILE
       : CINEMATIC_ZOOM_DURATION_DESKTOP;
   }
 
-  function getCardTitle(link) {
-    const heading = link.querySelector("h3");
-    const title =
-      (link.dataset.trackTitle || heading?.textContent || "").trim();
+  function closeMobileMenuIfOpen() {
+    if (typeof window.isMobileMenuOpen === "function" && !window.isMobileMenuOpen()) {
+      return;
+    }
 
-    return title || "Entry";
+    if (typeof window.closeMobileMenu === "function") {
+      window.closeMobileMenu({ restoreFocus: false });
+      return;
+    }
+
+    const body = getBody();
+    if (!body || !body.classList.contains("mobile-menu-open")) return;
+
+    body.classList.remove("mobile-menu-open");
   }
 
-  function getCardKicker(link) {
-    const custom = (link.dataset.cinematicLabel || "").trim();
-    if (custom) return custom;
-    return "";
+  function createGenericMobileNavigationVeil(link) {
+    const title = getTransitionTitle(link);
+
+    const veil = document.createElement("div");
+    veil.setAttribute("aria-hidden", "true");
+    veil.style.position = "fixed";
+    veil.style.inset = "0";
+    veil.style.zIndex = "10012";
+    veil.style.pointerEvents = "none";
+    veil.style.opacity = "0";
+    veil.style.background = [
+      "radial-gradient(circle at 50% 18%, rgba(201,178,143,.14), transparent 18%)",
+      "radial-gradient(circle at 50% 46%, rgba(255,255,255,.04), transparent 26%)",
+      "linear-gradient(180deg, rgba(8,8,8,.08), rgba(8,8,8,.44), rgba(6,6,6,.94))"
+    ].join(", ");
+    veil.style.backdropFilter = "blur(7px)";
+    veil.style.webkitBackdropFilter = "blur(7px)";
+    veil.style.transition = "opacity 260ms cubic-bezier(.16,1,.30,1)";
+
+    const sweep = document.createElement("div");
+    sweep.setAttribute("aria-hidden", "true");
+    sweep.style.position = "absolute";
+    sweep.style.inset = "-12% -34%";
+    sweep.style.opacity = "0";
+    sweep.style.transform = "translate3d(-28%,0,0) skewX(-12deg)";
+    sweep.style.mixBlendMode = "screen";
+    sweep.style.background =
+      "linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255,255,255,.12) 50%, transparent 58%, transparent 100%)";
+    sweep.style.transition =
+      "opacity 320ms cubic-bezier(.16,1,.30,1), transform 620ms cubic-bezier(.16,1,.30,1)";
+
+    const titleWrap = document.createElement("div");
+    titleWrap.setAttribute("aria-hidden", "true");
+    titleWrap.style.position = "absolute";
+    titleWrap.style.left = "50%";
+    titleWrap.style.top = "46%";
+    titleWrap.style.transform = "translate3d(-50%,16px,0) scale(.98)";
+    titleWrap.style.width = "82vw";
+    titleWrap.style.maxWidth = "340px";
+    titleWrap.style.textAlign = "center";
+    titleWrap.style.opacity = "0";
+    titleWrap.style.filter = "blur(10px)";
+    titleWrap.style.transition =
+      "opacity 260ms cubic-bezier(.16,1,.30,1), transform 420ms cubic-bezier(.16,1,.30,1), filter 420ms cubic-bezier(.16,1,.30,1)";
+
+    const titleText = document.createElement("div");
+    titleText.textContent = title.length > 38 ? `${title.slice(0, 38).trim()}…` : title;
+    titleText.style.fontFamily = '"Cormorant Garamond", serif';
+    titleText.style.fontWeight = "600";
+    titleText.style.fontSize = "clamp(1.8rem, 8.4vw, 2.8rem)";
+    titleText.style.lineHeight = ".92";
+    titleText.style.letterSpacing = "-.015em";
+    titleText.style.color = "#f2ece3";
+    titleText.style.textShadow =
+      "0 14px 34px rgba(0,0,0,.42), 0 2px 10px rgba(0,0,0,.24)";
+
+    titleWrap.appendChild(titleText);
+    veil.appendChild(sweep);
+    veil.appendChild(titleWrap);
+    document.body.appendChild(veil);
+
+    genericMobileVeil = {
+      veil,
+      sweep,
+      titleWrap
+    };
+
+    return genericMobileVeil;
   }
 
   function createCinematicVeil() {
@@ -416,8 +566,8 @@
     const linkStyle = window.getComputedStyle(sourceLink);
     const mediaStyle = window.getComputedStyle(sourceMedia);
 
-    const title = getCardTitle(sourceLink);
-    const kicker = getCardKicker(sourceLink);
+    const title = getTransitionTitle(sourceLink);
+    const kicker = (sourceLink.dataset.cinematicLabel || "").trim();
 
     const shell = document.createElement("div");
     shell.setAttribute("aria-hidden", "true");
@@ -622,6 +772,14 @@
     });
   }
 
+  function clearGenericMobileVeil() {
+    if (genericMobileVeil?.veil?.parentNode) {
+      genericMobileVeil.veil.parentNode.removeChild(genericMobileVeil.veil);
+    }
+
+    genericMobileVeil = null;
+  }
+
   function clearSpecialCinematicTransition() {
     clearCinematicTimers();
 
@@ -636,6 +794,7 @@
     cinematicZoomClone = null;
     cinematicZoomVeil = null;
 
+    clearGenericMobileVeil();
     clearCinematicShellState();
 
     if (document.body) {
@@ -643,6 +802,52 @@
     }
 
     notifyCinematicTransitionChange(false);
+  }
+
+  function runGenericMobileCinematicTransition(link) {
+    if (!(link instanceof HTMLAnchorElement)) return;
+    if (transitionLocked) return;
+
+    transitionLocked = true;
+
+    closeMobileMenuIfOpen();
+    triggerHapticFeedback("light");
+
+    writeCinematicArrivalState(link, MOBILE_CINEMATIC_LINK_TRANSITION_DURATION, "mobile-cinematic-link");
+
+    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic-mobile";
+    document.body?.classList.add("cinematic-transition-active");
+    notifyCinematicTransitionChange(true, "mobile-link");
+
+    cachePageTransitionElement();
+    if (pageTransition) {
+      pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
+    }
+
+    const veilBundle = createGenericMobileNavigationVeil(link);
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (!veilBundle) return;
+
+        veilBundle.veil.style.opacity = "1";
+
+        if (veilBundle.sweep) {
+          veilBundle.sweep.style.opacity = ".92";
+          veilBundle.sweep.style.transform = "translate3d(22%,0,0) skewX(-12deg)";
+        }
+
+        if (veilBundle.titleWrap) {
+          veilBundle.titleWrap.style.opacity = ".96";
+          veilBundle.titleWrap.style.transform = "translate3d(-50%,0,0) scale(1)";
+          veilBundle.titleWrap.style.filter = "blur(0)";
+        }
+      });
+    });
+
+    queueCinematicTimer(() => {
+      window.location.href = link.href;
+    }, MOBILE_CINEMATIC_LINK_NAVIGATION_DELAY);
   }
 
   function runSpecialCinematicCardTransition(link) {
@@ -658,7 +863,7 @@
     transitionLocked = true;
 
     const duration = getCinematicDuration();
-    writeCinematicArrivalState(link, duration);
+    writeCinematicArrivalState(link, duration, "cinematic-card");
 
     document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
 
@@ -666,13 +871,14 @@
       document.body.classList.add("cinematic-transition-active");
     }
 
-    notifyCinematicTransitionChange(true);
+    notifyCinematicTransitionChange(true, "card");
+    triggerHapticFeedback("firm");
 
     const veilBundle = createCinematicVeil();
     const cloneBundle = createCinematicZoomClone(link);
 
     if (!cloneBundle) {
-      notifyCinematicTransitionChange(false);
+      notifyCinematicTransitionChange(false, "card");
       transitionLocked = false;
       window.location.href = link.href;
       return;
@@ -860,6 +1066,12 @@
       return;
     }
 
+    if (shouldRunGenericMobileCinematicTransition(link, event)) {
+      event.preventDefault();
+      runGenericMobileCinematicTransition(link);
+      return;
+    }
+
     if (!shouldHandleTransition(link)) return;
 
     if (
@@ -868,6 +1080,18 @@
       event.button !== 0
     ) {
       return;
+    }
+
+    if (
+      isCinematicModeEnabled() &&
+      !isReducedMotionEnabled() &&
+      !isSaveDataEnabled()
+    ) {
+      writeCinematicArrivalState(
+        link,
+        isMobileViewport() ? MOBILE_CINEMATIC_LINK_TRANSITION_DURATION : 860,
+        "standard-link"
+      );
     }
 
     activatePageTransition();
