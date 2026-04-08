@@ -44,6 +44,16 @@
     return document.body;
   }
 
+  function notifyMobileMenuStateChange(open, source = "manual") {
+    document.documentElement.dataset.mobileMenu = open ? "open" : "closed";
+
+    document.dispatchEvent(
+      new CustomEvent("site:mobile-menu-change", {
+        detail: { open, source }
+      })
+    );
+  }
+
   function cacheMobileNavigationElements() {
     mobileNavToggle = document.getElementById("mobileNavToggle");
     mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
@@ -189,6 +199,7 @@
     document.body.classList.add("mobile-menu-open");
     mobileNavToggle.setAttribute("aria-expanded", "true");
     mobileMenuOverlay.setAttribute("aria-hidden", "false");
+    notifyMobileMenuStateChange(true, "open");
 
     window.requestAnimationFrame(() => {
       window.setTimeout(() => {
@@ -208,6 +219,7 @@
     document.body.classList.remove("mobile-menu-open");
     mobileNavToggle.setAttribute("aria-expanded", "false");
     mobileMenuOverlay.setAttribute("aria-hidden", "true");
+    notifyMobileMenuStateChange(false, "close");
 
     unlockBodyScroll();
     resetTouchTracking();
@@ -328,6 +340,7 @@
     } else {
       unlockBodyScroll();
       resetTouchTracking();
+      notifyMobileMenuStateChange(false, "pageshow");
     }
   }
 
@@ -410,6 +423,7 @@
       mobileNavToggle.setAttribute("aria-expanded", "false");
     }
 
+    notifyMobileMenuStateChange(false, "init");
     unlockBodyScroll();
     resetTouchTracking();
   }
