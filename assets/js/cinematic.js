@@ -8,6 +8,7 @@
 
   const CINEMATIC_STORAGE_KEY = "siteCinematicMode";
   const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
+  const MOBILE_CINEMATIC_FAB_ID = "mobileCinematicFab";
 
   const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
   const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
@@ -19,6 +20,7 @@
   let cinematicToggle = null;
   let cinematicHeroButton = null;
   let mobileCinematicToggle = null;
+  let mobileCinematicFab = null;
 
   let cinematicModeInitialized = false;
   let cinematicArrivalTimer = null;
@@ -28,10 +30,41 @@
     return document.body;
   }
 
+  function pageSupportsCinematicMode() {
+    return !!(
+      document.getElementById("cinematicToggle") ||
+      document.getElementById("cinematicHeroButton") ||
+      document.getElementById("mobileCinematicToggle")
+    );
+  }
+
+  function ensureMobileCinematicFab() {
+    const body = getBody();
+    if (!body) return;
+    if (!pageSupportsCinematicMode()) return;
+
+    let existingFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
+    if (existingFab) {
+      mobileCinematicFab = existingFab;
+      return;
+    }
+
+    const fab = document.createElement("button");
+    fab.type = "button";
+    fab.id = MOBILE_CINEMATIC_FAB_ID;
+    fab.className = "mobile-cinematic-fab";
+    fab.setAttribute("aria-pressed", "false");
+    fab.setAttribute("aria-label", "Cinematic Mode");
+
+    body.appendChild(fab);
+    mobileCinematicFab = fab;
+  }
+
   function cacheCinematicElements() {
     cinematicToggle = document.getElementById("cinematicToggle");
     cinematicHeroButton = document.getElementById("cinematicHeroButton");
     mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
+    mobileCinematicFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
   }
 
   function isPolishLanguage() {
@@ -140,7 +173,7 @@
       heroEnter: isPL ? "Włącz tryb kinowy" : "Enter Cinematic Mode",
       heroExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode",
 
-      mobileEnter: isPL ? "Włącz tryb kinowy" : "Enter Cinematic Mode",
+      mobileEnter: isPL ? "Tryb kinowy" : "Cinematic Mode",
       mobileExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode"
     };
   }
@@ -160,9 +193,11 @@
     button.setAttribute("aria-pressed", pressed ? "true" : "false");
     button.setAttribute("aria-label", text);
     button.setAttribute("title", text);
+    button.dataset.active = pressed ? "true" : "false";
   }
 
   function updateCinematicLabels() {
+    ensureMobileCinematicFab();
     cacheCinematicElements();
 
     const labels = getCinematicLabels();
@@ -182,6 +217,12 @@
 
     updateSingleButton(
       mobileCinematicToggle,
+      active ? labels.mobileExit : labels.mobileEnter,
+      active
+    );
+
+    updateSingleButton(
+      mobileCinematicFab,
       active ? labels.mobileExit : labels.mobileEnter,
       active
     );
@@ -408,6 +449,14 @@
     closeMobileMenuIfOpen();
   }
 
+  function handleMobileCinematicFabClick(event) {
+    if (event?.currentTarget instanceof HTMLElement) {
+      event.currentTarget.blur();
+    }
+
+    toggleCinematicMode("mobile-fab");
+  }
+
   function syncCinematicModeAcrossTabs(event) {
     if (event.key !== CINEMATIC_STORAGE_KEY) return;
 
@@ -523,6 +572,7 @@
   }
 
   function handlePageShow() {
+    ensureMobileCinematicFab();
     cacheCinematicElements();
     updateCinematicLabels();
     consumeAndApplyCinematicArrival();
@@ -536,6 +586,7 @@
     if (cinematicModeInitialized) return;
     cinematicModeInitialized = true;
 
+    ensureMobileCinematicFab();
     cacheCinematicElements();
 
     const shouldEnable = readCinematicPreference();
@@ -559,6 +610,13 @@
       mobileCinematicToggle.addEventListener(
         "click",
         handleMobileCinematicButtonClick
+      );
+    }
+
+    if (mobileCinematicFab) {
+      mobileCinematicFab.addEventListener(
+        "click",
+        handleMobileCinematicFabClick
       );
     }
 
