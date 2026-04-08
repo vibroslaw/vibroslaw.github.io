@@ -42,7 +42,6 @@
   font-size:clamp(2rem, 2.15vw, 2.55rem);
   line-height:.90;
   letter-spacing:-.015em;
-  text-wrap:nowrap;
   white-space:nowrap;
 }
 
@@ -103,9 +102,9 @@
   inset:0;
   pointer-events:none;
   z-index:1;
-  opacity:.42;
+  opacity:.44;
   background:
-    radial-gradient(circle at 50% 14%, rgba(255,255,255,.05), transparent 18%),
+    radial-gradient(circle at 50% 14%, rgba(255,255,255,.055), transparent 18%),
     radial-gradient(circle at 74% 20%, rgba(201,178,143,.10), transparent 20%),
     radial-gradient(circle at 22% 74%, rgba(201,178,143,.03), transparent 24%);
 }
@@ -116,10 +115,10 @@
   inset:0;
   pointer-events:none;
   z-index:2;
-  opacity:.68;
+  opacity:.58;
   background:
-    linear-gradient(180deg, rgba(0,0,0,.03) 0%, rgba(0,0,0,.09) 30%, rgba(0,0,0,.20) 68%, rgba(0,0,0,.38) 100%),
-    radial-gradient(circle at center, transparent 48%, rgba(0,0,0,.08) 76%, rgba(0,0,0,.16) 100%);
+    linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.07) 30%, rgba(0,0,0,.15) 68%, rgba(0,0,0,.28) 100%),
+    radial-gradient(circle at center, transparent 50%, rgba(0,0,0,.06) 78%, rgba(0,0,0,.11) 100%);
   transition:opacity .45s var(--ease);
 }
 
@@ -128,14 +127,14 @@
   inset:0;
   z-index:0;
   background-image:
-    linear-gradient(180deg, rgba(8,8,8,.05) 0%, rgba(8,8,8,.10) 34%, rgba(8,8,8,.24) 100%),
+    linear-gradient(180deg, rgba(8,8,8,.04) 0%, rgba(8,8,8,.08) 34%, rgba(8,8,8,.18) 100%),
     radial-gradient(circle at 72% 22%, rgba(201,178,143,.08), transparent 30%),
     url('/assets/images/hero-main.jpg');
   background-repeat:no-repeat;
   background-size:cover;
   background-position:var(--home-hero-pos-desktop);
   transform:translate3d(0, calc(var(--hero-parallax) * 0.14), 0) scale(1.002);
-  filter:saturate(.89) contrast(1.01) brightness(.85);
+  filter:saturate(.92) contrast(1.01) brightness(.89);
   will-change:transform, filter, opacity;
 }
 
@@ -144,11 +143,11 @@
   inset:0;
   z-index:3;
   background:
-    radial-gradient(circle at 50% 16%, rgba(255,255,255,.07), transparent 38%),
-    radial-gradient(circle at 78% 24%, rgba(201,178,143,.10), transparent 24%),
-    radial-gradient(circle at 24% 70%, rgba(201,178,143,.035), transparent 30%);
+    radial-gradient(circle at 50% 16%, rgba(255,255,255,.075), transparent 38%),
+    radial-gradient(circle at 78% 24%, rgba(201,178,143,.11), transparent 24%),
+    radial-gradient(circle at 24% 70%, rgba(201,178,143,.04), transparent 30%);
   mix-blend-mode:screen;
-  opacity:.68;
+  opacity:.76;
 }
 
 .hero-home .hero-fade{
@@ -156,8 +155,8 @@
   inset:0;
   z-index:4;
   background:
-    linear-gradient(90deg, rgba(8,8,8,.72) 0%, rgba(8,8,8,.50) 28%, rgba(8,8,8,.16) 62%, rgba(8,8,8,.12) 100%),
-    linear-gradient(180deg, rgba(8,8,8,.02) 0%, rgba(8,8,8,.10) 48%, rgba(8,8,8,.68) 100%);
+    linear-gradient(90deg, rgba(8,8,8,.64) 0%, rgba(8,8,8,.44) 28%, rgba(8,8,8,.14) 62%, rgba(8,8,8,.10) 100%),
+    linear-gradient(180deg, rgba(8,8,8,.01) 0%, rgba(8,8,8,.08) 48%, rgba(8,8,8,.52) 100%);
 }
 
 .hero-grid{
@@ -206,7 +205,7 @@
   text-wrap:balance;
   text-shadow:
     0 1px 0 rgba(0,0,0,.14),
-    0 12px 34px rgba(0,0,0,.20);
+    0 12px 34px rgba(0,0,0,.18);
 }
 
 .hero-lead{
@@ -751,27 +750,27 @@
 /* ---------- CINEMATIC MODE ---------- */
 
 body.cinematic-mode .hero-home .hero-bg::after{
-  opacity:.90;
+  opacity:.82;
 }
 
 body.cinematic-mode .hero-home .hero-image{
-  filter:saturate(1.00) contrast(1.08) brightness(.70);
+  filter:saturate(1.00) contrast(1.07) brightness(.74);
   transform:translate3d(0, calc(var(--hero-parallax) * 0.20), 0) scale(1.006);
 }
 
 body.cinematic-mode .hero-home .hero-fade{
   background:
-    linear-gradient(90deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.64) 30%, rgba(0,0,0,.20) 66%, rgba(0,0,0,.10) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.03) 0%, rgba(0,0,0,.14) 40%, rgba(0,0,0,.84) 100%);
+    linear-gradient(90deg, rgba(0,0,0,.80) 0%, rgba(0,0,0,.56) 30%, rgba(0,0,0,.18) 66%, rgba(0,0,0,.09) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.12) 40%, rgba(0,0,0,.70) 100%);
 }
 
 body.cinematic-mode .hero-home .hero-light{
-  opacity:1.00;
+  opacity:.98;
 }
 
 body.cinematic-mode .hero-home .hero-copy{
   text-shadow:
-    0 12px 36px rgba(0,0,0,.30),
+    0 12px 36px rgba(0,0,0,.28),
     0 2px 10px rgba(0,0,0,.18);
 }
 
@@ -1002,7 +1001,7 @@ body.reduced-motion .glass-panel:hover{
 
 @media (max-width:1360px){
   .hero-home{
-    --home-hero-pos-desktop:55% 32%;
+    --home-hero-pos-desktop:54% 32%;
   }
 }
 
@@ -1568,4 +1567,4 @@ body.reduced-motion .glass-panel:hover{
   body.cinematic-mode .cinematic-entry-card:active .project-body{
     transform:translateY(-2px);
   }
-  }
+}
