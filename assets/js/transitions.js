@@ -21,6 +21,7 @@
 
   const MOBILE_CINEMATIC_LINK_TRANSITION_DURATION = 380;
   const MOBILE_CINEMATIC_LINK_NAVIGATION_DELAY = 250;
+  const STANDARD_CINEMATIC_LINK_DURATION_DESKTOP = 860;
 
   let pageTransition = null;
   let transitionLocked = false;
@@ -79,7 +80,10 @@
   }
 
   function supportsHaptics() {
-    return typeof navigator !== "undefined" && typeof navigator.vibrate === "function";
+    return (
+      typeof navigator !== "undefined" &&
+      typeof navigator.vibrate === "function"
+    );
   }
 
   function triggerHapticFeedback(style = "light") {
@@ -96,7 +100,11 @@
   }
 
   function shouldUseMinimalTransition() {
-    return isReducedMotionEnabled() || isSaveDataEnabled() || isMobileViewport();
+    return (
+      isReducedMotionEnabled() ||
+      isMobileViewport() ||
+      isSaveDataEnabled()
+    );
   }
 
   function isSameLocation(targetUrl) {
@@ -233,7 +241,9 @@
   function getTransitionKey(link) {
     if (!(link instanceof HTMLAnchorElement)) return "entry";
 
-    const explicitKey = (link.dataset.cinematicEntry || "").trim().toLowerCase();
+    const explicitKey = (link.dataset.cinematicEntry || "")
+      .trim()
+      .toLowerCase();
     if (explicitKey) return explicitKey;
 
     const trackTitle = (link.dataset.trackTitle || "").trim().toLowerCase();
@@ -243,7 +253,10 @@
 
     const targetUrl = getLinkTargetUrl(link);
     if (targetUrl) {
-      const pathParts = normalizePath(targetUrl.pathname).split("/").filter(Boolean);
+      const pathParts = normalizePath(targetUrl.pathname)
+        .split("/")
+        .filter(Boolean);
+
       if (pathParts.length > 0) {
         return pathParts[pathParts.length - 1].toLowerCase();
       }
@@ -381,8 +394,27 @@
       : CINEMATIC_ZOOM_DURATION_DESKTOP;
   }
 
+  function getCinematicMediaBleed() {
+    return isMobileViewport() ? 18 : 10;
+  }
+
+  function getCinematicShellScale() {
+    return isMobileViewport() ? 1.012 : 1.03;
+  }
+
+  function getCinematicMediaTargetScale() {
+    return isMobileViewport() ? 1.08 : 1.14;
+  }
+
+  function getCinematicMediaFinalScale() {
+    return isMobileViewport() ? 1.12 : 1.22;
+  }
+
   function closeMobileMenuIfOpen() {
-    if (typeof window.isMobileMenuOpen === "function" && !window.isMobileMenuOpen()) {
+    if (
+      typeof window.isMobileMenuOpen === "function" &&
+      !window.isMobileMenuOpen()
+    ) {
       return;
     }
 
@@ -407,6 +439,8 @@
     veil.style.zIndex = "10012";
     veil.style.pointerEvents = "none";
     veil.style.opacity = "0";
+    veil.style.transform = "translateZ(0)";
+    veil.style.backfaceVisibility = "hidden";
     veil.style.background = [
       "radial-gradient(circle at 50% 18%, rgba(201,178,143,.14), transparent 18%)",
       "radial-gradient(circle at 50% 46%, rgba(255,255,255,.04), transparent 26%)",
@@ -443,7 +477,8 @@
       "opacity 260ms cubic-bezier(.16,1,.30,1), transform 420ms cubic-bezier(.16,1,.30,1), filter 420ms cubic-bezier(.16,1,.30,1)";
 
     const titleText = document.createElement("div");
-    titleText.textContent = title.length > 38 ? `${title.slice(0, 38).trim()}…` : title;
+    titleText.textContent =
+      title.length > 38 ? `${title.slice(0, 38).trim()}…` : title;
     titleText.style.fontFamily = '"Cormorant Garamond", serif';
     titleText.style.fontWeight = "600";
     titleText.style.fontSize = "clamp(1.8rem, 8.4vw, 2.8rem)";
@@ -468,6 +503,8 @@
   }
 
   function createCinematicVeil() {
+    const mobile = isMobileViewport();
+
     const veil = document.createElement("div");
     veil.setAttribute("aria-hidden", "true");
     veil.style.position = "fixed";
@@ -476,12 +513,16 @@
     veil.style.pointerEvents = "none";
     veil.style.opacity = "0";
     veil.style.overflow = "hidden";
+    veil.style.transform = "translateZ(0)";
+    veil.style.backfaceVisibility = "hidden";
     veil.style.background = [
       "radial-gradient(circle at 50% 10%, rgba(255,255,255,.06), transparent 10%)",
       "radial-gradient(circle at 50% 24%, rgba(201,178,143,.28), transparent 18%)",
       "radial-gradient(circle at 50% 46%, rgba(201,178,143,.18), transparent 30%)",
       "radial-gradient(circle at 50% 68%, rgba(0,0,0,.18), transparent 42%)",
-      "linear-gradient(180deg, rgba(3,3,3,.14), rgba(6,6,6,.42), rgba(9,9,9,.92))"
+      mobile
+        ? "linear-gradient(180deg, rgba(6,6,6,.10), rgba(8,8,8,.34), rgba(10,10,10,.86))"
+        : "linear-gradient(180deg, rgba(3,3,3,.14), rgba(6,6,6,.42), rgba(9,9,9,.92))"
     ].join(", ");
     veil.style.transition = "opacity 480ms cubic-bezier(.16,1,.30,1)";
 
@@ -514,7 +555,7 @@
     topShutter.style.top = "0";
     topShutter.style.left = "0";
     topShutter.style.right = "0";
-    topShutter.style.height = isMobileViewport() ? "10vh" : "12vh";
+    topShutter.style.height = mobile ? "8vh" : "12vh";
     topShutter.style.pointerEvents = "none";
     topShutter.style.opacity = "0";
     topShutter.style.transform = "translate3d(0,-104%,0)";
@@ -529,7 +570,7 @@
     bottomShutter.style.bottom = "0";
     bottomShutter.style.left = "0";
     bottomShutter.style.right = "0";
-    bottomShutter.style.height = isMobileViewport() ? "13vh" : "16vh";
+    bottomShutter.style.height = mobile ? "10vh" : "16vh";
     bottomShutter.style.pointerEvents = "none";
     bottomShutter.style.opacity = "0";
     bottomShutter.style.transform = "translate3d(0,104%,0)";
@@ -561,6 +602,9 @@
     const sourceMedia = sourceLink.querySelector(".project-media");
     if (!(sourceMedia instanceof HTMLElement)) return null;
 
+    const mobile = isMobileViewport();
+    const bleed = getCinematicMediaBleed();
+
     const linkRect = sourceLink.getBoundingClientRect();
     const mediaRect = sourceMedia.getBoundingClientRect();
     const linkStyle = window.getComputedStyle(sourceLink);
@@ -580,22 +624,29 @@
     shell.style.pointerEvents = "none";
     shell.style.overflow = "hidden";
     shell.style.borderRadius = linkStyle.borderRadius || "32px";
-    shell.style.background =
-      "linear-gradient(180deg, rgba(8,8,8,.95), rgba(5,5,5,.995))";
-    shell.style.border = "1px solid rgba(255,255,255,.08)";
-    shell.style.boxShadow = "0 52px 180px rgba(0,0,0,.56)";
+    shell.style.background = mobile
+      ? "transparent"
+      : "linear-gradient(180deg, rgba(8,8,8,.95), rgba(5,5,5,.995))";
+    shell.style.border = mobile ? "none" : "1px solid rgba(255,255,255,.08)";
+    shell.style.boxShadow = mobile
+      ? "0 24px 64px rgba(0,0,0,.30)"
+      : "0 52px 180px rgba(0,0,0,.56)";
     shell.style.transform = "translate3d(0,0,0) scale(1)";
     shell.style.transformOrigin = "center center";
     shell.style.willChange =
       "left, top, width, height, border-radius, transform, box-shadow, opacity";
+    shell.style.backfaceVisibility = "hidden";
+    shell.style.transformStyle = "preserve-3d";
+    shell.style.contain = "layout paint style";
+    shell.style.isolation = "isolate";
 
     const mediaLayer = document.createElement("div");
     mediaLayer.setAttribute("aria-hidden", "true");
     mediaLayer.style.position = "absolute";
-    mediaLayer.style.left = `${mediaRect.left - linkRect.left}px`;
-    mediaLayer.style.top = `${mediaRect.top - linkRect.top}px`;
-    mediaLayer.style.width = `${mediaRect.width}px`;
-    mediaLayer.style.height = `${mediaRect.height}px`;
+    mediaLayer.style.left = `${mediaRect.left - linkRect.left - bleed}px`;
+    mediaLayer.style.top = `${mediaRect.top - linkRect.top - bleed}px`;
+    mediaLayer.style.width = `${mediaRect.width + bleed * 2}px`;
+    mediaLayer.style.height = `${mediaRect.height + bleed * 2}px`;
     mediaLayer.style.backgroundImage = mediaStyle.backgroundImage;
     mediaLayer.style.backgroundPosition = mediaStyle.backgroundPosition;
     mediaLayer.style.backgroundSize = mediaStyle.backgroundSize;
@@ -605,6 +656,8 @@
     mediaLayer.style.transformOrigin = "center center";
     mediaLayer.style.willChange =
       "left, top, width, height, transform, filter, opacity";
+    mediaLayer.style.backfaceVisibility = "hidden";
+    mediaLayer.style.borderRadius = "inherit";
 
     const mediaShade = document.createElement("div");
     mediaShade.setAttribute("aria-hidden", "true");
@@ -626,7 +679,7 @@
     shellGlow.style.position = "absolute";
     shellGlow.style.inset = "0";
     shellGlow.style.pointerEvents = "none";
-    shellGlow.style.opacity = ".44";
+    shellGlow.style.opacity = mobile ? ".34" : ".44";
     shellGlow.style.background = [
       "radial-gradient(circle at top right, rgba(201,178,143,.20), transparent 28%)",
       "radial-gradient(circle at 50% 36%, rgba(255,255,255,.045), transparent 24%)",
@@ -641,7 +694,7 @@
     caption.style.left = "0";
     caption.style.right = "0";
     caption.style.bottom = "0";
-    caption.style.padding = isMobileViewport() ? "24px 18px 18px" : "30px 26px 24px";
+    caption.style.padding = mobile ? "22px 18px 16px" : "30px 26px 24px";
     caption.style.background =
       "linear-gradient(180deg, transparent 0%, rgba(4,4,4,.62) 34%, rgba(4,4,4,.96) 100%)";
     caption.style.transition =
@@ -655,7 +708,7 @@
       const captionKicker = document.createElement("div");
       captionKicker.textContent = kicker;
       captionKicker.style.color = "rgba(201,178,143,.94)";
-      captionKicker.style.fontSize = isMobileViewport() ? ".68rem" : ".74rem";
+      captionKicker.style.fontSize = mobile ? ".68rem" : ".74rem";
       captionKicker.style.letterSpacing = ".18em";
       captionKicker.style.textTransform = "uppercase";
       captionKicker.style.marginBottom = "10px";
@@ -668,7 +721,7 @@
     captionTitle.style.fontWeight = "600";
     captionTitle.style.lineHeight = ".92";
     captionTitle.style.letterSpacing = "-.01em";
-    captionTitle.style.fontSize = isMobileViewport() ? "2.2rem" : "3rem";
+    captionTitle.style.fontSize = mobile ? "2.1rem" : "3rem";
     captionTitle.style.color = "#f2ece3";
     captionTitle.style.maxWidth = "14ch";
     caption.appendChild(captionTitle);
@@ -677,9 +730,9 @@
     centerTitle.setAttribute("aria-hidden", "true");
     centerTitle.style.position = "absolute";
     centerTitle.style.left = "50%";
-    centerTitle.style.top = isMobileViewport() ? "44%" : "42%";
+    centerTitle.style.top = mobile ? "45%" : "42%";
     centerTitle.style.transform = "translate3d(-50%,22px,0) scale(.92)";
-    centerTitle.style.width = isMobileViewport() ? "86vw" : "min(72vw, 980px)";
+    centerTitle.style.width = mobile ? "88vw" : "min(72vw, 980px)";
     centerTitle.style.textAlign = "center";
     centerTitle.style.opacity = "0";
     centerTitle.style.filter = "blur(18px)";
@@ -696,8 +749,8 @@
     centerTitleText.style.fontWeight = "600";
     centerTitleText.style.lineHeight = ".89";
     centerTitleText.style.letterSpacing = "-.025em";
-    centerTitleText.style.fontSize = isMobileViewport()
-      ? "clamp(2.3rem, 9.2vw, 3.8rem)"
+    centerTitleText.style.fontSize = mobile
+      ? "clamp(2.2rem, 9vw, 3.5rem)"
       : "clamp(3.8rem, 6.8vw, 6.4rem)";
     centerTitleText.style.color = "#f2ece3";
 
@@ -801,7 +854,7 @@
       document.body.classList.remove("cinematic-transition-active");
     }
 
-    notifyCinematicTransitionChange(false);
+    notifyCinematicTransitionChange(false, "clear");
   }
 
   function runGenericMobileCinematicTransition(link) {
@@ -813,16 +866,26 @@
     closeMobileMenuIfOpen();
     triggerHapticFeedback("light");
 
-    writeCinematicArrivalState(link, MOBILE_CINEMATIC_LINK_TRANSITION_DURATION, "mobile-cinematic-link");
-
-    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic-mobile";
-    document.body?.classList.add("cinematic-transition-active");
-    notifyCinematicTransitionChange(true, "mobile-link");
+    writeCinematicArrivalState(
+      link,
+      MOBILE_CINEMATIC_LINK_TRANSITION_DURATION,
+      "mobile-cinematic-link"
+    );
 
     cachePageTransitionElement();
+
     if (pageTransition) {
       pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
     }
+
+    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "minimal";
+
+    const body = getBody();
+    if (body) {
+      body.classList.add("cinematic-transition-active");
+    }
+
+    notifyCinematicTransitionChange(true, "mobile-link");
 
     const veilBundle = createGenericMobileNavigationVeil(link);
 
@@ -834,12 +897,14 @@
 
         if (veilBundle.sweep) {
           veilBundle.sweep.style.opacity = ".92";
-          veilBundle.sweep.style.transform = "translate3d(22%,0,0) skewX(-12deg)";
+          veilBundle.sweep.style.transform =
+            "translate3d(22%,0,0) skewX(-12deg)";
         }
 
         if (veilBundle.titleWrap) {
           veilBundle.titleWrap.style.opacity = ".96";
-          veilBundle.titleWrap.style.transform = "translate3d(-50%,0,0) scale(1)";
+          veilBundle.titleWrap.style.transform =
+            "translate3d(-50%,0,0) scale(1)";
           veilBundle.titleWrap.style.filter = "blur(0)";
         }
       });
@@ -863,16 +928,22 @@
     transitionLocked = true;
 
     const duration = getCinematicDuration();
+    const bleed = getCinematicMediaBleed();
+    const shellScale = getCinematicShellScale();
+    const mediaTargetScale = getCinematicMediaTargetScale();
+    const mediaFinalScale = getCinematicMediaFinalScale();
+
     writeCinematicArrivalState(link, duration, "cinematic-card");
+    triggerHapticFeedback("firm");
 
     document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
 
-    if (document.body) {
-      document.body.classList.add("cinematic-transition-active");
+    const body = getBody();
+    if (body) {
+      body.classList.add("cinematic-transition-active");
     }
 
     notifyCinematicTransitionChange(true, "card");
-    triggerHapticFeedback("firm");
 
     const veilBundle = createCinematicVeil();
     const cloneBundle = createCinematicZoomClone(link);
@@ -950,15 +1021,16 @@
         shell.style.width = `${window.innerWidth}px`;
         shell.style.height = `${window.innerHeight}px`;
         shell.style.borderRadius = "0px";
-        shell.style.transform = "translate3d(0,0,0) scale(1.03)";
+        shell.style.transform = `translate3d(0,0,0) scale(${shellScale})`;
         shell.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
 
-        mediaLayer.style.left = "0px";
-        mediaLayer.style.top = "0px";
-        mediaLayer.style.width = `${window.innerWidth}px`;
-        mediaLayer.style.height = `${window.innerHeight}px`;
-        mediaLayer.style.transform = "translate3d(0,0,0) scale(1.14)";
-        mediaLayer.style.filter = "saturate(1.10) brightness(.68) contrast(1.10)";
+        mediaLayer.style.left = `${-bleed}px`;
+        mediaLayer.style.top = `${-bleed}px`;
+        mediaLayer.style.width = `${window.innerWidth + bleed * 2}px`;
+        mediaLayer.style.height = `${window.innerHeight + bleed * 2}px`;
+        mediaLayer.style.transform = `translate3d(0,0,0) scale(${mediaTargetScale})`;
+        mediaLayer.style.filter =
+          "saturate(1.10) brightness(.68) contrast(1.10)";
 
         if (mediaShade) {
           mediaShade.style.opacity = ".98";
@@ -992,8 +1064,9 @@
           `transform ${Math.round(duration * 0.36)}ms cubic-bezier(.12,1,.28,1), ` +
           `filter ${Math.round(duration * 0.36)}ms cubic-bezier(.12,1,.28,1)`;
 
-        mediaLayer.style.transform = "translate3d(0,0,0) scale(1.22)";
-        mediaLayer.style.filter = "saturate(1.14) brightness(.60) contrast(1.12)";
+        mediaLayer.style.transform = `translate3d(0,0,0) scale(${mediaFinalScale})`;
+        mediaLayer.style.filter =
+          "saturate(1.14) brightness(.60) contrast(1.12)";
       }
 
       if (mediaShade) {
@@ -1015,7 +1088,8 @@
           `filter ${Math.round(duration * 0.18)}ms ease`;
 
         centerTitle.style.opacity = "0";
-        centerTitle.style.transform = "translate3d(-50%,-14px,0) scale(1.04)";
+        centerTitle.style.transform =
+          "translate3d(-50%,-14px,0) scale(1.04)";
         centerTitle.style.filter = "blur(14px)";
       }
     }, Math.round(duration * 0.70));
@@ -1025,7 +1099,7 @@
     }, Math.max(260, duration - CINEMATIC_NAVIGATION_OFFSET));
   }
 
-  function activatePageTransition() {
+  function activatePageTransition(mode = null) {
     cachePageTransitionElement();
 
     if (!pageTransition || transitionLocked) return;
@@ -1034,7 +1108,7 @@
     pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
 
     document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] =
-      shouldUseMinimalTransition() ? "minimal" : "active";
+      mode || (shouldUseMinimalTransition() ? "minimal" : "active");
   }
 
   function clearPageTransition() {
@@ -1047,6 +1121,21 @@
     delete document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY];
     clearSpecialCinematicTransition();
     transitionLocked = false;
+  }
+
+  function prepareStandardCinematicArrival(link) {
+    if (!(link instanceof HTMLAnchorElement)) return;
+    if (!isCinematicModeEnabled()) return;
+    if (isReducedMotionEnabled()) return;
+    if (isSaveDataEnabled()) return;
+
+    writeCinematicArrivalState(
+      link,
+      isMobileViewport()
+        ? MOBILE_CINEMATIC_LINK_TRANSITION_DURATION
+        : STANDARD_CINEMATIC_LINK_DURATION_DESKTOP,
+      "standard-link"
+    );
   }
 
   function handleDocumentClick(event) {
@@ -1082,18 +1171,8 @@
       return;
     }
 
-    if (
-      isCinematicModeEnabled() &&
-      !isReducedMotionEnabled() &&
-      !isSaveDataEnabled()
-    ) {
-      writeCinematicArrivalState(
-        link,
-        isMobileViewport() ? MOBILE_CINEMATIC_LINK_TRANSITION_DURATION : 860,
-        "standard-link"
-      );
-    }
-
+    closeMobileMenuIfOpen();
+    prepareStandardCinematicArrival(link);
     activatePageTransition();
   }
 
