@@ -17,6 +17,12 @@
   const CINEMATIC_ARRIVAL_DURATION_MOBILE = 1180;
   const MOBILE_BREAKPOINT = 760;
 
+  const MOBILE_FAB_HIDE_SCROLL_DELTA = 18;
+  const MOBILE_FAB_SHOW_SCROLL_DELTA = 10;
+  const MOBILE_FAB_HIDE_START = 96;
+  const MOBILE_FAB_NEAR_FOOTER_OFFSET = 132;
+  const MOBILE_FAB_PULSE_DURATION = 560;
+
   let cinematicToggle = null;
   let cinematicHeroButton = null;
   let mobileCinematicToggle = null;
@@ -25,6 +31,12 @@
   let cinematicModeInitialized = false;
   let cinematicArrivalTimer = null;
   let cinematicArrivalFrame = null;
+
+  let lastKnownScrollY = 0;
+  let mobileFabScrollTicking = false;
+  let mobileFabHiddenByScroll = false;
+  let mobileFabNearFooter = false;
+  let mobileFabPulseTimer = null;
 
   function getBody() {
     return document.body;
@@ -38,38 +50,13 @@
     );
   }
 
-  function ensureMobileCinematicFab() {
-    const body = getBody();
-    if (!body) return;
-    if (!pageSupportsCinematicMode()) return;
-
-    let existingFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
-    if (existingFab) {
-      mobileCinematicFab = existingFab;
-      return;
-    }
-
-    const fab = document.createElement("button");
-    fab.type = "button";
-    fab.id = MOBILE_CINEMATIC_FAB_ID;
-    fab.className = "mobile-cinematic-fab";
-    fab.setAttribute("aria-pressed", "false");
-    fab.setAttribute("aria-label", "Cinematic Mode");
-
-    body.appendChild(fab);
-    mobileCinematicFab = fab;
-  }
-
-  function cacheCinematicElements() {
-    cinematicToggle = document.getElementById("cinematicToggle");
-    cinematicHeroButton = document.getElementById("cinematicHeroButton");
-    mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
-    mobileCinematicFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
-  }
-
   function isPolishLanguage() {
     const body = getBody();
     return body?.dataset.lang === "pl";
+  }
+
+  function isMobileViewport() {
+    return window.innerWidth <= MOBILE_BREAKPOINT;
   }
 
   function isCinematicModeActive() {
@@ -89,10 +76,6 @@
     }
 
     return false;
-  }
-
-  function isMobileViewport() {
-    return window.innerWidth <= MOBILE_BREAKPOINT;
   }
 
   function isCinematicArrivalActive() {
@@ -163,6 +146,83 @@
     window.setTimeout(callback, 16);
   }
 
+  function supportsHaptics() {
+    return typeof navigator !== "undefined" && typeof navigator.vibrate === "function";
+  }
+
+  function triggerHapticFeedback(style = "light") {
+    if (!isMobileViewport()) return;
+    if (!supportsHaptics()) return;
+
+    const duration = style === "firm" ? 16 : 10;
+
+    try {
+      navigator.vibrate(duration);
+    } catch (error) {
+      /* silent fallback */
+    }
+  }
+
+  function clearMobileFabPulse() {
+    if (mobileFabPulseTimer !== null) {
+      window.clearTimeout(mobileFabPulseTimer);
+      mobileFabPulseTimer = null;
+    }
+
+    if (mobileCinematicFab) {
+      mobileCinematicFab.classList.remove("is-pulsing");
+    }
+  }
+
+  function triggerMobileFabPulse() {
+    if (!mobileCinematicFab) return;
+    if (isReducedMotionEnabled()) return;
+
+    clearMobileFabPulse();
+
+    mobileCinematicFab.classList.remove("is-pulsing");
+    void mobileCinematicFab.offsetWidth;
+    mobileCinematicFab.classList.add("is-pulsing");
+
+    mobileFabPulseTimer = window.setTimeout(() => {
+      if (mobileCinematicFab) {
+        mobileCinematicFab.classList.remove("is-pulsing");
+      }
+      mobileFabPulseTimer = null;
+    }, MOBILE_FAB_PULSE_DURATION);
+  }
+
+  function ensureMobileCinematicFab() {
+    const body = getBody();
+    if (!body) return;
+    if (!pageSupportsCinematicMode()) return;
+
+    let existingFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
+
+    if (existingFab) {
+      mobileCinematicFab = existingFab;
+      return;
+    }
+
+    const fab = document.createElement("button");
+    fab.type = "button";
+    fab.id = MOBILE_CINEMATIC_FAB_ID;
+    fab.className = "mobile-cinematic-fab";
+    fab.setAttribute("aria-pressed", "false");
+    fab.setAttribute("aria-label", "Cinematic Mode");
+    fab.dataset.active = "false";
+
+    body.appendChild(fab);
+    mobileCinematicFab = fab;
+  }
+
+  function cacheCinematicElements() {
+    cinematicToggle = document.getElementById("cinematicToggle");
+    cinematicHeroButton = document.getElementById("cinematicHeroButton");
+    mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
+    mobileCinematicFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
+  }
+
   function getCinematicLabels() {
     const isPL = isPolishLanguage();
 
@@ -173,8 +233,14 @@
       heroEnter: isPL ? "Włącz tryb kinowy" : "Enter Cinematic Mode",
       heroExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode",
 
-      mobileEnter: isPL ? "Tryb kinowy" : "Cinematic Mode",
-      mobileExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode"
+      mobileMenuEnter: isPL ? "Tryb kinowy" : "Cinematic Mode",
+      mobileMenuExit: isPL ? "Wyłącz tryb kinowy" : "Exit Cinematic Mode",
+
+      mobileFabEnter: isPL ? "Tryb kinowy" : "Cinematic",
+      mobileFabExit: isPL ? "Tryb kinowy ON" : "Cinematic ON",
+
+      mobileFabAriaEnter: isPL ? "Włącz tryb kinowy" : "Enable Cinematic Mode",
+      mobileFabAriaExit: isPL ? "Wyłącz tryb kinowy" : "Disable Cinematic Mode"
     };
   }
 
@@ -186,14 +252,85 @@
     saveToLocalStorage(CINEMATIC_STORAGE_KEY, active ? "true" : "false");
   }
 
-  function updateSingleButton(button, text, pressed) {
-    if (!button) return;
+  function updateSingleButton(button, options) {
+    if (!button || !options) return;
+
+    const { text, pressed, ariaLabel } = options;
 
     button.textContent = text;
     button.setAttribute("aria-pressed", pressed ? "true" : "false");
-    button.setAttribute("aria-label", text);
-    button.setAttribute("title", text);
+    button.setAttribute("aria-label", ariaLabel || text);
+    button.setAttribute("title", ariaLabel || text);
     button.dataset.active = pressed ? "true" : "false";
+  }
+
+  function setMobileFabVisualState() {
+    if (!mobileCinematicFab) return;
+
+    const shouldHide =
+      !pageSupportsCinematicMode() ||
+      !isMobileViewport() ||
+      mobileFabHiddenByScroll ||
+      isCinematicTransitionActive() ||
+      isCinematicArrivalActive();
+
+    mobileCinematicFab.classList.toggle("is-hidden", shouldHide);
+    mobileCinematicFab.classList.toggle(
+      "is-near-footer",
+      !shouldHide && !!mobileFabNearFooter
+    );
+  }
+
+  function updateMobileFabScrollState(force = false) {
+    if (!mobileCinematicFab) return;
+
+    const currentY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
+
+    if (!isMobileViewport()) {
+      lastKnownScrollY = currentY;
+      mobileFabHiddenByScroll = false;
+      mobileFabNearFooter = false;
+      setMobileFabVisualState();
+      return;
+    }
+
+    const deltaY = currentY - lastKnownScrollY;
+
+    if (currentY <= MOBILE_FAB_HIDE_START) {
+      mobileFabHiddenByScroll = false;
+    } else if (!force) {
+      if (deltaY > MOBILE_FAB_HIDE_SCROLL_DELTA) {
+        mobileFabHiddenByScroll = true;
+      } else if (deltaY < -MOBILE_FAB_SHOW_SCROLL_DELTA) {
+        mobileFabHiddenByScroll = false;
+      }
+    }
+
+    const footer = document.querySelector(".site-footer");
+    if (footer instanceof HTMLElement) {
+      const footerTop = footer.getBoundingClientRect().top;
+      mobileFabNearFooter = footerTop < window.innerHeight - MOBILE_FAB_NEAR_FOOTER_OFFSET;
+    } else {
+      mobileFabNearFooter = false;
+    }
+
+    lastKnownScrollY = currentY;
+    setMobileFabVisualState();
+  }
+
+  function requestMobileFabStateUpdate(force = false) {
+    if (!mobileCinematicFab) return;
+
+    if (mobileFabScrollTicking) {
+      return;
+    }
+
+    mobileFabScrollTicking = true;
+
+    runOnNextFrame(() => {
+      updateMobileFabScrollState(force);
+      mobileFabScrollTicking = false;
+    });
   }
 
   function updateCinematicLabels() {
@@ -203,29 +340,28 @@
     const labels = getCinematicLabels();
     const active = isCinematicModeActive();
 
-    updateSingleButton(
-      cinematicToggle,
-      active ? labels.navExit : labels.navEnter,
-      active
-    );
+    updateSingleButton(cinematicToggle, {
+      text: active ? labels.navExit : labels.navEnter,
+      pressed: active
+    });
 
-    updateSingleButton(
-      cinematicHeroButton,
-      active ? labels.heroExit : labels.heroEnter,
-      active
-    );
+    updateSingleButton(cinematicHeroButton, {
+      text: active ? labels.heroExit : labels.heroEnter,
+      pressed: active
+    });
 
-    updateSingleButton(
-      mobileCinematicToggle,
-      active ? labels.mobileExit : labels.mobileEnter,
-      active
-    );
+    updateSingleButton(mobileCinematicToggle, {
+      text: active ? labels.mobileMenuExit : labels.mobileMenuEnter,
+      pressed: active
+    });
 
-    updateSingleButton(
-      mobileCinematicFab,
-      active ? labels.mobileExit : labels.mobileEnter,
-      active
-    );
+    updateSingleButton(mobileCinematicFab, {
+      text: active ? labels.mobileFabExit : labels.mobileFabEnter,
+      pressed: active,
+      ariaLabel: active ? labels.mobileFabAriaExit : labels.mobileFabAriaEnter
+    });
+
+    requestMobileFabStateUpdate(true);
   }
 
   function notifyCinematicChange(active, source = "manual") {
@@ -296,11 +432,14 @@
     if (wasActive) {
       notifyCinematicArrivalEnd(payload);
     }
+
+    requestMobileFabStateUpdate(true);
   }
 
   function clearCinematicArrivalSilently() {
     clearCinematicArrivalTimer();
     clearCinematicArrivalState();
+    requestMobileFabStateUpdate(true);
   }
 
   function refreshUiAfterCinematicToggle() {
@@ -335,6 +474,7 @@
     runOnNextFrame(() => {
       window.dispatchEvent(new Event("resize"));
       window.dispatchEvent(new Event("scroll"));
+      requestMobileFabStateUpdate(true);
     });
   }
 
@@ -370,6 +510,14 @@
 
     if (!active) {
       finishCinematicArrival();
+    }
+
+    if (
+      source === "mobile-fab" ||
+      source === "mobile-button"
+    ) {
+      triggerHapticFeedback(active ? "firm" : "light");
+      triggerMobileFabPulse();
     }
 
     if (persist) {
@@ -550,6 +698,7 @@
         };
 
         notifyCinematicArrivalStart(detail);
+        requestMobileFabStateUpdate(true);
 
         cinematicArrivalTimer = window.setTimeout(() => {
           finishCinematicArrival(detail);
@@ -565,6 +714,7 @@
 
     if (!shouldPlayCinematicArrival(payload)) {
       clearCinematicArrivalState();
+      requestMobileFabStateUpdate(true);
       return;
     }
 
@@ -576,10 +726,27 @@
     cacheCinematicElements();
     updateCinematicLabels();
     consumeAndApplyCinematicArrival();
+    lastKnownScrollY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
+    requestMobileFabStateUpdate(true);
   }
 
   function handlePageHide() {
     clearCinematicArrivalSilently();
+  }
+
+  function handleMobileFabScroll() {
+    requestMobileFabStateUpdate(false);
+  }
+
+  function handleMobileFabViewportChange() {
+    requestMobileFabStateUpdate(true);
+  }
+
+  function handleVisibilityChange() {
+    if (!document.hidden) {
+      lastKnownScrollY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
+      requestMobileFabStateUpdate(true);
+    }
   }
 
   function initCinematicMode() {
@@ -623,9 +790,32 @@
     window.addEventListener("storage", syncCinematicModeAcrossTabs);
     window.addEventListener("pageshow", handlePageShow);
     window.addEventListener("pagehide", handlePageHide);
+    window.addEventListener("scroll", handleMobileFabScroll, { passive: true });
+    window.addEventListener("resize", handleMobileFabViewportChange);
+    window.addEventListener("orientationchange", handleMobileFabViewportChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    document.addEventListener("site:cinematic-arrival-start", () => {
+      requestMobileFabStateUpdate(true);
+    });
+
+    document.addEventListener("site:cinematic-arrival-end", () => {
+      requestMobileFabStateUpdate(true);
+    });
+
+    document.addEventListener("site:cinematic-transition-start", () => {
+      requestMobileFabStateUpdate(true);
+    });
+
+    document.addEventListener("site:cinematic-transition-end", () => {
+      requestMobileFabStateUpdate(true);
+    });
 
     consumeAndApplyCinematicArrival();
     updateCinematicLabels();
+
+    lastKnownScrollY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
+    requestMobileFabStateUpdate(true);
   }
 
   window.setCinematicMode = setCinematicMode;
