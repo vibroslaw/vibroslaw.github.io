@@ -25,6 +25,8 @@
   flex-direction:column;
   justify-content:center;
   align-items:flex-start;
+  text-decoration:none;
+  color:inherit;
 }
 
 .site-header .brand-name{
@@ -34,11 +36,12 @@
 .site-header .brand-sub-desktop,
 .site-header .brand-sub-mobile{
   margin:0;
+  font-family:"Inter", sans-serif;
+  font-weight:500;
   text-transform:uppercase;
   opacity:.86;
 }
 
-/* default visibility */
 .site-header .brand-sub-desktop{
   display:block;
 }
@@ -71,6 +74,7 @@
   }
 
   .site-header .brand-sub-desktop{
+    display:block !important;
     max-width:100%;
     font-size:.72rem;
     line-height:1.12;
@@ -1097,7 +1101,7 @@ body.reduced-motion .glass-panel:hover{
   }
 }
 
-/* ---------- HOME MOBILE HEADER / SHORT VERSION ---------- */
+/* ---------- MOBILE HEADER / SHORT VERSION ---------- */
 
 @media (max-width:760px){
   .site-header{
@@ -1647,4 +1651,4 @@ body.reduced-motion .glass-panel:hover{
   body.cinematic-mode .cinematic-entry-card:active .project-body{
     transform:translateY(-2px);
   }
-  }
+    }
