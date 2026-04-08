@@ -1524,7 +1524,7 @@ body.reduced-motion .glass-panel:hover{
   }
       }
 
-/* ---------- HOME MOBILE HEADER: SHORT BRAND ---------- */
+/* ---------- HOME MOBILE HEADER / SHORT VERSION ---------- */
 
 @media (max-width:760px){
   .site-header{
@@ -1543,43 +1543,29 @@ body.reduced-motion .glass-panel:hover{
     flex:1 1 auto;
     width:auto;
     min-width:0;
-    max-width:170px;
-    gap:2px;
+    max-width:175px;
+    gap:3px;
     justify-content:flex-start;
-    align-items:flex-start;
   }
 
-  .site-header .brand-name,
+  .site-header .brand-name{
+    margin:0;
+    max-width:10ch;
+    font-size:1rem;
+    line-height:.92;
+    letter-spacing:-.02em;
+    white-space:normal;
+    text-wrap:balance;
+  }
+
   .site-header .brand-sub{
-    font-size:0 !important;
-    line-height:0 !important;
-    letter-spacing:0 !important;
-    color:transparent !important;
-    margin:0 !important;
-    white-space:normal !important;
-  }
-
-  .site-header .brand-name::before{
-    content:"PIOTR LICHWAŁA";
-    display:block;
-    font-family:"Cormorant Garamond", serif;
-    font-size:1.02rem;
-    line-height:.96;
-    letter-spacing:-.01em;
-    color:var(--text);
-    white-space:nowrap;
-  }
-
-  .site-header .brand-sub::before{
-    content:"VIBROSŁAW";
-    display:block;
-    margin-top:4px;
-    font-size:.64rem;
-    line-height:1;
+    margin:0;
+    max-width:12ch;
+    font-size:.62rem;
+    line-height:1.02;
     letter-spacing:.22em;
-    text-transform:uppercase;
-    color:var(--soft);
-    white-space:nowrap;
+    white-space:normal;
+    text-wrap:balance;
     opacity:.82;
   }
 
@@ -1603,15 +1589,17 @@ body.reduced-motion .glass-panel:hover{
   }
 
   .site-header .brand{
-    max-width:156px;
+    max-width:160px;
   }
 
-  .site-header .brand-name::before{
-    font-size:.96rem;
+  .site-header .brand-name{
+    font-size:.92rem;
+    max-width:9.5ch;
   }
 
-  .site-header .brand-sub::before{
+  .site-header .brand-sub{
     font-size:.58rem;
+    max-width:11ch;
     letter-spacing:.20em;
   }
 
@@ -1622,14 +1610,14 @@ body.reduced-motion .glass-panel:hover{
 
 @media (max-width:380px){
   .site-header .brand{
-    max-width:146px;
+    max-width:148px;
   }
 
-  .site-header .brand-name::before{
-    font-size:.90rem;
+  .site-header .brand-name{
+    font-size:.86rem;
   }
 
-  .site-header .brand-sub::before{
+  .site-header .brand-sub{
     font-size:.54rem;
   }
 }
