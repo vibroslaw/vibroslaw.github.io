@@ -198,7 +198,7 @@ textarea:focus-visible{
 .page-transition{
   position:fixed;
   inset:0;
-  z-index:10040;
+  z-index:10005;
   overflow:hidden;
   background:
     radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 22%),
@@ -256,11 +256,12 @@ textarea:focus-visible{
     transform .78s var(--ease);
 }
 
-/* standard active + minimal + cinematic */
+/* standard active + minimal + cinematic + cinematic-mobile */
 .page-transition.active,
 html[data-page-transition="active"] .page-transition,
 html[data-page-transition="minimal"] .page-transition,
-html[data-page-transition="cinematic"] .page-transition{
+html[data-page-transition="cinematic"] .page-transition,
+html[data-page-transition="cinematic-mobile"] .page-transition{
   opacity:1;
   visibility:visible;
   pointer-events:auto;
@@ -301,7 +302,7 @@ html[data-page-transition="minimal"] .page-transition::after{
   transform:none;
 }
 
-/* cinematic — world class */
+/* cinematic — desktop / large premium */
 html[data-page-transition="cinematic"] .page-transition{
   background:
     radial-gradient(circle at 50% 9%, rgba(255,255,255,.055), transparent 11%),
@@ -341,6 +342,40 @@ html[data-page-transition="cinematic"] .page-transition::after{
   animation:cinematicTransitionSweep .96s cubic-bezier(.22,1,.36,1) both;
 }
 
+/* cinematic-mobile — lighter global layer under custom JS veil */
+html[data-page-transition="cinematic-mobile"] .page-transition{
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,.028), transparent 16%),
+    radial-gradient(circle at 50% 34%, rgba(201,178,143,.14), transparent 24%),
+    radial-gradient(circle at 50% 54%, rgba(201,178,143,.08), transparent 34%),
+    linear-gradient(180deg, rgba(5,5,5,.28) 0%, rgba(7,7,7,.58) 44%, rgba(9,9,9,.90) 100%);
+  transform:none;
+  filter:saturate(1.02) contrast(1.01);
+}
+
+html[data-page-transition="cinematic-mobile"] .page-transition::before{
+  opacity:.82;
+  transform:scale(1.01);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(201,178,143,.14), transparent 24%),
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,.045), transparent 12%),
+    linear-gradient(180deg, rgba(255,255,255,.012), transparent 30%);
+}
+
+html[data-page-transition="cinematic-mobile"] .page-transition::after{
+  opacity:.46;
+  transform:translate3d(12%, 0, 0);
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255,255,255,.08) 50%,
+      transparent 60%,
+      transparent 100%
+    );
+}
+
 /* cinematic shell backup */
 body.cinematic-transition-active{
   overflow:hidden;
@@ -357,6 +392,12 @@ body.cinematic-transition-active .site-footer{
 body.cinematic-transition-active .progress-bar{
   opacity:.10;
   transform:scaleX(.985);
+}
+
+body.cinematic-transition-active .floating-tools{
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(8px);
 }
 
 body.reduced-motion .page-transition{
@@ -953,7 +994,8 @@ h2{
   touch-action:manipulation;
 }
 
-body.mobile-menu-open .floating-tools{
+body.mobile-menu-open .floating-tools,
+html[data-mobile-menu="open"] .floating-tools{
   opacity:0;
   pointer-events:none;
   transform:translateY(8px);
@@ -1013,7 +1055,7 @@ body.mobile-menu-open .floating-tools{
   position:fixed;
   right:calc(18px + env(safe-area-inset-right, 0px));
   bottom:calc(18px + env(safe-area-inset-bottom, 0px));
-  z-index:160;
+  z-index:150;
   display:flex;
   flex-direction:column;
   gap:10px;
@@ -1236,6 +1278,25 @@ body.reduced-motion *::after{
     opacity:.78;
     transform:translate3d(18%, 0, 0);
   }
+
+  html[data-page-transition="cinematic-mobile"] .page-transition{
+    background:
+      radial-gradient(circle at 50% 20%, rgba(255,255,255,.024), transparent 14%),
+      radial-gradient(circle at 50% 32%, rgba(201,178,143,.14), transparent 20%),
+      radial-gradient(circle at 50% 48%, rgba(201,178,143,.08), transparent 28%),
+      linear-gradient(180deg, rgba(5,5,5,.24), rgba(7,7,7,.52), rgba(9,9,9,.88));
+    filter:saturate(1.03);
+  }
+
+  html[data-page-transition="cinematic-mobile"] .page-transition::before{
+    opacity:.78;
+    transform:scale(1.01);
+  }
+
+  html[data-page-transition="cinematic-mobile"] .page-transition::after{
+    opacity:.42;
+    transform:translate3d(10%, 0, 0);
+  }
 }
 
 @media (max-width:640px){
@@ -1297,5 +1358,9 @@ body.reduced-motion *::after{
 
   html[data-page-transition="cinematic"] .page-transition{
     filter:saturate(1.03);
+  }
+
+  html[data-page-transition="cinematic-mobile"] .page-transition{
+    filter:saturate(1.02);
   }
   }
