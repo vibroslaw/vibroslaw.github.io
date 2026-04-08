@@ -124,18 +124,19 @@ body.cinematic-mode .floating-tools{
   }
 
   body.cinematic-mode .site-footer{
-    opacity:.66;
+    opacity:.52;
     transform:none;
   }
 
   body.cinematic-mode .floating-tools{
-    opacity:.84;
+    opacity:.92;
     transform:none;
   }
 }
 
 /* do not dim menu overlay state */
-body.cinematic-mode.mobile-menu-open .site-header{
+body.cinematic-mode.mobile-menu-open .site-header,
+html[data-mobile-menu="open"] body.cinematic-mode .site-header{
   opacity:1;
   transform:none;
   filter:none;
@@ -406,6 +407,41 @@ body.cinematic-mode .tool-button:hover{
   border-color:rgba(255,255,255,.16);
 }
 
+/* mobile cinematic floating button */
+body.cinematic-mode .mobile-cinematic-fab{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.060), rgba(255,255,255,.032)),
+    radial-gradient(circle at top right, rgba(201,178,143,.16), transparent 44%);
+  border-color:rgba(255,255,255,.10);
+  box-shadow:
+    0 22px 46px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+body.cinematic-mode .mobile-cinematic-fab:hover{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.072), rgba(255,255,255,.040)),
+    radial-gradient(circle at top right, rgba(201,178,143,.20), transparent 46%);
+  border-color:rgba(255,255,255,.15);
+  box-shadow:
+    0 26px 52px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+body.cinematic-mode .mobile-cinematic-fab[data-active="true"]{
+  border-color:rgba(201,178,143,.30);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.076), rgba(255,255,255,.040)),
+    radial-gradient(circle at top right, rgba(201,178,143,.24), transparent 48%);
+  box-shadow:
+    0 26px 56px rgba(0,0,0,.40),
+    inset 0 0 0 1px rgba(201,178,143,.10);
+}
+
+body.cinematic-mode .mobile-cinematic-fab[data-active="true"]::after{
+  color:var(--accent);
+}
+
 /* =========================================================
    TIMELINE / LISTS
    ========================================================= */
@@ -527,6 +563,14 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
    ========================================================= */
 
 @media (max-width:760px){
+  body.cinematic-mode::after{
+    background:
+      radial-gradient(circle at 50% 15%, rgba(255,255,255,.030), transparent 18%),
+      radial-gradient(circle at 50% 28%, rgba(201,178,143,.08), transparent 22%),
+      radial-gradient(circle at center, transparent 48%, rgba(0,0,0,.14) 78%, rgba(0,0,0,.38) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.14) 42%, rgba(0,0,0,.22));
+  }
+
   body.cinematic-mode .section{
     padding:98px 0;
   }
@@ -553,6 +597,21 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
     transform:translateY(-4px);
   }
 
+  body.cinematic-mode .site-header{
+    opacity:.88;
+    background:rgba(8,8,8,.68);
+  }
+
+  body.cinematic-mode .floating-tools{
+    opacity:.96;
+  }
+
+  body.cinematic-mode .mobile-cinematic-fab{
+    box-shadow:
+      0 20px 42px rgba(0,0,0,.30),
+      inset 0 1px 0 rgba(255,255,255,.04);
+  }
+
   body.cinematic-arrival-active .hero-home .hero-image,
   body.cinematic-arrival-active .profile-hero .hero-image,
   body.cinematic-arrival-active .hero-ps .hero-image,
@@ -567,6 +626,14 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
     padding:90px 0;
   }
 
+  body.cinematic-mode::after{
+    background:
+      radial-gradient(circle at 50% 14%, rgba(255,255,255,.026), transparent 16%),
+      radial-gradient(circle at 50% 26%, rgba(201,178,143,.07), transparent 20%),
+      radial-gradient(circle at center, transparent 50%, rgba(0,0,0,.12) 80%, rgba(0,0,0,.34) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.12) 42%, rgba(0,0,0,.20));
+  }
+
   body.cinematic-mode .hero-home .hero-image,
   body.cinematic-mode .profile-hero .hero-image,
   body.cinematic-mode .hero-ps .hero-image,
@@ -574,4 +641,10 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
   body.cinematic-mode .hero-raport .hero-image{
     filter:saturate(.96) contrast(1.03) brightness(.86);
   }
+
+  body.cinematic-mode .mobile-cinematic-fab{
+    box-shadow:
+      0 18px 38px rgba(0,0,0,.28),
+      inset 0 1px 0 rgba(255,255,255,.04);
   }
+   }
