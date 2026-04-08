@@ -388,8 +388,9 @@ body.mobile-menu-open .mobile-menu-panel > *:nth-child(12){ transition-delay:.36
 .mobile-cinematic-fab{
   display:none;
   position:fixed;
-  left:max(14px, calc(env(safe-area-inset-left, 0px) + 14px));
-  bottom:max(14px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+  right:max(14px, calc(env(safe-area-inset-right, 0px) + 14px));
+  bottom:max(72px, calc(env(safe-area-inset-bottom, 0px) + 72px));
+  left:auto;
   z-index:160;
   min-height:48px;
   padding:0 18px;
@@ -596,6 +597,8 @@ body.reduced-motion .mobile-menu-panel > *{
     min-height:46px;
     padding:0 16px;
     font-size:.88rem;
+    right:max(12px, calc(env(safe-area-inset-right, 0px) + 12px));
+    bottom:max(68px, calc(env(safe-area-inset-bottom, 0px) + 68px));
   }
 
   .mobile-lang-switch{
@@ -615,8 +618,9 @@ body.reduced-motion .mobile-menu-panel > *{
   }
 
   .mobile-cinematic-fab{
-    left:max(12px, calc(env(safe-area-inset-left, 0px) + 12px));
-    bottom:max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+    right:max(12px, calc(env(safe-area-inset-right, 0px) + 12px));
+    bottom:max(64px, calc(env(safe-area-inset-bottom, 0px) + 64px));
+    left:auto;
     min-height:44px;
     padding:0 15px;
     font-size:.84rem;
@@ -642,4 +646,4 @@ body.reduced-motion .mobile-menu-panel > *{
   .mobile-cinematic-fab:active{
     transform:scale(.985);
   }
-}
+  }
