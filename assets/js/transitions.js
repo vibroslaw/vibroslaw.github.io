@@ -8,6 +8,11 @@
 
   const PAGE_TRANSITION_ACTIVE_CLASS = "active";
   const PAGE_TRANSITION_DATA_KEY = "pageTransition";
+  const PAGE_TRANSITION_MODE_ACTIVE = "active";
+  const PAGE_TRANSITION_MODE_MINIMAL = "minimal";
+  const PAGE_TRANSITION_MODE_CINEMATIC = "cinematic";
+  const PAGE_TRANSITION_MODE_CINEMATIC_MOBILE = "cinematic-mobile";
+
   const MOBILE_BREAKPOINT = 760;
 
   const CINEMATIC_HOME_PAGE = "home";
@@ -20,7 +25,7 @@
   const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
 
   const MOBILE_CINEMATIC_LINK_TRANSITION_DURATION = 380;
-  const MOBILE_CINEMATIC_LINK_NAVIGATION_DELAY = 250;
+  const MOBILE_CINEMATIC_LINK_NAVIGATION_DELAY = 280;
   const STANDARD_CINEMATIC_LINK_DURATION_DESKTOP = 860;
 
   let pageTransition = null;
@@ -200,6 +205,22 @@
     } catch (error) {
       /* silent */
     }
+  }
+
+  function setPageTransitionMode(mode) {
+    if (!mode) {
+      delete document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY];
+      return;
+    }
+
+    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = mode;
+  }
+
+  function setBodyCinematicTransitionState(active) {
+    const body = getBody();
+    if (!body) return;
+
+    body.classList.toggle("cinematic-transition-active", active);
   }
 
   function notifyCinematicTransitionChange(active, source = "generic") {
@@ -441,6 +462,9 @@
     veil.style.opacity = "0";
     veil.style.transform = "translateZ(0)";
     veil.style.backfaceVisibility = "hidden";
+    veil.style.webkitBackfaceVisibility = "hidden";
+    veil.style.willChange = "opacity, transform, filter";
+    veil.style.contain = "layout paint style";
     veil.style.background = [
       "radial-gradient(circle at 50% 18%, rgba(201,178,143,.14), transparent 18%)",
       "radial-gradient(circle at 50% 46%, rgba(255,255,255,.04), transparent 26%)",
@@ -457,6 +481,7 @@
     sweep.style.opacity = "0";
     sweep.style.transform = "translate3d(-28%,0,0) skewX(-12deg)";
     sweep.style.mixBlendMode = "screen";
+    sweep.style.willChange = "opacity, transform";
     sweep.style.background =
       "linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255,255,255,.12) 50%, transparent 58%, transparent 100%)";
     sweep.style.transition =
@@ -473,6 +498,7 @@
     titleWrap.style.textAlign = "center";
     titleWrap.style.opacity = "0";
     titleWrap.style.filter = "blur(10px)";
+    titleWrap.style.willChange = "opacity, transform, filter";
     titleWrap.style.transition =
       "opacity 260ms cubic-bezier(.16,1,.30,1), transform 420ms cubic-bezier(.16,1,.30,1), filter 420ms cubic-bezier(.16,1,.30,1)";
 
@@ -515,6 +541,9 @@
     veil.style.overflow = "hidden";
     veil.style.transform = "translateZ(0)";
     veil.style.backfaceVisibility = "hidden";
+    veil.style.webkitBackfaceVisibility = "hidden";
+    veil.style.willChange = "opacity, transform, filter";
+    veil.style.contain = "layout paint style";
     veil.style.background = [
       "radial-gradient(circle at 50% 10%, rgba(255,255,255,.06), transparent 10%)",
       "radial-gradient(circle at 50% 24%, rgba(201,178,143,.28), transparent 18%)",
@@ -534,6 +563,7 @@
     sweep.style.opacity = "0";
     sweep.style.transform = "translate3d(-24%,0,0) skewX(-10deg)";
     sweep.style.mixBlendMode = "screen";
+    sweep.style.willChange = "opacity, transform";
     sweep.style.background =
       "linear-gradient(110deg, transparent 0%, transparent 40%, rgba(255,255,255,.17) 50%, transparent 60%, transparent 100%)";
     sweep.style.transition =
@@ -636,6 +666,7 @@
     shell.style.willChange =
       "left, top, width, height, border-radius, transform, box-shadow, opacity";
     shell.style.backfaceVisibility = "hidden";
+    shell.style.webkitBackfaceVisibility = "hidden";
     shell.style.transformStyle = "preserve-3d";
     shell.style.contain = "layout paint style";
     shell.style.isolation = "isolate";
@@ -657,6 +688,7 @@
     mediaLayer.style.willChange =
       "left, top, width, height, transform, filter, opacity";
     mediaLayer.style.backfaceVisibility = "hidden";
+    mediaLayer.style.webkitBackfaceVisibility = "hidden";
     mediaLayer.style.borderRadius = "inherit";
 
     const mediaShade = document.createElement("div");
@@ -775,6 +807,56 @@
     return cinematicZoomClone;
   }
 
+  function applyGenericMobileShellState(sourceLink) {
+    const header = document.querySelector(".site-header");
+    const main = document.querySelector("main");
+    const floatingTools = document.querySelector(".floating-tools");
+    const footer = document.querySelector(".site-footer");
+
+    cinematicShellSnapshot = [];
+
+    snapshotAndStyleElement(header, {
+      transition:
+        "opacity 260ms cubic-bezier(.16,1,.30,1), transform 260ms cubic-bezier(.16,1,.30,1), filter 260ms cubic-bezier(.16,1,.30,1)",
+      opacity: "0",
+      transform: "translateY(-10px)",
+      filter: "blur(4px)",
+      pointerEvents: "none"
+    });
+
+    snapshotAndStyleElement(main, {
+      transition:
+        "opacity 280ms cubic-bezier(.16,1,.30,1), transform 280ms cubic-bezier(.16,1,.30,1), filter 280ms cubic-bezier(.16,1,.30,1)",
+      opacity: ".14",
+      transform: "scale(.992)",
+      filter: "blur(3px)",
+      pointerEvents: "none"
+    });
+
+    snapshotAndStyleElement(floatingTools, {
+      transition:
+        "opacity 220ms cubic-bezier(.16,1,.30,1), transform 220ms cubic-bezier(.16,1,.30,1)",
+      opacity: "0",
+      transform: "translateY(10px)",
+      pointerEvents: "none"
+    });
+
+    snapshotAndStyleElement(footer, {
+      transition:
+        "opacity 240ms cubic-bezier(.16,1,.30,1), transform 240ms cubic-bezier(.16,1,.30,1), filter 240ms cubic-bezier(.16,1,.30,1)",
+      opacity: "0",
+      transform: "translateY(10px)",
+      filter: "blur(3px)",
+      pointerEvents: "none"
+    });
+
+    snapshotAndStyleElement(sourceLink, {
+      transition: "opacity 180ms ease",
+      opacity: ".88",
+      pointerEvents: "none"
+    });
+  }
+
   function applyCinematicShellState(sourceLink) {
     const header = document.querySelector(".site-header");
     const main = document.querySelector("main");
@@ -849,10 +931,7 @@
 
     clearGenericMobileVeil();
     clearCinematicShellState();
-
-    if (document.body) {
-      document.body.classList.remove("cinematic-transition-active");
-    }
+    setBodyCinematicTransitionState(false);
 
     notifyCinematicTransitionChange(false, "clear");
   }
@@ -878,14 +957,11 @@
       pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
     }
 
-    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "minimal";
-
-    const body = getBody();
-    if (body) {
-      body.classList.add("cinematic-transition-active");
-    }
-
+    setPageTransitionMode(PAGE_TRANSITION_MODE_CINEMATIC_MOBILE);
+    setBodyCinematicTransitionState(true);
     notifyCinematicTransitionChange(true, "mobile-link");
+
+    applyGenericMobileShellState(link);
 
     const veilBundle = createGenericMobileNavigationVeil(link);
 
@@ -936,13 +1012,8 @@
     writeCinematicArrivalState(link, duration, "cinematic-card");
     triggerHapticFeedback("firm");
 
-    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] = "cinematic";
-
-    const body = getBody();
-    if (body) {
-      body.classList.add("cinematic-transition-active");
-    }
-
+    setPageTransitionMode(PAGE_TRANSITION_MODE_CINEMATIC);
+    setBodyCinematicTransitionState(true);
     notifyCinematicTransitionChange(true, "card");
 
     const veilBundle = createCinematicVeil();
@@ -1107,8 +1178,9 @@
     transitionLocked = true;
     pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
 
-    document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY] =
-      mode || (shouldUseMinimalTransition() ? "minimal" : "active");
+    setPageTransitionMode(
+      mode || (shouldUseMinimalTransition() ? PAGE_TRANSITION_MODE_MINIMAL : PAGE_TRANSITION_MODE_ACTIVE)
+    );
   }
 
   function clearPageTransition() {
@@ -1118,7 +1190,7 @@
       pageTransition.classList.remove(PAGE_TRANSITION_ACTIVE_CLASS);
     }
 
-    delete document.documentElement.dataset[PAGE_TRANSITION_DATA_KEY];
+    setPageTransitionMode(null);
     clearSpecialCinematicTransition();
     transitionLocked = false;
   }
