@@ -29,6 +29,7 @@
   let touchCurrentY = 0;
   let touchTrackingActive = false;
   let mobileNavigationInitialized = false;
+  let currentMobileMenuState = false;
 
   const savedBodyStyles = {
     position: "",
@@ -44,14 +45,8 @@
     return document.body;
   }
 
-  function notifyMobileMenuStateChange(open, source = "manual") {
-    document.documentElement.dataset.mobileMenu = open ? "open" : "closed";
-
-    document.dispatchEvent(
-      new CustomEvent("site:mobile-menu-change", {
-        detail: { open, source }
-      })
-    );
+  function getHtml() {
+    return document.documentElement;
   }
 
   function cacheMobileNavigationElements() {
@@ -67,6 +62,32 @@
 
   function isMobileViewport() {
     return window.innerWidth <= MOBILE_BREAKPOINT;
+  }
+
+  function setMobileMenuState(open, source = "manual") {
+    const html = getHtml();
+    const body = getBody();
+    const nextValue = open ? "open" : "closed";
+
+    if (html) {
+      html.dataset.mobileMenu = nextValue;
+    }
+
+    if (body) {
+      body.dataset.mobileMenu = nextValue;
+    }
+
+    if (currentMobileMenuState === open) {
+      return;
+    }
+
+    currentMobileMenuState = open;
+
+    document.dispatchEvent(
+      new CustomEvent("site:mobile-menu-change", {
+        detail: { open, source }
+      })
+    );
   }
 
   function isVisibleElement(element) {
@@ -184,10 +205,24 @@
     }
   }
 
-  function openMobileMenu() {
+  function syncMenuAccessibility(open) {
+    if (mobileNavToggle) {
+      mobileNavToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    if (mobileMenuOverlay) {
+      mobileMenuOverlay.setAttribute("aria-hidden", open ? "false" : "true");
+    }
+  }
+
+  function openMobileMenu({ source = "open" } = {}) {
     cacheMobileNavigationElements();
 
-    if (!mobileNavToggle || !mobileMenuOverlay || isMobileMenuOpen()) return;
+    const body = getBody();
+
+    if (!body || !mobileNavToggle || !mobileMenuOverlay || isMobileMenuOpen()) {
+      return;
+    }
 
     lastFocusedElement =
       document.activeElement instanceof HTMLElement
@@ -196,10 +231,9 @@
 
     lockBodyScroll();
 
-    document.body.classList.add("mobile-menu-open");
-    mobileNavToggle.setAttribute("aria-expanded", "true");
-    mobileMenuOverlay.setAttribute("aria-hidden", "false");
-    notifyMobileMenuStateChange(true, "open");
+    body.classList.add("mobile-menu-open");
+    syncMenuAccessibility(true);
+    setMobileMenuState(true, source);
 
     window.requestAnimationFrame(() => {
       window.setTimeout(() => {
@@ -208,36 +242,50 @@
     });
   }
 
-  function closeMobileMenu({ restoreFocus = true } = {}) {
+  function closeMobileMenu({ restoreFocus = true, source = "close" } = {}) {
     cacheMobileNavigationElements();
 
-    if (!mobileNavToggle || !mobileMenuOverlay || !isMobileMenuOpen()) {
+    const body = getBody();
+
+    if (!body || !mobileNavToggle || !mobileMenuOverlay) {
       resetTouchTracking();
+      setMobileMenuState(false, source);
       return;
     }
 
-    document.body.classList.remove("mobile-menu-open");
-    mobileNavToggle.setAttribute("aria-expanded", "false");
-    mobileMenuOverlay.setAttribute("aria-hidden", "true");
-    notifyMobileMenuStateChange(false, "close");
+    if (!isMobileMenuOpen()) {
+      resetTouchTracking();
+      syncMenuAccessibility(false);
+      setMobileMenuState(false, source);
+      return;
+    }
+
+    body.classList.remove("mobile-menu-open");
+    syncMenuAccessibility(false);
+    setMobileMenuState(false, source);
 
     unlockBodyScroll();
     resetTouchTracking();
 
     if (restoreFocus && lastFocusedElement instanceof HTMLElement) {
+      const targetToRestore = lastFocusedElement;
+
       window.setTimeout(() => {
-        if (document.contains(lastFocusedElement)) {
-          lastFocusedElement.focus();
+        if (document.contains(targetToRestore)) {
+          targetToRestore.focus();
         }
+        lastFocusedElement = null;
       }, 40);
+    } else {
+      lastFocusedElement = null;
     }
   }
 
   function toggleMobileMenu() {
     if (isMobileMenuOpen()) {
-      closeMobileMenu();
+      closeMobileMenu({ source: "toggle-close" });
     } else {
-      openMobileMenu();
+      openMobileMenu({ source: "toggle-open" });
     }
   }
 
@@ -283,7 +331,7 @@
 
     if (event.key === "Escape") {
       event.preventDefault();
-      closeMobileMenu();
+      closeMobileMenu({ source: "escape" });
       return;
     }
 
@@ -305,7 +353,7 @@
     if (!mobileMenuOverlay) return;
 
     if (event.target === mobileMenuOverlay) {
-      closeMobileMenu();
+      closeMobileMenu({ source: "overlay-click" });
     }
   }
 
@@ -315,7 +363,7 @@
     const trigger = event.target.closest(MENU_INTERACTIVE_SELECTOR);
     if (!trigger) return;
 
-    closeMobileMenu({ restoreFocus: false });
+    closeMobileMenu({ restoreFocus: false, source: "panel-click" });
   }
 
   function handleResizeLikeEvent() {
@@ -327,8 +375,11 @@
       resizeFrame = null;
 
       if (!isMobileViewport() && isMobileMenuOpen()) {
-        closeMobileMenu({ restoreFocus: false });
+        closeMobileMenu({ restoreFocus: false, source: "viewport-exit" });
+        return;
       }
+
+      setMobileMenuState(isMobileMenuOpen(), "resize-sync");
     });
   }
 
@@ -336,12 +387,18 @@
     cacheMobileNavigationElements();
 
     if (isMobileMenuOpen()) {
-      closeMobileMenu({ restoreFocus: false });
+      closeMobileMenu({ restoreFocus: false, source: "pageshow-close" });
     } else {
       unlockBodyScroll();
       resetTouchTracking();
-      notifyMobileMenuStateChange(false, "pageshow");
+      syncMenuAccessibility(false);
+      setMobileMenuState(false, "pageshow");
     }
+  }
+
+  function handlePageHide() {
+    resetTouchTracking();
+    setMobileMenuState(false, "pagehide");
   }
 
   function handleTouchStart(event) {
@@ -382,7 +439,7 @@
       Math.abs(deltaX) <= SWIPE_MAX_HORIZONTAL_DRIFT;
 
     if (movedMostlyVertical && deltaY >= SWIPE_CLOSE_DISTANCE) {
-      closeMobileMenu({ restoreFocus: false });
+      closeMobileMenu({ restoreFocus: false, source: "swipe-close" });
     }
   }
 
@@ -414,18 +471,12 @@
     if (!body) return;
 
     body.classList.remove("mobile-menu-open");
+    syncMenuAccessibility(false);
+    setMobileMenuState(false, "init");
 
-    if (mobileMenuOverlay) {
-      mobileMenuOverlay.setAttribute("aria-hidden", "true");
-    }
-
-    if (mobileNavToggle) {
-      mobileNavToggle.setAttribute("aria-expanded", "false");
-    }
-
-    notifyMobileMenuStateChange(false, "init");
     unlockBodyScroll();
     resetTouchTracking();
+    lastFocusedElement = null;
   }
 
   function initTouchClose() {
@@ -468,6 +519,7 @@
     window.addEventListener("resize", handleResizeLikeEvent);
     window.addEventListener("orientationchange", handleResizeLikeEvent);
     window.addEventListener("pageshow", handlePageShow);
+    window.addEventListener("pagehide", handlePageHide);
   }
 
   window.openMobileMenu = openMobileMenu;
