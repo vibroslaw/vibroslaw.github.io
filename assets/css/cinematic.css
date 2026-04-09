@@ -22,6 +22,10 @@ body.cinematic-mode::after{
   inset:0;
   z-index:0;
   pointer-events:none;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform:translateZ(0);
+  will-change:opacity, filter, background;
   background:
     radial-gradient(circle at 50% 16%, rgba(255,255,255,.035), transparent 22%),
     radial-gradient(circle at 50% 32%, rgba(201,178,143,.08), transparent 24%),
@@ -55,6 +59,13 @@ body.cinematic-arrival-active.cinematic-mode::after{
     linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.20) 44%, rgba(0,0,0,.30));
 }
 
+/* lighter body vignette during mobile cinematic transition
+   because main.css + custom JS veil already do a lot */
+html[data-page-transition="cinematic-mobile"] body.cinematic-mode::after{
+  opacity:.72;
+  filter:saturate(1.01);
+}
+
 /* =========================================================
    QUIETER CHROME, STILL USABLE
    ========================================================= */
@@ -62,6 +73,9 @@ body.cinematic-arrival-active.cinematic-mode::after{
 body.cinematic-mode .site-header,
 body.cinematic-mode .site-footer,
 body.cinematic-mode .floating-tools{
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform:translateZ(0);
   transition:
     opacity .45s var(--ease),
     transform .45s var(--ease),
@@ -84,7 +98,7 @@ body.cinematic-mode .floating-tools{
   body.cinematic-mode .site-header:hover,
   body.cinematic-mode .site-header:focus-within{
     opacity:.98;
-    transform:none;
+    transform:translateZ(0);
     filter:none;
     background:rgba(8,8,8,.84);
     border-bottom-color:rgba(255,255,255,.08);
@@ -99,7 +113,7 @@ body.cinematic-mode .floating-tools{
   body.cinematic-mode .site-footer:hover,
   body.cinematic-mode .site-footer:focus-within{
     opacity:.90;
-    transform:none;
+    transform:translateZ(0);
   }
 
   body.cinematic-mode .floating-tools{
@@ -110,7 +124,7 @@ body.cinematic-mode .floating-tools{
   body.cinematic-mode .floating-tools:hover,
   body.cinematic-mode .floating-tools:focus-within{
     opacity:.98;
-    transform:none;
+    transform:translateZ(0);
   }
 }
 
@@ -118,19 +132,19 @@ body.cinematic-mode .floating-tools{
 @media (hover:none), (pointer:coarse){
   body.cinematic-mode .site-header{
     opacity:.84;
-    transform:none;
+    transform:translateZ(0);
     background:rgba(8,8,8,.62);
     border-bottom-color:rgba(255,255,255,.06);
   }
 
   body.cinematic-mode .site-footer{
     opacity:.52;
-    transform:none;
+    transform:translateZ(0);
   }
 
   body.cinematic-mode .floating-tools{
     opacity:.92;
-    transform:none;
+    transform:translateZ(0);
   }
 }
 
@@ -138,7 +152,7 @@ body.cinematic-mode .floating-tools{
 body.cinematic-mode.mobile-menu-open .site-header,
 html[data-mobile-menu="open"] body.cinematic-mode .site-header{
   opacity:1;
-  transform:none;
+  transform:translateZ(0);
   filter:none;
 }
 
@@ -161,6 +175,10 @@ body.cinematic-mode .profile-hero .hero-image,
 body.cinematic-mode .hero-ps .hero-image,
 body.cinematic-mode .hero-cr .hero-image,
 body.cinematic-mode .hero-raport .hero-image{
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform:translateZ(0);
+  will-change:transform, filter, opacity;
   filter:saturate(.98) contrast(1.06) brightness(.76);
 }
 
@@ -492,12 +510,12 @@ body.cinematic-mode .mobile-menu-overlay{
 @keyframes cinematicArrivalImage{
   0%{
     opacity:.76;
-    transform:scale(1.08);
+    transform:translateZ(0) scale(1.08);
     filter:saturate(1.08) contrast(1.08) brightness(.62);
   }
   100%{
     opacity:1;
-    transform:scale(1);
+    transform:translateZ(0) scale(1);
     filter:saturate(.98) contrast(1.06) brightness(.76);
   }
 }
@@ -571,6 +589,21 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
       linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.14) 42%, rgba(0,0,0,.22));
   }
 
+  body.cinematic-transition-active.cinematic-mode::after{
+    background:
+      radial-gradient(circle at 50% 16%, rgba(255,255,255,.030), transparent 16%),
+      radial-gradient(circle at 50% 30%, rgba(201,178,143,.10), transparent 22%),
+      radial-gradient(circle at center, transparent 46%, rgba(0,0,0,.18) 78%, rgba(0,0,0,.42) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.16) 42%, rgba(0,0,0,.26));
+    opacity:.92;
+    filter:saturate(1.02);
+  }
+
+  html[data-page-transition="cinematic-mobile"] body.cinematic-mode::after{
+    opacity:.62;
+    filter:none;
+  }
+
   body.cinematic-mode .section{
     padding:98px 0;
   }
@@ -634,6 +667,19 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
       linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.12) 42%, rgba(0,0,0,.20));
   }
 
+  body.cinematic-transition-active.cinematic-mode::after{
+    background:
+      radial-gradient(circle at 50% 15%, rgba(255,255,255,.026), transparent 15%),
+      radial-gradient(circle at 50% 28%, rgba(201,178,143,.08), transparent 18%),
+      radial-gradient(circle at center, transparent 52%, rgba(0,0,0,.16) 82%, rgba(0,0,0,.36) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.12) 40%, rgba(0,0,0,.22));
+    opacity:.90;
+  }
+
+  html[data-page-transition="cinematic-mobile"] body.cinematic-mode::after{
+    opacity:.56;
+  }
+
   body.cinematic-mode .hero-home .hero-image,
   body.cinematic-mode .profile-hero .hero-image,
   body.cinematic-mode .hero-ps .hero-image,
@@ -647,4 +693,4 @@ body.reduced-motion.cinematic-arrival-active .hero-raport .hero-side{
       0 18px 38px rgba(0,0,0,.28),
       inset 0 1px 0 rgba(255,255,255,.04);
   }
-   }
+}
