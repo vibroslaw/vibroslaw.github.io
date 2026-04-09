@@ -55,6 +55,21 @@
     return (path || "").replace(/\/+$/, "") || "/";
   }
 
+  function runOnNextFrame(callback) {
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(callback);
+      return;
+    }
+
+    window.setTimeout(callback, 16);
+  }
+
+  function runAfterTwoFrames(callback) {
+    runOnNextFrame(() => {
+      runOnNextFrame(callback);
+    });
+  }
+
   function isReducedMotionEnabled() {
     if (document.body && document.body.classList.contains("reduced-motion")) {
       return true;
@@ -965,25 +980,23 @@
 
     const veilBundle = createGenericMobileNavigationVeil(link);
 
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        if (!veilBundle) return;
+    runAfterTwoFrames(() => {
+      if (!veilBundle) return;
 
-        veilBundle.veil.style.opacity = "1";
+      veilBundle.veil.style.opacity = "1";
 
-        if (veilBundle.sweep) {
-          veilBundle.sweep.style.opacity = ".92";
-          veilBundle.sweep.style.transform =
-            "translate3d(22%,0,0) skewX(-12deg)";
-        }
+      if (veilBundle.sweep) {
+        veilBundle.sweep.style.opacity = ".92";
+        veilBundle.sweep.style.transform =
+          "translate3d(22%,0,0) skewX(-12deg)";
+      }
 
-        if (veilBundle.titleWrap) {
-          veilBundle.titleWrap.style.opacity = ".96";
-          veilBundle.titleWrap.style.transform =
-            "translate3d(-50%,0,0) scale(1)";
-          veilBundle.titleWrap.style.filter = "blur(0)";
-        }
-      });
+      if (veilBundle.titleWrap) {
+        veilBundle.titleWrap.style.opacity = ".96";
+        veilBundle.titleWrap.style.transform =
+          "translate3d(-50%,0,0) scale(1)";
+        veilBundle.titleWrap.style.filter = "blur(0)";
+      }
     });
 
     queueCinematicTimer(() => {
@@ -1020,8 +1033,7 @@
     const cloneBundle = createCinematicZoomClone(link);
 
     if (!cloneBundle) {
-      notifyCinematicTransitionChange(false, "card");
-      transitionLocked = false;
+      clearSpecialCinematicTransition();
       window.location.href = link.href;
       return;
     }
@@ -1038,87 +1050,85 @@
       centerTitle
     } = cloneBundle;
 
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        veil.style.opacity = "1";
+    runAfterTwoFrames(() => {
+      veil.style.opacity = "1";
 
-        if (sweep) {
-          sweep.style.opacity = ".98";
-          sweep.style.transform = "translate3d(28%,0,0) skewX(-10deg)";
-        }
+      if (sweep) {
+        sweep.style.opacity = ".98";
+        sweep.style.transform = "translate3d(28%,0,0) skewX(-10deg)";
+      }
 
-        if (topShutter) {
-          topShutter.style.opacity = "1";
-          topShutter.style.transform = "translate3d(0,0,0)";
-        }
+      if (topShutter) {
+        topShutter.style.opacity = "1";
+        topShutter.style.transform = "translate3d(0,0,0)";
+      }
 
-        if (bottomShutter) {
-          bottomShutter.style.opacity = "1";
-          bottomShutter.style.transform = "translate3d(0,0,0)";
-        }
+      if (bottomShutter) {
+        bottomShutter.style.opacity = "1";
+        bottomShutter.style.transform = "translate3d(0,0,0)";
+      }
 
-        if (flash) {
-          flash.style.opacity = ".42";
-          queueCinematicTimer(() => {
-            if (flash) {
-              flash.style.opacity = "0";
-            }
-          }, 180);
-        }
+      if (flash) {
+        flash.style.opacity = ".42";
+        queueCinematicTimer(() => {
+          if (flash) {
+            flash.style.opacity = "0";
+          }
+        }, 180);
+      }
 
-        shell.style.transition = [
-          `left ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `top ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `width ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `height ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `border-radius ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `transform ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `box-shadow ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `opacity ${duration}ms cubic-bezier(.12,1,.28,1)`
-        ].join(", ");
+      shell.style.transition = [
+        `left ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `top ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `width ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `height ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `border-radius ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `transform ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `box-shadow ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `opacity ${duration}ms cubic-bezier(.12,1,.28,1)`
+      ].join(", ");
 
-        mediaLayer.style.transition = [
-          `left ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `top ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `width ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `height ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `transform ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `filter ${duration}ms cubic-bezier(.12,1,.28,1)`,
-          `opacity ${duration}ms cubic-bezier(.12,1,.28,1)`
-        ].join(", ");
+      mediaLayer.style.transition = [
+        `left ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `top ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `width ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `height ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `transform ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `filter ${duration}ms cubic-bezier(.12,1,.28,1)`,
+        `opacity ${duration}ms cubic-bezier(.12,1,.28,1)`
+      ].join(", ");
 
-        shell.style.left = "0px";
-        shell.style.top = "0px";
-        shell.style.width = `${window.innerWidth}px`;
-        shell.style.height = `${window.innerHeight}px`;
-        shell.style.borderRadius = "0px";
-        shell.style.transform = `translate3d(0,0,0) scale(${shellScale})`;
-        shell.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
+      shell.style.left = "0px";
+      shell.style.top = "0px";
+      shell.style.width = `${window.innerWidth}px`;
+      shell.style.height = `${window.innerHeight}px`;
+      shell.style.borderRadius = "0px";
+      shell.style.transform = `translate3d(0,0,0) scale(${shellScale})`;
+      shell.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
 
-        mediaLayer.style.left = `${-bleed}px`;
-        mediaLayer.style.top = `${-bleed}px`;
-        mediaLayer.style.width = `${window.innerWidth + bleed * 2}px`;
-        mediaLayer.style.height = `${window.innerHeight + bleed * 2}px`;
-        mediaLayer.style.transform = `translate3d(0,0,0) scale(${mediaTargetScale})`;
-        mediaLayer.style.filter =
-          "saturate(1.10) brightness(.68) contrast(1.10)";
+      mediaLayer.style.left = `${-bleed}px`;
+      mediaLayer.style.top = `${-bleed}px`;
+      mediaLayer.style.width = `${window.innerWidth + bleed * 2}px`;
+      mediaLayer.style.height = `${window.innerHeight + bleed * 2}px`;
+      mediaLayer.style.transform = `translate3d(0,0,0) scale(${mediaTargetScale})`;
+      mediaLayer.style.filter =
+        "saturate(1.10) brightness(.68) contrast(1.10)";
 
-        if (mediaShade) {
-          mediaShade.style.opacity = ".98";
-          mediaShade.style.transform = "scale(1.07)";
-        }
+      if (mediaShade) {
+        mediaShade.style.opacity = ".98";
+        mediaShade.style.transform = "scale(1.07)";
+      }
 
-        if (shellGlow) {
-          shellGlow.style.opacity = ".68";
-          shellGlow.style.transform = "scale(1.04)";
-        }
+      if (shellGlow) {
+        shellGlow.style.opacity = ".68";
+        shellGlow.style.transform = "scale(1.04)";
+      }
 
-        if (caption) {
-          caption.style.opacity = "0";
-          caption.style.transform = "translate3d(0,40px,0) scale(.95)";
-          caption.style.filter = "blur(18px)";
-        }
-      });
+      if (caption) {
+        caption.style.opacity = "0";
+        caption.style.transform = "translate3d(0,40px,0) scale(.95)";
+        caption.style.filter = "blur(18px)";
+      }
     });
 
     queueCinematicTimer(() => {
@@ -1179,7 +1189,10 @@
     pageTransition.classList.add(PAGE_TRANSITION_ACTIVE_CLASS);
 
     setPageTransitionMode(
-      mode || (shouldUseMinimalTransition() ? PAGE_TRANSITION_MODE_MINIMAL : PAGE_TRANSITION_MODE_ACTIVE)
+      mode ||
+        (shouldUseMinimalTransition()
+          ? PAGE_TRANSITION_MODE_MINIMAL
+          : PAGE_TRANSITION_MODE_ACTIVE)
     );
   }
 
