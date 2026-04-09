@@ -21,11 +21,12 @@
       heroNearFocus: "hero-near-focus",
       heroOutOfView: "hero-out-of-view",
       heroActive: "hero-active",
-      heroPassive: "hero-passive"
+      heroPassive: "hero-passive",
+      mobileMenuOpen: "mobile-menu-open"
     },
 
     selectors: {
-      hero: ".hero-home, .profile-hero",
+      hero: ".hero-home, .profile-hero, .hero-ps, .hero-cr",
       reducedMotionToggle: "#reducedMotionToggle"
     },
 
@@ -113,6 +114,17 @@
 
   function isCinematicTransitionActive() {
     return hasBodyClass(CONFIG.classes.cinematicTransition);
+  }
+
+  function isMobileMenuOpen() {
+    const body = getBody();
+    const html = getDocumentElement();
+
+    if (body && body.classList.contains(CONFIG.classes.mobileMenuOpen)) {
+      return true;
+    }
+
+    return html?.dataset.mobileMenu === "open";
   }
 
   function setRootCssVariable(name, value) {
@@ -260,6 +272,7 @@
 
   function shouldSuspendHeroMotion() {
     return (
+      isMobileMenuOpen() ||
       isCinematicArrivalActive() ||
       isCinematicTransitionActive() ||
       hasPendingCinematicArrival()
@@ -552,7 +565,11 @@
     }
   }
 
-  function handleReducedMotionButtonClick() {
+  function handleReducedMotionButtonClick(event) {
+    if (event?.currentTarget instanceof HTMLElement) {
+      event.currentTarget.blur();
+    }
+
     applyReducedMotionState(!isReducedMotionEnabled());
   }
 
@@ -656,6 +673,11 @@
     refreshOrResetHeroMotionSoon();
   }
 
+  function handlePageHide() {
+    invalidateArrivalCache();
+    resetHeroMotionState();
+  }
+
   function handleVisibilityChange() {
     if (document.hidden) return;
     refreshOrResetHeroMotionSoon();
@@ -687,6 +709,17 @@
     refreshOrResetHeroMotionSoon();
   }
 
+  function handleMobileMenuChange(event) {
+    const isOpen = !!event?.detail?.open;
+
+    if (isOpen) {
+      resetHeroMotionState();
+      return;
+    }
+
+    refreshOrResetHeroMotionSoon();
+  }
+
   function initHeroMotion() {
     if (state.heroMotionInitialized) return;
     state.heroMotionInitialized = true;
@@ -704,6 +737,7 @@
     window.addEventListener("orientationchange", requestHeroMotionUpdate);
     window.addEventListener("load", requestHeroMotionUpdate);
     window.addEventListener("pageshow", handlePageShow);
+    window.addEventListener("pagehide", handlePageHide);
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     document.addEventListener(
@@ -729,6 +763,10 @@
     document.addEventListener(
       "site:cinematic-transition-end",
       handleCinematicTransitionEnd
+    );
+    document.addEventListener(
+      "site:mobile-menu-change",
+      handleMobileMenuChange
     );
 
     initHeroResizeObserver();
