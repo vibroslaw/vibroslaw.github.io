@@ -56,7 +56,12 @@
       <a class="mobile-menu-link" href="#principles">Principles</a>
       <a class="mobile-menu-link" href="#contact">Contact</a>
 
-      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+      <button
+        class="mobile-menu-link mobile-menu-button"
+        id="mobileCinematicToggle"
+        type="button"
+        aria-pressed="false"
+      >
         Cinematic Mode
       </button>
 
@@ -71,15 +76,22 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="/rap-ort/conscience-report/" aria-label="Conscience Report">
-        <div class="brand-name cr-brand">Rap-Ort · Work</div>
-        <div class="brand-sub">Conscience Report · English-language work</div>
+        <div class="brand-name cr-brand">Conscience Report</div>
+        <div class="brand-sub">English-language work</div>
       </a>
 
       <nav class="desktop-nav desktop-nav-compact" aria-label="Site controls">
         <a href="/" class="nav-button">Homepage</a>
         <a href="/rap-ort/" class="nav-button track-link" data-track-title="Rap-Ort">Rap-Ort</a>
 
-        <button type="button" id="cinematicToggle" class="nav-button">Cinematic Mode</button>
+        <button
+          type="button"
+          id="cinematicToggle"
+          class="nav-button"
+          aria-pressed="false"
+        >
+          Cinematic Mode
+        </button>
 
         <div class="lang-switch" aria-label="Language switch">
           <a href="/rap-ort/conscience-report/" class="active">EN</a>
@@ -143,7 +155,7 @@
           <div class="cta-row">
             <a class="btn btn-primary" href="#architecture">See the work structure</a>
             <a class="btn btn-secondary" href="#institutional">Institutional use</a>
-            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Enter Cinematic Mode</button>
+            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button" aria-pressed="false">Enter Cinematic Mode</button>
           </div>
         </div>
 
@@ -484,7 +496,7 @@
   </main>
 
   <div class="floating-tools">
-    <button class="tool-button" id="reducedMotionToggle" type="button">Reduced Motion</button>
+    <button class="tool-button" id="reducedMotionToggle" type="button" aria-pressed="false">Reduced Motion</button>
     <button class="tool-button" id="scrollTopButton" type="button">Top</button>
   </div>
 
@@ -503,4 +515,4 @@
   <script src="/assets/js/quotes.js"></script>
   <script src="/assets/js/conscience-report.js"></script>
 </body>
-  </html>
+        </html>
