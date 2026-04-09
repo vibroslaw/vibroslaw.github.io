@@ -15,9 +15,12 @@
 
   const MOBILE_BREAKPOINT = 760;
 
-  const CINEMATIC_HOME_PAGE = "home";
   const CINEMATIC_CARD_SELECTOR = ".cinematic-entry-card[data-cinematic-entry]";
-  const CINEMATIC_CARD_KEYS = new Set(["rap-ort", "sztab"]);
+  const CINEMATIC_CARD_MEDIA_SELECTOR = ".project-media, .chapter-media";
+  const CINEMATIC_CARD_PAGE_KEYS = {
+    home: new Set(["rap-ort", "sztab"]),
+    "rap-ort": new Set(["prawda-sumienia", "conscience-report"])
+  };
 
   const CINEMATIC_ZOOM_DURATION_DESKTOP = 1420;
   const CINEMATIC_ZOOM_DURATION_MOBILE = 1120;
@@ -53,6 +56,10 @@
 
   function normalizePath(path) {
     return (path || "").replace(/\/+$/, "") || "/";
+  }
+
+  function getCurrentPageKey() {
+    return (getBody()?.dataset.page || "").trim().toLowerCase();
   }
 
   function isReducedMotionEnabled() {
@@ -354,17 +361,17 @@
     });
   }
 
-  function isHomepage() {
-    return getBody()?.dataset.page === CINEMATIC_HOME_PAGE;
-  }
-
   function isSpecialCinematicCardLink(link) {
     if (!(link instanceof HTMLAnchorElement)) return false;
-    if (!isHomepage()) return false;
     if (!link.matches(CINEMATIC_CARD_SELECTOR)) return false;
 
+    const pageKey = getCurrentPageKey();
+    const allowedKeys = CINEMATIC_CARD_PAGE_KEYS[pageKey];
+
+    if (!allowedKeys) return false;
+
     const key = (link.dataset.cinematicEntry || "").trim().toLowerCase();
-    if (!CINEMATIC_CARD_KEYS.has(key)) return false;
+    if (!allowedKeys.has(key)) return false;
 
     const targetUrl = getLinkTargetUrl(link);
     if (!targetUrl) return false;
@@ -629,7 +636,7 @@
   function createCinematicZoomClone(sourceLink) {
     if (!(sourceLink instanceof HTMLAnchorElement)) return null;
 
-    const sourceMedia = sourceLink.querySelector(".project-media");
+    const sourceMedia = sourceLink.querySelector(CINEMATIC_CARD_MEDIA_SELECTOR);
     if (!(sourceMedia instanceof HTMLElement)) return null;
 
     const mobile = isMobileViewport();
@@ -995,7 +1002,7 @@
     if (!(link instanceof HTMLAnchorElement)) return;
     if (transitionLocked) return;
 
-    const sourceMedia = link.querySelector(".project-media");
+    const sourceMedia = link.querySelector(CINEMATIC_CARD_MEDIA_SELECTOR);
     if (!(sourceMedia instanceof HTMLElement)) {
       window.location.href = link.href;
       return;
