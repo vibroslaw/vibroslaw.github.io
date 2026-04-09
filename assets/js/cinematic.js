@@ -34,6 +34,7 @@
 
   let lastKnownScrollY = 0;
   let mobileFabScrollTicking = false;
+  let mobileFabForceRefreshPending = false;
   let mobileFabHiddenByScroll = false;
   let mobileFabNearFooter = false;
   let mobileFabPulseTimer = null;
@@ -147,7 +148,10 @@
   }
 
   function supportsHaptics() {
-    return typeof navigator !== "undefined" && typeof navigator.vibrate === "function";
+    return (
+      typeof navigator !== "undefined" &&
+      typeof navigator.vibrate === "function"
+    );
   }
 
   function triggerHapticFeedback(style = "light") {
@@ -279,6 +283,10 @@
       "is-near-footer",
       !shouldHide && !!mobileFabNearFooter
     );
+
+    if (shouldHide) {
+      clearMobileFabPulse();
+    }
   }
 
   function updateMobileFabScrollState(force = false) {
@@ -309,7 +317,8 @@
     const footer = document.querySelector(".site-footer");
     if (footer instanceof HTMLElement) {
       const footerTop = footer.getBoundingClientRect().top;
-      mobileFabNearFooter = footerTop < window.innerHeight - MOBILE_FAB_NEAR_FOOTER_OFFSET;
+      mobileFabNearFooter =
+        footerTop < window.innerHeight - MOBILE_FAB_NEAR_FOOTER_OFFSET;
     } else {
       mobileFabNearFooter = false;
     }
@@ -322,14 +331,24 @@
     if (!mobileCinematicFab) return;
 
     if (mobileFabScrollTicking) {
+      if (force) {
+        mobileFabForceRefreshPending = true;
+      }
       return;
     }
 
     mobileFabScrollTicking = true;
 
     runOnNextFrame(() => {
-      updateMobileFabScrollState(force);
+      const effectiveForce = force || mobileFabForceRefreshPending;
+      mobileFabForceRefreshPending = false;
+
+      updateMobileFabScrollState(effectiveForce);
       mobileFabScrollTicking = false;
+
+      if (mobileFabForceRefreshPending) {
+        requestMobileFabStateUpdate(true);
+      }
     });
   }
 
@@ -512,10 +531,7 @@
       finishCinematicArrival();
     }
 
-    if (
-      source === "mobile-fab" ||
-      source === "mobile-button"
-    ) {
+    if (source === "mobile-fab" || source === "mobile-button") {
       triggerHapticFeedback(active ? "firm" : "light");
       triggerMobileFabPulse();
     }
@@ -538,6 +554,16 @@
       source,
       refreshUi: true
     });
+  }
+
+  function dispatchMobileMenuFallbackState(open, source = "fallback") {
+    document.documentElement.dataset.mobileMenu = open ? "open" : "closed";
+
+    document.dispatchEvent(
+      new CustomEvent("site:mobile-menu-change", {
+        detail: { open, source }
+      })
+    );
   }
 
   function closeMobileMenuIfOpen() {
@@ -578,6 +604,8 @@
     if (restoredScrollY > 0) {
       window.scrollTo(0, restoredScrollY);
     }
+
+    dispatchMobileMenuFallbackState(false, "fallback-close");
   }
 
   function handleCinematicButtonClick(event) {
@@ -732,6 +760,7 @@
 
   function handlePageHide() {
     clearCinematicArrivalSilently();
+    clearMobileFabPulse();
   }
 
   function handleMobileFabScroll() {
@@ -747,6 +776,18 @@
       lastKnownScrollY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
       requestMobileFabStateUpdate(true);
     }
+  }
+
+  function handleReducedMotionChange(event) {
+    const enabled =
+      event?.detail?.enabled === true || isReducedMotionEnabled();
+
+    if (enabled) {
+      finishCinematicArrival();
+      clearMobileFabPulse();
+    }
+
+    requestMobileFabStateUpdate(true);
   }
 
   function initCinematicMode() {
@@ -794,6 +835,12 @@
     window.addEventListener("resize", handleMobileFabViewportChange);
     window.addEventListener("orientationchange", handleMobileFabViewportChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    document.addEventListener("site:mobile-menu-change", () => {
+      requestMobileFabStateUpdate(true);
+    });
+
+    document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
 
     document.addEventListener("site:cinematic-arrival-start", () => {
       requestMobileFabStateUpdate(true);
