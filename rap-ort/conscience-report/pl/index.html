@@ -56,7 +56,12 @@
       <a class="mobile-menu-link" href="#principles">Założenia</a>
       <a class="mobile-menu-link" href="#contact">Kontakt</a>
 
-      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button">
+      <button
+        class="mobile-menu-link mobile-menu-button"
+        id="mobileCinematicToggle"
+        type="button"
+        aria-pressed="false"
+      >
         Tryb kinowy
       </button>
 
@@ -71,15 +76,22 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="/rap-ort/conscience-report/pl/" aria-label="Conscience Report">
-        <div class="brand-name cr-brand">Rap-Ort · Przewodnik</div>
-        <div class="brand-sub">Conscience Report · Polskie wejście interpretacyjne</div>
+        <div class="brand-name cr-brand">Conscience Report</div>
+        <div class="brand-sub">Polish interpretive guide</div>
       </a>
 
       <nav class="desktop-nav desktop-nav-compact" aria-label="Sterowanie stroną">
         <a href="/pl/" class="nav-button">Strona główna</a>
         <a href="/rap-ort/pl/" class="nav-button track-link" data-track-title="Rap-Ort">Rap-Ort</a>
 
-        <button type="button" id="cinematicToggle" class="nav-button">Tryb kinowy</button>
+        <button
+          type="button"
+          id="cinematicToggle"
+          class="nav-button"
+          aria-pressed="false"
+        >
+          Tryb kinowy
+        </button>
 
         <div class="lang-switch" aria-label="Zmiana języka">
           <a href="/rap-ort/conscience-report/">EN</a>
@@ -144,7 +156,7 @@
           <div class="cta-row">
             <a class="btn btn-primary" href="#architecture">Zobacz strukturę dzieła</a>
             <a class="btn btn-secondary" href="#institutional">Zastosowanie</a>
-            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button">Włącz tryb kinowy</button>
+            <button class="btn btn-tertiary" id="cinematicHeroButton" type="button" aria-pressed="false">Włącz tryb kinowy</button>
           </div>
         </div>
 
@@ -485,7 +497,7 @@
   </main>
 
   <div class="floating-tools">
-    <button class="tool-button" id="reducedMotionToggle" type="button">Mniej ruchu</button>
+    <button class="tool-button" id="reducedMotionToggle" type="button" aria-pressed="false">Mniej ruchu</button>
     <button class="tool-button" id="scrollTopButton" type="button">Góra</button>
   </div>
 
