@@ -684,16 +684,22 @@ body.reduced-motion.cinematic-arrival-active #featured .featured-body{
   }
 
   .site-header .brand-name.sztab-brand{
-    max-width:12ch;
-    font-size:1rem;
+    max-width:100%;
+    font-family:"Oswald",sans-serif !important;
+    font-weight:500;
+    font-size:1.35rem;
     line-height:1;
-    letter-spacing:.12em !important;
+    letter-spacing:.16em !important;
+    text-transform:uppercase;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-wrap:nowrap;
+    overflow-wrap:normal;
   }
 
   .site-header .brand-sub{
-    max-width:18ch;
-    font-size:.66rem;
-    line-height:1.12;
+    display:none !important;
   }
 
   .desktop-menu-toggle{
@@ -828,14 +834,18 @@ body.reduced-motion.cinematic-arrival-active #featured .featured-body{
   }
 
   .site-header .brand-name.sztab-brand{
-    max-width:10.5ch;
-    font-size:.90rem;
-    letter-spacing:.10em !important;
+    max-width:100%;
+    font-size:1.20rem;
+    letter-spacing:.16em !important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-wrap:nowrap;
+    overflow-wrap:normal;
   }
 
   .site-header .brand-sub{
-    max-width:15ch;
-    font-size:.60rem;
+    display:none !important;
   }
 
   .hero-sztab .hero-image{
@@ -888,4 +898,4 @@ body.reduced-motion.cinematic-arrival-active #featured .featured-body{
     transform:scale(1.01);
     filter:saturate(.78) brightness(.98);
   }
-  }
+        }
