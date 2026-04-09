@@ -1376,3 +1376,81 @@ body.reduced-motion *::after{
     filter:saturate(1.02);
   }
 }
+
+/* =========================================================
+   MOBILE ONLY — REMOVE BLUE TAP / FOCUS RECTANGLE
+   Desktop untouched
+   ========================================================= */
+
+@media (hover:none) and (pointer:coarse), (max-width:760px){
+  a,
+  button,
+  [role="button"],
+  .btn,
+  .tool-button,
+  .mobile-menu-link,
+  .mobile-menu-button,
+  .mobile-cinematic-fab,
+  .mobile-nav-toggle,
+  .desktop-menu-toggle,
+  .nav-button,
+  .chapter-link-card,
+  .project-link-card,
+  .cinematic-entry-card,
+  .track-link{
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  a:focus,
+  button:focus,
+  [role="button"]:focus,
+  .btn:focus,
+  .tool-button:focus,
+  .mobile-menu-link:focus,
+  .mobile-menu-button:focus,
+  .mobile-cinematic-fab:focus,
+  .mobile-nav-toggle:focus,
+  .desktop-menu-toggle:focus,
+  .nav-button:focus,
+  .chapter-link-card:focus,
+  .project-link-card:focus,
+  .cinematic-entry-card:focus,
+  .track-link:focus{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  .btn:focus-visible,
+  .tool-button:focus-visible,
+  .mobile-menu-link:focus-visible,
+  .mobile-menu-button:focus-visible,
+  .mobile-cinematic-fab:focus-visible,
+  .mobile-nav-toggle:focus-visible,
+  .desktop-menu-toggle:focus-visible,
+  .nav-button:focus-visible,
+  .chapter-link-card:focus-visible,
+  .project-link-card:focus-visible,
+  .cinematic-entry-card:focus-visible,
+  .track-link:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .chapter-link-card,
+  .project-link-card,
+  .cinematic-entry-card,
+  .track-link,
+  .mobile-menu-link,
+  .mobile-menu-button,
+  .btn,
+  .tool-button,
+  .mobile-cinematic-fab{
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
