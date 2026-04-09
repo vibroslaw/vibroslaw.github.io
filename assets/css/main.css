@@ -1454,3 +1454,58 @@ body.reduced-motion *::after{
     -webkit-user-select: none;
   }
 }
+
+/* =========================================================
+   MOBILE HEADER ONLY — REMOVE BLUE TAP / FOCUS RECTANGLE
+   Tylko pasek górny, desktop bez zmian
+   ========================================================= */
+
+@media (hover:none) and (pointer:coarse), (max-width:760px){
+  .site-header,
+  .site-header a,
+  .site-header button,
+  .site-header .brand,
+  .site-header .brand-name,
+  .site-header .brand-sub,
+  .site-header .nav-button,
+  .site-header .lang-switch a,
+  .site-header .mobile-nav-toggle,
+  .site-header .desktop-menu-toggle,
+  .site-header #cinematicToggle,
+  .site-header #mobileNavToggle{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    outline: none !important;
+  }
+
+  .site-header a:focus,
+  .site-header button:focus,
+  .site-header .brand:focus,
+  .site-header .nav-button:focus,
+  .site-header .lang-switch a:focus,
+  .site-header .mobile-nav-toggle:focus,
+  .site-header .desktop-menu-toggle:focus,
+  .site-header #cinematicToggle:focus,
+  .site-header #mobileNavToggle:focus{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .site-header a:focus-visible,
+  .site-header button:focus-visible,
+  .site-header .brand:focus-visible,
+  .site-header .nav-button:focus-visible,
+  .site-header .lang-switch a:focus-visible,
+  .site-header .mobile-nav-toggle:focus-visible,
+  .site-header .desktop-menu-toggle:focus-visible,
+  .site-header #cinematicToggle:focus-visible,
+  .site-header #mobileNavToggle:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .site-header *{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+}
