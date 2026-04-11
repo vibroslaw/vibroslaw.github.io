@@ -5,394 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Zo — The Silence That Fights | SZTAB</title>
-  <meta name="description" content="A cinematic SZTAB episode dedicated to Elżbieta Zawacka — resistance, intelligence, discipline, and moral strength." />
+  <meta
+    name="description"
+    content="A cinematic SZTAB episode dedicated to Elżbieta Zawacka — resistance, intelligence, discipline, and moral strength."
+  />
   <meta name="theme-color" content="#090909" />
+  <meta name="color-scheme" content="dark" />
 
   <meta property="og:title" content="Zo — The Silence That Fights | SZTAB" />
-  <meta property="og:description" content="A cinematic SZTAB episode dedicated to Elżbieta Zawacka." />
+  <meta
+    property="og:description"
+    content="A cinematic SZTAB episode dedicated to Elżbieta Zawacka."
+  />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/sztab/original/zo/" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
+  <link rel="stylesheet" href="/assets/css/sztab.css" />
 
   <style>
-    :root{
-      --bg:#090909;
-      --bg-soft:#101010;
-      --bg-soft-2:#151515;
-      --panel:rgba(255,255,255,0.04);
-      --panel-2:rgba(255,255,255,0.025);
-      --line:rgba(255,255,255,0.08);
-      --line-strong:rgba(255,255,255,0.16);
-
-      --text:#f0e9df;
-      --muted:rgba(240,233,223,0.74);
-      --soft:rgba(240,233,223,0.52);
-
-      --accent:#d4a95c;
-      --accent-soft:rgba(212,169,92,0.14);
-
-      --shadow:0 30px 90px rgba(0,0,0,0.38);
-      --radius-xl:32px;
-      --radius-lg:24px;
-      --radius-md:18px;
-
-      --max:1320px;
-      --nav-h:78px;
-      --hero-shift:32px;
-      --ease:cubic-bezier(.22,1,.36,1);
+    .sztab-brand-desktop{
+      display:inline;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:"Inter",sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top, rgba(212,169,92,0.08), transparent 26%),
-        linear-gradient(180deg, #080808 0%, #0b0b0b 30%, #0e0e0e 100%);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
+    .sztab-brand-mobile{
+      display:none;
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        linear-gradient(rgba(255,255,255,.012), rgba(255,255,255,.012)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.008) 0px,
-          rgba(255,255,255,.008) 1px,
-          transparent 1px,
-          transparent 3px
-        );
-      opacity:.10;
-      mix-blend-mode:soft-light;
-      z-index:0;
-    }
-
-    a{color:inherit;text-decoration:none}
-    img, iframe{display:block;max-width:100%}
-
-    .wrap{
-      width:min(var(--max), calc(100% - 32px));
-      margin:0 auto;
-      position:relative;
-      z-index:1;
-    }
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:100;
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-      background:rgba(9,9,9,0.78);
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .nav-inner{
-      min-height:var(--nav-h);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .brand-main{
-      font-family:"Oswald",sans-serif;
-      font-size:1.25rem;
-      line-height:1;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-    }
-
-    .brand-sub{
-      font-size:.74rem;
-      color:var(--soft);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      font-size:.94rem;
-      transition:color .25s ease;
-    }
-
-    .nav-links a:hover{color:var(--text)}
-
-    .lang-switch{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .lang-item{color:var(--muted); font-size:.94rem;}
-    .lang-item.active{color:var(--text)}
-    .lang-sep{color:var(--soft)}
-
-    .hero{
-      position:relative;
-      min-height:calc(100vh - var(--nav-h));
-      display:flex;
-      align-items:flex-end;
-      overflow:hidden;
-    }
-
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      background:
+    .hero-sztab-zo .hero-image{
+      background-image:
         linear-gradient(180deg, rgba(8,8,8,.08) 0%, rgba(8,8,8,.34) 42%, rgba(8,8,8,.92) 100%),
         radial-gradient(circle at 72% 22%, rgba(212,169,92,.18), transparent 28%),
-        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=80') center/cover no-repeat;
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=80');
       filter:saturate(.72) brightness(.62) contrast(1.04);
-      transform:scale(1.05);
-      animation:heroFloat 18s ease-in-out infinite alternate;
-    }
-
-    .hero-overlay{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(8,8,8,.88) 0%, rgba(8,8,8,.72) 34%, rgba(8,8,8,.30) 72%, rgba(8,8,8,.16) 100%),
-        linear-gradient(180deg, rgba(8,8,8,.08) 0%, rgba(8,8,8,.44) 58%, rgba(8,8,8,.96) 100%);
-    }
-
-    .hero-grid{
-      position:relative;
-      z-index:2;
-      display:grid;
-      grid-template-columns:minmax(0,780px) minmax(280px,380px);
-      justify-content:space-between;
-      gap:46px;
-      align-items:end;
-      width:100%;
-      padding:98px 0 76px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:18px;
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.20em;
-      font-size:.72rem;
-    }
-
-    .eyebrow::before{
-      content:"";
-      width:42px;
-      height:1px;
-      background:rgba(212,169,92,.64);
-      transform-origin:left center;
-      animation:lineGrow 1.2s var(--ease) both;
-    }
-
-    .hero-title{
-      margin:0;
-      font-family:"Oswald",sans-serif;
-      font-size:clamp(3rem, 7vw, 6rem);
-      line-height:.92;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-    }
-
-    .hero-subtitle{
-      margin:18px 0 0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(1.45rem, 2.3vw, 2.2rem);
-      line-height:1.08;
-      max-width:18ch;
-    }
-
-    .hero-lead{
-      margin:26px 0 0;
-      max-width:58ch;
-      color:var(--muted);
-      line-height:1.9;
-      font-size:1.03rem;
-    }
-
-    .cta-row{
-      margin-top:34px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px;
-    }
-
-    .btn{
-      min-height:50px;
-      padding:0 20px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      border:1px solid var(--line);
-      font-size:.96rem;
-      transition:transform .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .btn::before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      background:linear-gradient(120deg, transparent 20%, rgba(255,255,255,.12), transparent 80%);
-      transform:translateX(-120%);
-      transition:transform .8s var(--ease);
-      pointer-events:none;
-    }
-
-    .btn:hover::before{
-      transform:translateX(120%);
-    }
-
-    .btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 14px 34px rgba(0,0,0,.25);
-    }
-
-    .btn-primary{
-      background:var(--text);
-      color:#0a0a0a;
-      border-color:transparent;
-    }
-
-    .btn-secondary{
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-    }
-
-    .btn-secondary:hover{
-      background:rgba(255,255,255,.08);
-      border-color:var(--line-strong);
-    }
-
-    .hero-panel{
-      width:100%;
-      border:1px solid var(--line);
-      border-radius:var(--radius-lg);
-      padding:24px 22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
-        radial-gradient(circle at top right, rgba(212,169,92,.12), transparent 36%);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-    }
-
-    .hero-panel-label{
-      font-size:.72rem;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:12px;
-    }
-
-    .hero-panel-quote{
-      margin:0 0 16px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:1.7rem;
-      line-height:1.08;
-    }
-
-    .hero-panel-text{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-      font-size:.95rem;
-    }
-
-    .section{
-      padding:92px 0;
-      position:relative;
-      z-index:1;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:20px;
-      margin-bottom:28px;
-    }
-
-    .section-kicker{
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-size:.72rem;
-      margin-bottom:12px;
-    }
-
-    h2{
-      margin:0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.4rem, 4.8vw, 4rem);
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .section-note{
-      max-width:56ch;
-      color:var(--muted);
-      line-height:1.88;
-      font-size:1rem;
-    }
-
-    .panel{
-      border:1px solid var(--line);
-      border-radius:var(--radius-xl);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.024)),
-        radial-gradient(circle at top right, rgba(212,169,92,.10), transparent 34%);
-      box-shadow:var(--shadow);
-      padding:34px 28px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .panel::after{
-      content:"";
-      position:absolute;
-      inset:auto -10% -30% auto;
-      width:220px;
-      height:220px;
-      background:radial-gradient(circle, rgba(212,169,92,.08), transparent 70%);
-      pointer-events:none;
-    }
-
-    .panel p{
-      max-width:72ch;
-      color:var(--muted);
-      line-height:1.95;
-      font-size:1.05rem;
-      margin:0;
     }
 
     .video-wrap{
@@ -402,7 +56,6 @@
       box-shadow:var(--shadow);
       background:#000;
       aspect-ratio:16/9;
-      position:relative;
     }
 
     .video-wrap iframe{
@@ -418,65 +71,18 @@
       line-height:1.7;
     }
 
-    .grid{
+    .recognition-grid{
       display:grid;
-      grid-template-columns:1.08fr .92fr;
-      gap:24px;
-      align-items:stretch;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:18px;
     }
 
-    .card{
-      border-radius:var(--radius-xl);
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      transition:transform .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease);
-    }
-
-    .card:hover{
-      transform:translateY(-4px);
-      border-color:rgba(255,255,255,.14);
-      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
-    }
-
-    .card-body{
-      padding:30px 24px 24px;
-    }
-
-    .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:16px;
-    }
-
-    .chip{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
-      color:var(--soft);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:.76rem;
-    }
-
-    .card h3{
-      margin:0 0 14px;
-      font-family:"Cormorant Garamond",serif;
-      font-size:2rem;
-      line-height:.95;
-      font-weight:600;
-    }
-
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.86;
-      font-size:1rem;
+    .recognition-grid .content-panel h3{
+      margin-bottom:14px;
     }
 
     .quote-block{
-      padding:20px 0 0;
+      padding:24px 0 0;
       text-align:center;
     }
 
@@ -486,6 +92,7 @@
       font-family:"Cormorant Garamond",serif;
       font-size:clamp(1.9rem, 4vw, 3rem);
       line-height:1.04;
+      text-wrap:balance;
     }
 
     .quote-block span{
@@ -497,233 +104,216 @@
       text-transform:uppercase;
     }
 
-    .recognition{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:18px;
-    }
-
-    .recognition .card-body{
-      padding:24px 20px;
-    }
-
-    .recognition h3{
-      font-size:1.55rem;
-    }
-
-    .recognition a.inline-link{
-      color:var(--text);
-      border-bottom:1px solid rgba(255,255,255,.25);
-      transition:border-color .25s ease, color .25s ease;
-    }
-
-    .recognition a.inline-link:hover{
-      border-color:var(--accent);
-      color:#fff;
-    }
-
-    .footer{
-      padding:34px 0 64px;
-      border-top:1px solid rgba(255,255,255,.06);
-      position:relative;
-      z-index:1;
-    }
-
-    .footer-inner{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-      color:var(--soft);
-      font-size:.94rem;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(var(--hero-shift));
-      transition:
-        opacity 1s var(--ease),
-        transform 1s var(--ease),
-        filter 1s var(--ease);
-      filter:blur(6px);
-    }
-
-    .reveal.visible{
-      opacity:1;
-      transform:translateY(0);
-      filter:blur(0);
-    }
-
-    .reveal-stagger-1{transition-delay:.05s}
-    .reveal-stagger-2{transition-delay:.12s}
-    .reveal-stagger-3{transition-delay:.20s}
-    .reveal-stagger-4{transition-delay:.28s}
-
-    .hero-copy .reveal{
-      transform:translateY(24px);
-    }
-
-    @keyframes heroFloat{
-      from{transform:scale(1.04) translate3d(0,0,0)}
-      to{transform:scale(1.08) translate3d(-1.5%, -1%, 0)}
-    }
-
-    @keyframes lineGrow{
-      from{transform:scaleX(0)}
-      to{transform:scaleX(1)}
-    }
-
     @media (max-width:1100px){
-      .hero-grid,
-      .grid,
-      .recognition{
+      .recognition-grid{
         grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width:900px){
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
       }
     }
 
     @media (max-width:760px){
-      :root{--nav-h:72px}
-
-      .nav-inner{
-        min-height:auto;
-        padding:14px 0;
-        align-items:flex-start;
+      .sztab-brand-desktop{
+        display:none;
       }
 
-      .nav-links{
-        gap:10px 12px;
+      .sztab-brand-mobile{
+        display:inline;
       }
 
-      .hero{
-        min-height:auto;
+      .site-header .brand-sub{
+        display:none;
       }
 
-      .hero-grid{
-        grid-template-columns:1fr;
-        padding:58px 0 52px;
-        gap:20px;
-      }
-
-      .eyebrow{
-        justify-content:center;
-      }
-
-      .hero-copy{
-        text-align:center;
-      }
-
-      .hero-title{
-        font-size:clamp(2.8rem, 12vw, 4.8rem);
-        max-width:12ch;
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-subtitle,
-      .hero-lead{
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      .hero-subtitle{max-width:16ch}
-      .hero-lead{
-        max-width:30ch;
+      .site-header .brand-name.sztab-brand{
+        max-width:none;
         font-size:1rem;
-        line-height:1.84;
-      }
-
-      .cta-row{
-        justify-content:center;
-      }
-
-      .hero-panel{
-        max-width:560px;
-        margin:0 auto;
-      }
-
-      .section{
-        padding:74px 0;
+        line-height:1;
+        letter-spacing:.12em !important;
+        white-space:nowrap;
       }
     }
 
-    @media (max-width:640px){
-      .wrap{
-        width:min(var(--max), calc(100% - 20px));
-      }
-
-      .panel,
-      .card-body{
-        padding:22px 18px;
-      }
-
-      .btn{
-        width:100%;
-      }
-
-      .cta-row{
-        flex-direction:column;
-        align-items:stretch;
+    @media (max-width:480px){
+      .site-header .brand-name.sztab-brand{
+        font-size:.90rem;
+        letter-spacing:.10em !important;
       }
     }
   </style>
+
+  <noscript>
+    <style>
+      .reveal{
+        opacity:1 !important;
+        transform:none !important;
+        filter:none !important;
+      }
+
+      .page-transition,
+      .progress-bar{
+        display:none !important;
+      }
+    </style>
+  </noscript>
 </head>
-<body>
+<body
+  data-page="sztab-zo"
+  data-lang="en"
+  data-quotes='[
+    "Not every act of resistance speaks loudly. Some of it moves in silence.",
+    "Zo is not only a figure of resistance, but a figure of discipline, intelligence, and inner force.",
+    "Some stories do not need spectacle. They need density, precision, and memory.",
+    "This episode is built not around monumentality, but around presence.",
+    "History is sometimes carried most powerfully by those who moved without theatricality."
+  ]'
+>
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
 
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <div class="brand">
-        <div class="brand-main">SZTAB · Episode</div>
-        <div class="brand-sub">Zo — The Silence That Fights</div>
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="/">Homepage</a>
+      <a class="mobile-menu-link track-link" href="/sztab/" data-track-title="SZTAB">SZTAB</a>
+      <a class="mobile-menu-link track-link" href="/sztab/original/" data-track-title="SZTAB Original">Original</a>
+      <a class="mobile-menu-link" href="#video">Video</a>
+      <a class="mobile-menu-link" href="#context">Context</a>
+      <a class="mobile-menu-link" href="#recognition">Recognition</a>
+
+      <button
+        class="mobile-menu-link mobile-menu-button"
+        id="mobileCinematicToggle"
+        type="button"
+        aria-pressed="false"
+      >
+        Cinematic Mode
+      </button>
+
+      <div class="mobile-lang-switch">
+        <a href="/sztab/original/zo/" class="active">EN</a>
+        <span>|</span>
+        <a href="/sztab/original/zo/pl/">PL</a>
       </div>
+    </div>
+  </div>
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#video">Video</a>
-        <a href="#context">Context</a>
-        <a href="#recognition">Recognition</a>
-        <div class="lang-switch">
-          <a href="/sztab/original/zo/" class="lang-item active">EN</a>
-          <span class="lang-sep">|</span>
-          <a href="/sztab/original/zo/pl/" class="lang-item">PL</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/sztab/original/zo/" aria-label="SZTAB Zo">
+        <div class="brand-name sztab-brand">
+          <span class="sztab-brand-desktop">SZTAB</span>
+          <span class="sztab-brand-mobile">SZTAB • ZO</span>
         </div>
+        <div class="brand-sub">Zo · The Silence That Fights</div>
+      </a>
+
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Site controls">
+        <a href="/" class="nav-button">Homepage</a>
+        <a href="/sztab/" class="nav-button track-link" data-track-title="SZTAB">SZTAB</a>
+        <a href="/sztab/original/" class="nav-button track-link" data-track-title="SZTAB Original">Original</a>
+
+        <button
+          type="button"
+          id="cinematicToggle"
+          class="nav-button"
+          aria-pressed="false"
+        >
+          Cinematic Mode
+        </button>
+
+        <div class="lang-switch" aria-label="Language switch">
+          <a href="/sztab/original/zo/" class="active">EN</a>
+          <span>|</span>
+          <a href="/sztab/original/zo/pl/">PL</a>
+        </div>
+
+        <button
+          class="mobile-nav-toggle desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-overlay"></div>
+    <section class="hero hero-sztab hero-sztab-zo">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-image"></div>
+        <div class="hero-light"></div>
+        <div class="hero-fade"></div>
+      </div>
 
       <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <div class="eyebrow reveal reveal-stagger-1">Cinematic Historical Episode</div>
-          <h1 class="hero-title reveal reveal-stagger-2">Zo</h1>
-          <div class="hero-subtitle reveal reveal-stagger-3">The Silence That Fights</div>
-          <p class="hero-lead reveal reveal-stagger-4">
-            An episode dedicated to Elżbieta Zawacka — resistance, intelligence, discipline, and moral strength. A short music-film form that functions as a complete story while also opening the wider world of the SZTAB series.
+        <div class="hero-copy reveal">
+          <div class="eyebrow">Cinematic Historical Episode</div>
+
+          <h1 class="hero-title">Zo</h1>
+
+          <div class="hero-subtitle">The Silence That Fights</div>
+
+          <p class="hero-lead">
+            An episode dedicated to Elżbieta Zawacka — resistance, intelligence,
+            discipline, and moral strength. A short music-film form that functions
+            as a complete story while also opening the wider world of the SZTAB series.
           </p>
 
-          <div class="cta-row reveal reveal-stagger-4">
+          <div class="memory-quote-block">
+            <div class="memory-quote-label">Axis of the episode</div>
+            <p class="memory-quote-text" id="memoryQuoteText">
+              Not every act of resistance speaks loudly. Some of it moves in silence.
+            </p>
+          </div>
+
+          <div class="cta-row">
             <a class="btn btn-primary" href="#video">Watch Episode</a>
-            <a class="btn btn-secondary" href="/sztab/">Back to SZTAB</a>
+            <a
+              class="btn btn-secondary track-link"
+              href="/sztab/original/"
+              data-track-title="SZTAB Original"
+            >
+              Back to Original
+            </a>
+            <button
+              class="btn btn-tertiary"
+              id="cinematicHeroButton"
+              type="button"
+              aria-pressed="false"
+            >
+              Enter Cinematic Mode
+            </button>
           </div>
         </div>
 
-        <div class="hero-side reveal reveal-stagger-4">
-          <aside class="hero-panel">
-            <div class="hero-panel-label">Episode Orientation</div>
-            <p class="hero-panel-quote">Not every act of resistance speaks loudly. Some of it moves in silence.</p>
-            <p class="hero-panel-text">
-              This episode was conceived as an intense short-form work about a figure who remains a symbol of discipline, service, and inner strength.
+        <div class="hero-side reveal">
+          <aside class="glass-panel">
+            <div class="panel-label">Episode Orientation</div>
+            <p class="panel-quote">
+              Not every act of resistance speaks loudly. Some of it moves in silence.
+            </p>
+            <p class="panel-text">
+              This episode was conceived as an intense short-form work about a figure
+              who remains a symbol of discipline, service, and inner strength.
             </p>
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section continue-section" id="continueSection">
+      <div class="wrap">
+        <div class="content-panel continue-panel" id="continuePanel" aria-hidden="true">
+          <h3>Continue where you left off</h3>
+          <p id="continueText">Return to the most recently opened SZTAB page.</p>
+          <div class="cta-row compact">
+            <a class="btn btn-primary" href="#" id="continueButton">Continue</a>
+            <button class="btn btn-secondary" type="button" id="dismissContinue">Dismiss</button>
+          </div>
         </div>
       </div>
     </section>
@@ -741,7 +331,11 @@
         </div>
 
         <div class="video-wrap reveal">
-          <iframe src="https://www.youtube.com/embed/JgV9KEZTbeM" title="Zo — The Silence That Fights" allowfullscreen></iframe>
+          <iframe
+            src="https://www.youtube.com/embed/JgV9KEZTbeM"
+            title="Zo — The Silence That Fights"
+            allowfullscreen
+          ></iframe>
         </div>
 
         <div class="video-caption reveal">
@@ -758,17 +352,23 @@
             <h2>A short historical frame</h2>
           </div>
           <div class="section-note">
-            Each SZTAB episode can stand on its own, but gains further depth through a short historical and interpretive frame.
+            Each SZTAB episode can stand on its own, but gains further depth through
+            a short historical and interpretive frame.
           </div>
         </div>
 
-        <div class="panel reveal">
+        <div class="content-panel reveal">
+          <h3>Why Zo</h3>
           <p>
-            Elżbieta Zawacka “Zo” was one of the most remarkable figures of the Polish resistance. Her activity combined courage, intelligence, discipline, and the ability to operate within structures that rarely rewarded visibility. This episode does not aim to contain an entire biography, but to bring forward the tension between silence and force — between invisibility and real impact on history.
+            Elżbieta Zawacka “Zo” was one of the most remarkable figures of the Polish resistance.
+            Her activity combined courage, intelligence, discipline, and the ability to operate
+            within structures that rarely rewarded visibility. This episode does not aim to contain
+            an entire biography, but to bring forward the tension between silence and force —
+            between invisibility and real impact on history.
           </p>
         </div>
 
-        <div class="grid" style="margin-top:24px;">
+        <div class="grid grid-2" style="margin-top:24px;">
           <article class="card reveal">
             <div class="card-body">
               <div class="chips">
@@ -776,9 +376,10 @@
                 <span class="chip">Original</span>
                 <span class="chip">SZTAB</span>
               </div>
-              <h3>Why “Zo”</h3>
+              <h3>Why this figure</h3>
               <p>
-                This is not only a story about one person, but about the way history is often carried by those who acted effectively without public spectacle.
+                This is not only a story about one person, but about the way history is often
+                carried by those who acted effectively without public spectacle.
               </p>
             </div>
           </article>
@@ -791,14 +392,17 @@
               </div>
               <h3>Why this form</h3>
               <p>
-                The short music-film form preserves intensity, emotional charge, and memorability while opening a path toward deeper historical engagement.
+                The short music-film form preserves intensity, emotional charge, and memorability
+                while opening a path toward deeper historical engagement.
               </p>
             </div>
           </article>
         </div>
 
         <div class="quote-block reveal">
-          <p>“Not every act of resistance is written in large letters. Some of it has to be restored to memory.”</p>
+          <p>
+            Not every act of resistance is written in large letters. Some of it has to be restored to memory.
+          </p>
           <span>SZTAB · Zo</span>
         </div>
       </div>
@@ -812,58 +416,71 @@
             <h2>A trace beyond the episode itself</h2>
           </div>
           <div class="section-note">
-            This section can gather elegant references, reactions, and external acknowledgement connected to the episode.
+            This section can gather elegant references, reactions,
+            and external acknowledgement connected to the episode.
           </div>
         </div>
 
-        <div class="recognition">
-          <article class="card reveal">
-            <div class="card-body">
-              <h3>External mention</h3>
-              <p>
-                This is where you can place a short reference to an external acknowledgement — for example a link to Clare Mulley’s site, post, or reaction related to the episode.
-              </p>
-            </div>
+        <div class="recognition-grid">
+          <article class="content-panel reveal">
+            <h3>External mention</h3>
+            <p>
+              This is where you can place a short reference to an external acknowledgement —
+              for example a link to Clare Mulley’s site, post, or reaction related to the episode.
+            </p>
           </article>
 
-          <article class="card reveal">
-            <div class="card-body">
-              <h3>Further context</h3>
-              <p>
-                You can use this space to explain who noticed the project, why it matters, and how it strengthens the long-term development of SZTAB.
-              </p>
-            </div>
+          <article class="content-panel reveal">
+            <h3>Further context</h3>
+            <p>
+              You can use this space to explain who noticed the project,
+              why it matters, and how it strengthens the long-term development of SZTAB.
+            </p>
           </article>
         </div>
 
         <div class="cta-row reveal" style="margin-top:32px;">
-          <a class="btn btn-secondary" href="/sztab/">Back to SZTAB Series</a>
-          <a class="btn btn-secondary" href="/">Main Site</a>
+          <a
+            class="btn btn-secondary track-link"
+            href="/sztab/original/"
+            data-track-title="SZTAB Original"
+          >
+            Back to Original
+          </a>
+          <a
+            class="btn btn-secondary track-link"
+            href="/sztab/"
+            data-track-title="SZTAB"
+          >
+            Back to SZTAB Series
+          </a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <div class="floating-tools">
+    <button class="tool-button" id="reducedMotionToggle" type="button" aria-pressed="false">
+      Reduced Motion
+    </button>
+    <button class="tool-button" id="scrollTopButton" type="button">
+      Top
+    </button>
+  </div>
+
+  <footer class="site-footer">
     <div class="wrap footer-inner">
       <div>SZTAB · Zo — The Silence That Fights · Piotr Lichwała (Vibrosław)</div>
       <div>English version</div>
     </div>
   </footer>
 
-  <script>
-    const revealItems = document.querySelectorAll('.reveal');
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14 });
-
-    revealItems.forEach((item) => revealObserver.observe(item));
-  </script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
+  <script src="/assets/js/cinematic.js"></script>
+  <script src="/assets/js/continue.js"></script>
+  <script src="/assets/js/quotes.js"></script>
+  <script src="/assets/js/sztab.js"></script>
 </body>
 </html>
