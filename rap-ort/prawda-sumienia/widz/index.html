@@ -17,7 +17,7 @@
     content="Wejście dla widza: raport, język filmu, historia Rotmistrza i głębszy kontekst projektu Prawda Sumienia."
   />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://piotrlichwala.com/rap-ort/prawda-sumienia/widz/pl/" />
+  <meta property="og:url" content="https://piotrlichwala.com/rap-ort/prawda-sumienia/widz/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,10 +26,36 @@
     rel="stylesheet"
   />
 
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
   <link rel="stylesheet" href="/assets/css/ps-viewer-guide.css" />
 </head>
-<body>
+<body data-page="ps-viewer-guide" data-lang="pl">
   <a class="skip-link" href="#mainContent">Przejdź do treści</a>
+
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="/pl/">Strona główna</a>
+      <a class="mobile-menu-link track-link" href="/rap-ort/pl/" data-track-title="Rap-Ort">Rap-Ort</a>
+      <a class="mobile-menu-link track-link" href="/rap-ort/prawda-sumienia/pl/" data-track-title="Prawda Sumienia">Prawda Sumienia</a>
+      <a class="mobile-menu-link" href="#report">Raport</a>
+      <a class="mobile-menu-link" href="#language">Język filmu</a>
+      <a class="mobile-menu-link" href="#timeline">Historia Rotmistrza</a>
+      <a class="mobile-menu-link" href="#systems">Totalitaryzmy</a>
+      <a class="mobile-menu-link" href="#questions">Pytania</a>
+      <a class="mobile-menu-link" href="#deeper">Wejdź głębiej</a>
+
+      <div class="mobile-lang-switch">
+        <a href="/rap-ort/prawda-sumienia/viewer/">EN</a>
+        <span>|</span>
+        <a href="/rap-ort/prawda-sumienia/widz/" class="active">PL</a>
+      </div>
+    </div>
+  </div>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -38,13 +64,33 @@
         <div class="brand-sub">Poradnik widza · Rap-Ort</div>
       </a>
 
-      <nav class="desktop-nav" aria-label="Nawigacja strony">
-        <a href="#report">Raport</a>
-        <a href="#language">Język filmu</a>
-        <a href="#timeline">Historia Rotmistrza</a>
-        <a href="#systems">Totalitaryzmy</a>
-        <a href="#questions">Pytania</a>
-        <a href="#deeper">Wejdź głębiej</a>
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Nawigacja strony">
+        <a href="/pl/" class="nav-button">Strona główna</a>
+        <a href="/rap-ort/pl/" class="nav-button track-link" data-track-title="Rap-Ort">Rap-Ort</a>
+        <a href="/rap-ort/prawda-sumienia/pl/" class="nav-button track-link" data-track-title="Prawda Sumienia">Dzieło</a>
+
+        <a href="#report" class="nav-button">Raport</a>
+        <a href="#language" class="nav-button">Język filmu</a>
+        <a href="#timeline" class="nav-button">Historia Rotmistrza</a>
+
+        <div class="lang-switch" aria-label="Zmiana języka">
+          <a href="/rap-ort/prawda-sumienia/viewer/">EN</a>
+          <span>|</span>
+          <a href="/rap-ort/prawda-sumienia/widz/" class="active">PL</a>
+        </div>
+
+        <button
+          class="mobile-nav-toggle desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Otwórz menu"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </nav>
     </div>
   </header>
@@ -337,6 +383,9 @@
     </div>
   </div>
 
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
   <script src="/assets/js/ps-viewer-guide-data.js"></script>
   <script src="/assets/js/ps-viewer-guide.js"></script>
 </body>
