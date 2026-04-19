@@ -1,192 +1,192 @@
 window.psViewerGuideData = {
   reportEntries: [
     {
-      title: "Entering the camp",
-      kicker: "Entry point 01",
+      kicker: "Historical source",
+      title: "Entering Auschwitz",
       summary:
-        "The first encounter with the camp is not only shock. It is a violent entry into a world designed to reduce, break, and subordinate the human being.",
+        "The threshold is not shown as a single dramatic image, but as entry into a system that immediately strips a person of ordinary human status.",
       intro:
-        "This entry point helps the viewer read not only the crossing of the gate itself, but the immediate logic of dehumanization that becomes the foundation of the entire camp experience.",
+        "This entry helps the viewer read the beginning of the camp experience not only as an event, but as the opening logic of a totalitarian machine.",
       excerptLabel: "What to notice in the source",
       excerpt:
-        "While reading the fragment about the first moments in the camp, pay attention not only to violence itself, but to the speed with which the old world disappears. Ordinary life is abruptly replaced by a world of number, command, fear, and coercion.",
-      chips: ["Source", "Auschwitz", "Beginning"],
+        "Focus on the transition itself: the loss of ordinary language, the collapse of previous rules, the speed with which the camp imposes its own order, and the way fear becomes structural rather than episodic.",
+      chips: ["Source", "Camp threshold", "Witness"],
       tabs: [
         {
           label: "Context",
-          title: "Why this moment matters so much",
+          title: "Why this moment matters",
           text:
-            "Entering the camp is not just the beginning of one biographical episode. It is an entry into a system whose purpose was to destroy the human being physically, morally, psychologically, and socially.\n\nThat is why this moment should not be read merely as one scene of terror, but as the activation of the whole camp logic."
+            "The beginning is decisive because it establishes the grammar of everything that follows. Auschwitz is not merely presented as a place of confinement, but as a system designed to reorder human life through degradation, terror, repetition, and control.\n\nIn the guide, this moment should not be treated as a spectacle of shock. It should be treated as the first encounter with the logic of the camp."
         },
         {
           label: "In the film",
-          title: "How this threshold works inside the work",
+          title: "How the film approaches it",
           text:
-            "In the film this threshold does not need to be shown literally minute by minute. What matters more is the weight of transition: the loss of the former world, the entry into a space of coercion, and the collapse of normality.\n\nThat is why image, rhythm, and sound may condense several experiences at once instead of reconstructing them in documentary detail."
+            "The film should carry the viewer into disorientation, compression, and pressure rather than trying to reconstruct every procedural detail literally. The aim is not museum illustration shot by shot, but the felt structure of forced entry into a dehumanizing order.\n\nThat is why atmosphere, rhythm, framing, and restraint are more important here than visual excess."
         },
         {
           label: "Why shown this way",
-          title: "Why the image is a condensation rather than a literal reconstruction",
+          title: "Why the image may condense reality",
           text:
-            "This work does not operate like an illustrated school manual. Its task is not to redraw every detail, but to restore the moral weight of the situation.\n\nIf the image appears harsher, more symbolic, or more condensed than a literal record, it serves the purpose of making the viewer feel the threshold of entering a system of violence, not merely identify it."
+            "A film sometimes condenses space, weather, gesture, and sequence in order to preserve the deeper truth of pressure. Literal reconstruction and cinematic truth are not always identical.\n\nIf a scene feels simplified, the guide can explain that the choice serves clarity, emotional pressure, and the viewer’s ability to grasp the system as a whole."
         },
         {
           label: "Question",
           title: "Question for the viewer",
           text:
-            "What strikes you more strongly here: the violence itself, or the speed with which a person is stripped of their former identity?"
+            "At what moment does a place stop feeling like a prison and begin to feel like a total system? Which visual or musical element in the film makes that transition legible to you?"
         }
       ]
     },
     {
-      title: "The camp as a system",
-      kicker: "Entry point 02",
+      kicker: "Historical source",
+      title: "Camp logic and daily terror",
       summary:
-        "Auschwitz did not function only as a place of suffering. It was a system of discipline, terror, hierarchy, and planned destruction of the human person.",
+        "The camp is not built only from spectacular violence. It is built from routine, hierarchy, unpredictability, and the constant breaking of human rhythm.",
       intro:
-        "This entry point helps the viewer read the camp not only through isolated scenes, but as an organized machinery of violence.",
+        "This entry is useful for viewers who need to understand that terror in Auschwitz worked through structure as much as through individual acts of cruelty.",
       excerptLabel: "What to notice in the source",
       excerpt:
-        "While reading, notice how often the most important things are described in a restrained, factual, almost technical tone. Precisely there the logic of the system becomes visible: terror is not chaos here, but method.",
-      chips: ["System", "Violence", "Witness"],
+        "Notice how ordinary details become instruments of domination: movement, waiting, hunger, counting, punishment, and the permanent uncertainty of what comes next.",
+      chips: ["System", "Routine", "Violence"],
       tabs: [
         {
           label: "Context",
-          title: "The camp as mechanism",
+          title: "Terror as system",
           text:
-            "One of the most important aspects of Pilecki’s witness is that it allows Auschwitz to be seen not only as a place of individual suffering, but as a mechanism of power.\n\nViolence does not appear by accident. It is built into routine, labor, punishment, hierarchy, and the continuous production of fear."
+            "One of the most important things for a modern viewer to understand is that terror does not always appear as constant visible climax. It also lives in order, repetition, hierarchy, and exhaustion.\n\nThis is why the guide should teach the viewer to read routine itself as a weapon."
         },
         {
           label: "In the film",
-          title: "How to show a system, not only isolated pain",
+          title: "How the film translates routine",
           text:
-            "A film can show a system through repetition, rhythm, coldness, recurring gestures, repeated sounds, commands, and routines. Often this works more powerfully than a sequence of literal scenes of cruelty.\n\nThe viewer should understand that this is not one explosion of violence, but a world organized around violence."
+            "Music and visual rhythm can make repetition feel oppressive. The return of certain sounds, cuts, shadows, gestures, and color fields can suggest a system without reducing it to explanation.\n\nThe film becomes strongest when it lets routine itself feel heavy."
         },
         {
           label: "Why shown this way",
-          title: "Why not everything must be shown literally",
+          title: "Why not everything is explained literally",
           text:
-            "In a work carrying this kind of weight, excessive literalness can weaken the experience. Instead of deepening meaning, it begins to dominate it.\n\nRestraint, omission, and rhythm may be more honest toward witness than visual excess."
+            "A work of this kind should not overload the viewer with every fact at once. Instead, it should leave space for the viewer to sense the machinery beneath the image.\n\nThe guide then performs the second movement: it names what the film allows the viewer first to feel."
         },
         {
           label: "Question",
           title: "Question for the viewer",
           text:
-            "What is more frightening to you: a single act of brutality, or the awareness that brutality has been turned into daily order?"
+            "Which seems more disturbing in the film: visible brutality, or the sense that brutality has become normalized within daily order? Why?"
         }
       ]
     },
     {
+      kicker: "Historical source",
       title: "Resistance inside the camp",
-      kicker: "Entry point 03",
       summary:
-        "One of the most extraordinary dimensions of Pilecki’s story is that inside a space designed to destroy the human being, he attempted to build bond, structure, and resistance.",
+        "The story is not only about survival. It is also about intelligence, organization, discipline, and the will to act under conditions designed to destroy all agency.",
       intro:
-        "This is the entry point into one of the central paradoxes of the story: even inside a system of extreme terror, action, trust, and purpose remained possible.",
+        "This entry helps explain why Pilecki is not presented only as a victim or witness, but also as a figure of interior discipline and organized resistance.",
       excerptLabel: "What to notice in the source",
       excerpt:
-        "While reading fragments about organizing others, pay attention to the fact that the power of this story lies not only in survival. It lies in the ability to create trust, shared purpose, and inner structure where everything was meant to collapse.",
-      chips: ["Resistance", "Mission", "Community"],
+        "Look for signs of method: observation, communication, trust, secrecy, endurance, and the effort to create structure where the camp seeks total fragmentation.",
+      chips: ["Resistance", "Network", "Discipline"],
       tabs: [
         {
           label: "Context",
-          title: "Why this thread is so exceptional",
+          title: "Why this matters historically",
           text:
-            "In the history of the camp, survival itself was already a dramatic condition. In Pilecki’s case there is a second level: an attempt to act in conditions designed precisely to break all action.\n\nThat is why the thread of organized resistance is not only historically important. It is also one of the moral centers of the whole work."
+            "The camp was built to isolate, degrade, and atomize. Resistance within such a system therefore matters not only practically, but morally: it restores initiative where the system tries to erase it.\n\nThe guide should help the viewer understand resistance as form, method, and discipline—not only as heroism."
         },
         {
           label: "In the film",
-          title: "How film can show resistance",
+          title: "How resistance may appear on screen",
           text:
-            "Resistance does not have to be shown only through spectacular action. Sometimes it is stronger when carried by whisper, glance, message, shared endurance, or disciplined presence.\n\nThat scale is often closer to truth than a purely monumental heroic gesture."
+            "Resistance in this film language should often remain restrained. It may appear through signals, glances, fragments of movement, changes in rhythm, or the strengthening of inner purpose rather than through overt spectacle.\n\nThat restraint can make the resistance feel more serious, not less."
         },
         {
           label: "Why shown this way",
-          title: "Why resistance may appear quieter than violence",
+          title: "Why subtlety is stronger here",
           text:
-            "The violence of the system is loud, external, and brutal. Resistance often grows through discipline, loyalty, inward decision, and trust.\n\nThat is why the film may consciously present resistance as less spectacular but deeper in moral force."
+            "If everything is exaggerated, the viewer loses scale. A quieter treatment can preserve credibility and allow the viewer to feel how difficult even the smallest organized act must have been inside such a system.\n\nSubtlety, here, is not weakness. It is accuracy of pressure."
         },
         {
           label: "Question",
           title: "Question for the viewer",
           text:
-            "Does the true strength of this story lie more in courage, or in the ability to preserve purpose and discipline under extreme pressure?"
+            "What does resistance look like when open action is almost impossible? Does the film persuade you that discipline itself can become a form of struggle?"
         }
       ]
     },
     {
-      title: "Escape and the obligation to bear witness",
-      kicker: "Entry point 04",
+      kicker: "Historical source",
+      title: "Escape and the need to report",
       summary:
-        "Escape does not close this story. It opens its second stage: the obligation to testify and the attempt to move the world beyond the camp.",
+        "Escape is not shown as simple release. It is tied to the obligation to bear witness, carry knowledge outward, and transform experience into responsibility.",
       intro:
-        "This entry point shows that leaving the camp is not the end of the experience. It becomes the beginning of another struggle: making witness heard.",
+        "This entry is crucial because it marks the shift from internal witness to outward report—from surviving inside the system to confronting a world outside it.",
       excerptLabel: "What to notice in the source",
       excerpt:
-        "While reading fragments related to reporting, pay close attention to tone. This is not the language of effect. It is the language of responsibility. That restraint is precisely what gives the witness its force.",
-      chips: ["Report", "Witness", "After escape"],
+        "Notice the change in direction: the narrative moves from internal endurance toward testimony, transmission, and the burden of making the outside world know.",
+      chips: ["Escape", "Report", "Witness"],
       tabs: [
         {
           label: "Context",
-          title: "Witness as the continuation of struggle",
+          title: "Why escape is not the end",
           text:
-            "After escape, Pilecki’s story does not move into simple relief. Another burden begins: to shape what was seen into a report and to make truth capable of acting beyond the camp.\n\nThat is why the report is not an appendix to the camp story. It is its continuation."
+            "For a viewer shaped by contemporary film habits, escape may appear to function as climax and closure. Here, it does not. It opens another responsibility: how to speak, report, warn, and carry witness beyond the camp itself.\n\nThe guide should make that transition explicit."
         },
         {
           label: "In the film",
-          title: "How the report can be carried inside the work",
+          title: "How the film should carry this turn",
           text:
-            "The film can treat the report not only as a document, but as the moral structure of the work itself. It is what gives direction to rhythm, form, and the questions the viewer is left with.\n\nIn that way the source is not a dead supplement. It becomes the axis of the whole experience."
+            "The emotional axis changes after escape. The pressure does not disappear; it transforms. The viewer should feel that survival now becomes tied to memory, communication, and unfinished obligation.\n\nThat is why the tone after escape may remain heavy rather than triumphant."
         },
         {
           label: "Why shown this way",
-          title: "Why restraint matters so much here",
+          title: "Why the film avoids a simple release",
           text:
-            "The heavier the witness, the greater the temptation to reinforce it with emotional excess. Yet coldness and discipline often carry more force than added commentary.\n\nThat is why the form may deliberately avoid shouting, in order not to drown out witness itself."
+            "A simple victorious release would flatten the moral architecture of the story. The deeper point is that witness continues to weigh on the one who carries it.\n\nThe guide can help the viewer understand why post-escape scenes may still feel burdened, fractured, or unresolved."
         },
         {
           label: "Question",
           title: "Question for the viewer",
           text:
-            "Does witness sound more powerful when it describes horror without pathos and without emotional overstatement?"
+            "Why does the story not become lighter after escape? What does that tell you about the difference between survival and release?"
         }
       ]
     },
     {
-      title: "After the war: unfinished freedom",
-      kicker: "Entry point 05",
+      kicker: "Historical source",
+      title: "After Auschwitz: war, postwar struggle, death",
       summary:
-        "Pilecki’s story does not end with the war. It also becomes a story of postwar oppression, communist violence, investigation, execution, and attempted erasure.",
+        "The story does not end with the camp. The later chapters deepen the viewer’s understanding of continuity, moral cost, and the long shadow of totalitarian violence.",
       intro:
-        "This entry point helps the viewer see the full arc of Pilecki’s road: from struggle against German occupation to confrontation with a second violent system after 1945.",
-      excerptLabel: "What to notice in source and context",
+        "This entry opens the broader frame: Auschwitz is central, but it is not the only horizon through which Pilecki’s life should be read.",
+      excerptLabel: "What to notice in the source",
       excerpt:
-        "This part of the story should not be treated as a minor epilogue. It is a second burden carried by the same life: a man who survived one system of terror is destroyed after the war by another apparatus of repression.",
-      chips: ["Aftermath", "Communism", "Memory"],
+        "Read the later movement as continuity rather than appendix. The burden carried out of Auschwitz does not vanish; it passes into later struggle, later responsibility, and later persecution.",
+      chips: ["Aftermath", "Continuity", "Moral cost"],
       tabs: [
         {
           label: "Context",
-          title: "Why this part is essential",
+          title: "Why the later chapters matter",
           text:
-            "Without the postwar ending, Pilecki’s story remains incomplete. Only then does it become clear that this is not merely a story of one historical evil, but of a human being passing through two different totalitarian orders.\n\nThat is why the work treats Nazi and communist violence as two distinct but equally grave historical burdens pressing upon one biography."
+            "Viewers often isolate Auschwitz as the complete story. But the later life of Pilecki changes the scale of interpretation. It reveals continuity across war, occupation, postwar repression, and the fate of those who continued to act under new forms of pressure.\n\nThe guide should widen the horizon without diluting Auschwitz."
         },
         {
           label: "In the film",
-          title: "How to show continuation after the war",
+          title: "How the film can handle the later arc",
           text:
-            "The postwar stage does not need to be the most expanded formally. It only needs to strike with clarity: the end of war does not automatically bring true liberation.\n\nOften it is precisely formal restraint that makes the tragic ending resonate more strongly."
+            "The later sections do not need to become another full biography. What they need is weight, clarity, and the sense that the witness carried out of Auschwitz entered another brutal historical field.\n\nThe film can suggest continuity through rhythm, visual echo, and moral recurrence."
         },
         {
           label: "Why shown this way",
-          title: "Why the ending should not become over-illustrated",
+          title: "Why the ending may remain unresolved",
           text:
-            "The more tragic the ending, the easier it is to fall into cheap literalness. Yet in a work of this weight, the ending should leave resonance rather than spectacle.\n\nThat is why the form may close with silence, weight, or a final question rather than with visual excess."
+            "A closed ending would betray the subject. The story should leave the viewer with continuation rather than neat completion: witness passes outward, responsibility remains, and history does not simply seal itself.\n\nThat open ending is part of the work’s ethical form."
         },
         {
           label: "Question",
           title: "Question for the viewer",
           text:
-            "Is the full story of Pilecki more a story of heroism, or of consistent fidelity to principles in a world that rewarded violence and betrayal?"
+            "Does the story change for you when you understand it not as one episode of wartime suffering, but as a life stretched across multiple forms of pressure and duty?"
         }
       ]
     }
@@ -194,113 +194,113 @@ window.psViewerGuideData = {
 
   filmLanguage: [
     {
-      title: "This is not an illustration 1:1",
-      chips: ["Film language", "Form"],
+      chips: ["Film language", "Method"],
+      title: "Condensation, not literal illustration",
       text:
-        "Prawda Sumienia was not conceived as a visual footnote to facts. It is a work that takes responsibility for carrying the weight of witness rather than mechanically reproducing it.\n\nThat is why image may condense, simplify, or shift emphasis. Not to blur truth, but to preserve its force in cinematic language."
+        "The work does not need to reconstruct every historical moment literally in order to remain serious. It may condense location, atmosphere, sequence, and gesture in order to preserve pressure, moral weight, and clarity of reception."
     },
     {
-      title: "Condensation instead of chronicle",
-      chips: ["Condensation", "Rhythm"],
+      chips: ["Film language", "Restraint"],
+      title: "Silence as force",
       text:
-        "In film, several events, emotions, or states may be gathered into one image. That is a conscious decision. Screen time works differently from historical documentation.\n\nThe viewer should not receive only a line of information, but an experience that remains faithful to the deeper axis of meaning."
+        "Silence is not emptiness here. It can carry tension, withheld pain, discipline, memory, and the refusal to turn witness into spectacle. A quieter moment may therefore hold more force than a louder one."
     },
     {
-      title: "Silence works as strongly as speech",
-      chips: ["Silence", "Restraint"],
+      chips: ["Film language", "Symbol"],
+      title: "Symbol without decoration",
       text:
-        "In a work built around witness, silence is not emptiness. It is a space in which the weight of what no longer needs to be explained can be heard.\n\nThat is why some scenes may feel quieter than expected. This is part of the language of the work."
+        "A number, a gate, a shadow, a corridor, a gesture, a fragment of paper—small elements can become carriers of meaning when they are disciplined and repeated carefully. Symbol should deepen the source, not replace it."
     },
     {
-      title: "Symbol does not replace history",
-      chips: ["Symbol", "Meaning"],
+      chips: ["Film language", "Rhythm"],
+      title: "Music as pressure",
       text:
-        "Bars, number, shadow, snow, distance, emptiness of frame — such elements are not there to replace facts. They are there to help the viewer feel their weight.\n\nSymbol in this project does not serve decoration. It serves concentration."
+        "Music in this work should not merely accompany the image. It should shape how pressure is felt: repetition, acceleration, fracture, suspension, and burden can all be carried by rhythm before they are explained in words."
     },
     {
-      title: "Music does not merely accompany",
-      chips: ["Music", "Narration"],
+      chips: ["Film language", "Color"],
+      title: "Dark palette, ethical purpose",
       text:
-        "The musical layer is not an accessory to image. It is one of the principal carriers of tension, memory, and inner rhythm.\n\nThat is why text, beat, and image should be read together rather than separately."
+        "Desaturated or darkened color is not only an aesthetic choice. It can function as discipline, keeping the viewer inside seriousness rather than allowing the material to slide into visual consumption."
     },
     {
-      title: "Restraint is part of the ethics",
-      chips: ["Ethics", "Witness"],
+      chips: ["Film language", "Witness"],
+      title: "The film does not replace the source",
       text:
-        "The heavier the history, the greater the responsibility of form. In Prawda Sumienia restraint does not come from lack of intensity, but from the conviction that not everything should be forced into the foreground.\n\nSometimes it is precisely reduced effect that makes a work more honest toward its source."
+        "The film is not a substitute for historical documents. It is an interpretive encounter shaped by music, image, and narrative form. The guide exists to help the viewer move back and forth between source and film with greater awareness."
     }
   ],
 
   microVideos: [
     {
-      title: "Olonets and eastern childhood",
-      subtitle: "1901 · the beginning of the road",
-      badge: "Micro-video 01",
+      badge: "1901",
+      title: "Olonets and the eastern beginning",
+      subtitle: "Early life, family memory, eastern horizon",
       text:
-        "A short opening piece introducing Pilecki’s birth, eastern family context, and the world from which his later formation begins.",
+        "A short entry point into the beginning of Pilecki’s life: not as a full biographical lecture, but as the opening atmosphere from which later discipline, memory, and identity begin to form.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
-      title: "Formation and the 1920 war",
-      subtitle: "Youth, service, discipline",
-      badge: "Micro-video 02",
+      badge: "1920",
+      title: "Formation through war",
+      subtitle: "Youth, service, endurance",
       text:
-        "A brief context piece about how discipline, responsibility, and military ethos became part of the character later visible in his decisions.",
+        "A brief portrait of how war and service shaped the moral and practical discipline that later becomes essential to his actions under radically different conditions.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
-      title: "1939 and the move into conspiracy",
-      subtitle: "The fall of the state does not end struggle",
-      badge: "Micro-video 03",
+      badge: "1939",
+      title: "Underground beginnings",
+      subtitle: "Conspiracy, duty, response",
       text:
-        "A short piece showing the transition from defensive war to underground activity and the meaning of action under occupation.",
+        "A short context film showing that entry into resistance is not spontaneous myth but a disciplined response to national collapse, occupation, and the need to organize.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
+      badge: "1940",
       title: "Voluntary entry into Auschwitz",
-      subtitle: "A mission beyond ordinary courage",
-      badge: "Micro-video 04",
+      subtitle: "Mission, danger, moral scale",
       text:
-        "One of the central entry points into the whole story: the decision to enter the camp in order to gain information and organize resistance.",
+        "One of the key micro-videos of the entire guide: the decision is not presented as legend alone, but as a mission carrying intelligence, duty, and extreme risk.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
+      badge: "1940–1943",
       title: "Resistance inside the camp",
-      subtitle: "Bond, trust, structure",
-      badge: "Micro-video 05",
+      subtitle: "Network, witness, endurance",
       text:
-        "A short piece showing that Pilecki’s history is not only survival, but also organized responsibility toward others inside the system of terror.",
+        "A focused short piece on how survival, observation, and organized resistance become intertwined inside Auschwitz.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
+      badge: "1943",
       title: "Escape and reporting",
-      subtitle: "Witness as the next stage of struggle",
-      badge: "Micro-video 06",
+      subtitle: "Witness carried outward",
       text:
-        "A bridge from lived experience to the obligation of shaping that experience into report and witness.",
+        "This micro-video marks the shift from internal witness to outward report. It should feel less like release and more like the continuation of responsibility.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
-      title: "Warsaw Uprising",
-      subtitle: "The struggle does not end after Auschwitz",
-      badge: "Micro-video 07",
+      badge: "1944",
+      title: "Warsaw and continued struggle",
+      subtitle: "War does not end with one escape",
       text:
-        "A reminder that Pilecki’s post-camp life does not become a safe epilogue. History continues to press through war and resistance.",
+        "A brief continuation showing that Auschwitz was central, but not the final horizon of action, duty, or risk.",
       youtubeId: "",
       cta: "Play micro-video"
     },
     {
-      title: "Postwar repression and death",
-      subtitle: "Unfinished freedom",
-      badge: "Micro-video 08",
+      badge: "1947–1948",
+      title: "Arrest, persecution, death",
+      subtitle: "The long shadow of totalitarian violence",
       text:
-        "A closing piece bringing together arrest, interrogation, sentence, death, and the attempted erasure of memory after the war.",
+        "The final micro-video should not aim at sensationalism. Its purpose is to show continuity of pressure, historical rupture, and the tragic postwar dimension of the story.",
       youtubeId: "",
       cta: "Play micro-video"
     }
@@ -308,130 +308,136 @@ window.psViewerGuideData = {
 
   systems: [
     {
+      chips: ["Context", "Definition"],
+      title: "What is a totalitarian system?",
+      text:
+        "A totalitarian system does not seek only obedience in one area of life. It seeks deep control over language, fear, memory, institutions, and the very conditions under which a person may act, speak, or survive."
+    },
+    {
+      chips: ["Nazism", "Mechanism"],
       title: "Nazi totalitarianism",
-      chips: ["System", "Third Reich"],
       text:
-        "The Nazi system of violence was built on racism, state terror, biological hierarchy, extermination, and the ideological dehumanization of entire groups.\n\nIn Pilecki’s story, this is the system that creates the reality of KL Auschwitz."
+        "Within the frame of this guide, Nazism should be understood as a system of racial ideology, annihilatory violence, terror, bureaucratic control, and dehumanization carried out through state and camp structures."
     },
     {
+      chips: ["Stalinism", "Mechanism"],
       title: "Stalinist totalitarianism",
-      chips: ["System", "Communism"],
       text:
-        "The Stalinist system of violence was built on political terror, forced conformity, investigative brutality, elimination of opponents, and complete subordination of social life to the state and ideology.\n\nIn Pilecki’s postwar history, this becomes the second apparatus of repression."
+        "Stalinism should not be treated here as identical in every respect to Nazism. But it should be read as another totalitarian order built on repression, surveillance, coercion, ideological domination, and the destruction of independent civic life."
     },
     {
-      title: "What they share",
-      chips: ["Comparison", "Violence"],
+      chips: ["Comparison", "Reading frame"],
+      title: "What they share—and where they differ",
       text:
-        "Both systems were totalitarian: they aimed at total control over the person, reduced human autonomy, used fear as an instrument of power, and normalized violence as method.\n\nIt matters that the viewer sees Pilecki’s life not alongside such systems, but passing directly through them."
-    },
-    {
-      title: "How they differ",
-      chips: ["Comparison", "Precision"],
-      text:
-        "They are not identical systems. They differ in ideology, historical structure, and the explicit logic through which violence is justified and organized.\n\nOn the page they should be shown together not in order to flatten them, but in order to understand two distinct orders of terror pressing upon one biography."
+        "The guide should help the viewer avoid false simplification. These systems are not identical. Yet they do share a totalitarian logic: pressure on truth, pressure on the person, pressure on memory, and pressure on any space of freedom."
     }
   ],
 
   discussionQuestions: [
     {
-      title: "The force of witness",
-      chips: ["Question", "Source"],
+      chips: ["Discussion"],
+      title: "Why such a restrained voice?",
       text:
-        "Why does Pilecki’s witness work so strongly through discipline and restraint of language? Can a cold tone move the imagination more deeply than emotional commentary?"
+        "Why do you think witness written in a restrained, disciplined tone can sometimes hit harder than openly emotional commentary? What kind of authority does such restraint create?"
     },
     {
-      title: "Modern memory",
-      chips: ["Question", "Contemporary form"],
+      chips: ["Discussion"],
+      title: "What does modern music change?",
       text:
-        "How do music, rhythm, and image change your reception of a history originally shaped as report? Does contemporary form bring you closer, or create a different kind of distance?"
+        "This project translates historical pressure into music, rhythm, and visual form. How does that change the way you receive a story written more than eighty years ago?"
     },
     {
-      title: "Moral choice",
-      chips: ["Question", "Responsibility"],
+      chips: ["Discussion"],
+      title: "How should we read moral courage now?",
       text:
-        "What does a life governed by principle rather than comfort mean to a contemporary viewer? Can moral courage in peacetime take forms other than ultimate sacrifice?"
+        "When you encounter a figure such as Pilecki today, do you read him first as a national symbol, a moral witness, a disciplined organizer, or something else? Why?"
     },
     {
-      title: "Resistance and discipline",
-      chips: ["Question", "Character"],
+      chips: ["Discussion"],
+      title: "What makes resistance believable on screen?",
       text:
-        "What kind of character allows someone not only to endure a violent system, but to preserve purpose, structure, and responsibility inside it?"
+        "Which moments in the film persuade you most that resistance can exist without spectacle? What does the work do to make discipline, silence, or inner strength visible?"
     },
     {
-      title: "Film language",
-      chips: ["Question", "Interpretation"],
+      chips: ["Discussion"],
+      title: "Can a film condense history without betraying it?",
       text:
-        "Which element of form affects you most strongly: word, image, music, silence, or rhythm of editing? Why that one?"
+        "Where is the line between artistic condensation and historical distortion? Does the guide help you feel that the film is working responsibly with that tension?"
     },
     {
-      title: "Memory today",
-      chips: ["Question", "Present day"],
+      chips: ["Discussion"],
+      title: "What remains after the film ends?",
       text:
-        "Do you experience Pilecki’s story mainly as history, or does it still ask something of the present and of the viewer now?"
+        "What stays with you most strongly after the work: a scene, a rhythm, a symbol, a historical fact, or a moral question? Why does that element remain?"
     }
   ],
 
   books: [
     {
+      chips: ["Reading", "Biography"],
       title: "The Volunteer",
       author: "Jack Fairweather",
-      chips: ["Book", "Biography"],
       text:
-        "A strong choice for the viewer who wants to move from the filmic form into the broader arc of Pilecki’s mission and the later fate of his witness."
+        "A widely read narrative account that helps international viewers enter Pilecki’s story through urgency, structure, and dramatic readability while keeping the historical scale visible.",
+      href: "#",
+      cta: "Add link"
     },
     {
+      chips: ["Reading", "Source"],
       title: "Raport Witolda",
-      author: "source edition",
-      chips: ["Book", "Source"],
+      author: "Edition with historical introduction and notes",
       text:
-        "The most important next step for anyone who wants to return from the audiovisual form to the source itself and read it not only as evidence, but as an act of responsibility."
+        "Best used when the viewer is ready to move from cinematic reception into source-based reading. Particularly valuable for deeper contextual and terminological orientation.",
+      href: "#",
+      cta: "Add link"
     },
     {
-      title: "Rotmistrz Pilecki. Ochotnik do Auschwitz",
-      author: "Adam Cyra",
-      chips: ["Book", "Historical context"],
+      chips: ["Reading", "Context"],
+      title: "Biographical and museum-based studies",
+      author: "For example: Adam Cyra and related scholarship",
       text:
-        "A strong contextual complement for viewers who want a broader biographical and historical frame after engaging with the work."
+        "Important for viewers who want a more historically grounded, document-centered understanding after the initial encounter through the film.",
+      href: "#",
+      cta: "Add link"
     }
   ],
 
   downloads: [
     {
-      title: "Viewer reflection sheet",
-      type: "PDF",
-      chips: ["Download", "Viewer"],
+      chips: ["Download", "PDF"],
+      title: "Viewer Reflection Card",
+      type: "Public viewer material",
       text:
-        "A short printable sheet for personal reflection after the screening: one image, one line, one question, one idea that remains.",
+        "A short printable companion sheet for individual viewers: key questions, interpretive prompts, and space for one scene, one thought, one line that stayed with them.",
       href: "#",
-      cta: "Add PDF file"
+      cta: "Add PDF"
     },
     {
-      title: "Post-screening discussion questions",
-      type: "PDF",
-      chips: ["Download", "Discussion"],
+      chips: ["Download", "PDF"],
+      title: "Film Language Guide",
+      type: "Public viewer material",
       text:
-        "A compact set of questions for quiet reflection after the screening — individually, at home, or in conversation.",
+        "A compact guide explaining how to read the work’s imagery, silence, rhythm, symbolic compression, and relation to source material.",
       href: "#",
-      cta: "Add PDF file"
+      cta: "Add PDF"
     },
     {
-      title: "Mini guide to the language of the film",
-      type: "PDF",
-      chips: ["Download", "Form"],
+      chips: ["Download", "PDF"],
+      title: "Short Historical Companion",
+      type: "Public viewer material",
       text:
-        "A short companion piece explaining condensation, symbol, rhythm, silence, and restraint inside Prawda Sumienia.",
+        "A concise historical frame for viewers who want a little more grounding after the film without entering a full academic dossier.",
       href: "#",
-      cta: "Add PDF file"
+      cta: "Add PDF"
     },
     {
-      title: "Starter bibliography",
-      type: "PDF",
-      chips: ["Download", "Read further"],
+      chips: ["Download", "PDF"],
+      title: "Starter Reading List",
+      type: "Public viewer material",
       text:
-        "A concise reading list for viewers who want to move from the work toward deeper historical context and source reading.",
+        "A short reading path for viewers who want to continue from film into books, source editions, and historical context.",
       href: "#",
-      cta: "Add PDF file"
+      cta: "Add PDF"
     }
   ]
 };
