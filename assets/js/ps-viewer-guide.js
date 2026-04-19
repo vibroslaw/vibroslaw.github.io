@@ -13,7 +13,6 @@
       reportFallbackTitle: "Wybierz punkt wejścia",
       reportFallbackText:
         "Zacznij od jednego fragmentu. To najlepszy sposób, by wejść głębiej w źródło bez rozbijania ciężaru całego dzieła.",
-      reportReadMore: "Otwórz",
       emptyGrid: "Treść pojawi się tutaj po uzupełnieniu danych.",
       openVideo: "Odtwórz materiał",
       closeVideo: "Zamknij",
@@ -32,7 +31,6 @@
       reportFallbackTitle: "Choose an entry point",
       reportFallbackText:
         "Begin with one fragment. That is the clearest way to enter the source more deeply without weakening the gravity of the work as a whole.",
-      reportReadMore: "Open",
       emptyGrid: "Content will appear here once the data file is filled in.",
       openVideo: "Play video",
       closeVideo: "Close",
@@ -50,7 +48,6 @@
   };
 
   const T = I18N[LANG];
-
   const data = window.psViewerGuideData || {};
 
   const reportEntryList = document.getElementById("reportEntryList");
@@ -135,14 +132,13 @@
 
   function renderChips(container, chips) {
     const list = normalizeArray(chips).filter(Boolean);
-    if (!list.length) return null;
+    if (!list.length) return;
 
     const chipsWrap = createEl("div", "chips");
     list.forEach((chip) => {
       chipsWrap.appendChild(createEl("span", "chip", chip));
     });
     container.appendChild(chipsWrap);
-    return chipsWrap;
   }
 
   function createLinkButton({ href, label, className = "btn btn-secondary", target = "" }) {
@@ -152,7 +148,6 @@
     link.href = hasRealLink(href) ? href : "#";
 
     if (!hasRealLink(href)) {
-      link.classList.add("is-disabled");
       link.setAttribute("aria-disabled", "true");
       link.addEventListener("click", (event) => event.preventDefault());
       link.textContent = label || T.unavailable;
@@ -260,10 +255,9 @@
 
     reportDetail.innerHTML = "";
 
-    const wrapper = createEl("div", "report-detail");
+    const wrapper = createEl("div", "detail-shell");
 
-    const chips = normalizeArray(getItemValue(entry, ["chips", "tags"], []));
-    renderChips(wrapper, chips);
+    renderChips(wrapper, getItemValue(entry, ["chips", "tags"], []));
 
     const title = getItemValue(entry, ["title", "name"], "");
     const intro = getItemValue(entry, ["intro", "summary", "lead"], "");
@@ -275,14 +269,23 @@
     const excerpt = getItemValue(entry, ["excerpt", "sourceText", "entryText"], "");
     const tabs = normalizeArray(getItemValue(entry, ["tabs", "panels", "sections"], []));
 
-    wrapper.appendChild(createEl("h3", "report-detail-title", title));
+    const head = createEl("div", "report-detail-head");
+    const kicker = getItemValue(entry, ["kicker", "eyebrow", "label"], "");
 
-    if (isMeaningfulString(intro)) {
-      wrapper.appendChild(createEl("p", "report-detail-intro", intro));
+    if (isMeaningfulString(kicker)) {
+      head.appendChild(createEl("div", "report-detail-kicker", kicker));
     }
 
+    head.appendChild(createEl("h3", "report-detail-title", title));
+
+    if (isMeaningfulString(intro)) {
+      head.appendChild(createEl("p", "report-detail-intro", intro));
+    }
+
+    wrapper.appendChild(head);
+
     if (isMeaningfulString(excerpt)) {
-      const excerptBox = createEl("div", "report-excerpt-box");
+      const excerptBox = createEl("div", "report-excerpt");
       excerptBox.appendChild(createEl("div", "report-excerpt-label", excerptLabel));
 
       const excerptText = createEl("div", "report-excerpt-text");
@@ -293,8 +296,7 @@
     }
 
     if (tabs.length) {
-      const tabsNav = createEl("div", "report-tabs-nav");
-      const tabsContent = createEl("div", "report-tabs-content");
+      const tabsNav = createEl("div", "report-tabs");
 
       const safeTabIndex =
         activeReportTabIndex >= 0 && activeReportTabIndex < tabs.length
@@ -318,8 +320,10 @@
         tabsNav.appendChild(tabButton);
       });
 
+      wrapper.appendChild(tabsNav);
+
       const activeTab = tabs[safeTabIndex];
-      const tabTitle = getItemValue(activeTab, ["title", "heading", "label"], "");
+      const tabTitle = getItemValue(activeTab, ["title", "heading"], "");
       const tabBody = getItemValue(activeTab, ["text", "body", "content"], "");
       const tabHtml = getItemValue(activeTab, ["html", "bodyHtml"], "");
 
@@ -329,7 +333,7 @@
         tabPanel.appendChild(createEl("h4", "report-tab-title", tabTitle));
       }
 
-      const tabPanelBody = createEl("div", "report-tab-body");
+      const tabPanelBody = createEl("div", "report-tab-text");
       if (isMeaningfulString(tabHtml)) {
         tabPanelBody.innerHTML = tabHtml;
       } else {
@@ -337,10 +341,7 @@
       }
 
       tabPanel.appendChild(tabPanelBody);
-      tabsContent.appendChild(tabPanel);
-
-      wrapper.appendChild(tabsNav);
-      wrapper.appendChild(tabsContent);
+      wrapper.appendChild(tabPanel);
     }
 
     reportDetail.appendChild(wrapper);
@@ -351,34 +352,30 @@
     renderReportDetail();
   }
 
-  function createInfoCard(item, options = {}) {
-    const {
-      titleKeys = ["title", "name"],
-      textKeys = ["text", "body", "description"],
-      chipsKeys = ["chips", "tags"]
-    } = options;
+  function createContentCard(item, cardClass) {
+    const card = createEl("article", cardClass);
+    renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
-    const card = createEl("article", "card");
-    const body = createEl("div", "card-body");
-
-    renderChips(body, getItemValue(item, chipsKeys, []));
-
-    const title = getItemValue(item, titleKeys, "");
-    const text = getItemValue(item, textKeys, "");
+    const title = getItemValue(item, ["title", "name"], "");
+    const text = getItemValue(item, ["text", "body", "description"], "");
+    const subtitle = getItemValue(item, ["subtitle"], "");
 
     if (isMeaningfulString(title)) {
-      body.appendChild(createEl("h3", "", title));
+      card.appendChild(createEl("h3", "", title));
     }
 
-    const textBox = createEl("div", "card-copy");
-    setRichText(textBox, text);
-    body.appendChild(textBox);
+    if (isMeaningfulString(subtitle)) {
+      card.appendChild(createEl("div", "card-subtitle", subtitle));
+    }
 
-    card.appendChild(body);
+    const copy = createEl("div", "card-copy");
+    setRichText(copy, text);
+    card.appendChild(copy);
+
     return card;
   }
 
-  function renderSimpleGrid(container, items, options = {}) {
+  function renderSimpleGrid(container, items, cardClass) {
     if (!container) return;
     container.innerHTML = "";
 
@@ -388,7 +385,7 @@
     }
 
     items.forEach((item) => {
-      container.appendChild(createInfoCard(item, options));
+      container.appendChild(createContentCard(item, cardClass));
     });
   }
 
@@ -404,10 +401,9 @@
     }
 
     items.forEach((item) => {
-      const card = createEl("article", "card");
-      const body = createEl("div", "card-body");
+      const card = createEl("article", "book-card");
 
-      renderChips(body, getItemValue(item, ["chips", "tags"], []));
+      renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
       const title = getItemValue(item, ["title", "name"], "");
       const author = getItemValue(item, ["author"], "");
@@ -416,31 +412,28 @@
       const cta = getItemValue(item, ["cta", "buttonLabel"], T.linkLabel);
 
       if (isMeaningfulString(title)) {
-        body.appendChild(createEl("h3", "", title));
+        card.appendChild(createEl("h3", "", title));
       }
 
       if (isMeaningfulString(author)) {
-        body.appendChild(
-          createEl("div", "meta-line", `${T.booksAuthorPrefix} ${author}`)
-        );
+        card.appendChild(createEl("div", "book-author", `${T.booksAuthorPrefix} ${author}`));
       }
 
       const copy = createEl("div", "card-copy");
       setRichText(copy, text);
-      body.appendChild(copy);
+      card.appendChild(copy);
 
-      const ctaRow = createEl("div", "card-cta-row");
-      ctaRow.appendChild(
+      const actions = createEl("div", "download-actions");
+      actions.appendChild(
         createLinkButton({
           href,
           label: hasRealLink(href) ? cta : T.unavailable,
-          className: "btn btn-secondary",
+          className: "download-button",
           target: hasRealLink(href) ? "_blank" : ""
         })
       );
-      body.appendChild(ctaRow);
+      card.appendChild(actions);
 
-      card.appendChild(body);
       booksGrid.appendChild(card);
     });
   }
@@ -457,43 +450,42 @@
     }
 
     items.forEach((item) => {
-      const card = createEl("article", "card");
-      const body = createEl("div", "card-body");
+      const href = getItemValue(item, ["href", "link", "url"], "");
+      const card = createEl(
+        "article",
+        hasRealLink(href) ? "download-card" : "download-card is-disabled"
+      );
 
-      renderChips(body, getItemValue(item, ["chips", "tags"], []));
+      renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
       const title = getItemValue(item, ["title", "name"], "");
       const type = getItemValue(item, ["type", "format"], "");
       const text = getItemValue(item, ["text", "body", "description"], "");
-      const href = getItemValue(item, ["href", "link", "url"], "");
       const cta = getItemValue(item, ["cta", "buttonLabel"], T.linkLabel);
 
       if (isMeaningfulString(title)) {
-        body.appendChild(createEl("h3", "", title));
+        card.appendChild(createEl("h3", "", title));
       }
 
       if (isMeaningfulString(type)) {
-        body.appendChild(
-          createEl("div", "meta-line", `${T.downloadTypePrefix} ${type}`)
-        );
+        card.appendChild(createEl("div", "download-type", `${T.downloadTypePrefix} ${type}`));
       }
 
       const copy = createEl("div", "card-copy");
       setRichText(copy, text);
-      body.appendChild(copy);
+      card.appendChild(copy);
 
-      const ctaRow = createEl("div", "card-cta-row");
-      ctaRow.appendChild(
+      const actions = createEl("div", "download-actions");
+      actions.appendChild(
         createLinkButton({
           href,
           label: hasRealLink(href) ? cta : T.unavailable,
-          className: "btn btn-secondary",
+          className: "download-button",
           target: hasRealLink(href) ? "_blank" : ""
         })
       );
-      body.appendChild(ctaRow);
+      card.appendChild(actions);
 
-      card.appendChild(body);
       downloadsGrid.appendChild(card);
     });
   }
@@ -514,12 +506,12 @@
     if (embedUrl) {
       videoModalFrame.src = embedUrl;
       videoModalFrame.hidden = false;
-      videoModalPlaceholder.hidden = true;
+      videoModalPlaceholder.classList.remove("is-visible");
     } else {
       videoModalFrame.src = "";
       videoModalFrame.hidden = true;
-      videoModalPlaceholder.hidden = false;
       videoModalPlaceholder.innerHTML = `<p>${T.noVideoText}</p>`;
+      videoModalPlaceholder.classList.add("is-visible");
     }
 
     videoModal.classList.add("is-open");
@@ -528,10 +520,12 @@
   }
 
   function closeVideoModal() {
-    if (!videoModal || !videoModalFrame) return;
+    if (!videoModal || !videoModalFrame || !videoModalPlaceholder) return;
     videoModal.classList.remove("is-open");
     videoModal.setAttribute("aria-hidden", "true");
     videoModalFrame.src = "";
+    videoModalFrame.hidden = false;
+    videoModalPlaceholder.classList.remove("is-visible");
     document.body.classList.remove("video-modal-open");
   }
 
@@ -547,38 +541,36 @@
     }
 
     items.forEach((item) => {
-      const card = createEl("article", "card micro-card");
-      const body = createEl("div", "card-body");
+      const card = createEl("article", "micro-video-card");
 
       const badge = getItemValue(item, ["badge", "kicker", "label"], "");
       if (isMeaningfulString(badge)) {
-        body.appendChild(createEl("div", "micro-badge", badge));
+        card.appendChild(createEl("div", "micro-video-badge", badge));
       }
 
       const title = getItemValue(item, ["title", "name"], "");
       const subtitle = getItemValue(item, ["subtitle"], "");
       const text = getItemValue(item, ["text", "body", "description"], "");
 
-      body.appendChild(createEl("h3", "", title));
+      card.appendChild(createEl("h3", "", title));
 
       if (isMeaningfulString(subtitle)) {
-        body.appendChild(createEl("div", "micro-subtitle", subtitle));
+        card.appendChild(createEl("div", "micro-video-subtitle", subtitle));
       }
 
       const copy = createEl("div", "card-copy");
       setRichText(copy, text);
-      body.appendChild(copy);
+      card.appendChild(copy);
 
-      const actions = createEl("div", "card-cta-row");
+      const actions = createEl("div", "micro-video-actions");
       const playButton = document.createElement("button");
       playButton.type = "button";
-      playButton.className = "btn btn-secondary";
+      playButton.className = "micro-video-button";
       playButton.textContent = getItemValue(item, ["cta", "buttonLabel"], T.openVideo);
       playButton.addEventListener("click", () => openVideoModal(item));
       actions.appendChild(playButton);
 
-      body.appendChild(actions);
-      card.appendChild(body);
+      card.appendChild(actions);
       microVideoGrid.appendChild(card);
     });
   }
@@ -595,10 +587,7 @@
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
 
-      if (
-        target.dataset.closeVideoModal === "true" ||
-        target === videoModal
-      ) {
+      if (target.dataset.closeVideoModal === "true") {
         closeVideoModal();
       }
     });
@@ -678,10 +667,10 @@
 
   function init() {
     updateReportExplorer();
-    renderSimpleGrid(filmLanguageGrid, getFilmLanguageItems());
+    renderSimpleGrid(filmLanguageGrid, getFilmLanguageItems(), "language-card");
     renderMicroVideos();
-    renderSimpleGrid(systemsGrid, getSystems());
-    renderSimpleGrid(discussionGrid, getDiscussionQuestions());
+    renderSimpleGrid(systemsGrid, getSystems(), "system-card");
+    renderSimpleGrid(discussionGrid, getDiscussionQuestions(), "question-card");
     renderBooks();
     renderDownloads();
     initVideoModal();
