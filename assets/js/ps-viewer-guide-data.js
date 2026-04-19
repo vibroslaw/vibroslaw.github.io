@@ -2,181 +2,185 @@ window.psViewerGuideData = {
   reportEntries: [
     {
       id: "entry-1",
-      title: "Wejście do obozu",
-      note: "Pierwszy kontakt z logiką Auschwitz.",
+      title: "Wejście do Auschwitz",
+      note: "Moment przejścia z życia do systemu przemocy.",
       intro:
-        "Ten blok prowadzi przez moment przejścia z życia codziennego do systemu przemocy. Chodzi nie tylko o wydarzenie, ale o zmianę całej logiki świata.",
-      excerptLabel: "Fragment źródła",
+        "To jedno z najmocniejszych wejść w raport i w cały świat filmu. Nie chodzi tu tylko o sam fakt uwięzienia, ale o gwałtowne wejście w rzeczywistość, która działa według zupełnie innej logiki: numeru, terroru, podporządkowania i odebrania człowiekowi sprawczości.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
       excerpt:
-        "[TU WSTAW KRÓTKI AUTENTYCZNY FRAGMENT RAPORTU DOTYCZĄCY PIERWSZYCH DNI / WEJŚCIA DO OBOZU]",
+        "Szukaj w tym fragmencie nie tylko opisów wydarzeń, ale też zmiany języka rzeczywistości: przejścia od osoby do numeru, od zwykłego świata do mechanizmu przemocy. Jeśli później dodasz tu autentyczny cytat z raportu, wybierz krótki, chłodny i rzeczowy fragment — wtedy kontrast z filmem będzie jeszcze mocniejszy.",
       tabs: [
         {
           id: "context",
           label: "Kontekst historyczny",
           body:
-            "Ten fragment służy jako wejście w rzeczywistość obozu. Na poziomie odbioru najważniejsze jest tu nie tylko to, co się dzieje, ale to, jak szybko człowiek zostaje wrzucony w system podporządkowania, numeru i przemocy."
+            "Ten moment działa jak próg. W historii Pileckiego i w całej opowieści o Auschwitz jest to chwila wejścia w system, który miał złamać człowieka nie tylko fizycznie, ale także psychicznie i moralnie. Warto czytać ten fragment nie jako pojedynczą scenę, lecz jako początek nowego porządku przemocy."
         },
         {
           id: "film",
           label: "W filmie",
           body:
-            "W tej części filmu warto połączyć ten fragment z momentami wizualnego przejścia: ciemność, rytm marszu, nagłe zawężenie przestrzeni, utrata indywidualności. Film nie musi odtwarzać wszystkiego dosłownie, żeby unieść sens źródła."
+            "W filmie ten moment najlepiej działa wtedy, gdy nie jest tylko ilustracją jednego zdania z raportu. Ciemność, marsz, zawężona przestrzeń, chłód, rytm i nagłe odcięcie od normalnego świata mogą unieść sens tego wejścia silniej niż dosłowna rekonstrukcja."
         },
         {
           id: "why",
           label: "Dlaczego tak pokazane",
           body:
-            "Scena może być skondensowana wizualnie i rytmicznie. Jej zadaniem nie jest wyłącznie ilustracja jednego akapitu, ale oddanie doświadczenia wejścia w mechanizm odczłowieczenia."
+            "Jeżeli obraz jest uproszczony, skondensowany albo bardziej symboliczny niż literalny, to nie musi oznaczać błędu. Taki wybór może podkreślać doświadczenie przejścia: nie jeden szczegół historyczny, lecz sam moment wejścia w logikę obozu."
         },
         {
           id: "question",
           label: "Pytanie do widza",
           body:
-            "Co mocniej działa na Ciebie w tym momencie: sam fakt historyczny czy sposób, w jaki film buduje poczucie wejścia w zamknięty system przemocy?"
+            "Co mocniej do Ciebie trafia w tym momencie: sama historyczna wiedza o tym, co się wydarzyło, czy poczucie nagłego wejścia w zamknięty system przemocy zbudowane przez obraz i dźwięk?"
         }
       ]
     },
+
     {
       id: "entry-2",
       title: "Mechanizm obozu",
-      note: "System, nie tylko pojedyncze okrucieństwo.",
+      note: "Auschwitz jako system, nie tylko pojedyncze okrucieństwo.",
       intro:
-        "Raport nie zatrzymuje się na emocjonalnym komentarzu. Pokazuje, że Auschwitz działało jak mechanizm — z własnym rytmem, hierarchią i logiką przemocy.",
-      excerptLabel: "Fragment źródła",
+        "Raport Pileckiego jest tak mocny między innymi dlatego, że nie zatrzymuje się wyłącznie na emocjach. Pokazuje Auschwitz jako działający system: z własną hierarchią, rytmem, procedurą, terrorem i logiką odczłowieczenia.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
       excerpt:
-        "[TU WSTAW KRÓTKI AUTENTYCZNY FRAGMENT O ORGANIZACJI OBOZU, RELACJACH, TERRORZE, CODZIENNOŚCI]",
+        "W tym miejscu najlepiej pracują fragmenty, które pokazują codzienność obozu jako mechanizm: powtarzalność, procedurę, zależność, przemoc wpisaną w porządek dnia. Gdy dodasz tu cytat źródłowy, wybierz taki, który nie jest tylko dramatyczny, ale pokazuje strukturę działania systemu.",
       tabs: [
         {
           id: "context",
           label: "Kontekst historyczny",
           body:
-            "Ten fragment pomaga zrozumieć, że przemoc obozowa nie była wyłącznie serią jednostkowych aktów brutalności. Miała strukturę, powtarzalność i jasno działający system podporządkowania."
+            "To bardzo ważne wejście dla widza, bo pomaga zrozumieć, że obóz nie był zbiorem przypadkowych aktów brutalności. Był systemem zaprojektowanym do łamania człowieka, kontroli i terroru. Tę logikę trzeba zobaczyć, aby zrozumieć wagę świadectwa."
         },
         {
           id: "film",
           label: "W filmie",
           body:
-            "W warstwie audiowizualnej ten blok może odpowiadać scenom powtarzalności: rytmowi, procedurze, marszowi, numerowi, kracie, ciszy po przemocy. To właśnie powtarzalność niesie tutaj ciężar."
+            "W warstwie filmowej ten sens można pokazać przez rytm, repetycję, ciasnotę, numer, kraty, kroki, monotonię i ciszę po przemocy. Właśnie powtarzalność może nieść tutaj większy ciężar niż jedna dosłowna scena."
         },
         {
           id: "why",
           label: "Dlaczego tak pokazane",
           body:
-            "Film może celowo unikać nadmiaru dosłowności. Zamiast epatować pojedynczym obrazem, pokazuje działanie systemu przez rytm, kompresję i wizualne repetycje."
+            "Film nie musi wszystkiego dopowiadać obrazem jeden do jednego. Czasem mocniej działa pokazanie mechanizmu przez serię krótkich znaków niż przez próbę dosłownego odtworzenia całej historycznej sytuacji."
         },
         {
           id: "question",
           label: "Pytanie do widza",
           body:
-            "Czy większe wrażenie robi na Tobie opis pojedynczej przemocy, czy właśnie świadomość, że była ona częścią chłodno działającego mechanizmu?"
+            "Czy większe wrażenie robi na Tobie jednostkowy obraz przemocy, czy świadomość, że była ona częścią chłodno działającego, uporządkowanego systemu?"
         }
       ]
     },
+
     {
       id: "entry-3",
       title: "Opór wewnątrz piekła",
       note: "Świadectwo i działanie jednocześnie.",
       intro:
-        "Pilecki nie pozostaje w raporcie wyłącznie obserwatorem. Wewnątrz obozu próbuje tworzyć relacje, pomoc i struktury oporu.",
-      excerptLabel: "Fragment źródła",
+        "Pilecki w raporcie nie pozostaje tylko obserwatorem. Wewnątrz obozu próbuje organizować pomoc, budować relacje i tworzyć struktury oporu. To jeden z najważniejszych punktów całej biografii: człowiek w piekle nie tylko widzi — on działa.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
       excerpt:
-        "[TU WSTAW KRÓTKI AUTENTYCZNY FRAGMENT DOTYCZĄCY KONSPIRACJI, POMOCY, ORGANIZOWANIA OPORU]",
+        "Wybierając fragment do tej sekcji, szukaj momentów, które pokazują nie widowiskowy heroizm, lecz cichą organizację: zaufanie, odpowiedzialność, dyscyplinę i próbę działania dla innych mimo skrajnego zagrożenia.",
       tabs: [
         {
           id: "context",
           label: "Kontekst historyczny",
           body:
-            "Ta część raportu jest kluczowa, bo pokazuje Pileckiego nie tylko jako świadka, ale również jako człowieka działania. W warunkach skrajnego terroru próbuje tworzyć sieć odpowiedzialności."
+            "Ta część jest kluczowa, bo pokazuje Pileckiego jako człowieka czynu. Nawet w warunkach skrajnego terroru nie zamyka się w biernym przetrwaniu. Próbuje budować struktury odpowiedzialności, informacji i pomocy."
         },
         {
           id: "film",
           label: "W filmie",
           body:
-            "W filmie ten motyw może być pokazany bardziej przez spojrzenia, gest, przekazywanie sygnału, ruch światła i cień niż przez długi opis. To nadal ten sam sens, tylko przeniesiony w język obrazu."
+            "Film może pokazać ten wymiar bardzo oszczędnie: przez spojrzenie, znak, gest, szept, cień, przekazanie kartki czy prosty rytm montażu. To nadal ten sam sens — tylko przetłumaczony z dokumentu na obraz."
         },
         {
           id: "why",
           label: "Dlaczego tak pokazane",
           body:
-            "Jeśli film pokazuje ten motyw oszczędnie, to dlatego, że opór w takich warunkach często nie był widowiskowy. Był cichy, ryzykowny i oparty na zaufaniu, dyscyplinie oraz znaku."
+            "Jeśli opór nie jest pokazany jako widowiskowa akcja, to bardzo dobrze. Właśnie taka powściągliwość buduje prawdę tej historii: opór wewnątrz obozu był cichy, ryzykowny i oparty na zaufaniu, a nie na spektaklu."
         },
         {
           id: "question",
           label: "Pytanie do widza",
           body:
-            "Co jest dla Ciebie tutaj ważniejsze: heroizm, organizacja, czy sam fakt, że nawet w takich warunkach człowiek próbował działać dla innych?"
+            "Co jest tu dla Ciebie najważniejsze: sama odwaga, umiejętność organizacji, czy fakt, że nawet w takich warunkach człowiek próbował działać nie tylko dla siebie?"
         }
       ]
     },
+
     {
       id: "entry-4",
       title: "Ucieczka i obowiązek mówienia",
-      note: "Ucieczka nie kończy historii.",
+      note: "Ucieczka nie zamyka historii — otwiera nowy etap.",
       intro:
-        "Po wyjściu z obozu zaczyna się nowy etap odpowiedzialności. Ucieczka nie jest zamknięciem doświadczenia, ale początkiem obowiązku przekazania świadectwa dalej.",
-      excerptLabel: "Fragment źródła",
+        "Wyjście z obozu nie oznacza końca opowieści. W biografii Pileckiego ucieczka staje się początkiem kolejnego zadania: przekazać świadectwo dalej, mówić, raportować, działać.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
       excerpt:
-        "[TU WSTAW KRÓTKI AUTENTYCZNY FRAGMENT O UCIECZCE, PRZEKAZANIU INFORMACJI, ŚWIADCZENIU]",
+        "To dobre miejsce na krótki fragment, w którym widać przejście od przetrwania do świadectwa. Nie chodzi tu o ulgę po ucieczce, lecz o poczucie obowiązku: skoro się wyszło, trzeba mówić dalej.",
       tabs: [
         {
           id: "context",
           label: "Kontekst historyczny",
           body:
-            "Ten blok przechodzi od przeżycia do świadczenia. Pilecki nie wychodzi z obozu po to, by jedynie ocaleć, ale po to, by mówić, raportować i działać dalej."
+            "Ucieczka jest tu nie tyle finałem, ile przejściem do nowego etapu odpowiedzialności. Biografia Pileckiego pokazuje, że świadectwo nie kończy się w chwili ocalenia — ono dopiero zaczyna pracować dalej."
         },
         {
           id: "film",
           label: "W filmie",
           body:
-            "W tym miejscu film może zmienić tempo: od klaustrofobii ku ruchowi, od zamknięcia ku przekazowi. To bardzo ważny moment kompozycyjny całego dzieła."
+            "To miejsce może być w filmie pokazane zmianą rytmu: z klaustrofobii ku ruchowi, z zamknięcia ku drodze, z wnętrza systemu ku obowiązkowi przekazania prawdy dalej."
         },
         {
           id: "why",
           label: "Dlaczego tak pokazane",
           body:
-            "Zmiana rytmu lub obrazu nie oznacza osłabienia ciężaru. Przeciwnie — może podkreślać, że świadectwo po wyjściu staje się zadaniem, a nie ulgą."
+            "Jeśli obraz po ucieczce nie jest radosny ani triumfalny, to jest to bardzo mocny wybór. Taki sposób pokazania podkreśla, że ucieczka nie przynosi prostego szczęścia, lecz ciężar dalszego działania."
         },
         {
           id: "question",
           label: "Pytanie do widza",
           body:
-            "Czy ucieczka w tej historii jest dla Ciebie bardziej aktem ocalenia, czy wejściem w jeszcze większą odpowiedzialność?"
+            "Czy ucieczkę czytasz tutaj bardziej jako moment ocalenia, czy jako wejście w jeszcze większą odpowiedzialność wobec prawdy i innych ludzi?"
         }
       ]
     },
+
     {
       id: "entry-5",
       title: "Po co był ten raport",
       note: "Źródło jako akt odpowiedzialności.",
       intro:
-        "Raport nie powstał jako literatura ani osobista ekspresja. Powstał jako świadectwo, które miało zostać przekazane dalej.",
-      excerptLabel: "Fragment źródła",
+        "Raport nie powstał jako literatura ani jako osobista ekspresja. Jego najgłębszy sens leży w odpowiedzialności: trzeba było zapisać, przekazać i dać świadectwo temu, czego nie wolno było zostawić w ciemności.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
       excerpt:
-        "[TU WSTAW FRAGMENT LUB KRÓTKIE ZDANIE, KTÓRE DOBRZE USTAWIA SENS RAPORTU JAKO ŚWIADECTWA]",
+        "W tej sekcji najlepiej działa krótki fragment, który pokazuje raport jako świadectwo i obowiązek. Nawet jeden zwięzły cytat może tu ustawić cały sens projektu: nie dekoracja historii, ale akt niesienia prawdy dalej.",
       tabs: [
         {
           id: "context",
           label: "Kontekst historyczny",
           body:
-            "Warto czytać raport nie tylko jako dokument wydarzeń, ale także jako akt odpowiedzialności wobec prawdy i wobec tych, którzy nie mogli już mówić sami."
+            "Raport warto czytać nie tylko jako opis wydarzeń, lecz jako dokument odpowiedzialności. Jest próbą ocalenia prawdy o doświadczeniu tych, którzy nie mogli już mówić sami."
         },
         {
           id: "film",
           label: "W filmie",
           body:
-            "Całe dzieło można czytać jako późniejsze, współczesne wejście w ten sam obowiązek pamięci: nie zastąpienie raportu, ale próbę uniesienia jego ciężaru w nowym języku."
+            "Na tym poziomie całe dzieło można czytać jako współczesne wejście w ten sam obowiązek pamięci. Nie jako zastąpienie raportu, ale jako próbę uniesienia jego ciężaru w nowym języku — muzyki, obrazu i rytmu."
         },
         {
           id: "why",
           label: "Dlaczego tak pokazane",
           body:
-            "Jeśli film chwilami odchodzi od dosłownej rekonstrukcji, robi to po to, by nie zgubić tego, co w źródle najważniejsze: ciężaru, odpowiedzialności i napięcia moralnego."
+            "Jeżeli film miejscami odchodzi od literalnej rekonstrukcji, robi to po to, by nie zgubić tego, co w źródle najważniejsze: ciężaru świadectwa, odpowiedzialności i pytania, co zrobić z tą wiedzą teraz."
         },
         {
           id: "question",
           label: "Pytanie do widza",
           body:
-            "Czy po obejrzeniu filmu i wejściu w raport bardziej myślisz o historii jako o przeszłości, czy jako o zadaniu pamięci wobec teraźniejszości?"
+            "Czy po wejściu w raport i film bardziej myślisz o historii jako o przeszłości, czy jako o zadaniu pamięci wobec teraźniejszości?"
         }
       ]
     }
@@ -184,34 +188,44 @@ window.psViewerGuideData = {
 
   filmLanguage: [
     {
-      title: "Kondensacja zamiast ilustracji",
+      title: "Film nie musi być literalny, żeby był prawdziwy",
       text:
-        "Film nie musi odtwarzać raportu linijka po linijce. Może kondensować momenty, obrazy i napięcia po to, by oddać ciężar doświadczenia, a nie tylko jego powierzchowny zapis."
+        "W tym projekcie prawda nie zawsze oznacza dosłowność jednego kadru. Czasem sens historyczny mocniej niesie obraz skondensowany, symboliczny albo zbudowany z napięcia niż rekonstrukcja szczegół po szczególe."
     },
     {
-      title: "Obraz pamięci, nie tylko rekonstrukcji",
+      title: "Obraz może pracować jak pamięć",
       text:
-        "Niektóre ujęcia działają jak obraz pamięci, dziedziczenia, wygnania albo lęku. Nie zawsze oznaczają jeden literalny dzień czy jedną dokładną scenę historyczną."
+        "Niektóre sceny działają bardziej jak obraz pamięci, lęku, dziedziczenia albo moralnego ciężaru niż jak precyzyjna rekonstrukcja jednej daty czy jednego miejsca. To nie musi być błąd — to może być świadomy język filmu."
     },
     {
-      title: "Cisza jako środek wyrazu",
+      title: "Powściągliwość jest częścią sensu",
       text:
-        "Brak nadmiaru, brak widowiskowości i brak ciągłego dopowiadania nie oznaczają pustki. To forma dyscypliny odbioru."
+        "Brak widowiskowości, brak nadmiaru przemocy i brak nieustannego tłumaczenia wszystkiego słowem to nie brak treści. To forma dyscypliny. Dzięki niej odbiorca nie dostaje gotowego efektu, tylko wchodzi w ciężar opowieści."
     },
     {
-      title: "Symbol zamiast pełnego opisu",
+      title: "Cisza niesie tyle samo co słowo",
       text:
-        "Krata, cień, numer, drzwi, marsz, chłód, pustka — w filmie nie muszą oznaczać tylko jednego wydarzenia. Czasem niosą większy odcinek doświadczenia."
+        "W tym filmie cisza, pauza, ciemność, zamknięta przestrzeń i rytm potrafią znaczyć równie dużo jak tekst. To ważne zwłaszcza tam, gdzie źródło działa chłodem i rzeczowością, a film odpowiada napięciem i zawieszeniem."
     },
     {
-      title: "Muzyka nie upiększa historii",
+      title: "Symbol nie zastępuje historii — otwiera ją",
       text:
-        "Muzyka nie służy tu do dekoracji. Jej zadaniem jest otworzyć współczesnego widza na ciężar świadectwa i na moralne napięcie historii."
+        "Numer, krata, cień, chłód, drzwi, marsz, pustka, oddech — te znaki nie muszą oznaczać jednej sceny. Mogą skupiać większy odcinek doświadczenia i kierować widza z powrotem do źródła."
+    },
+    {
+      title: "Muzyka nie dekoruje, tylko przenosi ciężar",
+      text:
+        "Muzyka nie ma tu upiększać historii. Jej zadaniem jest otworzyć współczesnego widza na coś, co w źródle jest zapisane chłodno, ale waży moralnie bardzo dużo."
     },
     {
       title: "Źródło pozostaje fundamentem",
       text:
-        "Film nie zamyka raportu i go nie zastępuje. Jest współczesnym wejściem w to samo świadectwo, ale przez inny język."
+        "Raport jest punktem ciężkości. Film nie zamyka jego sensu i go nie zastępuje. Jest współczesnym wejściem w to samo świadectwo — innym językiem, ale wobec tego samego rdzenia."
+    },
+    {
+      title: "Nie wszystko trzeba objaśnić natychmiast",
+      text:
+        "Dobrze zbudowany film historyczny zostawia też przestrzeń na pracę widza. Ta strona właśnie temu służy: żeby po seansie wejść głębiej, a nie zabić odbioru nadmiarem objaśnień w samym dziele."
     }
   ],
 
@@ -219,74 +233,74 @@ window.psViewerGuideData = {
     {
       title: "Ołońiec i początek biografii",
       description:
-        "Krótki materiał otwierający biografię Rotmistrza i jej wschodni kontekst pamięci.",
+        "Krótki materiał otwierający historię Pileckiego od początku: dzieciństwo, wschodni kontekst rodziny i początek drogi, która później zyska wymiar historyczny.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Tu wstaw ID niepublicznego filmu YouTube lub innego osadzanego materiału."
+        "W tym klipie najlepiej działa spokojne wejście: 2–3 zdania narracji, jedno mocne zdjęcie / ilustracja, zero przeładowania."
     },
     {
-      title: "Wojna 1920",
+      title: "Wojna 1920 i formacja charakteru",
       description:
-        "Moment formacyjny: młodość, służba i wejście w polskie doświadczenie walki o wolność.",
+        "Moment, w którym młodość spotyka się ze służbą, odpowiedzialnością i doświadczeniem walki o niepodległość.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "Tu warto pokazać nie tyle batalistykę, ile formowanie postawy: dyscypliny, odwagi i służby."
     },
     {
-      title: "Konspiracja po 1939",
+      title: "1939 i wejście w konspirację",
       description:
-        "Od klęski państwa do decyzji o działaniu w podziemiu.",
+        "Od upadku państwa do decyzji o działaniu w podziemiu. Krótki blok ustawiający, że ta historia nie zaczyna się dopiero w Auschwitz.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "Dobrze działa tu rytm przejścia: klęska → decyzja → konspiracja."
     },
     {
       title: "Dobrowolnie do Auschwitz",
       description:
-        "Najbardziej niewiarygodna decyzja tej biografii — wejście do obozu jako misja.",
+        "Najbardziej niewiarygodna decyzja tej biografii: wejście do obozu nie przez przypadek, lecz jako świadoma misja zdobycia informacji i organizacji oporu.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "To powinien być jeden z najmocniejszych mikroklipów całej serii."
     },
     {
-      title: "Raport i opór",
+      title: "Raport i ruch oporu",
       description:
-        "Świadectwo nie jako bierny zapis, lecz jako działanie wewnątrz systemu przemocy.",
+        "Pilecki nie tylko widzi i zapamiętuje. Przekazuje, organizuje, buduje relacje i próbuje działać wewnątrz systemu terroru.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "Najlepszy ton: skupiony, rzeczowy, bez przesadnego patosu."
     },
     {
       title: "Ucieczka",
       description:
-        "Wyjście z obozu nie kończy historii — otwiera etap mówienia i dalszej walki.",
+        "Wyjście z obozu nie zamyka tej historii. Otwiera etap świadectwa, dalszej służby i przekazywania prawdy dalej.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "Ten klip dobrze działa, kiedy zamiast triumfu pokazuje ciężar dalszego zadania."
     },
     {
-      title: "Po wojnie",
+      title: "Powstanie Warszawskie i dalsza walka",
       description:
-        "Dalsza służba, odpowiedzialność i cena, jaką przyszło zapłacić po 1945 roku.",
+        "Po Auschwitz historia się nie kończy. Pilecki pozostaje człowiekiem czynu także dalej, w kolejnych odsłonach wojny i walki.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "W tym miejscu klip powinien budować ciągłość biografii, a nie nową osobną opowieść."
     },
     {
-      title: "Pamięć",
+      title: "Po wojnie: śledztwo, wyrok, pamięć",
       description:
-        "Jak wraca dziś? Nie tylko jako nazwisko, ale jako pytanie o odpowiedzialność.",
+        "Ostatni etap tej drogi: konspiracja po 1945 roku, represje komunistyczne i pamięć, która wraca do nas już po śmierci Rotmistrza.",
       length: "15–20 sek.",
       youtubeId: "",
       note:
-        "Wstaw własny klip lub teaser."
+        "To dobry finał mikroserii — nie tylko o śmierci, ale o tym, dlaczego dziś do tej historii wracamy."
     }
   ],
 
@@ -294,31 +308,34 @@ window.psViewerGuideData = {
     {
       title: "Nazizm",
       intro:
-        "System oparty na rasizmie, przemocy państwowej i logice eksterminacji.",
+        "System totalitarny oparty na rasizmie, przemocy państwowej, odczłowieczeniu i logice eksterminacji. W tej historii to przede wszystkim kontekst Auschwitz i niemieckiej machiny terroru.",
       bullets: [
-        "terror i odczłowieczenie jako narzędzie państwa",
-        "obozy i przemysłowa logika zbrodni",
-        "ideologia wykluczenia i biologicznej hierarchii"
+        "przemoc jako część państwowego porządku",
+        "rasistowska ideologia wykluczenia i hierarchii",
+        "obóz jako system terroru, kontroli i odczłowieczenia"
       ]
     },
     {
       title: "Stalinizm / komunizm sowiecki",
       intro:
-        "System terroru politycznego, aparatu śledczego i niszczenia niezależności.",
+        "Drugi system przemocy obecny w tej biografii. Nie tożsamy z nazizmem, ale również totalitarny: oparty na terrorze politycznym, aparacie śledczym, przemocy wobec niezależności i niszczeniu ludzi uznanych za zagrożenie.",
       bullets: [
-        "przemoc wobec przeciwników i struktur niepodległościowych",
-        "śledztwo, więzienie, wymuszanie winy",
-        "państwo jako aparat kontroli i eliminacji"
+        "represje wobec przeciwników i środowisk niepodległościowych",
+        "śledztwo, wymuszanie winy, więzienie i terror aparatu bezpieczeństwa",
+        "państwo jako narzędzie kontroli, złamania i eliminacji"
       ]
     }
   ],
 
   discussionQuestions: [
-    "Dlaczego rzeczowy ton świadectwa może działać mocniej niż emocjonalny komentarz?",
-    "W jaki sposób współczesna muzyka i obraz zmieniają Twój odbiór historii zapisanej ponad 80 lat temu?",
-    "Co w tej opowieści najmocniej dotyczy teraźniejszości, a nie tylko przeszłości?",
-    "Czy film pomaga Ci wejść bliżej w źródło, czy tworzy przede wszystkim osobne doświadczenie artystyczne?",
-    "Czy odwaga Pileckiego czytasz bardziej jako heroizm, czy jako konsekwencję odpowiedzialności?"
+    "Dlaczego chłodny i rzeczowy ton świadectwa może działać mocniej niż emocjonalny komentarz?",
+    "W jaki sposób muzyka i obraz zmieniają Twój odbiór historii zapisanej ponad 80 lat temu?",
+    "Czy film zbliżył Cię bardziej do samego raportu, czy raczej otworzył osobną, współczesną emocję wokół tej historii?",
+    "Jak rozumiesz dziś odpowiedzialność człowieka, który nie tylko przetrwał, ale uznał, że musi świadczyć dalej?",
+    "Który element działał na Ciebie najmocniej: źródło, obraz, rytm, cisza, czy sama biografia Pileckiego?",
+    "Czy opór w tej historii jawi Ci się bardziej jako heroizm, czy jako konsekwencja odpowiedzialności wobec innych?",
+    "Dlaczego niektóre postacie historyczne wracają do współczesności silniej dopiero wtedy, gdy przemówi do nas także forma artystyczna?",
+    "Co po tym spotkaniu z historią wydaje Ci się ważniejsze: wiedzieć więcej czy pamiętać mocniej?"
   ],
 
   books: [
@@ -326,36 +343,44 @@ window.psViewerGuideData = {
       title: "Ochotnik do Auschwitz",
       subtitle: "Jack Fairweather",
       note:
-        "Dobra książka dla widza, który po filmie chce wejść szerzej w biografię i międzynarodowy kontekst przekazu raportów."
+        "Mocna książka dla widza, który po filmie chce wejść szerzej w samą biografię Pileckiego i w drogę, jaką raporty próbowały przebyć do świata zewnętrznego."
     },
     {
       title: "Raport Witolda",
       subtitle: "wydanie źródłowe",
       note:
-        "Najlepsza ścieżka dla tych, którzy chcą po filmie wejść bezpośrednio w samo źródło i jego aparat objaśniający."
+        "Najważniejsza ścieżka dla tych, którzy po filmie chcą wejść bezpośrednio w źródło. Najlepiej czytać fragmentami, wracając do wybranych części po seansie, a nie próbując wszystko naraz."
     },
     {
       title: "Rotmistrz Pilecki. Ochotnik do Auschwitz",
       subtitle: "Adam Cyra",
       note:
-        "Dobre uzupełnienie dla widza, który chce poszerzyć odbiór o biografię opartą na pracy historycznej."
+        "Dobre uzupełnienie dla odbiorcy, który chce poszerzyć filmowe wejście o klasyczną biografię i szerszy kontekst historyczny."
     }
   ],
 
   downloads: [
     {
-      title: "Karta widza",
+      title: "Karta widza po seansie",
       subtitle: "PDF",
       note:
-        "Krótka karta do własnych notatek po seansie.",
+        "Krótka karta do własnych notatek: co najmocniej zostało po filmie, który fragment źródła wrócił najdłużej i z jakim pytaniem wychodzisz.",
       href: "#",
       label: "Dodaj link do PDF"
     },
     {
-      title: "Pytania po seansie",
+      title: "Pytania do refleksji",
       subtitle: "PDF",
       note:
-        "Zestaw pytań do refleksji indywidualnej lub grupowej.",
+        "Zestaw pytań do samodzielnego odbioru, rozmowy rodzinnej, dyskusji klasowej albo spotkania po projekcji.",
+      href: "#",
+      label: "Dodaj link do PDF"
+    },
+    {
+      title: "Mini-przewodnik do Raportu",
+      subtitle: "PDF",
+      note:
+        "Krótki przewodnik: od których fragmentów zacząć, na co zwracać uwagę i jak czytać raport bez zagubienia w nadmiarze materiału.",
       href: "#",
       label: "Dodaj link do PDF"
     },
@@ -363,7 +388,7 @@ window.psViewerGuideData = {
       title: "Słownik pojęć",
       subtitle: "PDF",
       note:
-        "Najważniejsze pojęcia historyczne i kontekstowe dla widza.",
+        "Najważniejsze pojęcia historyczne i kontekstowe: obóz, konspiracja, totalitaryzm, świadectwo, raport, ruch oporu.",
       href: "#",
       label: "Dodaj link do PDF"
     }
