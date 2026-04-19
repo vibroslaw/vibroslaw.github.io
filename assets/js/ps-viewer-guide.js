@@ -25,7 +25,16 @@
       downloadTypePrefix: "Format:",
       defaultTabLabel: "Wejście",
       reportExcerptLabel: "Punkt wejścia",
-      activeClass: "is-active"
+      activeClass: "is-active",
+      viewerReportDefaultDate: "—",
+      viewerReportDefaultSignature: "Anonimowo",
+      viewerReportDefaultWhatStayed: "Tutaj pojawi się Twoja pierwsza odpowiedź.",
+      viewerReportDefaultStrongestMoment: "Tutaj pojawi się moment, który wraca najmocniej.",
+      viewerReportDefaultResponsibility: "Tutaj pojawi się Twoja refleksja o odpowiedzialności.",
+      viewerReportDefaultPassForward: "Tutaj pojawi się jedno zdanie, które chcesz przekazać dalej.",
+      viewerReportCopied: "Raport został skopiowany.",
+      viewerReportCleared: "Raport został wyczyszczony.",
+      viewerReportPrintReady: "Otwieram kartę do zapisu jako PDF…"
     },
     en: {
       reportFallbackTitle: "Choose an entry point",
@@ -43,7 +52,16 @@
       downloadTypePrefix: "Format:",
       defaultTabLabel: "Entry",
       reportExcerptLabel: "Entry point",
-      activeClass: "is-active"
+      activeClass: "is-active",
+      viewerReportDefaultDate: "—",
+      viewerReportDefaultSignature: "Anonymous",
+      viewerReportDefaultWhatStayed: "Your first response will appear here.",
+      viewerReportDefaultStrongestMoment: "The moment that returns most strongly will appear here.",
+      viewerReportDefaultResponsibility: "Your reflection on responsibility will appear here.",
+      viewerReportDefaultPassForward: "The sentence you want to pass forward will appear here.",
+      viewerReportCopied: "The report has been copied.",
+      viewerReportCleared: "The report has been cleared.",
+      viewerReportPrintReady: "Opening print card for PDF export…"
     }
   };
 
@@ -64,6 +82,27 @@
   const videoModalTitle = document.getElementById("videoModalTitle");
   const videoModalClose = document.getElementById("videoModalClose");
   const videoModalPlaceholder = document.getElementById("videoModalPlaceholder");
+
+  const viewerReportForm = document.getElementById("viewerReportForm");
+  const viewerReportDate = document.getElementById("viewerReportDate");
+  const viewerReportName = document.getElementById("viewerReportName");
+  const viewerReportAnonymous = document.getElementById("viewerReportAnonymous");
+  const viewerReportWhatStayed = document.getElementById("viewerReportWhatStayed");
+  const viewerReportStrongestMoment = document.getElementById("viewerReportStrongestMoment");
+  const viewerReportResponsibility = document.getElementById("viewerReportResponsibility");
+  const viewerReportPassForward = document.getElementById("viewerReportPassForward");
+
+  const viewerReportNumber = document.getElementById("viewerReportNumber");
+  const viewerReportDatePreview = document.getElementById("viewerReportDatePreview");
+  const viewerReportSignaturePreview = document.getElementById("viewerReportSignaturePreview");
+  const viewerReportWhatStayedPreview = document.getElementById("viewerReportWhatStayedPreview");
+  const viewerReportStrongestMomentPreview = document.getElementById("viewerReportStrongestMomentPreview");
+  const viewerReportResponsibilityPreview = document.getElementById("viewerReportResponsibilityPreview");
+  const viewerReportPassForwardPreview = document.getElementById("viewerReportPassForwardPreview");
+  const viewerReportDownload = document.getElementById("viewerReportDownload");
+  const viewerReportCopy = document.getElementById("viewerReportCopy");
+  const viewerReportClear = document.getElementById("viewerReportClear");
+  const viewerReportStatus = document.getElementById("viewerReportStatus");
 
   let activeReportIndex = 0;
   let activeReportTabIndex = 0;
@@ -132,13 +171,14 @@
 
   function renderChips(container, chips) {
     const list = normalizeArray(chips).filter(Boolean);
-    if (!list.length) return;
+    if (!list.length) return null;
 
     const chipsWrap = createEl("div", "chips");
     list.forEach((chip) => {
       chipsWrap.appendChild(createEl("span", "chip", chip));
     });
     container.appendChild(chipsWrap);
+    return chipsWrap;
   }
 
   function createLinkButton({ href, label, className = "btn btn-secondary", target = "" }) {
@@ -148,6 +188,7 @@
     link.href = hasRealLink(href) ? href : "#";
 
     if (!hasRealLink(href)) {
+      link.classList.add("is-disabled");
       link.setAttribute("aria-disabled", "true");
       link.addEventListener("click", (event) => event.preventDefault());
       link.textContent = label || T.unavailable;
@@ -256,7 +297,6 @@
     reportDetail.innerHTML = "";
 
     const wrapper = createEl("div", "detail-shell");
-
     renderChips(wrapper, getItemValue(entry, ["chips", "tags"], []));
 
     const title = getItemValue(entry, ["title", "name"], "");
@@ -269,20 +309,11 @@
     const excerpt = getItemValue(entry, ["excerpt", "sourceText", "entryText"], "");
     const tabs = normalizeArray(getItemValue(entry, ["tabs", "panels", "sections"], []));
 
-    const head = createEl("div", "report-detail-head");
-    const kicker = getItemValue(entry, ["kicker", "eyebrow", "label"], "");
-
-    if (isMeaningfulString(kicker)) {
-      head.appendChild(createEl("div", "report-detail-kicker", kicker));
-    }
-
-    head.appendChild(createEl("h3", "report-detail-title", title));
+    wrapper.appendChild(createEl("h3", "report-detail-title", title));
 
     if (isMeaningfulString(intro)) {
-      head.appendChild(createEl("p", "report-detail-intro", intro));
+      wrapper.appendChild(createEl("p", "report-detail-intro", intro));
     }
-
-    wrapper.appendChild(head);
 
     if (isMeaningfulString(excerpt)) {
       const excerptBox = createEl("div", "report-excerpt");
@@ -320,10 +351,8 @@
         tabsNav.appendChild(tabButton);
       });
 
-      wrapper.appendChild(tabsNav);
-
       const activeTab = tabs[safeTabIndex];
-      const tabTitle = getItemValue(activeTab, ["title", "heading"], "");
+      const tabTitle = getItemValue(activeTab, ["title", "heading", "label"], "");
       const tabBody = getItemValue(activeTab, ["text", "body", "content"], "");
       const tabHtml = getItemValue(activeTab, ["html", "bodyHtml"], "");
 
@@ -333,7 +362,7 @@
         tabPanel.appendChild(createEl("h4", "report-tab-title", tabTitle));
       }
 
-      const tabPanelBody = createEl("div", "report-tab-text");
+      const tabPanelBody = createEl("div", "report-tab-body");
       if (isMeaningfulString(tabHtml)) {
         tabPanelBody.innerHTML = tabHtml;
       } else {
@@ -341,6 +370,7 @@
       }
 
       tabPanel.appendChild(tabPanelBody);
+      wrapper.appendChild(tabsNav);
       wrapper.appendChild(tabPanel);
     }
 
@@ -352,20 +382,15 @@
     renderReportDetail();
   }
 
-  function createContentCard(item, cardClass) {
-    const card = createEl("article", cardClass);
+  function createGenericCard(item, cardClassName = "card") {
+    const card = createEl("article", cardClassName);
     renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
     const title = getItemValue(item, ["title", "name"], "");
     const text = getItemValue(item, ["text", "body", "description"], "");
-    const subtitle = getItemValue(item, ["subtitle"], "");
 
     if (isMeaningfulString(title)) {
       card.appendChild(createEl("h3", "", title));
-    }
-
-    if (isMeaningfulString(subtitle)) {
-      card.appendChild(createEl("div", "card-subtitle", subtitle));
     }
 
     const copy = createEl("div", "card-copy");
@@ -375,7 +400,7 @@
     return card;
   }
 
-  function renderSimpleGrid(container, items, cardClass) {
+  function renderSimpleGrid(container, items, cardClassName = "card") {
     if (!container) return;
     container.innerHTML = "";
 
@@ -385,7 +410,7 @@
     }
 
     items.forEach((item) => {
-      container.appendChild(createContentCard(item, cardClass));
+      container.appendChild(createGenericCard(item, cardClassName));
     });
   }
 
@@ -423,16 +448,16 @@
       setRichText(copy, text);
       card.appendChild(copy);
 
-      const actions = createEl("div", "download-actions");
-      actions.appendChild(
+      const ctaRow = createEl("div", "card-cta-row");
+      ctaRow.appendChild(
         createLinkButton({
           href,
           label: hasRealLink(href) ? cta : T.unavailable,
-          className: "download-button",
+          className: "btn btn-secondary",
           target: hasRealLink(href) ? "_blank" : ""
         })
       );
-      card.appendChild(actions);
+      card.appendChild(ctaRow);
 
       booksGrid.appendChild(card);
     });
@@ -475,8 +500,8 @@
       setRichText(copy, text);
       card.appendChild(copy);
 
-      const actions = createEl("div", "download-actions");
-      actions.appendChild(
+      const ctaRow = createEl("div", "download-actions");
+      ctaRow.appendChild(
         createLinkButton({
           href,
           label: hasRealLink(href) ? cta : T.unavailable,
@@ -484,7 +509,7 @@
           target: hasRealLink(href) ? "_blank" : ""
         })
       );
-      card.appendChild(actions);
+      card.appendChild(ctaRow);
 
       downloadsGrid.appendChild(card);
     });
@@ -510,8 +535,8 @@
     } else {
       videoModalFrame.src = "";
       videoModalFrame.hidden = true;
-      videoModalPlaceholder.innerHTML = `<p>${T.noVideoText}</p>`;
       videoModalPlaceholder.classList.add("is-visible");
+      videoModalPlaceholder.innerHTML = `<p>${T.noVideoText}</p>`;
     }
 
     videoModal.classList.add("is-open");
@@ -520,11 +545,10 @@
   }
 
   function closeVideoModal() {
-    if (!videoModal || !videoModalFrame || !videoModalPlaceholder) return;
+    if (!videoModal || !videoModalFrame) return;
     videoModal.classList.remove("is-open");
     videoModal.setAttribute("aria-hidden", "true");
     videoModalFrame.src = "";
-    videoModalFrame.hidden = false;
     videoModalPlaceholder.classList.remove("is-visible");
     document.body.classList.remove("video-modal-open");
   }
@@ -545,8 +569,10 @@
 
       const badge = getItemValue(item, ["badge", "kicker", "label"], "");
       if (isMeaningfulString(badge)) {
-        card.appendChild(createEl("div", "micro-video-badge", badge));
+        card.appendChild(createEl("div", "micro-badge", badge));
       }
+
+      renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
       const title = getItemValue(item, ["title", "name"], "");
       const subtitle = getItemValue(item, ["subtitle"], "");
@@ -555,7 +581,7 @@
       card.appendChild(createEl("h3", "", title));
 
       if (isMeaningfulString(subtitle)) {
-        card.appendChild(createEl("div", "micro-video-subtitle", subtitle));
+        card.appendChild(createEl("div", "micro-subtitle", subtitle));
       }
 
       const copy = createEl("div", "card-copy");
@@ -587,7 +613,7 @@
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
 
-      if (target.dataset.closeVideoModal === "true") {
+      if (target.dataset.closeVideoModal === "true" || target === videoModal) {
         closeVideoModal();
       }
     });
@@ -665,6 +691,410 @@
     });
   }
 
+  function formatDisplayDate(value) {
+    if (!isMeaningfulString(value)) return T.viewerReportDefaultDate;
+    try {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString(LANG === "pl" ? "pl-PL" : "en-GB");
+    } catch {
+      return value;
+    }
+  }
+
+  function createReportNumber() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const hh = String(now.getHours()).padStart(2, "0");
+    const min = String(now.getMinutes()).padStart(2, "0");
+    return `RW-${yyyy}${mm}${dd}-${hh}${min}`;
+  }
+
+  function getViewerReportStorageKey() {
+    return `ps-viewer-report-${LANG}`;
+  }
+
+  function setStatus(message) {
+    if (!viewerReportStatus) return;
+    viewerReportStatus.textContent = message || "";
+  }
+
+  function getViewerReportState() {
+    return {
+      reportNumber: viewerReportNumber?.textContent?.trim() || createReportNumber(),
+      date: viewerReportDate?.value || "",
+      name: viewerReportName?.value?.trim() || "",
+      anonymous: !!viewerReportAnonymous?.checked,
+      whatStayed: viewerReportWhatStayed?.value?.trim() || "",
+      strongestMoment: viewerReportStrongestMoment?.value?.trim() || "",
+      responsibility: viewerReportResponsibility?.value?.trim() || "",
+      passForward: viewerReportPassForward?.value?.trim() || ""
+    };
+  }
+
+  function saveViewerReportState() {
+    if (!viewerReportForm) return;
+    const state = getViewerReportState();
+    localStorage.setItem(getViewerReportStorageKey(), JSON.stringify(state));
+  }
+
+  function loadViewerReportState() {
+    if (!viewerReportForm) return;
+    const raw = localStorage.getItem(getViewerReportStorageKey());
+    if (!raw) return;
+
+    try {
+      const state = JSON.parse(raw);
+      if (viewerReportNumber && isMeaningfulString(state.reportNumber)) {
+        viewerReportNumber.textContent = state.reportNumber;
+      }
+      if (viewerReportDate && isMeaningfulString(state.date)) viewerReportDate.value = state.date;
+      if (viewerReportName && isMeaningfulString(state.name)) viewerReportName.value = state.name;
+      if (viewerReportAnonymous) viewerReportAnonymous.checked = !!state.anonymous;
+      if (viewerReportWhatStayed && isMeaningfulString(state.whatStayed)) {
+        viewerReportWhatStayed.value = state.whatStayed;
+      }
+      if (viewerReportStrongestMoment && isMeaningfulString(state.strongestMoment)) {
+        viewerReportStrongestMoment.value = state.strongestMoment;
+      }
+      if (viewerReportResponsibility && isMeaningfulString(state.responsibility)) {
+        viewerReportResponsibility.value = state.responsibility;
+      }
+      if (viewerReportPassForward && isMeaningfulString(state.passForward)) {
+        viewerReportPassForward.value = state.passForward;
+      }
+    } catch {
+      // ignore corrupted local state
+    }
+  }
+
+  function updateViewerReportPreview() {
+    if (!viewerReportForm) return;
+
+    const state = getViewerReportState();
+
+    if (viewerReportDatePreview) {
+      viewerReportDatePreview.textContent = formatDisplayDate(state.date);
+    }
+
+    if (viewerReportSignaturePreview) {
+      viewerReportSignaturePreview.textContent =
+        state.anonymous || !state.name
+          ? T.viewerReportDefaultSignature
+          : state.name;
+    }
+
+    if (viewerReportWhatStayedPreview) {
+      viewerReportWhatStayedPreview.textContent =
+        state.whatStayed || T.viewerReportDefaultWhatStayed;
+    }
+
+    if (viewerReportStrongestMomentPreview) {
+      viewerReportStrongestMomentPreview.textContent =
+        state.strongestMoment || T.viewerReportDefaultStrongestMoment;
+    }
+
+    if (viewerReportResponsibilityPreview) {
+      viewerReportResponsibilityPreview.textContent =
+        state.responsibility || T.viewerReportDefaultResponsibility;
+    }
+
+    if (viewerReportPassForwardPreview) {
+      viewerReportPassForwardPreview.textContent =
+        state.passForward || T.viewerReportDefaultPassForward;
+    }
+
+    saveViewerReportState();
+  }
+
+  function buildViewerReportText() {
+    const state = getViewerReportState();
+    const signature =
+      state.anonymous || !state.name ? T.viewerReportDefaultSignature : state.name;
+
+    return [
+      "Prawda Sumienia",
+      "Raport widza",
+      state.reportNumber,
+      "",
+      `Data: ${formatDisplayDate(state.date)}`,
+      `Podpis: ${signature}`,
+      "",
+      "Co zostało po seansie:",
+      state.whatStayed || "—",
+      "",
+      "Najmocniejszy moment:",
+      state.strongestMoment || "—",
+      "",
+      "Odpowiedzialność:",
+      state.responsibility || "—",
+      "",
+      "Co przekazać dalej:",
+      state.passForward || "—",
+      "",
+      "To nie jest raport historyczny. To osobista odpowiedź po spotkaniu ze świadectwem."
+    ].join("\n");
+  }
+
+  async function copyViewerReport() {
+    try {
+      await navigator.clipboard.writeText(buildViewerReportText());
+      setStatus(T.viewerReportCopied);
+    } catch {
+      setStatus("");
+    }
+  }
+
+  function clearViewerReport() {
+    if (!viewerReportForm) return;
+
+    viewerReportForm.reset();
+
+    if (viewerReportNumber) {
+      viewerReportNumber.textContent = createReportNumber();
+    }
+
+    if (viewerReportDate) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      viewerReportDate.value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    updateViewerReportPreview();
+    localStorage.removeItem(getViewerReportStorageKey());
+    setStatus(T.viewerReportCleared);
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function openViewerReportPrintCard() {
+    const state = getViewerReportState();
+    const signature =
+      state.anonymous || !state.name ? T.viewerReportDefaultSignature : state.name;
+
+    const reportHtml = `
+<!DOCTYPE html>
+<html lang="${LANG}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${escapeHtml(state.reportNumber)}</title>
+<style>
+  body{
+    margin:0;
+    padding:32px;
+    background:#f2ebdd;
+    color:#171717;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .sheet{
+    max-width:900px;
+    margin:0 auto;
+    background:#fbf7ee;
+    border:1px solid rgba(0,0,0,.12);
+    box-shadow:0 18px 60px rgba(0,0,0,.12);
+    padding:34px 32px 28px;
+  }
+  .top{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:flex-start;
+    border-bottom:1px solid rgba(0,0,0,.10);
+    padding-bottom:18px;
+    margin-bottom:20px;
+  }
+  .brand{
+    font-size:22px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .sub{
+    margin-top:6px;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#665f53;
+  }
+  .number{
+    font-size:12px;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    border:1px solid rgba(0,0,0,.12);
+    padding:8px 12px;
+  }
+  .meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .meta-label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#665f53;
+    margin-bottom:4px;
+  }
+  .meta-value{
+    font-size:15px;
+    line-height:1.5;
+  }
+  .block{
+    padding-bottom:16px;
+    margin-bottom:16px;
+    border-bottom:1px solid rgba(0,0,0,.08);
+  }
+  .block-label{
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#665f53;
+    margin-bottom:8px;
+  }
+  .block-value{
+    white-space:pre-line;
+    line-height:1.72;
+    font-size:16px;
+  }
+  .footer{
+    margin-top:10px;
+    font-size:13px;
+    line-height:1.6;
+    color:#665f53;
+  }
+  @media print{
+    body{padding:0;background:#fff;}
+    .sheet{box-shadow:none;border:0;max-width:none;}
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="top">
+      <div>
+        <div class="brand">Prawda Sumienia</div>
+        <div class="sub">Raport widza · odpowiedź po seansie</div>
+      </div>
+      <div class="number">${escapeHtml(state.reportNumber)}</div>
+    </div>
+
+    <div class="meta">
+      <div>
+        <span class="meta-label">Data</span>
+        <div class="meta-value">${escapeHtml(formatDisplayDate(state.date))}</div>
+      </div>
+      <div>
+        <span class="meta-label">Podpis</span>
+        <div class="meta-value">${escapeHtml(signature)}</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Co zostało po seansie</div>
+      <div class="block-value">${escapeHtml(state.whatStayed || "—")}</div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Najmocniejszy moment</div>
+      <div class="block-value">${escapeHtml(state.strongestMoment || "—")}</div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Odpowiedzialność</div>
+      <div class="block-value">${escapeHtml(state.responsibility || "—")}</div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Co przekazać dalej</div>
+      <div class="block-value">${escapeHtml(state.passForward || "—")}</div>
+    </div>
+
+    <div class="footer">
+      To nie jest raport historyczny. To osobista odpowiedź po spotkaniu ze świadectwem.
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const printWindow = window.open("", "_blank", "width=980,height=860");
+    if (!printWindow) return;
+
+    printWindow.document.open();
+    printWindow.document.write(reportHtml);
+    printWindow.document.close();
+
+    setStatus(T.viewerReportPrintReady);
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+    };
+  }
+
+  function initViewerReport() {
+    if (!viewerReportForm) return;
+
+    if (viewerReportNumber && !isMeaningfulString(viewerReportNumber.textContent)) {
+      viewerReportNumber.textContent = createReportNumber();
+    }
+
+    if (viewerReportDate && !viewerReportDate.value) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      viewerReportDate.value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    loadViewerReportState();
+    updateViewerReportPreview();
+
+    [
+      viewerReportDate,
+      viewerReportName,
+      viewerReportAnonymous,
+      viewerReportWhatStayed,
+      viewerReportStrongestMoment,
+      viewerReportResponsibility,
+      viewerReportPassForward
+    ].forEach((field) => {
+      if (!field) return;
+      field.addEventListener("input", () => {
+        updateViewerReportPreview();
+        setStatus("");
+      });
+      field.addEventListener("change", () => {
+        updateViewerReportPreview();
+        setStatus("");
+      });
+    });
+
+    if (viewerReportCopy) {
+      viewerReportCopy.addEventListener("click", copyViewerReport);
+    }
+
+    if (viewerReportClear) {
+      viewerReportClear.addEventListener("click", clearViewerReport);
+    }
+
+    if (viewerReportDownload) {
+      viewerReportDownload.addEventListener("click", openViewerReportPrintCard);
+    }
+  }
+
   function init() {
     updateReportExplorer();
     renderSimpleGrid(filmLanguageGrid, getFilmLanguageItems(), "language-card");
@@ -676,6 +1106,7 @@
     initVideoModal();
     initSectionNav();
     initSmoothScrollOffset();
+    initViewerReport();
   }
 
   if (document.readyState === "loading") {
