@@ -26,10 +26,36 @@
     rel="stylesheet"
   />
 
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/cinematic.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
   <link rel="stylesheet" href="/assets/css/ps-viewer-guide.css" />
 </head>
-<body>
+<body data-page="ps-viewer-guide" data-lang="en">
   <a class="skip-link" href="#mainContent">Skip to content</a>
+
+  <div class="page-transition" id="pageTransition" aria-hidden="true"></div>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="mobile-menu-link" href="/">Homepage</a>
+      <a class="mobile-menu-link track-link" href="/rap-ort/" data-track-title="Rap-Ort">Rap-Ort</a>
+      <a class="mobile-menu-link track-link" href="/rap-ort/prawda-sumienia/" data-track-title="Prawda Sumienia">Prawda Sumienia</a>
+      <a class="mobile-menu-link" href="#report">Report</a>
+      <a class="mobile-menu-link" href="#language">Film Language</a>
+      <a class="mobile-menu-link" href="#timeline">Pilecki’s Story</a>
+      <a class="mobile-menu-link" href="#systems">Totalitarian Systems</a>
+      <a class="mobile-menu-link" href="#questions">Questions</a>
+      <a class="mobile-menu-link" href="#deeper">Go Deeper</a>
+
+      <div class="mobile-lang-switch">
+        <a href="/rap-ort/prawda-sumienia/viewer/" class="active">EN</a>
+        <span>|</span>
+        <a href="/rap-ort/prawda-sumienia/widz/">PL</a>
+      </div>
+    </div>
+  </div>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -38,13 +64,33 @@
         <div class="brand-sub">Viewer Guide · Rap-Ort</div>
       </a>
 
-      <nav class="desktop-nav" aria-label="Page navigation">
-        <a href="#report">Report</a>
-        <a href="#language">Film Language</a>
-        <a href="#timeline">Pilecki’s Story</a>
-        <a href="#systems">Totalitarian Systems</a>
-        <a href="#questions">Questions</a>
-        <a href="#deeper">Go Deeper</a>
+      <nav class="desktop-nav desktop-nav-compact" aria-label="Page navigation">
+        <a href="/" class="nav-button">Homepage</a>
+        <a href="/rap-ort/" class="nav-button track-link" data-track-title="Rap-Ort">Rap-Ort</a>
+        <a href="/rap-ort/prawda-sumienia/" class="nav-button track-link" data-track-title="Prawda Sumienia">Work</a>
+
+        <a href="#report" class="nav-button">Report</a>
+        <a href="#language" class="nav-button">Film Language</a>
+        <a href="#timeline" class="nav-button">Pilecki’s Story</a>
+
+        <div class="lang-switch" aria-label="Language switch">
+          <a href="/rap-ort/prawda-sumienia/viewer/" class="active">EN</a>
+          <span>|</span>
+          <a href="/rap-ort/prawda-sumienia/widz/">PL</a>
+        </div>
+
+        <button
+          class="mobile-nav-toggle desktop-menu-toggle"
+          id="mobileNavToggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobileMenuOverlay"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </nav>
     </div>
   </header>
@@ -339,6 +385,9 @@
     </div>
   </div>
 
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/navigation.js"></script>
+  <script src="/assets/js/transitions.js"></script>
   <script src="/assets/js/ps-viewer-guide-data-en.js"></script>
   <script src="/assets/js/ps-viewer-guide.js"></script>
 </body>
