@@ -16,6 +16,7 @@
       emptyGrid: "Treść pojawi się tutaj po uzupełnieniu danych.",
       openVideo: "Odtwórz materiał",
       closeVideo: "Zamknij",
+      noVideoTitle: "Materiał dodatkowy",
       noVideoText:
         "Dodaj identyfikator YouTube w pliku danych, aby ten materiał odtwarzał się bezpośrednio ze strony.",
       linkLabel: "Otwórz",
@@ -24,9 +25,21 @@
       downloadTypePrefix: "Format:",
       defaultTabLabel: "Wejście",
       reportExcerptLabel: "Punkt wejścia",
-      copied: "Tekst raportu został skopiowany.",
+      copied: "Raport został skopiowany do schowka.",
       cleared: "Raport został wyczyszczony.",
-      pdfReady: "Otworzono wersję gotową do zapisu jako PDF.",
+      printHint: "Otworzono widok do zapisu jako PDF.",
+      copyError: "Nie udało się skopiować raportu.",
+      reportDefaultText:
+        "Tutaj pojawi się Twoja odpowiedź po seansie — jedno zdanie, jedna myśl albo jedno pytanie, które zostało.",
+      reportDefaultPlace: "Po seansie",
+      reportPaperTitle: "RAPORT",
+      reportPaperSubtitle: "(dokument osobisty)",
+      reportPaperIntro:
+        "Po obejrzeniu filmu i po wejściu w źródło można zapisać jedno zdanie, jedną myśl albo jedno pytanie, które zostało po spotkaniu z historią.",
+      reportPaperFooter:
+        "dokument pozostaje do Twojej dyspozycji",
+      reportDateLabel: "Data",
+      reportPlaceLabel: "Miejsce",
       activeClass: "is-active"
     },
     en: {
@@ -36,6 +49,7 @@
       emptyGrid: "Content will appear here once the data file is filled in.",
       openVideo: "Play video",
       closeVideo: "Close",
+      noVideoTitle: "Additional material",
       noVideoText:
         "Add a YouTube ID in the data file so this material can be played directly from the page.",
       linkLabel: "Open",
@@ -44,9 +58,21 @@
       downloadTypePrefix: "Format:",
       defaultTabLabel: "Entry",
       reportExcerptLabel: "Entry point",
-      copied: "The report text has been copied.",
+      copied: "The report has been copied to the clipboard.",
       cleared: "The report has been cleared.",
-      pdfReady: "A PDF-ready version has been opened.",
+      printHint: "A print view has been opened so you can save it as PDF.",
+      copyError: "The report could not be copied.",
+      reportDefaultText:
+        "Your response will appear here after the screening — one sentence, one thought, or one question that remained.",
+      reportDefaultPlace: "After the screening",
+      reportPaperTitle: "REPORT",
+      reportPaperSubtitle: "(personal document)",
+      reportPaperIntro:
+        "After the film and after returning to the source, you can write one sentence, one thought, or one question that remained after the encounter with the story.",
+      reportPaperFooter:
+        "this document remains at your disposal",
+      reportDateLabel: "Date",
+      reportPlaceLabel: "Place",
       activeClass: "is-active"
     }
   };
@@ -72,14 +98,15 @@
   const viewerReportForm = document.getElementById("viewerReportForm");
   const viewerReportDate = document.getElementById("viewerReportDate");
   const viewerReportPlace = document.getElementById("viewerReportPlace");
-  const viewerReportWhatStayed = document.getElementById("viewerReportWhatStayed");
+  const viewerReportText = document.getElementById("viewerReportText");
+  const viewerReportDownload = document.getElementById("viewerReportDownload");
+  const viewerReportCopy = document.getElementById("viewerReportCopy");
+  const viewerReportClear = document.getElementById("viewerReportClear");
+  const viewerReportStatus = document.getElementById("viewerReportStatus");
+  const viewerReportNumber = document.getElementById("viewerReportNumber");
   const viewerReportDatePreview = document.getElementById("viewerReportDatePreview");
   const viewerReportPlacePreview = document.getElementById("viewerReportPlacePreview");
-  const viewerReportWhatStayedPreview = document.getElementById("viewerReportWhatStayedPreview");
-  const viewerReportPdfButton = document.getElementById("viewerReportPdfButton");
-  const viewerReportCopyButton = document.getElementById("viewerReportCopyButton");
-  const viewerReportClearButton = document.getElementById("viewerReportClearButton");
-  const viewerReportStatus = document.getElementById("viewerReportStatus");
+  const viewerReportTextPreview = document.getElementById("viewerReportTextPreview");
 
   let activeReportIndex = 0;
   let activeReportTabIndex = 0;
@@ -166,8 +193,8 @@
     if (!hasRealLink(href)) {
       link.classList.add("is-disabled");
       link.setAttribute("aria-disabled", "true");
-      link.addEventListener("click", (event) => event.preventDefault());
       link.textContent = label || T.unavailable;
+      link.addEventListener("click", (event) => event.preventDefault());
     }
 
     if (target) {
@@ -183,6 +210,7 @@
   function renderEmptyState(container) {
     if (!container) return;
     container.innerHTML = "";
+
     const box = createEl("div", "detail-empty");
     box.appendChild(createEl("h3", "", T.reportFallbackTitle));
     box.appendChild(createEl("p", "", T.reportFallbackText));
@@ -272,13 +300,17 @@
 
     reportDetail.innerHTML = "";
 
-    const wrapper = createEl("div", "detail-shell report-detail");
+    const wrapper = createEl("div", "detail-shell");
 
     renderChips(wrapper, getItemValue(entry, ["chips", "tags"], []));
 
     const title = getItemValue(entry, ["title", "name"], "");
     const intro = getItemValue(entry, ["intro", "summary", "lead"], "");
-    const excerptLabel = getItemValue(entry, ["excerptLabel", "sourceLabel"], T.reportExcerptLabel);
+    const excerptLabel = getItemValue(
+      entry,
+      ["excerptLabel", "sourceLabel"],
+      T.reportExcerptLabel
+    );
     const excerpt = getItemValue(entry, ["excerpt", "sourceText", "entryText"], "");
     const tabs = normalizeArray(getItemValue(entry, ["tabs", "panels", "sections"], []));
 
@@ -289,17 +321,18 @@
     }
 
     if (isMeaningfulString(excerpt)) {
-      const excerptBox = createEl("div", "report-excerpt-box");
+      const excerptBox = createEl("div", "report-excerpt");
       excerptBox.appendChild(createEl("div", "report-excerpt-label", excerptLabel));
+
       const excerptText = createEl("div", "report-excerpt-text");
       setRichText(excerptText, excerpt);
       excerptBox.appendChild(excerptText);
+
       wrapper.appendChild(excerptBox);
     }
 
     if (tabs.length) {
-      const tabsNav = createEl("div", "report-tabs-nav");
-      const tabsContent = createEl("div", "report-tabs-content");
+      const tabsNav = createEl("div", "report-tabs");
 
       const safeTabIndex =
         activeReportTabIndex >= 0 && activeReportTabIndex < tabs.length
@@ -329,6 +362,7 @@
       const tabHtml = getItemValue(activeTab, ["html", "bodyHtml"], "");
 
       const tabPanel = createEl("div", "report-tab-panel");
+
       if (isMeaningfulString(tabTitle)) {
         tabPanel.appendChild(createEl("h4", "report-tab-title", tabTitle));
       }
@@ -341,10 +375,8 @@
       }
 
       tabPanel.appendChild(tabPanelBody);
-      tabsContent.appendChild(tabPanel);
-
       wrapper.appendChild(tabsNav);
-      wrapper.appendChild(tabsContent);
+      wrapper.appendChild(tabPanel);
     }
 
     reportDetail.appendChild(wrapper);
@@ -355,28 +387,25 @@
     renderReportDetail();
   }
 
-  function createInfoCard(item, cardClass = "card") {
-    const card = createEl("article", cardClass);
-    const body = createEl("div", "card-body");
-
-    renderChips(body, getItemValue(item, ["chips", "tags"], []));
+  function createInfoCard(item, className) {
+    const card = createEl("article", className);
+    renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
     const title = getItemValue(item, ["title", "name"], "");
     const text = getItemValue(item, ["text", "body", "description"], "");
 
     if (isMeaningfulString(title)) {
-      body.appendChild(createEl("h3", "", title));
+      card.appendChild(createEl("h3", "", title));
     }
 
     const copy = createEl("div", "card-copy");
     setRichText(copy, text);
-    body.appendChild(copy);
+    card.appendChild(copy);
 
-    card.appendChild(body);
     return card;
   }
 
-  function renderSimpleGrid(container, items, cardClass) {
+  function renderSimpleGrid(container, items, className) {
     if (!container) return;
     container.innerHTML = "";
 
@@ -386,7 +415,7 @@
     }
 
     items.forEach((item) => {
-      container.appendChild(createInfoCard(item, cardClass));
+      container.appendChild(createInfoCard(item, className));
     });
   }
 
@@ -395,6 +424,7 @@
     booksGrid.innerHTML = "";
 
     const items = getBooks();
+
     if (!items.length) {
       booksGrid.appendChild(createEl("p", "grid-empty", T.emptyGrid));
       return;
@@ -402,9 +432,8 @@
 
     items.forEach((item) => {
       const card = createEl("article", "book-card");
-      const body = createEl("div", "card-body");
 
-      renderChips(body, getItemValue(item, ["chips", "tags"], []));
+      renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
       const title = getItemValue(item, ["title", "name"], "");
       const author = getItemValue(item, ["author"], "");
@@ -413,16 +442,16 @@
       const cta = getItemValue(item, ["cta", "buttonLabel"], T.linkLabel);
 
       if (isMeaningfulString(title)) {
-        body.appendChild(createEl("h3", "", title));
+        card.appendChild(createEl("h3", "", title));
       }
 
       if (isMeaningfulString(author)) {
-        body.appendChild(createEl("div", "book-author", `${T.booksAuthorPrefix} ${author}`));
+        card.appendChild(createEl("div", "book-author", `${T.booksAuthorPrefix} ${author}`));
       }
 
       const copy = createEl("div", "card-copy");
       setRichText(copy, text);
-      body.appendChild(copy);
+      card.appendChild(copy);
 
       const ctaRow = createEl("div", "card-cta-row");
       ctaRow.appendChild(
@@ -433,9 +462,8 @@
           target: hasRealLink(href) ? "_blank" : ""
         })
       );
-      body.appendChild(ctaRow);
+      card.appendChild(ctaRow);
 
-      card.appendChild(body);
       booksGrid.appendChild(card);
     });
   }
@@ -445,6 +473,7 @@
     downloadsGrid.innerHTML = "";
 
     const items = getDownloads();
+
     if (!items.length) {
       downloadsGrid.appendChild(createEl("p", "grid-empty", T.emptyGrid));
       return;
@@ -452,9 +481,8 @@
 
     items.forEach((item) => {
       const card = createEl("article", "download-card");
-      const body = createEl("div", "card-body");
 
-      renderChips(body, getItemValue(item, ["chips", "tags"], []));
+      renderChips(card, getItemValue(item, ["chips", "tags"], []));
 
       const title = getItemValue(item, ["title", "name"], "");
       const type = getItemValue(item, ["type", "format"], "");
@@ -463,29 +491,28 @@
       const cta = getItemValue(item, ["cta", "buttonLabel"], T.linkLabel);
 
       if (isMeaningfulString(title)) {
-        body.appendChild(createEl("h3", "", title));
+        card.appendChild(createEl("h3", "", title));
       }
 
       if (isMeaningfulString(type)) {
-        body.appendChild(createEl("div", "download-type", `${T.downloadTypePrefix} ${type}`));
+        card.appendChild(createEl("div", "download-type", `${T.downloadTypePrefix} ${type}`));
       }
 
       const copy = createEl("div", "card-copy");
       setRichText(copy, text);
-      body.appendChild(copy);
+      card.appendChild(copy);
 
-      const ctaRow = createEl("div", "download-actions");
+      const ctaRow = createEl("div", "card-cta-row");
       ctaRow.appendChild(
         createLinkButton({
           href,
           label: hasRealLink(href) ? cta : T.unavailable,
-          className: "download-button",
+          className: "btn btn-secondary",
           target: hasRealLink(href) ? "_blank" : ""
         })
       );
-      body.appendChild(ctaRow);
+      card.appendChild(ctaRow);
 
-      card.appendChild(body);
       downloadsGrid.appendChild(card);
     });
   }
@@ -493,10 +520,12 @@
   function openVideoModal(video) {
     if (!videoModal || !videoModalFrame || !videoModalTitle || !videoModalPlaceholder) return;
 
-    const title = getItemValue(video, ["title", "name"], "Video");
+    const title = getItemValue(video, ["title", "name"], T.noVideoTitle);
     const youtubeId = getItemValue(video, ["youtubeId", "videoId", "id"], "");
     const embedUrl = isMeaningfulString(youtubeId)
-      ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeId.trim())}?autoplay=1&rel=0`
+      ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(
+          youtubeId.trim()
+        )}?autoplay=1&rel=0`
       : "";
 
     videoModalTitle.textContent = title;
@@ -505,11 +534,9 @@
       videoModalFrame.src = embedUrl;
       videoModalFrame.hidden = false;
       videoModalPlaceholder.classList.remove("is-visible");
-      videoModalPlaceholder.hidden = true;
     } else {
       videoModalFrame.src = "";
       videoModalFrame.hidden = true;
-      videoModalPlaceholder.hidden = false;
       videoModalPlaceholder.classList.add("is-visible");
       videoModalPlaceholder.innerHTML = `<p>${T.noVideoText}</p>`;
     }
@@ -524,6 +551,8 @@
     videoModal.classList.remove("is-open");
     videoModal.setAttribute("aria-hidden", "true");
     videoModalFrame.src = "";
+    videoModalFrame.hidden = false;
+    videoModalPlaceholder.classList.remove("is-visible");
     document.body.classList.remove("video-modal-open");
   }
 
@@ -532,6 +561,7 @@
     microVideoGrid.innerHTML = "";
 
     const items = getMicroVideos();
+
     if (!items.length) {
       microVideoGrid.appendChild(createEl("p", "grid-empty", T.emptyGrid));
       return;
@@ -539,11 +569,10 @@
 
     items.forEach((item) => {
       const card = createEl("article", "micro-video-card");
-      const body = createEl("div", "card-body");
 
       const badge = getItemValue(item, ["badge", "kicker", "label"], "");
       if (isMeaningfulString(badge)) {
-        body.appendChild(createEl("div", "micro-badge", badge));
+        card.appendChild(createEl("div", "micro-badge", badge));
       }
 
       const title = getItemValue(item, ["title", "name"], "");
@@ -551,27 +580,26 @@
       const text = getItemValue(item, ["text", "body", "description"], "");
 
       if (isMeaningfulString(title)) {
-        body.appendChild(createEl("h3", "", title));
+        card.appendChild(createEl("h3", "", title));
       }
 
       if (isMeaningfulString(subtitle)) {
-        body.appendChild(createEl("div", "micro-subtitle", subtitle));
+        card.appendChild(createEl("div", "micro-subtitle", subtitle));
       }
 
       const copy = createEl("div", "card-copy");
       setRichText(copy, text);
-      body.appendChild(copy);
+      card.appendChild(copy);
 
-      const actions = createEl("div", "micro-video-actions");
+      const actions = createEl("div", "card-cta-row");
       const playButton = document.createElement("button");
       playButton.type = "button";
-      playButton.className = "micro-video-button";
+      playButton.className = "btn btn-secondary";
       playButton.textContent = getItemValue(item, ["cta", "buttonLabel"], T.openVideo);
       playButton.addEventListener("click", () => openVideoModal(item));
       actions.appendChild(playButton);
 
-      body.appendChild(actions);
-      card.appendChild(body);
+      card.appendChild(actions);
       microVideoGrid.appendChild(card);
     });
   }
@@ -655,7 +683,8 @@
         event.preventDefault();
 
         const headerOffset = header ? header.offsetHeight + 18 : 90;
-        const targetY = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+        const targetY =
+          target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
 
         window.scrollTo({
           top: targetY,
@@ -665,283 +694,395 @@
     });
   }
 
-  function setStatus(message) {
-    if (viewerReportStatus) {
-      viewerReportStatus.textContent = message || "";
-    }
+  function formatDateForInput(value) {
+    const date = value instanceof Date ? value : new Date(value);
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
   }
 
-  function formatDate(value) {
-    if (!value) return "—";
+  function formatDateForDisplay(value) {
+    if (!isMeaningfulString(value)) return "—";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
-    return date.toLocaleDateString(LANG === "pl" ? "pl-PL" : "en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    });
+
+    return LANG === "pl"
+      ? date.toLocaleDateString("pl-PL")
+      : date.toLocaleDateString("en-GB");
+  }
+
+  function buildReportNumber() {
+    const now = new Date();
+    const datePart =
+      `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
+    const timePart =
+      `${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+    const prefix = LANG === "pl" ? "RW" : "VR";
+    return `${prefix}-${datePart}-${timePart}`;
   }
 
   function getViewerReportStorageKey() {
-    return `ps-viewer-report-${LANG}-${window.location.pathname}`;
+    return `ps-viewer-guide-report-${LANG}-${window.location.pathname}`;
   }
 
-  function getViewerReportPayload() {
+  function getViewerReportSnapshot() {
     return {
-      date: viewerReportDate?.value || "",
-      place: viewerReportPlace?.value || (LANG === "pl" ? "Oświęcim" : "Oświęcim"),
-      text: viewerReportWhatStayed?.value || ""
+      date: viewerReportDate ? viewerReportDate.value : "",
+      place: viewerReportPlace ? viewerReportPlace.value.trim() : "",
+      text: viewerReportText ? viewerReportText.value.trim() : "",
+      number: viewerReportNumber ? viewerReportNumber.textContent.trim() : buildReportNumber()
     };
   }
 
-  function saveViewerReport() {
+  function persistViewerReport() {
     if (!viewerReportForm) return;
-    localStorage.setItem(getViewerReportStorageKey(), JSON.stringify(getViewerReportPayload()));
+    try {
+      localStorage.setItem(
+        getViewerReportStorageKey(),
+        JSON.stringify(getViewerReportSnapshot())
+      );
+    } catch (_) {}
   }
 
-  function loadViewerReport() {
-    if (!viewerReportForm) return;
-    const raw = localStorage.getItem(getViewerReportStorageKey());
-    if (!raw) return;
+  function restoreViewerReport() {
+    if (!viewerReportForm) return false;
 
     try {
-      const parsed = JSON.parse(raw);
+      const raw = localStorage.getItem(getViewerReportStorageKey());
+      if (!raw) return false;
 
-      if (viewerReportDate && parsed.date) viewerReportDate.value = parsed.date;
-      if (viewerReportPlace && parsed.place) viewerReportPlace.value = parsed.place;
-      if (viewerReportWhatStayed && parsed.text) viewerReportWhatStayed.value = parsed.text;
-    } catch (_) {}
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return false;
+
+      if (viewerReportDate && isMeaningfulString(parsed.date)) {
+        viewerReportDate.value = parsed.date;
+      }
+
+      if (viewerReportPlace && isMeaningfulString(parsed.place)) {
+        viewerReportPlace.value = parsed.place;
+      }
+
+      if (viewerReportText && isMeaningfulString(parsed.text)) {
+        viewerReportText.value = parsed.text;
+      }
+
+      if (viewerReportNumber && isMeaningfulString(parsed.number)) {
+        viewerReportNumber.textContent = parsed.number;
+      }
+
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   function updateViewerReportPreview() {
     if (!viewerReportForm) return;
 
+    const snapshot = getViewerReportSnapshot();
+
     if (viewerReportDatePreview) {
-      viewerReportDatePreview.textContent = formatDate(viewerReportDate?.value || "");
+      viewerReportDatePreview.textContent = formatDateForDisplay(snapshot.date);
     }
 
     if (viewerReportPlacePreview) {
-      const place = (viewerReportPlace?.value || "").trim();
-      viewerReportPlacePreview.textContent = place || (LANG === "pl" ? "Oświęcim" : "Oświęcim");
+      viewerReportPlacePreview.textContent = isMeaningfulString(snapshot.place)
+        ? snapshot.place
+        : T.reportDefaultPlace;
     }
 
-    if (viewerReportWhatStayedPreview) {
-      const text = (viewerReportWhatStayed?.value || "").trim();
-      viewerReportWhatStayedPreview.textContent =
-        text || (LANG === "pl" ? "Twoja odpowiedź pojawi się tutaj." : "Your response will appear here.");
+    if (viewerReportTextPreview) {
+      viewerReportTextPreview.textContent = isMeaningfulString(snapshot.text)
+        ? snapshot.text
+        : T.reportDefaultText;
     }
 
-    saveViewerReport();
+    if (viewerReportNumber && !isMeaningfulString(viewerReportNumber.textContent)) {
+      viewerReportNumber.textContent = buildReportNumber();
+    }
+
+    persistViewerReport();
   }
 
-  function buildViewerReportText() {
-    const payload = getViewerReportPayload();
-
-    if (LANG === "pl") {
-      return [
-        "RAPORT (dokument osobisty)",
-        "",
-        `Data: ${formatDate(payload.date)}`,
-        `Miejsce: ${payload.place || "Oświęcim"}`,
-        "",
-        "Ten dokument nie jest testem wiedzy.",
-        "Jest zapisem chwili, w której historia przestaje być odległa.",
-        "",
-        payload.text || "—"
-      ].join("\n");
+  function setViewerReportStatus(message) {
+    if (viewerReportStatus) {
+      viewerReportStatus.textContent = message || "";
     }
+  }
 
-    return [
-      "REPORT (personal document)",
+  function buildViewerReportPlainText() {
+    const snapshot = getViewerReportSnapshot();
+    const lines = [
+      `${T.reportPaperTitle} ${T.reportPaperSubtitle}`,
+      `${T.reportDateLabel}: ${formatDateForDisplay(snapshot.date)}`,
+      `${T.reportPlaceLabel}: ${isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace}`,
       "",
-      `Date: ${formatDate(payload.date)}`,
-      `Place: ${payload.place || "Oświęcim"}`,
-      "",
-      "This document is not a test of knowledge.",
-      "It is a record of the moment when history stops feeling distant.",
-      "",
-      payload.text || "—"
-    ].join("\n");
+      isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText
+    ];
+
+    return lines.join("\n");
   }
 
   function copyViewerReport() {
-    const text = buildViewerReportText();
-    navigator.clipboard.writeText(text).then(() => {
-      setStatus(T.copied);
-    });
+    const text = buildViewerReportPlainText();
+
+    navigator.clipboard
+      .writeText(text)
+      .then(() => setViewerReportStatus(T.copied))
+      .catch(() => setViewerReportStatus(T.copyError));
   }
 
   function clearViewerReport() {
     if (!viewerReportForm) return;
-    viewerReportForm.reset();
-
-    if (viewerReportPlace) {
-      viewerReportPlace.value = LANG === "pl" ? "Oświęcim" : "Oświęcim";
-    }
 
     if (viewerReportDate) {
-      const today = new Date();
-      viewerReportDate.value = today.toISOString().slice(0, 10);
+      viewerReportDate.value = formatDateForInput(new Date());
     }
 
+    if (viewerReportPlace) {
+      viewerReportPlace.value = T.reportDefaultPlace;
+    }
+
+    if (viewerReportText) {
+      viewerReportText.value = "";
+    }
+
+    if (viewerReportNumber) {
+      viewerReportNumber.textContent = buildReportNumber();
+    }
+
+    try {
+      localStorage.removeItem(getViewerReportStorageKey());
+    } catch (_) {}
+
     updateViewerReportPreview();
-    saveViewerReport();
-    setStatus(T.cleared);
+    setViewerReportStatus(T.cleared);
   }
 
-  function openViewerReportPdf() {
-    const payload = getViewerReportPayload();
-    const printWindow = window.open("", "_blank", "width=900,height=1200");
+  function openViewerReportPrint() {
+    const snapshot = getViewerReportSnapshot();
+    const dateDisplay = formatDateForDisplay(snapshot.date);
+    const placeDisplay = isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace;
+    const textDisplay = isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText;
+    const numberDisplay = isMeaningfulString(snapshot.number) ? snapshot.number : buildReportNumber();
 
+    const printWindow = window.open("", "_blank", "width=980,height=1280");
     if (!printWindow) return;
 
-    const title =
-      LANG === "pl"
-        ? "Raport widza — dokument osobisty"
-        : "Viewer report — personal document";
+    const escapedText = textDisplay
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\n/g, "<br>");
 
-    const intro =
-      LANG === "pl"
-        ? "Ten dokument nie jest testem wiedzy. Jest zapisem chwili, w której historia przestaje być odległa. Jeśli chcesz — zapisz jedną myśl, jedno pytanie lub jedno zdanie, które pozostało po tym doświadczeniu."
-        : "This document is not a test of knowledge. It is a record of the moment when history stops feeling distant. If you wish, write down one thought, one question, or one sentence that remained after this experience.";
+    printWindow.document.open();
+    printWindow.document.write(`<!DOCTYPE html>
+<html lang="${LANG}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${T.reportPaperTitle}</title>
+<style>
+  :root{
+    --paper:#e6d7be;
+    --paper-edge:#cdb896;
+    --paper-text:#34291e;
+    --paper-muted:#6c5845;
+    --rule:#b49a78;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    padding:40px;
+    background:#f3efe8;
+    font-family:"Courier New", monospace;
+    color:var(--paper-text);
+  }
+  .page{
+    max-width:860px;
+    margin:0 auto;
+  }
+  .sheet{
+    position:relative;
+    min-height:1120px;
+    padding:54px 52px 42px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.02)),
+      linear-gradient(180deg, var(--paper), #dcc8a8 100%);
+    border:1px solid rgba(123,96,65,.30);
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
+    overflow:hidden;
+  }
+  .sheet::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    opacity:.14;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255,255,255,.46), transparent 18%),
+      radial-gradient(circle at 78% 76%, rgba(120,88,58,.24), transparent 24%),
+      repeating-linear-gradient(
+        0deg,
+        rgba(78,59,41,.035) 0px,
+        rgba(78,59,41,.035) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .top{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    margin-bottom:30px;
+  }
+  .title{
+    font-size:42px;
+    line-height:1;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin:0;
+  }
+  .subtitle{
+    margin-top:8px;
+    font-size:16px;
+    color:var(--paper-muted);
+  }
+  .number{
+    margin-top:10px;
+    font-size:14px;
+    color:var(--paper-muted);
+    letter-spacing:.06em;
+  }
+  .meta{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:24px;
+    font-size:16px;
+  }
+  .intro{
+    position:relative;
+    z-index:1;
+    margin-bottom:24px;
+    line-height:1.9;
+    font-size:16px;
+    color:#4a3b2d;
+  }
+  .body{
+    position:relative;
+    z-index:1;
+    font-size:17px;
+    line-height:2.05;
+    white-space:pre-wrap;
+    word-break:break-word;
+    min-height:420px;
+  }
+  .rule{
+    height:1px;
+    margin:26px 0 0;
+    background:linear-gradient(90deg, rgba(180,154,120,.88), rgba(180,154,120,.58));
+  }
+  .footer{
+    position:relative;
+    z-index:1;
+    margin-top:24px;
+    text-align:center;
+    font-size:14px;
+    color:var(--paper-muted);
+  }
+  @media print{
+    body{padding:0;background:#fff}
+    .page{max-width:none}
+    .sheet{box-shadow:none;border:0;min-height:auto}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="sheet">
+      <div class="top">
+        <h1 class="title">${T.reportPaperTitle}</h1>
+        <div class="subtitle">${T.reportPaperSubtitle}</div>
+        <div class="number">${numberDisplay}</div>
+      </div>
 
-    const footer =
-      LANG === "pl"
-        ? "dokument pozostaje do Twojej dyspozycji"
-        : "this document remains at your disposal";
+      <div class="meta">
+        <div><strong>${T.reportDateLabel}:</strong> ${dateDisplay}</div>
+        <div><strong>${T.reportPlaceLabel}:</strong> ${placeDisplay}</div>
+      </div>
 
-    const contentText = (payload.text || "—").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      <div class="intro">${T.reportPaperIntro}</div>
 
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html lang="${LANG}">
-      <head>
-        <meta charset="UTF-8" />
-        <title>${title}</title>
-        <style>
-          @page { size: A4; margin: 16mm; }
-          body{
-            margin:0;
-            background:#f3ead8;
-            color:#17120d;
-            font-family:"Courier New", monospace;
-          }
-          .paper{
-            min-height:calc(100vh - 32px);
-            box-sizing:border-box;
-            padding:44px 42px 36px;
-            background:
-              radial-gradient(circle at 20% 12%, rgba(255,255,255,.34), transparent 18%),
-              radial-gradient(circle at 84% 78%, rgba(129,92,55,.10), transparent 18%),
-              linear-gradient(180deg, #eee3cf 0%, #e4d3ba 100%);
-            border:1px solid rgba(80,52,33,.08);
-          }
-          .title{
-            text-align:center;
-            font-size:30px;
-            letter-spacing:.22em;
-            font-weight:700;
-            margin:0;
-          }
-          .subtitle{
-            text-align:center;
-            margin-top:10px;
-            font-size:20px;
-            font-weight:600;
-          }
-          .meta{
-            margin-top:52px;
-            font-size:20px;
-            line-height:1.4;
-          }
-          .intro{
-            margin-top:50px;
-            max-width:30ch;
-            font-size:19px;
-            line-height:1.45;
-            font-weight:600;
-          }
-          .text{
-            margin-top:38px;
-            min-height:120px;
-            font-size:18px;
-            line-height:1.7;
-            white-space:pre-line;
-          }
-          .rule{
-            height:1px;
-            background:rgba(40,31,23,.28);
-            margin:26px 0;
-          }
-          .footer{
-            margin-top:46px;
-            font-size:18px;
-            font-weight:600;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="paper">
-          <h1 class="title">${LANG === "pl" ? "RAPORT" : "REPORT"}</h1>
-          <div class="subtitle">(${LANG === "pl" ? "dokument osobisty" : "personal document"})</div>
+      <div class="body">${escapedText}</div>
 
-          <div class="meta">
-            <div><strong>${LANG === "pl" ? "Data" : "Date"}:</strong> ${formatDate(payload.date)}</div>
-            <div><strong>${LANG === "pl" ? "Miejsce" : "Place"}:</strong> ${payload.place || "Oświęcim"}</div>
-          </div>
+      <div class="rule"></div>
 
-          <div class="intro">${intro}</div>
-
-          <div class="text">${contentText}</div>
-          <div class="rule"></div>
-          <div class="rule"></div>
-          <div class="rule"></div>
-          <div class="rule"></div>
-          <div class="footer">${footer}</div>
-        </div>
-      </body>
-      </html>
-    `);
-
+      <div class="footer">${T.reportPaperFooter}</div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        window.print();
+      }, 250);
+    });
+  <\/script>
+</body>
+</html>`);
     printWindow.document.close();
-    printWindow.focus();
-    setTimeout(() => {
-      printWindow.print();
-    }, 300);
 
-    setStatus(T.pdfReady);
+    setViewerReportStatus(T.printHint);
   }
 
   function initViewerReport() {
     if (!viewerReportForm) return;
 
-    if (viewerReportDate && !viewerReportDate.value) {
-      const today = new Date();
-      viewerReportDate.value = today.toISOString().slice(0, 10);
+    const restored = restoreViewerReport();
+
+    if (!restored) {
+      if (viewerReportDate && !viewerReportDate.value) {
+        viewerReportDate.value = formatDateForInput(new Date());
+      }
+
+      if (viewerReportPlace && !viewerReportPlace.value.trim()) {
+        viewerReportPlace.value = T.reportDefaultPlace;
+      }
+
+      if (viewerReportNumber && !viewerReportNumber.textContent.trim()) {
+        viewerReportNumber.textContent = buildReportNumber();
+      }
     }
 
-    loadViewerReport();
     updateViewerReportPreview();
 
-    [viewerReportDate, viewerReportPlace, viewerReportWhatStayed]
-      .filter(Boolean)
-      .forEach((el) => {
-        el.addEventListener("input", updateViewerReportPreview);
-        el.addEventListener("change", updateViewerReportPreview);
-      });
-
-    if (viewerReportCopyButton) {
-      viewerReportCopyButton.addEventListener("click", copyViewerReport);
+    if (viewerReportDate) {
+      viewerReportDate.addEventListener("input", updateViewerReportPreview);
+      viewerReportDate.addEventListener("change", updateViewerReportPreview);
     }
 
-    if (viewerReportClearButton) {
-      viewerReportClearButton.addEventListener("click", () => {
-        setTimeout(clearViewerReport, 0);
-      });
+    if (viewerReportPlace) {
+      viewerReportPlace.addEventListener("input", updateViewerReportPreview);
     }
 
-    if (viewerReportPdfButton) {
-      viewerReportPdfButton.addEventListener("click", openViewerReportPdf);
+    if (viewerReportText) {
+      viewerReportText.addEventListener("input", updateViewerReportPreview);
+    }
+
+    if (viewerReportCopy) {
+      viewerReportCopy.addEventListener("click", copyViewerReport);
+    }
+
+    if (viewerReportClear) {
+      viewerReportClear.addEventListener("click", clearViewerReport);
+    }
+
+    if (viewerReportDownload) {
+      viewerReportDownload.addEventListener("click", openViewerReportPrint);
     }
   }
 
