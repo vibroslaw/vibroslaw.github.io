@@ -41,7 +41,7 @@
     <div class="mobile-menu-panel">
       <a class="mobile-menu-link" href="/pl/">Strona główna</a>
       <a class="mobile-menu-link track-link" href="/rap-ort/pl/" data-track-title="Rap-Ort">Rap-Ort</a>
-      <a class="mobile-menu-link track-link" href="/rap-ort/prawda-sumienia/pl/" data-track-title="Prawda Sumienia">Prawda Sumienia</a>
+      <a class="mobile-menu-link track-link" href="/rap-ort/prawda-sumienia/pl/" data-track-title="Prawda Sumienia">Dzieło</a>
 
       <a class="mobile-menu-link" href="#report">Raport</a>
       <a class="mobile-menu-link" href="#language">Język filmu</a>
@@ -140,10 +140,8 @@
               Najpierw film. Potem źródło. Potem pytanie, co z tym zrobić dzisiaj.
             </p>
             <p class="panel-text">
-              Najmocniej działa ten porządek:
-              najpierw pełny seans,
-              potem wejście w wybrane fragmenty raportu,
-              następnie krótkie konteksty biograficzne i dopiero na końcu refleksja.
+              Najmocniej działa ten porządek: najpierw pełny seans, potem wejście w wybrane
+              fragmenty raportu, następnie krótkie konteksty biograficzne i dopiero na końcu refleksja.
               Dzięki temu poradnik nie odbiera filmowi napięcia, ale je pogłębia.
             </p>
           </aside>
@@ -298,19 +296,19 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <div class="section-kicker">Po seansie</div>
+            <div class="section-kicker">Dokument osobisty po seansie</div>
             <h2>Raport widza</h2>
           </div>
           <div class="section-note">
-            To nie jest streszczenie filmu ani próba naśladowania raportu historycznego.
-            To osobista odpowiedź po spotkaniu ze świadectwem — tego, co zostało,
-            co wraca i co domaga się przekazania dalej.
+            To nie jest raport historyczny ani test wiedzy. To krótki zapis chwili,
+            w której historia przestaje być odległa. Jedna myśl, jedno pytanie albo jedno zdanie,
+            które pozostało po tym doświadczeniu.
           </div>
         </div>
 
         <div class="viewer-report-columns">
           <article class="content-panel viewer-report-form-panel">
-            <div class="subsection-label">Napisz swój raport</div>
+            <div class="subsection-label">Wypełnij dokument</div>
 
             <form id="viewerReportForm" class="viewer-report-form" autocomplete="on">
               <div class="viewer-report-meta-row">
@@ -320,59 +318,26 @@
                 </div>
 
                 <div class="field-group">
-                  <label for="viewerReportName">Imię / podpis</label>
+                  <label for="viewerReportPlace">Miejsce</label>
                   <input
-                    id="viewerReportName"
-                    name="viewerReportName"
+                    id="viewerReportPlace"
+                    name="viewerReportPlace"
                     type="text"
                     maxlength="80"
-                    placeholder="np. Piotr / anonimowo"
+                    placeholder="np. Oświęcim"
+                    value="Oświęcim"
                   />
                 </div>
               </div>
 
-              <label class="checkbox-row" for="viewerReportAnonymous">
-                <input id="viewerReportAnonymous" name="viewerReportAnonymous" type="checkbox" />
-                <span>Zapisz jako anonimową odpowiedź</span>
-              </label>
-
               <div class="field-group">
-                <label for="viewerReportWhatStayed">Co zostało z Tobą po seansie?</label>
+                <label for="viewerReportText">Jedna myśl / pytanie / zdanie</label>
                 <textarea
-                  id="viewerReportWhatStayed"
-                  name="viewerReportWhatStayed"
-                  rows="4"
-                  placeholder="Jedno zdanie, które najuczciwiej opisuje to, co zostało po spotkaniu z dziełem."
-                ></textarea>
-              </div>
-
-              <div class="field-group">
-                <label for="viewerReportStrongestMoment">Który moment był najmocniejszy?</label>
-                <textarea
-                  id="viewerReportStrongestMoment"
-                  name="viewerReportStrongestMoment"
-                  rows="4"
-                  placeholder="Może to być scena, słowo, rytm, cisza, detal albo napięcie, które wraca."
-                ></textarea>
-              </div>
-
-              <div class="field-group">
-                <label for="viewerReportResponsibility">Co ten film i raport mówią Ci o odpowiedzialności?</label>
-                <textarea
-                  id="viewerReportResponsibility"
-                  name="viewerReportResponsibility"
-                  rows="4"
-                  placeholder="Nie szukaj idealnej odpowiedzi. Zapisz to, co naprawdę porusza albo zostawia pytanie."
-                ></textarea>
-              </div>
-
-              <div class="field-group">
-                <label for="viewerReportPassForward">Co chciałbyś przekazać dalej po tym spotkaniu?</label>
-                <textarea
-                  id="viewerReportPassForward"
-                  name="viewerReportPassForward"
-                  rows="4"
-                  placeholder="Jedno zdanie dla kogoś, kto jeszcze nie zna tej historii."
+                  id="viewerReportText"
+                  name="viewerReportText"
+                  rows="8"
+                  maxlength="700"
+                  placeholder="Zapisz jedną myśl, jedno pytanie lub jedno zdanie, które pozostało po tym doświadczeniu."
                 ></textarea>
               </div>
 
@@ -389,8 +354,7 @@
               </div>
 
               <p class="report-form-note">
-                To nie jest raport historyczny.
-                To osobista odpowiedź po spotkaniu z dziełem.
+                Najlepiej działa krótki zapis: jedno zdanie, które naprawdę zostało.
               </p>
 
               <div class="report-status" id="viewerReportStatus" aria-live="polite"></div>
@@ -398,58 +362,41 @@
           </article>
 
           <aside class="viewer-report-preview-panel">
-            <div class="subsection-label">Podgląd karty</div>
+            <div class="subsection-label">Podgląd dokumentu</div>
 
-            <div class="viewer-report-card" id="viewerReportCard">
-              <div class="viewer-report-card-top">
-                <div>
-                  <div class="viewer-report-card-brand">Prawda Sumienia</div>
-                  <div class="viewer-report-card-sub">Raport widza · odpowiedź po seansie</div>
+            <div class="viewer-report-card-shell">
+              <div class="viewer-report-paper" id="viewerReportCard">
+                <div class="viewer-report-paper-top">
+                  <h3 class="viewer-report-paper-title">RAPORT</h3>
+                  <div class="viewer-report-paper-subtitle">(dokument osobisty)</div>
                 </div>
-                <div class="viewer-report-card-number" id="viewerReportNumber">RW-0001</div>
-              </div>
 
-              <div class="viewer-report-card-meta">
-                <div class="viewer-report-meta-item">
-                  <span class="viewer-report-meta-label">Data</span>
-                  <span class="viewer-report-meta-value" id="viewerReportDatePreview">—</span>
+                <div class="viewer-report-paper-meta">
+                  <div><strong>Data:</strong> <span id="viewerReportDatePreview">—</span></div>
+                  <div><strong>Miejsce:</strong> <span id="viewerReportPlacePreview">Oświęcim</span></div>
                 </div>
-                <div class="viewer-report-meta-item">
-                  <span class="viewer-report-meta-label">Podpis</span>
-                  <span class="viewer-report-meta-value" id="viewerReportSignaturePreview">Anonimowo</span>
+
+                <div class="viewer-report-paper-intro">
+                  Ten dokument nie jest testem wiedzy.
+                  Jest zapisem chwili, w której historia przestaje być odległa.
+                  Jeśli chcesz — zapisz jedną myśl, jedno pytanie lub jedno zdanie,
+                  które pozostało po tym doświadczeniu.
                 </div>
-              </div>
 
-              <div class="viewer-report-block">
-                <div class="viewer-report-block-label">Co zostało po seansie</div>
-                <p class="viewer-report-block-value" id="viewerReportWhatStayedPreview">
-                  Tutaj pojawi się Twoja pierwsza odpowiedź.
-                </p>
-              </div>
+                <div class="viewer-report-paper-lines">
+                  <div class="viewer-report-paper-line-text" id="viewerReportTextPreview">
+                    Twoja odpowiedź pojawi się tutaj.
+                  </div>
+                  <div class="viewer-report-paper-rule"></div>
+                  <div class="viewer-report-paper-rule"></div>
+                  <div class="viewer-report-paper-rule"></div>
+                  <div class="viewer-report-paper-rule"></div>
+                  <div class="viewer-report-paper-rule"></div>
+                </div>
 
-              <div class="viewer-report-block">
-                <div class="viewer-report-block-label">Najmocniejszy moment</div>
-                <p class="viewer-report-block-value" id="viewerReportStrongestMomentPreview">
-                  Tutaj pojawi się moment, który wraca najmocniej.
-                </p>
-              </div>
-
-              <div class="viewer-report-block">
-                <div class="viewer-report-block-label">Odpowiedzialność</div>
-                <p class="viewer-report-block-value" id="viewerReportResponsibilityPreview">
-                  Tutaj pojawi się Twoja refleksja o odpowiedzialności.
-                </p>
-              </div>
-
-              <div class="viewer-report-block">
-                <div class="viewer-report-block-label">Co przekazać dalej</div>
-                <p class="viewer-report-block-value" id="viewerReportPassForwardPreview">
-                  Tutaj pojawi się jedno zdanie, które chcesz przekazać dalej.
-                </p>
-              </div>
-
-              <div class="viewer-report-card-footer">
-                To nie jest raport historyczny. To osobista odpowiedź po spotkaniu ze świadectwem.
+                <div class="viewer-report-paper-footer">
+                  dokument pozostaje do Twojej dyspozycji
+                </div>
               </div>
             </div>
           </aside>
