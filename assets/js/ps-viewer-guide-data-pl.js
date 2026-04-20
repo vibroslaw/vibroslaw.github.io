@@ -1,1108 +1,443 @@
-(() => {
-  "use strict";
-
-  if (window.__psViewerGuideInitialized) return;
-  window.__psViewerGuideInitialized = true;
-
-  const LANG = (document.documentElement.lang || "en").toLowerCase().startsWith("pl")
-    ? "pl"
-    : "en";
-
-  const I18N = {
-    pl: {
-      reportFallbackTitle: "Wybierz punkt wejścia",
-      reportFallbackText:
-        "Zacznij od jednego fragmentu. To najlepszy sposób, by wejść głębiej w źródło bez rozbijania ciężaru całego dzieła.",
-      emptyGrid: "Treść pojawi się tutaj po uzupełnieniu danych.",
-      openVideo: "Odtwórz materiał",
-      closeVideo: "Zamknij",
-      noVideoTitle: "Materiał dodatkowy",
-      noVideoText:
-        "Dodaj identyfikator YouTube w pliku danych, aby ten materiał odtwarzał się bezpośrednio ze strony.",
-      linkLabel: "Otwórz",
-      unavailable: "W przygotowaniu",
-      booksAuthorPrefix: "Autor:",
-      downloadTypePrefix: "Format:",
-      defaultTabLabel: "Wejście",
-      reportExcerptLabel: "Punkt wejścia",
-      copied: "Raport został skopiowany do schowka.",
-      cleared: "Raport został wyczyszczony.",
-      printHint: "Otworzono widok do zapisu jako PDF.",
-      copyError: "Nie udało się skopiować raportu.",
-      reportDefaultText:
-        "Tutaj pojawi się Twoja odpowiedź po seansie — jedno zdanie, jedna myśl albo jedno pytanie, które zostało.",
-      reportDefaultPlace: "Po seansie",
-      reportPaperTitle: "RAPORT",
-      reportPaperSubtitle: "(dokument osobisty)",
-      reportPaperIntro:
-        "Po obejrzeniu filmu i po wejściu w źródło można zapisać jedno zdanie, jedną myśl albo jedno pytanie, które zostało po spotkaniu z historią.",
-      reportPaperFooter:
-        "dokument pozostaje do Twojej dyspozycji",
-      reportDateLabel: "Data",
-      reportPlaceLabel: "Miejsce",
-      activeClass: "is-active"
-    },
-    en: {
-      reportFallbackTitle: "Choose an entry point",
-      reportFallbackText:
-        "Begin with one fragment. That is the clearest way to enter the source more deeply without weakening the gravity of the work as a whole.",
-      emptyGrid: "Content will appear here once the data file is filled in.",
-      openVideo: "Play video",
-      closeVideo: "Close",
-      noVideoTitle: "Additional material",
-      noVideoText:
-        "Add a YouTube ID in the data file so this material can be played directly from the page.",
-      linkLabel: "Open",
-      unavailable: "Coming soon",
-      booksAuthorPrefix: "Author:",
-      downloadTypePrefix: "Format:",
-      defaultTabLabel: "Entry",
-      reportExcerptLabel: "Entry point",
-      copied: "The report has been copied to the clipboard.",
-      cleared: "The report has been cleared.",
-      printHint: "A print view has been opened so you can save it as PDF.",
-      copyError: "The report could not be copied.",
-      reportDefaultText:
-        "Your response will appear here after the screening — one sentence, one thought, or one question that remained.",
-      reportDefaultPlace: "After the screening",
-      reportPaperTitle: "REPORT",
-      reportPaperSubtitle: "(personal document)",
-      reportPaperIntro:
-        "After the film and after returning to the source, you can write one sentence, one thought, or one question that remained after the encounter with the story.",
-      reportPaperFooter:
-        "this document remains at your disposal",
-      reportDateLabel: "Date",
-      reportPlaceLabel: "Place",
-      activeClass: "is-active"
-    }
-  };
-
-  const T = I18N[LANG];
-  const data = window.psViewerGuideData || {};
-
-  const reportEntryList = document.getElementById("reportEntryList");
-  const reportDetail = document.getElementById("reportDetail");
-  const filmLanguageGrid = document.getElementById("filmLanguageGrid");
-  const microVideoGrid = document.getElementById("microVideoGrid");
-  const systemsGrid = document.getElementById("systemsGrid");
-  const discussionGrid = document.getElementById("discussionGrid");
-  const booksGrid = document.getElementById("booksGrid");
-  const downloadsGrid = document.getElementById("downloadsGrid");
-
-  const videoModal = document.getElementById("videoModal");
-  const videoModalFrame = document.getElementById("videoModalFrame");
-  const videoModalTitle = document.getElementById("videoModalTitle");
-  const videoModalClose = document.getElementById("videoModalClose");
-  const videoModalPlaceholder = document.getElementById("videoModalPlaceholder");
-
-  const viewerReportForm = document.getElementById("viewerReportForm");
-  const viewerReportDate = document.getElementById("viewerReportDate");
-  const viewerReportPlace = document.getElementById("viewerReportPlace");
-  const viewerReportText = document.getElementById("viewerReportText");
-  const viewerReportDownload = document.getElementById("viewerReportDownload");
-  const viewerReportCopy = document.getElementById("viewerReportCopy");
-  const viewerReportClear = document.getElementById("viewerReportClear");
-  const viewerReportStatus = document.getElementById("viewerReportStatus");
-  const viewerReportNumber = document.getElementById("viewerReportNumber");
-  const viewerReportDatePreview = document.getElementById("viewerReportDatePreview");
-  const viewerReportPlacePreview = document.getElementById("viewerReportPlacePreview");
-  const viewerReportTextPreview = document.getElementById("viewerReportTextPreview");
-
-  let activeReportIndex = 0;
-  let activeReportTabIndex = 0;
-
-  function normalizeArray(value) {
-    return Array.isArray(value) ? value : [];
-  }
-
-  function isMeaningfulString(value) {
-    return typeof value === "string" && value.trim().length > 0;
-  }
-
-  function hasRealLink(value) {
-    return isMeaningfulString(value) && value.trim() !== "#";
-  }
-
-  function getItemValue(item, keys, fallback = "") {
-    for (const key of keys) {
-      if (item && item[key] !== undefined && item[key] !== null) {
-        return item[key];
-      }
-    }
-    return fallback;
-  }
-
-  function createEl(tag, className, text) {
-    const el = document.createElement(tag);
-    if (className) el.className = className;
-    if (text !== undefined && text !== null) el.textContent = text;
-    return el;
-  }
-
-  function setRichText(container, value) {
-    container.innerHTML = "";
-
-    if (!value) return;
-
-    if (typeof value === "string") {
-      const chunks = value
-        .split(/\n{2,}/)
-        .map((part) => part.trim())
-        .filter(Boolean);
-
-      if (!chunks.length) {
-        container.textContent = value;
-        return;
-      }
-
-      chunks.forEach((chunk) => {
-        const p = document.createElement("p");
-        p.textContent = chunk;
-        container.appendChild(p);
-      });
-
-      return;
-    }
-
-    if (Array.isArray(value)) {
-      value.forEach((entry) => {
-        const p = document.createElement("p");
-        p.textContent = String(entry);
-        container.appendChild(p);
-      });
-    }
-  }
-
-  function renderChips(container, chips) {
-    const list = normalizeArray(chips).filter(Boolean);
-    if (!list.length) return;
-
-    const chipsWrap = createEl("div", "chips");
-    list.forEach((chip) => {
-      chipsWrap.appendChild(createEl("span", "chip", chip));
-    });
-    container.appendChild(chipsWrap);
-  }
-
-  function createLinkButton({ href, label, className = "btn btn-secondary", target = "" }) {
-    const link = document.createElement("a");
-    link.className = className;
-    link.textContent = label || T.linkLabel;
-    link.href = hasRealLink(href) ? href : "#";
-
-    if (!hasRealLink(href)) {
-      link.classList.add("is-disabled");
-      link.setAttribute("aria-disabled", "true");
-      link.textContent = label || T.unavailable;
-      link.addEventListener("click", (event) => event.preventDefault());
-    }
-
-    if (target) {
-      link.target = target;
-      if (target === "_blank") {
-        link.rel = "noopener noreferrer";
-      }
-    }
-
-    return link;
-  }
-
-  function renderEmptyState(container) {
-    if (!container) return;
-    container.innerHTML = "";
-
-    const box = createEl("div", "detail-empty");
-    box.appendChild(createEl("h3", "", T.reportFallbackTitle));
-    box.appendChild(createEl("p", "", T.reportFallbackText));
-    container.appendChild(box);
-  }
-
-  function getReportEntries() {
-    return normalizeArray(data.reportEntries || data.report || []);
-  }
-
-  function getFilmLanguageItems() {
-    return normalizeArray(data.filmLanguage || data.language || []);
-  }
-
-  function getMicroVideos() {
-    return normalizeArray(data.microVideos || data.timeline || data.videos || []);
-  }
-
-  function getSystems() {
-    return normalizeArray(data.systems || data.totalitarianSystems || []);
-  }
-
-  function getDiscussionQuestions() {
-    return normalizeArray(data.discussionQuestions || data.questions || []);
-  }
-
-  function getBooks() {
-    return normalizeArray(data.books || data.recommendedBooks || []);
-  }
-
-  function getDownloads() {
-    return normalizeArray(data.downloads || data.materials || []);
-  }
-
-  function renderReportList() {
-    if (!reportEntryList) return;
-
-    const entries = getReportEntries();
-    reportEntryList.innerHTML = "";
-
-    if (!entries.length) {
-      reportEntryList.appendChild(createEl("p", "grid-empty", T.emptyGrid));
-      renderEmptyState(reportDetail);
-      return;
-    }
-
-    entries.forEach((entry, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "report-entry-button";
-      if (index === activeReportIndex) button.classList.add(T.activeClass);
-
-      const kicker = getItemValue(entry, ["kicker", "eyebrow", "label"], "");
-      const title = getItemValue(entry, ["title", "name"], "");
-      const summary = getItemValue(entry, ["summary", "intro", "shortText"], "");
-
-      if (isMeaningfulString(kicker)) {
-        button.appendChild(createEl("span", "report-entry-kicker", kicker));
-      }
-
-      button.appendChild(createEl("span", "report-entry-title", title));
-
-      if (isMeaningfulString(summary)) {
-        button.appendChild(createEl("span", "report-entry-summary", summary));
-      }
-
-      button.addEventListener("click", () => {
-        activeReportIndex = index;
-        activeReportTabIndex = 0;
-        updateReportExplorer();
-      });
-
-      reportEntryList.appendChild(button);
-    });
-  }
-
-  function renderReportDetail() {
-    if (!reportDetail) return;
-
-    const entries = getReportEntries();
-    const entry = entries[activeReportIndex];
-
-    if (!entry) {
-      renderEmptyState(reportDetail);
-      return;
-    }
-
-    reportDetail.innerHTML = "";
-
-    const wrapper = createEl("div", "detail-shell");
-
-    renderChips(wrapper, getItemValue(entry, ["chips", "tags"], []));
-
-    const title = getItemValue(entry, ["title", "name"], "");
-    const intro = getItemValue(entry, ["intro", "summary", "lead"], "");
-    const excerptLabel = getItemValue(
-      entry,
-      ["excerptLabel", "sourceLabel"],
-      T.reportExcerptLabel
-    );
-    const excerpt = getItemValue(entry, ["excerpt", "sourceText", "entryText"], "");
-    const tabs = normalizeArray(getItemValue(entry, ["tabs", "panels", "sections"], []));
-
-    wrapper.appendChild(createEl("h3", "report-detail-title", title));
-
-    if (isMeaningfulString(intro)) {
-      wrapper.appendChild(createEl("p", "report-detail-intro", intro));
-    }
-
-    if (isMeaningfulString(excerpt)) {
-      const excerptBox = createEl("div", "report-excerpt");
-      excerptBox.appendChild(createEl("div", "report-excerpt-label", excerptLabel));
-
-      const excerptText = createEl("div", "report-excerpt-text");
-      setRichText(excerptText, excerpt);
-      excerptBox.appendChild(excerptText);
-
-      wrapper.appendChild(excerptBox);
-    }
-
-    if (tabs.length) {
-      const tabsNav = createEl("div", "report-tabs");
-
-      const safeTabIndex =
-        activeReportTabIndex >= 0 && activeReportTabIndex < tabs.length
-          ? activeReportTabIndex
-          : 0;
-
-      activeReportTabIndex = safeTabIndex;
-
-      tabs.forEach((tab, tabIndex) => {
-        const tabButton = document.createElement("button");
-        tabButton.type = "button";
-        tabButton.className = "report-tab-button";
-        if (tabIndex === safeTabIndex) tabButton.classList.add(T.activeClass);
-
-        tabButton.textContent = getItemValue(tab, ["label", "title", "name"], T.defaultTabLabel);
-        tabButton.addEventListener("click", () => {
-          activeReportTabIndex = tabIndex;
-          renderReportDetail();
-        });
-
-        tabsNav.appendChild(tabButton);
-      });
-
-      const activeTab = tabs[safeTabIndex];
-      const tabTitle = getItemValue(activeTab, ["title", "heading", "label"], "");
-      const tabBody = getItemValue(activeTab, ["text", "body", "content"], "");
-      const tabHtml = getItemValue(activeTab, ["html", "bodyHtml"], "");
-
-      const tabPanel = createEl("div", "report-tab-panel");
-
-      if (isMeaningfulString(tabTitle)) {
-        tabPanel.appendChild(createEl("h4", "report-tab-title", tabTitle));
-      }
-
-      const tabPanelBody = createEl("div", "report-tab-body");
-      if (isMeaningfulString(tabHtml)) {
-        tabPanelBody.innerHTML = tabHtml;
-      } else {
-        setRichText(tabPanelBody, tabBody);
-      }
-
-      tabPanel.appendChild(tabPanelBody);
-      wrapper.appendChild(tabsNav);
-      wrapper.appendChild(tabPanel);
-    }
-
-    reportDetail.appendChild(wrapper);
-  }
-
-  function updateReportExplorer() {
-    renderReportList();
-    renderReportDetail();
-  }
-
-  function createInfoCard(item, className) {
-    const card = createEl("article", className);
-    renderChips(card, getItemValue(item, ["chips", "tags"], []));
-
-    const title = getItemValue(item, ["title", "name"], "");
-    const text = getItemValue(item, ["text", "body", "description"], "");
-
-    if (isMeaningfulString(title)) {
-      card.appendChild(createEl("h3", "", title));
-    }
-
-    const copy = createEl("div", "card-copy");
-    setRichText(copy, text);
-    card.appendChild(copy);
-
-    return card;
-  }
-
-  function renderSimpleGrid(container, items, className) {
-    if (!container) return;
-    container.innerHTML = "";
-
-    if (!items.length) {
-      container.appendChild(createEl("p", "grid-empty", T.emptyGrid));
-      return;
-    }
-
-    items.forEach((item) => {
-      container.appendChild(createInfoCard(item, className));
-    });
-  }
-
-  function renderBooks() {
-    if (!booksGrid) return;
-    booksGrid.innerHTML = "";
-
-    const items = getBooks();
-
-    if (!items.length) {
-      booksGrid.appendChild(createEl("p", "grid-empty", T.emptyGrid));
-      return;
-    }
-
-    items.forEach((item) => {
-      const card = createEl("article", "book-card");
-
-      renderChips(card, getItemValue(item, ["chips", "tags"], []));
-
-      const title = getItemValue(item, ["title", "name"], "");
-      const author = getItemValue(item, ["author"], "");
-      const text = getItemValue(item, ["text", "body", "description"], "");
-      const href = getItemValue(item, ["href", "link", "url"], "");
-      const cta = getItemValue(item, ["cta", "buttonLabel"], T.linkLabel);
-
-      if (isMeaningfulString(title)) {
-        card.appendChild(createEl("h3", "", title));
-      }
-
-      if (isMeaningfulString(author)) {
-        card.appendChild(createEl("div", "book-author", `${T.booksAuthorPrefix} ${author}`));
-      }
-
-      const copy = createEl("div", "card-copy");
-      setRichText(copy, text);
-      card.appendChild(copy);
-
-      const ctaRow = createEl("div", "card-cta-row");
-      ctaRow.appendChild(
-        createLinkButton({
-          href,
-          label: hasRealLink(href) ? cta : T.unavailable,
-          className: "btn btn-secondary",
-          target: hasRealLink(href) ? "_blank" : ""
-        })
-      );
-      card.appendChild(ctaRow);
-
-      booksGrid.appendChild(card);
-    });
-  }
-
-  function renderDownloads() {
-    if (!downloadsGrid) return;
-    downloadsGrid.innerHTML = "";
-
-    const items = getDownloads();
-
-    if (!items.length) {
-      downloadsGrid.appendChild(createEl("p", "grid-empty", T.emptyGrid));
-      return;
-    }
-
-    items.forEach((item) => {
-      const card = createEl("article", "download-card");
-
-      renderChips(card, getItemValue(item, ["chips", "tags"], []));
-
-      const title = getItemValue(item, ["title", "name"], "");
-      const type = getItemValue(item, ["type", "format"], "");
-      const text = getItemValue(item, ["text", "body", "description"], "");
-      const href = getItemValue(item, ["href", "link", "url"], "");
-      const cta = getItemValue(item, ["cta", "buttonLabel"], T.linkLabel);
-
-      if (isMeaningfulString(title)) {
-        card.appendChild(createEl("h3", "", title));
-      }
-
-      if (isMeaningfulString(type)) {
-        card.appendChild(createEl("div", "download-type", `${T.downloadTypePrefix} ${type}`));
-      }
-
-      const copy = createEl("div", "card-copy");
-      setRichText(copy, text);
-      card.appendChild(copy);
-
-      const ctaRow = createEl("div", "card-cta-row");
-      ctaRow.appendChild(
-        createLinkButton({
-          href,
-          label: hasRealLink(href) ? cta : T.unavailable,
-          className: "btn btn-secondary",
-          target: hasRealLink(href) ? "_blank" : ""
-        })
-      );
-      card.appendChild(ctaRow);
-
-      downloadsGrid.appendChild(card);
-    });
-  }
-
-  function openVideoModal(video) {
-    if (!videoModal || !videoModalFrame || !videoModalTitle || !videoModalPlaceholder) return;
-
-    const title = getItemValue(video, ["title", "name"], T.noVideoTitle);
-    const youtubeId = getItemValue(video, ["youtubeId", "videoId", "id"], "");
-    const embedUrl = isMeaningfulString(youtubeId)
-      ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(
-          youtubeId.trim()
-        )}?autoplay=1&rel=0`
-      : "";
-
-    videoModalTitle.textContent = title;
-
-    if (embedUrl) {
-      videoModalFrame.src = embedUrl;
-      videoModalFrame.hidden = false;
-      videoModalPlaceholder.classList.remove("is-visible");
-    } else {
-      videoModalFrame.src = "";
-      videoModalFrame.hidden = true;
-      videoModalPlaceholder.classList.add("is-visible");
-      videoModalPlaceholder.innerHTML = `<p>${T.noVideoText}</p>`;
-    }
-
-    videoModal.classList.add("is-open");
-    videoModal.setAttribute("aria-hidden", "false");
-    document.body.classList.add("video-modal-open");
-  }
-
-  function closeVideoModal() {
-    if (!videoModal || !videoModalFrame) return;
-    videoModal.classList.remove("is-open");
-    videoModal.setAttribute("aria-hidden", "true");
-    videoModalFrame.src = "";
-    videoModalFrame.hidden = false;
-    videoModalPlaceholder.classList.remove("is-visible");
-    document.body.classList.remove("video-modal-open");
-  }
-
-  function renderMicroVideos() {
-    if (!microVideoGrid) return;
-    microVideoGrid.innerHTML = "";
-
-    const items = getMicroVideos();
-
-    if (!items.length) {
-      microVideoGrid.appendChild(createEl("p", "grid-empty", T.emptyGrid));
-      return;
-    }
-
-    items.forEach((item) => {
-      const card = createEl("article", "micro-video-card");
-
-      const badge = getItemValue(item, ["badge", "kicker", "label"], "");
-      if (isMeaningfulString(badge)) {
-        card.appendChild(createEl("div", "micro-badge", badge));
-      }
-
-      const title = getItemValue(item, ["title", "name"], "");
-      const subtitle = getItemValue(item, ["subtitle"], "");
-      const text = getItemValue(item, ["text", "body", "description"], "");
-
-      if (isMeaningfulString(title)) {
-        card.appendChild(createEl("h3", "", title));
-      }
-
-      if (isMeaningfulString(subtitle)) {
-        card.appendChild(createEl("div", "micro-subtitle", subtitle));
-      }
-
-      const copy = createEl("div", "card-copy");
-      setRichText(copy, text);
-      card.appendChild(copy);
-
-      const actions = createEl("div", "card-cta-row");
-      const playButton = document.createElement("button");
-      playButton.type = "button";
-      playButton.className = "btn btn-secondary";
-      playButton.textContent = getItemValue(item, ["cta", "buttonLabel"], T.openVideo);
-      playButton.addEventListener("click", () => openVideoModal(item));
-      actions.appendChild(playButton);
-
-      card.appendChild(actions);
-      microVideoGrid.appendChild(card);
-    });
-  }
-
-  function initVideoModal() {
-    if (!videoModal) return;
-
-    if (videoModalClose) {
-      videoModalClose.setAttribute("aria-label", T.closeVideo);
-      videoModalClose.addEventListener("click", closeVideoModal);
-    }
-
-    videoModal.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-
-      if (target.dataset.closeVideoModal === "true" || target === videoModal) {
-        closeVideoModal();
-      }
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && videoModal.classList.contains("is-open")) {
-        closeVideoModal();
-      }
-    });
-  }
-
-  function initSectionNav() {
-    const navLinks = Array.from(document.querySelectorAll('.desktop-nav a[href^="#"]'));
-    if (!navLinks.length) return;
-
-    const sections = navLinks
-      .map((link) => {
-        const href = link.getAttribute("href");
-        if (!href) return null;
-        return document.querySelector(href);
-      })
-      .filter(Boolean);
-
-    if (!sections.length) return;
-
-    const setActiveLink = (activeId) => {
-      navLinks.forEach((link) => {
-        const href = link.getAttribute("href");
-        link.classList.toggle(T.activeClass, href === `#${activeId}`);
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (visible.length) {
-          setActiveLink(visible[0].target.id);
+window.psViewerGuideData = {
+  reportEntries: [
+    {
+      title: "Wejście do obozu",
+      kicker: "Punkt wejścia 01",
+      summary:
+        "Pierwsze zetknięcie z logiką obozu nie polega tylko na szoku. Polega na gwałtownym wejściu w świat, w którym człowiek ma zostać złamany, zredukowany i podporządkowany.",
+      intro:
+        "Ten punkt wejścia pomaga czytać nie tylko sam moment przekroczenia bramy, ale również mechanizm natychmiastowego odczłowieczenia, który staje się fundamentem całego doświadczenia obozowego.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
+      excerpt:
+        "Czytając fragment dotyczący pierwszych chwil w obozie, zwróć uwagę nie tylko na opis przemocy, ale na tempo przemiany świata. To, co wcześniej należało do zwykłego porządku życia, zostaje nagle zastąpione porządkiem strachu, numeru, komendy i przymusu.",
+      chips: ["Źródło", "Auschwitz", "Początek"],
+      tabs: [
+        {
+          label: "Kontekst",
+          title: "Dlaczego ten moment jest tak ważny",
+          text:
+            "Wejście do obozu nie jest jedynie początkiem biograficznego epizodu. To wejście w system, którego celem było zniszczenie człowieka nie tylko fizycznie, ale także moralnie, psychicznie i społecznie.\n\nWłaśnie dlatego tak ważne jest, by patrzeć na ten moment nie jak na pojedynczą scenę grozy, lecz jak na uruchomienie całej logiki obozu."
+        },
+        {
+          label: "W filmie",
+          title: "Jak ten moment pracuje w dziele",
+          text:
+            "W filmie ten próg nie musi być pokazany literalnie minuta po minucie. Ważniejsze jest odtworzenie ciężaru przejścia: poczucia utraty dawnego świata, wejścia w przestrzeń przemocy i zerwania z normalnością.\n\nDlatego obraz, rytm i dźwięk mogą kondensować kilka doświadczeń naraz, zamiast rekonstruować je dokumentalnie krok po kroku."
+        },
+        {
+          label: "Dlaczego tak",
+          title: "Dlaczego obraz jest bardziej kondensacją niż rekonstrukcją",
+          text:
+            "To dzieło nie działa jak ilustracja do podręcznika. Jego zadaniem nie jest odrysowanie każdego szczegółu, lecz przywrócenie moralnego ciężaru sytuacji.\n\nJeśli obraz wydaje się surowszy, bardziej symboliczny albo bardziej skondensowany niż literalny zapis, służy to temu, by widz poczuł próg wejścia w system przemocy, a nie tylko go rozpoznał."
+        },
+        {
+          label: "Pytanie",
+          title: "Pytanie dla widza",
+          text:
+            "Co w tym fragmencie uderza mocniej: sam fakt przemocy czy szybkość, z jaką człowiek zostaje pozbawiony dawnej tożsamości?"
         }
-      },
-      {
-        rootMargin: "-20% 0px -55% 0px",
-        threshold: [0.15, 0.35, 0.6]
-      }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-  }
-
-  function initSmoothScrollOffset() {
-    const navLinks = Array.from(document.querySelectorAll('a[href^="#"]'));
-    const header = document.querySelector(".site-header");
-
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        const href = link.getAttribute("href");
-        if (!href || href === "#") return;
-
-        const target = document.querySelector(href);
-        if (!target) return;
-
-        event.preventDefault();
-
-        const headerOffset = header ? header.offsetHeight + 18 : 90;
-        const targetY =
-          target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: targetY,
-          behavior: "smooth"
-        });
-      });
-    });
-  }
-
-  function formatDateForInput(value) {
-    const date = value instanceof Date ? value : new Date(value);
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  }
-
-  function formatDateForDisplay(value) {
-    if (!isMeaningfulString(value)) return "—";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return value;
-
-    return LANG === "pl"
-      ? date.toLocaleDateString("pl-PL")
-      : date.toLocaleDateString("en-GB");
-  }
-
-  function buildReportNumber() {
-    const now = new Date();
-    const datePart =
-      `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
-    const timePart =
-      `${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
-    const prefix = LANG === "pl" ? "RW" : "VR";
-    return `${prefix}-${datePart}-${timePart}`;
-  }
-
-  function getViewerReportStorageKey() {
-    return `ps-viewer-guide-report-${LANG}-${window.location.pathname}`;
-  }
-
-  function getViewerReportSnapshot() {
-    return {
-      date: viewerReportDate ? viewerReportDate.value : "",
-      place: viewerReportPlace ? viewerReportPlace.value.trim() : "",
-      text: viewerReportText ? viewerReportText.value.trim() : "",
-      number: viewerReportNumber ? viewerReportNumber.textContent.trim() : buildReportNumber()
-    };
-  }
-
-  function persistViewerReport() {
-    if (!viewerReportForm) return;
-    try {
-      localStorage.setItem(
-        getViewerReportStorageKey(),
-        JSON.stringify(getViewerReportSnapshot())
-      );
-    } catch (_) {}
-  }
-
-  function restoreViewerReport() {
-    if (!viewerReportForm) return false;
-
-    try {
-      const raw = localStorage.getItem(getViewerReportStorageKey());
-      if (!raw) return false;
-
-      const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== "object") return false;
-
-      if (viewerReportDate && isMeaningfulString(parsed.date)) {
-        viewerReportDate.value = parsed.date;
-      }
-
-      if (viewerReportPlace && isMeaningfulString(parsed.place)) {
-        viewerReportPlace.value = parsed.place;
-      }
-
-      if (viewerReportText && isMeaningfulString(parsed.text)) {
-        viewerReportText.value = parsed.text;
-      }
-
-      if (viewerReportNumber && isMeaningfulString(parsed.number)) {
-        viewerReportNumber.textContent = parsed.number;
-      }
-
-      return true;
-    } catch (_) {
-      return false;
+      ]
+    },
+    {
+      title: "Obóz jako system",
+      kicker: "Punkt wejścia 02",
+      summary:
+        "Auschwitz nie działał wyłącznie jako miejsce cierpienia. Był systemem dyscypliny, terroru, hierarchii i planowego niszczenia człowieka.",
+      intro:
+        "Ten punkt wejścia pozwala patrzeć na obóz nie tylko przez pryzmat pojedynczych scen, ale jako na uporządkowaną machinę przemocy.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
+      excerpt:
+        "Podczas lektury zwracaj uwagę na to, jak często najważniejsze rzeczy opisane są chłodno, rzeczowo, niemal technicznie. Właśnie w tej rzeczowości ujawnia się logika systemu: terror nie jest tu chaosem, tylko metodą.",
+      chips: ["System", "Logika przemocy", "Świadectwo"],
+      tabs: [
+        {
+          label: "Kontekst",
+          title: "Obóz jako mechanizm",
+          text:
+            "Jednym z najważniejszych aspektów świadectwa Pileckiego jest to, że pozwala zobaczyć Auschwitz nie tylko jako miejsce cierpienia jednostek, ale jako mechanizm władzy.\n\nTo oznacza, że przemoc nie pojawia się przypadkowo. Jest wpisana w rytm dnia, organizację pracy, system kar, strukturę zależności i ciągłe produkowanie strachu."
+        },
+        {
+          label: "W filmie",
+          title: "Jak pokazać system, a nie tylko pojedynczy ból",
+          text:
+            "Film może pokazywać system przez powtarzalność, rytm, chłód, powrót podobnych motywów, komend, dźwięków i gestów. To często działa mocniej niż seria dosłownych scen okrucieństwa.\n\nWidz ma zrozumieć, że nie chodzi o jeden wybuch przemocy, lecz o świat zorganizowany wokół przemocy."
+        },
+        {
+          label: "Dlaczego tak",
+          title: "Dlaczego nie wszystko musi być pokazane dosłownie",
+          text:
+            "W dziele o takim ciężarze nadmiar dosłowności może osłabić odbiór. Zamiast pogłębiać, zaczyna dominować nad sensem.\n\nPowściągliwość, niedopowiedzenie i rytm bywają uczciwsze wobec świadectwa niż wizualny nadmiar."
+        },
+        {
+          label: "Pytanie",
+          title: "Pytanie dla widza",
+          text:
+            "Czy większy lęk budzi w Tobie pojedynczy akt przemocy, czy świadomość, że przemoc została zamieniona w codzienny porządek?"
+        }
+      ]
+    },
+    {
+      title: "Ruch oporu wewnątrz obozu",
+      kicker: "Punkt wejścia 03",
+      summary:
+        "Jednym z najbardziej niezwykłych wymiarów historii Pileckiego jest to, że w miejscu planowego niszczenia człowieka próbował budować więź, strukturę i opór.",
+      intro:
+        "To punkt wejścia do jednego z najważniejszych paradoksów tej historii: nawet w przestrzeni skrajnego terroru możliwe było działanie, organizowanie innych i podtrzymywanie sensu walki.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
+      excerpt:
+        "Czytając fragmenty o organizowaniu ludzi, zwracaj uwagę na to, że siła tej historii nie polega wyłącznie na przetrwaniu. Polega na zdolności tworzenia wspólnoty, zaufania i celu tam, gdzie wszystko miało służyć rozpadowi.",
+      chips: ["Opór", "Wspólnota", "Misja"],
+      tabs: [
+        {
+          label: "Kontekst",
+          title: "Dlaczego ten wątek jest tak wyjątkowy",
+          text:
+            "W historii obozu sam fakt przetrwania był już dramatycznym doświadczeniem. W przypadku Pileckiego pojawia się jeszcze drugi poziom: próba działania w warunkach, które zostały zaprojektowane właśnie po to, by wszelkie działanie złamać.\n\nDlatego wątek organizowania oporu jest nie tylko historycznie ważny. Jest także moralnym centrum całej opowieści."
+        },
+        {
+          label: "W filmie",
+          title: "Jak film może pokazać opór",
+          text:
+            "Opór nie musi być pokazany wyłącznie przez spektakularny czyn. Czasem silniej działa szept, spojrzenie, przekazanie wiadomości, obecność drugiego człowieka, rytm wspólnego trwania.\n\nWłaśnie taka skala bywa bliższa prawdzie niż wyłącznie heroiczna poza."
+        },
+        {
+          label: "Dlaczego tak",
+          title: "Dlaczego opór bywa pokazany ciszej niż przemoc",
+          text:
+            "Przemoc systemu jest głośna, brutalna i zewnętrzna. Opór często rodzi się w skupieniu, dyscyplinie, decyzji i lojalności.\n\nDlatego film może świadomie pokazywać opór jako coś bardziej wewnętrznego, mniej widowiskowego, ale głębiej działającego."
+        },
+        {
+          label: "Pytanie",
+          title: "Pytanie dla widza",
+          text:
+            "Czy prawdziwa siła tej historii polega bardziej na odwadze, czy na zdolności zachowania celu i dyscypliny w warunkach skrajnego chaosu?"
+        }
+      ]
+    },
+    {
+      title: "Ucieczka i obowiązek świadczenia",
+      kicker: "Punkt wejścia 04",
+      summary:
+        "Ucieczka nie zamyka tej historii. Otwiera jej drugi etap: obowiązek przekazania świadectwa i próbę poruszenia świata poza obozem.",
+      intro:
+        "Ten punkt wejścia pokazuje, że wyjście z obozu nie jest końcem doświadczenia. Staje się początkiem innej walki — walki o to, by świadectwo zostało usłyszane.",
+      excerptLabel: "Na co zwrócić uwagę w źródle",
+      excerpt:
+        "Czytając fragmenty dotyczące raportowania, zwróć uwagę na ton. To nie jest język efektu. To język odpowiedzialności. Właśnie ta powściągliwość sprawia, że świadectwo brzmi jeszcze mocniej.",
+      chips: ["Raport", "Świadectwo", "Po ucieczce"],
+      tabs: [
+        {
+          label: "Kontekst",
+          title: "Świadectwo jako dalsza część walki",
+          text:
+            "Po ucieczce historia Pileckiego nie przechodzi w prostą ulgę. Pojawia się inny ciężar: przekazać to, co zobaczone, nadać temu formę, sprawić, by prawda mogła dalej działać.\n\nTo dlatego raport nie jest dodatkiem do historii obozowej. Jest jej dalszym ciągiem."
+        },
+        {
+          label: "W filmie",
+          title: "Jak pokazać wagę raportu",
+          text:
+            "Film może traktować raport nie tylko jako dokument, ale jako moralną strukturę całego dzieła. To on porządkuje sens, rytm i pytania stawiane widzowi.\n\nDzięki temu źródło nie jest martwym dodatkiem. Staje się osią formy."
+        },
+        {
+          label: "Dlaczego tak",
+          title: "Dlaczego tak ważna jest powściągliwość",
+          text:
+            "Im cięższe świadectwo, tym większa pokusa, by je dopowiadać nadmiarem emocji. Tymczasem chłód i dyscyplina języka często niosą większą siłę niż komentarz.\n\nWłaśnie dlatego forma świadomie może unikać krzyku, by nie zagłuszyć samego świadectwa."
+        },
+        {
+          label: "Pytanie",
+          title: "Pytanie dla widza",
+          text:
+            "Czy świadectwo brzmi mocniej wtedy, gdy opisuje grozę bez patosu i bez dopowiadania emocji?"
+        }
+      ]
+    },
+    {
+      title: "Po wojnie: wolność niedokończona",
+      kicker: "Punkt wejścia 05",
+      summary:
+        "Historia Pileckiego nie kończy się na wojnie. To także opowieść o powojennym zniewoleniu, śledztwie, przemocy komunistycznej i próbie wymazania pamięci.",
+      intro:
+        "Ten punkt wejścia pomaga zobaczyć całą drogę Rotmistrza: od walki z okupacją niemiecką po starcie z nowym systemem przemocy po 1945 roku.",
+      excerptLabel: "Na co zwrócić uwagę w źródle i kontekście",
+      excerpt:
+        "Patrząc na tę część historii, warto pamiętać, że nie jest to prosty epilog. To drugi ciężar tej samej opowieści: człowiek, który przeszedł przez piekło wojny, zostaje po wojnie zniszczony przez inny aparat przemocy.",
+      chips: ["Powojnie", "Komunizm", "Pamięć"],
+      tabs: [
+        {
+          label: "Kontekst",
+          title: "Dlaczego ta część historii jest tak istotna",
+          text:
+            "Bez powojennego finału historia Pileckiego wydaje się niepełna. Dopiero wtedy widać, że nie chodzi wyłącznie o jedną epokę przemocy, lecz o dłuższy dramat człowieka wrzuconego w dwa totalitarne porządki.\n\nTo właśnie dlatego w tym projekcie tak ważne jest zestawienie nazistowskiej i komunistycznej logiki przemocy bez ich upraszczania."
+        },
+        {
+          label: "W filmie",
+          title: "Jak pokazać ciąg dalszy po wojnie",
+          text:
+            "Powojenny etap nie musi być formalnie rozbudowany najbardziej. Wystarczy, by był uderzający w swojej prostocie: zmiana dekoracji historycznej nie przynosi prawdziwego uwolnienia.\n\nCzęsto to właśnie oszczędność formy najmocniej podkreśla tragiczny finał."
+        },
+        {
+          label: "Dlaczego tak",
+          title: "Dlaczego finał nie powinien być nadmiernie ilustracyjny",
+          text:
+            "Im bardziej tragiczny koniec, tym łatwiej popaść w łatwą dosłowność. Tymczasem w dziele o takim ciężarze finał powinien pozostawić rezonans, a nie tylko efekt.\n\nDlatego forma może kończyć się pytaniem, ciszą albo ciężarem, który przechodzi na widza."
+        },
+        {
+          label: "Pytanie",
+          title: "Pytanie dla widza",
+          text:
+            "Czy pełna historia Pileckiego jest bardziej opowieścią o bohaterstwie, czy o konsekwentnej wierności zasadom w świecie, który nagradzał zdradę i przemoc?"
+        }
+      ]
     }
-  }
+  ],
 
-  function updateViewerReportPreview() {
-    if (!viewerReportForm) return;
-
-    const snapshot = getViewerReportSnapshot();
-
-    if (viewerReportDatePreview) {
-      viewerReportDatePreview.textContent = formatDateForDisplay(snapshot.date);
+  filmLanguage: [
+    {
+      title: "To nie jest ilustracja 1:1",
+      chips: ["Język filmu", "Forma"],
+      text:
+        "Prawda Sumienia nie została pomyślana jako ekranowy przypis do faktów. To dzieło, które bierze na siebie obowiązek przeniesienia ciężaru świadectwa, a nie jedynie jego mechanicznego odtworzenia.\n\nDlatego obraz czasem kondensuje, upraszcza albo przenosi akcenty. Nie po to, by zacierać prawdę, ale po to, by zachować jej siłę w języku filmu."
+    },
+    {
+      title: "Kondensacja zamiast kroniki",
+      chips: ["Kondensacja", "Rytm"],
+      text:
+        "W filmie kilka wydarzeń, emocji albo stanów może zostać zebranych w jeden obraz. To świadomy zabieg. Czas ekranowy działa inaczej niż zapis historyczny.\n\nWidz nie ma otrzymać wyłącznie szeregu informacji. Ma wejść w doświadczenie, które pozostaje wierne osi sensu."
+    },
+    {
+      title: "Cisza pracuje tak samo jak słowo",
+      chips: ["Cisza", "Powściągliwość"],
+      text:
+        "W dziele opartym na świadectwie cisza nie jest pustką. Jest przestrzenią, w której wybrzmiewa ciężar tego, czego nie trzeba już dopowiadać.\n\nDlatego niektóre sceny mogą wydawać się bardziej wyciszone niż oczekiwany dramat. To część języka tej formy."
+    },
+    {
+      title: "Symbol nie zastępuje historii",
+      chips: ["Symbol", "Znaczenie"],
+      text:
+        "Krata, numer, cień, śnieg, dystans, pustka kadru — takie elementy nie mają zastępować faktów. Mają pomóc widzowi poczuć ich ciężar.\n\nSymbolika w tym projekcie nie służy ozdobie. Służy skupieniu."
+    },
+    {
+      title: "Muzyka nie ilustruje, lecz prowadzi",
+      chips: ["Muzyka", "Narracja"],
+      text:
+        "Warstwa muzyczna nie jest dodatkiem do obrazu. Jest jednym z głównych nośników napięcia, pamięci i wewnętrznego rytmu dzieła.\n\nTo dlatego tekst, beat i obraz powinny być czytane razem, a nie osobno."
+    },
+    {
+      title: "Powściągliwość jest częścią etyki",
+      chips: ["Etyka", "Świadectwo"],
+      text:
+        "Im cięższa historia, tym większa odpowiedzialność formy. W Prawdzie Sumienia powściągliwość nie wynika z braku odwagi, ale z przekonania, że nie wszystko powinno być podane wprost.\n\nCzasem to właśnie ograniczenie efektu czyni dzieło uczciwszym wobec źródła."
     }
+  ],
 
-    if (viewerReportPlacePreview) {
-      viewerReportPlacePreview.textContent = isMeaningfulString(snapshot.place)
-        ? snapshot.place
-        : T.reportDefaultPlace;
+  microVideos: [
+    {
+      title: "Ołońiec i wschodnie dzieciństwo",
+      subtitle: "1901 · początek drogi",
+      badge: "Mikro-wideo 01",
+      text:
+        "Krótki materiał otwierający historię Rotmistrza: narodziny, wschodnie doświadczenie rodziny i pierwszy kontekst świata, z którego wyrasta jego późniejsza postawa.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "Formacja i wojna 1920 roku",
+      subtitle: "Młodość, służba, formowanie charakteru",
+      badge: "Mikro-wideo 02",
+      text:
+        "Materiał o tym, jak kształtowały się dyscyplina, odpowiedzialność i żołnierski etos, które później staną się jednym z fundamentów jego decyzji.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "1939 i wejście do konspiracji",
+      subtitle: "Załamanie państwa nie kończy walki",
+      badge: "Mikro-wideo 03",
+      text:
+        "Krótki kontekst pokazujący przejście od wojny obronnej do pracy konspiracyjnej oraz sens działania w świecie okupacji.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "Dobrowolne wejście do Auschwitz",
+      subtitle: "Misja, która przekracza zwykłe pojęcie odwagi",
+      badge: "Mikro-wideo 04",
+      text:
+        "Jedno z kluczowych wejść do całej historii: decyzja, by trafić do obozu z misją zdobycia informacji i zorganizowania oporu.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "Opór wewnątrz obozu",
+      subtitle: "Wspólnota, zaufanie, organizacja",
+      badge: "Mikro-wideo 05",
+      text:
+        "Materiał o tym, że historia Pileckiego nie jest wyłącznie historią przetrwania, lecz także próbą działania na rzecz innych wewnątrz systemu terroru.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "Ucieczka i raportowanie",
+      subtitle: "Świadectwo jako dalszy etap walki",
+      badge: "Mikro-wideo 06",
+      text:
+        "Mikro-wideo o przejściu od bezpośredniego doświadczenia obozu do obowiązku nadania mu formy raportu i przekazania światu.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "Powstanie Warszawskie",
+      subtitle: "Dalsza walka po Auschwitz",
+      badge: "Mikro-wideo 07",
+      text:
+        "Krótki materiał przypominający, że po obozie historia Pileckiego nie zamienia się w bezpieczny epilog. Walka trwa dalej.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
+    },
+    {
+      title: "Powojnie, śledztwo, śmierć",
+      subtitle: "Wolność niedokończona",
+      badge: "Mikro-wideo 08",
+      text:
+        "Finałowy materiał spinający całą drogę: aresztowanie, brutalne śledztwo, wyrok i próba wymazania pamięci po wojnie.",
+      youtubeId: "",
+      cta: "Odtwórz mikro-wideo"
     }
+  ],
 
-    if (viewerReportTextPreview) {
-      viewerReportTextPreview.textContent = isMeaningfulString(snapshot.text)
-        ? snapshot.text
-        : T.reportDefaultText;
+  systems: [
+    {
+      title: "Nazistowski totalitaryzm",
+      chips: ["System", "III Rzesza"],
+      text:
+        "Nazistowski system przemocy opierał się na rasizmie, terrorze państwowym, biologicznej selekcji, eksterminacji i podporządkowaniu całych grup ludzkich ideologii nienawiści.\n\nW kontekście Pileckiego to właśnie ten system tworzy rzeczywistość KL Auschwitz."
+    },
+    {
+      title: "Stalinowski totalitaryzm",
+      chips: ["System", "Komunizm"],
+      text:
+        "System stalinowski opierał się na terrorze politycznym, kontroli społeczeństwa, przemocy śledczej, niszczeniu przeciwników i podporządkowaniu życia państwu oraz ideologii.\n\nW powojennej historii Pileckiego to właśnie ten system staje się drugim aparatem przemocy."
+    },
+    {
+      title: "Co je łączy",
+      chips: ["Porównanie", "Przemoc"],
+      text:
+        "Oba systemy były totalitarne: dążyły do pełnej kontroli nad człowiekiem, niszczyły autonomię jednostki, używały strachu jako narzędzia władzy i traktowały przemoc jako metodę organizowania rzeczywistości.\n\nTo ważne, by widz rozumiał, że historia Pileckiego nie przebiega obok tych systemów, lecz przez nie."
+    },
+    {
+      title: "Czym się różnią",
+      chips: ["Porównanie", "Ostrożność"],
+      text:
+        "Nie są to systemy tożsame. Różnią się ideologią, uzasadnieniem przemocy i historyczną strukturą swoich celów.\n\nNa stronie warto pokazywać je razem nie po to, by je uprościć, lecz po to, by lepiej zobaczyć dwa odmienne porządki terroru, które odcisnęły się na jednej biografii."
     }
+  ],
 
-    if (viewerReportNumber && !isMeaningfulString(viewerReportNumber.textContent)) {
-      viewerReportNumber.textContent = buildReportNumber();
+  discussionQuestions: [
+    {
+      title: "Siła przekazu",
+      chips: ["Pytanie", "Źródło"],
+      text:
+        "Dlaczego świadectwo Pileckiego działa tak mocno właśnie przez rzeczowość i dyscyplinę języka? Czy chłodny ton może poruszać mocniej niż komentarz pełen emocji?"
+    },
+    {
+      title: "Nowoczesna pamięć",
+      chips: ["Pytanie", "Forma współczesna"],
+      text:
+        "W jaki sposób muzyka, rytm i obraz zmieniają Twój odbiór historii zapisanej pierwotnie w formie raportu? Czy współczesna forma pomaga wejść bliżej, czy tworzy dodatkowy dystans?"
+    },
+    {
+      title: "Wybór moralny",
+      chips: ["Pytanie", "Odpowiedzialność"],
+      text:
+        "Co dla współczesnego widza oznacza życie podporządkowane zasadzie, a nie wygodzie? Czy odwaga moralna w czasie pokoju może przyjmować inne formy niż ofiara ostateczna?"
+    },
+    {
+      title: "Opór i dyscyplina",
+      chips: ["Pytanie", "Charakter"],
+      text:
+        "Jakie cechy charakteru pozwalają nie tylko przetrwać system przemocy, ale także organizować innych, zachować cel i nie rozpaść się wewnętrznie?"
+    },
+    {
+      title: "Język filmu",
+      chips: ["Pytanie", "Interpretacja"],
+      text:
+        "Który element formy działa na Ciebie najmocniej: słowo, obraz, muzyka, cisza czy rytm montażu? I dlaczego właśnie on?"
+    },
+    {
+      title: "Pamięć dzisiaj",
+      chips: ["Pytanie", "Współczesność"],
+      text:
+        "Czy historia Pileckiego jest dla Ciebie przede wszystkim historią przeszłości, czy nadal stawia pytania o odpowiedzialność człowieka dzisiaj?"
     }
+  ],
 
-    persistViewerReport();
-  }
-
-  function setViewerReportStatus(message) {
-    if (viewerReportStatus) {
-      viewerReportStatus.textContent = message || "";
+  books: [
+    {
+      title: "Ochotnik do Auschwitz",
+      author: "Jack Fairweather",
+      chips: ["Książka", "Biografia"],
+      text:
+        "Dobra propozycja dla widza, który po seansie chce wejść szerzej w drogę Pileckiego i zobaczyć, jak jego świadectwo funkcjonowało poza samym obozem.\n\nTo książka, która pomaga zrozumieć skalę misji oraz samotność raportu wobec świata.",
+      href: "#",
+      cta: "Dodaj link"
+    },
+    {
+      title: "Raport Witolda",
+      author: "wydanie źródłowe",
+      chips: ["Książka", "Źródło"],
+      text:
+        "Najważniejsza pozycja dla tych, którzy chcą po projekcie wrócić do samego tekstu źródłowego. Najlepiej czytać ją nie jako samą dokumentację faktów, ale jako zapis odpowiedzialności i świadczenia.",
+      href: "#",
+      cta: "Dodaj link"
+    },
+    {
+      title: "Rotmistrz Pilecki. Ochotnik do Auschwitz",
+      author: "Adam Cyra",
+      chips: ["Książka", "Kontekst historyczny"],
+      text:
+        "Mocne uzupełnienie dla widza, który chce poszerzyć wiedzę biograficzną i wejść głębiej w historyczne ramy całej opowieści.",
+      href: "#",
+      cta: "Dodaj link"
     }
-  }
+  ],
 
-  function buildViewerReportPlainText() {
-    const snapshot = getViewerReportSnapshot();
-    const lines = [
-      `${T.reportPaperTitle} ${T.reportPaperSubtitle}`,
-      `${T.reportDateLabel}: ${formatDateForDisplay(snapshot.date)}`,
-      `${T.reportPlaceLabel}: ${isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace}`,
-      "",
-      isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText
-    ];
-
-    return lines.join("\n");
-  }
-
-  function copyViewerReport() {
-    const text = buildViewerReportPlainText();
-
-    navigator.clipboard
-      .writeText(text)
-      .then(() => setViewerReportStatus(T.copied))
-      .catch(() => setViewerReportStatus(T.copyError));
-  }
-
-  function clearViewerReport() {
-    if (!viewerReportForm) return;
-
-    if (viewerReportDate) {
-      viewerReportDate.value = formatDateForInput(new Date());
+  downloads: [
+    {
+      title: "Karta widza",
+      type: "PDF",
+      chips: ["Do pobrania", "Widz"],
+      text:
+        "Krótki materiał do samodzielnego uzupełnienia po seansie: najważniejsze wrażenia, jeden obraz, jedno zdanie, jedno pytanie, które zostaje po obejrzeniu dzieła.",
+      href: "#",
+      cta: "Dodaj plik PDF"
+    },
+    {
+      title: "Pytania do rozmowy po seansie",
+      type: "PDF",
+      chips: ["Do pobrania", "Rozmowa"],
+      text:
+        "Zestaw pytań do spokojnej refleksji po projekcji — do wykorzystania indywidualnie, w domu albo podczas spotkania po seansie.",
+      href: "#",
+      cta: "Dodaj plik PDF"
+    },
+    {
+      title: "Mini-przewodnik po języku filmu",
+      type: "PDF",
+      chips: ["Do pobrania", "Forma"],
+      text:
+        "Krótki materiał objaśniający, jak działa kondensacja, symbol, rytm, cisza i powściągliwość w Prawdzie Sumienia.",
+      href: "#",
+      cta: "Dodaj plik PDF"
+    },
+    {
+      title: "Bibliografia startowa",
+      type: "PDF",
+      chips: ["Do pobrania", "Czytaj dalej"],
+      text:
+        "Krótka lista źródeł i książek dla widza, który po seansie chce wejść głębiej w historię Rotmistrza i kontekst epoki.",
+      href: "#",
+      cta: "Dodaj plik PDF"
     }
-
-    if (viewerReportPlace) {
-      viewerReportPlace.value = T.reportDefaultPlace;
-    }
-
-    if (viewerReportText) {
-      viewerReportText.value = "";
-    }
-
-    if (viewerReportNumber) {
-      viewerReportNumber.textContent = buildReportNumber();
-    }
-
-    try {
-      localStorage.removeItem(getViewerReportStorageKey());
-    } catch (_) {}
-
-    updateViewerReportPreview();
-    setViewerReportStatus(T.cleared);
-  }
-
-  function openViewerReportPrint() {
-    const snapshot = getViewerReportSnapshot();
-    const dateDisplay = formatDateForDisplay(snapshot.date);
-    const placeDisplay = isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace;
-    const textDisplay = isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText;
-    const numberDisplay = isMeaningfulString(snapshot.number) ? snapshot.number : buildReportNumber();
-
-    const printWindow = window.open("", "_blank", "width=980,height=1280");
-    if (!printWindow) return;
-
-    const escapedText = textDisplay
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\n/g, "<br>");
-
-    printWindow.document.open();
-    printWindow.document.write(`<!DOCTYPE html>
-<html lang="${LANG}">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>${T.reportPaperTitle}</title>
-<style>
-  :root{
-    --paper:#e6d7be;
-    --paper-edge:#cdb896;
-    --paper-text:#34291e;
-    --paper-muted:#6c5845;
-    --rule:#b49a78;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    padding:40px;
-    background:#f3efe8;
-    font-family:"Courier New", monospace;
-    color:var(--paper-text);
-  }
-  .page{
-    max-width:860px;
-    margin:0 auto;
-  }
-  .sheet{
-    position:relative;
-    min-height:1120px;
-    padding:54px 52px 42px;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.02)),
-      linear-gradient(180deg, var(--paper), #dcc8a8 100%);
-    border:1px solid rgba(123,96,65,.30);
-    box-shadow:0 18px 40px rgba(0,0,0,.18);
-    overflow:hidden;
-  }
-  .sheet::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    opacity:.14;
-    background:
-      radial-gradient(circle at 14% 18%, rgba(255,255,255,.46), transparent 18%),
-      radial-gradient(circle at 78% 76%, rgba(120,88,58,.24), transparent 24%),
-      repeating-linear-gradient(
-        0deg,
-        rgba(78,59,41,.035) 0px,
-        rgba(78,59,41,.035) 1px,
-        transparent 1px,
-        transparent 4px
-      );
-    mix-blend-mode:multiply;
-    pointer-events:none;
-  }
-  .top{
-    position:relative;
-    z-index:1;
-    text-align:center;
-    margin-bottom:30px;
-  }
-  .title{
-    font-size:42px;
-    line-height:1;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    margin:0;
-  }
-  .subtitle{
-    margin-top:8px;
-    font-size:16px;
-    color:var(--paper-muted);
-  }
-  .number{
-    margin-top:10px;
-    font-size:14px;
-    color:var(--paper-muted);
-    letter-spacing:.06em;
-  }
-  .meta{
-    position:relative;
-    z-index:1;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-    margin-bottom:24px;
-    font-size:16px;
-  }
-  .intro{
-    position:relative;
-    z-index:1;
-    margin-bottom:24px;
-    line-height:1.9;
-    font-size:16px;
-    color:#4a3b2d;
-  }
-  .body{
-    position:relative;
-    z-index:1;
-    font-size:17px;
-    line-height:2.05;
-    white-space:pre-wrap;
-    word-break:break-word;
-    min-height:420px;
-  }
-  .rule{
-    height:1px;
-    margin:26px 0 0;
-    background:linear-gradient(90deg, rgba(180,154,120,.88), rgba(180,154,120,.58));
-  }
-  .footer{
-    position:relative;
-    z-index:1;
-    margin-top:24px;
-    text-align:center;
-    font-size:14px;
-    color:var(--paper-muted);
-  }
-  @media print{
-    body{padding:0;background:#fff}
-    .page{max-width:none}
-    .sheet{box-shadow:none;border:0;min-height:auto}
-  }
-</style>
-</head>
-<body>
-  <div class="page">
-    <div class="sheet">
-      <div class="top">
-        <h1 class="title">${T.reportPaperTitle}</h1>
-        <div class="subtitle">${T.reportPaperSubtitle}</div>
-        <div class="number">${numberDisplay}</div>
-      </div>
-
-      <div class="meta">
-        <div><strong>${T.reportDateLabel}:</strong> ${dateDisplay}</div>
-        <div><strong>${T.reportPlaceLabel}:</strong> ${placeDisplay}</div>
-      </div>
-
-      <div class="intro">${T.reportPaperIntro}</div>
-
-      <div class="body">${escapedText}</div>
-
-      <div class="rule"></div>
-
-      <div class="footer">${T.reportPaperFooter}</div>
-    </div>
-  </div>
-  <script>
-    window.addEventListener("load", function () {
-      setTimeout(function () {
-        window.print();
-      }, 250);
-    });
-  <\/script>
-</body>
-</html>`);
-    printWindow.document.close();
-
-    setViewerReportStatus(T.printHint);
-  }
-
-  function initViewerReport() {
-    if (!viewerReportForm) return;
-
-    const restored = restoreViewerReport();
-
-    if (!restored) {
-      if (viewerReportDate && !viewerReportDate.value) {
-        viewerReportDate.value = formatDateForInput(new Date());
-      }
-
-      if (viewerReportPlace && !viewerReportPlace.value.trim()) {
-        viewerReportPlace.value = T.reportDefaultPlace;
-      }
-
-      if (viewerReportNumber && !viewerReportNumber.textContent.trim()) {
-        viewerReportNumber.textContent = buildReportNumber();
-      }
-    }
-
-    updateViewerReportPreview();
-
-    if (viewerReportDate) {
-      viewerReportDate.addEventListener("input", updateViewerReportPreview);
-      viewerReportDate.addEventListener("change", updateViewerReportPreview);
-    }
-
-    if (viewerReportPlace) {
-      viewerReportPlace.addEventListener("input", updateViewerReportPreview);
-    }
-
-    if (viewerReportText) {
-      viewerReportText.addEventListener("input", updateViewerReportPreview);
-    }
-
-    if (viewerReportCopy) {
-      viewerReportCopy.addEventListener("click", copyViewerReport);
-    }
-
-    if (viewerReportClear) {
-      viewerReportClear.addEventListener("click", clearViewerReport);
-    }
-
-    if (viewerReportDownload) {
-      viewerReportDownload.addEventListener("click", openViewerReportPrint);
-    }
-  }
-
-  function init() {
-    updateReportExplorer();
-    renderSimpleGrid(filmLanguageGrid, getFilmLanguageItems(), "language-card");
-    renderMicroVideos();
-    renderSimpleGrid(systemsGrid, getSystems(), "system-card");
-    renderSimpleGrid(discussionGrid, getDiscussionQuestions(), "question-card");
-    renderBooks();
-    renderDownloads();
-    initVideoModal();
-    initSectionNav();
-    initSmoothScrollOffset();
-    initViewerReport();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
-  } else {
-    init();
-  }
-})();
+  ]
+};
