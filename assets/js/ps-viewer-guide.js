@@ -99,14 +99,35 @@
   const viewerReportDate = document.getElementById("viewerReportDate");
   const viewerReportPlace = document.getElementById("viewerReportPlace");
   const viewerReportText = document.getElementById("viewerReportText");
-  const viewerReportDownload = document.getElementById("viewerReportDownload");
-  const viewerReportCopy = document.getElementById("viewerReportCopy");
-  const viewerReportClear = document.getElementById("viewerReportClear");
+
+  const viewerReportName = document.getElementById("viewerReportName");
+  const viewerReportAnonymous = document.getElementById("viewerReportAnonymous");
+  const viewerReportWhatStayed = document.getElementById("viewerReportWhatStayed");
+  const viewerReportStrongestMoment = document.getElementById("viewerReportStrongestMoment");
+  const viewerReportResponsibility = document.getElementById("viewerReportResponsibility");
+  const viewerReportPassForward = document.getElementById("viewerReportPassForward");
+
+  const viewerReportDownload =
+    document.getElementById("viewerReportDownload") ||
+    document.getElementById("viewerReportPdfButton");
+  const viewerReportCopy =
+    document.getElementById("viewerReportCopy") ||
+    document.getElementById("viewerReportCopyButton");
+  const viewerReportClear =
+    document.getElementById("viewerReportClear") ||
+    document.getElementById("viewerReportClearButton");
+
   const viewerReportStatus = document.getElementById("viewerReportStatus");
   const viewerReportNumber = document.getElementById("viewerReportNumber");
+
   const viewerReportDatePreview = document.getElementById("viewerReportDatePreview");
   const viewerReportPlacePreview = document.getElementById("viewerReportPlacePreview");
   const viewerReportTextPreview = document.getElementById("viewerReportTextPreview");
+  const viewerReportSignaturePreview = document.getElementById("viewerReportSignaturePreview");
+  const viewerReportWhatStayedPreview = document.getElementById("viewerReportWhatStayedPreview");
+  const viewerReportStrongestMomentPreview = document.getElementById("viewerReportStrongestMomentPreview");
+  const viewerReportResponsibilityPreview = document.getElementById("viewerReportResponsibilityPreview");
+  const viewerReportPassForwardPreview = document.getElementById("viewerReportPassForwardPreview");
 
   let activeReportIndex = 0;
   let activeReportTabIndex = 0;
@@ -615,7 +636,6 @@
     videoModal.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
-
       if (target.dataset.closeVideoModal === "true" || target === videoModal) {
         closeVideoModal();
       }
@@ -726,13 +746,47 @@
     return `ps-viewer-guide-report-${LANG}-${window.location.pathname}`;
   }
 
+  function getViewerReportMode() {
+    if (viewerReportText) return "simple";
+    if (
+      viewerReportWhatStayed ||
+      viewerReportStrongestMoment ||
+      viewerReportResponsibility ||
+      viewerReportPassForward
+    ) {
+      return "extended";
+    }
+    return "none";
+  }
+
   function getViewerReportSnapshot() {
-    return {
-      date: viewerReportDate ? viewerReportDate.value : "",
-      place: viewerReportPlace ? viewerReportPlace.value.trim() : "",
-      text: viewerReportText ? viewerReportText.value.trim() : "",
-      number: viewerReportNumber ? viewerReportNumber.textContent.trim() : buildReportNumber()
-    };
+    const mode = getViewerReportMode();
+
+    if (mode === "simple") {
+      return {
+        mode,
+        date: viewerReportDate ? viewerReportDate.value : "",
+        place: viewerReportPlace ? viewerReportPlace.value.trim() : "",
+        text: viewerReportText ? viewerReportText.value.trim() : "",
+        number: viewerReportNumber ? viewerReportNumber.textContent.trim() : buildReportNumber()
+      };
+    }
+
+    if (mode === "extended") {
+      return {
+        mode,
+        date: viewerReportDate ? viewerReportDate.value : "",
+        name: viewerReportName ? viewerReportName.value.trim() : "",
+        anonymous: !!(viewerReportAnonymous && viewerReportAnonymous.checked),
+        whatStayed: viewerReportWhatStayed ? viewerReportWhatStayed.value.trim() : "",
+        strongestMoment: viewerReportStrongestMoment ? viewerReportStrongestMoment.value.trim() : "",
+        responsibility: viewerReportResponsibility ? viewerReportResponsibility.value.trim() : "",
+        passForward: viewerReportPassForward ? viewerReportPassForward.value.trim() : "",
+        number: viewerReportNumber ? viewerReportNumber.textContent.trim() : buildReportNumber()
+      };
+    }
+
+    return { mode: "none" };
   }
 
   function persistViewerReport() {
@@ -767,6 +821,30 @@
         viewerReportText.value = parsed.text;
       }
 
+      if (viewerReportName && isMeaningfulString(parsed.name)) {
+        viewerReportName.value = parsed.name;
+      }
+
+      if (viewerReportAnonymous) {
+        viewerReportAnonymous.checked = !!parsed.anonymous;
+      }
+
+      if (viewerReportWhatStayed && isMeaningfulString(parsed.whatStayed)) {
+        viewerReportWhatStayed.value = parsed.whatStayed;
+      }
+
+      if (viewerReportStrongestMoment && isMeaningfulString(parsed.strongestMoment)) {
+        viewerReportStrongestMoment.value = parsed.strongestMoment;
+      }
+
+      if (viewerReportResponsibility && isMeaningfulString(parsed.responsibility)) {
+        viewerReportResponsibility.value = parsed.responsibility;
+      }
+
+      if (viewerReportPassForward && isMeaningfulString(parsed.passForward)) {
+        viewerReportPassForward.value = parsed.passForward;
+      }
+
       if (viewerReportNumber && isMeaningfulString(parsed.number)) {
         viewerReportNumber.textContent = parsed.number;
       }
@@ -777,51 +855,119 @@
     }
   }
 
-  function updateViewerReportPreview() {
-    if (!viewerReportForm) return;
-
-    const snapshot = getViewerReportSnapshot();
-
-    if (viewerReportDatePreview) {
-      viewerReportDatePreview.textContent = formatDateForDisplay(snapshot.date);
-    }
-
-    if (viewerReportPlacePreview) {
-      viewerReportPlacePreview.textContent = isMeaningfulString(snapshot.place)
-        ? snapshot.place
-        : T.reportDefaultPlace;
-    }
-
-    if (viewerReportTextPreview) {
-      viewerReportTextPreview.textContent = isMeaningfulString(snapshot.text)
-        ? snapshot.text
-        : T.reportDefaultText;
-    }
-
-    if (viewerReportNumber && !isMeaningfulString(viewerReportNumber.textContent)) {
-      viewerReportNumber.textContent = buildReportNumber();
-    }
-
-    persistViewerReport();
-  }
-
   function setViewerReportStatus(message) {
     if (viewerReportStatus) {
       viewerReportStatus.textContent = message || "";
     }
   }
 
+  function updateViewerReportPreview() {
+    if (!viewerReportForm) return;
+
+    const snapshot = getViewerReportSnapshot();
+
+    if (viewerReportNumber && !isMeaningfulString(viewerReportNumber.textContent)) {
+      viewerReportNumber.textContent = buildReportNumber();
+    }
+
+    if (snapshot.mode === "simple") {
+      if (viewerReportDatePreview) {
+        viewerReportDatePreview.textContent = formatDateForDisplay(snapshot.date);
+      }
+
+      if (viewerReportPlacePreview) {
+        viewerReportPlacePreview.textContent = isMeaningfulString(snapshot.place)
+          ? snapshot.place
+          : T.reportDefaultPlace;
+      }
+
+      if (viewerReportTextPreview) {
+        viewerReportTextPreview.textContent = isMeaningfulString(snapshot.text)
+          ? snapshot.text
+          : T.reportDefaultText;
+      }
+    }
+
+    if (snapshot.mode === "extended") {
+      if (viewerReportDatePreview) {
+        viewerReportDatePreview.textContent = formatDateForDisplay(snapshot.date);
+      }
+
+      if (viewerReportSignaturePreview) {
+        const signature =
+          snapshot.anonymous || !isMeaningfulString(snapshot.name)
+            ? "Anonimowo"
+            : snapshot.name;
+        viewerReportSignaturePreview.textContent = signature;
+      }
+
+      if (viewerReportWhatStayedPreview) {
+        viewerReportWhatStayedPreview.textContent = isMeaningfulString(snapshot.whatStayed)
+          ? snapshot.whatStayed
+          : "Tutaj pojawi się Twoja pierwsza odpowiedź.";
+      }
+
+      if (viewerReportStrongestMomentPreview) {
+        viewerReportStrongestMomentPreview.textContent = isMeaningfulString(snapshot.strongestMoment)
+          ? snapshot.strongestMoment
+          : "Tutaj pojawi się moment, który wraca najmocniej.";
+      }
+
+      if (viewerReportResponsibilityPreview) {
+        viewerReportResponsibilityPreview.textContent = isMeaningfulString(snapshot.responsibility)
+          ? snapshot.responsibility
+          : "Tutaj pojawi się Twoja refleksja o odpowiedzialności.";
+      }
+
+      if (viewerReportPassForwardPreview) {
+        viewerReportPassForwardPreview.textContent = isMeaningfulString(snapshot.passForward)
+          ? snapshot.passForward
+          : "Tutaj pojawi się jedno zdanie, które chcesz przekazać dalej.";
+      }
+    }
+
+    persistViewerReport();
+  }
+
   function buildViewerReportPlainText() {
     const snapshot = getViewerReportSnapshot();
-    const lines = [
-      `${T.reportPaperTitle} ${T.reportPaperSubtitle}`,
-      `${T.reportDateLabel}: ${formatDateForDisplay(snapshot.date)}`,
-      `${T.reportPlaceLabel}: ${isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace}`,
-      "",
-      isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText
-    ];
 
-    return lines.join("\n");
+    if (snapshot.mode === "simple") {
+      return [
+        `${T.reportPaperTitle} ${T.reportPaperSubtitle}`,
+        `${T.reportDateLabel}: ${formatDateForDisplay(snapshot.date)}`,
+        `${T.reportPlaceLabel}: ${isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace}`,
+        "",
+        isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText
+      ].join("\n");
+    }
+
+    if (snapshot.mode === "extended") {
+      const signature =
+        snapshot.anonymous || !isMeaningfulString(snapshot.name)
+          ? "Anonimowo"
+          : snapshot.name;
+
+      return [
+        `${T.reportPaperTitle} ${T.reportPaperSubtitle}`,
+        `${T.reportDateLabel}: ${formatDateForDisplay(snapshot.date)}`,
+        `${LANG === "pl" ? "Podpis" : "Signature"}: ${signature}`,
+        "",
+        `${LANG === "pl" ? "Co zostało po seansie" : "What remained after the screening"}:`,
+        snapshot.whatStayed || "",
+        "",
+        `${LANG === "pl" ? "Najmocniejszy moment" : "Strongest moment"}:`,
+        snapshot.strongestMoment || "",
+        "",
+        `${LANG === "pl" ? "Odpowiedzialność" : "Responsibility"}:`,
+        snapshot.responsibility || "",
+        "",
+        `${LANG === "pl" ? "Co przekazać dalej" : "What to pass forward"}:`,
+        snapshot.passForward || ""
+      ].join("\n");
+    }
+
+    return "";
   }
 
   function copyViewerReport() {
@@ -848,6 +994,19 @@
       viewerReportText.value = "";
     }
 
+    if (viewerReportName) {
+      viewerReportName.value = "";
+    }
+
+    if (viewerReportAnonymous) {
+      viewerReportAnonymous.checked = false;
+    }
+
+    if (viewerReportWhatStayed) viewerReportWhatStayed.value = "";
+    if (viewerReportStrongestMoment) viewerReportStrongestMoment.value = "";
+    if (viewerReportResponsibility) viewerReportResponsibility.value = "";
+    if (viewerReportPassForward) viewerReportPassForward.value = "";
+
     if (viewerReportNumber) {
       viewerReportNumber.textContent = buildReportNumber();
     }
@@ -862,19 +1021,67 @@
 
   function openViewerReportPrint() {
     const snapshot = getViewerReportSnapshot();
-    const dateDisplay = formatDateForDisplay(snapshot.date);
-    const placeDisplay = isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace;
-    const textDisplay = isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText;
     const numberDisplay = isMeaningfulString(snapshot.number) ? snapshot.number : buildReportNumber();
+
+    let metaRightLabel = T.reportPlaceLabel;
+    let metaRightValue = T.reportDefaultPlace;
+    let bodyHtml = "";
+    let introText = T.reportPaperIntro;
+
+    if (snapshot.mode === "simple") {
+      metaRightValue = isMeaningfulString(snapshot.place) ? snapshot.place : T.reportDefaultPlace;
+      bodyHtml = (isMeaningfulString(snapshot.text) ? snapshot.text : T.reportDefaultText)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\n/g, "<br>");
+    }
+
+    if (snapshot.mode === "extended") {
+      metaRightLabel = LANG === "pl" ? "Podpis" : "Signature";
+      metaRightValue =
+        snapshot.anonymous || !isMeaningfulString(snapshot.name)
+          ? "Anonimowo"
+          : snapshot.name;
+
+      const sections = [
+        {
+          label: LANG === "pl" ? "Co zostało po seansie" : "What remained after the screening",
+          value: snapshot.whatStayed
+        },
+        {
+          label: LANG === "pl" ? "Najmocniejszy moment" : "Strongest moment",
+          value: snapshot.strongestMoment
+        },
+        {
+          label: LANG === "pl" ? "Odpowiedzialność" : "Responsibility",
+          value: snapshot.responsibility
+        },
+        {
+          label: LANG === "pl" ? "Co przekazać dalej" : "What to pass forward",
+          value: snapshot.passForward
+        }
+      ];
+
+      bodyHtml = sections
+        .map((section) => {
+          const safeValue = (section.value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\n/g, "<br>");
+          return `
+            <div class="print-block">
+              <div class="print-label">${section.label}</div>
+              <div class="print-value">${safeValue || "—"}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
 
     const printWindow = window.open("", "_blank", "width=980,height=1280");
     if (!printWindow) return;
-
-    const escapedText = textDisplay
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\n/g, "<br>");
 
     printWindow.document.open();
     printWindow.document.write(`<!DOCTYPE html>
@@ -885,18 +1092,18 @@
 <title>${T.reportPaperTitle}</title>
 <style>
   :root{
-    --paper:#e6d7be;
-    --paper-edge:#cdb896;
-    --paper-text:#34291e;
-    --paper-muted:#6c5845;
-    --rule:#b49a78;
+    --paper:#e8d9bd;
+    --paper-deep:#d8c19a;
+    --paper-text:#34281d;
+    --paper-muted:#705c47;
+    --rule:#b49471;
   }
   *{box-sizing:border-box}
   body{
     margin:0;
-    padding:40px;
-    background:#f3efe8;
-    font-family:"Courier New", monospace;
+    padding:38px;
+    background:#f3eee5;
+    font-family:"Special Elite","Courier New",monospace;
     color:var(--paper-text);
   }
   .page{
@@ -906,42 +1113,47 @@
   .sheet{
     position:relative;
     min-height:1120px;
-    padding:54px 52px 42px;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.02)),
-      linear-gradient(180deg, var(--paper), #dcc8a8 100%);
-    border:1px solid rgba(123,96,65,.30);
-    box-shadow:0 18px 40px rgba(0,0,0,.18);
+    padding:56px 52px 40px;
     overflow:hidden;
+    background:
+      radial-gradient(circle at 12% 10%, rgba(255,255,255,.34), transparent 16%),
+      radial-gradient(circle at 84% 76%, rgba(118,82,47,.15), transparent 22%),
+      linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.02)),
+      linear-gradient(180deg, var(--paper), var(--paper-deep));
+    border:1px solid rgba(121,92,60,.30);
+    box-shadow:0 18px 40px rgba(0,0,0,.16);
   }
   .sheet::before{
     content:"";
     position:absolute;
     inset:0;
-    opacity:.14;
+    opacity:.22;
+    pointer-events:none;
     background:
-      radial-gradient(circle at 14% 18%, rgba(255,255,255,.46), transparent 18%),
-      radial-gradient(circle at 78% 76%, rgba(120,88,58,.24), transparent 24%),
+      radial-gradient(circle at 22% 26%, rgba(255,255,255,.34), transparent 12%),
+      radial-gradient(circle at 68% 34%, rgba(92,63,38,.12), transparent 20%),
+      radial-gradient(circle at 76% 78%, rgba(92,63,38,.14), transparent 18%),
       repeating-linear-gradient(
         0deg,
-        rgba(78,59,41,.035) 0px,
-        rgba(78,59,41,.035) 1px,
+        rgba(94,69,45,.032) 0px,
+        rgba(94,69,45,.032) 1px,
         transparent 1px,
         transparent 4px
       );
     mix-blend-mode:multiply;
-    pointer-events:none;
   }
   .top{
     position:relative;
     z-index:1;
     text-align:center;
-    margin-bottom:30px;
+    padding-bottom:18px;
+    margin-bottom:22px;
+    border-bottom:1px solid rgba(121,96,69,.32);
   }
   .title{
     font-size:42px;
     line-height:1;
-    letter-spacing:.08em;
+    letter-spacing:.10em;
     text-transform:uppercase;
     margin:0;
   }
@@ -951,7 +1163,7 @@
     color:var(--paper-muted);
   }
   .number{
-    margin-top:10px;
+    margin-top:12px;
     font-size:14px;
     color:var(--paper-muted);
     letter-spacing:.06em;
@@ -962,43 +1174,66 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:18px;
-    margin-bottom:24px;
+    margin-bottom:22px;
     font-size:16px;
   }
   .intro{
     position:relative;
     z-index:1;
-    margin-bottom:24px;
-    line-height:1.9;
+    margin-bottom:22px;
+    line-height:1.95;
     font-size:16px;
-    color:#4a3b2d;
+    color:#4c3d2e;
   }
   .body{
     position:relative;
     z-index:1;
-    font-size:17px;
+    min-height:440px;
     line-height:2.05;
+    font-size:17px;
     white-space:pre-wrap;
     word-break:break-word;
-    min-height:420px;
+  }
+  .print-block + .print-block{
+    margin-top:20px;
+  }
+  .print-label{
+    margin-bottom:8px;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#7b6752;
+  }
+  .print-value{
+    min-height:54px;
   }
   .rule{
+    position:relative;
+    z-index:1;
     height:1px;
-    margin:26px 0 0;
-    background:linear-gradient(90deg, rgba(180,154,120,.88), rgba(180,154,120,.58));
+    margin:28px 0 18px;
+    background:linear-gradient(90deg, rgba(180,148,113,.85), rgba(180,148,113,.45));
   }
   .footer{
     position:relative;
     z-index:1;
-    margin-top:24px;
     text-align:center;
     font-size:14px;
     color:var(--paper-muted);
   }
   @media print{
-    body{padding:0;background:#fff}
-    .page{max-width:none}
-    .sheet{box-shadow:none;border:0;min-height:auto}
+    body{
+      padding:0;
+      background:#fff;
+    }
+    .page{
+      max-width:none;
+    }
+    .sheet{
+      box-shadow:none;
+      border:0;
+      min-height:auto;
+    }
   }
 </style>
 </head>
@@ -1012,13 +1247,13 @@
       </div>
 
       <div class="meta">
-        <div><strong>${T.reportDateLabel}:</strong> ${dateDisplay}</div>
-        <div><strong>${T.reportPlaceLabel}:</strong> ${placeDisplay}</div>
+        <div><strong>${T.reportDateLabel}:</strong> ${formatDateForDisplay(snapshot.date)}</div>
+        <div><strong>${metaRightLabel}:</strong> ${metaRightValue}</div>
       </div>
 
-      <div class="intro">${T.reportPaperIntro}</div>
+      <div class="intro">${introText}</div>
 
-      <div class="body">${escapedText}</div>
+      <div class="body">${bodyHtml}</div>
 
       <div class="rule"></div>
 
@@ -1035,7 +1270,6 @@
 </body>
 </html>`);
     printWindow.document.close();
-
     setViewerReportStatus(T.printHint);
   }
 
@@ -1060,17 +1294,17 @@
 
     updateViewerReportPreview();
 
-    if (viewerReportDate) {
-      viewerReportDate.addEventListener("input", updateViewerReportPreview);
-      viewerReportDate.addEventListener("change", updateViewerReportPreview);
-    }
+    [viewerReportDate, viewerReportPlace, viewerReportText, viewerReportName,
+      viewerReportWhatStayed, viewerReportStrongestMoment, viewerReportResponsibility,
+      viewerReportPassForward]
+      .filter(Boolean)
+      .forEach((field) => {
+        field.addEventListener("input", updateViewerReportPreview);
+        field.addEventListener("change", updateViewerReportPreview);
+      });
 
-    if (viewerReportPlace) {
-      viewerReportPlace.addEventListener("input", updateViewerReportPreview);
-    }
-
-    if (viewerReportText) {
-      viewerReportText.addEventListener("input", updateViewerReportPreview);
+    if (viewerReportAnonymous) {
+      viewerReportAnonymous.addEventListener("change", updateViewerReportPreview);
     }
 
     if (viewerReportCopy) {
