@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vibroslaw.github.io/sitemap.xml
