@@ -1,0 +1,19 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# IDE Files
+*.sublime-workspace
+*.sublime-project
+*.idea/
+*.vscode/
+
+# Build Artifacts
+/dist/
+/build/
+*.o
+*.out
+*.exe
+*.class
+*.war
+*.jar
