@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>SZTAB — Cinematic Historical Series</title>
+  <title>SZTAB — Raport z Pamięci | Vibrosław</title>
   <meta
     name="description"
-    content="SZTAB is a cinematic historical series built around resistance, memory, and the moments that shaped history — through music, image, and narrative."
+    content="SZTAB began as a historical memory music album by Vibrosław and now expands into cinematic album videos and the SZTAB Animated Series: Origin, Battles and Forgotten."
   />
   <meta name="theme-color" content="#090909" />
   <meta name="color-scheme" content="dark" />
 
-  <meta property="og:title" content="SZTAB — Cinematic Historical Series" />
+  <meta property="og:title" content="SZTAB — Raport z Pamięci | Vibrosław" />
   <meta
     property="og:description"
-    content="A cinematic historical series built around resistance, memory, and the moments that shaped history."
+    content="Historical memory music expanding into cinematic album videos and companion animated episodes."
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://piotrlichwala.com/sztab/" />
@@ -28,24 +28,10 @@
   />
 
   <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/hub.css?v=1" />
   <link rel="stylesheet" href="/assets/css/cinematic.css" />
   <link rel="stylesheet" href="/assets/css/mobile-nav.css" />
   <link rel="stylesheet" href="/assets/css/sztab.css" />
-
-  <noscript>
-    <style>
-      .reveal{
-        opacity:1 !important;
-        transform:none !important;
-        filter:none !important;
-      }
-
-      .page-transition,
-      .progress-bar{
-        display:none !important;
-      }
-    </style>
-  </noscript>
 </head>
 <body
   data-page="sztab"
@@ -54,7 +40,7 @@
     "History does not survive by itself. Someone has to carry it forward.",
     "Resistance is not only an act. It is also a memory that must be kept alive.",
     "Some names remain known. Others must be brought back from silence.",
-    "SZTAB is built not as a playlist, but as a durable world of memory and narrative.",
+    "SZTAB began in music and now expands into image.",
     "Episodes can be short. Their weight does not have to be."
   ]'
 >
@@ -63,17 +49,16 @@
 
   <div class="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true">
     <div class="mobile-menu-panel">
-      <a class="mobile-menu-link" href="/">Homepage</a>
-      <a class="mobile-menu-link" href="#featured">Featured</a>
-      <a class="mobile-menu-link" href="#video">Trailer</a>
-      <a class="mobile-menu-link" href="#categories">Categories</a>
+      <a class="mobile-menu-link" href="/">Home</a>
+      <a class="mobile-menu-link" href="/rap-ort/">Rap-Ort</a>
+      <a class="mobile-menu-link" href="/sztab/">SZTAB</a>
+      <a class="mobile-menu-link" href="/music-works/">Music / Works</a>
+      <a class="mobile-menu-link" href="/for-institutions/">For Institutions</a>
+      <a class="mobile-menu-link" href="/press-recognition/">Press / Recognition</a>
+      <a class="mobile-menu-link" href="/authorial-profile/">Author</a>
+      <a class="mobile-menu-link" href="/#contact">Contact</a>
 
-      <button
-        class="mobile-menu-link mobile-menu-button"
-        id="mobileCinematicToggle"
-        type="button"
-        aria-pressed="false"
-      >
+      <button class="mobile-menu-link mobile-menu-button" id="mobileCinematicToggle" type="button" aria-pressed="false">
         Cinematic Mode
       </button>
 
@@ -89,20 +74,17 @@
     <div class="wrap header-inner">
       <a class="brand" href="/sztab/" aria-label="SZTAB homepage">
         <div class="brand-name sztab-brand">SZTAB</div>
-        <div class="brand-sub">Cinematic Historical Series</div>
+        <div class="brand-sub">Raport z Pamięci</div>
       </a>
 
-      <nav class="desktop-nav desktop-nav-compact" aria-label="Site controls">
-        <a href="/" class="nav-button">Homepage</a>
-
-        <button
-          type="button"
-          id="cinematicToggle"
-          class="nav-button"
-          aria-pressed="false"
-        >
-          Cinematic Mode
-        </button>
+      <nav class="desktop-nav desktop-nav-compact site-nav-hub" aria-label="Primary navigation">
+        <a href="/" class="nav-button">Home</a>
+        <a href="/rap-ort/" class="nav-button">Rap-Ort</a>
+        <a href="/sztab/" class="nav-button">SZTAB</a>
+        <a href="/music-works/" class="nav-button">Music</a>
+        <a href="/for-institutions/" class="nav-button nav-wide">For Institutions</a>
+        <a href="/press-recognition/" class="nav-button nav-optional">Press</a>
+        <a href="/#contact" class="nav-button nav-optional">Contact</a>
 
         <div class="lang-switch" aria-label="Language switch">
           <a href="/sztab/" class="active">EN</a>
@@ -136,16 +118,16 @@
 
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
-          <div class="eyebrow">Cinematic Historical Series</div>
+          <div class="eyebrow">Historical memory music & animated formats</div>
 
           <h1 class="hero-title">SZTAB</h1>
 
           <div class="hero-subtitle">
-            Episodes about resistance, memory, and the moments that shaped history.
+            Raport z Pamięci. Music first, now expanding into image.
           </div>
 
           <p class="hero-lead">
-            SZTAB is an evolving series of short music-film works. Each episode stands as a self-contained story — about a figure, a neglected name, or a battle that changed the course of history. It is a series built for broader audiences without surrendering gravity, atmosphere, or respect.
+            SZTAB began as a historical memory music album: <strong>SZTAB — Raport z Pamięci</strong>. It is now expanding into cinematic album videos and a companion animated series based on selected songs, figures and historical memory themes.
           </p>
 
           <div class="memory-quote-block">
@@ -156,40 +138,132 @@
           </div>
 
           <div class="cta-row">
-            <a class="btn btn-primary" href="#categories">Enter the Series</a>
-            <a class="btn btn-secondary" href="/">Back to Main Site</a>
-            <button
-              class="btn btn-tertiary"
-              id="cinematicHeroButton"
-              type="button"
-              aria-pressed="false"
-            >
-              Enter Cinematic Mode
-            </button>
+            <a class="btn btn-primary" href="#album">Open the Album Context</a>
+            <a class="btn btn-secondary" href="#animated-series">Animated Series</a>
+            <a class="btn btn-tertiary" href="/music-works/">Music / Works</a>
           </div>
         </div>
 
         <div class="hero-side reveal">
           <aside class="glass-panel">
-            <div class="panel-label">Series Orientation</div>
-            <p class="panel-quote">History does not survive by itself. Someone has to carry it forward.</p>
+            <div class="panel-label">Orientation</div>
+            <p class="panel-quote">SZTAB is not only an animated series.</p>
             <p class="panel-text">
-              SZTAB organizes its stories around three axes — Original, Forgotten, and Battles — in order to build not a playlist, but a durable world of memory and narrative.
+              It is a wider historical-memory project by Vibrosław: an album foundation, cinematic visual extensions and animated strands shaped around biographies, battles and forgotten stories.
             </p>
           </aside>
         </div>
       </div>
     </section>
 
-    <section class="section continue-section" id="continueSection">
+    <section class="section" id="album">
       <div class="wrap">
-        <div class="content-panel continue-panel" id="continuePanel" aria-hidden="true">
-          <h3>Continue where you left off</h3>
-          <p id="continueText">Return to the most recently opened SZTAB episode or category.</p>
-          <div class="cta-row compact">
-            <a class="btn btn-primary" href="#" id="continueButton">Continue</a>
-            <button class="btn btn-secondary" type="button" id="dismissContinue">Dismiss</button>
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Album Foundation</div>
+            <h2>SZTAB — Raport z Pamięci</h2>
           </div>
+          <div class="section-note">
+            The first historical memory music album by Vibrosław and the source layer from which later visual formats can grow.
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="content-panel reveal">
+            <div class="status-row">
+              <span class="status-label">Music album</span>
+              <span class="status-label is-muted">Active</span>
+            </div>
+            <h3>First historical memory music album</h3>
+            <p>
+              <strong>SZTAB — Raport z Pamięci</strong> established the project as historical memory music: songs built around Polish history, resistance, conscience and remembrance. The album remains the source context for several later audiovisual directions.
+            </p>
+          </article>
+
+          <article class="content-panel reveal">
+            <div class="status-row">
+              <span class="status-label is-muted">Album origin</span>
+              <span class="status-label is-muted">Later version</span>
+            </div>
+            <h3>Kurier Prawdy</h3>
+            <p>
+              “Kurier Prawdy” comes from the first SZTAB album and was later used in a newer version. This distinction matters: the album origin remains part of the SZTAB foundation, while later versions can open separate visual or performance contexts.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="album-two">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Continuation</div>
+            <h2>SZTAB — Raport z Pamięci II</h2>
+          </div>
+          <div class="section-note">
+            A planned continuation of the historical-memory album line.
+          </div>
+        </div>
+
+        <div class="content-panel reveal">
+          <div class="status-row">
+            <span class="status-label">In development</span>
+            <span class="status-label is-muted">Planned for September</span>
+          </div>
+          <h3>Upcoming continuation</h3>
+          <p>
+            <strong>SZTAB — Raport z Pamięci II</strong> is planned as the next chapter in the music-album strand. It is presented here as an in-development continuation, not as a completed public release.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="animated-series">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="section-kicker">Visual Expansion</div>
+            <h2>SZTAB Animated Series</h2>
+          </div>
+          <div class="section-note">
+            A companion animated format based on selected songs and historical memory themes.
+          </div>
+        </div>
+
+        <div class="grid grid-3">
+          <a class="card mini-card reveal" href="/sztab/original/">
+            <div>
+              <div class="status-row">
+                <span class="status-label">Animated series</span>
+              </div>
+              <h3>SZTAB: Origin</h3>
+              <p>Biographical stories and moral beginnings: figures whose choices open a deeper question of courage, conscience and responsibility.</p>
+            </div>
+            <div class="card-link-row"><span class="card-entry">Open Origin</span></div>
+          </a>
+
+          <a class="card mini-card reveal" href="/sztab/battles/">
+            <div>
+              <div class="status-row">
+                <span class="status-label">Animated series</span>
+              </div>
+              <h3>SZTAB: Battles</h3>
+              <p>Battles, uprisings and collective resistance: moments where history changes through pressure, sacrifice and organized defiance.</p>
+            </div>
+            <div class="card-link-row"><span class="card-entry">Open Battles</span></div>
+          </a>
+
+          <a class="card mini-card reveal" href="/sztab/forgotten/">
+            <div>
+              <div class="status-row">
+                <span class="status-label">Animated series</span>
+              </div>
+              <h3>SZTAB: Forgotten</h3>
+              <p>Lesser-known figures and stories deserving remembrance: people and episodes pushed too far into the margins of public memory.</p>
+            </div>
+            <div class="card-link-row"><span class="card-entry">Open Forgotten</span></div>
+          </a>
         </div>
       </div>
     </section>
@@ -198,11 +272,11 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Featured Episode</div>
-            <h2>Current point of entry</h2>
+            <div class="section-kicker">First Animated Entry</div>
+            <h2>SZTAB: Origin — Zo</h2>
           </div>
           <div class="section-note">
-            This is where the most important or newest episode of the series can be foregrounded.
+            The first episode connects the album source material with a newer beat and visual direction.
           </div>
         </div>
 
@@ -216,25 +290,19 @@
 
           <div class="featured-body reveal">
             <div class="chips">
-              <span class="chip">Featured</span>
-              <span class="chip">Episode</span>
-              <span class="chip">SZTAB</span>
+              <span class="chip">Origin</span>
+              <span class="chip">Elżbieta Zawacka “Zo”</span>
+              <span class="chip">Animated short</span>
             </div>
 
             <h3 class="featured-title">Zo — The Silence That Fights</h3>
 
             <p class="featured-text">
-              A cinematic episode devoted to Elżbieta Zawacka — resistance, intelligence, discipline, and moral strength. It functions as a self-contained story, but also as an entry point into the wider world of the series.
+              The first episode, <strong>SZTAB: Origin — Zo</strong>, was based on a newer version of a song from the first SZTAB album, with the same lyrics and a different beat / visual direction. The animated short about Elżbieta Zawacka “Zo” was mentioned on Clare Mulley’s website.
             </p>
 
             <div class="cta-row compact">
-              <a
-                class="btn btn-primary track-link"
-                href="/sztab/original/zo/"
-                data-track-title="Zo — The Silence That Fights"
-              >
-                Open Episode
-              </a>
+              <a class="btn btn-primary track-link" href="/sztab/original/zo/" data-track-title="Zo — The Silence That Fights">Open Episode</a>
               <a class="btn btn-secondary" href="#video">Watch Video</a>
             </div>
           </div>
@@ -246,11 +314,11 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="section-kicker">Trailer / Episode</div>
-            <h2>Series Video</h2>
+            <div class="section-kicker">Video</div>
+            <h2>Featured SZTAB material</h2>
           </div>
           <div class="section-note">
-            Embedded YouTube material — this may be either the series trailer or a featured episode.
+            Embedded YouTube material from the SZTAB visual strand.
           </div>
         </div>
 
@@ -265,85 +333,17 @@
         </div>
       </div>
     </section>
-
-    <section class="section" id="categories">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <div class="section-kicker">Series Categories</div>
-            <h2>Three axes of the SZTAB world</h2>
-          </div>
-          <div class="section-note">
-            Each category forms its own narrative space and organizes subsequent episodes according to their type and historical function.
-          </div>
-        </div>
-
-        <div class="categories-grid">
-          <a
-            class="card category-card track-link reveal"
-            href="/sztab/original/"
-            data-track-title="SZTAB — Original"
-            aria-label="Enter Original category"
-          >
-            <div class="category-image"></div>
-            <div class="category-body">
-              <h3 class="category-title">Original</h3>
-              <p class="category-text">
-                Recognizable figures, yet still far from exhausted. Zo, Karski, Pilecki, Inka, and others who remain reference points of memory.
-              </p>
-              <div class="category-link">Enter category</div>
-            </div>
-          </a>
-
-          <a
-            class="card category-card track-link reveal"
-            href="/sztab/forgotten/"
-            data-track-title="SZTAB — Forgotten"
-            aria-label="Enter Forgotten category"
-          >
-            <div class="category-image"></div>
-            <div class="category-body">
-              <h3 class="category-title">Forgotten</h3>
-              <p class="category-text">
-                Names, stories, and achievements pushed to the margins. A place for those who must be restored to memory.
-              </p>
-              <div class="category-link">Enter category</div>
-            </div>
-          </a>
-
-          <a
-            class="card category-card track-link reveal"
-            href="/sztab/battles/"
-            data-track-title="SZTAB — Battles"
-            aria-label="Enter Battles category"
-          >
-            <div class="category-image"></div>
-            <div class="category-body">
-              <h3 class="category-title">Battles</h3>
-              <p class="category-text">
-                Clashes and events in which history changed direction. Battles retold as concentrated cinematic forms of memory.
-              </p>
-              <div class="category-link">Enter category</div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <div class="floating-tools">
-    <button class="tool-button" id="reducedMotionToggle" type="button" aria-pressed="false">
-      Reduced Motion
-    </button>
-    <button class="tool-button" id="scrollTopButton" type="button">
-      Top
-    </button>
+    <button class="tool-button" id="reducedMotionToggle" type="button" aria-pressed="false">Reduced Motion</button>
+    <button class="tool-button" id="scrollTopButton" type="button">Top</button>
   </div>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <div>SZTAB · Piotr Lichwała (Vibrosław)</div>
-      <div>English version</div>
+      <div>Historical memory music · English version</div>
     </div>
   </footer>
 
@@ -351,7 +351,6 @@
   <script src="/assets/js/navigation.js"></script>
   <script src="/assets/js/transitions.js"></script>
   <script src="/assets/js/cinematic.js"></script>
-  <script src="/assets/js/continue.js"></script>
   <script src="/assets/js/quotes.js"></script>
   <script src="/assets/js/sztab.js"></script>
 </body>

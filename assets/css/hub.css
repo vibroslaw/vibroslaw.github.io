@@ -1,0 +1,213 @@
+.site-header .desktop-nav-compact.site-nav-hub{
+  gap:8px;
+}
+
+.site-header .desktop-nav-compact.site-nav-hub .nav-button{
+  min-height:38px;
+  padding:0 10px;
+  font-size:.84rem;
+}
+
+.site-nav-hub .lang-switch{
+  margin-left:0;
+}
+
+.status-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.status-label{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:0 10px;
+  border:1px solid rgba(201,178,143,.28);
+  border-radius:999px;
+  background:rgba(201,178,143,.10);
+  color:var(--accent);
+  font-size:.70rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.status-label.is-muted{
+  border-color:rgba(255,255,255,.10);
+  background:rgba(255,255,255,.025);
+  color:var(--soft);
+}
+
+.hero-home .home-author-title{
+  max-width:13.5ch;
+  font-size:clamp(3.2rem, 6.5vw, 6.2rem);
+}
+
+.project-map-card,
+.work-card,
+.recognition-card,
+.institution-card{
+  min-height:300px;
+}
+
+.project-map-card .chips,
+.work-card .chips,
+.recognition-card .chips,
+.institution-card .chips{
+  margin-bottom:18px;
+}
+
+.project-map-card p,
+.work-card p,
+.recognition-card p,
+.institution-card p{
+  max-width:56ch;
+}
+
+.project-card-note{
+  margin-top:14px;
+  color:var(--soft);
+  line-height:1.72;
+  font-size:.94rem;
+}
+
+.hub-hero{
+  position:relative;
+  padding:112px 0 58px;
+  overflow:hidden;
+  isolation:isolate;
+}
+
+.hub-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(201,178,143,.12), transparent 26%),
+    radial-gradient(circle at 80% 4%, rgba(255,255,255,.045), transparent 24%),
+    linear-gradient(180deg, rgba(255,255,255,.018), transparent 62%);
+  pointer-events:none;
+}
+
+.hub-hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0, 760px) minmax(280px, 380px);
+  gap:48px;
+  align-items:end;
+}
+
+.hub-hero h1{
+  margin:0 0 22px;
+  font-family:"Cormorant Garamond",serif;
+  font-weight:600;
+  font-size:clamp(3.2rem, 6.2vw, 6rem);
+  line-height:.9;
+  letter-spacing:-.02em;
+  text-wrap:balance;
+}
+
+.hub-hero-lead{
+  margin:0;
+  max-width:60ch;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.92;
+}
+
+.hub-hero-panel{
+  align-self:stretch;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+
+.feature-list{
+  display:grid;
+  gap:12px;
+  margin-top:22px;
+}
+
+.feature-item{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:15px 16px;
+  background:rgba(255,255,255,.02);
+  color:var(--muted);
+  line-height:1.72;
+}
+
+.feature-item strong{
+  color:var(--text);
+}
+
+.link-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:22px;
+}
+
+.press-list,
+.work-list{
+  display:grid;
+  gap:18px;
+}
+
+.press-item,
+.work-item{
+  border-left:2px solid rgba(201,178,143,.38);
+  padding-left:16px;
+}
+
+.press-item h3,
+.work-item h3{
+  margin:0 0 8px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:1.7rem;
+  line-height:1;
+}
+
+.press-item p,
+.work-item p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.82;
+}
+
+@media (max-width:1320px){
+  .site-nav-hub .nav-optional{
+    display:none !important;
+  }
+}
+
+@media (max-width:1120px){
+  .site-nav-hub .nav-wide{
+    display:none !important;
+  }
+}
+
+@media (max-width:900px){
+  .hub-hero-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:760px){
+  .hub-hero{
+    padding:72px 0 36px;
+  }
+
+  .hub-hero h1,
+  .hero-home .home-author-title{
+    font-size:clamp(2.65rem, 12vw, 4.4rem);
+  }
+
+  .project-map-card,
+  .work-card,
+  .recognition-card,
+  .institution-card{
+    min-height:auto;
+  }
+}
