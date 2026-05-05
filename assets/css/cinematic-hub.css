@@ -377,3 +377,134 @@ body[data-lang="en"].reduced-motion a.institution-card:hover {
     padding-inline: 12px;
   }
 }
+
+
+/* Premium world-entry polish and reduced-motion aliases. */
+body[data-lang="en"] .home-world-title{
+  text-shadow:
+    0 28px 92px rgba(0,0,0,.62),
+    0 14px 58px rgba(201,178,143,.13);
+}
+
+body[data-lang="en"] .hero-home .hero-lead{
+  max-width:42ch;
+  color:rgba(246,242,234,.80);
+  font-size:clamp(1.04rem, 1.35vw, 1.18rem);
+}
+
+body[data-lang="en"].cinematic-mode .home-world-title{
+  text-shadow:
+    0 30px 110px rgba(0,0,0,.70),
+    0 20px 78px rgba(201,178,143,.18);
+}
+
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hub-hero::before{
+  animation:premiumHubHeroArrival 1.26s cubic-bezier(.16,1,.30,1) both;
+}
+
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hero-home .hero-image,
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .profile-hero .hero-image,
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hero-raport .hero-image,
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hero-sztab .hero-image{
+  animation:premiumWorldHeroArrival 1.22s cubic-bezier(.16,1,.30,1) both;
+}
+
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hero-copy,
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hub-hero .reveal:first-child{
+  animation:premiumWorldCopyArrival .94s cubic-bezier(.16,1,.30,1) .10s both;
+}
+
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hero-side,
+body[data-lang="en"].cinematic-arrival-active:not(.reduced-motion):not(.reduce-motion) .hub-hero-panel{
+  animation:premiumWorldPanelArrival 1s cubic-bezier(.16,1,.30,1) .18s both;
+}
+
+@keyframes premiumHubHeroArrival{
+  0%{
+    opacity:.78;
+    filter:saturate(.9) contrast(1.14) brightness(.64);
+    transform:translate3d(0, 0, 0) scale(1.135);
+  }
+  100%{
+    opacity:.62;
+    filter:saturate(.9) contrast(1.12) brightness(.82);
+    transform:translate3d(0, var(--hero-parallax, 0px), 0) scale(1.075);
+  }
+}
+
+@keyframes premiumWorldHeroArrival{
+  0%{
+    opacity:.82;
+    filter:saturate(.9) contrast(1.14) brightness(.62);
+    transform:translate3d(0, 0, 0) scale(1.13);
+  }
+  100%{
+    opacity:1;
+    filter:saturate(.86) contrast(1.12) brightness(.82);
+    transform:translate3d(0, var(--hero-parallax, 0px), 0) scale(1.065);
+  }
+}
+
+@keyframes premiumWorldCopyArrival{
+  0%{
+    opacity:0;
+    transform:translate3d(0, 28px, 0);
+    filter:blur(12px);
+  }
+  100%{
+    opacity:1;
+    transform:translate3d(0, 0, 0);
+    filter:blur(0);
+  }
+}
+
+@keyframes premiumWorldPanelArrival{
+  0%{
+    opacity:0;
+    transform:translate3d(0, 34px, 0) scale(.98);
+    filter:blur(14px);
+  }
+  100%{
+    opacity:1;
+    transform:translate3d(0, 0, 0) scale(1);
+    filter:blur(0);
+  }
+}
+
+body[data-lang="en"].reduce-motion .hub-hero::before,
+body[data-lang="en"].reduce-motion .hero-image,
+body[data-lang="en"].reduce-motion .project-map-card,
+body[data-lang="en"].reduce-motion .work-card,
+body[data-lang="en"].reduce-motion .recognition-card,
+body[data-lang="en"].reduce-motion .institution-card,
+body[data-lang="en"].reduce-motion .project-map-card::after,
+body[data-lang="en"].reduce-motion .work-card::after,
+body[data-lang="en"].reduce-motion .recognition-card::after,
+body[data-lang="en"].reduce-motion .institution-card::after{
+  animation:none !important;
+  transition:none !important;
+  transform:none !important;
+}
+
+body[data-lang="en"].reduce-motion .hero-home .hero-image,
+body[data-lang="en"].reduce-motion.cinematic-mode .hero-home .hero-image,
+body[data-lang="en"].reduce-motion.cinematic-arrival-active .hero-home .hero-image,
+body[data-lang="en"].reduce-motion.cinematic-arrival-active .hero-sztab .hero-image,
+body[data-lang="en"].reduce-motion.cinematic-arrival-active .hero-raport .hero-image,
+body[data-lang="en"].reduce-motion.cinematic-arrival-active .hub-hero::before{
+  animation:none !important;
+  transform:none !important;
+}
+
+@media (max-width:760px){
+  body[data-lang="en"] .home-world-title{
+    text-shadow:
+      0 20px 70px rgba(0,0,0,.68),
+      0 12px 46px rgba(201,178,143,.16);
+  }
+
+  body[data-lang="en"] .hero-home .hero-lead{
+    max-width:30ch;
+    font-size:.99rem;
+  }
+}
