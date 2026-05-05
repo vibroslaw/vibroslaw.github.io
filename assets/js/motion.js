@@ -14,6 +14,7 @@
 
     classes: {
       reducedMotion: "reduced-motion",
+      reduceMotionAlias: "reduce-motion",
       cinematicMode: "cinematic-mode",
       cinematicArrival: "cinematic-arrival-active",
       cinematicTransition: "cinematic-transition-active",
@@ -101,7 +102,10 @@
   }
 
   function isReducedMotionEnabled() {
-    return hasBodyClass(CONFIG.classes.reducedMotion);
+    return (
+      hasBodyClass(CONFIG.classes.reducedMotion) ||
+      hasBodyClass(CONFIG.classes.reduceMotionAlias)
+    );
   }
 
   function isCinematicModeEnabled() {
@@ -506,8 +510,12 @@
   function readReducedMotionPreference() {
     const stored = readFromLocalStorage(CONFIG.storage.reducedMotion);
 
+    if (getSystemReducedMotionPreference()) {
+      return true;
+    }
+
     if (stored === null) {
-      return getSystemReducedMotionPreference();
+      return false;
     }
 
     return stored === "true";
@@ -528,31 +536,34 @@
     const body = getBody();
     if (!body) return;
 
+    const requestedState = enabled;
+    const effectiveState = getSystemReducedMotionPreference() || requestedState;
     const currentState = isReducedMotionEnabled();
 
-    if (currentState === enabled) {
+    if (currentState === effectiveState) {
       updateReducedMotionButtonLabel();
 
-      if (enabled) {
+      if (effectiveState) {
         resetHeroMotionState();
       } else {
         refreshOrResetHeroMotionSoon();
       }
 
       if (persist) {
-        saveReducedMotionPreference(enabled);
+        saveReducedMotionPreference(requestedState);
       }
 
       return;
     }
 
-    body.classList.toggle(CONFIG.classes.reducedMotion, enabled);
+    body.classList.toggle(CONFIG.classes.reducedMotion, effectiveState);
+    body.classList.toggle(CONFIG.classes.reduceMotionAlias, effectiveState);
 
     if (persist) {
-      saveReducedMotionPreference(enabled);
+      saveReducedMotionPreference(requestedState);
     }
 
-    if (enabled) {
+    if (effectiveState) {
       resetHeroMotionState();
     } else {
       refreshOrResetHeroMotionSoon();
@@ -561,7 +572,7 @@
     updateReducedMotionButtonLabel();
 
     if (notify) {
-      notifyReducedMotionChange(enabled);
+      notifyReducedMotionChange(effectiveState);
     }
   }
 
@@ -588,9 +599,8 @@
     if (event.key !== CONFIG.storage.reducedMotion) return;
 
     const shouldReduceMotion =
-      event.newValue === null
-        ? getSystemReducedMotionPreference()
-        : event.newValue === "true";
+      getSystemReducedMotionPreference() ||
+      (event.newValue !== null && event.newValue === "true");
 
     applyReducedMotionState(shouldReduceMotion, {
       persist: false,
@@ -600,10 +610,9 @@
 
   function handleSystemReducedMotionChange(event) {
     const stored = readFromLocalStorage(CONFIG.storage.reducedMotion);
+    const requestedState = stored === null ? event.matches : stored === "true";
 
-    if (stored !== null) return;
-
-    applyReducedMotionState(event.matches, {
+    applyReducedMotionState(requestedState, {
       persist: false,
       notify: true
     });
@@ -786,11 +795,26 @@
   window.requestHeroMotionUpdate = requestHeroMotionUpdate;
   window.refreshHeroMotionSoon = refreshHeroMotionSoon;
 
+  function ensureWorldTransitionsModule() {
+    if (window.__siteWorldTransitionsInitialized) return;
+    if (document.getElementById("siteWorldTransitionsScript")) return;
+    if (document.querySelector('script[src*="/assets/js/world-transitions.js"]')) return;
+
+    const script = document.createElement("script");
+    script.id = "siteWorldTransitionsScript";
+    script.src = "/assets/js/world-transitions.js?v=1";
+    script.defer = true;
+
+    const target = document.body || document.head || document.documentElement;
+    target?.appendChild(script);
+  }
+
   function initHeroAndMotionUi() {
     cacheUiElements();
     initReducedMotion();
     initHeroMotion();
     updateReducedMotionButtonLabel();
+    ensureWorldTransitionsModule();
   }
 
   if (document.body) {
