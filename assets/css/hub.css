@@ -1,3 +1,5 @@
+@import url("/assets/css/cinematic-hub.css?v=1");
+
 .site-header .desktop-nav-compact.site-nav-hub{
   gap:8px;
 }
@@ -74,21 +76,8 @@
 
 .hub-hero{
   position:relative;
-  padding:112px 0 58px;
   overflow:hidden;
   isolation:isolate;
-}
-
-.hub-hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:0;
-  background:
-    radial-gradient(circle at 16% 12%, rgba(201,178,143,.12), transparent 26%),
-    radial-gradient(circle at 80% 4%, rgba(255,255,255,.045), transparent 24%),
-    linear-gradient(180deg, rgba(255,255,255,.018), transparent 62%);
-  pointer-events:none;
 }
 
 .hub-hero-grid{
@@ -104,7 +93,7 @@
   font-weight:600;
   font-size:clamp(3.2rem, 6.2vw, 6rem);
   line-height:.9;
-  letter-spacing:-.02em;
+  letter-spacing:0;
   text-wrap:balance;
 }
 
@@ -195,10 +184,6 @@
 }
 
 @media (max-width:760px){
-  .hub-hero{
-    padding:72px 0 36px;
-  }
-
   .hub-hero h1,
   .hero-home .home-author-title{
     font-size:clamp(2.65rem, 12vw, 4.4rem);

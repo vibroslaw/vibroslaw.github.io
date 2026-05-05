@@ -26,7 +26,7 @@
     },
 
     selectors: {
-      hero: ".hero-home, .profile-hero, .hero-ps, .hero-cr",
+      hero: ".hero-home, .profile-hero, .hero-ps, .hero-cr, .hero-raport, .hero-sztab, .hub-hero",
       reducedMotionToggle: "#reducedMotionToggle"
     },
 
