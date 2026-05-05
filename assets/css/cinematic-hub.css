@@ -1,0 +1,379 @@
+/* Shared cinematic layer for the English project hub pages.
+   The Polish site remains the visual source of truth; this file only adapts
+   that atmosphere to the new English information architecture. */
+
+body[data-lang="en"] {
+  --hub-hero-image: url("/assets/images/hero-main.jpg");
+  --hub-veil: rgba(4, 4, 4, .72);
+  --hub-panel: rgba(12, 11, 10, .58);
+  --hub-line: rgba(201, 178, 143, .18);
+  --hub-line-strong: rgba(201, 178, 143, .34);
+  --hub-text-glow: 0 20px 80px rgba(201, 178, 143, .14);
+}
+
+body[data-page="music-works"] {
+  --hub-hero-image: url("/assets/images/hero-sztab-main.jpg");
+}
+
+body[data-page="for-institutions"] {
+  --hub-hero-image: url("/assets/images/hero-raport-main.jpg");
+}
+
+body[data-page="press-recognition"] {
+  --hub-hero-image: url("/assets/images/hero-prawda-sumienia-main.jpg");
+}
+
+body[data-lang="en"] .section {
+  padding: 106px 0;
+}
+
+body[data-lang="en"].cinematic-mode .section {
+  padding: 124px 0;
+}
+
+body[data-lang="en"] .hub-hero {
+  min-height: clamp(580px, 72vh, 800px);
+  display: flex;
+  align-items: flex-end;
+  background: #050505;
+  border-bottom: 1px solid rgba(201, 178, 143, .10);
+}
+
+body[data-lang="en"] .hub-hero::before,
+body[data-lang="en"] .hub-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+body[data-lang="en"] .hub-hero::before {
+  z-index: -2;
+  background-image:
+    linear-gradient(90deg, rgba(4, 4, 4, .92) 0%, rgba(4, 4, 4, .62) 38%, rgba(4, 4, 4, .30) 72%, rgba(4, 4, 4, .76) 100%),
+    linear-gradient(180deg, rgba(4, 4, 4, .12) 0%, rgba(4, 4, 4, .84) 100%),
+    var(--hub-hero-image);
+  background-position: center;
+  background-size: cover;
+  opacity: .48;
+  transform: translate3d(0, var(--hero-parallax, 0px), 0) scale(1.045);
+  transition: opacity .8s ease, filter .8s ease, transform .8s ease;
+}
+
+body[data-lang="en"] .hub-hero::after {
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(201, 178, 143, .16), transparent 26%),
+    radial-gradient(circle at 72% 16%, rgba(255, 255, 255, .055), transparent 22%),
+    radial-gradient(circle at 50% 120%, rgba(201, 178, 143, .10), transparent 36%),
+    linear-gradient(180deg, rgba(5, 5, 5, .10), rgba(5, 5, 5, .78));
+  mix-blend-mode: screen;
+  opacity: .56;
+}
+
+body[data-lang="en"].cinematic-mode .hub-hero::before {
+  opacity: .62;
+  filter: saturate(.9) contrast(1.12) brightness(.82);
+  transform: translate3d(0, var(--hero-parallax, 0px), 0) scale(1.075);
+}
+
+body[data-lang="en"].cinematic-mode .hub-hero::after {
+  opacity: .82;
+}
+
+body[data-lang="en"] .hub-hero-grid {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 168px 0 78px;
+}
+
+body[data-lang="en"] .hub-hero h1 {
+  max-width: 11ch;
+  text-shadow: var(--hub-text-glow);
+}
+
+body[data-lang="en"] .hub-hero-lead {
+  color: rgba(246, 242, 234, .76);
+}
+
+body[data-lang="en"] .hub-hero-panel {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .018)),
+    rgba(5, 5, 5, .48);
+  border-color: rgba(201, 178, 143, .20);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, .42);
+  backdrop-filter: blur(18px);
+}
+
+body[data-lang="en"] .hero-raport,
+body[data-lang="en"] .hero-sztab,
+body[data-lang="en"] .hero-home,
+body[data-lang="en"] .profile-hero {
+  isolation: isolate;
+}
+
+body[data-lang="en"].cinematic-mode .hero-raport .hero-image,
+body[data-lang="en"].cinematic-mode .hero-sztab .hero-image,
+body[data-lang="en"].cinematic-mode .hero-home .hero-image,
+body[data-lang="en"].cinematic-mode .profile-hero .hero-image {
+  transform: translate3d(0, var(--hero-parallax, 0px), 0) scale(1.065);
+  filter: saturate(.86) contrast(1.12) brightness(.82);
+}
+
+body[data-lang="en"].cinematic-mode .hero-raport .hero-light,
+body[data-lang="en"].cinematic-mode .hero-sztab .hero-light,
+body[data-lang="en"].cinematic-mode .hero-home .hero-light,
+body[data-lang="en"].cinematic-mode .profile-hero .hero-light {
+  opacity: .84;
+}
+
+body[data-lang="en"] .project-map-card,
+body[data-lang="en"] .work-card,
+body[data-lang="en"] .recognition-card,
+body[data-lang="en"] .institution-card {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--hub-line);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .052), rgba(255, 255, 255, .012)),
+    rgba(8, 8, 8, .62);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .30);
+  transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease, background .35s ease;
+}
+
+body[data-lang="en"] .project-map-card > *,
+body[data-lang="en"] .work-card > *,
+body[data-lang="en"] .recognition-card > *,
+body[data-lang="en"] .institution-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+body[data-lang="en"] .project-map-card::before,
+body[data-lang="en"] .work-card::before,
+body[data-lang="en"] .recognition-card::before,
+body[data-lang="en"] .institution-card::before,
+body[data-lang="en"] .project-map-card::after,
+body[data-lang="en"] .work-card::after,
+body[data-lang="en"] .recognition-card::after,
+body[data-lang="en"] .institution-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+body[data-lang="en"] .project-map-card::before,
+body[data-lang="en"] .work-card::before,
+body[data-lang="en"] .recognition-card::before,
+body[data-lang="en"] .institution-card::before {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(201, 178, 143, .17), transparent 30%),
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, .30));
+  opacity: .54;
+}
+
+body[data-lang="en"] .project-map-card::after,
+body[data-lang="en"] .work-card::after,
+body[data-lang="en"] .recognition-card::after,
+body[data-lang="en"] .institution-card::after {
+  z-index: 1;
+  left: auto;
+  width: 58%;
+  background:
+    linear-gradient(90deg, rgba(8, 8, 8, 0), rgba(8, 8, 8, .80)),
+    var(--entry-image, url("/assets/images/hero-main.jpg"));
+  background-size: cover;
+  background-position: center;
+  opacity: .12;
+  transform: scale(1.04);
+}
+
+body[data-lang="en"] .project-map-card:nth-child(1),
+body[data-lang="en"] .institution-card {
+  --entry-image: url("/assets/images/hero-raport-main.jpg");
+}
+
+body[data-lang="en"] .project-map-card:nth-child(2),
+body[data-lang="en"] .work-card:nth-child(1),
+body[data-lang="en"] .work-card:nth-child(3) {
+  --entry-image: url("/assets/images/hero-sztab-main.jpg");
+}
+
+body[data-lang="en"] .project-map-card:nth-child(4) {
+  --entry-image: url("/assets/images/comingsoon.jpg");
+}
+
+body[data-lang="en"] .recognition-card {
+  --entry-image: url("/assets/images/hero-prawda-sumienia-main.jpg");
+}
+
+body[data-lang="en"].cinematic-mode .project-map-card,
+body[data-lang="en"].cinematic-mode .work-card,
+body[data-lang="en"].cinematic-mode .recognition-card,
+body[data-lang="en"].cinematic-mode .institution-card {
+  border-color: var(--hub-line-strong);
+  background:
+    linear-gradient(145deg, rgba(201, 178, 143, .10), rgba(255, 255, 255, .014)),
+    rgba(6, 6, 6, .74);
+  box-shadow: 0 34px 110px rgba(0, 0, 0, .48), 0 0 0 1px rgba(201, 178, 143, .07);
+}
+
+body[data-lang="en"].cinematic-mode .project-map-card::after,
+body[data-lang="en"].cinematic-mode .work-card::after,
+body[data-lang="en"].cinematic-mode .recognition-card::after,
+body[data-lang="en"].cinematic-mode .institution-card::after {
+  opacity: .22;
+  transform: scale(1.09);
+}
+
+body[data-lang="en"] a.project-map-card:hover,
+body[data-lang="en"] a.work-card:hover,
+body[data-lang="en"] a.recognition-card:hover,
+body[data-lang="en"] a.institution-card:hover,
+body[data-lang="en"].cinematic-mode .project-map-card:hover,
+body[data-lang="en"].cinematic-mode .work-card:hover,
+body[data-lang="en"].cinematic-mode .recognition-card:hover,
+body[data-lang="en"].cinematic-mode .institution-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201, 178, 143, .45);
+}
+
+body[data-lang="en"] .content-panel,
+body[data-lang="en"] .glass-panel {
+  box-shadow: 0 24px 86px rgba(0, 0, 0, .28);
+}
+
+body[data-lang="en"] .status-label {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .018);
+}
+
+body[data-lang="en"] .floating-tools {
+  gap: 8px;
+  align-items: flex-end;
+}
+
+body[data-lang="en"] .floating-tools .tool-button {
+  min-height: 38px;
+  border-color: rgba(201, 178, 143, .20);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .018)),
+    rgba(8, 8, 8, .70);
+  color: rgba(246, 242, 234, .82);
+  backdrop-filter: blur(18px);
+}
+
+body[data-lang="en"] .floating-tools #cinematicToggle {
+  min-width: 142px;
+}
+
+body[data-lang="en"] .floating-tools #cinematicToggle[data-active="true"],
+body[data-lang="en"] .floating-tools #reducedMotionToggle[aria-pressed="true"] {
+  border-color: rgba(201, 178, 143, .45);
+  color: var(--accent);
+}
+
+body[data-lang="en"] .floating-tools .tool-button:focus-visible,
+body[data-lang="en"] .mobile-cinematic-fab:focus-visible {
+  outline: 1px solid rgba(201, 178, 143, .82);
+  outline-offset: 3px;
+}
+
+body[data-lang="en"].reduced-motion .hub-hero::before,
+body[data-lang="en"].reduced-motion .hero-image,
+body[data-lang="en"].reduced-motion .project-map-card,
+body[data-lang="en"].reduced-motion .work-card,
+body[data-lang="en"].reduced-motion .recognition-card,
+body[data-lang="en"].reduced-motion .institution-card,
+body[data-lang="en"].reduced-motion .project-map-card::after,
+body[data-lang="en"].reduced-motion .work-card::after,
+body[data-lang="en"].reduced-motion .recognition-card::after,
+body[data-lang="en"].reduced-motion .institution-card::after {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+body[data-lang="en"].reduced-motion a.project-map-card:hover,
+body[data-lang="en"].reduced-motion a.work-card:hover,
+body[data-lang="en"].reduced-motion a.recognition-card:hover,
+body[data-lang="en"].reduced-motion a.institution-card:hover {
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-lang="en"] .hub-hero::before,
+  body[data-lang="en"] .hero-image,
+  body[data-lang="en"] .project-map-card,
+  body[data-lang="en"] .work-card,
+  body[data-lang="en"] .recognition-card,
+  body[data-lang="en"] .institution-card,
+  body[data-lang="en"] .project-map-card::after,
+  body[data-lang="en"] .work-card::after,
+  body[data-lang="en"] .recognition-card::after,
+  body[data-lang="en"] .institution-card::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  body[data-lang="en"] .hub-hero-grid {
+    padding: 136px 0 58px;
+  }
+
+  body[data-lang="en"] .hub-hero h1 {
+    max-width: 12ch;
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-lang="en"] .section,
+  body[data-lang="en"].cinematic-mode .section {
+    padding: 76px 0;
+  }
+
+  body[data-lang="en"] .hub-hero {
+    min-height: 640px;
+  }
+
+  body[data-lang="en"] .hub-hero::before {
+    opacity: .54;
+    background-position: center top;
+  }
+
+  body[data-lang="en"] .hub-hero-grid {
+    padding: 116px 0 42px;
+  }
+
+  body[data-lang="en"] .hub-hero-panel {
+    align-self: auto;
+  }
+
+  body[data-lang="en"] .project-map-card::after,
+  body[data-lang="en"] .work-card::after,
+  body[data-lang="en"] .recognition-card::after,
+  body[data-lang="en"] .institution-card::after {
+    width: 100%;
+    opacity: .08;
+  }
+
+  body[data-lang="en"] .floating-tools {
+    right: 14px;
+    bottom: 82px;
+  }
+
+  body[data-lang="en"] .floating-tools #cinematicToggle {
+    display: none !important;
+  }
+
+  body[data-lang="en"] .floating-tools #reducedMotionToggle {
+    display: inline-flex !important;
+    max-width: 148px;
+    padding-inline: 12px;
+  }
+}
