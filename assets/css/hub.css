@@ -41,9 +41,19 @@
   color:var(--soft);
 }
 
-.hero-home .home-author-title{
-  max-width:13.5ch;
-  font-size:clamp(3.2rem, 6.5vw, 6.2rem);
+.hero-home .home-world-title{
+  max-width:13.2ch;
+  font-size:clamp(4.1rem, 7.6vw, 7.7rem);
+  line-height:.82;
+  letter-spacing:0;
+}
+
+.hero-home .home-world-title span{
+  display:block;
+}
+
+.hero-home .home-world-title span + span{
+  margin-top:.04em;
 }
 
 .project-map-card,
@@ -165,6 +175,16 @@
   line-height:1.82;
 }
 
+@media (min-width:761px){
+  .site-header .site-nav-hub > .nav-button[href="/"],
+  .site-header .site-nav-hub > .nav-button[href="/for-institutions/"],
+  .site-header .site-nav-hub > .nav-button[href="/press-recognition/"],
+  .site-header .site-nav-hub > .nav-button[href="#contact"],
+  .site-header .site-nav-hub > .nav-button[href="/#contact"]{
+    display:none !important;
+  }
+}
+
 @media (max-width:1320px){
   .site-nav-hub .nav-optional{
     display:none !important;
@@ -184,9 +204,14 @@
 }
 
 @media (max-width:760px){
-  .hub-hero h1,
-  .hero-home .home-author-title{
+  .hub-hero h1{
     font-size:clamp(2.65rem, 12vw, 4.4rem);
+  }
+
+  .hero-home .home-world-title{
+    max-width:13ch;
+    font-size:clamp(2.88rem, 12.4vw, 5rem);
+    line-height:.88;
   }
 
   .project-map-card,
