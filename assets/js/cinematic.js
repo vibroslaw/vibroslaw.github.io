@@ -9,6 +9,8 @@
   const CINEMATIC_STORAGE_KEY = "siteCinematicMode";
   const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
   const MOBILE_CINEMATIC_FAB_ID = "mobileCinematicFab";
+  const MOTION_SCRIPT_ID = "siteMotionScript";
+  const MOTION_SCRIPT_SRC = "/assets/js/motion.js?v=9";
 
   const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
   const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
@@ -54,6 +56,51 @@
   function isPolishLanguage() {
     const body = getBody();
     return body?.dataset.lang === "pl";
+  }
+
+  function ensureCinematicUtilityToggle() {
+    const body = getBody();
+    if (!body) return;
+    if (document.getElementById("cinematicToggle")) return;
+
+    const hasCinematicEntry = !!(
+      document.getElementById("mobileCinematicToggle") ||
+      document.getElementById("cinematicHeroButton")
+    );
+
+    if (!hasCinematicEntry) return;
+
+    const tools = document.querySelector(".floating-tools");
+    if (!(tools instanceof HTMLElement)) return;
+
+    const button = document.createElement("button");
+    button.className = "tool-button cinematic-tool-button";
+    button.id = "cinematicToggle";
+    button.type = "button";
+    button.textContent = isPolishLanguage() ? "Tryb kinowy" : "Cinematic Mode";
+    button.setAttribute("aria-pressed", "false");
+    button.setAttribute("aria-label", button.textContent);
+    button.setAttribute("title", button.textContent);
+    button.dataset.active = "false";
+
+    const reducedMotionToggle = document.getElementById("reducedMotionToggle");
+    tools.insertBefore(button, reducedMotionToggle || tools.firstChild);
+  }
+
+  function ensureMotionModule() {
+    if (window.__siteMotionModuleInitialized) return;
+    if (document.getElementById(MOTION_SCRIPT_ID)) return;
+    if (document.querySelector('script[src*="/assets/js/motion.js"]')) return;
+
+    const script = document.createElement("script");
+    script.id = MOTION_SCRIPT_ID;
+    script.src = MOTION_SCRIPT_SRC;
+    script.defer = true;
+
+    const target = document.body || document.head || document.documentElement;
+    if (target) {
+      target.appendChild(script);
+    }
   }
 
   function isMobileViewport() {
@@ -353,6 +400,7 @@
   }
 
   function updateCinematicLabels() {
+    ensureCinematicUtilityToggle();
     ensureMobileCinematicFab();
     cacheCinematicElements();
 
@@ -750,6 +798,8 @@
   }
 
   function handlePageShow() {
+    ensureCinematicUtilityToggle();
+    ensureMotionModule();
     ensureMobileCinematicFab();
     cacheCinematicElements();
     updateCinematicLabels();
@@ -794,6 +844,7 @@
     if (cinematicModeInitialized) return;
     cinematicModeInitialized = true;
 
+    ensureCinematicUtilityToggle();
     ensureMobileCinematicFab();
     cacheCinematicElements();
 
@@ -805,6 +856,8 @@
       source: "init",
       refreshUi: false
     });
+
+    ensureMotionModule();
 
     if (cinematicToggle) {
       cinematicToggle.addEventListener("click", handleCinematicButtonClick);
