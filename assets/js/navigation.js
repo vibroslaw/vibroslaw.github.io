@@ -11,6 +11,32 @@
     ".mobile-menu-link, .mobile-menu-button, .mobile-lang-switch a";
   const FOCUSABLE_SELECTOR =
     'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
+  const LANGUAGE_ROUTE_PAIRS = {
+    "/music-works/": {
+      en: "/music-works/",
+      pl: "/music-works/pl/"
+    },
+    "/music-works/pl/": {
+      en: "/music-works/",
+      pl: "/music-works/pl/"
+    },
+    "/for-institutions/": {
+      en: "/for-institutions/",
+      pl: "/for-institutions/pl/"
+    },
+    "/for-institutions/pl/": {
+      en: "/for-institutions/",
+      pl: "/for-institutions/pl/"
+    },
+    "/press-recognition/": {
+      en: "/press-recognition/",
+      pl: "/press-recognition/pl/"
+    },
+    "/press-recognition/pl/": {
+      en: "/press-recognition/",
+      pl: "/press-recognition/pl/"
+    }
+  };
 
   const SWIPE_CLOSE_DISTANCE = 72;
   const SWIPE_MAX_HORIZONTAL_DRIFT = 56;
@@ -47,6 +73,47 @@
 
   function getHtml() {
     return document.documentElement;
+  }
+
+  function normalizePath(path) {
+    return path.endsWith("/") ? path : `${path}/`;
+  }
+
+  function getLanguageRoutePair() {
+    return LANGUAGE_ROUTE_PAIRS[normalizePath(window.location.pathname)] || null;
+  }
+
+  function updateAlternateLink(lang, href) {
+    if (!document.head) return;
+
+    const absoluteHref = new URL(href, window.location.origin).href;
+    let link = document.head.querySelector(`link[rel="alternate"][hreflang="${lang}"]`);
+
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "alternate";
+      link.hreflang = lang;
+      document.head.appendChild(link);
+    }
+
+    link.href = absoluteHref;
+  }
+
+  function syncLanguageSwitchLinks() {
+    const routes = getLanguageRoutePair();
+    if (!routes) return;
+
+    document.querySelectorAll(".lang-switch, .mobile-lang-switch").forEach((switcher) => {
+      switcher.querySelectorAll("a").forEach((link) => {
+        const label = link.textContent.trim().toUpperCase();
+        if (label === "EN") link.href = routes.en;
+        if (label === "PL") link.href = routes.pl;
+      });
+    });
+
+    updateAlternateLink("en", routes.en);
+    updateAlternateLink("pl", routes.pl);
+    updateAlternateLink("x-default", routes.en);
   }
 
   function cacheMobileNavigationElements() {
@@ -500,6 +567,7 @@
     if (mobileNavigationInitialized) return;
 
     cacheMobileNavigationElements();
+    syncLanguageSwitchLinks();
 
     if (!mobileNavToggle || !mobileMenuOverlay || !mobileMenuPanel) return;
 
