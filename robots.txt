@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://vibroslaw.github.io/sitemap.xml
+Sitemap: https://piotrlichwala.com/sitemap.xml
