@@ -47,7 +47,7 @@
     },
 
     motion: {
-      defaultStrength: 22,
+      defaultStrength: 0,
       cinematicDesktopStrength: 42,
       cinematicMobileStrength: 28
     }
@@ -287,9 +287,9 @@
     if (isPolishLanguage()) {
       return {
         inactiveText: "Mniej ruchu",
-        activeText: "Przywróć ruch",
+        activeText: "Przywr\u00f3\u0107 ruch",
         inactiveAria: "Ogranicz animacje i ruch",
-        activeAria: "Przywróć animacje i ruch"
+        activeAria: "Przywr\u00f3\u0107 animacje i ruch"
       };
     }
 
