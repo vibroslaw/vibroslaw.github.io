@@ -428,11 +428,21 @@
     runWorldEntry(link);
   }
 
+  function handleReducedMotionChange(event) {
+    const enabled = event?.detail?.enabled === true || isReducedMotionEnabled();
+    if (!enabled) return;
+
+    locked = false;
+    clearActiveNodes();
+    dispatchTransitionState(false);
+  }
+
   window.addEventListener("pagehide", clearActiveNodes);
   window.addEventListener("pageshow", () => {
     locked = false;
     clearActiveNodes();
     dispatchTransitionState(false);
   });
+  document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
   document.addEventListener("click", handleClick, true);
 })();

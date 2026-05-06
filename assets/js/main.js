@@ -29,9 +29,19 @@
     return document.body;
   }
 
+  function getSystemReducedMotionPreference() {
+    if (!window.matchMedia) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
   function isReducedMotionEnabled() {
     const body = getBody();
-    return !!body && body.classList.contains("reduced-motion");
+    return (
+      getSystemReducedMotionPreference() ||
+      (!!body &&
+        (body.classList.contains("reduced-motion") ||
+          body.classList.contains("reduce-motion")))
+    );
   }
 
   function isPolishLanguage() {
@@ -272,7 +282,7 @@
     if (!scrollTopButton) return;
 
     const label = isPolishLanguage()
-      ? "Wróć na górę strony"
+      ? "Wr\u00f3\u0107 na g\u00f3r\u0119 strony"
       : "Back to top";
 
     scrollTopButton.setAttribute("aria-label", label);
