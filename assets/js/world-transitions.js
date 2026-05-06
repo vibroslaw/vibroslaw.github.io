@@ -66,6 +66,21 @@
     return (path || "").replace(/\/+$/, "") || "/";
   }
 
+  function getWorldLookupPath(path) {
+    const normalized = normalizePath(path);
+
+    if (normalized === "/pl") return "/";
+    if (normalized.endsWith("/pl")) {
+      return normalizePath(normalized.slice(0, -3));
+    }
+
+    if (normalized === "/rap-ort/prawda-sumienia/widz") {
+      return "/rap-ort/prawda-sumienia";
+    }
+
+    return normalized;
+  }
+
   function isMobileViewport() {
     return window.innerWidth <= MOBILE_BREAKPOINT;
   }
@@ -128,7 +143,7 @@
     const url = getUrl(link);
     if (!url || url.origin !== window.location.origin || isSameLocation(url)) return false;
 
-    return WORLD_PATHS.has(normalizePath(url.pathname));
+    return WORLD_PATHS.has(getWorldLookupPath(url.pathname));
   }
 
   function getTitle(link) {
@@ -154,7 +169,7 @@
 
   function getPath(link) {
     const url = getUrl(link);
-    return url ? normalizePath(url.pathname) : "/";
+    return url ? getWorldLookupPath(url.pathname) : "/";
   }
 
   function getWorldImage(link, media) {
