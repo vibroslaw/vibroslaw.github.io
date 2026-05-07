@@ -11,6 +11,8 @@
   const SCROLL_TOP_VISIBILITY_THRESHOLD = 560;
   const BODY_CLASS_ATTRIBUTE = "class";
   const VIEWPORT_HEIGHT_CSS_VARIABLE = "--vh";
+  const CONTACT_FLOW_SCRIPT_ID = "siteContactFlowScript";
+  const CONTACT_FLOW_SCRIPT_SRC = "/assets/js/contact-flow.js?v=1";
 
   const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
   const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
@@ -120,6 +122,20 @@
     }
   }
 
+
+  function ensureContactFlowModule() {
+    if (window.__siteContactFlowInitialized) return;
+    if (document.getElementById(CONTACT_FLOW_SCRIPT_ID)) return;
+    if (document.querySelector('script[src*="/assets/js/contact-flow.js"]')) return;
+
+    const script = document.createElement("script");
+    script.id = CONTACT_FLOW_SCRIPT_ID;
+    script.src = CONTACT_FLOW_SCRIPT_SRC;
+    script.defer = true;
+
+    const target = document.body || document.head || document.documentElement;
+    if (target) target.appendChild(script);
+  }
   function getPendingCinematicArrival() {
     const raw = readFromSessionStorage(CINEMATIC_ARRIVAL_STORAGE_KEY);
     if (!raw) return null;
@@ -473,6 +489,7 @@
     initRevealObserver();
     initBodyClassObserver();
     refreshMainUI();
+    ensureContactFlowModule();
 
     window.addEventListener(
       "scroll",
@@ -496,6 +513,7 @@
       }
 
       refreshMainUI();
+      ensureContactFlowModule();
     });
 
     document.addEventListener("visibilitychange", () => {
