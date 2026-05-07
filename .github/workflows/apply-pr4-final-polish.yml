@@ -1,0 +1,42 @@
+name: Apply PR4 final polish patch
+
+on:
+  push:
+    branches:
+      - codex/final-polish-seo-content-accuracy-pass
+
+permissions:
+  contents: write
+
+jobs:
+  apply-pr4-patch:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Apply generated PR4 patch
+        shell: bash
+        run: |
+          cat .codex/pr4-part-*.b64 > .codex/pr4.patch.gz.b64
+          python3 - <<'PY'
+          import base64, gzip, pathlib
+          data = base64.b64decode(pathlib.Path('.codex/pr4.patch.gz.b64').read_text().strip())
+          pathlib.Path('pr4.patch').write_bytes(gzip.decompress(data))
+          PY
+          git apply --whitespace=nowarn pr4.patch
+          rm pr4.patch
+          rm -rf .codex
+          rm .github/workflows/apply-pr4-final-polish.yml
+
+      - name: Commit final polish pass
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Final polish, SEO and content accuracy pass"
+          git push
