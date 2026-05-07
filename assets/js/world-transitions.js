@@ -66,6 +66,19 @@
     return (path || "").replace(/\/+$/, "") || "/";
   }
 
+  function getWorldLookupPath(path) {
+    let clean = normalizePath(path);
+
+    if (clean === "/pl") return "/";
+    if (clean.endsWith("/pl")) clean = normalizePath(clean.slice(0, -3));
+
+    clean = clean.replace("/rap-ort/prawda-sumienia/widz", "/rap-ort/prawda-sumienia");
+    clean = clean.replace("/rap-ort/prawda-sumienia/viewer", "/rap-ort/prawda-sumienia");
+    clean = clean.replace("/sztab/origin", "/sztab/original");
+
+    return clean;
+  }
+
   function isMobileViewport() {
     return window.innerWidth <= MOBILE_BREAKPOINT;
   }
@@ -128,7 +141,7 @@
     const url = getUrl(link);
     if (!url || url.origin !== window.location.origin || isSameLocation(url)) return false;
 
-    return WORLD_PATHS.has(normalizePath(url.pathname));
+    return WORLD_PATHS.has(getWorldLookupPath(url.pathname));
   }
 
   function getTitle(link) {
@@ -145,16 +158,14 @@
     const explicit = link.dataset.cinematicEntry?.trim().toLowerCase();
     if (explicit) return explicit;
 
-    const url = getUrl(link);
-    if (!url) return "world";
-
-    const parts = normalizePath(url.pathname).split("/").filter(Boolean);
+    const path = getPath(link);
+    const parts = path.split("/").filter(Boolean);
     return parts[parts.length - 1] || "world";
   }
 
   function getPath(link) {
     const url = getUrl(link);
-    return url ? normalizePath(url.pathname) : "/";
+    return url ? getWorldLookupPath(url.pathname) : "/";
   }
 
   function getWorldImage(link, media) {
@@ -210,9 +221,7 @@
   function dispatchTransitionState(active) {
     document.body?.classList.toggle("cinematic-transition-active", active);
     document.documentElement.dataset.pageTransition = active ? "cinematic" : "";
-    if (!active) {
-      delete document.documentElement.dataset.pageTransition;
-    }
+    if (!active) delete document.documentElement.dataset.pageTransition;
 
     document.dispatchEvent(
       new CustomEvent(active ? "site:cinematic-transition-start" : "site:cinematic-transition-end", {
@@ -261,16 +270,20 @@
     const mediaRect = media instanceof HTMLElement ? media.getBoundingClientRect() : linkRect;
     const compact = !(media instanceof HTMLElement) && linkRect.width < 190 && linkRect.height < 92;
 
-    if (!compact) {
-      return linkRect;
-    }
+    if (!compact) return linkRect;
 
     const width = Math.min(window.innerWidth - 36, 340);
     const height = Math.min(window.innerHeight - 36, 204);
 
     return {
-      left: Math.min(Math.max(mediaRect.left + mediaRect.width / 2 - width / 2, 18), Math.max(18, window.innerWidth - width - 18)),
-      top: Math.min(Math.max(mediaRect.top + mediaRect.height / 2 - height / 2, 18), Math.max(18, window.innerHeight - height - 18)),
+      left: Math.min(
+        Math.max(mediaRect.left + mediaRect.width / 2 - width / 2, 18),
+        Math.max(18, window.innerWidth - width - 18)
+      ),
+      top: Math.min(
+        Math.max(mediaRect.top + mediaRect.height / 2 - height / 2, 18),
+        Math.max(18, window.innerHeight - height - 18)
+      ),
       width,
       height,
       right: 0,
