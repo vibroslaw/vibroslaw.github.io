@@ -26,9 +26,15 @@ jobs:
         run: |
           cat .codex/pr4-part-*.b64 > .codex/pr4.patch.gz.b64
           python3 - <<'PY'
-          import base64, gzip, pathlib
+          import base64, gzip, hashlib, pathlib, zlib
           data = base64.b64decode(pathlib.Path('.codex/pr4.patch.gz.b64').read_text().strip())
-          pathlib.Path('pr4.patch').write_bytes(gzip.decompress(data))
+          try:
+              patch = gzip.decompress(data)
+          except Exception as exc:
+              print(f'gzip wrapper failed ({exc}); retrying raw deflate stream')
+              patch = zlib.decompress(data[10:-8], -15)
+          pathlib.Path('pr4.patch').write_bytes(patch)
+          print('patch bytes', len(patch), 'sha256', hashlib.sha256(patch).hexdigest())
           PY
           git apply --whitespace=nowarn pr4.patch
           rm pr4.patch
