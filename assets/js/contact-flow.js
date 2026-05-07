@@ -114,14 +114,14 @@
     if (path === "/" || path === "/pl") {
       const panel = document.querySelector("#contact .content-panel");
       addContactButton(panel, isPl ? "Kontakt" : "Contact", contactHref, "primary");
-      addContactButton(panel, isPl ? "Napisz wiadomosc" : "Email Piotr / Vibroslaw", getContactMailHref("screening", lang), "secondary");
+      addContactButton(panel, isPl ? "Napisz wiadomość" : "Email Piotr / Vibrosław", getContactMailHref("screening", lang), "secondary");
       return;
     }
 
     if (path === "/rap-ort" || path === "/rap-ort/pl") {
       const panel = document.querySelector("#contact .content-panel");
       const mailHref = getContactMailHref("screening", lang);
-      updateFirstContactMail(panel, isPl ? "Zapytaj o pokaz lub licencje" : "Request screening / licensing information", mailHref) || addContactButton(panel, isPl ? "Zapytaj o pokaz lub licencje" : "Request screening / licensing information", mailHref, "primary");
+      updateFirstContactMail(panel, isPl ? "Zapytaj o pokaz lub licencję" : "Request screening / licensing information", mailHref) || addContactButton(panel, isPl ? "Zapytaj o pokaz lub licencję" : "Request screening / licensing information", mailHref, "primary");
       addContactButton(panel, isPl ? "Kontakt" : "Contact page", contactHref, "secondary");
       return;
     }
@@ -153,7 +153,7 @@
 
     if (path.startsWith("/music-works")) {
       const panel = document.querySelector("#listen .content-panel");
-      addContactButton(panel, isPl ? "Zapytanie o wykorzystanie muzyki / wspolprace" : "Music use / collaboration enquiry", getContactMailHref("music", lang), "tertiary");
+      addContactButton(panel, isPl ? "Zapytanie o wykorzystanie muzyki / współpracę" : "Music use / collaboration enquiry", getContactMailHref("music", lang), "tertiary");
       if (isPl) addContactButton(panel, "Kontakt", contactHref, "secondary");
     }
   }
