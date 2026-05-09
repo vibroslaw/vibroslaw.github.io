@@ -11,7 +11,9 @@
   };
 
   const currentPath = normalizePath(window.location.pathname);
+  const pageLang = (document.documentElement.lang || document.body?.dataset.lang || "").toLowerCase();
   const isPolish =
+    pageLang === "pl" ||
     currentPath === "/pl/" ||
     currentPath.startsWith("/pl/") ||
     currentPath.endsWith("/pl/") ||
@@ -40,12 +42,18 @@
     ["/music/pl/", "/music/"],
     ["/music-works/", "/music/pl/"],
     ["/music-works/pl/", "/music/"],
+    ["/pl/music/", "/music/"],
     ["/between-the-lines/", "/miedzy-wierszami/"],
     ["/miedzy-wierszami/", "/between-the-lines/"],
+    ["/author/", "/authorial-profile/pl/"],
     ["/authorial-profile/", "/authorial-profile/pl/"],
     ["/authorial-profile/pl/", "/authorial-profile/"],
+    ["/institutions/", "/for-institutions/pl/"],
+    ["/pl/institutions/", "/for-institutions/"],
     ["/for-institutions/", "/for-institutions/pl/"],
     ["/for-institutions/pl/", "/for-institutions/"],
+    ["/press/", "/press-recognition/pl/"],
+    ["/pl/press/", "/press-recognition/"],
     ["/press-recognition/", "/press-recognition/pl/"],
     ["/press-recognition/pl/", "/press-recognition/"],
     ["/contact/", "/contact/pl/"],
@@ -59,6 +67,21 @@
     path === "/music/pl/" ||
     path === "/between-the-lines/" ||
     path === "/miedzy-wierszami/";
+
+  const isActive = (key) => {
+    if (key === "home") return currentPath === "/" || currentPath === "/pl/";
+    if (key === "raport") return currentPath.startsWith("/rap-ort/");
+    if (key === "sztab") return currentPath.startsWith("/sztab/");
+    if (key === "between") return currentPath === "/between-the-lines/" || currentPath === "/miedzy-wierszami/";
+    if (key === "music") return currentPath === "/music/" || currentPath === "/music/pl/" || currentPath.startsWith("/music-works/") || currentPath === "/pl/music/";
+    if (key === "institutions") return currentPath === "/for-institutions/" || currentPath === "/for-institutions/pl/" || currentPath === "/institutions/" || currentPath === "/pl/institutions/";
+    if (key === "author") return currentPath === "/authorial-profile/" || currentPath === "/authorial-profile/pl/" || currentPath === "/author/";
+    if (key === "press") return currentPath === "/press-recognition/" || currentPath === "/press-recognition/pl/" || currentPath === "/press/" || currentPath === "/pl/press/";
+    if (key === "contact") return currentPath === "/contact/" || currentPath === "/contact/pl/";
+    return false;
+  };
+
+  const languageTarget = languagePairs.get(currentPath) || (isPolish ? "/" : "/pl/");
 
   const routeIdentity = () => {
     if (currentPath === "/" || currentPath === "/pl/") {
@@ -102,7 +125,7 @@
     if (currentPath === "/sztab/" || currentPath === "/sztab/pl/") {
       return { label: "SZTAB", sub: isPolish ? "świat pamięci" : "world of memory", href: isPolish ? "/sztab/pl/" : "/sztab/", className: "identity-sztab" };
     }
-    if (currentPath === "/music/" || currentPath === "/music/pl/") {
+    if (currentPath === "/music/" || currentPath === "/music/pl/" || currentPath.startsWith("/music-works/") || currentPath === "/pl/music/") {
       return { label: isPolish ? "MUZYKA" : "MUSIC", sub: "Vibrosław", href: isPolish ? "/music/pl/" : "/music/", className: "identity-neutral" };
     }
     if (currentPath === "/between-the-lines/" || currentPath === "/miedzy-wierszami/") {
@@ -111,44 +134,65 @@
     return { label: "PIOTR LICHWAŁA", sub: "VIBROSŁAW · VERITAS HUMANUM", href: isPolish ? "/pl/" : "/", className: "identity-neutral" };
   };
 
-  const navItems = isPolish
-    ? [
-        { label: "Veritas Humanum", href: "/pl/", active: currentPath === "/pl/" },
-        { label: "Rap-Ort", href: "/rap-ort/pl/", active: currentPath.startsWith("/rap-ort/") },
-        { label: "SZTAB", href: "/sztab/pl/", active: currentPath.startsWith("/sztab/") },
-        { label: "Między Wierszami", href: "/miedzy-wierszami/", active: currentPath === "/miedzy-wierszami/" },
-        { label: "Muzyka", href: "/music/pl/", active: currentPath === "/music/pl/" },
-        { label: "Dla instytucji", href: "/for-institutions/pl/", active: currentPath === "/for-institutions/pl/" },
-        { label: "Profil autorski", href: "/authorial-profile/pl/", active: currentPath === "/authorial-profile/pl/" },
-        { label: "Media", href: "/press-recognition/pl/", active: currentPath === "/press-recognition/pl/" },
-        { label: "Kontakt", href: "/contact/pl/", active: currentPath === "/contact/pl/" },
-      ]
-    : [
-        { label: "Veritas Humanum", href: "/", active: currentPath === "/" },
-        { label: "Rap-Ort", href: "/rap-ort/", active: currentPath.startsWith("/rap-ort/") },
-        { label: "SZTAB", href: "/sztab/", active: currentPath.startsWith("/sztab/") },
-        { label: "Between the Lines", href: "/between-the-lines/", active: currentPath === "/between-the-lines/" },
-        { label: "Music", href: "/music/", active: currentPath === "/music/" },
-        { label: "For Institutions", href: "/for-institutions/", active: currentPath === "/for-institutions/" },
-        { label: "Author", href: "/authorial-profile/", active: currentPath === "/authorial-profile/" },
-        { label: "Press", href: "/press-recognition/", active: currentPath === "/press-recognition/" },
-        { label: "Contact", href: "/contact/", active: currentPath === "/contact/" },
-      ];
+  const labels = isPolish
+    ? {
+        home: ["Veritas", "Veritas Humanum"],
+        raport: ["Rap-Ort", "Rap-Ort"],
+        sztab: ["SZTAB", "SZTAB"],
+        between: ["Między", "Między Wierszami"],
+        music: ["Muzyka", "Muzyka"],
+        institutions: ["Instytucje", "Dla instytucji"],
+        author: ["Autor", "Profil autorski"],
+        press: ["Media", "Media / wzmianki"],
+        contact: ["Kontakt", "Kontakt"],
+      }
+    : {
+        home: ["Veritas", "Veritas Humanum"],
+        raport: ["Rap-Ort", "Rap-Ort"],
+        sztab: ["SZTAB", "SZTAB"],
+        between: ["Between", "Between the Lines"],
+        music: ["Music", "Music"],
+        institutions: ["Institutions", "For Institutions"],
+        author: ["Author", "Authorial Profile"],
+        press: ["Press", "Press / Recognition"],
+        contact: ["Contact", "Contact"],
+      };
 
-  const languageTarget = languagePairs.get(currentPath) || (isPolish ? "/" : "/pl/");
-  const languageLabel = isPolish ? "EN" : "PL";
+  const navConfig = [
+    { key: "home", href: isPolish ? "/pl/" : "/" },
+    { key: "raport", href: isPolish ? "/rap-ort/pl/" : "/rap-ort/" },
+    { key: "sztab", href: isPolish ? "/sztab/pl/" : "/sztab/" },
+    { key: "between", href: isPolish ? "/miedzy-wierszami/" : "/between-the-lines/" },
+    { key: "music", href: isPolish ? "/music/pl/" : "/music/" },
+    { key: "institutions", href: isPolish ? "/for-institutions/pl/" : "/for-institutions/" },
+    { key: "author", href: isPolish ? "/authorial-profile/pl/" : "/authorial-profile/" },
+    { key: "press", href: isPolish ? "/press-recognition/pl/" : "/press-recognition/" },
+    { key: "contact", href: isPolish ? "/contact/pl/" : "/contact/" },
+  ];
+
+  const navItems = navConfig.map((item) => {
+    const [desktopLabel, mobileLabel] = labels[item.key];
+    return {
+      ...item,
+      desktopLabel,
+      mobileLabel,
+      active: isActive(item.key),
+    };
+  });
+
   const identity = routeIdentity();
 
-  const createLinkHtml = (item, className = "nav-button") => {
+  const createLinkHtml = (item, className = "nav-button", variant = "desktop") => {
     const classes = [className, item.active ? "is-active active" : ""].filter(Boolean).join(" ");
     const entry = isWorldPath(normalizePath(item.href)) ? ' data-cinematic-entry="true"' : "";
     const ariaCurrent = item.active ? ' aria-current="page"' : "";
-    return `<a class="${classes}" href="${item.href}"${entry}${ariaCurrent}>${item.label}</a>`;
+    const label = variant === "desktop" ? item.desktopLabel : item.mobileLabel;
+    return `<a class="${classes}" href="${item.href}" data-nav-key="${item.key}" title="${item.mobileLabel}"${entry}${ariaCurrent}>${label}</a>`;
   };
 
-  const desktopLinks = navItems.map((item) => createLinkHtml(item)).join("");
-  const mobilePrimary = navItems.slice(0, 5).map((item) => createLinkHtml(item, "mobile-menu-link mobile-menu-primary")).join("");
-  const mobileSecondary = navItems.slice(5).map((item) => createLinkHtml(item, "mobile-menu-link")).join("");
+  const desktopLinks = navItems.map((item) => createLinkHtml(item, "nav-button", "desktop")).join("");
+  const mobilePrimary = navItems.slice(0, 5).map((item) => createLinkHtml(item, "mobile-menu-link mobile-menu-primary", "mobile")).join("");
+  const mobileSecondary = navItems.slice(5).map((item) => createLinkHtml(item, "mobile-menu-link", "mobile")).join("");
   const header = document.querySelector(".site-header");
 
   if (header) {
@@ -162,9 +206,9 @@
         <nav class="desktop-nav desktop-nav-compact site-nav-hub" aria-label="${isPolish ? "Nawigacja główna" : "Primary navigation"}">
           ${desktopLinks}
           <div class="lang-switch" aria-label="${isPolish ? "Zmiana języka" : "Language switch"}">
-            <a href="${isPolish ? languageTarget : currentPath}" class="${!isPolish ? "active" : ""}" hreflang="en">EN</a>
+            <a href="${isPolish ? languageTarget : currentPath}" class="${!isPolish ? "active" : ""}" hreflang="en" title="English">EN</a>
             <span>|</span>
-            <a href="${isPolish ? currentPath : languageTarget}" class="${isPolish ? "active" : ""}" hreflang="pl">PL</a>
+            <a href="${isPolish ? currentPath : languageTarget}" class="${isPolish ? "active" : ""}" hreflang="pl" title="Polski">PL</a>
           </div>
           <button class="mobile-nav-toggle desktop-menu-toggle" id="mobileNavToggle" type="button" aria-label="${isPolish ? "Otwórz menu strony" : "Open site menu"}" aria-expanded="false" aria-controls="mobileMenuOverlay">
             <span></span><span></span><span></span>
