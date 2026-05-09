@@ -257,11 +257,34 @@
     document.body.appendChild(tools);
   };
 
+  const keepEssentialDesktopLinksVisible = () => {
+    const forceVisible = window.matchMedia("(min-width: 901px)").matches;
+    document.querySelectorAll('.desktop-nav-compact .nav-button[data-nav-key="institutions"], .desktop-nav-compact .nav-button[data-nav-key="press"]').forEach((link) => {
+      if (forceVisible) {
+        link.style.setProperty("display", "inline-flex", "important");
+      } else {
+        link.style.removeProperty("display");
+      }
+    });
+  };
+
+  const scheduleEssentialLinkGuard = () => {
+    keepEssentialDesktopLinksVisible();
+    window.requestAnimationFrame?.(keepEssentialDesktopLinksVisible);
+    window.setTimeout(keepEssentialDesktopLinksVisible, 0);
+    window.setTimeout(keepEssentialDesktopLinksVisible, 120);
+    window.setTimeout(keepEssentialDesktopLinksVisible, 500);
+  };
+
   document.body.classList.add("navbar-unified", "veritas-nav-ready");
   document.body.classList.toggle("page-home", currentPath === "/" || currentPath === "/pl/");
   document.body.classList.toggle("lang-pl", isPolish);
   document.body.classList.toggle("lang-en", !isPolish);
   ensureQuickControls();
+  scheduleEssentialLinkGuard();
+  window.addEventListener("resize", keepEssentialDesktopLinksVisible, { passive: true });
+  document.addEventListener("DOMContentLoaded", scheduleEssentialLinkGuard, { once: true });
+  window.addEventListener("load", scheduleEssentialLinkGuard, { once: true });
 
   const menu = document.getElementById("mobileMenuOverlay");
   const toggle = document.getElementById("mobileNavToggle");
@@ -285,6 +308,7 @@
     document.body.classList.remove("mobile-menu-open");
     document.documentElement.dataset.mobileMenu = "closed";
     document.dispatchEvent(new CustomEvent("site:mobile-menu-change", { detail: { open: false, source: "nav" } }));
+    keepEssentialDesktopLinksVisible();
   };
 
   window.openMobileMenu = openMenu;
