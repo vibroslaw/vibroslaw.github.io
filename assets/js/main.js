@@ -125,6 +125,7 @@
 
   function ensureContactFlowModule() {
     if (window.__siteContactFlowInitialized) return;
+    if (document.body?.dataset.veritas === "true") return;
     if (document.getElementById(CONTACT_FLOW_SCRIPT_ID)) return;
     if (document.querySelector('script[src*="/assets/js/contact-flow.js"]')) return;
 
