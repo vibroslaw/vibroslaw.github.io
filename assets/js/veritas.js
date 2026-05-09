@@ -1,81 +1,117 @@
 (() => {
   "use strict";
 
-  const isPolish = document.documentElement.lang === "pl" || document.body?.dataset.lang === "pl";
+  const body = document.body;
+  const isPolish = document.documentElement.lang === "pl" || body?.dataset.lang === "pl";
 
   const injectRuntimeStyles = () => {
-    if (document.getElementById("veritasRuntimeFixes")) return;
+    const previous = document.getElementById("veritasRuntimeFixes");
+    if (previous) previous.remove();
+
     const style = document.createElement("style");
     style.id = "veritasRuntimeFixes";
     style.textContent = `
+      /* Final Veritas visual polish: nav, hero visibility, controls, menu */
       body.navbar-unified .site-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 9990;
-        background: linear-gradient(180deg, rgba(5,4,3,.82), rgba(5,4,3,.44));
-        border-bottom: 1px solid rgba(201,178,143,.16);
-        backdrop-filter: blur(18px) saturate(115%);
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9990 !important;
+        background:
+          linear-gradient(180deg, rgba(5,4,3,.86), rgba(5,4,3,.50) 72%, rgba(5,4,3,.16)) !important;
+        border-bottom: 1px solid rgba(201,178,143,.14) !important;
+        box-shadow: 0 18px 42px rgba(0,0,0,.18) !important;
+        backdrop-filter: blur(20px) saturate(118%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(118%) !important;
+        overflow: visible !important;
       }
       body.navbar-unified .header-inner {
-        min-height: 72px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
+        min-height: 68px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 16px !important;
       }
       body.navbar-unified .brand {
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        color: var(--vh-ivory, #f1eadb);
-        text-decoration: none;
-        min-width: 0;
+        display: inline-flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        color: var(--vh-ivory, #f1eadb) !important;
+        text-decoration: none !important;
+        min-width: 0 !important;
+        flex: 0 1 auto !important;
       }
       body.navbar-unified .brand-name {
-        font-family: var(--font-display, Georgia, serif);
-        font-size: clamp(.78rem, .95vw, 1rem);
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        white-space: nowrap;
+        font-family: var(--font-display, Georgia, serif) !important;
+        font-size: clamp(.70rem, .78vw, .88rem) !important;
+        letter-spacing: .14em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+        line-height: 1.05 !important;
       }
       body.navbar-unified .brand-sub-desktop,
       body.navbar-unified .brand-sub-mobile {
-        color: rgba(241,234,219,.52);
-        font-size: .62rem;
-        letter-spacing: .14em;
-        text-transform: uppercase;
-        margin-top: 4px;
+        color: rgba(241,234,219,.50) !important;
+        font-size: .56rem !important;
+        letter-spacing: .15em !important;
+        text-transform: uppercase !important;
+        margin-top: 4px !important;
+        white-space: nowrap !important;
       }
-      body.navbar-unified .brand-sub-mobile { display: none; }
+      body.navbar-unified .brand-sub-mobile { display: none !important; }
       body.navbar-unified .desktop-nav-compact {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 4px;
-        min-width: 0;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: clamp(1px, .2vw, 5px) !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
       }
       body.navbar-unified .desktop-nav-compact .nav-button,
       body.navbar-unified .desktop-nav-compact .lang-switch a,
       body.navbar-unified .desktop-menu-toggle {
-        position: relative;
-        min-height: 36px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid transparent;
-        border-radius: 999px;
-        padding: 0 9px;
-        color: rgba(241,234,219,.72);
-        background: transparent;
-        text-decoration: none;
-        text-transform: uppercase;
-        letter-spacing: .085em;
-        font-size: clamp(.58rem, .66vw, .72rem);
-        line-height: 1;
-        white-space: nowrap;
-        transition: color .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease, transform .22s ease;
+        position: relative !important;
+        min-height: 34px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        padding: 0 clamp(4px, .52vw, 8px) !important;
+        color: rgba(241,234,219,.70) !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+        text-transform: uppercase !important;
+        letter-spacing: .075em !important;
+        font-size: clamp(.49rem, .54vw, .62rem) !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        transform-origin: center !important;
+        transition: color .24s ease, transform .24s cubic-bezier(.2,.7,.2,1), letter-spacing .24s ease !important;
+      }
+      body.navbar-unified .desktop-nav-compact .nav-button::after,
+      body.navbar-unified .desktop-nav-compact .lang-switch a::after {
+        content: "" !important;
+        position: absolute !important;
+        left: 50% !important;
+        bottom: 3px !important;
+        width: 0 !important;
+        height: 2px !important;
+        transform: translateX(-50%) !important;
+        border-radius: 999px !important;
+        background:
+          linear-gradient(90deg,
+            rgba(208,173,104,0),
+            rgba(208,173,104,.54) 16%,
+            rgba(241,234,219,.86) 50%,
+            rgba(208,173,104,.54) 84%,
+            rgba(208,173,104,0)
+          ) !important;
+        filter: drop-shadow(0 0 7px rgba(208,173,104,.18)) !important;
+        opacity: 0 !important;
+        transition: width .28s cubic-bezier(.2,.7,.2,1), opacity .22s ease !important;
       }
       body.navbar-unified .desktop-nav-compact .nav-button:hover,
       body.navbar-unified .desktop-nav-compact .nav-button:focus-visible,
@@ -83,128 +119,188 @@
       body.navbar-unified .desktop-nav-compact .nav-button.active,
       body.navbar-unified .desktop-nav-compact .lang-switch a:hover,
       body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible,
-      body.navbar-unified .desktop-nav-compact .lang-switch a.active,
-      body.navbar-unified .desktop-menu-toggle:hover,
-      body.navbar-unified .desktop-menu-toggle:focus-visible {
-        color: var(--vh-ivory, #f1eadb);
-        border-color: rgba(201,178,143,.24);
-        background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.018));
-        box-shadow: 0 12px 34px rgba(0,0,0,.20), inset 0 0 0 1px rgba(255,255,255,.03);
-        transform: translateY(-1px);
-        outline: none;
+      body.navbar-unified .desktop-nav-compact .lang-switch a.active {
+        color: var(--vh-ivory, #f1eadb) !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        transform: translateY(-1px) scale(1.075) !important;
+        letter-spacing: .095em !important;
+        outline: none !important;
+      }
+      body.navbar-unified .desktop-nav-compact .nav-button:hover::after,
+      body.navbar-unified .desktop-nav-compact .nav-button:focus-visible::after,
+      body.navbar-unified .desktop-nav-compact .nav-button.is-active::after,
+      body.navbar-unified .desktop-nav-compact .nav-button.active::after,
+      body.navbar-unified .desktop-nav-compact .lang-switch a:hover::after,
+      body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible::after,
+      body.navbar-unified .desktop-nav-compact .lang-switch a.active::after {
+        width: calc(100% - 8px) !important;
+        opacity: 1 !important;
       }
       body.navbar-unified .desktop-nav-compact .lang-switch {
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        margin-left: 3px;
-        padding-left: 9px;
-        border-left: 1px solid rgba(201,178,143,.18);
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        margin-left: 2px !important;
+        padding-left: 7px !important;
+        border-left: 1px solid rgba(201,178,143,.16) !important;
       }
-      body.navbar-unified .desktop-nav-compact .lang-switch span { color: rgba(241,234,219,.28); }
+      body.navbar-unified .desktop-nav-compact .lang-switch span {
+        color: rgba(241,234,219,.24) !important;
+        font-size: .64rem !important;
+      }
       body.navbar-unified .desktop-menu-toggle {
-        width: 42px;
-        padding: 0;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
+        width: 40px !important;
+        min-width: 40px !important;
+        padding: 0 !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+        border: 1px solid rgba(201,178,143,.20) !important;
+        border-radius: 999px !important;
+        background: rgba(255,255,255,.025) !important;
+        cursor: pointer !important;
+      }
+      body.navbar-unified .desktop-menu-toggle:hover,
+      body.navbar-unified .desktop-menu-toggle:focus-visible {
+        border-color: rgba(201,178,143,.44) !important;
+        background: rgba(208,173,104,.08) !important;
+        transform: translateY(-1px) scale(1.05) !important;
+        outline: none !important;
       }
       body.navbar-unified .desktop-menu-toggle span {
-        width: 18px;
-        height: 1.5px;
-        background: currentColor;
-        display: block;
+        width: 17px !important;
+        height: 1.5px !important;
+        border-radius: 999px !important;
+        background: currentColor !important;
+        display: block !important;
       }
+
       body.navbar-unified .mobile-menu-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 10020;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        background: rgba(5,4,3,.76);
-        backdrop-filter: blur(18px);
-        transition: opacity .25s ease, visibility .25s ease;
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 10050 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        background:
+          radial-gradient(circle at 78% 18%, rgba(208,173,104,.14), transparent 30rem),
+          rgba(5,4,3,.82) !important;
+        backdrop-filter: blur(22px) saturate(112%) !important;
+        -webkit-backdrop-filter: blur(22px) saturate(112%) !important;
+        transition: opacity .28s ease, visibility .28s ease !important;
+        overflow: hidden !important;
       }
       body.navbar-unified .mobile-menu-overlay.is-open,
       body.navbar-unified .mobile-menu-overlay.open {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
       }
       body.navbar-unified .mobile-menu-panel {
-        position: absolute;
-        top: 18px;
-        right: 18px;
-        bottom: 18px;
-        width: min(420px, calc(100vw - 36px));
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 26px;
-        border: 1px solid rgba(201,178,143,.24);
-        border-radius: 24px;
-        background: linear-gradient(145deg, rgba(28,24,18,.98), rgba(7,6,5,.98));
-        box-shadow: 0 32px 90px rgba(0,0,0,.46);
-        overflow-y: auto;
-        transform: translateX(28px);
-        transition: transform .28s cubic-bezier(.2,.7,.2,1);
+        position: fixed !important;
+        top: clamp(78px, 9vh, 96px) !important;
+        right: clamp(14px, 3vw, 30px) !important;
+        bottom: clamp(14px, 3vw, 30px) !important;
+        width: min(460px, calc(100vw - clamp(28px, 6vw, 60px))) !important;
+        max-height: none !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: clamp(20px, 3vw, 30px) !important;
+        border: 1px solid rgba(201,178,143,.28) !important;
+        border-radius: 28px !important;
+        background:
+          linear-gradient(145deg, rgba(32,28,21,.985), rgba(7,6,5,.985)),
+          rgba(7,6,5,.98) !important;
+        box-shadow: 0 38px 100px rgba(0,0,0,.56), inset 0 0 0 1px rgba(255,255,255,.035) !important;
+        overflow-y: auto !important;
+        transform: translate3d(34px,0,0) scale(.985) !important;
+        transition: transform .32s cubic-bezier(.2,.7,.2,1) !important;
       }
       body.navbar-unified .mobile-menu-overlay.is-open .mobile-menu-panel,
-      body.navbar-unified .mobile-menu-overlay.open .mobile-menu-panel { transform: translateX(0); }
+      body.navbar-unified .mobile-menu-overlay.open .mobile-menu-panel {
+        transform: translate3d(0,0,0) scale(1) !important;
+      }
       body.navbar-unified .mobile-menu-link,
       body.navbar-unified .mobile-menu-button {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 46px;
-        padding: 0 14px;
-        border: 1px solid rgba(201,178,143,.12);
-        border-radius: 999px;
-        background: rgba(255,255,255,.035);
-        color: rgba(241,234,219,.82);
-        text-decoration: none;
-        text-transform: uppercase;
-        letter-spacing: .09em;
-        font-size: .78rem;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex: 0 0 auto !important;
+        min-height: 46px !important;
+        padding: 0 16px !important;
+        border: 1px solid rgba(201,178,143,.14) !important;
+        border-radius: 999px !important;
+        background: linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.018)) !important;
+        color: rgba(241,234,219,.82) !important;
+        text-decoration: none !important;
+        text-transform: uppercase !important;
+        letter-spacing: .09em !important;
+        font-size: .74rem !important;
+        transition: transform .22s ease, border-color .22s ease, background .22s ease, color .22s ease !important;
       }
-      body.navbar-unified .mobile-menu-primary { color: var(--vh-ivory, #f1eadb); border-color: rgba(201,178,143,.22); }
+      body.navbar-unified .mobile-menu-link:hover,
+      body.navbar-unified .mobile-menu-link:focus-visible,
+      body.navbar-unified .mobile-menu-button:hover,
+      body.navbar-unified .mobile-menu-button:focus-visible {
+        transform: translateX(-4px) !important;
+        color: var(--vh-ivory, #f1eadb) !important;
+        border-color: rgba(201,178,143,.36) !important;
+        background: rgba(208,173,104,.10) !important;
+        outline: none !important;
+      }
+      body.navbar-unified .mobile-menu-primary {
+        color: var(--vh-ivory, #f1eadb) !important;
+        border-color: rgba(201,178,143,.24) !important;
+      }
       body.navbar-unified .mobile-lang-switch {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        margin-top: 12px;
-        color: rgba(241,234,219,.5);
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 14px !important;
+        margin-top: 14px !important;
+        color: rgba(241,234,219,.42) !important;
       }
-      body.navbar-unified .mobile-lang-switch a { color: rgba(241,234,219,.66); text-decoration: none; letter-spacing: .12em; }
-      body.navbar-unified .mobile-lang-switch a.active { color: var(--vh-ivory, #f1eadb); }
+      body.navbar-unified .mobile-lang-switch a {
+        color: rgba(241,234,219,.66) !important;
+        text-decoration: none !important;
+        letter-spacing: .14em !important;
+        text-transform: uppercase !important;
+      }
+      body.navbar-unified .mobile-lang-switch a.active { color: var(--vh-ivory, #f1eadb) !important; }
+
       .floating-tools.veritas-quick-controls {
-        position: fixed;
-        right: clamp(14px, 2vw, 26px);
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 9988;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        pointer-events: none;
+        position: fixed !important;
+        right: clamp(14px, 1.8vw, 24px) !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        z-index: 9988 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        pointer-events: none !important;
       }
       .floating-tools.veritas-quick-controls .tool-button,
       .floating-tools.veritas-quick-controls .reduced-motion-toggle {
-        pointer-events: auto;
-        min-width: 132px;
-        min-height: 42px;
-        border: 1px solid rgba(201,178,143,.26);
-        border-radius: 999px;
-        background: rgba(8,7,6,.66);
-        color: rgba(241,234,219,.82);
-        backdrop-filter: blur(14px) saturate(115%);
-        box-shadow: 0 16px 40px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.03);
-        text-transform: uppercase;
-        letter-spacing: .08em;
-        font-size: .68rem;
-        cursor: pointer;
+        pointer-events: auto !important;
+        min-width: 122px !important;
+        min-height: 40px !important;
+        border: 1px solid rgba(201,178,143,.26) !important;
+        border-radius: 999px !important;
+        background:
+          linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.018)),
+          rgba(8,7,6,.66) !important;
+        color: rgba(241,234,219,.80) !important;
+        backdrop-filter: blur(16px) saturate(118%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(118%) !important;
+        box-shadow: 0 18px 46px rgba(0,0,0,.30), inset 0 0 0 1px rgba(255,255,255,.035) !important;
+        text-transform: uppercase !important;
+        letter-spacing: .085em !important;
+        font-size: .62rem !important;
+        cursor: pointer !important;
+        transform-origin: right center !important;
+        transition: transform .24s cubic-bezier(.2,.7,.2,1), color .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease !important;
       }
       .floating-tools.veritas-quick-controls .tool-button:hover,
       .floating-tools.veritas-quick-controls .tool-button:focus-visible,
@@ -212,67 +308,152 @@
       .floating-tools.veritas-quick-controls .reduced-motion-toggle:focus-visible,
       .floating-tools.veritas-quick-controls .tool-button[aria-pressed="true"],
       .floating-tools.veritas-quick-controls .reduced-motion-toggle[aria-pressed="true"] {
-        color: var(--vh-ivory, #f1eadb);
-        border-color: rgba(201,178,143,.48);
-        background: rgba(208,173,104,.12);
-        outline: none;
+        color: var(--vh-ivory, #f1eadb) !important;
+        border-color: rgba(201,178,143,.54) !important;
+        background:
+          linear-gradient(135deg, rgba(208,173,104,.18), rgba(255,255,255,.025)),
+          rgba(8,7,6,.78) !important;
+        box-shadow: 0 20px 54px rgba(0,0,0,.38), 0 0 28px rgba(208,173,104,.10), inset 0 0 0 1px rgba(255,255,255,.05) !important;
+        transform: translateX(-3px) scale(1.035) !important;
+        outline: none !important;
       }
-      .vh-hero-media,
-      .vh-hero-media.has-future-hero {
-        background-image:
-          linear-gradient(90deg, rgba(8,7,6,.94), rgba(8,7,6,.58), rgba(8,7,6,.88)),
-          var(--vh-hero-image, linear-gradient(135deg, #17120d, #050403));
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: #050403;
+
+      body.veritas-universe .vh-hero-media.has-future-hero {
+        background-image: var(--vh-hero-image) !important;
+        background-size: cover !important;
+        background-position: var(--vh-hero-position, center) !important;
+        background-repeat: no-repeat !important;
+        background-color: #050403 !important;
       }
-      .world-portal-card.has-future-hero::before {
+      body.veritas-universe .vh-hero-media.has-future-hero::before {
+        inset: 0 !important;
+        opacity: 1 !important;
         background-image:
-          linear-gradient(180deg, rgba(5,4,3,.1), rgba(5,4,3,.7)),
+          linear-gradient(90deg, rgba(5,4,3,.82), rgba(5,4,3,.34) 44%, rgba(5,4,3,.72)),
+          linear-gradient(180deg, rgba(5,4,3,.12), rgba(5,4,3,.72)),
+          var(--vh-hero-image) !important;
+        background-size: cover, cover, cover !important;
+        background-position: center, center, var(--vh-hero-position, center) !important;
+        background-repeat: no-repeat !important;
+        transform: translate3d(0, calc(var(--vh-parallax, 0px) * .32), 0) scale(1.035) !important;
+        filter: saturate(1.06) contrast(1.06) brightness(1.06) !important;
+      }
+      body.veritas-universe .vh-hero-media.has-future-hero::after {
+        inset: 0 !important;
+        opacity: .58 !important;
+        background:
+          radial-gradient(circle at 32% 22%, rgba(208,173,104,.16), transparent 32rem),
+          linear-gradient(90deg, rgba(5,4,3,.78), rgba(5,4,3,.10) 48%, rgba(5,4,3,.64)),
+          linear-gradient(180deg, rgba(5,4,3,.05), rgba(5,4,3,.82) 88%, rgba(5,4,3,.97)),
+          repeating-linear-gradient(90deg, rgba(255,255,255,.016) 0 1px, transparent 1px 7px) !important;
+      }
+      body.cinematic-mode .vh-hero-media.has-future-hero::before {
+        filter: saturate(1.12) contrast(1.08) brightness(1.12) !important;
+        transform: translate3d(0, calc(var(--vh-parallax, 0px) * .48), 0) scale(1.075) !important;
+      }
+      body.cinematic-mode .vh-hero-media.has-future-hero::after {
+        opacity: .46 !important;
+      }
+      body.veritas-universe .vh-hero-copy {
+        text-shadow: 0 18px 46px rgba(0,0,0,.56) !important;
+      }
+      body.veritas-universe .world-portal-card.has-future-hero::before {
+        background-image:
+          linear-gradient(180deg, rgba(5,4,3,.22), rgba(5,4,3,.76)),
           var(--vh-card-image),
-          radial-gradient(circle at 26% 20%, rgba(208,173,104,.17), transparent 22rem);
-        background-size: cover;
-        background-position: center;
+          radial-gradient(circle at 26% 20%, rgba(208,173,104,.17), transparent 22rem) !important;
+        background-size: cover, cover, cover !important;
+        background-position: center !important;
+        filter: saturate(1.04) contrast(1.05) brightness(1.04) !important;
       }
-      @media (max-width: 1180px) {
-        body.navbar-unified .desktop-nav-compact .nav-button { padding-inline: 7px; font-size: .58rem; }
-        body.navbar-unified .brand-sub-desktop { display: none; }
-        body.navbar-unified .brand-sub-mobile { display: block; }
+      body.cinematic-mode .world-portal-card.has-future-hero::before {
+        filter: saturate(1.12) contrast(1.08) brightness(1.10) !important;
       }
-      @media (max-width: 860px) {
+
+      @media (max-width: 1320px) {
         body.navbar-unified .desktop-nav-compact .nav-button,
-        body.navbar-unified .desktop-nav-compact .lang-switch { display: none; }
+        body.navbar-unified .desktop-nav-compact .lang-switch a { font-size: clamp(.47rem, .50vw, .58rem) !important; padding-inline: 4px !important; letter-spacing: .06em !important; }
+        body.navbar-unified .brand-name { font-size: .70rem !important; }
+        body.navbar-unified .brand-sub-desktop { display: none !important; }
+        body.navbar-unified .brand-sub-mobile { display: block !important; }
+      }
+      @media (max-width: 1060px) {
+        body.navbar-unified .desktop-nav-compact .nav-button:nth-of-type(n+6) { display: none !important; }
+      }
+      @media (max-width: 900px) {
+        body.navbar-unified .desktop-nav-compact .nav-button,
+        body.navbar-unified .desktop-nav-compact .lang-switch { display: none !important; }
       }
       @media (max-width: 760px) {
-        .floating-tools.veritas-quick-controls { display: none; }
-        body.navbar-unified .header-inner { min-height: 66px; }
-        body.navbar-unified .brand-name { font-size: .76rem; }
+        .floating-tools.veritas-quick-controls { display: none !important; }
+        body.navbar-unified .header-inner { min-height: 64px !important; }
+        body.navbar-unified .brand-name { font-size: .72rem !important; max-width: calc(100vw - 96px); overflow: hidden; text-overflow: ellipsis; }
+        body.navbar-unified .brand-sub-mobile { display: none !important; }
+        body.navbar-unified .mobile-menu-panel { left: 14px !important; right: 14px !important; width: auto !important; top: 78px !important; }
+        body.veritas-universe .vh-hero-media.has-future-hero::before { background-position: center, center, center !important; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body.navbar-unified .desktop-nav-compact .nav-button,
+        body.navbar-unified .desktop-nav-compact .lang-switch a,
+        body.navbar-unified .mobile-menu-panel,
+        body.navbar-unified .mobile-menu-link,
+        .floating-tools.veritas-quick-controls .tool-button,
+        .floating-tools.veritas-quick-controls .reduced-motion-toggle { transition: none !important; }
       }
       body.reduce-motion *,
-      body.reduced-motion * {
-        scroll-behavior: auto !important;
-      }
+      body.reduced-motion * { scroll-behavior: auto !important; }
     `;
     document.head.appendChild(style);
   };
 
+  const moveMobileOverlayToBody = () => {
+    const overlay = document.getElementById("mobileMenuOverlay");
+    if (overlay && overlay.parentElement !== document.body) {
+      document.body.appendChild(overlay);
+    }
+  };
+
   const bindFutureHeroes = () => {
+    const positionMap = [
+      ["veritas-humanum", "center"],
+      ["rap-ort", "center"],
+      ["prawda-sumienia", "center"],
+      ["english-guide", "center"],
+      ["conscience-report", "center"],
+      ["witness-report", "center"],
+      ["sztab", "center"],
+      ["between-the-lines", "center"],
+      ["music", "center"],
+      ["authorial-profile", "center"],
+      ["for-institutions", "center"],
+      ["press-recognition", "center"],
+      ["contact", "center"],
+    ];
+
     document.querySelectorAll("[data-future-hero]").forEach((element) => {
       const src = element.getAttribute("data-future-hero");
       if (!src) return;
       const cssUrl = `url("${src.replace(/"/g, "%22")}")`;
+      const position = positionMap.find(([key]) => src.includes(key))?.[1] || "center";
+
       if (element.classList.contains("world-portal-card")) {
         element.style.setProperty("--vh-card-image", cssUrl);
       } else {
         element.style.setProperty("--vh-hero-image", cssUrl);
+        element.style.setProperty("--vh-hero-position", position);
       }
       element.classList.add("has-future-hero");
     });
   };
 
-  injectRuntimeStyles();
-  bindFutureHeroes();
+  const initVisualSystem = () => {
+    injectRuntimeStyles();
+    moveMobileOverlayToBody();
+    bindFutureHeroes();
+  };
+
+  initVisualSystem();
+  document.addEventListener("DOMContentLoaded", initVisualSystem, { once: true });
 
   const reduceKeys = ["siteReducedMotion", "reduceMotion", "reducedMotion"];
   const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
