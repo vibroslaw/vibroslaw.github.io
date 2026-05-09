@@ -1,19 +1,20 @@
 /* =========================================================
    UNIFIED PREMIUM NAVBAR
    Shared desktop navbar layer. Mobile menu styling remains owned by mobile-nav.css.
+   This file intentionally contains final desktop overrides that beat runtime styles.
    ========================================================= */
 
 @media (min-width:761px){
   body.navbar-unified .site-header .header-inner{
     min-height:var(--nav-h);
     align-items:center;
-    gap:clamp(14px,1.4vw,24px);
+    gap:clamp(12px,1.2vw,22px);
   }
 
   body.navbar-unified .site-header .brand{
-    flex:0 1 min(390px, 34vw) !important;
-    min-width:min(220px, 26vw);
-    max-width:min(390px, 34vw);
+    flex:0 1 min(350px, 30vw) !important;
+    min-width:min(190px, 24vw);
+    max-width:min(350px, 30vw);
     overflow:hidden;
   }
 
@@ -24,21 +25,15 @@
     text-overflow:ellipsis;
   }
 
-  body.navbar-unified .site-header .brand-sub:empty{
-    display:none;
-  }
-
-  body.navbar-unified .desktop-nav.desktop-nav-compact{
-    gap:clamp(2px,.28vw,6px);
+  body.navbar-unified .desktop-nav.desktop-nav-compact,
+  body.navbar-unified .site-header .desktop-nav-compact.site-nav-hub{
+    display:flex;
     flex-wrap:nowrap;
     align-items:center;
     justify-content:flex-end;
+    gap:clamp(1px,.22vw,5px);
     margin-left:auto;
     min-width:0;
-  }
-
-  body.navbar-unified .site-header .desktop-nav-compact.site-nav-hub{
-    gap:clamp(2px,.28vw,6px);
   }
 
   body.navbar-unified .desktop-nav-compact .nav-button,
@@ -50,111 +45,30 @@
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:38px;
+    min-height:36px;
     border-radius:999px;
     border:1px solid transparent;
     background:transparent;
     color:var(--muted);
-    font-size:clamp(.60rem,.63vw,.74rem);
+    font-size:clamp(.55rem,.57vw,.68rem);
     line-height:1;
-    letter-spacing:.072em;
+    letter-spacing:.064em;
     text-transform:uppercase;
     white-space:nowrap;
     box-shadow:none;
     transform:translateZ(0);
     transform-origin:center;
-    transition:
-      color .28s var(--ease),
-      opacity .28s var(--ease),
-      transform .32s var(--ease),
-      border-color .32s var(--ease),
-      background .32s var(--ease),
-      box-shadow .32s var(--ease),
-      letter-spacing .32s var(--ease);
+    transition:color .28s var(--ease), transform .32s var(--ease), letter-spacing .32s var(--ease), border-color .32s var(--ease), background .32s var(--ease), box-shadow .32s var(--ease);
   }
 
   body.navbar-unified .desktop-nav-compact .nav-button{
-    min-width:clamp(48px,5.25vw,104px);
-    padding:0 clamp(7px,.72vw,12px);
-  }
-
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="home"]{
-    min-width:clamp(54px,5.2vw,92px);
-  }
-
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="raport"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="sztab"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="music"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="press"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="author"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="contact"]{
-    min-width:clamp(46px,4.7vw,84px);
+    min-width:auto;
+    padding:0 clamp(5px,.54vw,9px);
   }
 
   body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="between"],
   body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="institutions"]{
-    min-width:clamp(62px,6.3vw,118px);
-  }
-
-  body.navbar-unified .site-header .desktop-nav-compact.site-nav-hub .nav-button{
-    min-height:38px;
-    font-size:clamp(.60rem,.63vw,.74rem);
-  }
-
-  body.navbar-unified .desktop-nav-compact .lang-switch{
-    display:flex;
-    align-items:center;
-    gap:1px;
-    margin-left:4px;
-  }
-
-  body.navbar-unified .desktop-nav-compact .lang-switch a{
-    min-width:34px;
-    padding:0 7px;
-  }
-
-  body.navbar-unified .desktop-nav-compact .lang-switch span{
-    color:rgba(242,236,227,.34);
-    font-size:.72rem;
-    line-height:1;
-  }
-
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle{
-    width:43px;
-    height:38px;
-    min-width:43px;
-    min-height:38px;
-    padding:0;
-    gap:5px;
-    flex:0 0 auto;
-  }
-
-  body.navbar-unified.page-home .desktop-nav-compact .nav-button[href="/"],
-  body.navbar-unified.page-home .desktop-nav-compact .nav-button[href="/pl/"]{
-    display:none !important;
-  }
-
-  body.navbar-unified .desktop-nav-compact .nav-button::before,
-  body.navbar-unified .desktop-nav-compact .lang-switch a::before,
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:-1;
-    border-radius:inherit;
-    opacity:0;
-    transform:scale(.96);
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.052), rgba(255,255,255,.020)),
-      radial-gradient(circle at 78% 0%, rgba(201,178,143,.12), transparent 46%);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.030),
-      0 12px 30px rgba(0,0,0,.18);
-    transition:
-      opacity .34s var(--ease),
-      transform .34s var(--ease),
-      background .34s var(--ease),
-      box-shadow .34s var(--ease);
+    padding-inline:clamp(6px,.62vw,10px);
   }
 
   body.navbar-unified .desktop-nav-compact .nav-button::after,
@@ -176,32 +90,21 @@
   body.navbar-unified .desktop-nav-compact .nav-button:hover,
   body.navbar-unified .desktop-nav-compact .nav-button:focus-visible,
   body.navbar-unified .desktop-nav-compact .lang-switch a:hover,
-  body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible,
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle:hover,
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle:focus-visible{
+  body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible{
     color:var(--text);
-    border-color:rgba(255,255,255,.12);
-    transform:translateY(-1px) scale(1.055);
-    letter-spacing:.086em;
-    box-shadow:0 14px 34px rgba(0,0,0,.20);
-  }
-
-  body.navbar-unified .desktop-nav-compact .nav-button:hover::before,
-  body.navbar-unified .desktop-nav-compact .nav-button:focus-visible::before,
-  body.navbar-unified .desktop-nav-compact .lang-switch a:hover::before,
-  body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible::before,
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle:hover::before,
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle:focus-visible::before{
-    opacity:.88;
-    transform:scale(1);
+    transform:translateY(-1px) scale(1.045);
+    letter-spacing:.078em;
+    outline:none;
   }
 
   body.navbar-unified .desktop-nav-compact .nav-button:hover::after,
   body.navbar-unified .desktop-nav-compact .nav-button:focus-visible::after,
+  body.navbar-unified .desktop-nav-compact .nav-button.is-active::after,
   body.navbar-unified .desktop-nav-compact .lang-switch a:hover::after,
-  body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible::after{
+  body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible::after,
+  body.navbar-unified .desktop-nav-compact .lang-switch a.active::after{
     opacity:.86;
-    width:calc(100% - 18px);
+    width:calc(100% - 16px);
   }
 
   body.navbar-unified .desktop-nav-compact .nav-button.is-active,
@@ -210,23 +113,18 @@
     opacity:1;
   }
 
-  body.navbar-unified .desktop-nav-compact .nav-button.is-active::before,
-  body.navbar-unified .desktop-nav-compact .lang-switch a.active::before{
-    opacity:.28;
-    transform:scale(1);
-    border-color:rgba(201,178,143,.12);
-  }
-
-  body.navbar-unified .desktop-nav-compact .nav-button.is-active::after,
-  body.navbar-unified .desktop-nav-compact .lang-switch a.active::after{
-    opacity:.68;
-    width:calc(100% - 24px);
+  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle{
+    width:42px;
+    min-width:42px;
+    height:36px;
+    min-height:36px;
+    padding:0;
+    gap:5px;
+    flex:0 0 auto;
   }
 
   body.navbar-unified .desktop-nav-compact .desktop-menu-toggle span{
-    position:relative;
-    z-index:1;
-    width:18px;
+    width:17px;
     height:1.5px;
     border-radius:999px;
     background:currentColor;
@@ -234,7 +132,11 @@
 
   body.navbar-unified .desktop-nav-compact .lang-switch{
     position:relative;
-    padding-left:9px;
+    display:flex;
+    align-items:center;
+    gap:1px;
+    margin-left:3px;
+    padding-left:8px;
   }
 
   body.navbar-unified .desktop-nav-compact .lang-switch::before{
@@ -246,163 +148,67 @@
     height:18px;
     transform:translateY(-50%);
     background:linear-gradient(180deg, transparent, rgba(201,178,143,.30), transparent);
-    opacity:.72;
   }
 
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle:focus-visible,
-  body.navbar-unified .desktop-nav-compact .nav-button:focus-visible,
-  body.navbar-unified .desktop-nav-compact .lang-switch a:focus-visible{
-    outline:none;
-    box-shadow:
-      0 0 0 4px rgba(201,178,143,.14),
-      0 14px 34px rgba(0,0,0,.20);
+  body.navbar-unified .desktop-nav-compact .lang-switch a{
+    min-width:32px;
+    padding:0 6px;
   }
 
-  body.navbar-unified .brand-name.raport-brand{
-    font-family:"Cinzel", serif !important;
-    letter-spacing:.10em !important;
-    text-transform:uppercase;
-  }
-
-  body.navbar-unified .brand-name.sztab-brand{
-    font-family:"Oswald", sans-serif !important;
-    font-weight:500;
-    letter-spacing:.16em !important;
-    text-transform:uppercase;
-  }
-
-  body.navbar-unified .brand-name.sztab-manuscript-brand{
-    font-family:"Cormorant Garamond", serif !important;
-    font-style:italic;
-    font-weight:600;
-    letter-spacing:.01em !important;
-    text-transform:none;
-  }
-
-  body.navbar-unified.mobile-menu-open .mobile-menu-panel,
-  html[data-mobile-menu="open"] body.navbar-unified .mobile-menu-panel{
-    max-width:min(420px, calc(100% - 40px));
-    min-height:auto;
-    margin-left:auto;
-    margin-right:calc(20px + env(safe-area-inset-right, 0px));
-    padding-top:calc(var(--nav-h) + 22px + env(safe-area-inset-top, 0px));
-    gap:10px;
-  }
-
-  body.navbar-unified .mobile-menu-panel .mobile-menu-primary,
-  body.navbar-unified .mobile-menu-panel .mobile-lang-switch{
+  body.navbar-unified.page-home .desktop-nav-compact .nav-button[href="/"],
+  body.navbar-unified.page-home .desktop-nav-compact .nav-button[href="/pl/"]{
     display:none !important;
-  }
-
-  body.navbar-unified .mobile-menu-panel .mobile-menu-link,
-  body.navbar-unified .mobile-menu-panel .mobile-menu-button{
-    min-height:52px;
-    border-radius:16px;
-    font-size:.96rem;
   }
 }
 
-@media (max-width:1320px) and (min-width:761px){
-  body.navbar-unified .site-header .brand{
-    flex-basis:min(310px, 28vw) !important;
-    min-width:min(190px, 24vw);
+/* Critical fix after PR #22:
+   veritas.js has runtime breakpoint rules that may hide nav items from the 6th item onward.
+   These higher-specificity rules keep Institutions/Instytucje and Press/Media visible on desktop. */
+@media (min-width:761px){
+  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="institutions"],
+  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="press"]{
+    display:inline-flex !important;
   }
+}
 
-  body.navbar-unified .desktop-nav-compact .nav-button{
-    min-width:auto;
-    padding-inline:clamp(5px,.55vw,9px);
-    font-size:clamp(.56rem,.58vw,.67rem);
-    letter-spacing:.058em;
-  }
-
-  body.navbar-unified .desktop-nav-compact .nav-button:hover,
-  body.navbar-unified .desktop-nav-compact .nav-button:focus-visible{
-    letter-spacing:.068em;
-    transform:translateY(-1px) scale(1.045);
+@media (min-width:1061px){
+  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="author"],
+  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="contact"]{
+    display:inline-flex !important;
   }
 }
 
 @media (max-width:1120px) and (min-width:761px){
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="author"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="press"]{
+  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="author"]{
     display:none !important;
   }
 }
 
 @media (max-width:980px) and (min-width:761px){
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="between"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="institutions"]{
+  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="between"]{
     display:none !important;
   }
 }
 
 @media (max-width:760px){
-  body.navbar-unified{
-    overflow-x:clip;
-  }
-
-  body.navbar-unified .site-header{
-    max-width:100vw;
-    overflow-x:hidden;
-  }
-
-  body.navbar-unified .site-header .header-inner{
-    width:100%;
-    max-width:100%;
-    min-width:0;
-  }
-
-  body.navbar-unified .site-header .brand{
-    min-width:0;
-  }
-
-  body.navbar-unified .desktop-nav.desktop-nav-compact{
-    min-width:0;
-    flex:0 0 auto;
-  }
-
-  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle{
-    width:50px;
-    min-width:50px;
-    height:50px;
-    min-height:50px;
-  }
-
-  body.navbar-unified .mobile-menu-overlay{
-    width:100vw;
-    max-width:100vw;
-    overflow-x:hidden;
-  }
-
-  body.navbar-unified .mobile-menu-panel{
-    width:calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
-    max-width:min(420px, calc(100vw - 24px));
-    margin-left:auto;
-    margin-right:auto;
-    box-sizing:border-box;
-  }
-
+  body.navbar-unified{overflow-x:clip;}
+  body.navbar-unified .site-header{max-width:100vw;overflow-x:hidden;}
+  body.navbar-unified .site-header .header-inner{width:100%;max-width:100%;min-width:0;}
+  body.navbar-unified .site-header .brand{min-width:0;}
+  body.navbar-unified .desktop-nav.desktop-nav-compact{min-width:0;flex:0 0 auto;}
+  body.navbar-unified .desktop-nav-compact .desktop-menu-toggle{width:50px;min-width:50px;height:50px;min-height:50px;}
+  body.navbar-unified .mobile-menu-overlay{width:100vw;max-width:100vw;overflow-x:hidden;}
+  body.navbar-unified .mobile-menu-panel{width:calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));max-width:min(420px, calc(100vw - 24px));margin-left:auto;margin-right:auto;box-sizing:border-box;}
   body.navbar-unified .mobile-menu-link,
-  body.navbar-unified .mobile-menu-button{
-    box-sizing:border-box;
-  }
-
-  body.navbar-unified .brand-name.unified-world-label{
-    max-width:100%;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
+  body.navbar-unified .mobile-menu-button{box-sizing:border-box;}
+  body.navbar-unified .brand-name.unified-world-label{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 }
 
 body.reduced-motion.navbar-unified .desktop-nav-compact .nav-button,
-body.reduced-motion.navbar-unified .desktop-nav-compact .nav-button::before,
 body.reduced-motion.navbar-unified .desktop-nav-compact .nav-button::after,
 body.reduced-motion.navbar-unified .desktop-nav-compact .lang-switch a,
-body.reduced-motion.navbar-unified .desktop-nav-compact .lang-switch a::before,
 body.reduced-motion.navbar-unified .desktop-nav-compact .lang-switch a::after,
-body.reduced-motion.navbar-unified .desktop-nav-compact .desktop-menu-toggle,
-body.reduced-motion.navbar-unified .desktop-nav-compact .desktop-menu-toggle::before{
+body.reduced-motion.navbar-unified .desktop-nav-compact .desktop-menu-toggle{
   transition:none !important;
 }
 
