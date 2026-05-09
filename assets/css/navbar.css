@@ -323,16 +323,28 @@
 }
 
 @media (max-width:1120px) and (min-width:761px){
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="author"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="press"]{
+  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="author"]{
     display:none !important;
   }
 }
 
 @media (max-width:980px) and (min-width:761px){
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="between"],
-  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="institutions"]{
+  body.navbar-unified .desktop-nav-compact .nav-button[data-nav-key="between"]{
     display:none !important;
+  }
+}
+
+@media (min-width:761px){
+  html body.veritas-universe.navbar-unified .site-header .desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="institutions"],
+  html body.veritas-universe.navbar-unified .site-header .desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="press"]{
+    display:inline-flex !important;
+  }
+}
+
+@media (min-width:1061px){
+  html body.veritas-universe.navbar-unified .site-header .desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="author"],
+  html body.veritas-universe.navbar-unified .site-header .desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="contact"]{
+    display:inline-flex !important;
   }
 }
 
