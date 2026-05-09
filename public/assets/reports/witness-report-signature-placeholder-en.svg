@@ -1,0 +1,33 @@
+<svg width="1200" height="280" viewBox="0 0 1200 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Premium archival signature placeholder for Witness Report">
+  <defs>
+    <linearGradient id="mainLineGradientEN" x1="170" y1="0" x2="1030" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4A4038" stop-opacity="0.10"/>
+      <stop offset="0.16" stop-color="#4A4038" stop-opacity="0.42"/>
+      <stop offset="0.34" stop-color="#4A4038" stop-opacity="0.66"/>
+      <stop offset="0.50" stop-color="#4A4038" stop-opacity="0.84"/>
+      <stop offset="0.66" stop-color="#4A4038" stop-opacity="0.66"/>
+      <stop offset="0.84" stop-color="#4A4038" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#4A4038" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="accentGlowEN" x1="485" y1="0" x2="715" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6A5A4B" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#6A5A4B" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#6A5A4B" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="subLineGradientEN" x1="260" y1="0" x2="940" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4A4038" stop-opacity="0"/>
+      <stop offset="0.20" stop-color="#4A4038" stop-opacity="0.12"/>
+      <stop offset="0.50" stop-color="#4A4038" stop-opacity="0.22"/>
+      <stop offset="0.80" stop-color="#4A4038" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#4A4038" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path d="M260 154C360 153.7 460 153.5 560 153.5C660 153.5 760 153.5 860 153.7C892 153.75 920 153.8 940 154" stroke="url(#subLineGradientEN)" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M170 168C245 167.5 320 167.1 395 167.1C470 167.1 545 167 620 167C695 167 770 167.1 845 167.1C920 167.1 995 167.5 1030 168" stroke="url(#mainLineGradientEN)" stroke-width="2.1" stroke-linecap="round"/>
+  <path d="M485 167.8H715" stroke="url(#accentGlowEN)" stroke-width="4.6" stroke-linecap="round"/>
+  <path d="M142 168C148 167 153 163.8 157 158.2C161 152.9 164 146.5 167 140.3C169.2 146.6 171.6 152.8 175.4 158.1C179.6 163.7 185.1 166.9 193 168" stroke="#4A4038" stroke-opacity="0.28" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1058 168C1052 167 1047 163.8 1043 158.2C1039 152.9 1036 146.5 1033 140.3C1030.8 146.6 1028.4 152.8 1024.6 158.1C1020.4 163.7 1014.9 166.9 1007 168" stroke="#4A4038" stroke-opacity="0.28" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M600 145V151" stroke="#4A4038" stroke-opacity="0.18" stroke-width="1" stroke-linecap="round"/>
+  <text x="600" y="215" text-anchor="middle" fill="#4A4038" fill-opacity="0.42" font-family="Cormorant Garamond, Garamond, Georgia, serif" font-size="19" letter-spacing="2.8">SIGNATURE</text>
+  <path d="M548 224H652" stroke="#4A4038" stroke-opacity="0.12" stroke-width="1" stroke-linecap="round"/>
+</svg>
