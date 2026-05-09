@@ -20,6 +20,101 @@
     currentPath === "/miedzy-wierszami/" ||
     currentPath === "/rap-ort/raport-swiadka/";
 
+  const heroRoot = "/public/assets/heroes/";
+  const heroAssets = {
+    veritas: `${heroRoot}veritas-humanum-hero.webp`,
+    raport: `${heroRoot}rap-ort-hero.webp`,
+    prawda: `${heroRoot}prawda-sumienia-hero.webp`,
+    guide: `${heroRoot}english-guide-hero.webp`,
+    conscience: `${heroRoot}conscience-report-hero.webp`,
+    witness: `${heroRoot}witness-report-hero.webp`,
+    sztab: `${heroRoot}sztab-hero.webp`,
+    between: `${heroRoot}between-the-lines-hero.webp`,
+    music: `${heroRoot}music-hero.webp`,
+    institutions: `${heroRoot}for-institutions-hero.webp`,
+    press: `${heroRoot}press-recognition-hero.webp`,
+    author: `${heroRoot}authorial-profile-hero.webp`,
+    contact: `${heroRoot}contact-hero.webp`,
+  };
+
+  const heroForPath = (path) => {
+    if (path === "/" || path === "/pl/") return heroAssets.veritas;
+    if (path === "/rap-ort/" || path === "/rap-ort/pl/") return heroAssets.raport;
+    if (path === "/rap-ort/prawda-sumienia/") return heroAssets.guide;
+    if (path === "/rap-ort/prawda-sumienia/pl/") return heroAssets.prawda;
+    if (path === "/rap-ort/conscience-report/") return heroAssets.conscience;
+    if (path === "/rap-ort/witness-report/" || path === "/rap-ort/raport-swiadka/") return heroAssets.witness;
+    if (path.startsWith("/sztab/")) return heroAssets.sztab;
+    if (path === "/between-the-lines/" || path === "/miedzy-wierszami/") return heroAssets.between;
+    if (path === "/music/" || path === "/music/pl/" || path.startsWith("/music-works/") || path === "/pl/music/") return heroAssets.music;
+    if (path === "/for-institutions/" || path === "/for-institutions/pl/" || path === "/institutions/" || path === "/pl/institutions/") return heroAssets.institutions;
+    if (path === "/press-recognition/" || path === "/press-recognition/pl/" || path === "/press/" || path === "/pl/press/") return heroAssets.press;
+    if (path === "/authorial-profile/" || path === "/authorial-profile/pl/" || path === "/author/") return heroAssets.author;
+    if (path === "/contact/" || path === "/contact/pl/") return heroAssets.contact;
+    return heroAssets.veritas;
+  };
+
+  const finalHeroSrc = heroForPath(currentPath);
+
+  const preloadFinalHero = () => {
+    if (!finalHeroSrc || document.querySelector(`link[rel="preload"][href="${finalHeroSrc}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = finalHeroSrc;
+    link.type = "image/webp";
+    document.head.appendChild(link);
+  };
+
+  const setHeroElement = (element) => {
+    if (!element || !finalHeroSrc) return;
+    const cssUrl = `url("${finalHeroSrc.replace(/"/g, "%22")}")`;
+    element.setAttribute("data-future-hero", finalHeroSrc);
+    element.style.setProperty("--vh-hero-image", cssUrl);
+    element.style.setProperty("--vh-final-hero-image", cssUrl);
+    element.style.setProperty("--vh-hero-position", "center");
+    element.classList.add("has-future-hero", "has-final-hero");
+  };
+
+  const applyFinalHeroAssets = () => {
+    if (!finalHeroSrc) return;
+    document.body.classList.add("final-hero-ready");
+    document.body.dataset.finalHero = finalHeroSrc;
+    document.documentElement.style.setProperty("--vh-page-hero-image", `url("${finalHeroSrc.replace(/"/g, "%22")}")`);
+    document.querySelectorAll(".vh-hero-media").forEach(setHeroElement);
+    preloadFinalHero();
+  };
+
+  const injectFinalHeroStyles = () => {
+    document.getElementById("veritasFinalHeroLayer")?.remove();
+    const style = document.createElement("style");
+    style.id = "veritasFinalHeroLayer";
+    style.textContent = `
+      body.veritas-universe.final-hero-ready .vh-hero{isolation:isolate!important;overflow:hidden!important;background:#050403!important;}
+      body.veritas-universe.final-hero-ready .vh-hero::after{content:""!important;position:absolute!important;left:clamp(18px,3vw,52px)!important;right:clamp(18px,3vw,52px)!important;bottom:clamp(18px,3vw,42px)!important;height:1px!important;background:linear-gradient(90deg,transparent,rgba(208,173,104,.44),rgba(241,234,219,.26),transparent)!important;opacity:.72!important;z-index:-1!important;}
+      body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero{background-image:var(--vh-final-hero-image)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;background-color:#050403!important;filter:none!important;}
+      body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{content:""!important;position:absolute!important;inset:-7%!important;opacity:1!important;background-image:linear-gradient(90deg,rgba(5,4,3,.92) 0%,rgba(5,4,3,.68) 27%,rgba(5,4,3,.20) 56%,rgba(5,4,3,.48) 100%),linear-gradient(180deg,rgba(5,4,3,.42) 0%,rgba(5,4,3,.10) 38%,rgba(5,4,3,.94) 100%),radial-gradient(circle at 36% 22%,rgba(208,173,104,.25),transparent 32rem),var(--vh-final-hero-image)!important;background-size:cover,cover,cover,cover!important;background-position:center,center,center,center!important;background-repeat:no-repeat!important;transform:translate3d(0,calc(var(--vh-parallax,0px) * .36),0) scale(1.055)!important;filter:saturate(1.13) contrast(1.09) brightness(1.05)!important;will-change:transform!important;}
+      body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::after{content:""!important;position:absolute!important;inset:0!important;opacity:.72!important;background:radial-gradient(circle at 78% 18%,rgba(241,234,219,.08),transparent 28rem),radial-gradient(circle at 28% 32%,rgba(208,173,104,.13),transparent 26rem),linear-gradient(90deg,rgba(5,4,3,.86),rgba(5,4,3,.12) 50%,rgba(5,4,3,.54)),linear-gradient(180deg,rgba(5,4,3,.10),rgba(5,4,3,.24) 54%,rgba(5,4,3,.96)),repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 8px)!important;mix-blend-mode:normal!important;}
+      body.veritas-universe.final-hero-ready .vh-hero-copy{position:relative!important;z-index:2!important;padding:clamp(18px,2.4vw,34px)!important;border-left:1px solid rgba(208,173,104,.28)!important;background:linear-gradient(90deg,rgba(5,4,3,.36),rgba(5,4,3,.10),transparent)!important;box-shadow:-28px 0 80px rgba(0,0,0,.24)!important;}
+      body.veritas-universe.final-hero-ready .vh-title{text-shadow:0 30px 90px rgba(0,0,0,.88),0 0 30px rgba(208,173,104,.10)!important;}
+      body.veritas-universe.final-hero-ready .vh-subtitle,body.veritas-universe.final-hero-ready .vh-lead{text-shadow:0 18px 48px rgba(0,0,0,.78)!important;}
+      body.cinematic-mode.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{transform:translate3d(0,calc(var(--vh-parallax,0px) * .58),0) scale(1.105)!important;filter:saturate(1.24) contrast(1.14) brightness(1.12)!important;}
+      body.cinematic-mode.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::after{opacity:.55!important;background:radial-gradient(circle at 70% 20%,rgba(208,173,104,.17),transparent 30rem),linear-gradient(90deg,rgba(5,4,3,.82),rgba(5,4,3,.08) 54%,rgba(5,4,3,.46)),linear-gradient(180deg,rgba(5,4,3,.05),rgba(5,4,3,.20) 55%,rgba(5,4,3,.94)),repeating-linear-gradient(90deg,rgba(255,255,255,.020) 0 1px,transparent 1px 8px)!important;}
+      body.reduced-motion.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before,body.reduce-motion.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{transform:scale(1.04)!important;will-change:auto!important;}
+      @media(max-width:760px){body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-3%!important;transform:scale(1.03)!important;background-image:linear-gradient(180deg,rgba(5,4,3,.52) 0%,rgba(5,4,3,.22) 34%,rgba(5,4,3,.96) 100%),linear-gradient(90deg,rgba(5,4,3,.82),rgba(5,4,3,.18) 62%,rgba(5,4,3,.66)),var(--vh-final-hero-image)!important;background-size:cover,cover,cover!important;}body.veritas-universe.final-hero-ready .vh-hero-copy{padding:0!important;border-left:0!important;background:transparent!important;box-shadow:none!important;}}
+    `;
+    document.head.appendChild(style);
+  };
+
+  const scheduleFinalHero = () => {
+    applyFinalHeroAssets();
+    injectFinalHeroStyles();
+    window.requestAnimationFrame?.(() => { applyFinalHeroAssets(); injectFinalHeroStyles(); });
+    window.setTimeout(() => { applyFinalHeroAssets(); injectFinalHeroStyles(); }, 80);
+    window.setTimeout(() => { applyFinalHeroAssets(); injectFinalHeroStyles(); }, 320);
+    window.setTimeout(() => { applyFinalHeroAssets(); injectFinalHeroStyles(); }, 900);
+  };
+
   const languagePairs = new Map([
     ["/", "/pl/"],
     ["/pl/", "/"],
@@ -281,10 +376,11 @@
   document.body.classList.toggle("lang-pl", isPolish);
   document.body.classList.toggle("lang-en", !isPolish);
   ensureQuickControls();
+  scheduleFinalHero();
   scheduleEssentialLinkGuard();
-  window.addEventListener("resize", keepEssentialDesktopLinksVisible, { passive: true });
-  document.addEventListener("DOMContentLoaded", scheduleEssentialLinkGuard, { once: true });
-  window.addEventListener("load", scheduleEssentialLinkGuard, { once: true });
+  window.addEventListener("resize", () => { keepEssentialDesktopLinksVisible(); scheduleFinalHero(); }, { passive: true });
+  document.addEventListener("DOMContentLoaded", () => { scheduleEssentialLinkGuard(); scheduleFinalHero(); }, { once: true });
+  window.addEventListener("load", () => { scheduleEssentialLinkGuard(); scheduleFinalHero(); }, { once: true });
 
   const menu = document.getElementById("mobileMenuOverlay");
   const toggle = document.getElementById("mobileNavToggle");
