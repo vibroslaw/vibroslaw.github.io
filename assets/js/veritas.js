@@ -63,8 +63,9 @@
   const modal = document.getElementById("manifestoModal");
   if (modal) {
     const frame = modal.querySelector("[data-manifesto-frame]");
-    const placeholder =
-      '<div class="manifesto-placeholder">The manifesto film modal is ready. Add a YouTube video ID when the film is available.</div>';
+    const placeholder = isPolish
+      ? '<div class="manifesto-placeholder"><p>Film-manifest Veritas Humanum jest w przygotowaniu.</p><p>Wkrótce pojawi się tutaj krótki prolog do autorskiego świata Piotra Lichwały / Vibrosław.</p></div>'
+      : '<div class="manifesto-placeholder"><p>The Veritas Humanum manifesto film is in preparation.</p><p>A short cinematic prologue to the authorial world of Piotr Lichwała / Vibrosław will appear here soon.</p></div>';
 
     const closeModal = () => {
       modal.setAttribute("aria-hidden", "true");
