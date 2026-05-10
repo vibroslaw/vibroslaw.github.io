@@ -6,6 +6,18 @@
   window.__veritasMusicSoundMap = true;
   root.classList.add("music-experience-polished");
 
+  function ensureExperienceStyles() {
+    const href = "/assets/css/music-experience-polish.css";
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    link.dataset.musicExperiencePolish = "true";
+    document.head.appendChild(link);
+  }
+
+  ensureExperienceStyles();
+
   const lang = root.dataset.lang === "pl" ? "pl" : "en";
   const isPl = lang === "pl";
   const spotifyArtist = "https://open.spotify.com/artist/0df87MMIM1VOy2dR1DM2oF";
@@ -188,10 +200,13 @@
 
   function loadPlaylist() {
     const button = $('[data-load-playlist]'); const key = button?.dataset.playlist || "personal"; const data = playlist[key] || playlist.personal; const target = $('#spotifyPlaylistRoom');
-    if (!target || target.dataset.loaded === "true") return;
+    if (!button || !target || target.dataset.loaded === "true") return;
+    let isSettled = false;
+    const markLoaded = () => { if (isSettled) return; isSettled = true; target.classList.remove("is-loading"); target.classList.add("is-loaded"); target.dataset.loaded = "true"; button.textContent = text.loaded; };
     button.disabled = true; button.textContent = text.loading; target.classList.add("is-loading"); target.replaceChildren(Object.assign(document.createElement("span"), { textContent: text.loading }));
-    const iframe = document.createElement("iframe"); iframe.src = `https://open.spotify.com/embed/playlist/${data.id}?utm_source=generator`; iframe.title = `Spotify playlist — ${data.label}`; iframe.loading = "lazy"; iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"; iframe.width = "100%"; iframe.height = "352";
-    iframe.addEventListener("load", () => { target.classList.remove("is-loading"); target.classList.add("is-loaded"); target.dataset.loaded = "true"; button.textContent = text.loaded; }, { once: true });
+    const iframe = document.createElement("iframe"); iframe.src = `https://open.spotify.com/embed/playlist/${data.id}?utm_source=generator`; iframe.title = `Spotify playlist — ${data.label}`; iframe.loading = "lazy"; iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"; iframe.width = "100%"; iframe.height = "352"; iframe.style.border = "0";
+    iframe.addEventListener("load", markLoaded, { once: true });
+    setTimeout(markLoaded, 2200);
     target.replaceChildren(iframe);
   }
 
