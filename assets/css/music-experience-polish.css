@@ -1,0 +1,42 @@
+/* Veritas Humanum — Music technical experience polish */
+body.page-music .playlist-selector{display:flex;flex-wrap:wrap;gap:10px;margin:1.2rem 0 1rem}
+body.page-music .playlist-btn{min-height:40px;border:1px solid rgba(201,178,143,.24);border-radius:999px;background:rgba(255,255,255,.035);color:rgba(241,234,219,.78);padding:0 14px;text-transform:uppercase;letter-spacing:.09em;font-size:.68rem;cursor:pointer;transition:transform .22s ease,border-color .22s ease,background .22s ease,color .22s ease,box-shadow .22s ease}
+body.page-music .playlist-btn:hover,body.page-music .playlist-btn:focus-visible,body.page-music .playlist-btn.is-active{color:#f1eadb;border-color:rgba(201,178,143,.52);background:rgba(201,178,143,.12);box-shadow:0 0 2rem rgba(201,178,143,.08);transform:translateY(-2px);outline:none}
+body.page-music .playlist-room-panel{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.8rem);background:linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.8rem 5rem rgba(0,0,0,.24)}
+body.page-music .playlist-room-panel:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 12% 15%,rgba(201,178,143,.12),transparent 20rem),repeating-linear-gradient(90deg,rgba(201,178,143,.028) 0 1px,transparent 1px 28px);opacity:.62}
+body.page-music .playlist-room-panel h3{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,3vw,3rem);line-height:.95;margin:.4rem 0 .7rem}
+body.page-music .playlist-room-panel p{color:rgba(241,234,219,.72);line-height:1.72}
+body.page-music .playlist-actions{display:flex;flex-wrap:wrap;gap:10px;margin:1rem 0}
+body.page-music .lazy-embed{min-height:120px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(201,178,143,.28);border-radius:18px;margin:1rem 0;background:rgba(5,4,3,.36);color:rgba(201,178,143,.78);letter-spacing:.14em;text-transform:uppercase}
+body.page-music .lazy-embed.is-loading{border-style:solid;background:radial-gradient(circle at 50% 50%,rgba(201,178,143,.10),rgba(5,4,3,.38));animation:vhAudioPulse 1.5s ease-in-out infinite}
+body.page-music .lazy-embed.is-loaded{border-style:solid;padding:0;background:transparent}
+body.page-music .lazy-embed iframe{border-radius:18px;display:block;width:100%;min-height:352px}
+body.page-music .embed-privacy-note{margin:.25rem 0 1rem;color:rgba(201,178,143,.72);font-size:.78rem;line-height:1.55;letter-spacing:.07em;text-transform:uppercase}
+body.page-music .album-entry-group{margin-top:2rem}
+body.page-music .album-entry-heading{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+body.page-music .album-entry-heading h3{margin:0;font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,3vw,3rem);line-height:.95}
+body.page-music .album-entry-heading p{max-width:42rem;color:rgba(241,234,219,.68);line-height:1.65;margin:0}
+body.page-music .album-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem)}
+body.page-music .album-entry-card{position:relative;overflow:hidden;border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.7rem);background:radial-gradient(circle at 14% 12%,rgba(201,178,143,.12),transparent 18rem),linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.8rem 5rem rgba(0,0,0,.24);transition:transform .26s ease,border-color .26s ease,box-shadow .26s ease}
+body.page-music .album-entry-card:hover,body.page-music .album-entry-card:focus-within{transform:translateY(-5px);border-color:rgba(201,178,143,.42);box-shadow:0 2.2rem 5.8rem rgba(0,0,0,.32),0 0 2rem rgba(201,178,143,.08)}
+body.page-music .album-entry-card h4{font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,2.5vw,2.6rem);line-height:.95;margin:.25rem 0 .65rem}
+body.page-music .album-entry-card p{color:rgba(241,234,219,.72);line-height:1.7}
+body.page-music .album-entry-meta{display:inline-flex;border:1px solid rgba(201,178,143,.24);border-radius:999px;padding:6px 10px;color:rgba(201,178,143,.86);text-transform:uppercase;letter-spacing:.09em;font-size:.62rem;margin-bottom:.7rem}
+body.page-music .platform-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:1.2rem}
+body.page-music .platform-link{border:1px solid rgba(201,178,143,.20);border-radius:18px;padding:15px 14px;text-align:center;background:rgba(255,255,255,.025);color:rgba(241,234,219,.82);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+body.page-music .platform-link:hover,body.page-music .platform-link:focus-visible{border-color:rgba(201,178,143,.52);background:rgba(201,178,143,.10);outline:none}
+body.page-music .guided-journey-grid,body.page-music .audience-path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem);margin-top:1.4rem}
+body.page-music .guided-journey-card,body.page-music .audience-path-card,body.page-music .music-final-ribbon{position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.75rem);background:linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.6rem 4.8rem rgba(0,0,0,.24)}
+body.page-music .guided-journey-card h3,body.page-music .audience-path-card h3{margin:0 0 .65rem;font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,2.4vw,2.7rem);line-height:.95}
+body.page-music .guided-journey-card p,body.page-music .audience-path-card p{color:rgba(241,234,219,.72);line-height:1.72}
+body.page-music .time-badge{display:inline-flex;align-items:center;min-height:28px;border:1px solid rgba(201,178,143,.25);border-radius:999px;padding:0 10px;margin-bottom:1rem;background:rgba(201,178,143,.08);color:rgba(201,178,143,.86);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
+body.page-music .guided-journey-card ol{margin:1rem 0 0;padding:0;list-style:none;display:grid;gap:.55rem}
+body.page-music .guided-journey-card li{display:flex;gap:.55rem;align-items:flex-start;color:rgba(241,234,219,.78);line-height:1.45}
+body.page-music .guided-journey-card li span{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(201,178,143,.12);color:rgba(201,178,143,.9);font-size:.7rem;flex:0 0 auto}
+body.cinematic-mode.page-music .playlist-room-panel,body.cinematic-mode.page-music .album-entry-card,body.cinematic-mode.page-music .music-final-ribbon{box-shadow:0 2.7rem 7rem rgba(0,0,0,.42),0 0 3rem rgba(201,178,143,.10)}
+@keyframes vhAudioPulse{0%,100%{box-shadow:inset 0 0 0 rgba(201,178,143,0)}50%{box-shadow:inset 0 0 2.5rem rgba(201,178,143,.09)}}
+@media(max-width:900px){body.page-music .guided-journey-grid,body.page-music .audience-path-grid,body.page-music .platform-grid,body.page-music .album-entry-grid{grid-template-columns:1fr}body.page-music .album-entry-heading{display:block}body.page-music .album-entry-heading p{margin-top:.6rem}}
+@media(max-width:680px){body.page-music .playlist-btn{width:100%;justify-content:center}body.page-music .playlist-actions .vh-button{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){body.page-music .playlist-btn,body.page-music .guided-journey-card,body.page-music .audience-path-card,body.page-music .album-entry-card{transition:none!important;transform:none!important}body.page-music .lazy-embed.is-loading{animation:none!important}}
+body.reduce-motion.page-music .playlist-btn,body.reduced-motion.page-music .playlist-btn,body.reduce-motion.page-music .guided-journey-card,body.reduced-motion.page-music .guided-journey-card,body.reduce-motion.page-music .audience-path-card,body.reduced-motion.page-music .audience-path-card,body.reduce-motion.page-music .album-entry-card,body.reduced-motion.page-music .album-entry-card{transition:none!important;transform:none!important}
+body.reduce-motion.page-music .lazy-embed.is-loading,body.reduced-motion.page-music .lazy-embed.is-loading{animation:none!important}
