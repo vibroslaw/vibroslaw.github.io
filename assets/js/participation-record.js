@@ -10,7 +10,10 @@
       codeError: 'Kod nie został rozpoznany. Sprawdź kod z QR lub wpisz kod wydarzenia pokazany po projekcji.',
       unlocked: 'Dostęp uczestnika został odblokowany. Możesz utworzyć Zapis Uczestnictwa.',
       generated: 'Nowy numer dokumentu został wygenerowany.',
-      print: 'Dokument został przygotowany. W oknie drukowania wybierz „Zapisz jako PDF”.',
+      preparing: 'Przygotowuję dokument do zapisu. Ładuję tło i warstwę tekstu…',
+      print: 'Dokument został przygotowany. W nowym oknie wybierz „Drukuj” lub „Zapisz jako PDF”.',
+      popupBlocked: 'Nie udało się otworzyć okna zapisu. Zezwól na wyskakujące okna dla tej strony i spróbuj ponownie.',
+      fallbackPrint: 'Nie udało się otworzyć osobnego okna. Używam awaryjnego trybu drukowania.',
       finale: 'Dziękujemy za udział w doświadczeniu Rap-Ort: Prawda Sumienia.',
       missingPlace: 'Uzupełnij miejsce / instytucję.',
       missingDate: 'Uzupełnij datę wydarzenia.',
@@ -25,14 +28,19 @@
       closing: 'To nie jest dyplom ani dokument urzędowy.\nTo pamiątkowy ślad chwili, w której historia\nstaje się pytaniem, które uczestnik zabiera ze sobą.',
       customPlace: 'Miejsce / instytucja',
       customDate: 'Data wydarzenia',
-      prefix: 'VH-ZU'
+      prefix: 'VH-ZU',
+      printWindowTitle: 'Zapis Uczestnictwa — Rap-Ort',
+      printButton: 'Drukuj / zapisz jako PDF'
     },
     en: {
       validCodes: ['syd2026', 'conscience'],
       codeError: 'The code was not recognised. Check the QR code or enter the event code shown after the screening.',
       unlocked: 'Participant access unlocked. You can create your Record of Participation.',
       generated: 'New document number generated.',
-      print: 'Your document is ready. In the print window, choose “Save as PDF”.',
+      preparing: 'Preparing your document. Loading background and text layer…',
+      print: 'Your document is ready. In the new window, choose “Print” or “Save as PDF”.',
+      popupBlocked: 'Could not open the save window. Allow pop-ups for this site and try again.',
+      fallbackPrint: 'Could not open a separate window. Using fallback print mode.',
       finale: 'Thank you for participating in the Rap-Ort: Prawda Sumienia experience.',
       missingPlace: 'Enter the place / institution.',
       missingDate: 'Enter the event date.',
@@ -47,7 +55,9 @@
       closing: 'This is not an official certificate.\nIt is a commemorative trace of a moment in which history\nbecomes a question the participant carries forward.',
       customPlace: 'Place / institution',
       customDate: 'Event date',
-      prefix: 'VH-REC'
+      prefix: 'VH-REC',
+      printWindowTitle: 'Record of Participation — Rap-Ort',
+      printButton: 'Print / save as PDF'
     }
   };
 
@@ -72,26 +82,47 @@
     cinema: {
       code: 'cinema',
       layout: 'cinema',
-      bg: '/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg',
-      preview: '/public/assets/reports/participation-record-bg-01-archival-cinema-preview.webp',
-      fallbackBg: '/public/assets/reports/participation-record-bg-a4-300dpi.jpg',
-      fallbackPreview: '/public/assets/reports/participation-record-bg-preview.webp'
+      bgCandidates: [
+        '/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi.jpeg'
+      ],
+      previewCandidates: [
+        '/public/assets/reports/participation-record-bg-01-archival-cinema-preview.webp',
+        '/public/assets/reports/participation-record-bg-preview.webp',
+        '/public/assets/reports/participation-record-bg-a4-300dpi.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi.jpeg'
+      ]
     },
     museum: {
       code: 'museum',
       layout: 'museum',
-      bg: '/public/assets/reports/participation-record-bg-02-museum-line-a4.jpg',
-      preview: '/public/assets/reports/participation-record-bg-02-museum-line-preview.webp',
-      fallbackBg: '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg',
-      fallbackPreview: '/public/assets/reports/participation-record-bg-preview2.webp'
+      bgCandidates: [
+        '/public/assets/reports/participation-record-bg-02-museum-line-a4.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi2.jpeg'
+      ],
+      previewCandidates: [
+        '/public/assets/reports/participation-record-bg-02-museum-line-preview.webp',
+        '/public/assets/reports/participation-record-bg-preview2.webp',
+        '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi2.jpeg'
+      ]
     },
     ceremonial: {
       code: 'ceremonial',
       layout: 'ceremonial',
-      bg: '/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg',
-      preview: '/public/assets/reports/participation-record-bg-03-ceremonial-frame-preview.webp',
-      fallbackBg: '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg',
-      fallbackPreview: '/public/assets/reports/participation-record-bg-preview3.webp'
+      bgCandidates: [
+        '/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi3.jpeg'
+      ],
+      previewCandidates: [
+        '/public/assets/reports/participation-record-bg-03-ceremonial-frame-preview.webp',
+        '/public/assets/reports/participation-record-bg-preview3.webp',
+        '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg',
+        '/public/assets/reports/participation-record-bg-a4-300dpi3.jpeg'
+      ]
     }
   };
 
@@ -117,7 +148,7 @@
   const printDoc = document.querySelector('[data-pr-print-doc]');
   const finale = $('[data-pr-finale]');
 
-  let unlocked = false;
+  const imageCache = new Map();
   let currentEventKey = 'custom';
   let sequence = randomSequence();
 
@@ -131,6 +162,10 @@
 
   function cleanCode(value) {
     return String(value || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+  }
+
+  function absoluteUrl(path) {
+    return new URL(path, window.location.origin).href;
   }
 
   function storageKey() {
@@ -151,7 +186,6 @@
   }
 
   function unlock(eventKey) {
-    unlocked = true;
     currentEventKey = EVENTS[eventKey] ? eventKey : 'custom';
     gate.hidden = true;
     generator.hidden = false;
@@ -235,14 +269,33 @@
     return VARIANTS[checked ? checked.value : 'cinema'] || VARIANTS.cinema;
   }
 
-  function setImageBackground(el, primary, fallback) {
+  function testImage(url) {
+    const absolute = absoluteUrl(url);
+    if (imageCache.has(absolute)) return imageCache.get(absolute);
+    const promise = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(absolute);
+      img.onerror = () => resolve('');
+      img.src = absolute;
+    });
+    imageCache.set(absolute, promise);
+    return promise;
+  }
+
+  async function resolveFirstImage(candidates) {
+    for (const candidate of candidates) {
+      const resolved = await testImage(candidate);
+      if (resolved) return resolved;
+    }
+    return '';
+  }
+
+  function setImageBackgroundFromCandidates(el, candidates) {
     if (!el) return;
-    el.style.backgroundImage = `url('${primary}')`;
-    const img = new Image();
-    img.onerror = () => {
-      el.style.backgroundImage = `url('${fallback}')`;
-    };
-    img.src = primary;
+    el.style.backgroundImage = 'linear-gradient(135deg, #0b0907, #19140e)';
+    resolveFirstImage(candidates).then((resolved) => {
+      if (resolved) el.style.backgroundImage = `url('${resolved}')`;
+    });
   }
 
   function splitLines(text) {
@@ -260,26 +313,34 @@
 
   function renderDocument(container) {
     if (!container) return;
-    const name = nameInput ? nameInput.value.trim() : '';
-    const place = placeInput ? placeInput.value.trim() : '';
-    const date = labelDate();
-    const number = numberInput ? numberInput.value : '';
+    const data = getDocumentData();
     container.querySelector('[data-pr-project]').textContent = copy.project;
     container.querySelector('[data-pr-title]').textContent = copy.title;
     container.querySelector('[data-pr-body]').innerHTML = splitLines(copy.body).map((line) => `<span>${escapeHtml(line)}</span>`).join('<br>');
     const forEl = container.querySelector('[data-pr-for]');
     if (forEl) {
-      forEl.hidden = !name;
-      forEl.innerHTML = name ? `${copy.forLabel} <strong>${escapeHtml(name)}</strong>` : '';
+      forEl.hidden = !data.name;
+      forEl.innerHTML = data.name ? `${copy.forLabel} <strong>${escapeHtml(data.name)}</strong>` : '';
     }
     container.querySelector('[data-pr-date-label]').textContent = copy.dateLabel;
-    container.querySelector('[data-pr-date]').textContent = date;
+    container.querySelector('[data-pr-date]').textContent = data.date;
     container.querySelector('[data-pr-place-label]').textContent = copy.placeLabel;
-    container.querySelector('[data-pr-place]').textContent = place || copy.customPlace;
+    container.querySelector('[data-pr-place]').textContent = data.place || copy.customPlace;
     container.querySelector('[data-pr-number-label]').textContent = copy.numberLabel;
-    container.querySelector('[data-pr-number]').textContent = number;
+    container.querySelector('[data-pr-number]').textContent = data.number;
     container.querySelector('[data-pr-closing]').innerHTML = splitLines(copy.closing).map((line) => `<span>${escapeHtml(line)}</span>`).join('<br>');
     container.querySelector('[data-pr-author-role]').textContent = copy.projectAuthor;
+  }
+
+  function getDocumentData() {
+    return {
+      name: nameInput ? nameInput.value.trim() : '',
+      place: placeInput ? placeInput.value.trim() : '',
+      date: labelDate(),
+      dateInput: dateInput ? dateInput.value : '',
+      number: numberInput ? numberInput.value : '',
+      variant: selectedVariant()
+    };
   }
 
   function updatePreview() {
@@ -290,15 +351,13 @@
       previewDoc.classList.add('is-switching');
       window.setTimeout(() => previewDoc.classList.remove('is-switching'), 220);
     }
-    setImageBackground(previewBg, variant.preview, variant.fallbackPreview);
+    setImageBackgroundFromCandidates(previewBg, variant.previewCandidates);
     setLayout(previewDoc, variant.layout);
     renderDocument(previewDoc);
-    if (printBg) printBg.src = variant.bg;
-    const printImg = new Image();
-    printImg.onerror = () => {
-      if (printBg) printBg.src = variant.fallbackBg;
-    };
-    printImg.src = variant.bg;
+
+    resolveFirstImage(variant.bgCandidates).then((resolved) => {
+      if (printBg) printBg.src = resolved || '';
+    });
     setLayout(printDoc, variant.layout);
     renderDocument(printDoc);
   }
@@ -323,6 +382,98 @@
     if (EVENTS[clean]) return unlock(clean);
     if (copy.validCodes.includes(clean)) return unlock('custom');
     return setStatus(copy.codeError);
+  }
+
+  function documentHtml(data, backgroundUrl) {
+    const nameBlock = data.name ? `<p class="for-line">${copy.forLabel} <strong>${escapeHtml(data.name)}</strong></p>` : '';
+    const bodyLines = splitLines(copy.body).map((line) => `<span>${escapeHtml(line)}</span>`).join('<br>');
+    const closingLines = splitLines(copy.closing).map((line) => `<span>${escapeHtml(line)}</span>`).join('<br>');
+    const bg = backgroundUrl ? `<img class="bg" src="${backgroundUrl}" alt="">` : '<div class="bg-fallback"></div>';
+    const signature = absoluteUrl('/public/assets/reports/author-signature-placeholder.svg');
+    const layout = `layout-${data.variant.layout}`;
+
+    return `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<title>${copy.printWindowTitle}</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  html, body { margin: 0; padding: 0; background: #050403; color: #ead8b4; }
+  body { width: 297mm; height: 210mm; overflow: hidden; }
+  .toolbar { position: fixed; z-index: 10; top: 12px; left: 12px; right: 12px; display: flex; justify-content: center; gap: 10px; font: 13px Arial, sans-serif; }
+  .toolbar button { border: 1px solid rgba(231,211,174,.35); border-radius: 999px; padding: 10px 16px; background: #17120d; color: #ead8b4; cursor: pointer; }
+  .page { position: relative; width: 297mm; height: 210mm; overflow: hidden; background: #080807; }
+  .bg, .bg-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bg-fallback { background: radial-gradient(circle at 50% 35%, rgba(231,211,174,.12), transparent 42%), linear-gradient(135deg, #060504, #17110c); }
+  .content { position: absolute; inset: 24mm 32mm; display: flex; flex-direction: column; align-items: center; text-align: center; font-family: Georgia, 'Times New Roman', serif; }
+  .project { font-size: 12px; letter-spacing: .42em; text-transform: uppercase; opacity: .88; margin: 0 0 9mm; }
+  .title { font-size: 42px; letter-spacing: .22em; text-transform: uppercase; font-weight: 500; margin: 0 0 9mm; }
+  .body { max-width: 205mm; font-size: 17px; line-height: 1.55; margin: 0 auto 6mm; color: rgba(244,232,205,.9); }
+  .for-line { font-size: 15px; letter-spacing: .08em; margin: 1mm 0 5mm; color: #f3dfb7; }
+  .fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12mm; width: 215mm; margin: 7mm auto; }
+  .field { border-top: 1px solid rgba(232,206,150,.42); padding-top: 3mm; min-width: 0; }
+  .field span { display: block; font: 10px Arial, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: rgba(232,206,150,.62); margin-bottom: 2mm; }
+  .field strong { font-size: 14px; font-weight: 400; color: #f2e4c7; overflow-wrap: anywhere; }
+  .closing { margin-top: auto; max-width: 205mm; font-size: 14px; line-height: 1.5; color: rgba(244,232,205,.84); }
+  .author { margin-top: 4mm; display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+  .author img { width: 66mm; max-height: 19mm; object-fit: contain; }
+  .author strong { font-size: 12px; font-weight: 400; color: #f4e5c7; }
+  .author span { font: 10px Arial, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: rgba(232,206,150,.66); }
+  .layout-cinema.content { inset: 26mm 32mm 20mm; }
+  .layout-museum.content { inset: 23mm 31mm; }
+  .layout-museum .fields { width: 220mm; }
+  .layout-ceremonial.content { inset: 27mm 36mm 22mm; }
+  .layout-ceremonial .title { font-size: 46px; margin-bottom: 10mm; }
+  .layout-ceremonial .body { max-width: 190mm; }
+  .layout-ceremonial .closing { max-width: 190mm; }
+  @media print { .toolbar { display: none !important; } html, body { width: 297mm; height: 210mm; } }
+</style>
+</head>
+<body>
+  <div class="toolbar"><button type="button" onclick="window.print()">${copy.printButton}</button></div>
+  <main class="page">
+    ${bg}
+    <section class="content ${layout}">
+      <p class="project">${copy.project}</p>
+      <h1 class="title">${copy.title}</h1>
+      <p class="body">${bodyLines}</p>
+      ${nameBlock}
+      <div class="fields">
+        <div class="field"><span>${copy.dateLabel}</span><strong>${escapeHtml(data.date)}</strong></div>
+        <div class="field"><span>${copy.placeLabel}</span><strong>${escapeHtml(data.place || copy.customPlace)}</strong></div>
+        <div class="field"><span>${copy.numberLabel}</span><strong>${escapeHtml(data.number)}</strong></div>
+      </div>
+      <p class="closing">${closingLines}</p>
+      <div class="author"><img src="${signature}" alt=""><strong>Piotr Jakub Lichwała</strong><span>${copy.projectAuthor}</span></div>
+    </section>
+  </main>
+</body>
+</html>`;
+  }
+
+  async function openPrintWindow() {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      setStatus(copy.popupBlocked);
+      return false;
+    }
+    printWindow.document.open();
+    printWindow.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${copy.printWindowTitle}</title></head><body style="margin:0;background:#070604;color:#ead8b4;font-family:Georgia,serif;display:grid;place-items:center;height:100vh;text-align:center"><p>${copy.preparing}</p></body></html>`);
+    printWindow.document.close();
+
+    const data = getDocumentData();
+    const backgroundUrl = await resolveFirstImage(data.variant.bgCandidates);
+    printWindow.document.open();
+    printWindow.document.write(documentHtml(data, backgroundUrl));
+    printWindow.document.close();
+    printWindow.focus();
+    return true;
+  }
+
+  function fallbackPrint() {
+    updatePreview();
+    window.setTimeout(() => window.print(), 500);
   }
 
   codeForm?.addEventListener('submit', (event) => {
@@ -365,19 +516,21 @@
     });
   });
 
-  root.querySelector('[data-pr-print]')?.addEventListener('click', () => {
+  root.querySelector('[data-pr-print]')?.addEventListener('click', async () => {
     const error = validate();
     if (error) {
       setStatus(error);
       return;
     }
     updatePreview();
-    setStatus(copy.print);
+    setStatus(copy.preparing);
+    const opened = await openPrintWindow();
+    setStatus(opened ? copy.print : copy.fallbackPrint);
+    if (!opened) fallbackPrint();
     if (finale) {
       finale.hidden = false;
       finale.textContent = copy.finale;
     }
-    window.setTimeout(() => window.print(), 180);
   });
 
   const urlParams = new URLSearchParams(location.search);
