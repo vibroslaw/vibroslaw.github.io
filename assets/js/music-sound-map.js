@@ -6,173 +6,430 @@
   window.__veritasMusicSoundMap = true;
 
   const lang = root.dataset.lang === "pl" ? "pl" : "en";
-  const t = {
-    en: {
-      all: "All", memory: "Memory", conscience: "Conscience", resistance: "Resistance", identity: "Identity", resilience: "Resilience",
-      filterTitle: "Interactive emotional filter", filterKicker: "Choose an emotion", filterLead: "Click an emotional entry point to reshape the visible sound documents.", showing: "Showing", empty: "No works match this emotional entry yet.",
-      pathTitle: "Now listening path", pathKicker: "Three recommended entries", pathLead: "Choose a path and receive three entry points into the sound world.",
-      audioTitle: "Audio room", audioKicker: "Listen without leaving the world", audioLead: "Load selected listening spaces only when you need them. No autoplay, no heavy embeds before interaction.", spotify: "Load Spotify artist room", loaded: "Audio room loaded", spotifyPrivacy: "Spotify player loads only after your click.",
-      rapOrtCard: "Rap-Ort playlist", rapOrtText: "Enter the audiovisual music world connected with Rap-Ort and Prawda Sumienia.", sztabCard: "SZTAB / ORIGINS video entry", sztabText: "Begin with the animated memory branch and the first SZTAB · ORIGINS episode.", openYoutube: "Open on YouTube",
-      badge: "Press / context note", badgeText: "External mention documented carefully — not an endorsement.", open: "Open", explore: "Explore",
-      timeKicker: "Guided listening", timeTitle: "Choose by time", timeLead: "Enter the music through the amount of attention you have now — a short spark, a focused path or the full authorial world.",
-      fiveTitle: "If you have 5 minutes", fiveText: "Start with one direct emotional entry and one context door.", twentyTitle: "If you have 20 minutes", twentyText: "Follow a compact path through music, memory and image.", fullTitle: "If you want the full world", fullText: "Move from sound into Rap-Ort, SZTAB, Press context and institutional use.",
-      audienceKicker: "Who is entering?", audienceTitle: "Three ways to use the Sound Map", audienceLead: "The same music can work differently for listeners, curators and institutions.",
-      listenerTitle: "For listeners", listenerText: "Start with emotion and let the map lead you toward a world.", curatorTitle: "For curators", curatorText: "Start with context, external traces and carefully described cultural use.", institutionTitle: "For institutions", institutionText: "Start with screenings, educational context and programme formats.",
-      finalTitle: "Continue from the Sound Map", finalText: "Move from listening into the worlds, context or collaboration.", listen: "Listen", enterRaport: "Enter Rap-Ort", discoverSztab: "Discover SZTAB", contact: "Contact"
+  const isPl = lang === "pl";
+
+  const spotifyArtist = "https://open.spotify.com/artist/0df87MMIM1VOy2dR1DM2oF";
+  const platforms = [
+    ["YouTube", "https://www.youtube.com/@VIBROS%C5%81AW"],
+    ["Spotify", spotifyArtist],
+    ["TIDAL", "https://tidal.com/artist/64846539"],
+    ["Qobuz", "https://www.qobuz.com/ie-en/interpreter/vibrosaw/28032763"],
+    ["Amazon Music", "https://music.amazon.com/artists/B0FL7G4Z7J/vibros%25C5%2582aw?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_l71YflSsnpFEp72kXFRNRSkRW"],
+  ];
+
+  const playlistData = {
+    memory: {
+      label: isPl ? "Pamięć" : "Memory",
+      id: "0xv8YgWzwwY7VtER506P1Z",
+      url: "https://open.spotify.com/playlist/0xv8YgWzwwY7VtER506P1Z?si=gyPJNvRvThm_pXuQiJyMqg",
+      description: isPl ? "Świadectwo, pamięć, historia i echo tego, co zostaje po spotkaniu z prawdą." : "Witness, memory, history and the echo of what remains after encountering truth.",
     },
-    pl: {
-      all: "Wszystko", memory: "Pamięć", conscience: "Sumienie", resistance: "Opór", identity: "Tożsamość", resilience: "Odporność",
-      filterTitle: "Interaktywny filtr emocji", filterKicker: "Wybierz emocję", filterLead: "Kliknij emocjonalne wejście, aby zmienić widoczne dokumenty dźwiękowe.", showing: "Pokazuję", empty: "Na razie brak prac dla tego wejścia emocjonalnego.",
-      pathTitle: "Teraz ścieżka słuchania", pathKicker: "Trzy rekomendowane wejścia", pathLead: "Wybierz ścieżkę i otrzymaj trzy wejścia do dźwiękowego świata.",
-      audioTitle: "Pokój odsłuchowy", audioKicker: "Słuchaj bez opuszczania świata", audioLead: "Ładuj wybrane przestrzenie odsłuchu tylko wtedy, gdy ich potrzebujesz. Bez autoplay i bez ciężkich embedów przed interakcją.", spotify: "Załaduj pokój Spotify", loaded: "Pokój odsłuchowy załadowany", spotifyPrivacy: "Odtwarzacz Spotify ładuje się dopiero po kliknięciu.",
-      rapOrtCard: "Playlista Rap-Ort", rapOrtText: "Wejdź w audiowizualny świat muzyki związany z Rap-Ort i Prawdą Sumienia.", sztabCard: "SZTAB / ORIGINS — wejście wideo", sztabText: "Zacznij od animowanej gałęzi pamięci i pierwszego odcinka SZTAB · ORIGINS.", openYoutube: "Otwórz na YouTube",
-      badge: "Notka prasowa / kontekst", badgeText: "Wzmianka zewnętrzna opisana ostrożnie — nie oznacza rekomendacji.", open: "Otwórz", explore: "Zobacz",
-      timeKicker: "Prowadzone słuchanie", timeTitle: "Wybierz według czasu", timeLead: "Wejdź w muzykę przez ilość uwagi, którą masz teraz — krótki impuls, skupioną ścieżkę albo pełny autorski świat.",
-      fiveTitle: "Jeśli masz 5 minut", fiveText: "Zacznij od jednego mocnego wejścia emocjonalnego i jednych drzwi kontekstu.", twentyTitle: "Jeśli masz 20 minut", twentyText: "Przejdź krótką ścieżkę przez muzykę, pamięć i obraz.", fullTitle: "Jeśli chcesz pełny świat", fullText: "Przejdź od dźwięku do Rap-Ort, SZTAB, kontekstu prasowego i użycia instytucjonalnego.",
-      audienceKicker: "Kto wchodzi?", audienceTitle: "Trzy sposoby użycia Sound Map", audienceLead: "Ta sama muzyka może działać inaczej dla słuchaczy, kuratorów i instytucji.",
-      listenerTitle: "Dla słuchaczy", listenerText: "Zacznij od emocji i pozwól mapie poprowadzić Cię do świata.", curatorTitle: "Dla kuratorów", curatorText: "Zacznij od kontekstu, śladów zewnętrznych i ostrożnie opisanych zastosowań kulturalnych.", institutionTitle: "Dla instytucji", institutionText: "Zacznij od pokazów, kontekstu edukacyjnego i formatów programowych.",
-      finalTitle: "Kontynuuj z Dźwiękowej Mapy", finalText: "Przejdź od słuchania do światów, kontekstu albo współpracy.", listen: "Słuchaj", enterRaport: "Wejdź do Rap-Ort", discoverSztab: "Odkryj SZTAB", contact: "Kontakt"
-    }
-  }[lang];
+    conscience: {
+      label: isPl ? "Sumienie" : "Conscience",
+      id: "46B6jvmQkPM33LV28w4UvV",
+      url: "https://open.spotify.com/playlist/46B6jvmQkPM33LV28w4UvV?si=aiEvJgP0QGOxfcpGYJ-XYw",
+      description: isPl ? "Prawda, wybór, presja moralna i pytanie, które zostaje z odbiorcą." : "Truth, choice, moral pressure and the question that remains with the listener.",
+    },
+    resistance: {
+      label: isPl ? "Opór" : "Resistance",
+      id: "6R2zp276q7G9z9IJZMWxqU",
+      url: "https://open.spotify.com/playlist/6R2zp276q7G9z9IJZMWxqU?si=oJgjHDBlTIqMh1OYJjehIQ",
+      description: isPl ? "Siła, odmowa, przetrwanie i energia, która nie pozwala zamilknąć." : "Strength, refusal, survival and the energy that refuses to disappear.",
+    },
+    identity: {
+      label: isPl ? "Tożsamość" : "Identity",
+      id: "4Ml3373UqCDgQEdr0m6SoH",
+      url: "https://open.spotify.com/playlist/4Ml3373UqCDgQEdr0m6SoH?si=NmS1kFpkSMS80Y0dhYLW-g",
+      description: isPl ? "Odbicie, język, przynależność, wewnętrzny konflikt i szukanie siebie." : "Reflection, language, belonging, inner conflict and the search for self.",
+    },
+    resilience: {
+      label: isPl ? "Odporność" : "Resilience",
+      id: "6FNzNCjmvmGwpibLLDNufr",
+      url: "https://open.spotify.com/playlist/6FNzNCjmvmGwpibLLDNufr?si=5lcht8ixTKetPM94XKzeZw",
+      description: isPl ? "Wytrwałość, odbudowa, wewnętrzny ogień i powrót po doświadczeniu ciężaru." : "Endurance, rebuilding, inner fire and return after carrying weight.",
+    },
+    personal: {
+      label: isPl ? "Osobiste / filmowe" : "Personal / Cinematic",
+      id: "6FNzNCjmvmGwpibLLDNufr",
+      url: "https://open.spotify.com/playlist/6FNzNCjmvmGwpibLLDNufr?si=5lcht8ixTKetPM94XKzeZw",
+      description: isPl ? "Lżejsze, filmowe wejście w emocję, klimat i osobistą stronę twórczości." : "A lighter cinematic entry into emotion, atmosphere and the personal side of the work.",
+    },
+  };
+
+  const albumGroups = [
+    {
+      heading: isPl ? "Polskie albumy muzyczne" : "Polish music albums",
+      intro: isPl ? "Dwa główne polskie wejścia albumowe w świat pamięci, świadectwa i autorskiej narracji." : "Two core Polish album entries into memory, testimony and authorial narrative.",
+      albums: [
+        {
+          title: "SZTAB — Raport z Pamięci",
+          meta: isPl ? "album muzyczny / świat SZTAB" : "music album / SZTAB world",
+          text: isPl ? "Albumowy fundament świata SZTAB — pamięć, postacie i energia krótkich form historycznych." : "The album foundation of the SZTAB world — memory, figures and the energy of short historical forms.",
+          href: "https://youtube.com/playlist?list=OLAK5uy_n4HwvBGKMhwr94yRn60j_uM3JZjE43Rf4&si=UTEiUBph7jwLh-e_",
+        },
+        {
+          title: "Rap-Ort: Prawda Sumienia",
+          meta: isPl ? "album muzyczny / świat Rap-Ort" : "music album / Rap-Ort world",
+          text: isPl ? "Główne muzyczne wejście w świat Rap-Ort: pamięć, raport, decyzja i odpowiedzialność." : "The main musical entry into Rap-Ort: memory, report, decision and responsibility.",
+          href: "https://youtube.com/playlist?list=PLa1mFnbfhev615wCW-3Bi8Fz1kE0Maksq&si=BxyIIHrXvSddcRWS",
+        },
+      ],
+    },
+    {
+      heading: isPl ? "Anglojęzyczne albumy muzyczne" : "English-language music albums",
+      intro: isPl ? "Osobne anglojęzyczne wejścia w odporność, energię, filmowy klimat i bardziej popkulturowe napięcie." : "Separate English-language entries into resilience, energy, cinematic atmosphere and pop-cultural tension.",
+      albums: [
+        {
+          title: "UNBROKEN",
+          meta: isPl ? "album anglojęzyczny / odporność" : "English-language album / resilience",
+          text: isPl ? "Wejście w siłę, przetrwanie, podnoszenie się i emocjonalną wytrwałość." : "An entry into strength, survival, rebuilding and emotional endurance.",
+          href: "https://youtube.com/playlist?list=OLAK5uy_n3NC_O5G2d5IMF20tF8_QnXDX3GDxFJv8&si=rPcdlKWdCBG1VuMc",
+        },
+        {
+          title: "VHS: Viral Halloween System",
+          meta: isPl ? "album anglojęzyczny / energia i system" : "English-language album / energy and system",
+          text: isPl ? "Bardziej dynamiczne, popkulturowe i mroczniejsze wejście w świat dźwięku Vibrosława." : "A more dynamic, pop-cultural and darker entry into Vibrosław’s sound world.",
+          href: "https://youtube.com/playlist?list=PLa1mFnbfhev4PV6x8EuNI_suNl75qjrXZ&si=1mb_wNaU5RUJCKy6",
+        },
+      ],
+    },
+  ];
+
+  const t = {
+    showing: isPl ? "Pokazuję" : "Showing",
+    empty: isPl ? "Na razie brak prac dla tego wejścia emocjonalnego." : "No works match this emotional entry yet.",
+    filterKicker: isPl ? "Wybierz emocję" : "Choose an emotion",
+    filterTitle: isPl ? "Interaktywny filtr emocji" : "Interactive emotional filter",
+    filterLead: isPl ? "Kliknij emocjonalne wejście, aby zmienić widoczne dokumenty dźwiękowe i playlistę." : "Click an emotional entry point to reshape the visible sound documents and playlist.",
+    pathKicker: isPl ? "Trzy rekomendowane wejścia" : "Three recommended entries",
+    pathTitle: isPl ? "Teraz ścieżka słuchania" : "Now listening path",
+    pathLead: isPl ? "Wybierz ścieżkę i otrzymaj trzy wejścia do dźwiękowego świata." : "Choose a path and receive three entry points into the sound world.",
+    audioKicker: isPl ? "Kuratorowane playlisty" : "Curated playlists",
+    audioTitle: "Emotional Playlist Room",
+    audioLead: isPl ? "Zamiast profilu artysty i algorytmu, ta sekcja prowadzi przez ręcznie ustawione playlisty emocji." : "Instead of the artist profile and algorithm, this room leads through manually curated emotional playlists.",
+    loadPlaylist: isPl ? "Załaduj playlistę Spotify" : "Load Spotify playlist",
+    loaded: isPl ? "Playlista załadowana" : "Playlist loaded",
+    privacy: isPl ? "Odtwarzacz Spotify ładuje się dopiero po kliknięciu." : "Spotify player loads only after your click.",
+    openSpotify: isPl ? "Otwórz playlistę w Spotify" : "Open playlist on Spotify",
+    albumsKicker: isPl ? "Albumy" : "Albums",
+    albumsTitle: isPl ? "Wejścia do albumów muzycznych" : "Music album entry points",
+    albumsLead: isPl ? "Playlisty emocji prowadzą przez nastrój. Albumy prowadzą przez pełniejsze światy muzyczne — polskie i anglojęzyczne." : "Emotional playlists lead by mood. Albums lead into fuller music worlds — Polish and English-language.",
+    openYoutube: isPl ? "Otwórz na YouTube" : "Open on YouTube",
+    platformsKicker: isPl ? "Platformy" : "Platforms",
+    platformsTitle: isPl ? "Słuchaj na swojej platformie" : "Listen on your platform",
+    platformsLead: isPl ? "Główne wejście na tej stronie prowadzi przez playlisty emocji. Pełniejszy katalog możesz otworzyć również na platformach poniżej." : "This page leads through emotional playlists first. The wider catalogue can also be opened on the platforms below.",
+    timeKicker: isPl ? "Prowadzone słuchanie" : "Guided listening",
+    timeTitle: isPl ? "Wybierz według czasu" : "Choose by time",
+    timeLead: isPl ? "Wejdź w muzykę przez ilość uwagi, którą masz teraz — krótki impuls, skupioną ścieżkę albo pełny świat." : "Enter the music through the amount of attention you have now — a short spark, a focused path or the full world.",
+    fiveTitle: isPl ? "Jeśli masz 5 minut" : "If you have 5 minutes",
+    twentyTitle: isPl ? "Jeśli masz 20 minut" : "If you have 20 minutes",
+    fullTitle: isPl ? "Jeśli chcesz pełny świat" : "If you want the full world",
+    fiveText: isPl ? "Zacznij od jednego mocnego wejścia emocjonalnego i jednej bramy kontekstu." : "Start with one direct emotional entry and one context door.",
+    twentyText: isPl ? "Przejdź krótką ścieżkę przez playlistę, muzykę, pamięć i obraz." : "Follow a compact path through playlist, music, memory and image.",
+    fullText: isPl ? "Przejdź od dźwięku do Rap-Ort, SZTAB, kontekstu prasowego i użycia instytucjonalnego." : "Move from sound into Rap-Ort, SZTAB, press context and institutional use.",
+    audienceKicker: isPl ? "Kto wchodzi?" : "Who is entering?",
+    audienceTitle: isPl ? "Trzy sposoby użycia Sound Map" : "Three ways to use the Sound Map",
+    audienceLead: isPl ? "Ta sama muzyka może działać inaczej dla słuchaczy, kuratorów i instytucji." : "The same music can work differently for listeners, curators and institutions.",
+    listenerTitle: isPl ? "Dla słuchaczy" : "For listeners",
+    curatorTitle: isPl ? "Dla kuratorów" : "For curators",
+    institutionTitle: isPl ? "Dla instytucji" : "For institutions",
+    listenerText: isPl ? "Zacznij od emocji i pozwól mapie poprowadzić Cię do świata." : "Start with emotion and let the map lead you toward a world.",
+    curatorText: isPl ? "Zacznij od kontekstu, śladów zewnętrznych i ostrożnie opisanych zastosowań kulturalnych." : "Start with context, external traces and carefully described cultural use.",
+    institutionText: isPl ? "Zacznij od pokazów, kontekstu edukacyjnego i formatów programowych." : "Start with screenings, educational context and programme formats.",
+    explore: isPl ? "Zobacz" : "Explore",
+    finalTitle: isPl ? "Kontynuuj z Dźwiękowej Mapy" : "Continue from the Sound Map",
+    finalText: isPl ? "Przejdź od słuchania do światów, kontekstu albo współpracy." : "Move from listening into the worlds, context or collaboration.",
+    enterRaport: isPl ? "Wejdź do Rap-Ort" : "Enter Rap-Ort",
+    discoverSztab: isPl ? "Odkryj SZTAB" : "Discover SZTAB",
+    contact: isPl ? "Kontakt" : "Contact",
+    badge: isPl ? "Notka prasowa / kontekst" : "Press / context note",
+    badgeText: isPl ? "Wzmianka zewnętrzna opisana ostrożnie — nie oznacza rekomendacji." : "External mention documented carefully — not an endorsement.",
+  };
 
   const paths = {
-    memory: [
-      { title: "SZTAB — Raport z Pamięci", reason: lang === "pl" ? "Albumowy fundament świata pamięci." : "The album foundation of the memory world.", href: "/sztab/raport-z-pamieci/" },
-      { title: "Kurier Prawdy", reason: lang === "pl" ? "Świadectwo, prawda i koszt bycia usłyszanym." : "Witness, truth and the cost of being heard.", href: lang === "pl" ? "/press-recognition/pl/" : "/press-recognition/" },
-      { title: "Rap-Ort / Prawda Sumienia", reason: lang === "pl" ? "Muzyka jako świadectwo i presja moralna." : "Music as testimony and moral pressure.", href: lang === "pl" ? "/rap-ort/prawda-sumienia/pl/" : "/rap-ort/prawda-sumienia/" }
-    ],
-    conscience: [
-      { title: "LUSTRO / THE MIRROR", reason: lang === "pl" ? "Współczesne pytanie o prawdę i system." : "A contemporary question of truth and system.", href: lang === "pl" ? "/music/pl/#conscience" : "/music/#conscience" },
-      { title: "Rap-Ort", reason: lang === "pl" ? "Sumienie, pamięć i decyzja człowieka pod presją." : "Conscience, memory and human decision under pressure.", href: lang === "pl" ? "/rap-ort/pl/" : "/rap-ort/" },
-      { title: "Kurier Prawdy", reason: lang === "pl" ? "Świadectwo jako obowiązek wobec prawdy." : "Witness as a responsibility toward truth.", href: lang === "pl" ? "/press-recognition/pl/" : "/press-recognition/" }
-    ],
-    resistance: [
-      { title: "Unbroken", reason: lang === "pl" ? "Odporność, przetrwanie i wewnętrzna siła." : "Resilience, survival and inner strength.", href: lang === "pl" ? "/music/pl/#resilience" : "/music/#resilience" },
-      { title: "SZTAB", reason: lang === "pl" ? "Pamięć opowiadana przez muzykę i animowaną formę." : "Memory told through music and animated form.", href: lang === "pl" ? "/sztab/pl/" : "/sztab/" },
-      { title: "Zo / SZTAB ORIGINS", reason: lang === "pl" ? "Pierwsze wejście w animowaną gałąź SZTAB." : "The first entry into the animated SZTAB branch.", href: lang === "pl" ? "/sztab/origins/pl/" : "/sztab/origins/" }
-    ],
-    identity: [
-      { title: "LUSTRO / THE MIRROR", reason: lang === "pl" ? "Tożsamość, odbicie i napięcie współczesności." : "Identity, reflection and contemporary tension.", href: lang === "pl" ? "/music/pl/#identity" : "/music/#identity" },
-      { title: "Campus Ignis", reason: lang === "pl" ? "Świadomość, ogień i odpowiedzialność." : "Awareness, fire and responsibility.", href: lang === "pl" ? "/music/pl/#identity" : "/music/#identity" },
-      { title: lang === "pl" ? "Między Wierszami" : "Between the Lines", reason: lang === "pl" ? "Znaczenia ukryte między słowami i ciszą." : "Meanings hidden between words and silence.", href: lang === "pl" ? "/miedzy-wierszami/" : "/between-the-lines/" }
-    ],
-    resilience: [
-      { title: "Unbroken", reason: lang === "pl" ? "Wytrwałość jako dźwiękowe wejście." : "Endurance as a sound entry point.", href: lang === "pl" ? "/music/pl/#resilience" : "/music/#resilience" },
-      { title: "Equilibrium", reason: lang === "pl" ? "Równowaga, napięcie i ruch." : "Balance, tension and movement.", href: lang === "pl" ? "/music/pl/#resilience" : "/music/#resilience" },
-      { title: "SZTAB", reason: lang === "pl" ? "Odporność pamięci i krótkich form historycznych." : "The resilience of memory and short historical forms.", href: lang === "pl" ? "/sztab/pl/" : "/sztab/" }
-    ]
+    memory: ["SZTAB — Raport z Pamięci", "Kurier Prawdy", "Rap-Ort / Prawda Sumienia"],
+    conscience: ["LUSTRO / THE MIRROR", "Rap-Ort", "Kurier Prawdy"],
+    resistance: ["Unbroken", "SZTAB", "Zo / SZTAB ORIGINS"],
+    identity: ["LUSTRO / THE MIRROR", "Campus Ignis", isPl ? "Między Wierszami" : "Between the Lines"],
+    resilience: ["Unbroken", "Equilibrium", "SZTAB"],
+    personal: ["Equilibrium", "Campus Ignis", "Unbroken"],
+  };
+
+  const recommendationLinks = {
+    "SZTAB — Raport z Pamięci": "/sztab/raport-z-pamieci/",
+    "Kurier Prawdy": isPl ? "/press-recognition/pl/" : "/press-recognition/",
+    "Rap-Ort / Prawda Sumienia": isPl ? "/rap-ort/prawda-sumienia/pl/" : "/rap-ort/prawda-sumienia/",
+    "Rap-Ort": isPl ? "/rap-ort/pl/" : "/rap-ort/",
+    "SZTAB": isPl ? "/sztab/pl/" : "/sztab/",
+    "Zo / SZTAB ORIGINS": isPl ? "/sztab/origins/pl/" : "/sztab/origins/",
+    "Między Wierszami": "/miedzy-wierszami/",
+    "Between the Lines": "/between-the-lines/",
   };
 
   const emotionMap = [
     { test: /raport z pamięci/i, value: "memory resistance resilience" },
     { test: /kurier prawdy/i, value: "memory conscience resistance" },
-    { test: /lustro|mirror/i, value: "conscience identity" },
-    { test: /unbroken/i, value: "resistance resilience" },
-    { test: /campus ignis/i, value: "identity resilience conscience" },
-    { test: /equilibrium/i, value: "resilience identity" }
+    { test: /lustro|mirror/i, value: "conscience identity personal" },
+    { test: /unbroken/i, value: "resistance resilience personal" },
+    { test: /campus ignis/i, value: "identity resilience conscience personal" },
+    { test: /equilibrium/i, value: "resilience identity personal" },
   ];
 
-  const hashAliases = { all: "all", memory: "memory", pamiec: "memory", "pamięć": "memory", conscience: "conscience", sumienie: "conscience", resistance: "resistance", opor: "resistance", "opór": "resistance", identity: "identity", tozsamosc: "identity", "tożsamość": "identity", resilience: "resilience", odpornosc: "resilience", "odporność": "resilience" };
+  const hashAliases = { memory: "memory", pamiec: "memory", "pamięć": "memory", conscience: "conscience", sumienie: "conscience", resistance: "resistance", opor: "resistance", "opór": "resistance", identity: "identity", tozsamosc: "identity", "tożsamość": "identity", resilience: "resilience", resilence: "resilience", odpornosc: "resilience", "odporność": "resilience", personal: "personal", osobiste: "personal", cinematic: "personal", filmowe: "personal" };
 
-  function normalise(value) { return String(value || "").trim().toLowerCase(); }
-  function hashToKey(hash) { return hashAliases[normalise(String(hash || "").replace(/^#/, ""))] || null; }
-  function findFeaturedSection() { return [...document.querySelectorAll(".vh-section")].find((section) => /Selected sound documents|Dokumenty dźwiękowe/i.test(section.textContent || "")); }
-  function findCollaborationSection() { return [...document.querySelectorAll(".vh-section")].find((section) => /Music use \/ collaboration|Wykorzystanie muzyki \/ współpraca/i.test(section.textContent || "")); }
+  const $ = (selector, scope = document) => scope.querySelector(selector);
+  const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+  const normalise = (value) => String(value || "").trim().toLowerCase();
+  const hashToKey = (hash) => hashAliases[normalise(String(hash || "").replace(/^#/, ""))] || null;
+  const featuredSection = () => $$(".vh-section").find((s) => /Selected sound documents|Dokumenty dźwiękowe/i.test(s.textContent || ""));
+  const collaborationSection = () => $$(".vh-section").find((s) => /Music use \/ collaboration|Wykorzystanie muzyki \/ współpraca/i.test(s.textContent || ""));
 
-  function injectGuidedStyles() {
-    if (document.getElementById("musicGuidedJourneyStyles")) return;
+  function injectStyles() {
+    if ($("#musicPlaylistRoomStyles")) return;
     const style = document.createElement("style");
-    style.id = "musicGuidedJourneyStyles";
+    style.id = "musicPlaylistRoomStyles";
     style.textContent = `
-      body.page-music .guided-journey-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem);margin-top:1.4rem}
-      body.page-music .guided-journey-card,body.page-music .audience-path-card{position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.75rem);background:linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.6rem 4.8rem rgba(0,0,0,.24);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
-      body.page-music .guided-journey-card:before,body.page-music .audience-path-card:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 22% 10%,rgba(201,178,143,.12),transparent 18rem),repeating-linear-gradient(90deg,rgba(201,178,143,.026) 0 1px,transparent 1px 28px);opacity:.62}
-      body.page-music .guided-journey-card:hover,body.page-music .guided-journey-card:focus-within,body.page-music .audience-path-card:hover,body.page-music .audience-path-card:focus-within{transform:translateY(-6px);border-color:rgba(201,178,143,.42);box-shadow:0 2.2rem 6rem rgba(0,0,0,.32),0 0 2.4rem rgba(201,178,143,.08)}
-      body.page-music .guided-journey-card h3,body.page-music .audience-path-card h3{margin:0 0 .65rem;font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,2.4vw,2.7rem);line-height:.95}
-      body.page-music .guided-journey-card p,body.page-music .audience-path-card p{color:rgba(241,234,219,.72);line-height:1.72}
-      body.page-music .guided-journey-card ol{margin:1rem 0 0;padding:0;list-style:none;display:grid;gap:.55rem}
-      body.page-music .guided-journey-card li{display:flex;gap:.55rem;align-items:flex-start;color:rgba(241,234,219,.78);line-height:1.45}
-      body.page-music .guided-journey-card li span{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(201,178,143,.12);color:rgba(201,178,143,.9);font-size:.7rem;flex:0 0 auto}
-      body.page-music .time-badge{display:inline-flex;align-items:center;min-height:28px;border:1px solid rgba(201,178,143,.25);border-radius:999px;padding:0 10px;margin-bottom:1rem;background:rgba(201,178,143,.08);color:rgba(201,178,143,.86);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
-      body.page-music .audience-path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem);margin-top:1.4rem}
-      body.page-music .music-final-ribbon{border:1px solid rgba(201,178,143,.22);border-radius:28px;padding:clamp(1.3rem,3vw,2.5rem);background:radial-gradient(circle at 14% 20%,rgba(201,178,143,.14),transparent 25rem),linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.014));box-shadow:0 2.2rem 6rem rgba(0,0,0,.30)}
-      body.page-music .music-final-ribbon .vh-actions{margin-top:1.2rem}
-      body.cinematic-mode.page-music .guided-journey-card,body.cinematic-mode.page-music .audience-path-card,body.cinematic-mode.page-music .music-final-ribbon{box-shadow:0 2.8rem 7rem rgba(0,0,0,.42),0 0 3.5rem rgba(201,178,143,.10)}
-      @media(max-width:900px){body.page-music .guided-journey-grid,body.page-music .audience-path-grid{grid-template-columns:1fr}}
-      @media(prefers-reduced-motion:reduce){body.page-music .guided-journey-card,body.page-music .audience-path-card{transition:none!important;transform:none!important}}
-      body.reduce-motion.page-music .guided-journey-card,body.reduced-motion.page-music .guided-journey-card,body.reduce-motion.page-music .audience-path-card,body.reduced-motion.page-music .audience-path-card{transition:none!important;transform:none!important}
+      body.page-music .playlist-selector{display:flex;flex-wrap:wrap;gap:10px;margin:1.2rem 0 1rem}
+      body.page-music .playlist-btn,body.page-music .sound-control{min-height:40px;border:1px solid rgba(201,178,143,.24);border-radius:999px;background:rgba(255,255,255,.035);color:rgba(241,234,219,.78);padding:0 14px;text-transform:uppercase;letter-spacing:.09em;font-size:.68rem;cursor:pointer;transition:transform .22s ease,border-color .22s ease,background .22s ease,color .22s ease,box-shadow .22s ease}
+      body.page-music .playlist-btn:hover,body.page-music .playlist-btn:focus-visible,body.page-music .playlist-btn.is-active,body.page-music .sound-control:hover,body.page-music .sound-control:focus-visible,body.page-music .sound-control.is-active{color:#f1eadb;border-color:rgba(201,178,143,.52);background:rgba(201,178,143,.12);box-shadow:0 0 2rem rgba(201,178,143,.08);transform:translateY(-2px);outline:none}
+      body.page-music .playlist-room-panel{border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.8rem);background:linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.8rem 5rem rgba(0,0,0,.24)}
+      body.page-music .playlist-room-panel h3{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,3vw,3rem);line-height:.95;margin:.4rem 0 .7rem}
+      body.page-music .playlist-room-panel p{color:rgba(241,234,219,.72);line-height:1.72}
+      body.page-music .playlist-actions{display:flex;flex-wrap:wrap;gap:10px;margin:1rem 0}
+      body.page-music .lazy-embed{min-height:120px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(201,178,143,.28);border-radius:18px;margin:1rem 0;background:rgba(5,4,3,.36);color:rgba(201,178,143,.78);letter-spacing:.14em;text-transform:uppercase}.lazy-embed iframe{border-radius:18px;display:block;width:100%;min-height:352px}
+      body.page-music .embed-privacy-note{margin:.25rem 0 1rem;color:rgba(201,178,143,.72);font-size:.78rem;line-height:1.55;letter-spacing:.07em;text-transform:uppercase}
+      body.page-music .album-entry-group{margin-top:2rem}.album-entry-heading{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1rem}.album-entry-heading h3{margin:0;font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,3vw,3rem);line-height:.95}.album-entry-heading p{max-width:42rem;color:rgba(241,234,219,.68);line-height:1.65;margin:0}.album-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem)}.album-entry-card{position:relative;overflow:hidden;border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.7rem);background:radial-gradient(circle at 14% 12%,rgba(201,178,143,.12),transparent 18rem),linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.8rem 5rem rgba(0,0,0,.24)}.album-entry-card h4{font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,2.5vw,2.6rem);line-height:.95;margin:.25rem 0 .65rem}.album-entry-card p{color:rgba(241,234,219,.72);line-height:1.7}.album-entry-meta{display:inline-flex;border:1px solid rgba(201,178,143,.24);border-radius:999px;padding:6px 10px;color:rgba(201,178,143,.86);text-transform:uppercase;letter-spacing:.09em;font-size:.62rem;margin-bottom:.7rem}
+      body.page-music .platform-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:1.2rem}.platform-link{border:1px solid rgba(201,178,143,.20);border-radius:18px;padding:15px 14px;text-align:center;background:rgba(255,255,255,.025);color:rgba(241,234,219,.82);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}.platform-link:hover,.platform-link:focus-visible{border-color:rgba(201,178,143,.52);background:rgba(201,178,143,.10);outline:none}
+      body.page-music .guided-journey-grid,body.page-music .audience-path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.4rem);margin-top:1.4rem}.guided-journey-card,.audience-path-card,.music-final-ribbon{position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(201,178,143,.18);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.75rem);background:linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.014));box-shadow:0 1.6rem 4.8rem rgba(0,0,0,.24)}.guided-journey-card h3,.audience-path-card h3{margin:0 0 .65rem;font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,2.4vw,2.7rem);line-height:.95}.guided-journey-card p,.audience-path-card p{color:rgba(241,234,219,.72);line-height:1.72}.time-badge{display:inline-flex;align-items:center;min-height:28px;border:1px solid rgba(201,178,143,.25);border-radius:999px;padding:0 10px;margin-bottom:1rem;background:rgba(201,178,143,.08);color:rgba(201,178,143,.86);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}.guided-journey-card ol{margin:1rem 0 0;padding:0;list-style:none;display:grid;gap:.55rem}.guided-journey-card li{display:flex;gap:.55rem;align-items:flex-start;color:rgba(241,234,219,.78);line-height:1.45}.guided-journey-card li span{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(201,178,143,.12);color:rgba(201,178,143,.9);font-size:.7rem;flex:0 0 auto}
+      body.page-music .now-listening-output{display:grid;gap:12px;margin:1rem 0 0;padding:0;list-style:none}.now-listening-output li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid rgba(201,178,143,.18);border-radius:18px;padding:14px 16px;background:rgba(255,255,255,.028)}.now-listening-output li span{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(201,178,143,.12);color:rgba(201,178,143,.9)}.now-listening-output strong{display:block;color:#f1eadb;font-family:"Cormorant Garamond",serif;font-size:1.35rem}.now-listening-output small{display:block;color:rgba(241,234,219,.62);line-height:1.45}.now-listening-output a{border:1px solid rgba(201,178,143,.24);border-radius:999px;padding:8px 12px;color:rgba(201,178,143,.92);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font-size:.68rem}
+      body.page-music .track-document.is-filtered-out{display:none!important}.press-context-badge{display:block;margin-top:1rem;border:1px solid rgba(201,178,143,.28);border-radius:18px;padding:12px 14px;background:rgba(201,178,143,.08);color:rgba(241,234,219,.78);text-decoration:none;line-height:1.55}.press-context-badge strong{display:block;color:#f1eadb;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem}.press-context-badge span{font-size:.9rem;color:rgba(241,234,219,.68)}
+      @media(max-width:900px){body.page-music .guided-journey-grid,body.page-music .audience-path-grid,body.page-music .platform-grid,body.page-music .album-entry-grid{grid-template-columns:1fr}.album-entry-heading{display:block}.album-entry-heading p{margin-top:.6rem}}@media(max-width:680px){body.page-music .now-listening-output li{grid-template-columns:30px minmax(0,1fr)}body.page-music .now-listening-output li a{grid-column:2/-1;justify-self:start}.playlist-btn,.sound-control{width:100%}}
+      @media(prefers-reduced-motion:reduce){.playlist-btn,.sound-control,.guided-journey-card,.audience-path-card{transition:none!important;transform:none!important}}body.reduce-motion.page-music .playlist-btn,body.reduced-motion.page-music .playlist-btn,body.reduce-motion.page-music .sound-control,body.reduced-motion.page-music .sound-control{transition:none!important;transform:none!important}
     `;
     document.head.appendChild(style);
   }
 
+  function labelFor(key) { return playlistData[key]?.label || playlistData.personal.label; }
+
   function markTrackCards() {
-    document.querySelectorAll(".track-document").forEach((card, index) => {
-      const title = card.querySelector("h3")?.textContent || "";
+    $$(".track-document").forEach((card, index) => {
+      const title = $("h3", card)?.textContent || "";
       const match = emotionMap.find((item) => item.test.test(title));
       card.dataset.emotions = match?.value || "memory conscience";
       card.classList.add("has-waveform");
-      if (!card.querySelector(".status-badge")) {
-        const row = card.querySelector(".status-row") || document.createElement("div");
-        row.className = "status-row";
-        const badge = document.createElement("span");
-        badge.className = "status-badge";
-        badge.textContent = `VH-SND-${String(index + 1).padStart(2, "0")}`;
-        row.prepend(badge);
-        if (!card.querySelector(".status-row")) card.prepend(row);
-      } else {
+      const row = $(".status-row", card) || document.createElement("div");
+      row.className = "status-row";
+      if (!$(".status-badge[data-vh-snd]", row)) {
         const badge = document.createElement("span");
         badge.className = "status-badge is-muted";
+        badge.dataset.vhSnd = "true";
         badge.textContent = `VH-SND-${String(index + 1).padStart(2, "0")}`;
-        card.querySelector(".status-row")?.prepend(badge);
+        row.prepend(badge);
+        if (!$(".status-row", card)) card.prepend(row);
       }
-      if (/kurier prawdy/i.test(title) && !card.querySelector(".press-context-badge")) {
+      if (/kurier prawdy/i.test(title) && !$(".press-context-badge", card)) {
         const badge = document.createElement("a");
         badge.className = "press-context-badge";
-        badge.href = lang === "pl" ? "/press-recognition/pl/" : "/press-recognition/";
+        badge.href = isPl ? "/press-recognition/pl/" : "/press-recognition/";
         badge.innerHTML = `<strong>${t.badge}</strong><span>${t.badgeText}</span>`;
         card.appendChild(badge);
       }
     });
   }
 
-  function createButton(label, key, attr) { const button = document.createElement("button"); button.type = "button"; button.className = "sound-control"; button.textContent = label; button.dataset[attr] = key; button.setAttribute("aria-pressed", "false"); return button; }
+  function button(label, key, attr) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = attr === "playlistKey" ? "playlist-btn" : "sound-control";
+    btn.textContent = label;
+    btn.dataset[attr] = key;
+    btn.setAttribute("aria-pressed", "false");
+    return btn;
+  }
 
-  function createFilterSection() { if (document.querySelector("[data-music-emotion-filter]")) return; const section = document.createElement("section"); section.className = "vh-section music-wow-section"; section.dataset.musicEmotionFilter = "true"; section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.filterKicker}</p><h2 class="vh-section-title">${t.filterTitle}</h2><p class="vh-section-kicker">${t.filterLead}</p></div><div class="sound-control-panel" data-emotion-controls></div><p class="sound-filter-status" data-emotion-status aria-live="polite"></p></div>`; const controls = section.querySelector("[data-emotion-controls]"); [[t.all,"all"],[t.memory,"memory"],[t.conscience,"conscience"],[t.resistance,"resistance"],[t.identity,"identity"],[t.resilience,"resilience"]].forEach(([label,key]) => controls.appendChild(createButton(label, key, "emotionFilter"))); findFeaturedSection()?.before(section); }
+  function createAudioRoom() {
+    if ($("[data-audio-room]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-wow-section audio-room-section";
+    section.dataset.audioRoom = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.audioKicker}</p><h2 class="vh-section-title">${t.audioTitle}</h2><p class="vh-section-kicker">${t.audioLead}</p></div><div class="playlist-selector" data-playlist-selector></div><article class="playlist-room-panel" data-playlist-panel><p class="embed-privacy-note">${t.privacy}</p><h3 data-playlist-title></h3><p data-playlist-description></p><div class="playlist-actions"><button class="vh-button secondary" type="button" data-load-playlist>${t.loadPlaylist}</button><a class="vh-button secondary" data-playlist-open target="_blank" rel="noopener noreferrer">${t.openSpotify}</a></div><div class="lazy-embed" id="spotifyPlaylistRoom"><span>Spotify</span></div></article></div>`;
+    const selector = $("[data-playlist-selector]", section);
+    Object.entries(playlistData).forEach(([key, data]) => selector.appendChild(button(data.label, key, "playlistKey")));
+    $(".sound-map-orbit")?.closest(".vh-section")?.after(section);
+  }
 
-  function createListeningPathSection() { if (document.querySelector("[data-now-listening]")) return; const section = document.createElement("section"); section.className = "vh-section music-wow-section"; section.dataset.nowListening = "true"; section.innerHTML = `<div class="vh-wrap"><div class="sound-map-orbit reveal visible"><div class="vh-section-head"><p class="vh-eyebrow">${t.pathKicker}</p><h2 class="vh-section-title">${t.pathTitle}</h2><p class="vh-section-kicker">${t.pathLead}</p></div><div class="sound-control-panel" data-path-controls></div><ol class="now-listening-output" data-now-listening-output></ol></div></div>`; const controls = section.querySelector("[data-path-controls]"); [[t.memory,"memory"],[t.conscience,"conscience"],[t.resistance,"resistance"],[t.identity,"identity"],[t.resilience,"resilience"]].forEach(([label,key]) => controls.appendChild(createButton(label, key, "listeningPath"))); findFeaturedSection()?.before(section); }
+  function createAlbumEntrySection() {
+    if ($("[data-album-entry-points]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section album-entry-section";
+    section.dataset.albumEntryPoints = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.albumsKicker}</p><h2 class="vh-section-title">${t.albumsTitle}</h2><p class="vh-section-kicker">${t.albumsLead}</p></div>${albumGroups.map((group) => `<div class="album-entry-group"><div class="album-entry-heading"><h3>${group.heading}</h3><p>${group.intro}</p></div><div class="album-entry-grid">${group.albums.map((album) => `<article class="album-entry-card"><span class="album-entry-meta">${album.meta}</span><h4>${album.title}</h4><p>${album.text}</p><a class="vh-button secondary" href="${album.href}" target="_blank" rel="noopener noreferrer">${t.openYoutube}</a></article>`).join("")}</div></div>`).join("")}</div>`;
+    $("[data-audio-room]")?.after(section);
+  }
 
-  function createAudioRoom() { if (document.querySelector("[data-audio-room]")) return; const section = document.createElement("section"); section.className = "vh-section music-wow-section audio-room-section"; section.dataset.audioRoom = "true"; section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.audioKicker}</p><h2 class="vh-section-title">${t.audioTitle}</h2><p class="vh-section-kicker">${t.audioLead}</p></div><div class="vh-grid three"><article class="audio-room-card spotify-card"><h3>Spotify</h3><p>Vibrosław artist room.</p><p class="embed-privacy-note">${t.spotifyPrivacy}</p><div class="lazy-embed" id="spotifyArtistRoom"><span>Spotify</span></div><button class="vh-button secondary" type="button" data-load-embed data-load-embed-target="#spotifyArtistRoom" data-embed-title="Vibrosław Spotify artist room" data-embed-src="https://open.spotify.com/embed/artist/0df87MMIM1VOy2dR1DM2oF?utm_source=generator">${t.spotify}</button></article><article class="audio-room-card youtube-card"><div class="youtube-thumb" aria-hidden="true"><span>▶</span></div><h3>${t.rapOrtCard}</h3><p>${t.rapOrtText}</p><a class="vh-button secondary" href="https://youtube.com/playlist?list=PLa1mFnbfhev615wCW-3Bi8Fz1kE0Maksq" target="_blank" rel="noopener noreferrer">${t.openYoutube}</a></article><article class="audio-room-card youtube-card"><div class="youtube-thumb" aria-hidden="true"><span>▶</span></div><h3>${t.sztabCard}</h3><p>${t.sztabText}</p><a class="vh-button secondary" href="https://youtu.be/JgV9KEZTbeM" target="_blank" rel="noopener noreferrer">${t.openYoutube}</a></article></div></div>`; document.querySelector(".sound-map-orbit")?.closest(".vh-section")?.after(section); }
+  function createFilterSection() {
+    if ($("[data-music-emotion-filter]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-wow-section";
+    section.dataset.musicEmotionFilter = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.filterKicker}</p><h2 class="vh-section-title">${t.filterTitle}</h2><p class="vh-section-kicker">${t.filterLead}</p></div><div class="sound-control-panel" data-emotion-controls></div><p class="sound-filter-status" data-emotion-status aria-live="polite"></p></div>`;
+    const controls = $("[data-emotion-controls]", section);
+    Object.entries(playlistData).forEach(([key, data]) => controls.appendChild(button(data.label, key, "emotionFilter")));
+    featuredSection()?.before(section);
+  }
+
+  function createListeningPathSection() {
+    if ($("[data-now-listening]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-wow-section";
+    section.dataset.nowListening = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="sound-map-orbit reveal visible"><div class="vh-section-head"><p class="vh-eyebrow">${t.pathKicker}</p><h2 class="vh-section-title">${t.pathTitle}</h2><p class="vh-section-kicker">${t.pathLead}</p></div><div class="sound-control-panel" data-path-controls></div><ol class="now-listening-output" data-now-listening-output></ol></div></div>`;
+    const controls = $("[data-path-controls]", section);
+    Object.entries(playlistData).forEach(([key, data]) => controls.appendChild(button(data.label, key, "listeningPath")));
+    featuredSection()?.before(section);
+  }
 
   function createTimeJourneySection() {
-    if (document.querySelector("[data-time-journey]")) return;
-    const section = document.createElement("section"); section.className = "vh-section music-guided-section"; section.dataset.timeJourney = "true";
-    const lists = lang === "pl" ? [["05",t.fiveTitle,t.fiveText,["Kurier Prawdy","LUSTRO / THE MIRROR","Press / Recognition"]],["20",t.twentyTitle,t.twentyText,["Audio Room","Rap-Ort playlist","SZTAB ORIGINS"]],["∞",t.fullTitle,t.fullText,["Rap-Ort","SZTAB","Dla instytucji"]]] : [["05",t.fiveTitle,t.fiveText,["Kurier Prawdy","LUSTRO / THE MIRROR","Press / Recognition"]],["20",t.twentyTitle,t.twentyText,["Audio Room","Rap-Ort playlist","SZTAB ORIGINS"]],["∞",t.fullTitle,t.fullText,["Rap-Ort","SZTAB","For Institutions"]]];
-    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.timeKicker}</p><h2 class="vh-section-title">${t.timeTitle}</h2><p class="vh-section-kicker">${t.timeLead}</p></div><div class="guided-journey-grid">${lists.map(([badge,title,text,items]) => `<article class="guided-journey-card"><span class="time-badge">${badge}</span><h3>${title}</h3><p>${text}</p><ol>${items.map((item,i)=>`<li><span>${i+1}</span>${item}</li>`).join("")}</ol></article>`).join("")}</div></div>`;
-    document.querySelector("[data-audio-room]")?.after(section);
+    if ($("[data-time-journey]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-guided-section";
+    section.dataset.timeJourney = "true";
+    const lists = isPl ? [["05", t.fiveTitle, t.fiveText, ["Personal / Cinematic", "LUSTRO / THE MIRROR", "Press / Recognition"]], ["20", t.twentyTitle, t.twentyText, ["Emotional Playlist Room", "albumy muzyczne", "Rap-Ort / SZTAB"]], ["∞", t.fullTitle, t.fullText, ["Rap-Ort", "SZTAB", "Dla instytucji"]]] : [["05", t.fiveTitle, t.fiveText, ["Personal / Cinematic", "LUSTRO / THE MIRROR", "Press / Recognition"]], ["20", t.twentyTitle, t.twentyText, ["Emotional Playlist Room", "music albums", "Rap-Ort / SZTAB"]], ["∞", t.fullTitle, t.fullText, ["Rap-Ort", "SZTAB", "For Institutions"]]];
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.timeKicker}</p><h2 class="vh-section-title">${t.timeTitle}</h2><p class="vh-section-kicker">${t.timeLead}</p></div><div class="guided-journey-grid">${lists.map(([b, h, p, items]) => `<article class="guided-journey-card"><span class="time-badge">${b}</span><h3>${h}</h3><p>${p}</p><ol>${items.map((item, i) => `<li><span>${i + 1}</span>${item}</li>`).join("")}</ol></article>`).join("")}</div></div>`;
+    $("[data-album-entry-points]")?.after(section);
   }
 
   function createAudienceSection() {
-    if (document.querySelector("[data-audience-paths]")) return;
-    const section = document.createElement("section"); section.className = "vh-section music-guided-section"; section.dataset.audiencePaths = "true";
-    const cards = [[t.listenerTitle,t.listenerText, lang === "pl" ? "/music/pl/#memory" : "/music/#memory"],[t.curatorTitle,t.curatorText, lang === "pl" ? "/press-recognition/pl/" : "/press-recognition/"],[t.institutionTitle,t.institutionText, lang === "pl" ? "/for-institutions/pl/" : "/for-institutions/"]];
-    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.audienceKicker}</p><h2 class="vh-section-title">${t.audienceTitle}</h2><p class="vh-section-kicker">${t.audienceLead}</p></div><div class="audience-path-grid">${cards.map(([title,text,href])=>`<article class="audience-path-card"><h3>${title}</h3><p>${text}</p><a class="vh-button secondary" href="${href}">${t.explore}</a></article>`).join("")}</div></div>`;
-    findCollaborationSection()?.before(section);
+    if ($("[data-audience-paths]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-guided-section";
+    section.dataset.audiencePaths = "true";
+    const cards = [[t.listenerTitle, t.listenerText, isPl ? "/music/pl/#personal" : "/music/#personal"], [t.curatorTitle, t.curatorText, isPl ? "/press-recognition/pl/" : "/press-recognition/"], [t.institutionTitle, t.institutionText, isPl ? "/for-institutions/pl/" : "/for-institutions/"]];
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.audienceKicker}</p><h2 class="vh-section-title">${t.audienceTitle}</h2><p class="vh-section-kicker">${t.audienceLead}</p></div><div class="audience-path-grid">${cards.map(([h, p, href]) => `<article class="audience-path-card"><h3>${h}</h3><p>${p}</p><a class="vh-button secondary" href="${href}">${t.explore}</a></article>`).join("")}</div></div>`;
+    collaborationSection()?.before(section);
+  }
+
+  function createPlatformsSection() {
+    if ($("[data-platform-links]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section";
+    section.dataset.platformLinks = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="music-final-ribbon reveal visible"><p class="vh-eyebrow">${t.platformsKicker}</p><h2 class="vh-section-title">${t.platformsTitle}</h2><p>${t.platformsLead}</p><div class="platform-grid">${platforms.map(([label, href]) => `<a class="platform-link" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`).join("")}</div></div></div>`;
+    collaborationSection()?.after(section);
   }
 
   function createFinalRibbon() {
-    if (document.querySelector("[data-music-final-ribbon]")) return;
-    const section = document.createElement("section"); section.className = "vh-section"; section.dataset.musicFinalRibbon = "true";
-    const links = lang === "pl" ? [[t.listen,"https://open.spotify.com/artist/0df87MMIM1VOy2dR1DM2oF"],[t.enterRaport,"/rap-ort/pl/"],[t.discoverSztab,"/sztab/pl/"],[t.contact,"/contact/pl/"]] : [[t.listen,"https://open.spotify.com/artist/0df87MMIM1VOy2dR1DM2oF"],[t.enterRaport,"/rap-ort/"],[t.discoverSztab,"/sztab/"],[t.contact,"/contact/"]];
-    section.innerHTML = `<div class="vh-wrap"><div class="music-final-ribbon reveal visible"><p class="vh-eyebrow">Sound Map</p><h2 class="vh-section-title">${t.finalTitle}</h2><p>${t.finalText}</p><div class="vh-actions">${links.map(([label,href])=>`<a class="vh-button secondary" href="${href}" ${href.startsWith("http") ? "target=\"_blank\" rel=\"noopener noreferrer\"" : ""}>${label}</a>`).join("")}</div></div></div>`;
-    findCollaborationSection()?.after(section);
+    if ($("[data-music-final-ribbon]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section";
+    section.dataset.musicFinalRibbon = "true";
+    const links = isPl ? [[t.enterRaport, "/rap-ort/pl/"], [t.discoverSztab, "/sztab/pl/"], [t.contact, "/contact/pl/"]] : [[t.enterRaport, "/rap-ort/"], [t.discoverSztab, "/sztab/"], [t.contact, "/contact/"]];
+    section.innerHTML = `<div class="vh-wrap"><div class="music-final-ribbon reveal visible"><p class="vh-eyebrow">Sound Map</p><h2 class="vh-section-title">${t.finalTitle}</h2><p>${t.finalText}</p><div class="vh-actions">${links.map(([label, href]) => `<a class="vh-button secondary" href="${href}">${label}</a>`).join("")}</div></div></div>`;
+    createPlatformsSection();
+    $("[data-platform-links]")?.after(section);
   }
 
-  function setEmotionFilter(value, options = {}) { const filter = normalise(value || "all"); const cards = [...document.querySelectorAll(".track-document[data-emotions]")]; const buttons = [...document.querySelectorAll("[data-emotion-filter]")]; const status = document.querySelector("[data-emotion-status]"); let visible = 0; buttons.forEach((button) => { const active = normalise(button.dataset.emotionFilter) === filter; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); }); cards.forEach((card) => { const emotions = normalise(card.dataset.emotions).split(/\s+/).filter(Boolean); const show = filter === "all" || emotions.includes(filter); card.classList.toggle("is-filtered-out", !show); card.hidden = !show; if (show) visible += 1; }); if (status) { const activeLabel = buttons.find((button) => normalise(button.dataset.emotionFilter) === filter)?.textContent?.trim() || t.all; status.textContent = visible ? `${t.showing}: ${activeLabel}` : t.empty; } if (options.updateHash && filter !== "all") history.replaceState(null, "", `#${filter}`); if (options.updateHash && filter === "all" && location.hash) history.replaceState(null, "", location.pathname); }
-  function setListeningPath(value) { const key = normalise(value || "memory"); const output = document.querySelector("[data-now-listening-output]"); const buttons = [...document.querySelectorAll("[data-listening-path]")]; const recommendations = paths[key] || paths.memory; buttons.forEach((button) => { const active = normalise(button.dataset.listeningPath) === key; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); }); if (output) output.innerHTML = recommendations.map((item, index) => `<li><span>${index + 1}</span><div><strong>${item.title}</strong><small>${item.reason}</small></div><a href="${item.href}">${t.explore}</a></li>`).join(""); }
-  function loadEmbed(button) { const target = document.querySelector(button.dataset.loadEmbedTarget || ""); const src = button.dataset.embedSrc; const title = button.dataset.embedTitle || "Spotify player"; if (!target || !src || target.dataset.loaded === "true") return; const iframe = document.createElement("iframe"); iframe.src = src; iframe.title = title; iframe.loading = "lazy"; iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"; iframe.style.border = "0"; iframe.width = "100%"; iframe.height = "352"; target.replaceChildren(iframe); target.dataset.loaded = "true"; button.textContent = t.loaded; button.disabled = true; }
+  function recommendationsFor(key) {
+    return (paths[key] || paths.personal).map((title) => ({ title, href: recommendationLinks[title] || (isPl ? `/music/pl/#${key}` : `/music/#${key}`) }));
+  }
 
-  document.addEventListener("click", (event) => { const emotionButton = event.target.closest("[data-emotion-filter]"); if (emotionButton) { const key = emotionButton.dataset.emotionFilter; setEmotionFilter(key, { updateHash: true }); if (key !== "all") setListeningPath(key); return; } const pathButton = event.target.closest("[data-listening-path]"); if (pathButton) { const key = pathButton.dataset.listeningPath; setListeningPath(key); setEmotionFilter(key, { updateHash: true }); return; } const embedButton = event.target.closest("[data-load-embed]"); if (embedButton) return loadEmbed(embedButton); });
+  function setPlaylist(key, options = {}) {
+    const actualKey = playlistData[key] ? key : "personal";
+    const data = playlistData[actualKey];
+    $$("[data-playlist-key]").forEach((btn) => {
+      const active = btn.dataset.playlistKey === actualKey;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
+    const title = $("[data-playlist-title]");
+    const description = $("[data-playlist-description]");
+    const open = $("[data-playlist-open]");
+    const embed = $("#spotifyPlaylistRoom");
+    const loadBtn = $("[data-load-playlist]");
+    if (title) title.textContent = data.label;
+    if (description) description.textContent = data.description;
+    if (open) open.href = data.url;
+    if (embed) { embed.dataset.loaded = "false"; embed.innerHTML = "<span>Spotify</span>"; }
+    if (loadBtn) { loadBtn.disabled = false; loadBtn.textContent = t.loadPlaylist; loadBtn.dataset.playlist = actualKey; }
+    if (options.updateHash) history.replaceState(null, "", `#${actualKey}`);
+  }
 
-  injectGuidedStyles(); markTrackCards(); createAudioRoom(); createTimeJourneySection(); createFilterSection(); createListeningPathSection(); createAudienceSection(); createFinalRibbon();
-  const initialKey = hashToKey(location.hash) || "all"; setEmotionFilter(initialKey); setListeningPath(initialKey === "all" ? "memory" : initialKey); window.addEventListener("hashchange", () => { const key = hashToKey(location.hash) || "all"; setEmotionFilter(key); setListeningPath(key === "all" ? "memory" : key); });
+  function setEmotionFilter(value, options = {}) {
+    const filter = playlistData[value] ? value : "personal";
+    const cards = $$(".track-document[data-emotions]");
+    const buttons = $$("[data-emotion-filter]");
+    const status = $("[data-emotion-status]");
+    let visible = 0;
+    buttons.forEach((button) => {
+      const active = normalise(button.dataset.emotionFilter) === filter;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    cards.forEach((card) => {
+      const emotions = normalise(card.dataset.emotions).split(/\s+/).filter(Boolean);
+      const show = emotions.includes(filter);
+      card.classList.toggle("is-filtered-out", !show);
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (status) status.textContent = visible ? `${t.showing}: ${labelFor(filter)}` : t.empty;
+    setPlaylist(filter, { updateHash: options.updateHash });
+  }
+
+  function setListeningPath(value) {
+    const key = playlistData[value] ? value : "personal";
+    $$("[data-listening-path]").forEach((button) => {
+      const active = button.dataset.listeningPath === key;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    const output = $("[data-now-listening-output]");
+    if (output) output.innerHTML = recommendationsFor(key).map((item, index) => `<li><span>${index + 1}</span><div><strong>${item.title}</strong><small>${playlistData[key].description}</small></div><a href="${item.href}">${t.explore}</a></li>`).join("");
+  }
+
+  function loadPlaylist() {
+    const btn = $("[data-load-playlist]");
+    const key = btn?.dataset.playlist || "personal";
+    const data = playlistData[key] || playlistData.personal;
+    const target = $("#spotifyPlaylistRoom");
+    if (!target || target.dataset.loaded === "true") return;
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://open.spotify.com/embed/playlist/${data.id}?utm_source=generator`;
+    iframe.title = `Spotify playlist — ${data.label}`;
+    iframe.loading = "lazy";
+    iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    iframe.style.border = "0";
+    iframe.width = "100%";
+    iframe.height = "352";
+    target.replaceChildren(iframe);
+    target.dataset.loaded = "true";
+    if (btn) { btn.textContent = t.loaded; btn.disabled = true; }
+  }
+
+  document.addEventListener("click", (event) => {
+    const emotion = event.target.closest("[data-emotion-filter]");
+    if (emotion) { const key = emotion.dataset.emotionFilter; setEmotionFilter(key, { updateHash: true }); setListeningPath(key); return; }
+    const path = event.target.closest("[data-listening-path]");
+    if (path) { const key = path.dataset.listeningPath; setListeningPath(key); setEmotionFilter(key, { updateHash: true }); return; }
+    const playlist = event.target.closest("[data-playlist-key]");
+    if (playlist) { const key = playlist.dataset.playlistKey; setPlaylist(key, { updateHash: true }); setEmotionFilter(key); setListeningPath(key); return; }
+    if (event.target.closest("[data-load-playlist]")) loadPlaylist();
+  });
+
+  injectStyles();
+  markTrackCards();
+  createAudioRoom();
+  createAlbumEntrySection();
+  createTimeJourneySection();
+  createFilterSection();
+  createListeningPathSection();
+  createAudienceSection();
+  createPlatformsSection();
+  createFinalRibbon();
+
+  const initial = hashToKey(location.hash) || "personal";
+  setPlaylist(initial);
+  setEmotionFilter(initial);
+  setListeningPath(initial);
+  window.addEventListener("hashchange", () => { const key = hashToKey(location.hash) || "personal"; setPlaylist(key); setEmotionFilter(key); setListeningPath(key); });
 })();
