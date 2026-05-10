@@ -1,0 +1,12 @@
+/* Veritas Humanum — Music Cinematic Focus Premium Layer */
+body.cinematic-mode.page-music .music-mini-nav{background:rgba(4,3,2,.82);border-color:rgba(201,178,143,.22);box-shadow:0 1rem 3rem rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.035)}
+body.cinematic-mode.page-music .playlist-window:not(.is-active){opacity:.68;filter:saturate(.75) contrast(.92)}
+body.cinematic-mode.page-music .playlist-window.is-active{opacity:1;filter:saturate(1.08) contrast(1.12);box-shadow:inset 0 1px 0 rgba(255,235,190,.16),0 2.8rem 7rem rgba(0,0,0,.44),0 0 3.8rem rgba(201,178,143,.18)}
+body.cinematic-mode.page-music .playlist-window.is-active .playlist-window-title{text-shadow:0 .7rem 2.2rem rgba(0,0,0,.72),0 0 1.4rem rgba(201,178,143,.18)}
+body.page-music .playlist-window.is-active:before{opacity:.76}
+body.page-music .playlist-window.is-active:after{background:radial-gradient(circle at 20% 10%,rgba(201,178,143,.38),transparent 17rem),linear-gradient(180deg,rgba(5,4,3,.10),rgba(5,4,3,.68) 58%,rgba(5,4,3,.94)),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 34px)}
+body.cinematic-mode.page-music .audio-room-section{position:relative}
+body.cinematic-mode.page-music .audio-room-section:before{content:"";position:absolute;inset:-4rem 0;pointer-events:none;background:radial-gradient(circle at 50% 22%,rgba(201,178,143,.10),transparent 34rem);opacity:.85}
+body.page-music .playlist-room-panel{background:repeating-linear-gradient(90deg,rgba(201,178,143,.028) 0 1px,transparent 1px 22px),radial-gradient(circle at 12% 12%,rgba(201,178,143,.13),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.014))}
+body.page-music .album-entry-card:after{background:radial-gradient(circle at 16% 12%,rgba(201,178,143,.18),transparent 20rem),linear-gradient(180deg,rgba(5,4,3,.10),rgba(5,4,3,.78) 58%,rgba(5,4,3,.94)),repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
+body.cinematic-mode.page-music.music-visual-wow-layer:after{opacity:.32}
