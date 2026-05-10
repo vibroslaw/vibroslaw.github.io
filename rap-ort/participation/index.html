@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Record of Participation — Rap-Ort</title>
+  <meta name="description" content="A QR-access commemorative Record of Participation generator for participants of selected Rap-Ort: Prawda Sumienia screenings.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://piotrlichwala.com/rap-ort/participation/">
+  <link rel="alternate" hreflang="pl" href="https://piotrlichwala.com/rap-ort/uczestnictwo/">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/navbar.css">
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css">
+  <link rel="stylesheet" href="/assets/css/cinematic.css">
+  <link rel="stylesheet" href="/assets/css/hub.css">
+  <link rel="stylesheet" href="/assets/css/veritas.css">
+  <link rel="stylesheet" href="/assets/css/participation-record.css">
+</head>
+<body class="veritas-universe vh-page pr-page" data-lang="en" data-veritas="true" data-page="participation-en">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" role="banner"></header>
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Veritas Humanum</a> <span aria-hidden="true">/</span> <a href="/rap-ort/">Rap-Ort</a> <span aria-hidden="true">/</span> <span>Record of Participation</span></nav>
+  <main class="vh-main" id="main" data-participation-record data-lang="en">
+    <section class="vh-hero vh-hero-compact" aria-labelledby="page-title">
+      <div class="vh-hero-media" data-future-hero="/public/assets/heroes/witness-report-hero.webp"></div>
+      <div class="vh-wrap vh-hero-grid"><div class="vh-hero-copy reveal">
+        <p class="vh-kicker">QR ACCESS FOR SCREENING PARTICIPANTS</p>
+        <h1 class="vh-title vh-title-medium" id="page-title">RECORD OF PARTICIPATION</h1>
+        <p class="vh-subtitle">A commemorative document after the screening of Rap-Ort: Prawda Sumienia.</p>
+        <p class="vh-lead">Choose the character of your document, enter the place and date of the event, add your name — optionally — and download an elegant printable PDF.</p>
+        <p class="vh-lead">This is not a diploma or a form. It is a record of presence at an event — a keepsake of an encounter with a work about memory, testimony and responsibility.</p>
+        <div class="vh-actions"><a class="vh-button" href="#generator">Create Record of Participation</a><a class="vh-button secondary" href="/rap-ort/witness-report/">About the module</a></div>
+      </div></div>
+    </section>
+
+    <section class="vh-section" id="generator"><div class="vh-wrap">
+      <div class="pr-gate reveal" data-pr-gate>
+        <div class="vh-section-head"><h2 class="vh-section-title">Access for event participants</h2></div>
+        <p class="pr-note">This generator is intended for people who received a QR code after the screening. If you arrived here from an event, enter the event code or use the QR link with an assigned event.</p>
+        <form class="pr-code-row" data-pr-code-form>
+          <label>Event code<input data-pr-code autocomplete="off" placeholder="e.g. syd2026"></label>
+          <button class="vh-button" type="submit">Unlock</button>
+          <button class="vh-button secondary" type="button" data-pr-unlock="custom">Enter manually</button>
+        </form>
+        <p class="pr-status" data-pr-status aria-live="polite"></p>
+      </div>
+
+      <div class="pr-generator reveal" data-pr-generator hidden>
+        <div class="vh-section-head"><h2 class="vh-section-title">Create your post-screening document</h2></div>
+        <div class="pr-mode-grid">
+          <article class="pr-mode-card is-active"><span class="status-badge">Active</span><h3>Record of Participation</h3><p>An elegant commemorative document with date, place and unique number, prepared for printing.</p></article>
+          <article class="pr-mode-card is-disabled"><span class="status-badge">In preparation</span><h3>Witness Report</h3><p>A future personal reflection document with quote selection, a short trace of what remains after the screening, and participant signature.</p></article>
+        </div>
+        <div class="pr-steps" aria-label="Steps"><div class="pr-step"><span>1</span><p>Choose the character of the document.</p></div><div class="pr-step"><span>2</span><p>Enter the event details.</p></div><div class="pr-step"><span>3</span><p>Add your name — optionally.</p></div><div class="pr-step"><span>4</span><p>Download a printable PDF.</p></div></div>
+
+        <h3 class="vh-section-title" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-top:2rem">Choose the character of your document</h3>
+        <div class="pr-variant-grid" role="radiogroup" aria-label="Document background variant">
+          <label class="pr-variant-card is-selected"><input type="radio" name="recordVariant" value="cinema" checked><img class="pr-variant-thumb" src="/public/assets/reports/participation-record-bg-01-archival-cinema-preview.webp" onerror="this.src='/public/assets/reports/participation-record-bg-preview.webp'" alt="Archival Cinema"><h3>Variant I — Archival Cinema</h3><p>The most cinematic variant — dark, archival and restrained, with a subtle connection to projection and the memory of image.</p></label>
+          <label class="pr-variant-card"><input type="radio" name="recordVariant" value="museum"><img class="pr-variant-thumb" src="/public/assets/reports/participation-record-bg-02-museum-line-preview.webp" onerror="this.src='/public/assets/reports/participation-record-bg-preview2.webp'" alt="Museum Line"><h3>Variant II — Museum Line</h3><p>The most institutional variant — classical, dignified and balanced, suitable for universities, museums and commemorative events.</p></label>
+          <label class="pr-variant-card"><input type="radio" name="recordVariant" value="ceremonial"><img class="pr-variant-thumb" src="/public/assets/reports/participation-record-bg-03-ceremonial-frame-preview.webp" onerror="this.src='/public/assets/reports/participation-record-bg-preview3.webp'" alt="Ceremonial Frame"><h3>Variant III — Ceremonial Frame</h3><p>The most representative variant — minimal, elegant and best suited for printing and framing.</p></label>
+        </div>
+
+        <div class="pr-workspace">
+          <form class="vh-card pr-form" data-pr-form>
+            <label>Event<select name="eventPreset"><option value="syd2026">Polish Club Ashfield / Sydney — 21 June 2026</option><option value="custom">Enter manually</option></select></label>
+            <label>Name — optional<input name="participantName" autocomplete="name" placeholder="Optional"></label>
+            <label>Place / institution<input name="place" required></label>
+            <label>Event date<input name="eventDate" type="date" required></label>
+            <label>Document number<input name="documentNumber" readonly></label>
+            <div class="pr-form-actions"><button class="vh-button" type="button" data-pr-print>Download PDF</button><button class="vh-button secondary" type="button" data-pr-regenerate>Generate new number</button><button class="vh-button secondary" type="button" data-pr-clear>Clear form</button></div>
+            <p class="pr-status" data-pr-status aria-live="polite"></p>
+            <p class="pr-privacy">The document is generated locally in your browser. No data is sent or stored on a server.</p>
+          </form>
+          <aside class="pr-preview-wrap" aria-label="Document preview"><div class="pr-preview-toolbar"><span>Document preview</span><span class="status-badge">A4 landscape</span></div><div class="pr-document" data-pr-preview-doc><div class="pr-document-bg" data-pr-preview-bg></div><div class="pr-document-content"><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt="Piotr Jakub Lichwała — author signature"><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></aside>
+        </div>
+      </div>
+    </div></section>
+  </main>
+  <footer class="vh-footer"><div class="vh-wrap vh-footer-grid"><div><p class="vh-eyebrow">VERITAS HUMANUM</p><p>An authorial universe of memory, music, image and conscience.</p><p><a href="mailto:peter.lichwala@gmail.com">peter.lichwala@gmail.com</a></p></div><nav class="vh-footer-links"><a href="/rap-ort/">Rap-Ort</a><a href="/for-institutions/">For Institutions</a><a href="/contact/">Contact</a></nav></div></footer>
+  <div class="pr-print-stage" data-pr-print-stage><div class="pr-print-page"><img class="pr-print-bg" data-pr-print-bg alt=""><div class="pr-print-content" data-pr-print-doc><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt=""><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></div>
+  <button class="reduced-motion-toggle" type="button" data-reduce-motion-toggle aria-pressed="false">Reduce Motion</button><button class="scroll-top" id="scrollTopButton" type="button" aria-label="Back to top">↑</button>
+  <script src="/assets/js/main.js" defer></script><script src="/assets/js/navigation.js" defer></script><script src="/assets/js/transitions.js" defer></script><script src="/assets/js/cinematic.js" defer></script><script src="/assets/js/veritas.js" defer></script><script src="/assets/js/participation-record.js" defer></script>
+</body>
+</html>
