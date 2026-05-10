@@ -24,29 +24,33 @@
     <section class="vh-hero vh-hero-compact" aria-labelledby="page-title">
       <div class="vh-hero-media" data-future-hero="/public/assets/heroes/witness-report-hero.webp"></div>
       <div class="vh-wrap vh-hero-grid"><div class="vh-hero-copy reveal">
-        <p class="vh-kicker">DOSTĘP PRZEZ QR DLA UCZESTNIKÓW POKAZU</p>
+        <p class="vh-kicker">DOSTĘP UCZESTNIKA</p>
         <h1 class="vh-title vh-title-medium" id="page-title">ZAPIS UCZESTNICTWA</h1>
         <p class="vh-subtitle">Pamiątkowy dokument po projekcji Rap-Ort: Prawda Sumienia.</p>
         <p class="vh-lead">Wybierz charakter dokumentu, uzupełnij miejsce i datę wydarzenia, dodaj imię i nazwisko — opcjonalnie — i pobierz elegancki dokument PDF przygotowany do druku.</p>
-        <p class="vh-lead">To nie jest dyplom ani formularz. To zapis obecności na wydarzeniu — pamiątka spotkania z dziełem o pamięci, świadectwie i odpowiedzialności.</p>
+        <p class="vh-lead">Dostęp do generatora jest przeznaczony dla uczestników wybranych pokazów.</p>
         <div class="vh-actions"><a class="vh-button" href="#generator">Utwórz Zapis Uczestnictwa</a><a class="vh-button secondary" href="/rap-ort/raport-swiadka/">O module</a></div>
       </div></div>
     </section>
 
     <section class="vh-section" id="generator"><div class="vh-wrap">
       <div class="pr-gate reveal" data-pr-gate>
-        <div class="vh-section-head"><h2 class="vh-section-title">Dostęp dla uczestników wydarzenia</h2></div>
-        <p class="pr-note">Generator jest przeznaczony dla osób, które otrzymały kod QR po projekcji. Jeśli trafiłeś tutaj z wydarzenia, wpisz kod lub użyj linku QR z przypisanym wydarzeniem.</p>
+        <p class="vh-kicker">RAP-ORT: PRAWDA SUMIENIA</p>
+        <h2 class="pr-access-title">DOSTĘP UCZESTNIKA</h2>
+        <p class="pr-note">Ten moduł jest przeznaczony dla osób, które uczestniczyły w wybranym pokazie Rap-Ort: Prawda Sumienia.</p>
+        <p class="pr-note">Wpisz kod wydarzenia lub użyj linku QR, aby odblokować możliwość utworzenia Zapisu Uczestnictwa.</p>
+        <p class="pr-access-note">Dostęp do generatora jest przeznaczony dla uczestników wybranych pokazów.</p>
         <form class="pr-code-row" data-pr-code-form>
           <label>Kod wydarzenia<input data-pr-code autocomplete="off" placeholder="np. syd2026"></label>
-          <button class="vh-button" type="submit">Odblokuj</button>
-          <button class="vh-button secondary" type="button" data-pr-unlock="custom">Wpisz ręcznie</button>
+          <button class="vh-button" type="submit">Odblokuj dokument</button>
+          <button class="vh-button secondary pr-manual-button" type="button" data-pr-unlock="custom">Nie mam kodu — utwórz dokument ręcznie</button>
         </form>
         <p class="pr-status" data-pr-status aria-live="polite"></p>
       </div>
 
       <div class="pr-generator reveal" data-pr-generator hidden>
-        <div class="vh-section-head"><h2 class="vh-section-title">Utwórz dokument po projekcji</h2></div>
+        <div class="vh-section-head"><p class="vh-kicker">DOKUMENT PO PROJEKCJI</p><h2 class="vh-section-title">Utwórz dokument po projekcji</h2></div>
+        <div class="pr-event-badge" data-pr-event-badge hidden></div>
         <div class="pr-mode-grid">
           <article class="pr-mode-card is-active"><span class="status-badge">Aktywny</span><h3>Zapis Uczestnictwa</h3><p>Elegancki dokument pamiątkowy z datą, miejscem i unikalnym numerem, przygotowany do wydruku.</p></article>
           <article class="pr-mode-card is-disabled"><span class="status-badge">W przygotowaniu</span><h3>Raport Świadka</h3><p>Osobisty dokument refleksji z wyborem cytatu, krótkim zapisem tego, co zostaje po projekcji, oraz podpisem uczestnika.</p></article>
@@ -54,6 +58,7 @@
         <div class="pr-steps" aria-label="Kroki"><div class="pr-step"><span>1</span><p>Wybierz charakter dokumentu.</p></div><div class="pr-step"><span>2</span><p>Uzupełnij dane wydarzenia.</p></div><div class="pr-step"><span>3</span><p>Dodaj imię i nazwisko — opcjonalnie.</p></div><div class="pr-step"><span>4</span><p>Pobierz PDF do druku.</p></div></div>
 
         <h3 class="vh-section-title" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-top:2rem">Wybierz charakter dokumentu</h3>
+        <p class="pr-note">Każdy wariant zachowuje ten sam zapis uczestnictwa, ale nadaje mu inny ton: filmowy, instytucjonalny albo uroczysty.</p>
         <div class="pr-variant-grid" role="radiogroup" aria-label="Wariant tła dokumentu">
           <label class="pr-variant-card is-selected"><input type="radio" name="recordVariant" value="cinema" checked><img class="pr-variant-thumb" src="/public/assets/reports/participation-record-bg-01-archival-cinema-preview.webp" onerror="this.src='/public/assets/reports/participation-record-bg-preview.webp'" alt="Archiwalne Kino"><h3>Wariant I — Archiwalne Kino</h3><p>Najbardziej filmowy wariant — ciemny, archiwalny i spokojny, z subtelnym odniesieniem do projekcji i pamięci obrazu.</p></label>
           <label class="pr-variant-card"><input type="radio" name="recordVariant" value="museum"><img class="pr-variant-thumb" src="/public/assets/reports/participation-record-bg-02-museum-line-preview.webp" onerror="this.src='/public/assets/reports/participation-record-bg-preview2.webp'" alt="Linia Muzealna"><h3>Wariant II — Linia Muzealna</h3><p>Najbardziej instytucjonalny wariant — klasyczny, dostojny i wyważony, odpowiedni dla uczelni, muzeów i wydarzeń rocznicowych.</p></label>
@@ -68,16 +73,18 @@
             <label>Data wydarzenia<input name="eventDate" type="date" required></label>
             <label>Numer dokumentu<input name="documentNumber" readonly></label>
             <div class="pr-form-actions"><button class="vh-button" type="button" data-pr-print>Pobierz PDF do druku</button><button class="vh-button secondary" type="button" data-pr-regenerate>Wygeneruj nowy numer</button><button class="vh-button secondary" type="button" data-pr-clear>Wyczyść formularz</button></div>
+            <p class="pr-print-recommendation">Najlepszy efekt: A4 poziomo · kolor · papier matowy · bez dodatkowych marginesów.</p>
             <p class="pr-status" data-pr-status aria-live="polite"></p>
+            <p class="pr-finale" data-pr-finale hidden></p>
             <p class="pr-privacy">Dokument jest generowany lokalnie w przeglądarce. Dane nie są wysyłane ani zapisywane na serwerze.</p>
           </form>
-          <aside class="pr-preview-wrap" aria-label="Podgląd dokumentu"><div class="pr-preview-toolbar"><span>Podgląd dokumentu</span><span class="status-badge">A4 landscape</span></div><div class="pr-document" data-pr-preview-doc><div class="pr-document-bg" data-pr-preview-bg></div><div class="pr-document-content"><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt="Piotr Jakub Lichwała — podpis autora"><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></aside>
+          <aside class="pr-preview-wrap" aria-label="Podgląd dokumentu"><div class="pr-preview-toolbar"><span>Podgląd dokumentu</span><span class="status-badge">A4 landscape</span></div><div class="pr-document-surface"><div class="pr-document layout-cinema" data-pr-preview-doc><div class="pr-document-bg" data-pr-preview-bg></div><div class="pr-document-content"><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt="Piotr Jakub Lichwała — podpis autora"><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></div></aside>
         </div>
       </div>
     </div></section>
   </main>
   <footer class="vh-footer"><div class="vh-wrap vh-footer-grid"><div><p class="vh-eyebrow">VERITAS HUMANUM</p><p>Autorskie uniwersum pamięci, muzyki, obrazu i sumienia.</p><p><a href="mailto:peter.lichwala@gmail.com">peter.lichwala@gmail.com</a></p></div><nav class="vh-footer-links"><a href="/rap-ort/pl/">Rap-Ort</a><a href="/for-institutions/pl/">Dla instytucji</a><a href="/contact/pl/">Kontakt</a></nav></div></footer>
-  <div class="pr-print-stage" data-pr-print-stage><div class="pr-print-page"><img class="pr-print-bg" data-pr-print-bg alt=""><div class="pr-print-content" data-pr-print-doc><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt=""><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></div>
+  <div class="pr-print-stage" data-pr-print-stage><div class="pr-print-page"><img class="pr-print-bg" data-pr-print-bg alt=""><div class="pr-print-content layout-cinema" data-pr-print-doc><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt=""><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></div>
   <button class="reduced-motion-toggle" type="button" data-reduce-motion-toggle aria-pressed="false">Reduce Motion</button><button class="scroll-top" id="scrollTopButton" type="button" aria-label="Wróć na górę">↑</button>
   <script src="/assets/js/main.js" defer></script><script src="/assets/js/navigation.js" defer></script><script src="/assets/js/transitions.js" defer></script><script src="/assets/js/cinematic.js" defer></script><script src="/assets/js/veritas.js" defer></script><script src="/assets/js/participation-record.js" defer></script>
 </body>
