@@ -6,40 +6,100 @@
   window.__veritasMusicSoundMap = true;
 
   const lang = root.dataset.lang === "pl" ? "pl" : "en";
-  const labels = {
+  const t = {
     en: {
-      active: "Showing",
-      all: "All emotional entries",
-      empty: "No works match this emotional entry yet.",
-      loaded: "Audio room loaded.",
+      all: "All", memory: "Memory", conscience: "Conscience", resistance: "Resistance", identity: "Identity", resilience: "Resilience",
+      filterTitle: "Interactive emotional filter", filterKicker: "Choose an emotion", filterLead: "Click an emotional entry point to reshape the visible sound documents.", showing: "Showing", empty: "No works match this emotional entry yet.",
+      pathTitle: "Now listening path", pathKicker: "Three recommended entries", pathLead: "Choose a path and receive three entry points into the sound world.",
+      audioTitle: "Audio room", audioKicker: "Listen without leaving the world", audioLead: "Load selected listening spaces only when you need them. No autoplay, no heavy embeds before interaction.", spotify: "Load Spotify artist room", loaded: "Audio room loaded",
+      rapOrtCard: "Rap-Ort playlist", rapOrtText: "Enter the audiovisual music world connected with Rap-Ort and Prawda Sumienia.", sztabCard: "SZTAB / ORIGINS video entry", sztabText: "Begin with the animated memory branch and the first SZTAB · ORIGINS episode.", openYoutube: "Open on YouTube",
+      badge: "Press / context note", badgeText: "External mention documented carefully — not an endorsement."
     },
     pl: {
-      active: "Pokazuję",
-      all: "Wszystkie wejścia emocjonalne",
-      empty: "Na razie brak prac dla tego wejścia emocjonalnego.",
-      loaded: "Pokój odsłuchowy załadowany.",
-    },
+      all: "Wszystko", memory: "Pamięć", conscience: "Sumienie", resistance: "Opór", identity: "Tożsamość", resilience: "Odporność",
+      filterTitle: "Interaktywny filtr emocji", filterKicker: "Wybierz emocję", filterLead: "Kliknij emocjonalne wejście, aby zmienić widoczne dokumenty dźwiękowe.", showing: "Pokazuję", empty: "Na razie brak prac dla tego wejścia emocjonalnego.",
+      pathTitle: "Teraz ścieżka słuchania", pathKicker: "Trzy rekomendowane wejścia", pathLead: "Wybierz ścieżkę i otrzymaj trzy wejścia do dźwiękowego świata.",
+      audioTitle: "Pokój odsłuchowy", audioKicker: "Słuchaj bez opuszczania świata", audioLead: "Ładuj wybrane przestrzenie odsłuchu tylko wtedy, gdy ich potrzebujesz. Bez autoplay i bez ciężkich embedów przed interakcją.", spotify: "Załaduj pokój Spotify", loaded: "Pokój odsłuchowy załadowany",
+      rapOrtCard: "Playlista Rap-Ort", rapOrtText: "Wejdź w audiowizualny świat muzyki związany z Rap-Ort i Prawdą Sumienia.", sztabCard: "SZTAB / ORIGINS — wejście wideo", sztabText: "Zacznij od animowanej gałęzi pamięci i pierwszego odcinka SZTAB · ORIGINS.", openYoutube: "Otwórz na YouTube",
+      badge: "Notka prasowa / kontekst", badgeText: "Wzmianka zewnętrzna opisana ostrożnie — nie oznacza rekomendacji."
+    }
   }[lang];
 
-  const pathData = {
-    en: {
-      memory: ["SZTAB — Raport z Pamięci", "Kurier Prawdy", "Rap-Ort / Prawda Sumienia"],
-      conscience: ["LUSTRO / THE MIRROR", "Rap-Ort", "Kurier Prawdy"],
-      resistance: ["Unbroken", "SZTAB", "Zo / SZTAB ORIGINS"],
-      identity: ["LUSTRO / THE MIRROR", "Campus Ignis", "Between the Lines"],
-      resilience: ["Unbroken", "Equilibrium", "SZTAB"],
-    },
-    pl: {
-      memory: ["SZTAB — Raport z Pamięci", "Kurier Prawdy", "Rap-Ort / Prawda Sumienia"],
-      conscience: ["LUSTRO / THE MIRROR", "Rap-Ort", "Kurier Prawdy"],
-      resistance: ["Unbroken", "SZTAB", "Zo / SZTAB ORIGINS"],
-      identity: ["LUSTRO / THE MIRROR", "Campus Ignis", "Między Wierszami"],
-      resilience: ["Unbroken", "Equilibrium", "SZTAB"],
-    },
-  }[lang];
+  const paths = {
+    memory: ["SZTAB — Raport z Pamięci", "Kurier Prawdy", "Rap-Ort / Prawda Sumienia"],
+    conscience: ["LUSTRO / THE MIRROR", "Rap-Ort", "Kurier Prawdy"],
+    resistance: ["Unbroken", "SZTAB", "Zo / SZTAB ORIGINS"],
+    identity: lang === "pl" ? ["LUSTRO / THE MIRROR", "Campus Ignis", "Między Wierszami"] : ["LUSTRO / THE MIRROR", "Campus Ignis", "Between the Lines"],
+    resilience: ["Unbroken", "Equilibrium", "SZTAB"]
+  };
 
-  function normalise(value) {
-    return String(value || "").trim().toLowerCase();
+  const emotionMap = [
+    { test: /raport z pamięci/i, value: "memory resistance resilience" },
+    { test: /kurier prawdy/i, value: "memory conscience resistance" },
+    { test: /lustro|mirror/i, value: "conscience identity" },
+    { test: /unbroken/i, value: "resistance resilience" },
+    { test: /campus ignis/i, value: "identity resilience conscience" },
+    { test: /equilibrium/i, value: "resilience identity" }
+  ];
+
+  function normalise(value) { return String(value || "").trim().toLowerCase(); }
+  function findFeaturedSection() { return [...document.querySelectorAll(".vh-section")].find((section) => /Selected sound documents|Dokumenty dźwiękowe/i.test(section.textContent || "")); }
+
+  function markTrackCards() {
+    document.querySelectorAll(".track-document").forEach((card) => {
+      const title = card.querySelector("h3")?.textContent || "";
+      const match = emotionMap.find((item) => item.test.test(title));
+      card.dataset.emotions = match?.value || "memory conscience";
+      card.classList.add("has-waveform");
+      if (/kurier prawdy/i.test(title) && !card.querySelector(".press-context-badge")) {
+        const badge = document.createElement("a");
+        badge.className = "press-context-badge";
+        badge.href = lang === "pl" ? "/press-recognition/pl/" : "/press-recognition/";
+        badge.innerHTML = `<strong>${t.badge}</strong><span>${t.badgeText}</span>`;
+        card.appendChild(badge);
+      }
+    });
+  }
+
+  function createButton(label, key, attr) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "sound-control";
+    button.textContent = label;
+    button.dataset[attr] = key;
+    button.setAttribute("aria-pressed", "false");
+    return button;
+  }
+
+  function createFilterSection() {
+    if (document.querySelector("[data-music-emotion-filter]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-wow-section";
+    section.dataset.musicEmotionFilter = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.filterKicker}</p><h2 class="vh-section-title">${t.filterTitle}</h2><p class="vh-section-kicker">${t.filterLead}</p></div><div class="sound-control-panel" data-emotion-controls></div><p class="sound-filter-status" data-emotion-status aria-live="polite"></p></div>`;
+    const controls = section.querySelector("[data-emotion-controls]");
+    [[t.all,"all"],[t.memory,"memory"],[t.conscience,"conscience"],[t.resistance,"resistance"],[t.identity,"identity"],[t.resilience,"resilience"]].forEach(([label,key]) => controls.appendChild(createButton(label, key, "emotionFilter")));
+    findFeaturedSection()?.before(section);
+  }
+
+  function createListeningPathSection() {
+    if (document.querySelector("[data-now-listening]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-wow-section";
+    section.dataset.nowListening = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="sound-map-orbit reveal visible"><div class="vh-section-head"><p class="vh-eyebrow">${t.pathKicker}</p><h2 class="vh-section-title">${t.pathTitle}</h2><p class="vh-section-kicker">${t.pathLead}</p></div><div class="sound-control-panel" data-path-controls></div><ol class="now-listening-output" data-now-listening-output></ol></div></div>`;
+    const controls = section.querySelector("[data-path-controls]");
+    [[t.memory,"memory"],[t.conscience,"conscience"],[t.resistance,"resistance"],[t.identity,"identity"],[t.resilience,"resilience"]].forEach(([label,key]) => controls.appendChild(createButton(label, key, "listeningPath")));
+    findFeaturedSection()?.before(section);
+  }
+
+  function createAudioRoom() {
+    if (document.querySelector("[data-audio-room]")) return;
+    const section = document.createElement("section");
+    section.className = "vh-section music-wow-section audio-room-section";
+    section.dataset.audioRoom = "true";
+    section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${t.audioKicker}</p><h2 class="vh-section-title">${t.audioTitle}</h2><p class="vh-section-kicker">${t.audioLead}</p></div><div class="vh-grid three"><article class="audio-room-card spotify-card"><h3>Spotify</h3><p>Vibrosław artist room.</p><div class="lazy-embed" id="spotifyArtistRoom"><span>Spotify</span></div><button class="vh-button secondary" type="button" data-load-embed data-load-embed-target="#spotifyArtistRoom" data-embed-title="Vibrosław Spotify artist room" data-embed-src="https://open.spotify.com/embed/artist/0df87MMIM1VOy2dR1DM2oF?utm_source=generator">${t.spotify}</button></article><article class="audio-room-card youtube-card"><h3>${t.rapOrtCard}</h3><p>${t.rapOrtText}</p><a class="vh-button secondary" href="https://youtube.com/playlist?list=PLa1mFnbfhev615wCW-3Bi8Fz1kE0Maksq" target="_blank" rel="noopener noreferrer">${t.openYoutube}</a></article><article class="audio-room-card youtube-card"><h3>${t.sztabCard}</h3><p>${t.sztabText}</p><a class="vh-button secondary" href="https://youtu.be/JgV9KEZTbeM" target="_blank" rel="noopener noreferrer">${t.openYoutube}</a></article></div></div>`;
+    document.querySelector(".sound-map-orbit")?.closest(".vh-section")?.after(section);
   }
 
   function setEmotionFilter(value) {
@@ -48,50 +108,25 @@
     const buttons = [...document.querySelectorAll("[data-emotion-filter]")];
     const status = document.querySelector("[data-emotion-status]");
     let visible = 0;
-
-    buttons.forEach((button) => {
-      const active = normalise(button.dataset.emotionFilter) === filter;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-
-    cards.forEach((card) => {
-      const emotions = normalise(card.dataset.emotions).split(/\s+/).filter(Boolean);
-      const show = filter === "all" || emotions.includes(filter);
-      card.classList.toggle("is-filtered-out", !show);
-      card.hidden = !show;
-      if (show) visible += 1;
-    });
-
-    if (status) {
-      const activeLabel = buttons.find((button) => normalise(button.dataset.emotionFilter) === filter)?.textContent?.trim() || labels.all;
-      status.textContent = visible ? `${labels.active}: ${activeLabel}` : labels.empty;
-    }
+    buttons.forEach((button) => { const active = normalise(button.dataset.emotionFilter) === filter; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); });
+    cards.forEach((card) => { const emotions = normalise(card.dataset.emotions).split(/\s+/).filter(Boolean); const show = filter === "all" || emotions.includes(filter); card.classList.toggle("is-filtered-out", !show); card.hidden = !show; if (show) visible += 1; });
+    if (status) { const activeLabel = buttons.find((button) => normalise(button.dataset.emotionFilter) === filter)?.textContent?.trim() || t.all; status.textContent = visible ? `${t.showing}: ${activeLabel}` : t.empty; }
   }
 
   function setListeningPath(value) {
     const key = normalise(value || "memory");
     const output = document.querySelector("[data-now-listening-output]");
     const buttons = [...document.querySelectorAll("[data-listening-path]")];
-    const recommendations = pathData[key] || pathData.memory;
-
-    buttons.forEach((button) => {
-      const active = normalise(button.dataset.listeningPath) === key;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-
-    if (output) {
-      output.innerHTML = recommendations.map((item, index) => `<li><span>${index + 1}</span>${item}</li>`).join("");
-    }
+    const recommendations = paths[key] || paths.memory;
+    buttons.forEach((button) => { const active = normalise(button.dataset.listeningPath) === key; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); });
+    if (output) output.innerHTML = recommendations.map((item, index) => `<li><span>${index + 1}</span>${item}</li>`).join("");
   }
 
   function loadEmbed(button) {
-    const target = document.querySelector(button.dataset.loadEmbed || "");
+    const target = document.querySelector(button.dataset.loadEmbedTarget || "");
     const src = button.dataset.embedSrc;
     const title = button.dataset.embedTitle || "Spotify player";
     if (!target || !src || target.dataset.loaded === "true") return;
-
     const iframe = document.createElement("iframe");
     iframe.src = src;
     iframe.title = title;
@@ -102,29 +137,23 @@
     iframe.height = "352";
     target.replaceChildren(iframe);
     target.dataset.loaded = "true";
-    button.textContent = labels.loaded;
+    button.textContent = t.loaded;
     button.disabled = true;
   }
 
   document.addEventListener("click", (event) => {
     const emotionButton = event.target.closest("[data-emotion-filter]");
-    if (emotionButton) {
-      setEmotionFilter(emotionButton.dataset.emotionFilter);
-      return;
-    }
-
+    if (emotionButton) return setEmotionFilter(emotionButton.dataset.emotionFilter);
     const pathButton = event.target.closest("[data-listening-path]");
-    if (pathButton) {
-      setListeningPath(pathButton.dataset.listeningPath);
-      return;
-    }
-
+    if (pathButton) return setListeningPath(pathButton.dataset.listeningPath);
     const embedButton = event.target.closest("[data-load-embed]");
-    if (embedButton) {
-      loadEmbed(embedButton);
-    }
+    if (embedButton) return loadEmbed(embedButton);
   });
 
+  markTrackCards();
+  createAudioRoom();
+  createFilterSection();
+  createListeningPathSection();
   setEmotionFilter("all");
   setListeningPath("memory");
 })();
