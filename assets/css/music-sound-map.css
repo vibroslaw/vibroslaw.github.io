@@ -1,0 +1,21 @@
+/* Veritas Humanum — Music as Sound Map */
+body.page-music .sound-map-orbit{position:relative;isolation:isolate;overflow:clip;border:1px solid rgba(201,178,143,.18);border-radius:28px;padding:clamp(1.25rem,3vw,2.4rem);background:radial-gradient(circle at 16% 10%,rgba(201,178,143,.12),transparent 22rem),linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.012));box-shadow:0 2rem 6rem rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.03)}
+body.page-music .sound-map-orbit:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 44px),linear-gradient(180deg,transparent,rgba(5,4,3,.38));opacity:.45;mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+body.page-music .sound-path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;position:relative;z-index:1}
+body.page-music .sound-path{min-height:190px;border:1px solid rgba(201,178,143,.17);border-radius:22px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease,background .28s ease}
+body.page-music .sound-path:hover,body.page-music .sound-path:focus-within{transform:translateY(-6px);border-color:rgba(201,178,143,.42);background:linear-gradient(180deg,rgba(201,178,143,.08),rgba(255,255,255,.02));box-shadow:0 1.5rem 4rem rgba(0,0,0,.28),0 0 2rem rgba(201,178,143,.08)}
+body.page-music .sound-path h3,body.page-music .track-document h3{margin-top:0;font-family:"Cormorant Garamond",serif;font-size:clamp(1.7rem,2.2vw,2.45rem);line-height:.96}
+body.page-music .sound-path p,body.page-music .track-document p{color:rgba(241,234,219,.74);line-height:1.78}
+body.page-music .sound-tags{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
+body.page-music .sound-tag{display:inline-flex;align-items:center;min-height:25px;border:1px solid rgba(201,178,143,.22);border-radius:999px;padding:0 9px;color:rgba(201,178,143,.82);background:rgba(201,178,143,.07);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase}
+body.page-music .track-document{position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(201,178,143,.16);border-radius:24px;padding:clamp(1.1rem,2.4vw,1.8rem);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));box-shadow:0 1.5rem 4.5rem rgba(0,0,0,.22);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+body.page-music .track-document:before{content:"";position:absolute;inset:auto 0 0;height:4px;background:linear-gradient(90deg,transparent,rgba(201,178,143,.55),transparent);opacity:.42}
+body.page-music .track-document:hover,body.page-music .track-document:focus-within{transform:translateY(-5px);border-color:rgba(201,178,143,.40);box-shadow:0 2rem 5.5rem rgba(0,0,0,.3),0 0 2.4rem rgba(201,178,143,.08)}
+body.page-music .track-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:1rem 0;color:rgba(241,234,219,.66);font-size:.9rem;line-height:1.6}
+body.page-music .track-meta strong{display:block;color:rgba(241,234,219,.9);font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.18rem}
+body.page-music .music-note{border-left:2px solid rgba(201,178,143,.46);padding-left:1rem;color:rgba(241,234,219,.78);font-style:italic}
+body.cinematic-mode.page-music .sound-path,body.cinematic-mode.page-music .track-document{box-shadow:0 2rem 6rem rgba(0,0,0,.34),0 0 3rem rgba(201,178,143,.06)}
+@media(max-width:980px){body.page-music .sound-path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){body.page-music .sound-path-grid,body.page-music .track-meta{grid-template-columns:1fr}body.page-music .sound-path{min-height:auto}}
+@media(prefers-reduced-motion:reduce){body.page-music .sound-path,body.page-music .track-document{transition:none!important;transform:none!important}}
+body.reduce-motion.page-music .sound-path,body.reduced-motion.page-music .sound-path,body.reduce-motion.page-music .track-document,body.reduced-motion.page-music .track-document{transition:none!important;transform:none!important}
