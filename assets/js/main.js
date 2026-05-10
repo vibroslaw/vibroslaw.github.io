@@ -13,6 +13,7 @@
   const VIEWPORT_HEIGHT_CSS_VARIABLE = "--vh";
   const CONTACT_FLOW_SCRIPT_ID = "siteContactFlowScript";
   const CONTACT_FLOW_SCRIPT_SRC = "/assets/js/contact-flow.js?v=1";
+  const HERO_SEAMLESS_PATCH_STYLE_ID = "veritasHeroSeamlessPatch";
 
   const CINEMATIC_ARRIVAL_CLASS = "cinematic-arrival-active";
   const CINEMATIC_TRANSITION_CLASS = "cinematic-transition-active";
@@ -122,6 +123,49 @@
     }
   }
 
+  function ensureHeroSeamlessPatch() {
+    const body = getBody();
+    if (!body || body.dataset.veritas !== "true") return;
+
+    const existing = document.getElementById(HERO_SEAMLESS_PATCH_STYLE_ID);
+    if (existing) existing.remove();
+
+    const style = document.createElement("style");
+    style.id = HERO_SEAMLESS_PATCH_STYLE_ID;
+    style.textContent = `
+      body.veritas-universe{background:#050403!important;}
+      body.veritas-universe .site-header{position:fixed!important;top:0!important;left:0!important;right:0!important;z-index:1000!important;background:linear-gradient(180deg,rgba(5,4,3,.76),rgba(5,4,3,.26) 68%,rgba(5,4,3,0))!important;border-bottom:1px solid rgba(214,188,137,.10)!important;box-shadow:none!important;}
+      body.veritas-universe .breadcrumbs{position:absolute!important;z-index:4!important;top:calc(var(--nav-h,76px) + 12px)!important;left:50%!important;transform:translateX(-50%)!important;margin:0!important;padding-top:0!important;opacity:.78!important;}
+      body.veritas-universe .vh-main{margin-top:0!important;background:#050403!important;}
+      body.veritas-universe .vh-main::before{background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,.46) 52%,#050403 100%),radial-gradient(circle at 20% 16%,rgba(208,173,104,.10),transparent 30rem)!important;}
+      body.veritas-universe .vh-hero{min-height:clamp(760px,100vh,1080px)!important;padding:clamp(156px,18vh,220px) 0 clamp(160px,19vh,230px)!important;margin-top:0!important;align-items:center!important;background:#050403!important;overflow:hidden!important;isolation:isolate!important;}
+      body.veritas-universe .vh-hero.vh-hero-compact{min-height:clamp(700px,94vh,980px)!important;padding-top:clamp(150px,17vh,210px)!important;padding-bottom:clamp(150px,18vh,220px)!important;}
+      body.veritas-universe .vh-hero::before{content:""!important;position:absolute!important;inset:0!important;z-index:-1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,0) 42%,rgba(5,4,3,.42) 70%,#050403 100%)!important;}
+      body.veritas-universe .vh-hero::after{content:""!important;position:absolute!important;left:0!important;right:0!important;bottom:-1px!important;height:clamp(180px,26vh,320px)!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,.34) 34%,rgba(5,4,3,.76) 68%,#050403 100%)!important;opacity:1!important;}
+      body.veritas-universe .vh-hero-media{position:absolute!important;inset:0!important;top:0!important;bottom:auto!important;height:100%!important;z-index:-2!important;background-color:#050403!important;}
+      body.veritas-universe .vh-hero-media.has-final-hero,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero{background-image:var(--vh-final-hero-image)!important;background-size:cover!important;background-position:center top!important;background-repeat:no-repeat!important;}
+      body.veritas-universe .vh-hero-media::before,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-2% -5% -8%!important;background-image:linear-gradient(180deg,rgba(5,4,3,.18) 0%,rgba(5,4,3,.06) 22%,rgba(5,4,3,.18) 46%,rgba(5,4,3,.70) 78%,#050403 100%),linear-gradient(90deg,rgba(5,4,3,.86) 0%,rgba(5,4,3,.38) 26%,rgba(5,4,3,.08) 52%,rgba(5,4,3,.50) 100%),radial-gradient(circle at 36% 18%,rgba(208,173,104,.20),transparent 32rem),var(--vh-final-hero-image,var(--vh-page-hero-image))!important;background-size:cover,cover,cover,cover!important;background-position:center top,center top,center top,center top!important;background-repeat:no-repeat!important;transform:translate3d(0,calc(var(--vh-parallax,0px) * .30),0) scale(1.045)!important;filter:saturate(1.10) contrast(1.08) brightness(1.06)!important;opacity:1!important;will-change:transform!important;}
+      body.veritas-universe .vh-hero-media::after,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::after{inset:0!important;opacity:.74!important;background:radial-gradient(circle at 72% 12%,rgba(241,234,219,.08),transparent 28rem),radial-gradient(circle at 24% 26%,rgba(208,173,104,.12),transparent 26rem),linear-gradient(180deg,rgba(5,4,3,.04) 0%,rgba(5,4,3,.08) 42%,rgba(5,4,3,.72) 82%,#050403 100%),repeating-linear-gradient(90deg,rgba(255,255,255,.016) 0 1px,transparent 1px 8px)!important;}
+      body.veritas-universe .vh-hero-grid{position:relative!important;z-index:3!important;align-items:center!important;}
+      body.veritas-universe .vh-hero-copy{position:relative!important;z-index:3!important;}
+      body.veritas-universe.final-hero-ready .vh-hero-copy{background:linear-gradient(90deg,rgba(5,4,3,.42),rgba(5,4,3,.14),transparent)!important;}
+      body.cinematic-mode.veritas-universe .vh-hero-media.has-final-hero::before,body.cinematic-mode.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{transform:translate3d(0,calc(var(--vh-parallax,0px) * .52),0) scale(1.095)!important;filter:saturate(1.22) contrast(1.13) brightness(1.10)!important;}
+      body.cinematic-mode.veritas-universe .vh-hero::after{height:clamp(220px,30vh,360px)!important;background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,.28) 28%,rgba(5,4,3,.82) 72%,#050403 100%)!important;}
+      body.reduced-motion.veritas-universe .vh-hero-media::before,body.reduce-motion.veritas-universe .vh-hero-media::before{transform:scale(1.035)!important;will-change:auto!important;}
+      @media(max-width:760px){body.veritas-universe .breadcrumbs{display:none!important;}body.veritas-universe .vh-hero,body.veritas-universe .vh-hero.vh-hero-compact{min-height:clamp(680px,96vh,920px)!important;padding:clamp(126px,16vh,170px) 0 clamp(126px,17vh,190px)!important;}body.veritas-universe .vh-hero-media::before,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-1% -4% -8%!important;background-image:linear-gradient(180deg,rgba(5,4,3,.18) 0%,rgba(5,4,3,.08) 32%,rgba(5,4,3,.62) 74%,#050403 100%),linear-gradient(90deg,rgba(5,4,3,.72),rgba(5,4,3,.16) 58%,rgba(5,4,3,.62)),var(--vh-final-hero-image,var(--vh-page-hero-image))!important;background-position:center top,center top,center top!important;background-size:cover,cover,cover!important;transform:scale(1.035)!important;}body.veritas-universe .vh-hero::after{height:clamp(170px,25vh,280px)!important;}}
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function scheduleHeroSeamlessPatch() {
+    ensureHeroSeamlessPatch();
+    runOnNextFrame(ensureHeroSeamlessPatch);
+    window.setTimeout(ensureHeroSeamlessPatch, 0);
+    window.setTimeout(ensureHeroSeamlessPatch, 120);
+    window.setTimeout(ensureHeroSeamlessPatch, 420);
+    window.setTimeout(ensureHeroSeamlessPatch, 1000);
+  }
 
   function ensureContactFlowModule() {
     if (window.__siteContactFlowInitialized) return;
@@ -375,6 +419,7 @@
 
   function handleBodyClassMutation() {
     refreshMainUI();
+    scheduleHeroSeamlessPatch();
 
     if (isReducedMotionEnabled()) {
       revealAllElements();
@@ -418,6 +463,7 @@
     updateViewportHeightVariable();
     requestScrollLinkedUiUpdate();
     updateScrollTopButtonLabel();
+    scheduleHeroSeamlessPatch();
   }
 
   function refreshRevealSystem() {
@@ -434,6 +480,7 @@
 
   function handleReducedMotionChange() {
     cacheUiElements();
+    scheduleHeroSeamlessPatch();
 
     if (isReducedMotionEnabled()) {
       revealAllElements();
@@ -457,6 +504,7 @@
 
   function handleCinematicArrivalEnd() {
     refreshEverythingSoon();
+    scheduleHeroSeamlessPatch();
 
     if (typeof window.refreshHeroMotionSoon === "function") {
       window.refreshHeroMotionSoon();
@@ -473,6 +521,7 @@
 
   function handleCinematicTransitionEnd() {
     refreshEverythingSoon();
+    scheduleHeroSeamlessPatch();
   }
 
   /* ---------- INIT ---------- */
@@ -487,6 +536,7 @@
     updateScrollTopButtonLabel();
 
     updateViewportHeightVariable();
+    scheduleHeroSeamlessPatch();
     initRevealObserver();
     initBodyClassObserver();
     refreshMainUI();
@@ -506,6 +556,7 @@
 
     window.addEventListener("pageshow", () => {
       cacheUiElements();
+      scheduleHeroSeamlessPatch();
 
       if (shouldDelayRevealObserver()) {
         disconnectRevealObserver();
@@ -520,6 +571,7 @@
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) {
         refreshMainUI();
+        scheduleHeroSeamlessPatch();
       }
     });
 
@@ -549,6 +601,7 @@
   window.refreshMainUI = refreshMainUI;
   window.refreshRevealSystem = refreshRevealSystem;
   window.requestScrollLinkedUiUpdate = requestScrollLinkedUiUpdate;
+  window.refreshHeroSeamlessPatch = scheduleHeroSeamlessPatch;
 
   if (document.body) {
     initMainUi();
