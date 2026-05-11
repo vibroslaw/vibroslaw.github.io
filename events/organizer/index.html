@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Organizer Mode — Veritas Humanum</title>
+  <meta name="description" content="Organizer mode for creating QR links, end-screen copy and event material for Rap-Ort screenings.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://piotrlichwala.com/events/organizer/">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/navbar.css">
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css">
+  <link rel="stylesheet" href="/assets/css/cinematic.css">
+  <link rel="stylesheet" href="/assets/css/hub.css">
+  <link rel="stylesheet" href="/assets/css/veritas.css">
+  <link rel="stylesheet" href="/assets/css/event-pack.css">
+</head>
+<body class="veritas-universe vh-page event-page" data-lang="en" data-veritas="true" data-page="event-organizer">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" role="banner"></header>
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Veritas Humanum</a> <span aria-hidden="true">/</span> <span>Organizer Mode</span></nav>
+  <main class="vh-main" id="main" data-event-organizer>
+    <section class="vh-hero vh-hero-compact" aria-labelledby="page-title">
+      <div class="vh-hero-media"></div>
+      <div class="vh-wrap vh-hero-grid"><div class="vh-hero-copy reveal">
+        <p class="vh-kicker">ORGANIZER MODE · QR PACK</p>
+        <h1 class="vh-title vh-title-medium" id="page-title">Event Organizer Mode</h1>
+        <p class="vh-subtitle">Prepare QR links, end-screen copy and participant access material for selected Rap-Ort screenings.</p>
+        <p class="vh-lead">This tool helps turn the Record of Participation into a clear post-screening ritual: show a QR, guide participants to the language gateway, and let them create their commemorative PDF.</p>
+      </div></div>
+    </section>
+
+    <section class="vh-section"><div class="vh-wrap event-grid">
+      <form class="event-panel organizer-form reveal" data-organizer-form>
+        <p class="vh-kicker">EVENT SETUP</p>
+        <h2 class="vh-section-title">Configure event</h2>
+        <label>Preset<select name="preset"><option value="syd2026">Sydney 2026</option><option value="custom">Custom event</option></select></label>
+        <label>Event title<input name="title" value="Rap-Ort: Prawda Sumienia — Sydney 2026"></label>
+        <label>Place / venue<input name="place" value="Polish Club Ashfield / Sydney"></label>
+        <label>Date<input name="date" type="date" value="2026-06-21"></label>
+        <label>Event code<input name="eventCode" value="syd2026"></label>
+        <label>Event note<input name="note" value="International screening"></label>
+        <label>Gateway path<input name="gatewayPath" value="/events/sydney-2026/after/"></label>
+        <p class="pr-note">This is a static helper. It does not create server-side secure event codes. It prepares links and QR materials for the event workflow.</p>
+      </form>
+
+      <aside class="qr-card organizer-output reveal">
+        <p class="vh-kicker">QR OUTPUT</p>
+        <h3>Participant gateway QR</h3>
+        <div class="qr-frame"><img data-organizer-qr alt="Generated QR code for event gateway"></div>
+        <p><strong>Gateway:</strong><br><code data-gateway-url></code></p>
+        <p><strong>English:</strong><br><a data-en-url href="#"></a></p>
+        <p><strong>Polski:</strong><br><a data-pl-url href="#"></a></p>
+        <div class="qr-actions"><button class="vh-button" type="button" data-copy-links>Copy links</button><button class="vh-button secondary" type="button" data-print-pack>Print QR sheet</button></div>
+      </aside>
+    </div></section>
+
+    <section class="vh-section"><div class="vh-wrap event-grid">
+      <article class="event-panel reveal"><p class="vh-kicker">PROJECTION PREVIEW</p><h2>End-screen preview</h2><div data-screen-preview></div><p>Use this structure at the end of the screening. The most important line is simple: scan the QR to create the Record of Participation.</p></article>
+      <article class="event-panel reveal"><p class="vh-kicker">COPY BLOCK</p><h2>Links and screen copy</h2><textarea class="copy-box" data-copy-block readonly></textarea></article>
+    </div></section>
+
+    <section class="organizer-print-sheet" aria-hidden="true">
+      <h1>Event QR Pack</h1>
+      <div class="organizer-print-grid"><div><img data-organizer-qr alt=""></div><div><pre data-copy-block></pre></div></div>
+    </section>
+  </main>
+  <footer class="vh-footer"><div class="vh-wrap vh-footer-grid"><div><p class="vh-eyebrow">VERITAS HUMANUM</p><p>An authorial universe of memory, music, image and conscience.</p><p><a href="mailto:peter.lichwala@gmail.com">peter.lichwala@gmail.com</a></p></div><nav class="vh-footer-links"><a href="/events/sydney-2026/qr-pack/">Sydney QR Pack</a><a href="/events/sydney-2026/screen/">Sydney Screen</a><a href="/contact/">Contact</a></nav></div></footer>
+  <button class="reduced-motion-toggle" type="button" data-reduce-motion-toggle aria-pressed="false">Reduce Motion</button><button class="scroll-top" id="scrollTopButton" type="button" aria-label="Back to top">↑</button>
+  <script src="/assets/js/main.js" defer></script><script src="/assets/js/navigation.js" defer></script><script src="/assets/js/transitions.js" defer></script><script src="/assets/js/cinematic.js" defer></script><script src="/assets/js/veritas.js" defer></script><script src="/assets/js/event-organizer.js" defer></script>
+</body>
+</html>
