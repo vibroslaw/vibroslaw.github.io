@@ -266,6 +266,11 @@
   margin-top: 0.5rem;
 }
 
+.pr-form-actions .vh-button:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
 .pr-status,
 .pr-finale {
   min-height: 1.4rem;
@@ -289,6 +294,63 @@
 
 .pr-print-recommendation {
   color: rgba(231, 211, 174, 0.75);
+}
+
+/* Preflight */
+.pr-preflight {
+  border: 1px solid rgba(231, 211, 174, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.95rem 1rem;
+  color: rgba(244, 234, 215, 0.72);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.pr-preflight strong {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: rgba(231, 211, 174, 0.86);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pr-preflight ul {
+  display: grid;
+  gap: 0.42rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pr-preflight li {
+  display: flex;
+  gap: 0.52rem;
+  align-items: flex-start;
+}
+
+.pr-preflight li span {
+  width: 0.52rem;
+  height: 0.52rem;
+  border-radius: 99px;
+  margin-top: 0.45rem;
+  flex: 0 0 auto;
+  background: rgba(231, 211, 174, 0.42);
+  box-shadow: 0 0 18px rgba(231, 211, 174, 0.12);
+}
+
+.pr-preflight li.ok span {
+  background: #d9bd80;
+}
+
+.pr-preflight li.warn span {
+  background: #b88c48;
+}
+
+.pr-preflight li.warn {
+  color: rgba(244, 234, 215, 0.78);
 }
 
 /* Preview as physical object */
