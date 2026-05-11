@@ -72,7 +72,7 @@
             <label>Place / institution<input name="place" required></label>
             <label>Event date<input name="eventDate" type="date" required></label>
             <label>Document number<input name="documentNumber" readonly></label>
-            <div class="pr-form-actions"><button class="vh-button" type="button" data-pr-print>Download PDF</button><button class="vh-button secondary" type="button" data-pr-regenerate>Generate new number</button><button class="vh-button secondary" type="button" data-pr-clear>Clear form</button></div>
+            <div class="pr-form-actions"><button class="vh-button" type="button" data-pr-print>Download premium PDF</button><button class="vh-button secondary" type="button" data-pr-regenerate>Generate new number</button><button class="vh-button secondary" type="button" data-pr-clear>Clear form</button></div>
             <p class="pr-print-recommendation">Best result: A4 landscape · colour · matte paper · no extra margins.</p>
             <p class="pr-status" data-pr-status aria-live="polite"></p>
             <p class="pr-finale" data-pr-finale hidden></p>
@@ -86,6 +86,9 @@
   <footer class="vh-footer"><div class="vh-wrap vh-footer-grid"><div><p class="vh-eyebrow">VERITAS HUMANUM</p><p>An authorial universe of memory, music, image and conscience.</p><p><a href="mailto:peter.lichwala@gmail.com">peter.lichwala@gmail.com</a></p></div><nav class="vh-footer-links"><a href="/rap-ort/">Rap-Ort</a><a href="/for-institutions/">For Institutions</a><a href="/contact/">Contact</a></nav></div></footer>
   <div class="pr-print-stage" data-pr-print-stage><div class="pr-print-page"><img class="pr-print-bg" data-pr-print-bg alt=""><div class="pr-print-content layout-cinema" data-pr-print-doc><p class="pr-project" data-pr-project></p><h2 class="pr-title" data-pr-title></h2><p class="pr-body" data-pr-body></p><p class="pr-for" data-pr-for hidden></p><div class="pr-fields"><div class="pr-field"><span data-pr-date-label></span><strong data-pr-date></strong></div><div class="pr-field"><span data-pr-place-label></span><strong data-pr-place></strong></div><div class="pr-field"><span data-pr-number-label></span><strong data-pr-number></strong></div></div><p class="pr-closing" data-pr-closing></p><div class="pr-author"><img src="/public/assets/reports/author-signature-placeholder.svg" alt=""><strong>Piotr Jakub Lichwała</strong><span data-pr-author-role></span></div></div></div></div>
   <button class="reduced-motion-toggle" type="button" data-reduce-motion-toggle aria-pressed="false">Reduce Motion</button><button class="scroll-top" id="scrollTopButton" type="button" aria-label="Back to top">↑</button>
-  <script src="/assets/js/main.js" defer></script><script src="/assets/js/navigation.js" defer></script><script src="/assets/js/transitions.js" defer></script><script src="/assets/js/cinematic.js" defer></script><script src="/assets/js/veritas.js" defer></script><script src="/assets/js/participation-record.js" defer></script>
+  <script src="/assets/js/main.js" defer></script><script src="/assets/js/navigation.js" defer></script><script src="/assets/js/transitions.js" defer></script><script src="/assets/js/cinematic.js" defer></script><script src="/assets/js/veritas.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
+  <script src="/assets/js/participation-record.js" defer></script>
+  <script src="/assets/js/participation-pdf.js" defer></script>
 </body>
 </html>
