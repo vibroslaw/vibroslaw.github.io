@@ -157,6 +157,36 @@ This supports the real event flow:
 3. later opens the generator on a laptop or desktop,
 4. exports the print-ready PDF with more confidence.
 
+## Premium handoff layer
+
+PR53 extends the quality panel with a print handoff note.
+
+The handoff note is generated locally in the browser and can be copied or downloaded as `.txt`. It is meant for:
+
+- participants sending the file to themselves,
+- participants preparing a print-shop order,
+- organisers helping less technical participants understand how to print the document,
+- avoiding confusion between mobile QR access and desktop-quality export.
+
+The handoff note includes:
+
+- document type,
+- event context,
+- selected variant,
+- recommended format,
+- paper recommendation,
+- framing / archival recommendation,
+- document number when available,
+- generator link,
+- privacy and non-official document reminder.
+
+Important rules:
+
+- do not preserve stale `event=syd2026` when the user switches to custom event mode,
+- do not store handoff data on the server,
+- do not make the handoff note sound like a certificate, licence, patronage or institutional approval,
+- keep the handoff note practical and print-focused.
+
 ## Wall Edition rules
 
 The Wall Edition is intended for participants who want a document worth printing, framing and keeping.
@@ -180,7 +210,7 @@ Design requirements:
 
 ## Future font plan
 
-The current PR47–PR52 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
+The current PR47–PR53 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
 
 Recommended roles:
 
