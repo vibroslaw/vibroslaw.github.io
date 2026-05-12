@@ -1,7 +1,7 @@
 window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
 window.VH_DOCUMENTS.printMaster = {
-  version: '0.1.0-pr47',
+  version: '0.2.0-pr48',
   brand: {
     system: 'VERITAS HUMANUM',
     author: 'Piotr Jakub Lichwała / Vibrosław',
@@ -18,21 +18,21 @@ window.VH_DOCUMENTS.printMaster = {
     signature: '/public/assets/reports/author-signature-placeholder.svg',
     participation: {
       cinema: {
-        a4: ['/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi.jpeg'],
+        a4: ['/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi.jpeg', '/public/assets/reports/participation-record-bg-a4-300dpi.png'],
         preview: ['/public/assets/reports/participation-record-bg-01-archival-cinema-preview.webp', '/public/assets/reports/participation-record-bg-preview.webp']
       },
       museum: {
-        a4: ['/public/assets/reports/participation-record-bg-02-museum-line-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi2.jpeg'],
+        a4: ['/public/assets/reports/participation-record-bg-02-museum-line-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi2.jpeg', '/public/assets/reports/participation-record-bg-a4-300dpi2.png'],
         preview: ['/public/assets/reports/participation-record-bg-02-museum-line-preview.webp', '/public/assets/reports/participation-record-bg-preview2.webp']
       },
       ceremonial: {
-        a4: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpeg'],
+        a4: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpeg', '/public/assets/reports/participation-record-bg-a4-300dpi3.png'],
         preview: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-preview.webp', '/public/assets/reports/participation-record-bg-preview3.webp']
       }
     },
     witnessReport: {
       archivalPaper: {
-        a4: ['/public/assets/reports/witness-report-bg-01-archival-paper-a4.jpg', '/public/assets/reports/witness-report-bg-a4-300dpi.jpg', '/public/assets/reports/witness-report-bg-a4-300dpi.jpeg'],
+        a4: ['/public/assets/reports/witness-report-bg-01-archival-paper-a4.jpg', '/public/assets/reports/witness-report-bg-a4-300dpi.jpg', '/public/assets/reports/witness-report-bg-a4-300dpi.jpeg', '/public/assets/reports/witness-report-bg-a4-300dpi.png'],
         preview: ['/public/assets/reports/witness-report-bg-01-archival-paper-preview.webp', '/public/assets/reports/witness-report-bg-preview.webp']
       }
     }
@@ -67,11 +67,28 @@ window.VH_DOCUMENTS.printMaster = {
   documents: {
     participationRecord: {
       format: 'a4Landscape',
-      signatureMode: 'svg-plus-role-label',
+      signatureMode: 'svg-plus-role-label-only',
       variants: {
         cinema: { layout: 'cinema', assetKey: 'cinema', label: { pl: 'Archiwalne Kino', en: 'Archival Cinema' } },
         museum: { layout: 'museum', assetKey: 'museum', label: { pl: 'Linia Muzealna', en: 'Museum Line' } },
         ceremonial: { layout: 'ceremonial', assetKey: 'ceremonial', label: { pl: 'Rama Uroczysta', en: 'Ceremonial Frame' } }
+      },
+      layouts: {
+        cinema: {
+          projectY: 330, titleY: 590, titleSize: 154, titleSpacing: 14, bodyY: 790, bodySize: 60, bodyLine: 88,
+          nameY: 1195, fieldsY: 1420, closingY: 1810, signatureY: 2075, fieldWidth: 730, signatureWidth: 890,
+          textMaxWidth: 2100, closingMaxWidth: 1920, titleDistress: 0.16
+        },
+        museum: {
+          projectY: 285, titleY: 535, titleSize: 162, titleSpacing: 16, bodyY: 755, bodySize: 58, bodyLine: 86,
+          nameY: 1145, fieldsY: 1370, closingY: 1765, signatureY: 2035, fieldWidth: 790, signatureWidth: 850,
+          textMaxWidth: 2020, closingMaxWidth: 1860, titleDistress: 0.1
+        },
+        ceremonial: {
+          projectY: 320, titleY: 610, titleSize: 178, titleSpacing: 18, bodyY: 850, bodySize: 56, bodyLine: 84,
+          nameY: 1235, fieldsY: 1465, closingY: 1845, signatureY: 2055, fieldWidth: 690, signatureWidth: 930,
+          textMaxWidth: 1880, closingMaxWidth: 1720, titleDistress: 0.08
+        }
       }
     },
     witnessReport: {
