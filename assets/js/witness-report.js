@@ -13,6 +13,7 @@
   const PH = output.height;
   const MIN_BG = { width: 2200, height: 3100 };
   const imageCache = new Map();
+  const lockedCopy = master?.documents?.witnessReport?.copy?.[lang] || {};
 
   const C = lang === 'pl' ? {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
@@ -26,8 +27,9 @@
     date: 'Data',
     place: 'Miejsce',
     number: 'Numer raportu',
-    reflectionLabel: 'Kilka słów, które zostają po projekcji',
-    signature: 'Podpis świadka doświadczenia',
+    reflectionLabel: lockedCopy.reflectionLabel || 'Kilka słów, które zostają po projekcji',
+    signature: lockedCopy.signature || 'Podpis świadka doświadczenia',
+    microprint: lockedCopy.microprint || 'Raport Świadka · osobisty dokument refleksji · Veritas Humanum',
     fallbackName: 'Świadek doświadczenia',
     fallbackPlace: 'Miejsce wydarzenia',
     file: 'Rap-Ort-Raport-Swiadka',
@@ -51,8 +53,9 @@
     date: 'Date',
     place: 'Place',
     number: 'Report number',
-    reflectionLabel: 'A few words that remain after the screening',
-    signature: 'Signature of the witness to the experience',
+    reflectionLabel: lockedCopy.reflectionLabel || 'A few words that remain after the screening',
+    signature: lockedCopy.signature || 'Signature of the witness to the experience',
+    microprint: lockedCopy.microprint || 'Witness Report · personal reflection document · Veritas Humanum',
     fallbackName: 'Witness to the experience',
     fallbackPlace: 'Event place',
     file: 'Rap-Ort-Witness-Report',
@@ -70,11 +73,11 @@
   const events = master?.events || fallbackEvents;
   const configQuotes = master?.documents?.witnessReport?.quotes?.[lang] || [];
   const fallbackQuotes = lang === 'pl' ? [
-    { id: 'truth-trace', text: 'Prawda nie kończy się na ekranie. Zostaje w decyzji, którą człowiek podejmuje później.', source: 'Veritas Humanum — ślad po projekcji' },
-    { id: 'silence', text: 'Cisza po świadectwie nie jest pustką. Jest miejscem, w którym zaczyna pracować sumienie.', source: 'Rap-Ort — refleksja autorska' },
+    { id: 'truth-trace', text: 'Prawda nie kończy się na ekranie. Zostaje w pytaniu, które człowiek zabiera ze sobą.', source: 'Veritas Humanum — ślad po projekcji' },
+    { id: 'silence', text: 'Cisza po świadectwie nie jest pustką. To miejsce, w którym zaczyna pracować sumienie.', source: 'Rap-Ort — refleksja autorska' },
     { id: 'question-remains', text: 'Świadectwo zostało wypowiedziane. Teraz pytanie zostaje przy Tobie.', source: 'Veritas Humanum — pytanie końcowe' }
   ] : [
-    { id: 'truth-trace', text: 'Truth does not end on the screen. It remains in the decision a human being makes afterwards.', source: 'Veritas Humanum — post-screening trace' },
+    { id: 'truth-trace', text: 'Truth does not end on the screen. It remains in the question a human being carries forward.', source: 'Veritas Humanum — post-screening trace' },
     { id: 'silence', text: 'The silence after testimony is not empty. It is the place where conscience begins to work.', source: 'Rap-Ort — authorial reflection' },
     { id: 'question-remains', text: 'The testimony has been spoken. Now the question remains with you.', source: 'Veritas Humanum — final question' }
   ];
@@ -276,7 +279,7 @@
 
     ctx.strokeStyle = 'rgba(66,46,22,.32)'; ctx.beginPath(); ctx.moveTo(620, 2930); ctx.lineTo(1860, 2930); ctx.stroke();
     ctx.font = font(38, 'Arial'); ctx.fillStyle = 'rgba(66,46,22,.56)'; ctx.fillText(C.signature.toUpperCase(), W / 2, 3000);
-    ctx.font = font(26, 'Arial'); ctx.fillStyle = 'rgba(66,46,22,.38)'; ctx.fillText('VERITAS HUMANUM · WITNESS REPORT · PERSONAL REFLECTION DOCUMENT', W / 2, 3275);
+    ctx.font = font(26, 'Arial'); ctx.fillStyle = 'rgba(66,46,22,.38)'; ctx.fillText(C.microprint.toUpperCase(), W / 2, 3275);
     return canvas;
   }
 

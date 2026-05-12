@@ -98,6 +98,40 @@ Preview backgrounds:
 - Event accents should be subtle: edition label, venue, date, micro-line, optional coordinates.
 - Avoid tourist-style graphics, large flags or decorative clutter.
 
+## Locked document language rules
+
+PR51 introduces a locked copy layer in `assets/js/document-config.js`.
+
+Rules:
+
+- Keep central document copy short, ceremonial and printable.
+- Keep legal / official-status disclaimers as microprint where possible.
+- Do not imply institutional endorsement, patronage, approval or official certification.
+- Keep the Record of Participation as a document of presence, not achievement.
+- Keep the Witness Report as a personal reflection document, not a test or survey.
+- Use authorial Veritas Humanum / Rap-Ort starting thoughts instead of uncertain historical quotations.
+- Do not expand the document body into explanatory website copy.
+
+### Record of Participation copy tone
+
+The Record of Participation should feel:
+
+- commemorative,
+- ceremonial,
+- event-specific,
+- suitable for framing,
+- non-official in legal meaning.
+
+### Witness Report copy tone
+
+The Witness Report should feel:
+
+- quiet,
+- personal,
+- archival,
+- reflective,
+- suitable for keeping in a folder, on a desk, or framed as a personal trace.
+
 ## Wall Edition rules
 
 The Wall Edition is intended for participants who want a document worth printing, framing and keeping.
@@ -121,7 +155,7 @@ Design requirements:
 
 ## Future font plan
 
-The current PR47–PR49 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
+The current PR47–PR51 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
 
 Recommended roles:
 
