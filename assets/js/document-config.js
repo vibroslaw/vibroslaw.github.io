@@ -1,7 +1,7 @@
 window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
 window.VH_DOCUMENTS.printMaster = {
-  version: '0.2.0-pr48',
+  version: '0.3.0-pr49-wall-edition',
   brand: {
     system: 'VERITAS HUMANUM',
     author: 'Piotr Jakub Lichwała / Vibrosław',
@@ -10,8 +10,10 @@ window.VH_DOCUMENTS.printMaster = {
   output: {
     a4Landscape: { width: 841.89, height: 595.28, pixels: { width: 3508, height: 2480 }, safePixels: { width: 2480, height: 1754 } },
     a4Portrait: { width: 595.28, height: 841.89, pixels: { width: 2480, height: 3508 }, safePixels: { width: 1754, height: 2480 } },
+    a3Landscape: { width: 1190.55, height: 841.89, pixels: { width: 4961, height: 3508 }, safePixels: { width: 3508, height: 2480 } },
     minPrintBackground: { width: 3000, height: 2100 },
-    jpegQuality: { premium: 0.94, safe: 0.92 }
+    wallReadyBackground: { width: 3508, height: 2480 },
+    jpegQuality: { premium: 0.94, safe: 0.92, wall: 0.96 }
   },
   assets: {
     reportsRoot: '/public/assets/reports/',
@@ -68,26 +70,61 @@ window.VH_DOCUMENTS.printMaster = {
     participationRecord: {
       format: 'a4Landscape',
       signatureMode: 'svg-plus-role-label-only',
+      exports: {
+        standard: { format: 'a4Landscape', label: { pl: 'A4 print-master', en: 'A4 print-master' }, recommendedVariant: 'ceremonial' },
+        wall: { format: 'a3Landscape', label: { pl: 'A3 wall edition', en: 'A3 wall edition' }, recommendedVariant: 'ceremonial' }
+      },
       variants: {
         cinema: { layout: 'cinema', assetKey: 'cinema', label: { pl: 'Archiwalne Kino', en: 'Archival Cinema' } },
         museum: { layout: 'museum', assetKey: 'museum', label: { pl: 'Linia Muzealna', en: 'Museum Line' } },
         ceremonial: { layout: 'ceremonial', assetKey: 'ceremonial', label: { pl: 'Rama Uroczysta', en: 'Ceremonial Frame' } }
       },
+      copyProfiles: {
+        standard: {
+          pl: {
+            body: ['Dokument upamiętnia udział w projekcji audiowizualnej', '„Rap-Ort: Prawda Sumienia”', '', 'autorskim doświadczeniu muzyki, obrazu, słowa i ciszy,', 'poświęconym pamięci, świadectwu, sumieniu', 'oraz odpowiedzialności wobec prawdy.'],
+            closing: ['Pamiątkowy ślad wydarzenia, w którym historia', 'staje się pytaniem, które uczestnik zabiera ze sobą.'],
+            microprint: 'Pamiątkowy zapis uczestnictwa · nie jest dyplomem ani dokumentem urzędowym'
+          },
+          en: {
+            body: ['This document commemorates participation in the audiovisual screening of', '“Rap-Ort: Prawda Sumienia”', '', 'an authorial experience of music, image, words and silence,', 'devoted to memory, testimony, conscience', 'and human responsibility before truth.'],
+            closing: ['A commemorative trace of an event in which history', 'becomes a question the participant carries forward.'],
+            microprint: 'Commemorative record of participation · not an official certificate'
+          }
+        },
+        wall: {
+          pl: {
+            body: ['Dokument upamiętnia udział w projekcji audiowizualnej', '„Rap-Ort: Prawda Sumienia”', '', 'doświadczeniu pamięci, świadectwa, ciszy i odpowiedzialności.'],
+            closing: ['Prawda nie kończy się na ekranie.', 'Zostaje w pytaniu, które człowiek zabiera ze sobą.'],
+            microprint: 'Wall Edition · pamiątkowy zapis uczestnictwa · Veritas Humanum'
+          },
+          en: {
+            body: ['This document commemorates participation in the audiovisual screening of', '“Rap-Ort: Prawda Sumienia”', '', 'an experience of memory, testimony, silence and responsibility.'],
+            closing: ['Truth does not end on the screen.', 'It remains in the question a human being carries forward.'],
+            microprint: 'Wall Edition · commemorative record of participation · Veritas Humanum'
+          }
+        }
+      },
       layouts: {
         cinema: {
           projectY: 330, titleY: 590, titleSize: 154, titleSpacing: 14, bodyY: 790, bodySize: 60, bodyLine: 88,
           nameY: 1195, fieldsY: 1420, closingY: 1810, signatureY: 2075, fieldWidth: 730, signatureWidth: 890,
-          textMaxWidth: 2100, closingMaxWidth: 1920, titleDistress: 0.16
+          textMaxWidth: 2100, closingMaxWidth: 1920, titleDistress: 0.16, microprintY: 2325
         },
         museum: {
           projectY: 285, titleY: 535, titleSize: 162, titleSpacing: 16, bodyY: 755, bodySize: 58, bodyLine: 86,
           nameY: 1145, fieldsY: 1370, closingY: 1765, signatureY: 2035, fieldWidth: 790, signatureWidth: 850,
-          textMaxWidth: 2020, closingMaxWidth: 1860, titleDistress: 0.1
+          textMaxWidth: 2020, closingMaxWidth: 1860, titleDistress: 0.1, microprintY: 2325
         },
         ceremonial: {
           projectY: 320, titleY: 610, titleSize: 178, titleSpacing: 18, bodyY: 850, bodySize: 56, bodyLine: 84,
           nameY: 1235, fieldsY: 1465, closingY: 1845, signatureY: 2055, fieldWidth: 690, signatureWidth: 930,
-          textMaxWidth: 1880, closingMaxWidth: 1720, titleDistress: 0.08
+          textMaxWidth: 1880, closingMaxWidth: 1720, titleDistress: 0.08, microprintY: 2325
+        },
+        ceremonialWall: {
+          projectY: 365, titleY: 685, titleSize: 198, titleSpacing: 20, bodyY: 955, bodySize: 60, bodyLine: 92,
+          nameY: 1335, fieldsY: 1585, closingY: 1955, signatureY: 2110, fieldWidth: 710, signatureWidth: 980,
+          textMaxWidth: 1760, closingMaxWidth: 1650, titleDistress: 0, microprintY: 2345, quiet: true
         }
       }
     },
