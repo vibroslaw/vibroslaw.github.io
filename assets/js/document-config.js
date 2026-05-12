@@ -1,7 +1,7 @@
 window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
 window.VH_DOCUMENTS.printMaster = {
-  version: '0.4.0-pr51-copy-lock',
+  version: '0.5.0-pr53-handoff-layer',
   brand: {
     system: 'VERITAS HUMANUM',
     author: 'Piotr Jakub Lichwała / Vibrosław',
@@ -61,6 +61,15 @@ window.VH_DOCUMENTS.printMaster = {
       'Do not imply institutional endorsement or official certification.',
       'Use Witness Report as reflection language, not survey language.',
       'Use authorial Veritas Humanum / Rap-Ort starting thoughts instead of uncertain historical quotations.'
+    ]
+  },
+  qualityHandoff: {
+    status: 'active-pr53',
+    rules: [
+      'Do not leave stale event parameters in shared custom links.',
+      'Give participants a simple way to move from mobile QR access to desktop export.',
+      'Provide a copyable and downloadable print-shop note without collecting user data.',
+      'Keep handoff language non-official and non-endorsement-safe.'
     ]
   },
   events: {
