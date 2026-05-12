@@ -56,3 +56,26 @@ window.VH_DOCUMENTS.preflight = (() => {
 
   return { absolute, loadImage, resolveFirst, imageSize, meetsMinimum, constrainedDevice, formatSize };
 })();
+
+(() => {
+  const isDocumentPage = document.querySelector('[data-participation-record], [data-witness-report]');
+  if (!isDocumentPage) return;
+
+  const cssId = 'vh-document-quality-css';
+  if (!document.getElementById(cssId)) {
+    const link = document.createElement('link');
+    link.id = cssId;
+    link.rel = 'stylesheet';
+    link.href = '/assets/css/document-quality.css';
+    document.head.appendChild(link);
+  }
+
+  const scriptId = 'vh-document-quality-js';
+  if (!document.getElementById(scriptId)) {
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = '/assets/js/document-quality.js';
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+})();
