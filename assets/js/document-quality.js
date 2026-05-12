@@ -20,22 +20,32 @@
       frame: 'Oprawa',
       device: 'Urządzenie',
       privacy: 'Prywatność',
-      desktop: 'Najlepszy eksport wykonaj na laptopie lub komputerze. Mobile jest dobre do odblokowania dostępu i zapisania linku.',
-      privacyText: 'Dane pozostają lokalnie w przeglądarce. PDF powstaje po stronie użytkownika.',
-      copyLink: 'Kopiuj link do generatora',
-      shareLink: 'Udostępnij link',
+      event: 'Wydarzenie',
+      handoff: 'Notatka do wydruku',
+      desktop: 'Najlepszy eksport wykonaj na laptopie lub komputerze. Telefon jest idealny do skanu QR, zapisania linku i powrotu do dokumentu później.',
+      privacyText: 'Dane pozostają lokalnie w przeglądarce. PDF powstaje po stronie użytkownika i nie jest wysyłany na serwer.',
+      copyLink: 'Kopiuj link',
+      shareLink: 'Udostępnij',
+      copyHandoff: 'Kopiuj notatkę do druku',
+      downloadHandoff: 'Pobierz notatkę .txt',
       copied: 'Link skopiowany.',
+      handoffCopied: 'Notatka do druku skopiowana.',
+      handoffDownloaded: 'Notatka do druku została pobrana.',
       fallbackCopy: 'Skopiuj adres z paska przeglądarki.',
       participationPaper: 'A4/A3 · kolor · papier matowy lub silk matte 250–300 gsm.',
       witnessPaper: 'A4 pionowo · papier matowy 160–250 gsm · spokojny druk archiwalny.',
-      participationFrame: 'Najlepiej: czarna rama lub ciepłe passe-partout. Wariant Rama Uroczysta najlepiej nadaje się na ścianę.',
+      participationFrame: 'Najlepiej: czarna rama albo ciepłe passe-partout. Wariant Rama Uroczysta najlepiej nadaje się na ścianę.',
       witnessFrame: 'Najlepiej: teczka archiwalna, biurko albo prosta ramka. To dokument refleksji, nie certyfikat.',
       cinema: 'Archiwalne Kino — filmowy zapis uczestnictwa.',
       museum: 'Linia Muzealna — formalny, instytucjonalny charakter.',
       ceremonial: 'Rama Uroczysta — najlepszy wariant do oprawienia.',
       witnessVariant: 'Archiwalny papier — osobisty zapis refleksji.',
       a3: 'A3 Wall Edition dla najlepszego efektu na ścianie; A4 jako bezpieczny standard.',
-      a4: 'A4 portrait jako spokojny dokument osobisty.'
+      a4: 'A4 portrait jako spokojny dokument osobisty.',
+      customEvent: 'Wydarzenie wpisywane ręcznie',
+      noNumber: 'Numer zostanie nadany w generatorze',
+      notOfficial: 'Pamiątkowy dokument nieurzędowy. Nie sugeruje patronatu ani oficjalnej certyfikacji.',
+      printShopLine: 'Druk bez dopasowania do marginesów, najlepiej w rzeczywistym rozmiarze strony PDF. Kolor: wysoka jakość.'
     },
     en: {
       eyebrow: 'PRINT QUALITY',
@@ -50,11 +60,17 @@
       frame: 'Framing',
       device: 'Device',
       privacy: 'Privacy',
-      desktop: 'For the best export, use a laptop or desktop. Mobile is best for unlocking access and saving the link.',
-      privacyText: 'Your data remains local in the browser. The PDF is created on the user side.',
-      copyLink: 'Copy generator link',
-      shareLink: 'Share link',
+      event: 'Event',
+      handoff: 'Print handoff note',
+      desktop: 'For the best export, use a laptop or desktop. Mobile is ideal for QR access, saving the link and returning to the document later.',
+      privacyText: 'Your data remains local in the browser. The PDF is created on the user side and is not sent to a server.',
+      copyLink: 'Copy link',
+      shareLink: 'Share',
+      copyHandoff: 'Copy print note',
+      downloadHandoff: 'Download note .txt',
       copied: 'Link copied.',
+      handoffCopied: 'Print note copied.',
+      handoffDownloaded: 'Print note downloaded.',
       fallbackCopy: 'Copy the address from the browser bar.',
       participationPaper: 'A4/A3 · colour · matte or silk matte paper 250–300 gsm.',
       witnessPaper: 'A4 portrait · matte paper 160–250 gsm · calm archival print.',
@@ -65,7 +81,11 @@
       ceremonial: 'Ceremonial Frame — best variant for framing.',
       witnessVariant: 'Archival paper — personal reflection record.',
       a3: 'A3 Wall Edition for the strongest wall effect; A4 as the safe standard.',
-      a4: 'A4 portrait as a calm personal document.'
+      a4: 'A4 portrait as a calm personal document.',
+      customEvent: 'Manually entered event',
+      noNumber: 'Number will be assigned in the generator',
+      notOfficial: 'Non-official commemorative document. It does not imply patronage or official certification.',
+      printShopLine: 'Print without fitting to extra margins, preferably at the real PDF page size. Colour: high quality.'
     }
   }[lang];
 
@@ -76,6 +96,27 @@
   function selectedVariant() {
     if (isWitness) return 'witness';
     return root.querySelector('[name="recordVariant"]:checked')?.value || 'cinema';
+  }
+
+  function selectedEventValue() {
+    return root.querySelector('[name="eventPreset"]')?.value || 'custom';
+  }
+
+  function selectedEventText() {
+    const select = root.querySelector('[name="eventPreset"]');
+    const value = selectedEventValue();
+    if (!select || value === 'custom') return TEXT.customEvent;
+    return select.options[select.selectedIndex]?.textContent?.trim() || value;
+  }
+
+  function documentNumber() {
+    const selectors = ['[name="documentNumber"]', '[data-pr-number]', '[data-wr-number]'];
+    for (const selector of selectors) {
+      const node = root.querySelector(selector);
+      const value = node?.value || node?.textContent;
+      if (value && value.trim()) return value.trim();
+    }
+    return TEXT.noNumber;
   }
 
   function grade() {
@@ -94,6 +135,14 @@
     return isWitness ? TEXT.a4 : TEXT.a3;
   }
 
+  function paperText() {
+    return isWitness ? TEXT.witnessPaper : TEXT.participationPaper;
+  }
+
+  function frameText() {
+    return isWitness ? TEXT.witnessFrame : TEXT.participationFrame;
+  }
+
   function render() {
     const g = grade();
     panel.innerHTML = `
@@ -107,14 +156,18 @@
       <div class="dq-grid">
         <div class="dq-item"><span>${TEXT.variant}</span><p>${variantText()}</p></div>
         <div class="dq-item"><span>${TEXT.format}</span><p>${formatText()}</p></div>
-        <div class="dq-item"><span>${TEXT.paper}</span><p>${isWitness ? TEXT.witnessPaper : TEXT.participationPaper}</p></div>
-        <div class="dq-item"><span>${TEXT.frame}</span><p>${isWitness ? TEXT.witnessFrame : TEXT.participationFrame}</p></div>
+        <div class="dq-item"><span>${TEXT.paper}</span><p>${paperText()}</p></div>
+        <div class="dq-item"><span>${TEXT.frame}</span><p>${frameText()}</p></div>
+        <div class="dq-item"><span>${TEXT.event}</span><p>${selectedEventText()}</p></div>
         <div class="dq-item"><span>${TEXT.device}</span><p>${TEXT.desktop}</p></div>
         <div class="dq-item"><span>${TEXT.privacy}</span><p>${TEXT.privacyText}</p></div>
+        <div class="dq-item"><span>${TEXT.handoff}</span><p>${TEXT.printShopLine}</p></div>
       </div>
       <div class="dq-actions">
         <button class="dq-copy" type="button" data-dq-copy>${TEXT.copyLink}</button>
         <button class="dq-copy" type="button" data-dq-share>${TEXT.shareLink}</button>
+        <button class="dq-copy" type="button" data-dq-copy-handoff>${TEXT.copyHandoff}</button>
+        <button class="dq-copy" type="button" data-dq-download-handoff>${TEXT.downloadHandoff}</button>
       </div>
       <p class="dq-note">Veritas Humanum · ${master.version || 'print master'} · local browser PDF</p>
     `;
@@ -127,27 +180,78 @@
 
   function urlWithEvent() {
     const url = new URL(window.location.href);
-    const eventSelect = root.querySelector('[name="eventPreset"]');
-    const event = eventSelect?.value || url.searchParams.get('event');
-    if (event && event !== 'custom') url.searchParams.set('event', event);
+    const event = selectedEventValue();
+    if (event && event !== 'custom') {
+      url.searchParams.set('event', event);
+      url.searchParams.delete('key');
+    } else {
+      url.searchParams.delete('event');
+      url.searchParams.delete('key');
+    }
     return url.href;
   }
 
-  async function copyLink() {
+  function handoffText() {
+    const title = isWitness ? (lang === 'pl' ? 'RAPORT ŚWIADKA' : 'WITNESS REPORT') : (lang === 'pl' ? 'ZAPIS UCZESTNICTWA' : 'RECORD OF PARTICIPATION');
+    return [
+      'VERITAS HUMANUM / RAP-ORT: PRAWDA SUMIENIA',
+      title,
+      '',
+      `${TEXT.event}: ${selectedEventText()}`,
+      `${TEXT.variant}: ${variantText()}`,
+      `${TEXT.format}: ${formatText()}`,
+      `${TEXT.paper}: ${paperText()}`,
+      `${TEXT.frame}: ${frameText()}`,
+      `${lang === 'pl' ? 'Numer dokumentu' : 'Document number'}: ${documentNumber()}`,
+      '',
+      TEXT.printShopLine,
+      TEXT.notOfficial,
+      TEXT.privacyText,
+      '',
+      `${lang === 'pl' ? 'Link do generatora' : 'Generator link'}: ${urlWithEvent()}`
+    ].join('\n');
+  }
+
+  function setNote(message) {
+    const note = panel.querySelector('.dq-note');
+    if (note) note.textContent = message;
+  }
+
+  async function copyText(text, successMessage) {
     try {
-      await navigator.clipboard.writeText(urlWithEvent());
-      const note = panel.querySelector('.dq-note');
-      if (note) note.textContent = TEXT.copied;
+      await navigator.clipboard.writeText(text);
+      setNote(successMessage);
     } catch (_) {
-      const note = panel.querySelector('.dq-note');
-      if (note) note.textContent = TEXT.fallbackCopy;
+      setNote(TEXT.fallbackCopy);
     }
+  }
+
+  async function copyLink() {
+    await copyText(urlWithEvent(), TEXT.copied);
+  }
+
+  async function copyHandoff() {
+    await copyText(handoffText(), TEXT.handoffCopied);
+  }
+
+  function downloadHandoff() {
+    const blob = new Blob([handoffText()], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const prefix = isWitness ? 'Witness-Report-Print-Note' : 'Participation-Record-Print-Note';
+    a.href = url;
+    a.download = `${prefix}-${documentNumber().replace(/[^a-zA-Z0-9-]+/g, '-')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    setNote(TEXT.handoffDownloaded);
   }
 
   async function shareLink() {
     const href = urlWithEvent();
     if (navigator.share) {
-      try { await navigator.share({ title: document.title, url: href }); return; } catch (_) {}
+      try { await navigator.share({ title: document.title, text: isWitness ? TEXT.titleWitness : TEXT.titleParticipation, url: href }); return; } catch (_) {}
     }
     await copyLink();
   }
@@ -159,8 +263,13 @@
   root.addEventListener('change', (event) => {
     if (event.target?.matches('[name="recordVariant"], [name="eventPreset"]')) render();
   });
+  root.addEventListener('input', (event) => {
+    if (event.target?.matches('[name="documentNumber"], [name="place"], [name="eventDate"]')) render();
+  });
   panel.addEventListener('click', (event) => {
     if (event.target?.matches('[data-dq-copy]')) copyLink();
     if (event.target?.matches('[data-dq-share]')) shareLink();
+    if (event.target?.matches('[data-dq-copy-handoff]')) copyHandoff();
+    if (event.target?.matches('[data-dq-download-handoff]')) downloadHandoff();
   });
 })();
