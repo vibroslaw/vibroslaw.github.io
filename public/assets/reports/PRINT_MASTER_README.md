@@ -132,6 +132,31 @@ The Witness Report should feel:
 - reflective,
 - suitable for keeping in a folder, on a desk, or framed as a personal trace.
 
+## Premium quality guidance layer
+
+PR52 adds a lightweight quality guidance layer:
+
+- `assets/css/document-quality.css`
+- `assets/js/document-quality.js`
+
+The layer is auto-loaded from `document-preflight.js` only on document-generator pages.
+
+Its purpose is not to replace the PDF engine. It improves the participant experience by explaining:
+
+- which variant is best for framing,
+- which format should be used for wall print,
+- which paper is recommended,
+- why mobile is good for QR access but laptop / desktop is better for final export,
+- that privacy is local-browser based,
+- how to copy or share the generator link.
+
+This supports the real event flow:
+
+1. participant scans QR on mobile,
+2. saves / shares the event link,
+3. later opens the generator on a laptop or desktop,
+4. exports the print-ready PDF with more confidence.
+
 ## Wall Edition rules
 
 The Wall Edition is intended for participants who want a document worth printing, framing and keeping.
@@ -155,7 +180,7 @@ Design requirements:
 
 ## Future font plan
 
-The current PR47–PR51 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
+The current PR47–PR52 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
 
 Recommended roles:
 
