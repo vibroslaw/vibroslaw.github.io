@@ -441,6 +441,8 @@
   text-transform: uppercase;
   margin: 0 0 3%;
   font-weight: 500;
+  color: #ead39e;
+  text-shadow: 0 1px 0 rgba(255,255,255,.16), 0 4px 18px rgba(0,0,0,.38), 0 0 28px rgba(231,211,174,.08);
 }
 
 .pr-body {
@@ -513,9 +515,7 @@
 }
 
 .pr-author strong {
-  font-size: clamp(0.52rem, 0.9vw, 0.86rem);
-  font-weight: 400;
-  color: #f4e5c7;
+  display: none;
 }
 
 .pr-author span {
@@ -584,7 +584,6 @@
 .pr-print-content .pr-field strong { font-size: 14px; }
 .pr-print-content .pr-closing { font-size: 14px; max-width: 205mm; }
 .pr-print-content .pr-author img { width: 66mm; max-height: 19mm; }
-.pr-print-content .pr-author strong { font-size: 12px; }
 .pr-print-content .pr-author span { font-size: 10px; }
 .pr-print-content.layout-cinema { inset: 26mm 32mm 20mm; }
 .pr-print-content.layout-museum { inset: 23mm 31mm; }
