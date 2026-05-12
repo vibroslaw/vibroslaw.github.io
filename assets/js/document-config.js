@@ -1,7 +1,7 @@
 window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
 window.VH_DOCUMENTS.printMaster = {
-  version: '0.3.0-pr49-wall-edition',
+  version: '0.4.0-pr51-copy-lock',
   brand: {
     system: 'VERITAS HUMANUM',
     author: 'Piotr Jakub Lichwała / Vibrosław',
@@ -53,6 +53,16 @@ window.VH_DOCUMENTS.printMaster = {
       meta: { family: 'Arial', role: 'report metadata' }
     }
   },
+  languageLock: {
+    status: 'locked-pr51',
+    rules: [
+      'Keep central document copy short, ceremonial and printable.',
+      'Keep disclaimers as microprint where possible.',
+      'Do not imply institutional endorsement or official certification.',
+      'Use Witness Report as reflection language, not survey language.',
+      'Use authorial Veritas Humanum / Rap-Ort starting thoughts instead of uncertain historical quotations.'
+    ]
+  },
   events: {
     syd2026: {
       code: 'SYD',
@@ -82,25 +92,63 @@ window.VH_DOCUMENTS.printMaster = {
       copyProfiles: {
         standard: {
           pl: {
-            body: ['Dokument upamiętnia udział w projekcji audiowizualnej', '„Rap-Ort: Prawda Sumienia”', '', 'autorskim doświadczeniu muzyki, obrazu, słowa i ciszy,', 'poświęconym pamięci, świadectwu, sumieniu', 'oraz odpowiedzialności wobec prawdy.'],
-            closing: ['Pamiątkowy ślad wydarzenia, w którym historia', 'staje się pytaniem, które uczestnik zabiera ze sobą.'],
-            microprint: 'Pamiątkowy zapis uczestnictwa · nie jest dyplomem ani dokumentem urzędowym'
+            body: [
+              'Dokument upamiętnia udział w projekcji audiowizualnej',
+              '„Rap-Ort: Prawda Sumienia”',
+              '',
+              'autorskim doświadczeniu muzyki, obrazu, słowa i ciszy,',
+              'poświęconym pamięci, świadectwu, sumieniu',
+              'oraz odpowiedzialności człowieka wobec prawdy.'
+            ],
+            closing: [
+              'To pamiątkowy ślad spotkania z dziełem,',
+              'w którym historia nie kończy się na ekranie,',
+              'lecz zostaje w pytaniu zabranym dalej.'
+            ],
+            microprint: 'Pamiątkowy zapis uczestnictwa · dokument nieurzędowy · Veritas Humanum'
           },
           en: {
-            body: ['This document commemorates participation in the audiovisual screening of', '“Rap-Ort: Prawda Sumienia”', '', 'an authorial experience of music, image, words and silence,', 'devoted to memory, testimony, conscience', 'and human responsibility before truth.'],
-            closing: ['A commemorative trace of an event in which history', 'becomes a question the participant carries forward.'],
-            microprint: 'Commemorative record of participation · not an official certificate'
+            body: [
+              'This document commemorates participation in the audiovisual screening of',
+              '“Rap-Ort: Prawda Sumienia”',
+              '',
+              'an authorial experience of music, image, words and silence,',
+              'devoted to memory, testimony, conscience',
+              'and human responsibility before truth.'
+            ],
+            closing: [
+              'A commemorative trace of an encounter in which history',
+              'does not end on the screen,',
+              'but remains as a question carried forward.'
+            ],
+            microprint: 'Commemorative record of participation · non-official document · Veritas Humanum'
           }
         },
         wall: {
           pl: {
-            body: ['Dokument upamiętnia udział w projekcji audiowizualnej', '„Rap-Ort: Prawda Sumienia”', '', 'doświadczeniu pamięci, świadectwa, ciszy i odpowiedzialności.'],
-            closing: ['Prawda nie kończy się na ekranie.', 'Zostaje w pytaniu, które człowiek zabiera ze sobą.'],
+            body: [
+              'Dokument upamiętnia udział w projekcji audiowizualnej',
+              '„Rap-Ort: Prawda Sumienia”',
+              '',
+              'doświadczeniu pamięci, świadectwa, ciszy i odpowiedzialności.'
+            ],
+            closing: [
+              'Prawda nie kończy się na ekranie.',
+              'Zostaje w pytaniu, które człowiek zabiera ze sobą.'
+            ],
             microprint: 'Wall Edition · pamiątkowy zapis uczestnictwa · Veritas Humanum'
           },
           en: {
-            body: ['This document commemorates participation in the audiovisual screening of', '“Rap-Ort: Prawda Sumienia”', '', 'an experience of memory, testimony, silence and responsibility.'],
-            closing: ['Truth does not end on the screen.', 'It remains in the question a human being carries forward.'],
+            body: [
+              'This document commemorates participation in the audiovisual screening of',
+              '“Rap-Ort: Prawda Sumienia”',
+              '',
+              'an experience of memory, testimony, silence and responsibility.'
+            ],
+            closing: [
+              'Truth does not end on the screen.',
+              'It remains in the question a human being carries forward.'
+            ],
             microprint: 'Wall Edition · commemorative record of participation · Veritas Humanum'
           }
         }
@@ -132,14 +180,26 @@ window.VH_DOCUMENTS.printMaster = {
       format: 'a4Portrait',
       variant: 'archivalPaper',
       signatureMode: 'participant-signature-line',
+      copy: {
+        pl: {
+          reflectionLabel: 'Kilka słów, które zostają po projekcji',
+          signature: 'Podpis świadka doświadczenia',
+          microprint: 'Raport Świadka · osobisty dokument refleksji · Veritas Humanum'
+        },
+        en: {
+          reflectionLabel: 'A few words that remain after the screening',
+          signature: 'Signature of the witness to the experience',
+          microprint: 'Witness Report · personal reflection document · Veritas Humanum'
+        }
+      },
       quotes: {
         pl: [
-          { id: 'truth-trace', text: 'Prawda nie kończy się na ekranie. Zostaje w decyzji, którą człowiek podejmuje później.', source: 'Veritas Humanum — ślad po projekcji' },
-          { id: 'silence', text: 'Cisza po świadectwie nie jest pustką. Jest miejscem, w którym zaczyna pracować sumienie.', source: 'Rap-Ort — refleksja autorska' },
+          { id: 'truth-trace', text: 'Prawda nie kończy się na ekranie. Zostaje w pytaniu, które człowiek zabiera ze sobą.', source: 'Veritas Humanum — ślad po projekcji' },
+          { id: 'silence', text: 'Cisza po świadectwie nie jest pustką. To miejsce, w którym zaczyna pracować sumienie.', source: 'Rap-Ort — refleksja autorska' },
           { id: 'question-remains', text: 'Świadectwo zostało wypowiedziane. Teraz pytanie zostaje przy Tobie.', source: 'Veritas Humanum — pytanie końcowe' }
         ],
         en: [
-          { id: 'truth-trace', text: 'Truth does not end on the screen. It remains in the decision a human being makes afterwards.', source: 'Veritas Humanum — post-screening trace' },
+          { id: 'truth-trace', text: 'Truth does not end on the screen. It remains in the question a human being carries forward.', source: 'Veritas Humanum — post-screening trace' },
           { id: 'silence', text: 'The silence after testimony is not empty. It is the place where conscience begins to work.', source: 'Rap-Ort — authorial reflection' },
           { id: 'question-remains', text: 'The testimony has been spoken. Now the question remains with you.', source: 'Veritas Humanum — final question' }
         ]
