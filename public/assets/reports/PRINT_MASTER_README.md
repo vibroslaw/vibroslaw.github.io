@@ -51,6 +51,15 @@ Professional print / bleed candidate:
 - A4 landscape + 3 mm bleed
 - 300 DPI equivalent
 
+### A3 landscape Wall Edition
+
+Minimum render target:
+
+- `4961 × 3508 px`
+- 300 DPI equivalent
+
+If the background is only A4 landscape (`3508 × 2480 px`), the Wall Edition can still be generated, but it is an enlarged wall layout rather than a true native A3 print background. For final public use, prepare native A3 or bleed-safe backgrounds for the most important editions.
+
 ### A4 portrait
 
 Minimum:
@@ -69,7 +78,8 @@ Professional print / bleed candidate:
 Print backgrounds:
 
 - JPG quality 90–95%
-- usually 3–8 MB per background
+- usually 3–8 MB per A4 background
+- A3 backgrounds may be 6–14 MB depending on texture and compression
 - avoid oversharpening and excessive compression artefacts
 
 Preview backgrounds:
@@ -88,9 +98,30 @@ Preview backgrounds:
 - Event accents should be subtle: edition label, venue, date, micro-line, optional coordinates.
 - Avoid tourist-style graphics, large flags or decorative clutter.
 
+## Wall Edition rules
+
+The Wall Edition is intended for participants who want a document worth printing, framing and keeping.
+
+Recommended finish:
+
+- A3 landscape or A4 landscape depending on home printer / print shop
+- matte or silk matte paper
+- 250–300 gsm
+- high quality colour print
+- black frame or warm ivory passe-partout
+
+Design requirements:
+
+- use the Ceremonial Frame / Rama Uroczysta variant as the recommended wall variant
+- reduce central copy compared with the standard version
+- keep the disclaimer as microprint, not as a central message
+- keep the signature singular and calm
+- keep event accent subtle
+- avoid any random visual effect that changes the same document on each export
+
 ## Future font plan
 
-The current PR47 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
+The current PR47–PR49 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
 
 Recommended roles:
 
