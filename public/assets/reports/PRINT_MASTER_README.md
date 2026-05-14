@@ -4,6 +4,19 @@ This folder contains the visual assets used by the post-screening document syste
 
 The documents are not treated as screenshots of a web form. They are treated as printable artefacts of the Veritas Humanum / Rap-Ort experience.
 
+## PR54 hybrid vector print-master status
+
+PR54 introduces a hybrid print-master direction:
+
+- background remains a high-resolution raster image,
+- text is drawn as a PDF text layer whenever PDFLib is available,
+- local fonts are embedded when `fontkit` and the print font files are available,
+- StandardFonts are used only as a compatibility fallback,
+- A3 Wall Edition prefers native A3 backgrounds and warns when A4 fallback is used,
+- final signature and title assets are expected as separate production files.
+
+This is the key move away from treating the final PDF as a single screenshot-style canvas image.
+
 ## Required final asset names
 
 ### Record of Participation / Zapis Uczestnictwa
@@ -14,11 +27,32 @@ A4 landscape print backgrounds:
 - `participation-record-bg-02-museum-line-a4.jpg`
 - `participation-record-bg-03-ceremonial-frame-a4.jpg`
 
+A3 landscape Wall Edition backgrounds:
+
+- `participation-record-bg-01-archival-cinema-a3.jpg`
+- `participation-record-bg-02-museum-line-a3.jpg`
+- `participation-record-bg-03-ceremonial-frame-a3.jpg`
+
+Optional bleed backgrounds:
+
+- `participation-record-bg-01-archival-cinema-a4-bleed.jpg`
+- `participation-record-bg-02-museum-line-a4-bleed.jpg`
+- `participation-record-bg-03-ceremonial-frame-a4-bleed.jpg`
+- `participation-record-bg-01-archival-cinema-a3-bleed.jpg`
+- `participation-record-bg-02-museum-line-a3-bleed.jpg`
+- `participation-record-bg-03-ceremonial-frame-a3-bleed.jpg`
+
 Preview backgrounds:
 
 - `participation-record-bg-01-archival-cinema-preview.webp`
 - `participation-record-bg-02-museum-line-preview.webp`
 - `participation-record-bg-03-ceremonial-frame-preview.webp`
+
+Thumbnail backgrounds:
+
+- `participation-record-bg-01-archival-cinema-thumb.webp`
+- `participation-record-bg-02-museum-line-thumb.webp`
+- `participation-record-bg-03-ceremonial-frame-thumb.webp`
 
 ### Witness Report / Raport Świadka
 
@@ -26,15 +60,66 @@ A4 portrait print background:
 
 - `witness-report-bg-01-archival-paper-a4.jpg`
 
+Optional bleed background:
+
+- `witness-report-bg-01-archival-paper-a4-bleed.jpg`
+
 Preview background:
 
 - `witness-report-bg-01-archival-paper-preview.webp`
 
+Thumbnail background:
+
+- `witness-report-bg-01-archival-paper-thumb.webp`
+
+Optional paper texture:
+
+- `witness-report-paper-texture.webp`
+
 ### Signature
 
-- `author-signature-placeholder.svg`
+Final author signature assets:
 
-The author signature should appear only once in the final Participation Record print layout. The Witness Report should use a participant signature line, not the author signature, unless a future event explicitly requires author signing.
+- `author-signature-gold.svg`
+- `author-signature-dark.svg`
+- `author-signature-gold@2x.png`
+- `author-signature-dark@2x.png`
+
+Rules:
+
+- signature SVGs must be path-only,
+- no `<text>` elements,
+- no `AUTOR PROJEKTU` label inside the SVG,
+- no `project author` label inside the SVG,
+- transparent background,
+- the PDF engine adds the author role label separately.
+
+The legacy file `author-signature-placeholder.svg` is only a fallback and should not be treated as the final signature.
+
+### Title plates
+
+Title plates should be path-only SVGs in:
+
+- `title-plates/title-zapis-uczestnictwa-gold.svg`
+- `title-plates/title-record-of-participation-gold.svg`
+- `title-plates/title-raport-swiadka-dark.svg`
+- `title-plates/title-witness-report-dark.svg`
+
+Optional PNG fallbacks:
+
+- `title-plates/title-zapis-uczestnictwa-gold@2x.png`
+- `title-plates/title-record-of-participation-gold@2x.png`
+- `title-plates/title-raport-swiadka-dark@2x.png`
+- `title-plates/title-witness-report-dark@2x.png`
+
+### Event accents
+
+Sydney 2026 accents:
+
+- `event-accents/event-accent-syd2026-gold.svg`
+- `event-accents/event-accent-syd2026-dark.svg`
+
+Event accents must remain subtle and must not use tourist-style graphics, flags or fake seals.
 
 ## Recommended dimensions
 
@@ -98,6 +183,35 @@ Preview backgrounds:
 - Event accents should be subtle: edition label, venue, date, micro-line, optional coordinates.
 - Avoid tourist-style graphics, large flags or decorative clutter.
 
+## Vendor files
+
+The PR54 no-CDN target requires:
+
+- `/assets/vendor/pdf-lib.min.js`
+- `/assets/vendor/fontkit.umd.min.js`
+- `/assets/vendor/licenses/pdf-lib-LICENSE.md`
+- `/assets/vendor/licenses/pdf-lib-fontkit-LICENSE.md`
+- `/assets/vendor/VENDOR_MANIFEST.json`
+
+Vendor JavaScript files must be official distribution files from npm packages. Do not create placeholders.
+
+## Print fonts
+
+The print font stack is documented in:
+
+- `/public/assets/fonts/print/FONT_MANIFEST.json`
+
+Expected font roles:
+
+- Cinzel: monumental titles,
+- Source Serif 4: body copy,
+- EB Garamond: optional quotes,
+- IBM Plex Sans: metadata,
+- IBM Plex Mono: document numbers,
+- Courier Prime: Witness Report typewriter reflections.
+
+Each font folder must retain its own `OFL.txt` or license file.
+
 ## Wall Edition rules
 
 The Wall Edition is intended for participants who want a document worth printing, framing and keeping.
@@ -119,15 +233,6 @@ Design requirements:
 - keep event accent subtle
 - avoid any random visual effect that changes the same document on each export
 
-## Future font plan
+## Privacy rule
 
-The current PR47–PR49 architecture documents the font roles. Later print-engine PRs should embed licensed fonts locally.
-
-Recommended roles:
-
-- Monumental title serif: Veritas Humanum custom serif / Cormorant / EB Garamond / Cinzel style
-- Participation body: premium serif or restrained humanist sans
-- Witness Report reflection: premium typewriter style
-- Metadata / numbering: clean sans or mono
-
-Never commit private or unlicensed commercial font files without verifying licensing.
+All participant data must remain local in the browser. The generator must not submit names, places, reflections, document numbers or handoff notes to a server.
