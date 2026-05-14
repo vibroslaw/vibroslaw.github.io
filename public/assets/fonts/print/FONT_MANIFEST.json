@@ -1,0 +1,59 @@
+{
+  "cinzel": {
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "/public/assets/fonts/print/cinzel/OFL.txt",
+    "role": "monumental titles and title plates",
+    "files": {
+      "regular": "/public/assets/fonts/print/cinzel/Cinzel-Regular.ttf",
+      "semiBold": "/public/assets/fonts/print/cinzel/Cinzel-SemiBold.ttf",
+      "bold": "/public/assets/fonts/print/cinzel/Cinzel-Bold.ttf"
+    }
+  },
+  "source-serif-4": {
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "/public/assets/fonts/print/source-serif-4/OFL.txt",
+    "role": "document body text and refined printed copy",
+    "files": {
+      "regular": "/public/assets/fonts/print/source-serif-4/SourceSerif4-Regular.ttf",
+      "italic": "/public/assets/fonts/print/source-serif-4/SourceSerif4-Italic.ttf",
+      "semiBold": "/public/assets/fonts/print/source-serif-4/SourceSerif4-SemiBold.ttf"
+    }
+  },
+  "eb-garamond": {
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "/public/assets/fonts/print/eb-garamond/OFL.txt",
+    "role": "optional quotes and reflective italic passages",
+    "files": {
+      "regular": "/public/assets/fonts/print/eb-garamond/EBGaramond-Regular.ttf",
+      "italic": "/public/assets/fonts/print/eb-garamond/EBGaramond-Italic.ttf"
+    }
+  },
+  "ibm-plex-sans": {
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "/public/assets/fonts/print/ibm-plex-sans/OFL.txt",
+    "role": "metadata labels and institutional UI copy",
+    "files": {
+      "regular": "/public/assets/fonts/print/ibm-plex-sans/IBMPlexSans-Regular.ttf",
+      "semiBold": "/public/assets/fonts/print/ibm-plex-sans/IBMPlexSans-SemiBold.ttf"
+    }
+  },
+  "ibm-plex-mono": {
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "/public/assets/fonts/print/ibm-plex-mono/OFL.txt",
+    "role": "document numbers and archival numbering",
+    "files": {
+      "regular": "/public/assets/fonts/print/ibm-plex-mono/IBMPlexMono-Regular.ttf",
+      "semiBold": "/public/assets/fonts/print/ibm-plex-mono/IBMPlexMono-SemiBold.ttf"
+    }
+  },
+  "courier-prime": {
+    "license": "SIL Open Font License 1.1",
+    "licenseFile": "/public/assets/fonts/print/courier-prime/OFL.txt",
+    "role": "Witness Report typewriter reflection text",
+    "files": {
+      "regular": "/public/assets/fonts/print/courier-prime/CourierPrime-Regular.ttf",
+      "italic": "/public/assets/fonts/print/courier-prime/CourierPrime-Italic.ttf",
+      "bold": "/public/assets/fonts/print/courier-prime/CourierPrime-Bold.ttf"
+    }
+  }
+}
