@@ -2,6 +2,7 @@ window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
 window.VH_DOCUMENTS.preflight = (() => {
   const imageCache = new Map();
+  const headCache = new Map();
 
   function absolute(path) {
     return new URL(path, window.location.origin).href;
@@ -54,5 +55,46 @@ window.VH_DOCUMENTS.preflight = (() => {
     return `${size.width} × ${size.height}px`;
   }
 
-  return { absolute, loadImage, resolveFirst, imageSize, meetsMinimum, constrainedDevice, formatSize };
+  async function fileExists(path) {
+    if (!path) return false;
+    const url = absolute(path);
+    if (headCache.has(url)) return headCache.get(url);
+    const promise = fetch(url, { method: 'HEAD', cache: 'no-store' }).then((res) => res.ok).catch(() => false);
+    headCache.set(url, promise);
+    return promise;
+  }
+
+  async function vendorStatus() {
+    return {
+      pdfLibGlobal: Boolean(window.PDFLib?.PDFDocument),
+      fontkitGlobal: Boolean(window.fontkit || window.Fontkit),
+      pdfLibLocal: await fileExists('/assets/vendor/pdf-lib.min.js'),
+      fontkitLocal: await fileExists('/assets/vendor/fontkit.umd.min.js')
+    };
+  }
+
+  return { absolute, loadImage, resolveFirst, imageSize, meetsMinimum, constrainedDevice, formatSize, fileExists, vendorStatus };
+})();
+
+(() => {
+  const isDocumentPage = document.querySelector('[data-participation-record], [data-witness-report]');
+  if (!isDocumentPage) return;
+
+  const cssId = 'vh-document-quality-css';
+  if (!document.getElementById(cssId)) {
+    const link = document.createElement('link');
+    link.id = cssId;
+    link.rel = 'stylesheet';
+    link.href = '/assets/css/document-quality.css';
+    document.head.appendChild(link);
+  }
+
+  const scriptId = 'vh-document-quality-js';
+  if (!document.getElementById(scriptId)) {
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = '/assets/js/document-quality.js';
+    script.defer = true;
+    document.body.appendChild(script);
+  }
 })();
