@@ -1,5 +1,67 @@
 window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
+(() => {
+  const master = window.VH_DOCUMENTS.printMaster;
+  if (!master) return;
+
+  master.version = '0.6.0-pr54-hybrid-vector-print-master';
+  master.assets = master.assets || {};
+  master.assets.signatures = {
+    gold: '/public/assets/reports/author-signature-gold.svg',
+    dark: '/public/assets/reports/author-signature-dark.svg',
+    goldPng: '/public/assets/reports/author-signature-gold@2x.png',
+    darkPng: '/public/assets/reports/author-signature-dark@2x.png',
+    legacy: master.assets.signature || '/public/assets/reports/author-signature-placeholder.svg'
+  };
+  master.assets.titlePlates = {
+    participation: {
+      pl: '/public/assets/reports/title-plates/title-zapis-uczestnictwa-gold.svg',
+      en: '/public/assets/reports/title-plates/title-record-of-participation-gold.svg'
+    },
+    witnessReport: {
+      pl: '/public/assets/reports/title-plates/title-raport-swiadka-dark.svg',
+      en: '/public/assets/reports/title-plates/title-witness-report-dark.svg'
+    }
+  };
+  master.assets.eventAccents = {
+    syd2026: {
+      gold: '/public/assets/reports/event-accents/event-accent-syd2026-gold.svg',
+      dark: '/public/assets/reports/event-accents/event-accent-syd2026-dark.svg'
+    }
+  };
+
+  const participation = master.assets.participation || {};
+  if (participation.cinema) participation.cinema.a3 = ['/public/assets/reports/participation-record-bg-01-archival-cinema-a3.jpg', ...(participation.cinema.a3 || [])];
+  if (participation.museum) participation.museum.a3 = ['/public/assets/reports/participation-record-bg-02-museum-line-a3.jpg', ...(participation.museum.a3 || [])];
+  if (participation.ceremonial) participation.ceremonial.a3 = ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a3.jpg', ...(participation.ceremonial.a3 || [])];
+
+  master.vendors = {
+    pdfLib: '/assets/vendor/pdf-lib.min.js',
+    fontkit: '/assets/vendor/fontkit.umd.min.js',
+    manifest: '/assets/vendor/VENDOR_MANIFEST.json'
+  };
+  master.fonts = {
+    titleSerifRegular: '/public/assets/fonts/print/cinzel/Cinzel-Regular.ttf',
+    titleSerifSemiBold: '/public/assets/fonts/print/cinzel/Cinzel-SemiBold.ttf',
+    bodySerifRegular: '/public/assets/fonts/print/source-serif-4/SourceSerif4-Regular.ttf',
+    bodySerifItalic: '/public/assets/fonts/print/source-serif-4/SourceSerif4-Italic.ttf',
+    metaSansRegular: '/public/assets/fonts/print/ibm-plex-sans/IBMPlexSans-Regular.ttf',
+    metaSansSemiBold: '/public/assets/fonts/print/ibm-plex-sans/IBMPlexSans-SemiBold.ttf',
+    numberMonoRegular: '/public/assets/fonts/print/ibm-plex-mono/IBMPlexMono-Regular.ttf',
+    typewriterRegular: '/public/assets/fonts/print/courier-prime/CourierPrime-Regular.ttf'
+  };
+  master.pr54 = {
+    status: 'hybrid-vector-engine-active',
+    rules: [
+      'Use raster backgrounds with vector PDF text whenever PDFLib is available.',
+      'Use local embedded fonts when fontkit and print fonts are available.',
+      'Use final path-only signature and title assets when present.',
+      'Prefer native A3 assets for Wall Edition and warn when A4 fallback is used.',
+      'Keep all participant data local in the browser.'
+    ]
+  };
+})();
+
 window.VH_DOCUMENTS.preflight = (() => {
   const imageCache = new Map();
   const headCache = new Map();
