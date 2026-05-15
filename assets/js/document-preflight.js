@@ -4,7 +4,7 @@ window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
   const master = window.VH_DOCUMENTS.printMaster;
   if (!master) return;
 
-  master.version = '0.6.0-pr54-hybrid-vector-print-master';
+  master.version = '0.6.1-pr54-local-public-vendors';
   master.assets = master.assets || {};
   master.assets.signatures = {
     gold: '/public/assets/reports/author-signature-gold.svg',
@@ -36,9 +36,9 @@ window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
   if (participation.ceremonial) participation.ceremonial.a3 = ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a3.jpg', ...(participation.ceremonial.a3 || [])];
 
   master.vendors = {
-    pdfLib: '/assets/vendor/pdf-lib.min.js',
-    fontkit: '/assets/vendor/fontkit.umd.min.js',
-    manifest: '/assets/vendor/VENDOR_MANIFEST.json'
+    pdfLib: '/public/assets/vendor/pdf-lib.min.js',
+    fontkit: '/public/assets/vendor/fontkit.umd.min.js',
+    manifest: '/public/assets/vendor/VENDOR_MANIFEST.json'
   };
   master.fonts = {
     titleSerifRegular: '/public/assets/fonts/print/cinzel/Cinzel-Regular.ttf',
@@ -130,8 +130,8 @@ window.VH_DOCUMENTS.preflight = (() => {
     return {
       pdfLibGlobal: Boolean(window.PDFLib?.PDFDocument),
       fontkitGlobal: Boolean(window.fontkit || window.Fontkit),
-      pdfLibLocal: await fileExists('/assets/vendor/pdf-lib.min.js'),
-      fontkitLocal: await fileExists('/assets/vendor/fontkit.umd.min.js')
+      pdfLibLocal: await fileExists('/public/assets/vendor/pdf-lib.min.js'),
+      fontkitLocal: await fileExists('/public/assets/vendor/fontkit.umd.min.js')
     };
   }
 
