@@ -3,11 +3,14 @@
   if (!root || !window.PDFLib) return;
 
   const lang = root.dataset.lang === 'en' ? 'en' : 'pl';
-  const { PDFDocument } = window.PDFLib;
-  const W = 2480;
-  const H = 3508;
-  const PW = 595.28;
-  const PH = 841.89;
+  const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+
+  const PAGE = {
+    pxW: 2480,
+    pxH: 3508,
+    ptW: 595.28,
+    ptH: 841.89
+  };
 
   const ASSETS = {
     background: [
@@ -21,13 +24,24 @@
     }
   };
 
+  const FONT_PATHS = {
+    title: '/public/assets/fonts/print/cinzel/Cinzel-SemiBold.ttf',
+    body: '/public/assets/fonts/print/source-serif-4/SourceSerif4-Regular.ttf',
+    bodyItalic: '/public/assets/fonts/print/source-serif-4/SourceSerif4-Italic.ttf',
+    quoteItalic: '/public/assets/fonts/print/eb-garamond/EBGaramond-Italic.ttf',
+    meta: '/public/assets/fonts/print/ibm-plex-sans/IBMPlexSans-Regular.ttf',
+    metaBold: '/public/assets/fonts/print/ibm-plex-sans/IBMPlexSans-SemiBold.ttf',
+    mono: '/public/assets/fonts/print/ibm-plex-mono/IBMPlexMono-Regular.ttf',
+    typewriter: '/public/assets/fonts/print/courier-prime/CourierPrime-Regular.ttf'
+  };
+
   const C = lang === 'pl' ? {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     title: 'RAPORT ŚWIADKA',
     button: 'Pobierz Raport Świadka PDF',
-    preparing: 'Przygotowuję Raport Świadka jako PDF…',
-    ready: 'Raport Świadka został przygotowany i pobrany.',
-    error: 'Nie udało się wygenerować Raportu Świadka. Spróbuj ponownie.',
+    preparing: 'Przygotowuję finalny Raport Świadka jako print-master PDF…',
+    ready: 'Raport Świadka został przygotowany jako finalny print-master PDF.',
+    error: 'Nie udało się wygenerować Raportu Świadka. Sprawdź konsolę lub spróbuj ponownie.',
     missing: 'Wpisz kilka słów, które zostają po projekcji.',
     name: 'Imię i nazwisko',
     date: 'Data',
@@ -38,14 +52,15 @@
     fallbackPlace: 'Miejsce wydarzenia',
     file: 'Rap-Ort-Raport-Swiadka',
     finale: 'Raport Świadka został zachowany jako osobisty ślad refleksji.',
-    microprint: 'To nie jest test wiedzy ani dokument urzędowy. To osobisty ślad refleksji po projekcji.'
+    microprint: 'To nie jest test wiedzy ani dokument urzędowy. To osobisty ślad refleksji po projekcji.',
+    fontFallback: 'Uwaga: użyto awaryjnych fontów PDF. Dla finalnej jakości sprawdź lokalne pliki fontów.'
   } : {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     title: 'WITNESS REPORT',
     button: 'Download Witness Report PDF',
-    preparing: 'Preparing your Witness Report PDF…',
-    ready: 'Witness Report has been prepared and downloaded.',
-    error: 'Could not generate the Witness Report. Try again.',
+    preparing: 'Preparing the final Witness Report print-master PDF…',
+    ready: 'Witness Report has been prepared as a final print-master PDF.',
+    error: 'Could not generate the Witness Report. Check the console or try again.',
     missing: 'Write a few words that remain after the screening.',
     name: 'Name',
     date: 'Date',
@@ -56,7 +71,8 @@
     fallbackPlace: 'Event place',
     file: 'Rap-Ort-Witness-Report',
     finale: 'The Witness Report has been preserved as a personal trace of reflection.',
-    microprint: 'This is not a knowledge test or an official document. It is a personal trace of reflection after the screening.'
+    microprint: 'This is not a knowledge test or an official document. It is a personal trace of reflection after the screening.',
+    fontFallback: 'Note: PDF fallback fonts were used. For final quality, check local font files.'
   };
 
   const events = {
@@ -86,12 +102,43 @@
   const preview = $('[data-wr-preview]');
   const counter = $('[data-wr-counter]');
   const form = $('[data-wr-form]');
+
   if (button) button.textContent = C.button;
 
   const setStatus = (msg) => { if (status) status.textContent = msg || ''; };
-  const q = () => quotes.find((x) => x[0] === f('quote')?.value) || quotes[0];
-  const eventKey = () => f('eventPreset')?.value || 'custom';
   const abs = (path) => new URL(path, window.location.origin).href;
+  const q = () => quotes.find((item) => item[0] === f('quote')?.value) || quotes[0];
+  const eventKey = () => f('eventPreset')?.value || 'custom';
+  const x = (px) => px * (PAGE.ptW / PAGE.pxW);
+  const y = (px) => PAGE.ptH - px * (PAGE.ptH / PAGE.pxH);
+  const s = (px) => px * (PAGE.ptW / PAGE.pxW);
+
+  function stripDiacritics(value) {
+    return String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/Ł/g, 'L')
+      .replace(/ł/g, 'l');
+  }
+
+  function safeForFont(value, fonts) {
+    return fonts.custom ? String(value || '') : stripDiacritics(value);
+  }
+
+  async function fetchBytes(path) {
+    const res = await fetch(abs(path), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Missing asset: ${path}`);
+    return new Uint8Array(await res.arrayBuffer());
+  }
+
+  async function firstBytes(paths) {
+    for (const path of paths.filter(Boolean)) {
+      try {
+        return { path, bytes: await fetchBytes(path) };
+      } catch (_) {}
+    }
+    return null;
+  }
 
   async function loadImage(path) {
     return new Promise((resolve) => {
@@ -104,7 +151,7 @@
   }
 
   async function firstImage(paths) {
-    for (const path of paths) {
+    for (const path of paths.filter(Boolean)) {
       const img = await loadImage(path);
       if (img) return img;
     }
@@ -112,24 +159,27 @@
   }
 
   function reportNumber() {
-    const k = `vhWitnessReport:${lang}:${eventKey()}`;
-    let v = localStorage.getItem(k);
-    if (!v) {
-      const y = (f('eventDate')?.value || String(new Date().getFullYear())).slice(0, 4);
+    const key = `vhWitnessReport:${lang}:${eventKey()}`;
+    let value = localStorage.getItem(key);
+    if (!value) {
+      const year = (f('eventDate')?.value || String(new Date().getFullYear())).slice(0, 4);
       const code = events[eventKey()]?.code || 'CUSTOM';
-      v = `VH-WR-${y}-${code}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
-      localStorage.setItem(k, v);
+      value = `VH-WR-${year}-${code}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
+      localStorage.setItem(key, value);
     }
-    return v;
+    return value;
   }
 
   function dateLabel() {
-    const e = events[eventKey()];
-    if (e) return e[lang].label;
-    const v = f('eventDate')?.value;
-    if (!v) return lang === 'pl' ? 'Data wydarzenia' : 'Event date';
-    try { return new Intl.DateTimeFormat(lang === 'pl' ? 'pl-PL' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(`${v}T00:00:00`)); }
-    catch (_) { return v; }
+    const event = events[eventKey()];
+    if (event) return event[lang].label;
+    const value = f('eventDate')?.value;
+    if (!value) return lang === 'pl' ? 'Data wydarzenia' : 'Event date';
+    try {
+      return new Intl.DateTimeFormat(lang === 'pl' ? 'pl-PL' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(`${value}T00:00:00`));
+    } catch (_) {
+      return value;
+    }
   }
 
   function data() {
@@ -144,15 +194,17 @@
   }
 
   function applyPreset() {
-    const e = events[eventKey()];
-    if (e) {
-      if (f('place')) f('place').value = e[lang].place;
-      if (f('eventDate')) f('eventDate').value = e.date;
+    const event = events[eventKey()];
+    if (event) {
+      if (f('place')) f('place').value = event[lang].place;
+      if (f('eventDate')) f('eventDate').value = event.date;
     }
     renderPreview();
   }
 
-  function esc(v) { return String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+  function esc(value) {
+    return String(value).replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+  }
 
   function renderPreview() {
     const d = data();
@@ -173,138 +225,280 @@
     preview.querySelector('[data-wr-signature]').textContent = C.signature;
   }
 
-  function font(s, fam = 'Georgia', w = '400', style = 'normal') { return `${style} ${w} ${Math.round(s)}px ${fam}`; }
-  function wrap(ctx, text, max) {
-    const words = String(text || '').split(/\s+/).filter(Boolean);
-    const lines = [];
-    let line = '';
-    for (const word of words) {
-      const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > max && line) { lines.push(line); line = word; }
-      else line = test;
-    }
-    if (line) lines.push(line);
-    return lines;
-  }
-
-  function centered(ctx, lines, x, y, h) { lines.forEach((line, i) => ctx.fillText(line, x, y + i * h)); }
-
   function drawFallbackPaper(ctx) {
-    const g = ctx.createLinearGradient(0, 0, W, H);
-    g.addColorStop(0, '#f4e8cc');
-    g.addColorStop(0.5, '#d7c79f');
-    g.addColorStop(1, '#efe4c7');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
+    const gradient = ctx.createLinearGradient(0, 0, PAGE.pxW, PAGE.pxH);
+    gradient.addColorStop(0, '#f4e8cc');
+    gradient.addColorStop(0.5, '#d7c79f');
+    gradient.addColorStop(1, '#efe4c7');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, PAGE.pxW, PAGE.pxH);
+    ctx.strokeStyle = 'rgba(66,46,22,.22)';
+    ctx.lineWidth = 7;
+    ctx.strokeRect(150, 150, PAGE.pxW - 300, PAGE.pxH - 300);
+    ctx.strokeStyle = 'rgba(66,46,22,.12)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(210, 210, PAGE.pxW - 420, PAGE.pxH - 420);
   }
 
-  async function drawPaper(ctx) {
-    const bg = await firstImage(ASSETS.background);
-    if (bg) ctx.drawImage(bg, 0, 0, W, H);
+  async function composeBackgroundBytes() {
+    const canvas = document.createElement('canvas');
+    canvas.width = PAGE.pxW;
+    canvas.height = PAGE.pxH;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const background = await firstImage(ASSETS.background);
+    if (background) ctx.drawImage(background, 0, 0, PAGE.pxW, PAGE.pxH);
     else drawFallbackPaper(ctx);
 
     const texture = await firstImage(ASSETS.texture);
     if (texture) {
       ctx.save();
-      ctx.globalAlpha = 0.16;
+      ctx.globalAlpha = 0.13;
       const pattern = ctx.createPattern(texture, 'repeat');
       if (pattern) {
         ctx.fillStyle = pattern;
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillRect(0, 0, PAGE.pxW, PAGE.pxH);
       }
       ctx.restore();
     }
 
     ctx.save();
-    const veil = ctx.createRadialGradient(W / 2, H * 0.48, 180, W / 2, H * 0.48, 1420);
-    veil.addColorStop(0, 'rgba(255,250,235,.18)');
-    veil.addColorStop(1, 'rgba(255,250,235,0)');
+    const veil = ctx.createRadialGradient(PAGE.pxW / 2, PAGE.pxH * 0.47, 130, PAGE.pxW / 2, PAGE.pxH * 0.47, 1450);
+    veil.addColorStop(0, 'rgba(255,250,236,.16)');
+    veil.addColorStop(1, 'rgba(255,250,236,0)');
     ctx.fillStyle = veil;
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillRect(0, 0, PAGE.pxW, PAGE.pxH);
     ctx.restore();
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.96));
+    return new Uint8Array(await blob.arrayBuffer());
   }
 
-  function drawMetaField(ctx, label, value, x, y, maxWidth = 820) {
-    ctx.strokeStyle = 'rgba(66,46,22,.26)';
-    ctx.lineWidth = 2.4;
-    ctx.beginPath();
-    ctx.moveTo(x - maxWidth / 2, y);
-    ctx.lineTo(x + maxWidth / 2, y);
-    ctx.stroke();
-    ctx.font = font(33, 'Arial', '600');
-    ctx.fillStyle = 'rgba(66,46,22,.52)';
-    ctx.fillText(label.toUpperCase(), x, y + 54);
-    ctx.font = font(44, 'Georgia');
-    ctx.fillStyle = '#2a1d11';
-    ctx.fillText(value, x, y + 118, maxWidth);
+  async function loadFonts(pdfDoc) {
+    const kit = window.fontkit || window.Fontkit;
+    if (!kit || !pdfDoc.registerFontkit) throw new Error('fontkit unavailable');
+    pdfDoc.registerFontkit(kit);
+
+    const load = async (path) => {
+      try {
+        const bytes = await fetchBytes(path);
+        return await pdfDoc.embedFont(bytes, { subset: true });
+      } catch (err) {
+        console.warn(`Witness Report font unavailable: ${path}`, err);
+        return null;
+      }
+    };
+
+    const body = await load(FONT_PATHS.body);
+    const meta = await load(FONT_PATHS.meta);
+    const fallback = body || meta;
+    if (!fallback) throw new Error('custom fonts unavailable');
+
+    return {
+      custom: true,
+      title: await load(FONT_PATHS.title) || fallback,
+      body: body || fallback,
+      bodyItalic: await load(FONT_PATHS.bodyItalic) || body || fallback,
+      quoteItalic: await load(FONT_PATHS.quoteItalic) || await load(FONT_PATHS.bodyItalic) || body || fallback,
+      meta: meta || fallback,
+      metaBold: await load(FONT_PATHS.metaBold) || meta || fallback,
+      mono: await load(FONT_PATHS.mono) || meta || fallback,
+      typewriter: await load(FONT_PATHS.typewriter) || body || fallback
+    };
   }
 
-  async function renderCanvas(d) {
-    const canvas = document.createElement('canvas');
-    canvas.width = W;
-    canvas.height = H;
-    const ctx = canvas.getContext('2d', { alpha: false });
-    await drawPaper(ctx);
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = 'rgba(36,24,13,.72)';
-    ctx.font = font(45, 'Arial', '700');
-    ctx.fillText(C.project, W / 2, 350);
-
-    ctx.font = font(126, 'Georgia', '500');
-    ctx.fillStyle = '#24180d';
-    ctx.fillText(C.title, W / 2, 545);
-
-    ctx.font = font(58, 'Georgia', '400', 'italic');
-    ctx.fillStyle = '#2b2015';
-    const qLines = wrap(ctx, `“${d.quote[1]}”`, 1680).slice(0, 4);
-    centered(ctx, qLines, W / 2, 785, 82);
-
-    ctx.font = font(35, 'Arial', '600');
-    ctx.fillStyle = 'rgba(44,31,18,.58)';
-    ctx.fillText(d.quote[2], W / 2, 785 + qLines.length * 82 + 28);
-
-    ctx.strokeStyle = 'rgba(66,46,22,.18)';
-    ctx.lineWidth = 2.4;
-    ctx.beginPath();
-    ctx.moveTo(470, 1200);
-    ctx.lineTo(2010, 1200);
-    ctx.moveTo(470, 1935);
-    ctx.lineTo(2010, 1935);
-    ctx.stroke();
-
-    ctx.font = font(58, 'Georgia');
-    ctx.fillStyle = '#24180d';
-    const reflection = wrap(ctx, d.reflection, 1660).slice(0, 7);
-    centered(ctx, reflection, W / 2, 1340, 82);
-
-    drawMetaField(ctx, C.name, d.name, 720, 2180, 760);
-    drawMetaField(ctx, C.date, d.date, 1760, 2180, 760);
-    drawMetaField(ctx, C.place, d.place, 720, 2480, 760);
-    drawMetaField(ctx, C.number, d.number, 1760, 2480, 760);
-
-    ctx.strokeStyle = 'rgba(66,46,22,.3)';
-    ctx.lineWidth = 2.2;
-    ctx.beginPath();
-    ctx.moveTo(620, 2920);
-    ctx.lineTo(1860, 2920);
-    ctx.stroke();
-
-    ctx.font = font(38, 'Arial', '600');
-    ctx.fillStyle = 'rgba(66,46,22,.56)';
-    ctx.fillText(C.signature.toUpperCase(), W / 2, 2990);
-
-    ctx.font = font(28, 'Arial');
-    ctx.fillStyle = 'rgba(66,46,22,.42)';
-    ctx.fillText(C.microprint.toUpperCase(), W / 2, 3308, 1760);
-
-    return canvas;
+  async function fallbackFonts(pdfDoc) {
+    return {
+      custom: false,
+      title: await pdfDoc.embedFont(StandardFonts.TimesRomanBold),
+      body: await pdfDoc.embedFont(StandardFonts.TimesRoman),
+      bodyItalic: await pdfDoc.embedFont(StandardFonts.TimesRomanItalic),
+      quoteItalic: await pdfDoc.embedFont(StandardFonts.TimesRomanItalic),
+      meta: await pdfDoc.embedFont(StandardFonts.Helvetica),
+      metaBold: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
+      mono: await pdfDoc.embedFont(StandardFonts.Courier),
+      typewriter: await pdfDoc.embedFont(StandardFonts.Courier)
+    };
   }
 
-  const canvasJpg = (c) => new Promise((res, rej) => c.toBlob((b) => (b ? b.arrayBuffer().then((x) => res(new Uint8Array(x))).catch(rej) : rej(new Error('Canvas export failed'))), 'image/jpeg', 0.96));
-  function safe(t) { return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 120); }
-  function download(bytes, name) { const blob = new Blob([bytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 3000); }
+  function wrap(text, font, size, maxWidth, fonts) {
+    const words = safeForFont(text, fonts).split(/\s+/).filter(Boolean);
+    const lines = [];
+    let line = '';
+    words.forEach((word) => {
+      const test = line ? `${line} ${word}` : word;
+      if (font.widthOfTextAtSize(test, size) > maxWidth && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function drawText(page, text, opts, fonts) {
+    page.drawText(safeForFont(text, fonts), opts);
+  }
+
+  function drawCentered(page, text, font, size, centerX, baselineY, color, fonts) {
+    const value = safeForFont(text, fonts);
+    const width = font.widthOfTextAtSize(value, size);
+    page.drawText(value, { x: centerX - width / 2, y: baselineY, size, font, color });
+  }
+
+  function drawWrappedCentered(page, text, font, size, centerX, startY, maxWidth, color, lineHeight, fonts, maxLines = 99) {
+    const lines = wrap(text, font, size, maxWidth, fonts).slice(0, maxLines);
+    lines.forEach((line, index) => {
+      const width = font.widthOfTextAtSize(line, size);
+      page.drawText(line, { x: centerX - width / 2, y: startY - index * lineHeight, size, font, color });
+    });
+    return lines.length;
+  }
+
+  function drawWrappedLeft(page, text, font, size, leftX, startY, maxWidth, color, lineHeight, fonts, maxLines = 99) {
+    const lines = wrap(text, font, size, maxWidth, fonts).slice(0, maxLines);
+    lines.forEach((line, index) => page.drawText(line, { x: leftX, y: startY - index * lineHeight, size, font, color }));
+    return lines.length;
+  }
+
+  function line(page, x1, y1, x2, y2, color, thickness = 0.6) {
+    page.drawLine({ start: { x: x1, y: y1 }, end: { x: x2, y: y2 }, color, thickness });
+  }
+
+  async function svgToPngBytes(svgBytes, width, height) {
+    const svgText = new TextDecoder('utf-8').decode(svgBytes);
+    const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    try {
+      const img = new Image();
+      img.decoding = 'async';
+      await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      const png = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      return new Uint8Array(await png.arrayBuffer());
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  async function embedTitlePlate(pdfDoc) {
+    const asset = await firstBytes([ASSETS.titlePlate[lang]]);
+    if (!asset) return null;
+    try {
+      const pngBytes = asset.path.toLowerCase().endsWith('.svg') ? await svgToPngBytes(asset.bytes, 2400, 520) : asset.bytes;
+      return await pdfDoc.embedPng(pngBytes);
+    } catch (err) {
+      console.warn('Witness Report title plate unavailable.', err);
+      return null;
+    }
+  }
+
+  function drawMetaField(page, label, value, cx, topY, width, fonts, colors) {
+    line(page, cx - width / 2, topY, cx + width / 2, topY, colors.line, 0.55);
+    drawCentered(page, String(label).toUpperCase(), fonts.metaBold, s(22), cx, topY - s(44), colors.muted, fonts);
+    drawWrappedCentered(page, value, fonts.body, s(34), cx, topY - s(98), width - s(30), colors.ink, s(44), fonts, 2);
+  }
+
+  async function buildPdf(d) {
+    const pdfDoc = await PDFDocument.create();
+    let fonts;
+    try {
+      fonts = await loadFonts(pdfDoc);
+    } catch (err) {
+      console.warn('Witness Report custom fonts unavailable.', err);
+      fonts = await fallbackFonts(pdfDoc);
+      setStatus(C.fontFallback);
+    }
+
+    pdfDoc.setTitle(`${C.title} — ${d.number}`);
+    pdfDoc.setAuthor('Piotr Jakub Lichwała / Vibrosław');
+    pdfDoc.setSubject('Rap-Ort: Prawda Sumienia — Witness Report');
+    pdfDoc.setCreator('Veritas Humanum Witness Report Final Master');
+    pdfDoc.setProducer('Veritas Humanum local browser PDF generator');
+
+    const page = pdfDoc.addPage([PAGE.ptW, PAGE.ptH]);
+    const bgBytes = await composeBackgroundBytes();
+    const bg = await pdfDoc.embedJpg(bgBytes);
+    page.drawImage(bg, { x: 0, y: 0, width: PAGE.ptW, height: PAGE.ptH });
+
+    const colors = {
+      ink: rgb(0.15, 0.09, 0.045),
+      soft: rgb(0.23, 0.16, 0.09),
+      muted: rgb(0.39, 0.29, 0.18),
+      line: rgb(0.46, 0.34, 0.2),
+      faint: rgb(0.54, 0.43, 0.28)
+    };
+
+    const cx = PAGE.ptW / 2;
+    drawCentered(page, C.project, fonts.metaBold, s(39), cx, y(335), colors.muted, fonts);
+
+    const plate = await embedTitlePlate(pdfDoc);
+    if (plate) {
+      const width = x(1580);
+      const height = width * (plate.height / plate.width);
+      page.drawImage(plate, { x: cx - width / 2, y: y(560) - height / 2, width, height });
+    } else {
+      drawCentered(page, C.title, fonts.title, s(112), cx, y(555), colors.ink, fonts);
+    }
+
+    drawWrappedCentered(page, `“${d.quote[1]}”`, fonts.quoteItalic, s(50), cx, y(780), x(1670), colors.soft, s(74), fonts, 4);
+    drawCentered(page, d.quote[2], fonts.meta, s(29), cx, y(1038), colors.muted, fonts);
+
+    line(page, x(470), y(1195), x(2010), y(1195), colors.line, 0.45);
+    line(page, x(470), y(1945), x(2010), y(1945), colors.line, 0.45);
+
+    const reflectionText = d.reflection;
+    let reflectionSize = s(46);
+    let reflectionLines = wrap(reflectionText, fonts.typewriter, reflectionSize, x(1600), fonts);
+    while (reflectionLines.length > 8 && reflectionSize > s(36)) {
+      reflectionSize -= s(2);
+      reflectionLines = wrap(reflectionText, fonts.typewriter, reflectionSize, x(1600), fonts);
+    }
+    reflectionLines.slice(0, 8).forEach((lineText, index) => {
+      const width = fonts.typewriter.widthOfTextAtSize(lineText, reflectionSize);
+      page.drawText(lineText, { x: cx - width / 2, y: y(1340) - index * s(72), size: reflectionSize, font: fonts.typewriter, color: colors.ink });
+    });
+
+    drawMetaField(page, C.name, d.name, x(720), y(2190), x(760), fonts, colors);
+    drawMetaField(page, C.date, d.date, x(1760), y(2190), x(760), fonts, colors);
+    drawMetaField(page, C.place, d.place, x(720), y(2485), x(760), fonts, colors);
+    drawMetaField(page, C.number, d.number, x(1760), y(2485), x(760), fonts, colors);
+
+    line(page, x(620), y(2920), x(1860), y(2920), colors.line, 0.65);
+    drawCentered(page, C.signature.toUpperCase(), fonts.meta, s(31), cx, y(2992), colors.muted, fonts);
+
+    drawWrappedCentered(page, C.microprint.toUpperCase(), fonts.meta, s(18), cx, y(3308), x(1750), colors.faint, s(28), fonts, 2);
+
+    return pdfDoc.save({ useObjectStreams: true });
+  }
+
+  function safeFile(text) {
+    return String(text || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 120);
+  }
+
+  function download(bytes, name) {
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+  }
 
   async function createPdf() {
     const d = data();
@@ -312,21 +506,15 @@
     button.disabled = true;
     try {
       setStatus(C.preparing);
-      const canvas = await renderCanvas(d);
-      const jpg = await canvasJpg(canvas);
-      const pdf = await PDFDocument.create();
-      pdf.setTitle(`${C.title} — ${d.number}`);
-      pdf.setAuthor('Piotr Jakub Lichwała / Vibrosław');
-      pdf.setCreator('Veritas Humanum Witness Report Generator');
-      const page = pdf.addPage([PW, PH]);
-      const img = await pdf.embedJpg(jpg);
-      page.drawImage(img, { x: 0, y: 0, width: PW, height: PH });
-      const bytes = await pdf.save({ useObjectStreams: true });
-      download(bytes, `${C.file}-${safe(d.number)}.pdf`);
-      setStatus(C.ready);
-      if (finale) { finale.hidden = false; finale.textContent = C.finale; }
-    } catch (e) {
-      console.error(e);
+      const bytes = await buildPdf(d);
+      download(bytes, `${C.file}-${safeFile(d.number)}.pdf`);
+      setStatus(`${C.ready} ${(bytes.byteLength / 1024 / 1024).toFixed(2)} MB.`);
+      if (finale) {
+        finale.hidden = false;
+        finale.textContent = C.finale;
+      }
+    } catch (error) {
+      console.error(error);
       setStatus(C.error);
     } finally {
       button.disabled = false;
