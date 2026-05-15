@@ -7,7 +7,7 @@
 
   const TEXT = {
     pl: {
-      preparing: 'Przygotowuję wektorowy print-master PDF…',
+      preparing: 'Przygotowuję finalny print-master PDF…',
       ready: 'Print-master PDF został przygotowany i pobrany.',
       missingPlace: 'Uzupełnij miejsce / instytucję.',
       missingDate: 'Uzupełnij datę wydarzenia.',
@@ -16,7 +16,7 @@
       wallButton: 'Pobierz A3 Wall Edition',
       project: 'RAP-ORT: PRAWDA SUMIENIA',
       title: 'ZAPIS UCZESTNICTWA',
-      forLabel: 'Dla:',
+      forLabel: 'dla',
       dateLabel: 'Data wydarzenia',
       placeLabel: 'Miejsce',
       numberLabel: 'Numer dokumentu',
@@ -38,7 +38,7 @@
       pdfSize: 'Rozmiar pliku'
     },
     en: {
-      preparing: 'Preparing vector print-master PDF…',
+      preparing: 'Preparing final print-master PDF…',
       ready: 'Print-master PDF has been prepared and downloaded.',
       missingPlace: 'Enter the place / institution.',
       missingDate: 'Enter the event date.',
@@ -47,7 +47,7 @@
       wallButton: 'Download A3 Wall Edition',
       project: 'RAP-ORT: PRAWDA SUMIENIA',
       title: 'RECORD OF PARTICIPATION',
-      forLabel: 'For:',
+      forLabel: 'for',
       dateLabel: 'Event date',
       placeLabel: 'Place',
       numberLabel: 'Document number',
@@ -96,28 +96,19 @@
   };
 
   const FALLBACK_VARIANTS = {
-    cinema: {
-      layout: 'cinema',
-      a4: ['/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi.jpg'],
-      a3: ['/public/assets/reports/participation-record-bg-01-archival-cinema-a3.jpg']
-    },
-    museum: {
-      layout: 'museum',
-      a4: ['/public/assets/reports/participation-record-bg-02-museum-line-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg'],
-      a3: ['/public/assets/reports/participation-record-bg-02-museum-line-a3.jpg']
-    },
-    ceremonial: {
-      layout: 'ceremonial',
-      a4: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg'],
-      a3: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a3.jpg']
-    }
+    cinema: { layout: 'cinema', a4: ['/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi.jpg'], a3: ['/public/assets/reports/participation-record-bg-01-archival-cinema-a3.jpg'] },
+    museum: { layout: 'museum', a4: ['/public/assets/reports/participation-record-bg-02-museum-line-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi2.jpg'], a3: ['/public/assets/reports/participation-record-bg-02-museum-line-a3.jpg'] },
+    ceremonial: { layout: 'ceremonial', a4: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg'], a3: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a3.jpg'] }
   };
 
+  // Pixel coordinates are designed against the source A4 background: 3508 × 2480.
+  // Values were tuned for the current ornamental black/gold wall layout: title stays high,
+  // inscription is calmer, metadata values sit ABOVE lines, labels sit BELOW lines.
   const layoutPresets = {
-    cinema: { projectY: 285, titleY: 520, titleSize: 144, titlePlateWidth: 2460, bodyY: 785, bodySize: 49, nameY: 1128, fieldsY: 1372, closingY: 1762, signatureY: 2044, fieldWidth: 695, signatureWidth: 820, textMaxWidth: 1900, closingMaxWidth: 1740, microprintY: 2314 },
-    museum: { projectY: 260, titleY: 492, titleSize: 148, titlePlateWidth: 2520, bodyY: 738, bodySize: 48, nameY: 1092, fieldsY: 1344, closingY: 1736, signatureY: 2010, fieldWidth: 720, signatureWidth: 790, textMaxWidth: 1860, closingMaxWidth: 1690, microprintY: 2314 },
-    ceremonial: { projectY: 300, titleY: 570, titleSize: 154, titlePlateWidth: 2600, bodyY: 845, bodySize: 46, nameY: 1210, fieldsY: 1460, closingY: 1828, signatureY: 2045, fieldWidth: 650, signatureWidth: 875, textMaxWidth: 1740, closingMaxWidth: 1580, microprintY: 2320 },
-    ceremonialWall: { projectY: 335, titleY: 650, titleSize: 170, titlePlateWidth: 2720, bodyY: 948, bodySize: 49, nameY: 1310, fieldsY: 1570, closingY: 1930, signatureY: 2110, fieldWidth: 665, signatureWidth: 920, textMaxWidth: 1660, closingMaxWidth: 1480, microprintY: 2340 }
+    cinema: { projectY: 300, titleY: 505, titleSize: 118, titlePlateWidth: 2180, bodyY: 760, bodySize: 43, nameLabelY: 1085, nameY: 1160, fieldsY: 1455, closingY: 1818, signatureY: 2090, fieldWidth: 700, placeWidth: 780, signatureWidth: 840, textMaxWidth: 1740, closingMaxWidth: 1540, microprintY: 2328 },
+    museum: { projectY: 285, titleY: 495, titleSize: 120, titlePlateWidth: 2220, bodyY: 745, bodySize: 42, nameLabelY: 1065, nameY: 1138, fieldsY: 1438, closingY: 1795, signatureY: 2065, fieldWidth: 720, placeWidth: 820, signatureWidth: 805, textMaxWidth: 1700, closingMaxWidth: 1500, microprintY: 2328 },
+    ceremonial: { projectY: 305, titleY: 535, titleSize: 126, titlePlateWidth: 2260, bodyY: 805, bodySize: 40, nameLabelY: 1130, nameY: 1208, fieldsY: 1490, closingY: 1842, signatureY: 2090, fieldWidth: 660, placeWidth: 820, signatureWidth: 900, textMaxWidth: 1580, closingMaxWidth: 1420, microprintY: 2332 },
+    ceremonialWall: { projectY: 345, titleY: 620, titleSize: 140, titlePlateWidth: 2420, bodyY: 910, bodySize: 43, nameLabelY: 1235, nameY: 1310, fieldsY: 1605, closingY: 1948, signatureY: 2160, fieldWidth: 680, placeWidth: 840, signatureWidth: 960, textMaxWidth: 1540, closingMaxWidth: 1360, microprintY: 2348 }
   };
 
   const $ = (sel) => root.querySelector(sel);
@@ -161,7 +152,15 @@
   function data() {
     const preset = field('eventPreset')?.value || 'custom';
     const event = master.events?.[preset] || null;
-    return { name: field('participantName')?.value.trim() || '', place: field('place')?.value.trim() || event?.[lang]?.place || '', dateValue: field('eventDate')?.value || event?.dateInput || '', date: dateLabel(), number: field('documentNumber')?.value || '', event, variant: selectedVariant() };
+    return {
+      name: field('participantName')?.value.trim() || '',
+      place: field('place')?.value.trim() || event?.[lang]?.place || '',
+      dateValue: field('eventDate')?.value || event?.dateInput || '',
+      date: dateLabel(),
+      number: field('documentNumber')?.value || '',
+      event,
+      variant: selectedVariant()
+    };
   }
 
   function selectedVariant() {
@@ -246,20 +245,32 @@
     const words = String(text || '').split(/\s+/).filter(Boolean);
     const lines = [];
     let line = '';
-    words.forEach((word) => { const test = line ? `${line} ${word}` : word; if (font.widthOfTextAtSize(test, size) > maxWidth && line) { lines.push(line); line = word; } else line = test; });
+    words.forEach((word) => {
+      const test = line ? `${line} ${word}` : word;
+      if (font.widthOfTextAtSize(test, size) > maxWidth && line) { lines.push(line); line = word; }
+      else line = test;
+    });
     if (line) lines.push(line);
     return lines;
   }
 
-  function drawCentered(page, text, font, size, x, y, color) {
+  function drawCentered(page, text, font, size, centerX, baselineY, color) {
     const lines = Array.isArray(text) ? text : [text];
-    lines.forEach((line, i) => { if (!line) return; const width = font.widthOfTextAtSize(line, size); page.drawText(line, { x: x - width / 2, y: y - i * size * 1.35, size, font, color }); });
+    lines.forEach((line, i) => {
+      if (!line) return;
+      const width = font.widthOfTextAtSize(line, size);
+      page.drawText(line, { x: centerX - width / 2, y: baselineY - i * size * 1.35, size, font, color });
+    });
   }
 
-  function drawWrappedCentered(page, text, font, size, x, y, maxWidth, color, lineHeight = 1.35) {
+  function drawWrappedCentered(page, text, font, size, centerX, baselineY, maxWidth, color, lineHeight = 1.35, maxLines = 99) {
     const lines = [];
     String(text || '').split('\n').forEach((para) => { if (!para) lines.push(''); else lines.push(...wrap(para, font, size, maxWidth)); });
-    lines.forEach((line, i) => { if (!line) return; const width = font.widthOfTextAtSize(line, size); page.drawText(line, { x: x - width / 2, y: y - i * size * lineHeight, size, font, color }); });
+    lines.slice(0, maxLines).forEach((line, i) => {
+      if (!line) return;
+      const width = font.widthOfTextAtSize(line, size);
+      page.drawText(line, { x: centerX - width / 2, y: baselineY - i * size * lineHeight, size, font, color });
+    });
     return lines.length * size * lineHeight;
   }
 
@@ -280,7 +291,7 @@
     return { path: bg.path, native: exportMode !== 'wall' || d.variant.a3?.includes(bg.path) };
   }
 
-  async function svgToPngBytes(svgBytes, width = 2400, height = 720) {
+  async function svgToPngBytes(svgBytes, width = 3000, height = 1000) {
     const svgText = new TextDecoder('utf-8').decode(svgBytes);
     const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -288,12 +299,13 @@
       const img = new Image();
       img.decoding = 'async';
       await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
+      const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : width / height;
       const canvas = document.createElement('canvas');
       canvas.width = width;
-      canvas.height = height;
+      canvas.height = Math.max(1, Math.round(width / ratio));
       const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, width, height);
-      ctx.drawImage(img, 0, 0, width, height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const blobOut = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
       return new Uint8Array(await blobOut.arrayBuffer());
     } finally { URL.revokeObjectURL(url); }
@@ -311,36 +323,61 @@
     return null;
   }
 
-  async function drawTitlePlate(pdfDoc, page, fonts, output, l, centerX, gold) {
-    const image = await embedAssetImage(pdfDoc, [TITLE_PLATES[lang]], 3000, 1000);
-    const yCenter = toPtY(l.titleY, output);
+  async function drawTitlePlate(pdfDoc, page, fonts, output, layout, centerX, gold) {
+    const image = await embedAssetImage(pdfDoc, [TITLE_PLATES[lang]], 3400, 920);
+    const baselineY = toPtY(layout.titleY, output);
     if (image) {
-      const width = scaled(l.titlePlateWidth || 2500, output);
+      const width = scaled(layout.titlePlateWidth || 2200, output);
       const height = width * (image.height / image.width);
-      page.drawImage(image, { x: centerX - width / 2, y: yCenter - height / 2, width, height });
+      page.drawImage(image, { x: centerX - width / 2, y: baselineY - height / 2, width, height });
       return true;
     }
-    drawCentered(page, TEXT.title, fonts.title, scaled(l.titleSize, output), centerX, yCenter, gold);
+    drawCentered(page, TEXT.title, fonts.title, scaled(layout.titleSize, output), centerX, baselineY, gold);
     return false;
   }
 
-  async function drawSignature(pdfDoc, page, fonts, output, x, y, maxWidth) {
-    const image = await embedAssetImage(pdfDoc, [SIGNATURES.goldSvg, SIGNATURES.goldPng, SIGNATURES.placeholderSvg], 2400, 640);
+  async function drawSignature(pdfDoc, page, fonts, output, centerX, centerY, maxWidth) {
+    const image = await embedAssetImage(pdfDoc, [SIGNATURES.goldSvg, SIGNATURES.goldPng, SIGNATURES.placeholderSvg], 2600, 700);
     if (image) {
-      const width = Math.min(maxWidth, scaled(1040, output));
+      const width = Math.min(maxWidth, scaled(980, output));
       const height = width * (image.height / image.width);
-      page.drawImage(image, { x: x - width / 2, y: y - height / 2, width, height });
+      page.drawImage(image, { x: centerX - width / 2, y: centerY - height / 2, width, height });
       return height;
     }
-    drawCentered(page, 'Piotr Jakub Lichwała', fonts.bodyItalic, scaled(64, output), x, y, window.PDFLib.rgb(0.9, 0.78, 0.48));
-    return scaled(95, output);
+    drawCentered(page, 'Piotr Jakub Lichwała', fonts.bodyItalic, scaled(58, output), centerX, centerY, window.PDFLib.rgb(0.9, 0.78, 0.48));
+    return scaled(86, output);
   }
 
-  function drawField(page, fonts, label, value, x, y, width, output) {
+  function fitTextSize(font, text, preferredSize, maxWidth, minSize) {
+    let size = preferredSize;
+    while (font.widthOfTextAtSize(String(text || ''), size) > maxWidth && size > minSize) size -= preferredSize * 0.04;
+    return size;
+  }
+
+  function drawPremiumField(page, fonts, label, value, centerX, lineY, width, output, colors, options = {}) {
+    const valueFont = options.mono ? fonts.mono : fonts.body;
+    const valuePreferred = scaled(options.valueSize || 34, output);
+    const labelSize = scaled(options.labelSize || 18, output);
+    const maxValueWidth = width - scaled(24, output);
+    const valueSize = fitTextSize(valueFont, value, valuePreferred, maxValueWidth, scaled(20, output));
+    const valueY = lineY + scaled(options.valueOffset || 43, output);
+    const labelY = lineY - scaled(options.labelOffset || 35, output);
+
     const { rgb } = window.PDFLib;
-    page.drawLine({ start: { x: x - width / 2, y }, end: { x: x + width / 2, y }, thickness: 0.65, color: rgb(0.72, 0.61, 0.42) });
-    drawCentered(page, label.toUpperCase(), fonts.meta, scaled(23, output), x, y - scaled(39, output), rgb(0.72, 0.61, 0.42));
-    drawWrappedCentered(page, value, fonts.body, scaled(34, output), x, y - scaled(88, output), width - scaled(24, output), rgb(0.94, 0.86, 0.68), 1.14);
+    page.drawLine({ start: { x: centerX - width / 2, y: lineY }, end: { x: centerX + width / 2, y: lineY }, thickness: 0.58, color: colors.line });
+    drawCentered(page, value, valueFont, valueSize, centerX, valueY, colors.value);
+    drawCentered(page, label.toUpperCase(), fonts.meta, labelSize, centerX, labelY, colors.label);
+    if (options.cap) {
+      const cap = scaled(7, output);
+      page.drawRectangle({ x: centerX - cap / 2, y: lineY - cap / 2, width: cap, height: cap, color: rgb(0.72, 0.61, 0.42), rotate: window.PDFLib.degrees(45) });
+    }
+  }
+
+  function drawNameBlock(page, fonts, name, layout, output, centerX, colors) {
+    if (!name) return;
+    drawCentered(page, TEXT.forLabel.toUpperCase(), fonts.meta, scaled(20, output), centerX, toPtY(layout.nameLabelY, output), colors.label);
+    const nameSize = fitTextSize(fonts.body, name.toUpperCase(), scaled(54, output), scaled(1550, output), scaled(32, output));
+    drawCentered(page, name.toUpperCase(), fonts.body, nameSize, centerX, toPtY(layout.nameY, output), colors.value);
   }
 
   function download(bytes, filename) {
@@ -361,48 +398,52 @@
     const output = exportMode === 'wall' ? a3Output : a4Output;
     const pdfDoc = await PDFDocument.create();
     let fonts;
-    try { fonts = await loadFonts(pdfDoc); } catch (err) { console.warn('PR54 custom font embedding unavailable.', err); fonts = await fallbackFonts(pdfDoc); }
+    try { fonts = await loadFonts(pdfDoc); } catch (err) { console.warn('Custom font embedding unavailable.', err); fonts = await fallbackFonts(pdfDoc); }
 
     pdfDoc.setTitle(`${TEXT.title} — ${d.number}`);
     pdfDoc.setAuthor('Piotr Jakub Lichwała / Vibrosław');
     pdfDoc.setSubject('Rap-Ort: Prawda Sumienia — Participation Record');
-    pdfDoc.setCreator('Veritas Humanum Hybrid Print Master');
+    pdfDoc.setCreator('Veritas Humanum Participation Record Final Wall Master');
     pdfDoc.setProducer('Veritas Humanum local browser PDF generator');
 
     const page = pdfDoc.addPage([output.width, output.height]);
     await drawBackground(pdfDoc, page, d, exportMode, output);
 
-    const l = layoutFor(exportMode === 'wall' && d.variant.layout === 'ceremonial' ? 'ceremonialWall' : d.variant.layout, exportMode);
-    const p = profile(exportMode);
-    const gold = rgb(0.9, 0.74, 0.43);
-    const ivory = rgb(0.95, 0.88, 0.72);
-    const muted = rgb(0.72, 0.61, 0.42);
+    const layout = layoutFor(exportMode === 'wall' && d.variant.layout === 'ceremonial' ? 'ceremonialWall' : d.variant.layout, exportMode);
+    const copy = profile(exportMode);
+    const colors = {
+      gold: rgb(0.9, 0.74, 0.43),
+      ivory: rgb(0.94, 0.86, 0.68),
+      muted: rgb(0.68, 0.57, 0.38),
+      label: rgb(0.55, 0.47, 0.32),
+      line: rgb(0.58, 0.48, 0.3),
+      value: rgb(0.93, 0.83, 0.62),
+      micro: rgb(0.46, 0.39, 0.28)
+    };
     const centerX = output.width / 2;
 
-    drawCentered(page, TEXT.project, fonts.metaBold, scaled(33, output), centerX, toPtY(l.projectY, output), muted);
-    await drawTitlePlate(pdfDoc, page, fonts, output, l, centerX, gold);
+    drawCentered(page, TEXT.project, fonts.metaBold, scaled(23, output), centerX, toPtY(layout.projectY, output), colors.muted);
+    await drawTitlePlate(pdfDoc, page, fonts, output, layout, centerX, colors.gold);
 
-    drawWrappedCentered(page, (p.body || []).join('\n'), fonts.body, scaled(l.bodySize, output), centerX, toPtY(l.bodyY, output), scaled(l.textMaxWidth, output), ivory, 1.42);
+    drawWrappedCentered(page, (copy.body || []).join('\n'), fonts.body, scaled(layout.bodySize, output), centerX, toPtY(layout.bodyY, output), scaled(layout.textMaxWidth, output), colors.ivory, 1.42, 7);
+    drawNameBlock(page, fonts, d.name, layout, output, centerX, colors);
 
-    if (d.name) drawWrappedCentered(page, `${TEXT.forLabel} ${d.name}`, fonts.body, scaled(exportMode === 'wall' ? 56 : 50, output), centerX, toPtY(l.nameY, output), scaled(l.textMaxWidth, output), gold, 1.22);
+    const lineY = toPtY(layout.fieldsY, output);
+    drawPremiumField(page, fonts, TEXT.dateLabel, d.date, output.width * 0.255, lineY, scaled(layout.fieldWidth, output), output, colors);
+    drawPremiumField(page, fonts, TEXT.placeLabel, d.place || TEXT.fallbackPlace, output.width * 0.5, lineY, scaled(layout.placeWidth || layout.fieldWidth, output), output, colors);
+    drawPremiumField(page, fonts, TEXT.numberLabel, d.number, output.width * 0.745, lineY, scaled(layout.fieldWidth, output), output, colors, { mono: true, valueSize: 28, labelSize: 16 });
 
-    const fieldY = toPtY(l.fieldsY, output);
-    const fieldXs = [output.width * 0.255, output.width * 0.5, output.width * 0.745];
-    drawField(page, fonts, TEXT.dateLabel, d.date, fieldXs[0], fieldY, scaled(l.fieldWidth, output), output);
-    drawField(page, fonts, TEXT.placeLabel, d.place || TEXT.fallbackPlace, fieldXs[1], fieldY, scaled(l.fieldWidth, output), output);
-    drawField(page, fonts, TEXT.numberLabel, d.number, fieldXs[2], fieldY, scaled(l.fieldWidth, output), output);
+    drawWrappedCentered(page, (copy.closing || []).join('\n'), fonts.bodyItalic || fonts.body, scaled(33, output), centerX, toPtY(layout.closingY, output), scaled(layout.closingMaxWidth, output), colors.ivory, 1.45, 3);
 
-    drawWrappedCentered(page, (p.closing || []).join('\n'), fonts.bodyItalic || fonts.body, scaled(40, output), centerX, toPtY(l.closingY, output), scaled(l.closingMaxWidth, output), ivory, 1.45);
+    const sigCenterY = toPtY(layout.signatureY, output);
+    const signHeight = await drawSignature(pdfDoc, page, fonts, output, centerX, sigCenterY, scaled(layout.signatureWidth, output));
+    drawCentered(page, TEXT.authorRole.toUpperCase(), fonts.meta, scaled(18, output), centerX, sigCenterY - signHeight / 2 - scaled(28, output), colors.label);
 
-    const sigCenterY = toPtY(l.signatureY, output);
-    const signHeight = await drawSignature(pdfDoc, page, fonts, output, centerX, sigCenterY, scaled(l.signatureWidth, output));
-    drawCentered(page, TEXT.authorRole.toUpperCase(), fonts.meta, scaled(23, output), centerX, sigCenterY - signHeight / 2 - scaled(34, output), muted);
-
-    if (p.microprint) drawCentered(page, p.microprint.toUpperCase(), fonts.meta, scaled(18, output), centerX, toPtY(l.microprintY, output), muted);
+    if (copy.microprint) drawCentered(page, copy.microprint.toUpperCase(), fonts.meta, scaled(13, output), centerX, toPtY(layout.microprintY, output), colors.micro);
 
     if (d.event?.accent) {
-      page.drawText(`${d.event.accent.edition || ''} · ${d.event.accent.code || ''}`.replace(/^ · | · $/g, '').toUpperCase(), { x: output.width - scaled(760, output), y: scaled(65, output), size: scaled(18, output), font: fonts.meta, color: muted });
-      page.drawText(String(d.event.accent.microLine || '').toUpperCase(), { x: scaled(210, output), y: scaled(65, output), size: scaled(18, output), font: fonts.meta, color: muted });
+      page.drawText(`${d.event.accent.edition || ''} · ${d.event.accent.code || ''}`.replace(/^ · | · $/g, '').toUpperCase(), { x: output.width - scaled(665, output), y: scaled(57, output), size: scaled(13, output), font: fonts.meta, color: colors.micro });
+      page.drawText(String(d.event.accent.microLine || '').toUpperCase(), { x: scaled(210, output), y: scaled(57, output), size: scaled(13, output), font: fonts.meta, color: colors.micro });
     }
 
     return pdfDoc.save({ useObjectStreams: true });
@@ -421,9 +462,16 @@
       download(bytes, `${exportMode === 'wall' ? TEXT.wallFilePrefix : TEXT.filePrefix}-${safeName(d.number)}.pdf`);
       status(`${TEXT.ready} ${TEXT.pdfSize}: ${formatBytes(bytes.byteLength)}.`);
       const finale = $('[data-pr-finale]');
-      if (finale) { finale.hidden = false; finale.textContent = lang === 'pl' ? 'Dokument został przygotowany jako pamiątkowy artefakt doświadczenia Rap-Ort: Prawda Sumienia.' : 'The document has been prepared as a commemorative artefact of the Rap-Ort: Prawda Sumienia experience.'; }
-    } catch (err) { console.error(err); status(TEXT.error); }
-    finally { active.disabled = false; }
+      if (finale) {
+        finale.hidden = false;
+        finale.textContent = lang === 'pl' ? 'Dokument został przygotowany jako pamiątkowy artefakt doświadczenia Rap-Ort: Prawda Sumienia.' : 'The document has been prepared as a commemorative artefact of the Rap-Ort: Prawda Sumienia experience.';
+      }
+    } catch (err) {
+      console.error(err);
+      status(TEXT.error);
+    } finally {
+      active.disabled = false;
+    }
   }
 
   root.addEventListener('change', (event) => { if (event.target?.matches('[name="recordVariant"], [name="eventPreset"]')) runPreflight(); });
