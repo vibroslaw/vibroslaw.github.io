@@ -4,7 +4,6 @@
 
   const lang = root.dataset.lang === 'en' ? 'en' : 'pl';
   const master = window.VH_DOCUMENTS?.printMaster || {};
-  const preflight = window.VH_DOCUMENTS?.preflight || null;
 
   const TEXT = {
     pl: {
@@ -12,8 +11,7 @@
       ready: 'Print-master PDF został przygotowany i pobrany.',
       missingPlace: 'Uzupełnij miejsce / instytucję.',
       missingDate: 'Uzupełnij datę wydarzenia.',
-      error: 'Nie udało się wygenerować PDF. Spróbuj ponownie albo użyj trybu awaryjnego.',
-      fallback: 'Nie wykryto pełnego zestawu fontkit/fontów. Używam bezpiecznego trybu zgodności.',
+      error: 'Nie udało się wygenerować PDF. Sprawdź konsolę błędów albo spróbuj ponownie.',
       button: 'Pobierz A4 print-master',
       wallButton: 'Pobierz A3 Wall Edition',
       project: 'RAP-ORT: PRAWDA SUMIENIA',
@@ -33,8 +31,10 @@
       bgNative: 'Tło natywne dla wybranego formatu',
       bgUpscaled: 'Tło działa, ale A3 może użyć powiększonego A4',
       bgMissing: 'Nie znaleziono tła — PDF użyje awaryjnego tła wektorowego',
-      signatureOk: 'Podpis autora gotowy',
-      signatureMissing: 'Finalny podpis nie jest jeszcze dostępny — użyję podpisu tekstowego',
+      titleOk: 'Title plate osadzony w PDF',
+      titleMissing: 'Title plate niedostępny — użyję tytułu tekstowego',
+      signatureOk: 'Podpis autora osadzony w PDF',
+      signatureMissing: 'Finalny podpis niedostępny — użyję podpisu tekstowego',
       pdfSize: 'Rozmiar pliku'
     },
     en: {
@@ -42,8 +42,7 @@
       ready: 'Print-master PDF has been prepared and downloaded.',
       missingPlace: 'Enter the place / institution.',
       missingDate: 'Enter the event date.',
-      error: 'Could not generate the PDF. Try again or use fallback mode.',
-      fallback: 'Full fontkit/font set was not detected. Using safe compatibility mode.',
+      error: 'Could not generate the PDF. Check the console or try again.',
       button: 'Download A4 print-master',
       wallButton: 'Download A3 Wall Edition',
       project: 'RAP-ORT: PRAWDA SUMIENIA',
@@ -63,15 +62,17 @@
       bgNative: 'Native background available for selected format',
       bgUpscaled: 'Background works, but A3 may use an enlarged A4 asset',
       bgMissing: 'No background found — PDF will use vector fallback background',
-      signatureOk: 'Author signature ready',
+      titleOk: 'Title plate embedded in PDF',
+      titleMissing: 'Title plate unavailable — using text title fallback',
+      signatureOk: 'Author signature embedded in PDF',
       signatureMissing: 'Final signature unavailable — using text fallback signature',
       pdfSize: 'File size'
     }
   }[lang];
 
   const outputs = master.output || {};
-  const a4Output = outputs.a4Landscape || { width: 841.89, height: 595.28, pixels: { width: 3508, height: 2480 }, safePixels: { width: 2480, height: 1754 } };
-  const a3Output = outputs.a3Landscape || { width: 1190.55, height: 841.89, pixels: { width: 4961, height: 3508 }, safePixels: { width: 3508, height: 2480 } };
+  const a4Output = outputs.a4Landscape || { width: 841.89, height: 595.28, pixels: { width: 3508, height: 2480 } };
+  const a3Output = outputs.a3Landscape || { width: 1190.55, height: 841.89, pixels: { width: 4961, height: 3508 } };
   const design = a4Output.pixels || { width: 3508, height: 2480 };
 
   const FONT_PATHS = {
@@ -83,7 +84,14 @@
     mono: '/public/assets/fonts/print/ibm-plex-mono/IBMPlexMono-Regular.ttf'
   };
 
+  const TITLE_PLATES = {
+    pl: '/public/assets/reports/title-plates/title-zapis-uczestnictwa-gold.svg',
+    en: '/public/assets/reports/title-plates/title-record-of-participation-gold.svg'
+  };
+
   const SIGNATURES = {
+    goldSvg: '/public/assets/reports/author-signature-gold.svg',
+    darkSvg: '/public/assets/reports/author-signature-dark.svg',
     goldPng: '/public/assets/reports/author-signature-gold@2x.png',
     placeholderSvg: '/public/assets/reports/author-signature-placeholder.svg'
   };
@@ -107,10 +115,10 @@
   };
 
   const fallbackLayouts = {
-    cinema: { projectY: 330, titleY: 590, titleSize: 154, bodyY: 790, bodySize: 60, bodyLine: 88, nameY: 1195, fieldsY: 1420, closingY: 1810, signatureY: 2075, fieldWidth: 730, signatureWidth: 890, textMaxWidth: 2100, closingMaxWidth: 1920, microprintY: 2325 },
-    museum: { projectY: 285, titleY: 535, titleSize: 162, bodyY: 755, bodySize: 58, bodyLine: 86, nameY: 1145, fieldsY: 1370, closingY: 1765, signatureY: 2035, fieldWidth: 790, signatureWidth: 850, textMaxWidth: 2020, closingMaxWidth: 1860, microprintY: 2325 },
-    ceremonial: { projectY: 320, titleY: 610, titleSize: 178, bodyY: 850, bodySize: 56, bodyLine: 84, nameY: 1235, fieldsY: 1465, closingY: 1845, signatureY: 2055, fieldWidth: 690, signatureWidth: 930, textMaxWidth: 1880, closingMaxWidth: 1720, microprintY: 2325 },
-    ceremonialWall: { projectY: 365, titleY: 685, titleSize: 198, bodyY: 955, bodySize: 60, bodyLine: 92, nameY: 1335, fieldsY: 1585, closingY: 1955, signatureY: 2110, fieldWidth: 710, signatureWidth: 980, textMaxWidth: 1760, closingMaxWidth: 1650, microprintY: 2345 }
+    cinema: { projectY: 330, titleY: 590, titleSize: 154, titlePlateWidth: 1980, titlePlateHeight: 340, bodyY: 790, bodySize: 60, nameY: 1195, fieldsY: 1420, closingY: 1810, signatureY: 2075, fieldWidth: 730, signatureWidth: 890, textMaxWidth: 2100, closingMaxWidth: 1920, microprintY: 2325 },
+    museum: { projectY: 285, titleY: 535, titleSize: 162, titlePlateWidth: 2050, titlePlateHeight: 350, bodyY: 755, bodySize: 58, nameY: 1145, fieldsY: 1370, closingY: 1765, signatureY: 2035, fieldWidth: 790, signatureWidth: 850, textMaxWidth: 2020, closingMaxWidth: 1860, microprintY: 2325 },
+    ceremonial: { projectY: 320, titleY: 610, titleSize: 178, titlePlateWidth: 2160, titlePlateHeight: 380, bodyY: 850, bodySize: 56, nameY: 1235, fieldsY: 1465, closingY: 1845, signatureY: 2055, fieldWidth: 690, signatureWidth: 930, textMaxWidth: 1880, closingMaxWidth: 1720, microprintY: 2325 },
+    ceremonialWall: { projectY: 365, titleY: 685, titleSize: 198, titlePlateWidth: 2260, titlePlateHeight: 410, bodyY: 955, bodySize: 60, nameY: 1335, fieldsY: 1585, closingY: 1955, signatureY: 2110, fieldWidth: 710, signatureWidth: 980, textMaxWidth: 1760, closingMaxWidth: 1650, microprintY: 2345 }
   };
 
   const $ = (sel) => root.querySelector(sel);
@@ -136,6 +144,11 @@
 
   function status(message) { all('[data-pr-status]').forEach((node) => { node.textContent = message || ''; }); }
   function abs(path) { return new URL(path, window.location.origin).href; }
+  function toPtY(px, output) { return output.height - px * (output.height / design.height); }
+  function scaled(px, output) { return px * (output.width / design.width); }
+  function safeName(text) { return String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 120); }
+  function formatBytes(bytes) { const mb = bytes / 1024 / 1024; return `${mb.toFixed(mb >= 10 ? 1 : 2)} MB`; }
+
   function dateLabel() {
     const preset = field('eventPreset')?.value || 'custom';
     const event = master.events?.[preset];
@@ -166,12 +179,7 @@
     const assetKey = cfg.assetKey || key;
     const assets = master.assets?.participation?.[assetKey] || {};
     const fallback = FALLBACK_VARIANTS[key] || FALLBACK_VARIANTS.cinema;
-    return {
-      key,
-      layout: cfg.layout || fallback.layout,
-      a4: assets.a4 || fallback.a4,
-      a3: assets.a3 || fallback.a3
-    };
+    return { key, layout: cfg.layout || fallback.layout, a4: assets.a4 || fallback.a4, a3: assets.a3 || fallback.a3 };
   }
 
   function validate(d) {
@@ -182,9 +190,7 @@
 
   function profile(exportMode) {
     const profiles = master.documents?.participationRecord?.copyProfiles || {};
-    return profiles[exportMode]?.[lang] || profiles.standard?.[lang] || {
-      body: [], closing: [], microprint: ''
-    };
+    return profiles[exportMode]?.[lang] || profiles.standard?.[lang] || { body: [], closing: [], microprint: '' };
   }
 
   function layoutFor(name, exportMode) {
@@ -209,10 +215,8 @@
   }
 
   async function exists(path) {
-    try {
-      const res = await fetch(abs(path), { method: 'HEAD', cache: 'no-store' });
-      return res.ok;
-    } catch (_) { return false; }
+    try { const res = await fetch(abs(path), { method: 'HEAD', cache: 'no-store' }); return res.ok; }
+    catch (_) { return false; }
   }
 
   async function firstAvailable(paths) {
@@ -234,16 +238,12 @@
     items.push({ level: hasFontkit ? 'ok' : 'warn', text: hasFontkit ? TEXT.fontOk : TEXT.fontMissing });
     const bg = await firstAvailable([...(d.variant.a3 || []), ...(d.variant.a4 || [])]);
     items.push({ level: bg ? (d.variant.a3?.includes(bg.path) ? 'ok' : 'warn') : 'warn', text: bg ? (d.variant.a3?.includes(bg.path) ? TEXT.bgNative : TEXT.bgUpscaled) : TEXT.bgMissing });
-    const sig = await exists(SIGNATURES.goldPng);
+    const title = await exists(TITLE_PLATES[lang]);
+    const sig = await exists(SIGNATURES.goldSvg) || await exists(SIGNATURES.goldPng);
+    items.push({ level: title ? 'ok' : 'warn', text: title ? TEXT.titleOk : TEXT.titleMissing });
     items.push({ level: sig ? 'ok' : 'warn', text: sig ? TEXT.signatureOk : TEXT.signatureMissing });
     renderPreflight(items);
   }
-
-  function toPtX(px, output) { return px * (output.width / design.width); }
-  function toPtY(px, output) { return output.height - px * (output.height / design.height); }
-  function scaled(px, output) { return px * (output.width / design.width); }
-  function safeName(text) { return String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 120); }
-  function formatBytes(bytes) { const mb = bytes / 1024 / 1024; return `${mb.toFixed(mb >= 10 ? 1 : 2)} MB`; }
 
   async function loadFonts(pdfDoc) {
     const kit = window.fontkit || window.Fontkit;
@@ -254,26 +254,12 @@
       if (!res.ok) throw new Error(`Missing font: ${path}`);
       return pdfDoc.embedFont(new Uint8Array(await res.arrayBuffer()), { subset: true });
     };
-    return {
-      title: await load(FONT_PATHS.title),
-      body: await load(FONT_PATHS.body),
-      bodyItalic: await load(FONT_PATHS.bodyItalic),
-      meta: await load(FONT_PATHS.meta),
-      metaBold: await load(FONT_PATHS.metaBold),
-      mono: await load(FONT_PATHS.mono)
-    };
+    return { title: await load(FONT_PATHS.title), body: await load(FONT_PATHS.body), bodyItalic: await load(FONT_PATHS.bodyItalic), meta: await load(FONT_PATHS.meta), metaBold: await load(FONT_PATHS.metaBold), mono: await load(FONT_PATHS.mono) };
   }
 
   async function fallbackFonts(pdfDoc) {
     const { StandardFonts } = window.PDFLib;
-    return {
-      title: await pdfDoc.embedFont(StandardFonts.TimesRomanBold),
-      body: await pdfDoc.embedFont(StandardFonts.TimesRoman),
-      bodyItalic: await pdfDoc.embedFont(StandardFonts.TimesRomanItalic),
-      meta: await pdfDoc.embedFont(StandardFonts.Helvetica),
-      metaBold: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
-      mono: await pdfDoc.embedFont(StandardFonts.Courier)
-    };
+    return { title: await pdfDoc.embedFont(StandardFonts.TimesRomanBold), body: await pdfDoc.embedFont(StandardFonts.TimesRoman), bodyItalic: await pdfDoc.embedFont(StandardFonts.TimesRomanItalic), meta: await pdfDoc.embedFont(StandardFonts.Helvetica), metaBold: await pdfDoc.embedFont(StandardFonts.HelveticaBold), mono: await pdfDoc.embedFont(StandardFonts.Courier) };
   }
 
   function wrap(text, font, size, maxWidth) {
@@ -289,21 +275,18 @@
     return lines;
   }
 
-  function drawCentered(page, text, font, size, x, y, color, maxWidth) {
+  function drawCentered(page, text, font, size, x, y, color) {
     const lines = Array.isArray(text) ? text : [text];
     lines.forEach((line, i) => {
       if (!line) return;
       const width = font.widthOfTextAtSize(line, size);
-      page.drawText(line, { x: x - width / 2, y: y - i * size * 1.35, size, font, color, maxWidth });
+      page.drawText(line, { x: x - width / 2, y: y - i * size * 1.35, size, font, color });
     });
   }
 
   function drawWrappedCentered(page, text, font, size, x, y, maxWidth, color, lineHeight = 1.35) {
     const lines = [];
-    String(text || '').split('\n').forEach((para) => {
-      if (!para) lines.push('');
-      else lines.push(...wrap(para, font, size, maxWidth));
-    });
+    String(text || '').split('\n').forEach((para) => { if (!para) lines.push(''); else lines.push(...wrap(para, font, size, maxWidth)); });
     lines.forEach((line, i) => {
       if (!line) return;
       const width = font.widthOfTextAtSize(line, size);
@@ -329,11 +312,65 @@
     return { path: bg.path, native: exportMode !== 'wall' || d.variant.a3?.includes(bg.path) };
   }
 
+  async function svgToPngBytes(svgBytes, width = 2400, height = 720) {
+    const svgText = new TextDecoder('utf-8').decode(svgBytes);
+    const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    try {
+      const img = new Image();
+      img.decoding = 'async';
+      await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
+      const naturalRatio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : width / height;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = Math.max(1, Math.round(width / naturalRatio));
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const blobOut = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      return new Uint8Array(await blobOut.arrayBuffer());
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  async function embedAssetImage(pdfDoc, candidates, svgWidth, svgHeight) {
+    const asset = await firstAvailable(candidates);
+    if (!asset) return null;
+    const path = asset.path.toLowerCase();
+    try {
+      if (path.endsWith('.svg')) {
+        const pngBytes = await svgToPngBytes(asset.bytes, svgWidth, svgHeight);
+        return await pdfDoc.embedPng(pngBytes);
+      }
+      if (path.endsWith('.png')) return await pdfDoc.embedPng(asset.bytes);
+      if (path.endsWith('.jpg') || path.endsWith('.jpeg')) return await pdfDoc.embedJpg(asset.bytes);
+    } catch (err) {
+      console.warn(`Could not embed asset ${asset.path}`, err);
+    }
+    return null;
+  }
+
+  async function drawTitlePlate(pdfDoc, page, fonts, output, l, centerX, gold) {
+    const image = await embedAssetImage(pdfDoc, [TITLE_PLATES[lang]], 3000, 520);
+    const yCenter = toPtY(l.titleY, output);
+    if (image) {
+      const maxWidth = scaled(l.titlePlateWidth || 2050, output);
+      const maxHeight = scaled(l.titlePlateHeight || 350, output);
+      const scale = Math.min(maxWidth / image.width, maxHeight / image.height);
+      const width = image.width * scale;
+      const height = image.height * scale;
+      page.drawImage(image, { x: centerX - width / 2, y: yCenter - height / 2, width, height });
+      return true;
+    }
+    drawCentered(page, TEXT.title, fonts.title, scaled(l.titleSize, output), centerX, yCenter, gold);
+    return false;
+  }
+
   async function drawSignature(pdfDoc, page, fonts, output, x, y, maxWidth) {
-    const sig = await firstAvailable([SIGNATURES.goldPng]);
-    if (sig) {
-      const image = await pdfDoc.embedPng(sig.bytes);
-      const scale = Math.min(maxWidth / image.width, scaled(140, output) / image.height);
+    const image = await embedAssetImage(pdfDoc, [SIGNATURES.goldSvg, SIGNATURES.goldPng, SIGNATURES.placeholderSvg], 2400, 640);
+    if (image) {
+      const scale = Math.min(maxWidth / image.width, scaled(165, output) / image.height);
       const width = image.width * scale;
       const height = image.height * scale;
       page.drawImage(image, { x: x - width / 2, y: y - height / 2, width, height });
@@ -341,6 +378,13 @@
     }
     drawCentered(page, 'Piotr Jakub Lichwała', fonts.bodyItalic, scaled(64, output), x, y, window.PDFLib.rgb(0.9, 0.78, 0.48));
     return scaled(95, output);
+  }
+
+  function drawField(page, fonts, label, value, x, y, width, output) {
+    const { rgb } = window.PDFLib;
+    page.drawLine({ start: { x: x - width / 2, y }, end: { x: x + width / 2, y }, thickness: 0.8, color: rgb(0.72, 0.61, 0.42) });
+    drawCentered(page, label.toUpperCase(), fonts.meta, scaled(26, output), x, y - scaled(42, output), rgb(0.72, 0.61, 0.42));
+    drawWrappedCentered(page, value, fonts.body, scaled(42, output), x, y - scaled(95, output), width - scaled(24, output), rgb(0.94, 0.86, 0.68), 1.16);
   }
 
   function download(bytes, filename) {
@@ -381,14 +425,12 @@
     const centerX = output.width / 2;
 
     drawCentered(page, TEXT.project, fonts.metaBold, scaled(38, output), centerX, toPtY(l.projectY, output), muted);
-    drawCentered(page, TEXT.title, fonts.title, scaled(l.titleSize, output), centerX, toPtY(l.titleY, output), gold);
+    await drawTitlePlate(pdfDoc, page, fonts, output, l, centerX, gold);
 
     const bodyText = (p.body || []).join('\n');
     drawWrappedCentered(page, bodyText, fonts.body, scaled(l.bodySize, output), centerX, toPtY(l.bodyY, output), scaled(l.textMaxWidth, output), ivory, 1.35);
 
-    if (d.name) {
-      drawWrappedCentered(page, `${TEXT.forLabel} ${d.name}`, fonts.body, scaled(exportMode === 'wall' ? 64 : 58, output), centerX, toPtY(l.nameY, output), scaled(l.textMaxWidth, output), gold, 1.25);
-    }
+    if (d.name) drawWrappedCentered(page, `${TEXT.forLabel} ${d.name}`, fonts.body, scaled(exportMode === 'wall' ? 64 : 58, output), centerX, toPtY(l.nameY, output), scaled(l.textMaxWidth, output), gold, 1.25);
 
     const fieldY = toPtY(l.fieldsY, output);
     const fieldXs = [output.width * 0.255, output.width * 0.5, output.width * 0.745];
@@ -410,14 +452,6 @@
     }
 
     return pdfDoc.save({ useObjectStreams: true });
-  }
-
-  function drawField(page, fonts, label, value, x, y, width, output) {
-    const { rgb } = window.PDFLib;
-    const lineY = y;
-    page.drawLine({ start: { x: x - width / 2, y: lineY }, end: { x: x + width / 2, y: lineY }, thickness: 0.8, color: rgb(0.72, 0.61, 0.42) });
-    drawCentered(page, label.toUpperCase(), fonts.meta, scaled(26, output), x, y - scaled(42, output), rgb(0.72, 0.61, 0.42));
-    drawWrappedCentered(page, value, fonts.body, scaled(42, output), x, y - scaled(95, output), width - scaled(24, output), rgb(0.94, 0.86, 0.68), 1.16);
   }
 
   async function createPdf(exportMode = 'standard') {
@@ -443,9 +477,7 @@
     }
   }
 
-  root.addEventListener('change', (event) => {
-    if (event.target?.matches('[name="recordVariant"], [name="eventPreset"]')) runPreflight();
-  });
+  root.addEventListener('change', (event) => { if (event.target?.matches('[name="recordVariant"], [name="eventPreset"]')) runPreflight(); });
   premiumButton.addEventListener('click', () => createPdf('standard'));
   wallButton.addEventListener('click', () => createPdf('wall'));
 })();
