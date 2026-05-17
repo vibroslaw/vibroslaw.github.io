@@ -63,7 +63,11 @@
     archiveFinale: 'Możesz przekazać ten anonimowy JPG prowadzącemu, jeśli ma trafić do statycznego archiwum wydarzenia.',
     microprint: 'To nie jest test wiedzy ani dokument urzędowy. To osobisty ślad refleksji po projekcji.',
     archiveMicroprint: 'Wersja archiwalna anonimowa · bez imienia, nazwiska, podpisu i danych osobowych.',
-    fontFallback: 'Uwaga: użyto awaryjnych fontów PDF. Dla finalnej jakości sprawdź lokalne pliki fontów.'
+    fontFallback: 'Uwaga: użyto awaryjnych fontów PDF. Dla finalnej jakości sprawdź lokalne pliki fontów.',
+    eventEdition: 'Wersja wydarzenia',
+    publicEdition: 'Wersja publiczna',
+    portal: 'Portal uczestnika',
+    archive: 'Anonimowe archiwum'
   } : {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     title: 'WITNESS REPORT',
@@ -91,21 +95,41 @@
     archiveFinale: 'You may pass this anonymous JPG to the facilitator if it should become part of the static event archive.',
     microprint: 'This is not a knowledge test or an official document. It is a personal trace of reflection after the screening.',
     archiveMicroprint: 'Anonymous archive version · no name, surname, signature or personal data.',
-    fontFallback: 'Note: PDF fallback fonts were used. For final quality, check local font files.'
+    fontFallback: 'Note: PDF fallback fonts were used. For final quality, check local font files.',
+    eventEdition: 'Event edition',
+    publicEdition: 'Public preview',
+    portal: 'Participant portal',
+    archive: 'Anonymous archive'
   };
 
   const events = {
     oswiecim20260525: {
       code: 'OSW',
+      archiveCode: 'osw20260525',
       date: '2026-05-25',
-      pl: { place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu', label: '25 maja 2026' },
-      en: { place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim', label: '25 May 2026' }
+      archivePrefix: 'wr-osw20260525-anon',
+      pdfPrefix: {
+        pl: 'Rap-Ort-Raport-Swiadka-Oswiecim-2026-05-25',
+        en: 'Rap-Ort-Witness-Report-Oswiecim-2026-05-25'
+      },
+      portalUrl: { pl: '/rap-ort/uczestnictwo/?event=oswiecim20260525', en: '/rap-ort/participation/?event=oswiecim20260525' },
+      archiveUrl: { pl: '/rap-ort/uczestnictwo/?event=oswiecim20260525#archive-gallery', en: '/rap-ort/participation/?event=oswiecim20260525#archive-gallery' },
+      pl: { place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu', label: '25 maja 2026', edition: 'Oświęcim / MUP' },
+      en: { place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim', label: '25 May 2026', edition: 'Oświęcim / MUP' }
     },
     syd2026: {
       code: 'SYD',
+      archiveCode: 'syd2026',
       date: '2026-06-21',
-      pl: { place: 'Polish Club Ashfield / Sydney', label: '21 czerwca 2026' },
-      en: { place: 'Polish Club Ashfield / Sydney', label: '21 June 2026' }
+      archivePrefix: 'wr-syd2026-anon',
+      pdfPrefix: {
+        pl: 'Rap-Ort-Raport-Swiadka-Sydney-2026',
+        en: 'Rap-Ort-Witness-Report-Sydney-2026'
+      },
+      portalUrl: { pl: '/rap-ort/uczestnictwo/?event=syd2026', en: '/rap-ort/participation/?event=syd2026' },
+      archiveUrl: { pl: '/rap-ort/uczestnictwo/?event=syd2026#archive-gallery', en: '/rap-ort/participation/?event=syd2026#archive-gallery' },
+      pl: { place: 'Polish Club Ashfield / Sydney', label: '21 czerwca 2026', edition: 'Sydney 2026' },
+      en: { place: 'Polish Club Ashfield / Sydney', label: '21 June 2026', edition: 'Sydney 2026' }
     }
   };
 
@@ -137,6 +161,7 @@
   const abs = (path) => new URL(path, window.location.origin).href;
   const q = () => quotes.find((item) => item[0] === f('quote')?.value) || quotes[0];
   const eventKey = () => f('eventPreset')?.value || 'custom';
+  const activeEvent = () => events[eventKey()] || null;
   const x = (px) => px * (PAGE.ptW / PAGE.pxW);
   const y = (px) => PAGE.ptH - px * (PAGE.ptH / PAGE.pxH);
   const s = (px) => px * (PAGE.ptW / PAGE.pxW);
@@ -197,7 +222,7 @@
   }
 
   function dateLabel() {
-    const event = events[eventKey()];
+    const event = activeEvent();
     if (event) return event[lang].label;
     const value = f('eventDate')?.value;
     if (!value) return lang === 'pl' ? 'Data wydarzenia' : 'Event date';
@@ -206,24 +231,82 @@
     } catch (_) { return value; }
   }
 
+  function sequenceFromNumber(number) {
+    return String(number || '').split('-').filter(Boolean).pop() || String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+  }
+
+  function eventEditionLabel() {
+    const event = activeEvent();
+    return event?.[lang]?.edition || C.publicEdition;
+  }
+
+  function pdfFileName(d) {
+    const prefix = d.event?.pdfPrefix?.[lang] || C.file;
+    return `${prefix}-${safeFile(d.number)}.pdf`;
+  }
+
+  function archiveFileName(d) {
+    const prefix = d.event?.archivePrefix || C.archiveFile;
+    return `${prefix}-${safeFile(sequenceFromNumber(d.number))}.jpg`;
+  }
+
+  function updateEventLinks() {
+    const event = activeEvent();
+    const base = lang === 'pl' ? '/rap-ort/uczestnictwo/' : '/rap-ort/participation/';
+    const portal = event?.portalUrl?.[lang] || `${base}?event=${encodeURIComponent(eventKey())}`;
+    const archive = event?.archiveUrl?.[lang] || `${base}?event=${encodeURIComponent(eventKey())}#archive-gallery`;
+    root.querySelectorAll('[data-wr-participation-link]').forEach((link) => link.setAttribute('href', portal));
+    root.querySelectorAll('.wr-return-row a[href*="uczestnictwo"], .wr-return-row a[href*="participation"]').forEach((link) => {
+      const isArchive = link.getAttribute('href')?.includes('#archive-gallery');
+      link.setAttribute('href', isArchive ? archive : portal);
+    });
+  }
+
+  function ensureEventBadge() {
+    let badge = root.querySelector('[data-wr-event-badge]');
+    if (badge) return badge;
+    badge = document.createElement('div');
+    badge.className = 'wr-event-badge';
+    badge.setAttribute('data-wr-event-badge', '');
+    const heading = form?.querySelector('.vh-section-title');
+    if (heading) heading.insertAdjacentElement('afterend', badge);
+    else form?.prepend(badge);
+    return badge;
+  }
+
+  function renderEventBadge() {
+    const badge = ensureEventBadge();
+    if (!badge) return;
+    const event = activeEvent();
+    const label = eventEditionLabel();
+    const date = event ? event[lang].label : (lang === 'pl' ? 'Wersja ręczna' : 'Manual version');
+    badge.dataset.event = eventKey();
+    badge.innerHTML = `<span>${event ? C.eventEdition : C.publicEdition}</span><strong>${esc(label)}</strong><em>${esc(date)}</em>`;
+  }
+
   function data() {
+    const event = activeEvent();
     return {
       quote: q(),
       reflection: f('reflection')?.value.trim() || '',
       name: f('participantName')?.value.trim() || C.fallbackName,
-      place: f('place')?.value.trim() || events[eventKey()]?.[lang].place || C.fallbackPlace,
+      place: f('place')?.value.trim() || event?.[lang].place || C.fallbackPlace,
       date: dateLabel(),
       number: reportNumber(),
-      eventKey: eventKey()
+      eventKey: eventKey(),
+      event,
+      edition: eventEditionLabel()
     };
   }
 
   function applyPreset() {
-    const event = events[eventKey()];
+    const event = activeEvent();
     if (event) {
       if (f('place')) f('place').value = event[lang].place;
       if (f('eventDate')) f('eventDate').value = event.date;
     }
+    updateEventLinks();
+    renderEventBadge();
     renderPreview();
   }
 
@@ -232,11 +315,7 @@
     const event = params.get('event');
     const select = f('eventPreset');
     if (event && select && [...select.options].some((option) => option.value === event)) select.value = event;
-    const recordLink = root.querySelector('[data-wr-participation-link]');
-    if (recordLink && select?.value) {
-      const base = lang === 'pl' ? '/rap-ort/uczestnictwo/' : '/rap-ort/participation/';
-      recordLink.setAttribute('href', `${base}?event=${encodeURIComponent(select.value)}`);
-    }
+    updateEventLinks();
   }
 
   function esc(value) {
@@ -246,8 +325,11 @@
   function renderPreview() {
     const d = data();
     if (counter) counter.textContent = `${d.reflection.length}/280`;
+    renderEventBadge();
+    updateEventLinks();
     if (!preview) return;
-    preview.querySelector('[data-wr-project]').textContent = C.project;
+    preview.dataset.wrEvent = d.eventKey;
+    preview.querySelector('[data-wr-project]').textContent = d.event ? `${C.project} · ${d.edition}` : C.project;
     preview.querySelector('[data-wr-title]').textContent = C.title;
     preview.querySelector('[data-wr-quote]').innerHTML = `“${esc(d.quote[1])}”<br><small>${esc(d.quote[2])}</small>`;
     preview.querySelector('[data-wr-reflection]').textContent = d.reflection || (lang === 'pl' ? 'Kilka słów, które zostają po projekcji' : 'A few words that remain after the screening');
@@ -434,9 +516,9 @@
     try { fonts = await loadFonts(pdfDoc); }
     catch (err) { console.warn('Witness Report custom fonts unavailable.', err); fonts = await fallbackFonts(pdfDoc); setStatus(C.fontFallback); }
 
-    pdfDoc.setTitle(`${C.title} — ${d.number}`);
+    pdfDoc.setTitle(`${C.title} — ${d.edition} — ${d.number}`);
     pdfDoc.setAuthor('Piotr Jakub Lichwała / Vibrosław');
-    pdfDoc.setSubject('Rap-Ort: Prawda Sumienia — Witness Report');
+    pdfDoc.setSubject(`Rap-Ort: Prawda Sumienia — Witness Report — ${d.edition}`);
     pdfDoc.setCreator('Veritas Humanum Witness Report Final Master');
     pdfDoc.setProducer('Veritas Humanum local browser PDF generator');
 
@@ -447,7 +529,8 @@
 
     const colors = { ink: rgb(0.15, 0.09, 0.045), soft: rgb(0.23, 0.16, 0.09), muted: rgb(0.39, 0.29, 0.18), line: rgb(0.46, 0.34, 0.2), faint: rgb(0.54, 0.43, 0.28) };
     const cx = PAGE.ptW / 2;
-    drawCentered(page, C.project, fonts.metaBold, s(39), cx, y(335), colors.muted, fonts);
+    drawCentered(page, C.project, fonts.metaBold, s(39), cx, y(320), colors.muted, fonts);
+    drawCentered(page, `${d.event ? C.eventEdition : C.publicEdition}: ${d.edition}`, fonts.meta, s(25), cx, y(380), colors.faint, fonts);
 
     const plate = await embedTitlePlate(pdfDoc);
     if (plate) {
@@ -478,7 +561,7 @@
     drawMetaField(page, C.number, d.number, x(1760), y(2485), x(760), fonts, colors);
     line(page, x(620), y(2920), x(1860), y(2920), colors.line, 0.65);
     drawCentered(page, C.signature.toUpperCase(), fonts.meta, s(31), cx, y(2992), colors.muted, fonts);
-    drawWrappedCentered(page, C.microprint.toUpperCase(), fonts.meta, s(18), cx, y(3308), x(1750), colors.faint, s(28), fonts, 2);
+    drawWrappedCentered(page, `${C.microprint} · ${d.edition}`.toUpperCase(), fonts.meta, s(18), cx, y(3308), x(1750), colors.faint, s(28), fonts, 2);
     return pdfDoc.save({ useObjectStreams: true });
   }
 
@@ -525,7 +608,11 @@
     ctx.fillStyle = 'rgba(66,46,22,.72)';
     ctx.font = '700 44px Arial, sans-serif';
     ctx.letterSpacing = '0px';
-    ctx.fillText(C.project, PAGE.pxW / 2, 340);
+    ctx.fillText(C.project, PAGE.pxW / 2, 320);
+
+    ctx.fillStyle = 'rgba(70,48,27,.66)';
+    ctx.font = '38px Arial, sans-serif';
+    ctx.fillText(`${d.event ? C.eventEdition : C.publicEdition}: ${d.edition}`, PAGE.pxW / 2, 385);
 
     ctx.fillStyle = '#21160d';
     ctx.font = '700 118px Georgia, serif';
@@ -554,7 +641,7 @@
 
     ctx.fillStyle = 'rgba(70,48,27,.58)';
     ctx.font = '31px Arial, sans-serif';
-    drawCanvasCentered(ctx, C.archiveMicroprint.toUpperCase(), 3310, 1700, 44, 2);
+    drawCanvasCentered(ctx, `${C.archiveMicroprint} · ${d.edition}`.toUpperCase(), 3310, 1700, 44, 2);
 
     return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.94));
   }
@@ -586,7 +673,7 @@
     try {
       setStatus(C.preparing);
       const bytes = await buildPdf(d);
-      downloadPdf(bytes, `${C.file}-${safeFile(d.number)}.pdf`);
+      downloadPdf(bytes, pdfFileName(d));
       setStatus(`${C.ready} ${(bytes.byteLength / 1024 / 1024).toFixed(2)} MB.`);
       if (finale) { finale.hidden = false; finale.textContent = C.finale; }
     } catch (error) {
@@ -602,8 +689,7 @@
     try {
       setStatus(C.archivePreparing);
       const blob = await buildAnonymousArchiveJpg(d);
-      const prefix = d.eventKey === 'oswiecim20260525' ? 'wr-osw20260525-anon' : C.archiveFile;
-      downloadBlob(blob, `${prefix}-${safeFile(d.number)}.jpg`);
+      downloadBlob(blob, archiveFileName(d));
       setStatus(`${C.archiveReady} ${(blob.size / 1024 / 1024).toFixed(2)} MB.`);
       if (finale) { finale.hidden = false; finale.textContent = C.archiveFinale; }
     } catch (error) {
