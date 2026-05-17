@@ -76,6 +76,7 @@
     if (section) return section;
 
     section = document.createElement('section');
+    section.id = 'memory-pack';
     section.className = 'vh-section memory-pack-section';
     section.setAttribute('data-memory-pack-section', '');
     section.setAttribute('aria-labelledby', 'memory-pack-title');
@@ -100,6 +101,7 @@
   function renderPack(root, pack, lang) {
     const copy = strings[lang];
     const section = ensureSection(root);
+    section.id = 'memory-pack';
     section.dataset.memoryPack = pack.id;
 
     section.innerHTML = `
