@@ -12,6 +12,7 @@
       share: 'Udostępnij',
       shareFallback: 'Udostępnianie systemowe nie jest dostępne. Skopiuj link.',
       open: 'Otwórz generator',
+      experience: 'Otwórz doświadczenie',
       memory: 'Przejdź do Pakietu Uczestnika',
       witness: 'Raport Świadka',
       qr: 'QR-ready link',
@@ -29,6 +30,7 @@
       share: 'Share',
       shareFallback: 'System sharing is not available. Copy the link instead.',
       open: 'Open generator',
+      experience: 'Open experience',
       memory: 'Go to Memory Pack',
       witness: 'Witness Report',
       qr: 'QR-ready link',
@@ -47,6 +49,7 @@
   const extensionAssets = {
     css: [
       '/assets/css/event-experience.css',
+      '/assets/css/event-shell.css',
       '/assets/css/event-portal.css',
       '/assets/css/archive-gallery.css'
     ],
@@ -112,6 +115,12 @@
     return config.defaultFlowId || 'default';
   }
 
+  function experienceUrl(flowId) {
+    if (flowId === 'oswiecim20260525') return '/rap-ort/experience/oswiecim20260525/';
+    if (flowId === 'syd2026') return '/rap-ort/experience/syd2026/';
+    return '/rap-ort/experience/';
+  }
+
   function ensureSection(root) {
     let section = root.querySelector('[data-access-flow-section]');
     if (section) return section;
@@ -143,6 +152,7 @@
     const section = ensureSection(root);
     const participantUrl = absoluteUrl(flow.participantUrl);
     const witnessUrl = flow.witnessUrl ? absoluteUrl(flow.witnessUrl) : '';
+    const shellUrl = experienceUrl(flow.id);
     section.dataset.accessFlow = flow.id;
     section.innerHTML = `
       <div class="vh-wrap access-flow-wrap">
@@ -151,6 +161,15 @@
           <h2 class="vh-section-title" id="access-flow-title">${escapeHtml(flow.eventTitle)}</h2>
           <p class="access-flow-subtitle">${escapeHtml(flow.eventSubtitle)}</p>
           <p class="access-flow-active"><span>${escapeHtml(copy.active)}</span><strong>${escapeHtml(flow.label)}</strong></p>
+          <div class="event-shell-entry-panel">
+            <h3>${escapeHtml(copy.experience)}</h3>
+            <p>${lang === 'en'
+              ? 'Enter the cinematic event shell first, then continue into the document, reflection, memory pack and archive modules.'
+              : 'Najpierw wejdź do filmowej przestrzeni wydarzenia, a potem przejdź do dokumentu, refleksji, pakietu pamiątkowego i archiwum.'}</p>
+            <div class="event-shell-entry-actions">
+              <a class="event-shell-entry-link" href="${escapeHtml(shellUrl)}">${escapeHtml(copy.experience)}</a>
+            </div>
+          </div>
         </div>
         <div class="access-flow-grid">
           <article class="access-flow-card access-flow-card-main">
@@ -164,6 +183,7 @@
               <button class="vh-button secondary" type="button" data-access-copy>${escapeHtml(copy.copy)}</button>
             </div>
             <div class="access-flow-actions">
+              <a class="vh-button event-shell-entry-link" href="${escapeHtml(shellUrl)}">${escapeHtml(copy.experience)}</a>
               <a class="vh-button" href="${escapeHtml(flow.participantUrl)}">${escapeHtml(copy.open)}</a>
               <a class="vh-button secondary" href="${escapeHtml(flow.memoryAnchor)}">${escapeHtml(copy.memory)}</a>
               ${witnessUrl ? `<a class="vh-button secondary" href="${escapeHtml(flow.witnessUrl)}">${escapeHtml(copy.witness)}</a>` : ''}
