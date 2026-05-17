@@ -14,6 +14,7 @@
 
   const ASSETS = {
     background: [
+      '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/witness-report-bg-a4.jpg',
       '/public/assets/reports/witness-report-bg-01-archival-paper-a4.jpg',
       '/public/assets/reports/witness-report-bg-a4-300dpi.png'
     ],
@@ -38,44 +39,68 @@
   const C = lang === 'pl' ? {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     title: 'RAPORT ŚWIADKA',
+    archiveTitle: 'ANONIMOWY RAPORT ŚWIADKA',
     button: 'Pobierz Raport Świadka PDF',
+    archiveButton: 'Zarchiwizuj anonimową wersję JPG',
     preparing: 'Przygotowuję finalny Raport Świadka jako print-master PDF…',
+    archivePreparing: 'Przygotowuję anonimową wersję JPG do archiwum wydarzenia…',
     ready: 'Raport Świadka został przygotowany jako finalny print-master PDF.',
+    archiveReady: 'Anonimowa wersja JPG została przygotowana. Plik nie zawiera imienia, nazwiska ani podpisu.',
     error: 'Nie udało się wygenerować Raportu Świadka. Sprawdź konsolę lub spróbuj ponownie.',
+    archiveError: 'Nie udało się wygenerować anonimowego JPG. Spróbuj ponownie.',
     missing: 'Wpisz kilka słów, które zostają po projekcji.',
     name: 'Imię i nazwisko',
     date: 'Data',
     place: 'Miejsce',
     number: 'Numer raportu',
     signature: 'Podpis świadka doświadczenia',
+    archiveNumber: 'Numer archiwalny',
     fallbackName: 'Świadek doświadczenia',
     fallbackPlace: 'Miejsce wydarzenia',
     file: 'Rap-Ort-Raport-Swiadka',
+    archiveFile: 'raport-swiadka-anon',
     finale: 'Raport Świadka został zachowany jako osobisty ślad refleksji.',
+    archiveFinale: 'Możesz przekazać ten anonimowy JPG prowadzącemu, jeśli ma trafić do statycznego archiwum wydarzenia.',
     microprint: 'To nie jest test wiedzy ani dokument urzędowy. To osobisty ślad refleksji po projekcji.',
+    archiveMicroprint: 'Wersja archiwalna anonimowa · bez imienia, nazwiska, podpisu i danych osobowych.',
     fontFallback: 'Uwaga: użyto awaryjnych fontów PDF. Dla finalnej jakości sprawdź lokalne pliki fontów.'
   } : {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     title: 'WITNESS REPORT',
+    archiveTitle: 'ANONYMOUS WITNESS REPORT',
     button: 'Download Witness Report PDF',
+    archiveButton: 'Archive anonymous JPG version',
     preparing: 'Preparing the final Witness Report print-master PDF…',
+    archivePreparing: 'Preparing the anonymous archive JPG for this event…',
     ready: 'Witness Report has been prepared as a final print-master PDF.',
+    archiveReady: 'Anonymous JPG version has been prepared. The file contains no name, surname or signature.',
     error: 'Could not generate the Witness Report. Check the console or try again.',
+    archiveError: 'Could not generate the anonymous JPG. Try again.',
     missing: 'Write a few words that remain after the screening.',
     name: 'Name',
     date: 'Date',
     place: 'Place',
     number: 'Report number',
     signature: 'Signature of the witness to the experience',
+    archiveNumber: 'Archive number',
     fallbackName: 'Witness to the experience',
     fallbackPlace: 'Event place',
     file: 'Rap-Ort-Witness-Report',
+    archiveFile: 'witness-report-anon',
     finale: 'The Witness Report has been preserved as a personal trace of reflection.',
+    archiveFinale: 'You may pass this anonymous JPG to the facilitator if it should become part of the static event archive.',
     microprint: 'This is not a knowledge test or an official document. It is a personal trace of reflection after the screening.',
+    archiveMicroprint: 'Anonymous archive version · no name, surname, signature or personal data.',
     fontFallback: 'Note: PDF fallback fonts were used. For final quality, check local font files.'
   };
 
   const events = {
+    oswiecim20260525: {
+      code: 'OSW',
+      date: '2026-05-25',
+      pl: { place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu', label: '25 maja 2026' },
+      en: { place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim', label: '25 May 2026' }
+    },
     syd2026: {
       code: 'SYD',
       date: '2026-06-21',
@@ -91,12 +116,14 @@
   ] : [
     ['pilecki-life', 'I tried to live in such a way that in the hour of death I could rejoice rather than fear.', 'Witold Pilecki — attributed quote'],
     ['truth-trace', 'Truth does not end on the screen. It remains in the decision a human being makes afterwards.', 'Veritas Humanum — post-screening trace'],
-    ['silence', 'The silence after testimony is not empty. It is the place where conscience begins to work.', 'Rap-Ort — authorial reflection']
+    ['silence', 'The silence after testimony is not empty. It is the place where conscience begins to work.', 'Rap-Ort — authorial reflection'],
+    ['question-remains', 'The testimony has been spoken. Now the question remains with you.', 'Veritas Humanum — final question']
   ];
 
-  const $ = (s) => root.querySelector(s);
-  const f = (n) => root.querySelector(`[name="${n}"]`);
+  const $ = (selector) => root.querySelector(selector);
+  const f = (name) => root.querySelector(`[name="${name}"]`);
   const button = $('[data-wr-download]');
+  const archiveButton = $('[data-wr-archive]');
   const status = $('[data-wr-status]');
   const finale = $('[data-wr-finale]');
   const preview = $('[data-wr-preview]');
@@ -104,8 +131,9 @@
   const form = $('[data-wr-form]');
 
   if (button) button.textContent = C.button;
+  if (archiveButton) archiveButton.textContent = C.archiveButton;
 
-  const setStatus = (msg) => { if (status) status.textContent = msg || ''; };
+  const setStatus = (message) => { if (status) status.textContent = message || ''; };
   const abs = (path) => new URL(path, window.location.origin).href;
   const q = () => quotes.find((item) => item[0] === f('quote')?.value) || quotes[0];
   const eventKey = () => f('eventPreset')?.value || 'custom';
@@ -126,16 +154,14 @@
   }
 
   async function fetchBytes(path) {
-    const res = await fetch(abs(path), { cache: 'no-store' });
-    if (!res.ok) throw new Error(`Missing asset: ${path}`);
-    return new Uint8Array(await res.arrayBuffer());
+    const response = await fetch(abs(path), { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Missing asset: ${path}`);
+    return new Uint8Array(await response.arrayBuffer());
   }
 
   async function firstBytes(paths) {
     for (const path of paths.filter(Boolean)) {
-      try {
-        return { path, bytes: await fetchBytes(path) };
-      } catch (_) {}
+      try { return { path, bytes: await fetchBytes(path) }; } catch (_) {}
     }
     return null;
   }
@@ -177,9 +203,7 @@
     if (!value) return lang === 'pl' ? 'Data wydarzenia' : 'Event date';
     try {
       return new Intl.DateTimeFormat(lang === 'pl' ? 'pl-PL' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(`${value}T00:00:00`));
-    } catch (_) {
-      return value;
-    }
+    } catch (_) { return value; }
   }
 
   function data() {
@@ -189,7 +213,8 @@
       name: f('participantName')?.value.trim() || C.fallbackName,
       place: f('place')?.value.trim() || events[eventKey()]?.[lang].place || C.fallbackPlace,
       date: dateLabel(),
-      number: reportNumber()
+      number: reportNumber(),
+      eventKey: eventKey()
     };
   }
 
@@ -200,6 +225,18 @@
       if (f('eventDate')) f('eventDate').value = event.date;
     }
     renderPreview();
+  }
+
+  function initFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const event = params.get('event');
+    const select = f('eventPreset');
+    if (event && select && [...select.options].some((option) => option.value === event)) select.value = event;
+    const recordLink = root.querySelector('[data-wr-participation-link]');
+    if (recordLink && select?.value) {
+      const base = lang === 'pl' ? '/rap-ort/uczestnictwo/' : '/rap-ort/participation/';
+      recordLink.setAttribute('href', `${base}?event=${encodeURIComponent(select.value)}`);
+    }
   }
 
   function esc(value) {
@@ -240,12 +277,15 @@
     ctx.strokeRect(210, 210, PAGE.pxW - 420, PAGE.pxH - 420);
   }
 
-  async function composeBackgroundBytes() {
+  async function composeBackgroundCanvas() {
     const canvas = document.createElement('canvas');
     canvas.width = PAGE.pxW;
     canvas.height = PAGE.pxH;
     const ctx = canvas.getContext('2d', { alpha: false });
-    const background = await firstImage(ASSETS.background);
+    const eventBg = eventKey() === 'oswiecim20260525'
+      ? ['/public/assets/events/rap-ort/oswiecim20260525/backgrounds/witness-report-bg-a4.jpg']
+      : [];
+    const background = await firstImage([...eventBg, ...ASSETS.background]);
     if (background) ctx.drawImage(background, 0, 0, PAGE.pxW, PAGE.pxH);
     else drawFallbackPaper(ctx);
 
@@ -268,7 +308,11 @@
     ctx.fillStyle = veil;
     ctx.fillRect(0, 0, PAGE.pxW, PAGE.pxH);
     ctx.restore();
+    return canvas;
+  }
 
+  async function composeBackgroundBytes() {
+    const canvas = await composeBackgroundCanvas();
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.96));
     return new Uint8Array(await blob.arrayBuffer());
   }
@@ -277,22 +321,14 @@
     const kit = window.fontkit || window.Fontkit;
     if (!kit || !pdfDoc.registerFontkit) throw new Error('fontkit unavailable');
     pdfDoc.registerFontkit(kit);
-
     const load = async (path) => {
-      try {
-        const bytes = await fetchBytes(path);
-        return await pdfDoc.embedFont(bytes, { subset: true });
-      } catch (err) {
-        console.warn(`Witness Report font unavailable: ${path}`, err);
-        return null;
-      }
+      try { return await pdfDoc.embedFont(await fetchBytes(path), { subset: true }); }
+      catch (err) { console.warn(`Witness Report font unavailable: ${path}`, err); return null; }
     };
-
     const body = await load(FONT_PATHS.body);
     const meta = await load(FONT_PATHS.meta);
     const fallback = body || meta;
     if (!fallback) throw new Error('custom fonts unavailable');
-
     return {
       custom: true,
       title: await load(FONT_PATHS.title) || fallback,
@@ -323,22 +359,14 @@
   function wrap(text, font, size, maxWidth, fonts) {
     const words = safeForFont(text, fonts).split(/\s+/).filter(Boolean);
     const lines = [];
-    let line = '';
+    let lineText = '';
     words.forEach((word) => {
-      const test = line ? `${line} ${word}` : word;
-      if (font.widthOfTextAtSize(test, size) > maxWidth && line) {
-        lines.push(line);
-        line = word;
-      } else {
-        line = test;
-      }
+      const test = lineText ? `${lineText} ${word}` : word;
+      if (font.widthOfTextAtSize(test, size) > maxWidth && lineText) { lines.push(lineText); lineText = word; }
+      else lineText = test;
     });
-    if (line) lines.push(line);
+    if (lineText) lines.push(lineText);
     return lines;
-  }
-
-  function drawText(page, text, opts, fonts) {
-    page.drawText(safeForFont(text, fonts), opts);
   }
 
   function drawCentered(page, text, font, size, centerX, baselineY, color, fonts) {
@@ -349,16 +377,10 @@
 
   function drawWrappedCentered(page, text, font, size, centerX, startY, maxWidth, color, lineHeight, fonts, maxLines = 99) {
     const lines = wrap(text, font, size, maxWidth, fonts).slice(0, maxLines);
-    lines.forEach((line, index) => {
-      const width = font.widthOfTextAtSize(line, size);
-      page.drawText(line, { x: centerX - width / 2, y: startY - index * lineHeight, size, font, color });
+    lines.forEach((lineText, index) => {
+      const width = font.widthOfTextAtSize(lineText, size);
+      page.drawText(lineText, { x: centerX - width / 2, y: startY - index * lineHeight, size, font, color });
     });
-    return lines.length;
-  }
-
-  function drawWrappedLeft(page, text, font, size, leftX, startY, maxWidth, color, lineHeight, fonts, maxLines = 99) {
-    const lines = wrap(text, font, size, maxWidth, fonts).slice(0, maxLines);
-    lines.forEach((line, index) => page.drawText(line, { x: leftX, y: startY - index * lineHeight, size, font, color }));
     return lines.length;
   }
 
@@ -382,13 +404,14 @@
       ctx.drawImage(img, 0, 0, width, height);
       const png = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
       return new Uint8Array(await png.arrayBuffer());
-    } finally {
-      URL.revokeObjectURL(url);
-    }
+    } finally { URL.revokeObjectURL(url); }
   }
 
   async function embedTitlePlate(pdfDoc) {
-    const asset = await firstBytes([ASSETS.titlePlate[lang]]);
+    const eventPlate = eventKey() === 'oswiecim20260525'
+      ? `/public/assets/events/rap-ort/oswiecim20260525/title-plates/${lang === 'pl' ? 'title-raport-swiadka-dark.svg' : 'title-witness-report-dark.svg'}`
+      : null;
+    const asset = await firstBytes([eventPlate, ASSETS.titlePlate[lang]]);
     if (!asset) return null;
     try {
       const pngBytes = asset.path.toLowerCase().endsWith('.svg') ? await svgToPngBytes(asset.bytes, 2400, 520) : asset.bytes;
@@ -408,13 +431,8 @@
   async function buildPdf(d) {
     const pdfDoc = await PDFDocument.create();
     let fonts;
-    try {
-      fonts = await loadFonts(pdfDoc);
-    } catch (err) {
-      console.warn('Witness Report custom fonts unavailable.', err);
-      fonts = await fallbackFonts(pdfDoc);
-      setStatus(C.fontFallback);
-    }
+    try { fonts = await loadFonts(pdfDoc); }
+    catch (err) { console.warn('Witness Report custom fonts unavailable.', err); fonts = await fallbackFonts(pdfDoc); setStatus(C.fontFallback); }
 
     pdfDoc.setTitle(`${C.title} — ${d.number}`);
     pdfDoc.setAuthor('Piotr Jakub Lichwała / Vibrosław');
@@ -427,14 +445,7 @@
     const bg = await pdfDoc.embedJpg(bgBytes);
     page.drawImage(bg, { x: 0, y: 0, width: PAGE.ptW, height: PAGE.ptH });
 
-    const colors = {
-      ink: rgb(0.15, 0.09, 0.045),
-      soft: rgb(0.23, 0.16, 0.09),
-      muted: rgb(0.39, 0.29, 0.18),
-      line: rgb(0.46, 0.34, 0.2),
-      faint: rgb(0.54, 0.43, 0.28)
-    };
-
+    const colors = { ink: rgb(0.15, 0.09, 0.045), soft: rgb(0.23, 0.16, 0.09), muted: rgb(0.39, 0.29, 0.18), line: rgb(0.46, 0.34, 0.2), faint: rgb(0.54, 0.43, 0.28) };
     const cx = PAGE.ptW / 2;
     drawCentered(page, C.project, fonts.metaBold, s(39), cx, y(335), colors.muted, fonts);
 
@@ -443,22 +454,18 @@
       const width = x(1580);
       const height = width * (plate.height / plate.width);
       page.drawImage(plate, { x: cx - width / 2, y: y(560) - height / 2, width, height });
-    } else {
-      drawCentered(page, C.title, fonts.title, s(112), cx, y(555), colors.ink, fonts);
-    }
+    } else drawCentered(page, C.title, fonts.title, s(112), cx, y(555), colors.ink, fonts);
 
     drawWrappedCentered(page, `“${d.quote[1]}”`, fonts.quoteItalic, s(50), cx, y(780), x(1670), colors.soft, s(74), fonts, 4);
     drawCentered(page, d.quote[2], fonts.meta, s(29), cx, y(1038), colors.muted, fonts);
-
     line(page, x(470), y(1195), x(2010), y(1195), colors.line, 0.45);
     line(page, x(470), y(1945), x(2010), y(1945), colors.line, 0.45);
 
-    const reflectionText = d.reflection;
     let reflectionSize = s(46);
-    let reflectionLines = wrap(reflectionText, fonts.typewriter, reflectionSize, x(1600), fonts);
+    let reflectionLines = wrap(d.reflection, fonts.typewriter, reflectionSize, x(1600), fonts);
     while (reflectionLines.length > 8 && reflectionSize > s(36)) {
       reflectionSize -= s(2);
-      reflectionLines = wrap(reflectionText, fonts.typewriter, reflectionSize, x(1600), fonts);
+      reflectionLines = wrap(d.reflection, fonts.typewriter, reflectionSize, x(1600), fonts);
     }
     reflectionLines.slice(0, 8).forEach((lineText, index) => {
       const width = fonts.typewriter.widthOfTextAtSize(lineText, reflectionSize);
@@ -469,27 +476,99 @@
     drawMetaField(page, C.date, d.date, x(1760), y(2190), x(760), fonts, colors);
     drawMetaField(page, C.place, d.place, x(720), y(2485), x(760), fonts, colors);
     drawMetaField(page, C.number, d.number, x(1760), y(2485), x(760), fonts, colors);
-
     line(page, x(620), y(2920), x(1860), y(2920), colors.line, 0.65);
     drawCentered(page, C.signature.toUpperCase(), fonts.meta, s(31), cx, y(2992), colors.muted, fonts);
-
     drawWrappedCentered(page, C.microprint.toUpperCase(), fonts.meta, s(18), cx, y(3308), x(1750), colors.faint, s(28), fonts, 2);
-
     return pdfDoc.save({ useObjectStreams: true });
   }
 
-  function safeFile(text) {
-    return String(text || '')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-zA-Z0-9-]+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
-      .slice(0, 120);
+  function wrapCanvas(ctx, text, maxWidth) {
+    const words = String(text || '').split(/\s+/).filter(Boolean);
+    const lines = [];
+    let current = '';
+    words.forEach((word) => {
+      const test = current ? `${current} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && current) { lines.push(current); current = word; }
+      else current = test;
+    });
+    if (current) lines.push(current);
+    return lines;
   }
 
-  function download(bytes, name) {
+  function drawCanvasCentered(ctx, text, yPx, maxWidth, lineHeight, maxLines = 99) {
+    const lines = wrapCanvas(ctx, text, maxWidth).slice(0, maxLines);
+    lines.forEach((lineText, index) => ctx.fillText(lineText, PAGE.pxW / 2, yPx + index * lineHeight));
+    return lines.length;
+  }
+
+  function drawCanvasMeta(ctx, label, value, cx, yTop, width) {
+    ctx.strokeStyle = 'rgba(74,52,29,.55)';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx - width / 2, yTop);
+    ctx.lineTo(cx + width / 2, yTop);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(70,48,27,.7)';
+    ctx.font = '700 42px Arial, sans-serif';
+    ctx.fillText(label.toUpperCase(), cx, yTop + 78);
+    ctx.fillStyle = '#24180d';
+    ctx.font = '44px Georgia, serif';
+    drawCanvasCentered(ctx, value, yTop + 138, width - 40, 58, 2);
+  }
+
+  async function buildAnonymousArchiveJpg(d) {
+    const canvas = await composeBackgroundCanvas();
+    const ctx = canvas.getContext('2d');
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+
+    ctx.fillStyle = 'rgba(66,46,22,.72)';
+    ctx.font = '700 44px Arial, sans-serif';
+    ctx.letterSpacing = '0px';
+    ctx.fillText(C.project, PAGE.pxW / 2, 340);
+
+    ctx.fillStyle = '#21160d';
+    ctx.font = '700 118px Georgia, serif';
+    drawCanvasCentered(ctx, C.archiveTitle, 570, 1580, 130, 2);
+
+    ctx.fillStyle = '#2c1f13';
+    ctx.font = 'italic 58px Georgia, serif';
+    drawCanvasCentered(ctx, `“${d.quote[1]}”`, 820, 1680, 82, 4);
+    ctx.fillStyle = 'rgba(62,43,25,.72)';
+    ctx.font = '36px Arial, sans-serif';
+    ctx.fillText(d.quote[2], PAGE.pxW / 2, 1060);
+
+    ctx.strokeStyle = 'rgba(74,52,29,.45)';
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(470, 1220); ctx.lineTo(2010, 1220); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(470, 1970); ctx.lineTo(2010, 1970); ctx.stroke();
+
+    ctx.fillStyle = '#1d140b';
+    ctx.font = '54px "Courier New", Courier, monospace';
+    const reflectionLines = wrapCanvas(ctx, d.reflection, 1620).slice(0, 8);
+    reflectionLines.forEach((lineText, index) => ctx.fillText(lineText, PAGE.pxW / 2, 1390 + index * 76));
+
+    drawCanvasMeta(ctx, C.date, d.date, 720, 2240, 760);
+    drawCanvasMeta(ctx, C.place, d.place, 1760, 2240, 760);
+    drawCanvasMeta(ctx, C.archiveNumber, d.number, PAGE.pxW / 2, 2580, 1160);
+
+    ctx.fillStyle = 'rgba(70,48,27,.58)';
+    ctx.font = '31px Arial, sans-serif';
+    drawCanvasCentered(ctx, C.archiveMicroprint.toUpperCase(), 3310, 1700, 44, 2);
+
+    return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.94));
+  }
+
+  function safeFile(text) {
+    return String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 120);
+  }
+
+  function downloadPdf(bytes, name) {
     const blob = new Blob([bytes], { type: 'application/pdf' });
+    downloadBlob(blob, name);
+  }
+
+  function downloadBlob(blob, name) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -507,23 +586,39 @@
     try {
       setStatus(C.preparing);
       const bytes = await buildPdf(d);
-      download(bytes, `${C.file}-${safeFile(d.number)}.pdf`);
+      downloadPdf(bytes, `${C.file}-${safeFile(d.number)}.pdf`);
       setStatus(`${C.ready} ${(bytes.byteLength / 1024 / 1024).toFixed(2)} MB.`);
-      if (finale) {
-        finale.hidden = false;
-        finale.textContent = C.finale;
-      }
+      if (finale) { finale.hidden = false; finale.textContent = C.finale; }
     } catch (error) {
       console.error(error);
       setStatus(C.error);
+    } finally { button.disabled = false; }
+  }
+
+  async function createAnonymousArchive() {
+    const d = data();
+    if (!d.reflection) { setStatus(C.missing); return; }
+    if (archiveButton) archiveButton.disabled = true;
+    try {
+      setStatus(C.archivePreparing);
+      const blob = await buildAnonymousArchiveJpg(d);
+      const prefix = d.eventKey === 'oswiecim20260525' ? 'wr-osw20260525-anon' : C.archiveFile;
+      downloadBlob(blob, `${prefix}-${safeFile(d.number)}.jpg`);
+      setStatus(`${C.archiveReady} ${(blob.size / 1024 / 1024).toFixed(2)} MB.`);
+      if (finale) { finale.hidden = false; finale.textContent = C.archiveFinale; }
+    } catch (error) {
+      console.error(error);
+      setStatus(C.archiveError);
     } finally {
-      button.disabled = false;
+      if (archiveButton) archiveButton.disabled = false;
     }
   }
 
   form?.addEventListener('input', renderPreview);
   form?.addEventListener('change', () => { applyPreset(); renderPreview(); });
   button?.addEventListener('click', createPdf);
+  archiveButton?.addEventListener('click', createAnonymousArchive);
+  initFromQuery();
   applyPreset();
   renderPreview();
 })();
