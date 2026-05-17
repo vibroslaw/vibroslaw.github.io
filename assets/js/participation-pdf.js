@@ -149,9 +149,18 @@
     catch (_) { return value; }
   }
 
+  function activeDocumentPack(preset) {
+    const eventPack = master.events?.[preset]?.documentPack;
+    if (eventPack) return eventPack;
+    if (!window.getRapOrtDocumentPack) return null;
+    const pack = window.getRapOrtDocumentPack(preset, lang);
+    return pack?.id && pack.id !== 'default' ? pack : null;
+  }
+
   function data() {
     const preset = field('eventPreset')?.value || 'custom';
     const event = master.events?.[preset] || null;
+    const documentPack = activeDocumentPack(preset);
     return {
       name: field('participantName')?.value.trim() || '',
       place: field('place')?.value.trim() || event?.[lang]?.place || '',
@@ -159,6 +168,7 @@
       date: dateLabel(),
       number: field('documentNumber')?.value || '',
       event,
+      documentPack,
       variant: selectedVariant()
     };
   }
@@ -392,6 +402,13 @@
     setTimeout(() => URL.revokeObjectURL(url), 3000);
   }
 
+  function filenamePrefix(d, exportMode) {
+    if (d.documentPack?.filePrefix) {
+      return exportMode === 'wall' ? `${d.documentPack.filePrefix}-Wall-Edition` : d.documentPack.filePrefix;
+    }
+    return exportMode === 'wall' ? TEXT.wallFilePrefix : TEXT.filePrefix;
+  }
+
   async function buildPdf(d, exportMode) {
     if (!window.PDFLib?.PDFDocument) throw new Error('PDFLib unavailable');
     const { PDFDocument, rgb } = window.PDFLib;
@@ -400,9 +417,9 @@
     let fonts;
     try { fonts = await loadFonts(pdfDoc); } catch (err) { console.warn('Custom font embedding unavailable.', err); fonts = await fallbackFonts(pdfDoc); }
 
-    pdfDoc.setTitle(`${TEXT.title} — ${d.number}`);
+    pdfDoc.setTitle(`${d.documentPack?.documentTitle || TEXT.title} — ${d.number}`);
     pdfDoc.setAuthor('Piotr Jakub Lichwała / Vibrosław');
-    pdfDoc.setSubject('Rap-Ort: Prawda Sumienia — Participation Record');
+    pdfDoc.setSubject(`${d.documentPack?.eventTitle || TEXT.project} — Participation Record`);
     pdfDoc.setCreator('Veritas Humanum Participation Record Final Wall Master');
     pdfDoc.setProducer('Veritas Humanum local browser PDF generator');
 
@@ -422,7 +439,7 @@
     };
     const centerX = output.width / 2;
 
-    drawCentered(page, TEXT.project, fonts.metaBold, scaled(23, output), centerX, toPtY(layout.projectY, output), colors.muted);
+    drawCentered(page, d.documentPack?.eventTitle || TEXT.project, fonts.metaBold, scaled(23, output), centerX, toPtY(layout.projectY, output), colors.muted);
     await drawTitlePlate(pdfDoc, page, fonts, output, layout, centerX, colors.gold);
 
     drawWrappedCentered(page, (copy.body || []).join('\n'), fonts.body, scaled(layout.bodySize, output), centerX, toPtY(layout.bodyY, output), scaled(layout.textMaxWidth, output), colors.ivory, 1.42, 7);
@@ -439,11 +456,18 @@
     const signHeight = await drawSignature(pdfDoc, page, fonts, output, centerX, sigCenterY, scaled(layout.signatureWidth, output));
     drawCentered(page, TEXT.authorRole.toUpperCase(), fonts.meta, scaled(18, output), centerX, sigCenterY - signHeight / 2 - scaled(28, output), colors.label);
 
-    if (copy.microprint) drawCentered(page, copy.microprint.toUpperCase(), fonts.meta, scaled(13, output), centerX, toPtY(layout.microprintY, output), colors.micro);
+    const microprint = d.documentPack?.footerLine || copy.microprint;
+    if (microprint) drawCentered(page, microprint.toUpperCase(), fonts.meta, scaled(13, output), centerX, toPtY(layout.microprintY, output), colors.micro);
 
-    if (d.event?.accent) {
-      page.drawText(`${d.event.accent.edition || ''} · ${d.event.accent.code || ''}`.replace(/^ · | · $/g, '').toUpperCase(), { x: output.width - scaled(665, output), y: scaled(57, output), size: scaled(13, output), font: fonts.meta, color: colors.micro });
-      page.drawText(String(d.event.accent.microLine || '').toUpperCase(), { x: scaled(210, output), y: scaled(57, output), size: scaled(13, output), font: fonts.meta, color: colors.micro });
+    const packAccent = d.documentPack ? {
+      edition: d.documentPack.certificateLabel,
+      code: d.documentPack.eventCode,
+      microLine: d.documentPack.footerLine
+    } : null;
+    const accent = packAccent || d.event?.accent;
+    if (accent) {
+      page.drawText(`${accent.edition || ''} · ${accent.code || ''}`.replace(/^ · | · $/g, '').toUpperCase(), { x: output.width - scaled(665, output), y: scaled(57, output), size: scaled(13, output), font: fonts.meta, color: colors.micro });
+      page.drawText(String(accent.microLine || '').toUpperCase(), { x: scaled(210, output), y: scaled(57, output), size: scaled(13, output), font: fonts.meta, color: colors.micro });
     }
 
     return pdfDoc.save({ useObjectStreams: true });
@@ -459,7 +483,7 @@
       status(TEXT.preparing);
       await runPreflight();
       const bytes = await buildPdf(d, exportMode);
-      download(bytes, `${exportMode === 'wall' ? TEXT.wallFilePrefix : TEXT.filePrefix}-${safeName(d.number)}.pdf`);
+      download(bytes, `${filenamePrefix(d, exportMode)}-${safeName(d.number)}.pdf`);
       status(`${TEXT.ready} ${TEXT.pdfSize}: ${formatBytes(bytes.byteLength)}.`);
       const finale = $('[data-pr-finale]');
       if (finale) {
