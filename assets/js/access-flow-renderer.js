@@ -46,6 +46,7 @@
 
   const extensionAssets = {
     css: [
+      '/assets/css/event-experience.css',
       '/assets/css/event-portal.css',
       '/assets/css/archive-gallery.css'
     ],
