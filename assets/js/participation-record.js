@@ -6,7 +6,7 @@
 
   const COPY = {
     pl: {
-      validCodes: ['syd2026', 'sumienie'],
+      validCodes: ['syd2026', 'sumienie', 'oswiecim20260525', 'osw2026', 'vh-osw-2026-0525', 'vh-syd-2026'],
       codeError: 'Kod nie został rozpoznany. Sprawdź kod z QR lub wpisz kod wydarzenia pokazany po projekcji.',
       unlocked: 'Dostęp uczestnika został odblokowany. Możesz utworzyć Zapis Uczestnictwa.',
       generated: 'Nowy numer dokumentu został wygenerowany.',
@@ -30,10 +30,12 @@
       customDate: 'Data wydarzenia',
       prefix: 'VH-ZU',
       printWindowTitle: 'Zapis Uczestnictwa — Rap-Ort',
-      printButton: 'Drukuj / zapisz jako PDF'
+      printButton: 'Drukuj / zapisz jako PDF',
+      specialEdition: 'Wersja specjalna wydarzenia',
+      lockedEdition: 'Dostępna po wejściu z QR wydarzenia'
     },
     en: {
-      validCodes: ['syd2026', 'conscience'],
+      validCodes: ['syd2026', 'conscience', 'oswiecim20260525', 'osw2026', 'vh-osw-2026-0525', 'vh-syd-2026'],
       codeError: 'The code was not recognised. Check the QR code or enter the event code shown after the screening.',
       unlocked: 'Participant access unlocked. You can create your Record of Participation.',
       generated: 'New document number generated.',
@@ -57,23 +59,47 @@
       customDate: 'Event date',
       prefix: 'VH-REC',
       printWindowTitle: 'Record of Participation — Rap-Ort',
-      printButton: 'Print / save as PDF'
+      printButton: 'Print / save as PDF',
+      specialEdition: 'Special event edition',
+      lockedEdition: 'Available through the event QR access'
     }
   };
 
   const EVENTS = {
+    oswiecim20260525: {
+      code: 'OSW',
+      accessCodes: ['oswiecim20260525', 'osw2026', 'osw', 'vh-osw-2026-0525'],
+      dateInput: '2026-05-25',
+      variantKey: 'oswiecim',
+      pl: {
+        place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu',
+        dateLabel: '25 maja 2026',
+        badgeLine: 'Edycja rocznicowa — warsztat akademicki',
+        selectLabel: 'Oświęcim / MUP — 25 maja 2026'
+      },
+      en: {
+        place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim',
+        dateLabel: '25 May 2026',
+        badgeLine: 'Anniversary edition — academic workshop',
+        selectLabel: 'Oświęcim / MUP — 25 May 2026'
+      }
+    },
     syd2026: {
       code: 'SYD',
+      accessCodes: ['syd2026', 'sydney2026', 'vh-syd-2026'],
       dateInput: '2026-06-21',
+      variantKey: 'sydney',
       pl: {
         place: 'Polish Club Ashfield / Sydney',
         dateLabel: '21 czerwca 2026',
-        badgeLine: 'Międzynarodowa projekcja'
+        badgeLine: 'Międzynarodowa projekcja',
+        selectLabel: 'Polish Club Ashfield / Sydney — 21 czerwca 2026'
       },
       en: {
         place: 'Polish Club Ashfield / Sydney',
         dateLabel: '21 June 2026',
-        badgeLine: 'International screening'
+        badgeLine: 'International screening',
+        selectLabel: 'Polish Club Ashfield / Sydney — 21 June 2026'
       }
     }
   };
@@ -123,8 +149,53 @@
         '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg',
         '/public/assets/reports/participation-record-bg-a4-300dpi3.jpeg'
       ]
+    },
+    oswiecim: {
+      code: 'oswiecim',
+      layout: 'ceremonial',
+      eventOnly: 'oswiecim20260525',
+      label: { pl: 'Edycja Oświęcim / MUP', en: 'Oświęcim / MUP Edition' },
+      description: {
+        pl: 'Specjalna wersja rocznicowa dla wydarzenia 25 maja w Oświęcimiu. Używa dedykowanego tła, title plate i układu pod druk premium.',
+        en: 'Special anniversary version for the 25 May Oświęcim event. Uses dedicated background, title plate and premium print layout.'
+      },
+      bgCandidates: [
+        '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/participation-record-bg-a4.jpg',
+        '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/participation-record-wall-special-a3.jpg',
+        '/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg'
+      ],
+      previewCandidates: [
+        '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/participation-record-preview.webp',
+        '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/participation-record-thumb.webp',
+        '/public/assets/reports/participation-record-bg-03-ceremonial-frame-preview.webp'
+      ]
+    },
+    sydney: {
+      code: 'sydney',
+      layout: 'cinema',
+      eventOnly: 'syd2026',
+      label: { pl: 'Edycja Sydney', en: 'Sydney Edition' },
+      description: {
+        pl: 'Specjalna wersja międzynarodowa dla Polish Club Ashfield / Sydney z dedykowanym tłem i akcentem wydarzenia.',
+        en: 'Special international version for Polish Club Ashfield / Sydney with dedicated event background and accent.'
+      },
+      bgCandidates: [
+        '/public/assets/events/rap-ort/syd2026/backgrounds/participation-record-bg-a4.jpg',
+        '/public/assets/reports/participation-record-bg-01-archival-cinema-a4.jpg'
+      ],
+      previewCandidates: [
+        '/public/assets/events/rap-ort/syd2026/backgrounds/participation-record-preview.webp',
+        '/public/assets/events/rap-ort/syd2026/backgrounds/participation-record-thumb.webp',
+        '/public/assets/reports/participation-record-bg-01-archival-cinema-preview.webp'
+      ]
     }
   };
+
+  const ACCESS_ALIASES = Object.entries(EVENTS).reduce((acc, [eventKey, event]) => {
+    event.accessCodes.forEach((code) => { acc[code] = eventKey; });
+    acc[eventKey.toLowerCase()] = eventKey;
+    return acc;
+  }, {});
 
   const copy = COPY[lang];
   const $ = (sel) => root.querySelector(sel);
@@ -185,12 +256,69 @@
     localStorage.setItem(storageKey(), value);
   }
 
+  function ensureEventOptions() {
+    if (!preset) return;
+    Object.entries(EVENTS).forEach(([eventKey, event]) => {
+      if ([...preset.options].some((option) => option.value === eventKey)) return;
+      const option = document.createElement('option');
+      option.value = eventKey;
+      option.textContent = event[lang].selectLabel;
+      preset.insertBefore(option, preset.firstChild);
+    });
+  }
+
+  function variantCardHtml(key, variant) {
+    const label = variant.label?.[lang] || key;
+    const description = variant.description?.[lang] || '';
+    const fallbackPreview = variant.previewCandidates?.[variant.previewCandidates.length - 1] || '/public/assets/reports/participation-record-bg-preview.webp';
+    const firstPreview = variant.previewCandidates?.[0] || fallbackPreview;
+    return `<label class="pr-variant-card pr-event-variant-card" data-pr-event-variant="${variant.eventOnly}" hidden><input type="radio" name="recordVariant" value="${key}"><img class="pr-variant-thumb" src="${firstPreview}" onerror="this.src='${fallbackPreview}'" alt="${escapeHtml(label)}"><span class="pr-edition-lock">${escapeHtml(copy.specialEdition)}</span><h3>${escapeHtml(label)}</h3><p>${escapeHtml(description || copy.lockedEdition)}</p></label>`;
+  }
+
+  function injectEventVariantCards() {
+    const grid = $('.pr-variant-grid');
+    if (!grid || grid.querySelector('[data-pr-event-variant]')) return;
+    Object.entries(VARIANTS).filter(([, variant]) => variant.eventOnly).forEach(([key, variant]) => {
+      grid.insertAdjacentHTML('beforeend', variantCardHtml(key, variant));
+    });
+  }
+
+  function syncEventVariantVisibility() {
+    const selectedEvent = preset ? preset.value : currentEventKey;
+    all('[data-pr-event-variant]').forEach((card) => {
+      const visible = card.getAttribute('data-pr-event-variant') === selectedEvent;
+      card.hidden = !visible;
+      const input = card.querySelector('input');
+      if (input) input.disabled = !visible;
+      if (!visible && input?.checked) {
+        const fallback = root.querySelector('[name="recordVariant"][value="ceremonial"]') || root.querySelector('[name="recordVariant"]');
+        if (fallback) fallback.checked = true;
+      }
+    });
+  }
+
+  function selectEventVariant(eventKey) {
+    const variantKey = EVENTS[eventKey]?.variantKey;
+    const input = variantKey ? root.querySelector(`[name="recordVariant"][value="${variantKey}"]`) : null;
+    if (input && !input.disabled) input.checked = true;
+  }
+
+  function syncVariantCards() {
+    const checked = root.querySelector('[name="recordVariant"]:checked');
+    root.querySelectorAll('.pr-variant-card').forEach((card) => {
+      card.classList.toggle('is-selected', !!checked && card.contains(checked));
+      card.classList.toggle('is-event-pack', !!card.getAttribute('data-pr-event-variant'));
+    });
+  }
+
   function unlock(eventKey) {
     currentEventKey = EVENTS[eventKey] ? eventKey : 'custom';
     gate.hidden = true;
     generator.hidden = false;
     if (preset) preset.value = currentEventKey;
     applyPreset();
+    syncEventVariantVisibility();
+    if (EVENTS[currentEventKey]) selectEventVariant(currentEventKey);
     sequence = loadOrCreateSequence();
     updateNumber(false);
     updateEventBadge();
@@ -346,6 +474,8 @@
   function updatePreview() {
     updateNumber(false);
     updateEventBadge();
+    syncEventVariantVisibility();
+    syncVariantCards();
     const variant = selectedVariant();
     if (previewDoc) {
       previewDoc.classList.add('is-switching');
@@ -377,9 +507,15 @@
     return '';
   }
 
+  function resolveEventFromCode(code) {
+    const clean = cleanCode(code);
+    return EVENTS[clean] ? clean : ACCESS_ALIASES[clean] || '';
+  }
+
   function handleUnlock(code) {
     const clean = cleanCode(code);
-    if (EVENTS[clean]) return unlock(clean);
+    const eventKey = resolveEventFromCode(clean);
+    if (eventKey) return unlock(eventKey);
     if (copy.validCodes.includes(clean)) return unlock('custom');
     return setStatus(copy.codeError);
   }
@@ -389,7 +525,7 @@
     const bodyLines = splitLines(copy.body).map((line) => `<span>${escapeHtml(line)}</span>`).join('<br>');
     const closingLines = splitLines(copy.closing).map((line) => `<span>${escapeHtml(line)}</span>`).join('<br>');
     const bg = backgroundUrl ? `<img class="bg" src="${backgroundUrl}" alt="">` : '<div class="bg-fallback"></div>';
-    const signature = absoluteUrl('/public/assets/reports/author-signature-placeholder.svg');
+    const signature = absoluteUrl('/public/assets/reports/author-signature-gold.svg');
     const layout = `layout-${data.variant.layout}`;
 
     return `<!doctype html>
@@ -476,6 +612,9 @@
     window.setTimeout(() => window.print(), 500);
   }
 
+  ensureEventOptions();
+  injectEventVariantCards();
+
   codeForm?.addEventListener('submit', (event) => {
     event.preventDefault();
     handleUnlock(codeInput?.value || new URLSearchParams(location.search).get('event') || '');
@@ -487,6 +626,8 @@
 
   preset?.addEventListener('change', () => {
     applyPreset();
+    syncEventVariantVisibility();
+    if (EVENTS[preset.value]) selectEventVariant(preset.value);
     sequence = loadOrCreateSequence();
     updatePreview();
   });
@@ -511,7 +652,7 @@
 
   root.querySelectorAll('[name="recordVariant"]').forEach((input) => {
     input.addEventListener('change', () => {
-      root.querySelectorAll('.pr-variant-card').forEach((card) => card.classList.toggle('is-selected', card.contains(input) && input.checked));
+      syncVariantCards();
       updatePreview();
     });
   });
@@ -534,10 +675,13 @@
   });
 
   const urlParams = new URLSearchParams(location.search);
-  const urlCode = cleanCode(urlParams.get('event') || urlParams.get('key'));
-  if (EVENTS[urlCode]) unlock(urlCode);
+  const urlCode = cleanCode(urlParams.get('event') || urlParams.get('key') || urlParams.get('access'));
+  const urlEvent = resolveEventFromCode(urlCode);
+  if (urlEvent) unlock(urlEvent);
   else {
     generator.hidden = true;
     gate.hidden = false;
+    syncEventVariantVisibility();
+    syncVariantCards();
   }
 })();
