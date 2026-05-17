@@ -108,6 +108,15 @@
     if (watermark) watermark.textContent = pack.watermarkText;
   }
 
+  function rewriteDocumentEventCode(value, eventCode) {
+    const parts = String(value || '').split('-');
+    if (parts.length >= 6 && parts[0] === 'VH') {
+      parts[4] = eventCode;
+      return parts.join('-');
+    }
+    return value;
+  }
+
   function fillPackFields(root, pack) {
     const preset = root?.querySelector('[name="eventPreset"]');
     const place = root?.querySelector('[name="place"]');
@@ -137,12 +146,8 @@
       root.querySelector('[data-pr-form]')?.dispatchEvent(new Event('input', { bubbles: true }));
     }
     if (number && pack.accessMode === 'event' && pack.eventCode && number.value) {
-      const parts = number.value.split('-');
-      if (parts.length >= 5) {
-        parts[3] = pack.eventCode;
-        const nextNumber = parts.join('-');
-        if (number.value !== nextNumber) number.value = nextNumber;
-      }
+      const nextNumber = rewriteDocumentEventCode(number.value, pack.eventCode);
+      if (number.value !== nextNumber) number.value = nextNumber;
     }
   }
 
