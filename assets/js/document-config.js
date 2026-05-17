@@ -1,7 +1,7 @@
 window.VH_DOCUMENTS = window.VH_DOCUMENTS || {};
 
 window.VH_DOCUMENTS.printMaster = {
-  version: '0.3.0-pr49-wall-edition',
+  version: '0.4.0-pr65-mup-event-stabilization',
   brand: {
     system: 'VERITAS HUMANUM',
     author: 'Piotr Jakub Lichwała / Vibrosław',
@@ -54,6 +54,25 @@ window.VH_DOCUMENTS.printMaster = {
     }
   },
   events: {
+    oswiecim20260525: {
+      code: 'OSW',
+      accessCode: 'VH-OSW-2026-0525',
+      project: 'rap-ort',
+      title: 'Rap-Ort: Prawda Sumienia — Oświęcim 2026',
+      dateInput: '2026-05-25',
+      pl: {
+        place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu',
+        dateLabel: '25 maja 2026',
+        badgeLine: 'Edycja rocznicowa · warsztat akademicki'
+      },
+      en: {
+        place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim',
+        dateLabel: '25 May 2026',
+        badgeLine: 'Anniversary edition · academic workshop'
+      },
+      accent: { edition: 'Oświęcim Anniversary Edition', microLine: 'MUP Oświęcim · 25 maja 2026', code: 'OSW' },
+      documents: ['participationRecord', 'witnessReport']
+    },
     syd2026: {
       code: 'SYD',
       accessCode: 'VH-SYD-2026',
@@ -106,26 +125,10 @@ window.VH_DOCUMENTS.printMaster = {
         }
       },
       layouts: {
-        cinema: {
-          projectY: 330, titleY: 590, titleSize: 154, titleSpacing: 14, bodyY: 790, bodySize: 60, bodyLine: 88,
-          nameY: 1195, fieldsY: 1420, closingY: 1810, signatureY: 2075, fieldWidth: 730, signatureWidth: 890,
-          textMaxWidth: 2100, closingMaxWidth: 1920, titleDistress: 0.16, microprintY: 2325
-        },
-        museum: {
-          projectY: 285, titleY: 535, titleSize: 162, titleSpacing: 16, bodyY: 755, bodySize: 58, bodyLine: 86,
-          nameY: 1145, fieldsY: 1370, closingY: 1765, signatureY: 2035, fieldWidth: 790, signatureWidth: 850,
-          textMaxWidth: 2020, closingMaxWidth: 1860, titleDistress: 0.1, microprintY: 2325
-        },
-        ceremonial: {
-          projectY: 320, titleY: 610, titleSize: 178, titleSpacing: 18, bodyY: 850, bodySize: 56, bodyLine: 84,
-          nameY: 1235, fieldsY: 1465, closingY: 1845, signatureY: 2055, fieldWidth: 690, signatureWidth: 930,
-          textMaxWidth: 1880, closingMaxWidth: 1720, titleDistress: 0.08, microprintY: 2325
-        },
-        ceremonialWall: {
-          projectY: 365, titleY: 685, titleSize: 198, titleSpacing: 20, bodyY: 955, bodySize: 60, bodyLine: 92,
-          nameY: 1335, fieldsY: 1585, closingY: 1955, signatureY: 2110, fieldWidth: 710, signatureWidth: 980,
-          textMaxWidth: 1760, closingMaxWidth: 1650, titleDistress: 0, microprintY: 2345, quiet: true
-        }
+        cinema: { projectY: 300, titleY: 505, titleSize: 118, titlePlateWidth: 2180, bodyY: 760, bodySize: 43, nameLabelY: 1085, nameY: 1160, fieldsY: 1455, closingY: 1818, signatureY: 2090, fieldWidth: 700, placeWidth: 780, signatureWidth: 840, textMaxWidth: 1740, closingMaxWidth: 1540, microprintY: 2328 },
+        museum: { projectY: 285, titleY: 495, titleSize: 120, titlePlateWidth: 2220, bodyY: 745, bodySize: 42, nameLabelY: 1065, nameY: 1138, fieldsY: 1438, closingY: 1795, signatureY: 2065, fieldWidth: 720, placeWidth: 820, signatureWidth: 805, textMaxWidth: 1700, closingMaxWidth: 1500, microprintY: 2328 },
+        ceremonial: { projectY: 305, titleY: 535, titleSize: 126, titlePlateWidth: 2260, bodyY: 805, bodySize: 40, nameLabelY: 1130, nameY: 1208, fieldsY: 1490, closingY: 1842, signatureY: 2090, fieldWidth: 660, placeWidth: 820, signatureWidth: 900, textMaxWidth: 1580, closingMaxWidth: 1420, microprintY: 2332 },
+        ceremonialWall: { projectY: 345, titleY: 620, titleSize: 140, titlePlateWidth: 2420, bodyY: 910, bodySize: 43, nameLabelY: 1235, nameY: 1310, fieldsY: 1605, closingY: 1948, signatureY: 2160, fieldWidth: 680, placeWidth: 840, signatureWidth: 960, textMaxWidth: 1540, closingMaxWidth: 1360, microprintY: 2348 }
       }
     },
     witnessReport: {
