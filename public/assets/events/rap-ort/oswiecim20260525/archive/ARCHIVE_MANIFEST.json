@@ -1,6 +1,7 @@
 {
   "event": "oswiecim20260525",
-  "title": "Archiwum raportów",
-  "description": "Statyczne archiwum wersji JPG przygotowanych po wydarzeniu. Pliki archiwalne nie powinny zawierac imion, nazwisk, podpisow ani danych osobowych.",
+  "title": "Anonimowe Raporty Świadka — Oświęcim / MUP",
+  "description": "Statyczny manifest anonimowych raportów uczestników wydarzenia. Dodawaj wyłącznie materiały bez danych osobowych.",
+  "privacy": "No names, no surnames, no signatures, no personal data.",
   "items": []
 }
