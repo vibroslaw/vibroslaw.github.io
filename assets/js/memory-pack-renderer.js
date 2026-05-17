@@ -11,7 +11,7 @@
       open: 'Otwórz / pobierz',
       generate: 'Utwórz dokument',
       checking: 'Sprawdzanie materiału',
-      comingSoon: 'Asset coming soon',
+      comingSoon: 'Materiał w przygotowaniu',
       prepared: 'Przygotowane dla wersji wydarzenia',
       unavailable: 'Asset coming soon'
     },
