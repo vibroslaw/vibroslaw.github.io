@@ -1,0 +1,19 @@
+{
+  "typewriter": {
+    "required": {
+      "key": "typewriter-key.mp3"
+    },
+    "optional": {
+      "soft": "typewriter-key-soft.mp3",
+      "space": "typewriter-space.mp3",
+      "return": "typewriter-return.mp3",
+      "bell": "typewriter-bell.mp3"
+    },
+    "recommended": {
+      "format": "mp3",
+      "durationMs": "40-120",
+      "volume": "dry, subtle, no reverb, no background noise",
+      "size": "preferably below 50 KB per file"
+    }
+  }
+}
