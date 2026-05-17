@@ -44,6 +44,45 @@
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[char]));
 
+  const extensionAssets = {
+    css: [
+      '/assets/css/event-portal.css',
+      '/assets/css/archive-gallery.css'
+    ],
+    js: [
+      '/assets/js/event-portal-config.js',
+      '/assets/js/event-portal-renderer.js',
+      '/assets/js/archive-gallery-config.js',
+      '/assets/js/archive-gallery-renderer.js'
+    ]
+  };
+
+  function loadStylesheet(href) {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.appendChild(script);
+    });
+  }
+
+  function loadPostScreeningExtensions() {
+    if (!document.querySelector('[data-participation-record]')) return;
+    extensionAssets.css.forEach(loadStylesheet);
+    extensionAssets.js.reduce((chain, src) => chain.then(() => loadScript(src)), Promise.resolve());
+  }
+
   function pageLang(root) {
     return root?.dataset.lang === 'en' ? 'en' : 'pl';
   }
@@ -184,6 +223,7 @@
   function boot() {
     const root = document.querySelector('[data-participation-record]');
     if (!root) return;
+    loadPostScreeningExtensions();
     const scheduleRender = () => window.setTimeout(() => renderActive(root), 0);
     scheduleRender();
 
