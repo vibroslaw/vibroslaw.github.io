@@ -333,7 +333,7 @@ window.RapOrtMemoryPacks = (() => {
               description: 'Pamiątkowy format graficzny przygotowany z myślą o spokojnym udostępnieniu informacji o uczestnictwie.',
               format: 'WEBP / PNG',
               path: `${sydney}social-share-card-pl.webp`,
-              recommendedUse: 'Do prywatnego użycia, bez sugerowania patronatu lub oficjalnego endorsementu.'
+              recommendedUse: 'Do prywatnego użycia, bez sugerowania patronatu lub oficjalnej rekomendacji.'
             }
           ]
         }),
