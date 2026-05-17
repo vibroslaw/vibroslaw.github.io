@@ -132,6 +132,30 @@
     });
   }
 
+  function loadDocumentPackSystem() {
+    if (!document.querySelector('[data-participation-record]')) return;
+
+    if (!document.querySelector('link[href="/assets/css/document-pack.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/assets/css/document-pack.css';
+      document.head.appendChild(link);
+    }
+
+    const loadScript = (src) => new Promise((resolve) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.appendChild(script);
+    });
+
+    loadScript('/assets/js/document-pack-config.js')
+      .then(() => loadScript('/assets/js/document-pack-renderer.js'));
+  }
+
   roots.forEach((root) => {
     buildPanel(root);
     root.addEventListener('click', (event) => {
@@ -149,5 +173,6 @@
     });
   });
 
+  loadDocumentPackSystem();
   updatePanels();
 })();

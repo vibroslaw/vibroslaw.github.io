@@ -1,0 +1,182 @@
+/* Rap-Ort Document Pack System
+   Event-specific Participation Record layers for PR65. */
+
+:root {
+  --pack-gold: #e7d3ae;
+  --pack-ivory: #f5ead6;
+  --pack-muted: rgba(245, 234, 214, 0.7);
+  --pack-red: #6f251e;
+  --pack-blue: #1f3f55;
+  --pack-smoke: rgba(255, 255, 255, 0.035);
+}
+
+.document-pack-badge {
+  display: inline-grid;
+  gap: 0.22rem;
+  margin: 0.9rem 0 0.4rem;
+  padding: 0.78rem 0.95rem;
+  border: 1px solid rgba(231, 211, 174, 0.24);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(231, 211, 174, 0.09), rgba(255, 255, 255, 0.025)),
+    rgba(0, 0, 0, 0.18);
+  color: var(--pack-ivory);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.document-pack-badge strong {
+  color: var(--pack-gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.document-pack-badge span {
+  color: var(--pack-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.document-pack-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+
+.pack-background-default::after {
+  background:
+    radial-gradient(circle at 50% 22%, rgba(231, 211, 174, 0.12), transparent 36%),
+    linear-gradient(115deg, transparent, rgba(231, 211, 174, 0.06), transparent);
+}
+
+.pack-background-oswiecim::after {
+  background:
+    radial-gradient(circle at 48% 22%, rgba(231, 211, 174, 0.12), transparent 34%),
+    linear-gradient(115deg, transparent 18%, rgba(111, 37, 30, 0.16), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 30%);
+}
+
+.pack-background-sydney::after {
+  background:
+    radial-gradient(circle at 50% 21%, rgba(231, 211, 174, 0.13), transparent 36%),
+    linear-gradient(120deg, transparent 10%, rgba(31, 63, 85, 0.18), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 34%);
+}
+
+.document-pack-title-plate {
+  order: -1;
+  margin: 0 0 1.8%;
+  color: rgba(231, 211, 174, 0.82);
+  font-family: Arial, sans-serif;
+  font-size: clamp(0.46rem, 0.85vw, 0.74rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.document-pack-footer-line {
+  margin: 1.4% 0 0;
+  color: rgba(231, 211, 174, 0.58);
+  font-family: Arial, sans-serif;
+  font-size: clamp(0.42rem, 0.72vw, 0.66rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.document-pack-watermark {
+  position: absolute;
+  inset: auto 5% 6% auto;
+  margin: 0;
+  color: rgba(231, 211, 174, 0.1);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 3.3vw, 3.5rem);
+  letter-spacing: 0.18em;
+  line-height: 1;
+  pointer-events: none;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+}
+
+.pack-plate-oswiecim .document-pack-title-plate,
+.pack-accent-oswiecim .pr-title,
+.pack-accent-oswiecim .pr-field span {
+  color: #ead1aa;
+}
+
+.pack-plate-sydney .document-pack-title-plate,
+.pack-accent-sydney .pr-title,
+.pack-accent-sydney .pr-field span {
+  color: #e9d8b8;
+}
+
+.pack-accent-oswiecim .pr-field {
+  border-top-color: rgba(164, 84, 65, 0.48);
+}
+
+.pack-accent-sydney .pr-field {
+  border-top-color: rgba(117, 153, 170, 0.42);
+}
+
+.pack-accent-oswiecim .pr-author span,
+.pack-accent-oswiecim .document-pack-footer-line {
+  color: rgba(231, 188, 154, 0.68);
+}
+
+.pack-accent-sydney .pr-author span,
+.pack-accent-sydney .document-pack-footer-line {
+  color: rgba(207, 224, 226, 0.6);
+}
+
+.pr-page[data-document-pack="oswiecim20260525"] .pr-event-badge,
+.pr-page[data-document-pack="oswiecim20260525"] .document-pack-badge {
+  border-color: rgba(164, 84, 65, 0.36);
+}
+
+.pr-page[data-document-pack="syd2026"] .pr-event-badge,
+.pr-page[data-document-pack="syd2026"] .document-pack-badge {
+  border-color: rgba(117, 153, 170, 0.36);
+}
+
+.pr-print-content.document-pack-active {
+  overflow: hidden;
+}
+
+.pr-print-content .document-pack-title-plate {
+  font-size: 10px;
+  margin-bottom: 4mm;
+}
+
+.pr-print-content .document-pack-footer-line {
+  font-size: 9px;
+  margin-top: 3mm;
+}
+
+.pr-print-content .document-pack-watermark {
+  bottom: 8mm;
+  right: 10mm;
+  font-size: 30px;
+}
+
+@media (max-width: 700px) {
+  .document-pack-badge {
+    width: 100%;
+  }
+
+  .document-pack-watermark {
+    display: none;
+  }
+
+  .document-pack-title-plate,
+  .document-pack-footer-line {
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .document-pack-active::after {
+    transition: none !important;
+  }
+}
