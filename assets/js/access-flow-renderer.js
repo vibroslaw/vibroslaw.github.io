@@ -50,6 +50,7 @@
     css: [
       '/assets/css/event-experience.css',
       '/assets/css/event-shell.css',
+      '/assets/css/generator-cinematic.css',
       '/assets/css/event-portal.css',
       '/assets/css/archive-gallery.css'
     ],
