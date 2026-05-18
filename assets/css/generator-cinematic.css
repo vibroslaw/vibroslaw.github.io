@@ -1,0 +1,613 @@
+/* PR75 — Generator Cinematic Visual Alignment
+   Premium interior layer for Participation Record, Witness Report, Memory Pack and Archive Gallery.
+   Static-only. No PDF/JPG engine changes. */
+
+:root {
+  --gen-bg: #050403;
+  --gen-ivory: #f8edd9;
+  --gen-muted: rgba(248, 237, 217, 0.68);
+  --gen-soft: rgba(248, 237, 217, 0.46);
+  --gen-gold: #e9d2a6;
+  --gen-gold-2: #b7925d;
+  --gen-red: #6f251e;
+  --gen-panel: rgba(12, 10, 8, 0.78);
+  --gen-panel-strong: rgba(18, 14, 10, 0.92);
+  --gen-line: rgba(233, 210, 166, 0.2);
+  --gen-line-strong: rgba(233, 210, 166, 0.38);
+  --gen-radius-xl: 36px;
+  --gen-radius: 24px;
+  --gen-shadow: 0 42px 130px rgba(0, 0, 0, 0.58);
+  --gen-shadow-soft: 0 24px 76px rgba(0, 0, 0, 0.38);
+  --gen-hero: url('/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-hero.webp');
+  --gen-document: url('/public/assets/events/rap-ort/shared/experience/document-atelier.webp');
+  --gen-desk: url('/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp');
+  --gen-memory: url('/public/assets/events/rap-ort/shared/experience/memory-case.webp');
+  --gen-archive: url('/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp');
+  --gen-texture: url('/public/assets/events/rap-ort/shared/experience/archival-dark-texture.webp');
+}
+
+.pr-page,
+.wr-page {
+  background:
+    radial-gradient(circle at 50% 4%, rgba(233, 210, 166, 0.14), transparent 34rem),
+    radial-gradient(circle at 14% 12%, rgba(111, 37, 30, 0.16), transparent 34rem),
+    radial-gradient(circle at 88% 28%, rgba(248, 237, 217, 0.07), transparent 28rem),
+    linear-gradient(180deg, #050403 0%, #0b0806 48%, #050403 100%) !important;
+  color: var(--gen-ivory);
+}
+
+.pr-page::before,
+.wr-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px),
+    var(--gen-texture);
+  background-size: 84px 84px, 84px 84px, cover;
+  opacity: .38;
+  mix-blend-mode: screen;
+}
+
+.pr-page::after,
+.wr-page::after {
+  content: "";
+  position: fixed;
+  inset: -14vh -10vw;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(108deg, transparent 0 26%, rgba(233,210,166,.12) 36%, rgba(248,237,217,.045) 45%, transparent 64%),
+    radial-gradient(ellipse at 52% 0%, rgba(248,237,217,.08), transparent 42rem);
+  filter: blur(12px);
+  opacity: .76;
+}
+
+.pr-page .vh-hero-compact,
+.wr-page .vh-hero-compact {
+  min-height: clamp(520px, 76vh, 820px) !important;
+  display: grid !important;
+  align-items: end !important;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(233,210,166,.14);
+}
+
+.pr-page .vh-hero-compact::before,
+.wr-page .vh-hero-compact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(5,4,3,.94), rgba(5,4,3,.55) 48%, rgba(5,4,3,.9)),
+    linear-gradient(180deg, rgba(5,4,3,.1), rgba(5,4,3,.78)),
+    var(--gen-hero),
+    linear-gradient(135deg, #130e0b, #050403);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(.9) contrast(1.08);
+}
+
+.wr-page .vh-hero-compact::before {
+  background-image:
+    linear-gradient(90deg, rgba(5,4,3,.94), rgba(5,4,3,.55) 48%, rgba(5,4,3,.9)),
+    linear-gradient(180deg, rgba(5,4,3,.08), rgba(5,4,3,.78)),
+    var(--gen-desk),
+    linear-gradient(135deg, #130e0b, #050403);
+}
+
+.pr-page .vh-hero-compact::after,
+.wr-page .vh-hero-compact::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 58% 24%, rgba(248,237,217,.12), transparent 27rem),
+    linear-gradient(105deg, transparent 0 23%, rgba(233,210,166,.15) 36%, rgba(248,237,217,.05) 46%, transparent 66%);
+  mix-blend-mode: screen;
+  opacity: .72;
+}
+
+.pr-page .vh-hero-copy,
+.wr-page .vh-hero-copy {
+  max-width: 980px !important;
+  margin-bottom: clamp(3rem, 8vh, 6rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(233,210,166,.13);
+  border-radius: var(--gen-radius-xl);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.058), rgba(255,255,255,.016)),
+    rgba(0,0,0,.22);
+  box-shadow: var(--gen-shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.pr-page .vh-title,
+.wr-page .vh-title {
+  font-size: clamp(3.5rem, 9vw, 8.6rem) !important;
+  line-height: .9 !important;
+  text-shadow: 0 18px 70px rgba(0,0,0,.86);
+}
+
+.pr-page .vh-subtitle,
+.wr-page .vh-subtitle {
+  color: var(--gen-gold) !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.3rem, 3vw, 2.25rem) !important;
+  line-height: 1.18;
+}
+
+.pr-page .vh-lead,
+.wr-page .vh-lead,
+.pr-page .pr-note,
+.wr-page .wr-privacy {
+  color: var(--gen-muted) !important;
+}
+
+.pr-page .vh-section,
+.wr-page .vh-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.pr-page .vh-section::before,
+.wr-page .vh-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 13% 16%, rgba(233,210,166,.08), transparent 25rem),
+    radial-gradient(circle at 86% 34%, rgba(111,37,30,.11), transparent 28rem);
+  opacity: .82;
+}
+
+.pr-page .vh-wrap,
+.wr-page .vh-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Premium controls */
+.pr-page .vh-button,
+.wr-page .vh-button,
+.pr-page button,
+.wr-page button {
+  border-radius: 999px;
+}
+
+.pr-page .vh-button,
+.wr-page .vh-button {
+  border: 1px solid rgba(233,210,166,.35) !important;
+  background:
+    linear-gradient(135deg, rgba(233,210,166,.28), rgba(183,146,93,.13)),
+    rgba(0,0,0,.28) !important;
+  color: var(--gen-ivory) !important;
+  box-shadow: 0 18px 46px rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.034);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+.pr-page .vh-button.secondary,
+.wr-page .vh-button.secondary {
+  background: rgba(0,0,0,.26) !important;
+  color: rgba(248,237,217,.88) !important;
+}
+
+.pr-page .vh-button:hover,
+.wr-page .vh-button:hover,
+.pr-page .vh-button:focus-visible,
+.wr-page .vh-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(233,210,166,.62) !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,.42), 0 0 0 3px rgba(233,210,166,.08);
+}
+
+.pr-form input,
+.pr-form select,
+.pr-form textarea,
+.wr-form input,
+.wr-form select,
+.wr-form textarea,
+.access-flow-link-row input {
+  border: 1px solid rgba(233,210,166,.25) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.035), rgba(255,255,255,.012)),
+    rgba(0,0,0,.34) !important;
+  color: var(--gen-ivory) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.022);
+}
+
+.pr-form input:focus,
+.pr-form select:focus,
+.pr-form textarea:focus,
+.wr-form input:focus,
+.wr-form select:focus,
+.wr-form textarea:focus,
+.access-flow-link-row input:focus {
+  outline: none;
+  border-color: rgba(233,210,166,.62) !important;
+  box-shadow: 0 0 0 3px rgba(233,210,166,.09), inset 0 0 0 1px rgba(255,255,255,.035);
+}
+
+/* Participation Record: document atelier */
+.pr-gate,
+.pr-generator,
+.pr-form,
+.pr-preview-wrap,
+.wr-panel,
+.wr-preview-card,
+.typewriter-sound-panel {
+  border: 1px solid rgba(233,210,166,.2) !important;
+  border-radius: var(--gen-radius-xl) !important;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(233,210,166,.1), transparent 20rem),
+    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.016)),
+    var(--gen-panel) !important;
+  box-shadow: var(--gen-shadow-soft), inset 0 0 0 1px rgba(255,255,255,.025) !important;
+  backdrop-filter: blur(16px);
+}
+
+.pr-generator {
+  padding: clamp(1rem, 2.5vw, 1.8rem);
+}
+
+.pr-workspace,
+.wr-grid {
+  align-items: stretch !important;
+  gap: clamp(1.2rem, 3vw, 2.4rem) !important;
+}
+
+.pr-form,
+.wr-form {
+  position: relative;
+  overflow: hidden;
+}
+
+.pr-form::after,
+.wr-form::after {
+  content: "";
+  position: absolute;
+  right: -14rem;
+  top: -14rem;
+  width: 32rem;
+  height: 32rem;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(233,210,166,.11), transparent 64%);
+}
+
+.pr-preview-wrap,
+.wr-preview-card {
+  background-image:
+    linear-gradient(135deg, rgba(5,4,3,.24), rgba(5,4,3,.82)),
+    var(--gen-document) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.wr-preview-card {
+  background-image:
+    linear-gradient(135deg, rgba(5,4,3,.24), rgba(5,4,3,.84)),
+    var(--gen-desk) !important;
+}
+
+.pr-preview-toolbar,
+.wr-preview-card > .vh-kicker {
+  border: 1px solid rgba(233,210,166,.18);
+  border-radius: 999px;
+  width: fit-content;
+  padding: .48rem .75rem;
+  background: rgba(0,0,0,.28);
+}
+
+.pr-document-surface,
+.wr-preview-surface {
+  border: 1px solid rgba(233,210,166,.14);
+  border-radius: var(--gen-radius-xl) !important;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(233,210,166,.18), transparent 18rem),
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.32)),
+    rgba(0,0,0,.34) !important;
+  box-shadow: inset 0 0 90px rgba(0,0,0,.42), 0 32px 90px rgba(0,0,0,.28);
+}
+
+.pr-document,
+.wr-document {
+  filter: drop-shadow(0 38px 78px rgba(0,0,0,.7));
+  transform: rotate(-.55deg);
+  transition: transform .28s ease, filter .28s ease;
+}
+
+.pr-preview-wrap:hover .pr-document,
+.wr-preview-card:hover .wr-document {
+  transform: rotate(0deg) translateY(-4px);
+  filter: drop-shadow(0 44px 92px rgba(0,0,0,.76));
+}
+
+.pr-variant-grid,
+.pr-mode-grid,
+.pr-steps {
+  gap: clamp(.9rem, 2vw, 1.35rem) !important;
+}
+
+.pr-variant-card,
+.pr-mode-card,
+.pr-step {
+  border: 1px solid rgba(233,210,166,.16) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(150deg, rgba(233,210,166,.08), rgba(255,255,255,.018)),
+    rgba(0,0,0,.28) !important;
+  box-shadow: 0 20px 54px rgba(0,0,0,.28);
+}
+
+.pr-variant-card {
+  overflow: hidden;
+}
+
+.pr-variant-thumb {
+  min-height: 168px;
+  object-fit: cover;
+  filter: saturate(.86) contrast(1.08);
+}
+
+.pr-variant-card.is-selected,
+.pr-mode-card.is-active {
+  border-color: rgba(233,210,166,.46) !important;
+  box-shadow: 0 30px 86px rgba(0,0,0,.42), 0 0 0 1px rgba(233,210,166,.08);
+}
+
+.pr-print-recommendation,
+.pr-privacy,
+.wr-privacy,
+.wr-note-card,
+.wr-ritual-note,
+.typewriter-sound-panel p {
+  color: var(--gen-muted) !important;
+}
+
+.pr-event-badge,
+.wr-event-badge,
+.memory-pack-active-badge,
+.archive-gallery-active,
+.event-portal-active,
+.access-flow-active {
+  border-color: rgba(233,210,166,.25) !important;
+  background:
+    linear-gradient(135deg, rgba(233,210,166,.085), rgba(255,255,255,.018)),
+    rgba(0,0,0,.26) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.018);
+}
+
+/* Witness Report: writing desk ritual */
+.wr-central-section {
+  background:
+    linear-gradient(180deg, rgba(5,4,3,.2), rgba(5,4,3,.82)),
+    var(--gen-desk);
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid rgba(233,210,166,.12);
+  border-bottom: 1px solid rgba(233,210,166,.12);
+}
+
+.wr-central-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(5,4,3,.9), rgba(5,4,3,.48) 50%, rgba(5,4,3,.86)),
+    radial-gradient(ellipse at 58% 20%, rgba(248,237,217,.12), transparent 28rem);
+}
+
+.wr-central-wrap {
+  z-index: 2 !important;
+}
+
+.wr-central-grid {
+  max-width: 1040px !important;
+}
+
+.wr-central-card {
+  border-radius: 26px !important;
+  backdrop-filter: blur(12px);
+}
+
+.wr-counter {
+  color: var(--gen-soft) !important;
+}
+
+/* Memory Pack: premium case */
+.memory-pack-section {
+  background:
+    linear-gradient(180deg, rgba(5,4,3,.18), rgba(5,4,3,.84)),
+    var(--gen-memory);
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid rgba(233,210,166,.12);
+}
+
+.memory-pack-section::after,
+.archive-gallery-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(5,4,3,.92), rgba(5,4,3,.48) 50%, rgba(5,4,3,.86)),
+    radial-gradient(ellipse at 58% 18%, rgba(248,237,217,.12), transparent 28rem);
+}
+
+.memory-pack-wrap,
+.archive-gallery-wrap {
+  z-index: 2 !important;
+}
+
+.memory-pack-card,
+.archive-gallery-card {
+  border-radius: 28px !important;
+  border-color: rgba(233,210,166,.2) !important;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(233,210,166,.12), transparent 16rem),
+    linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018) 42%, rgba(0,0,0,.18)),
+    rgba(12,10,8,.76) !important;
+  box-shadow: var(--gen-shadow-soft), inset 0 0 0 1px rgba(255,255,255,.025) !important;
+  backdrop-filter: blur(14px);
+}
+
+.memory-pack-grid,
+.archive-gallery-grid {
+  gap: clamp(1rem, 2vw, 1.45rem) !important;
+}
+
+.memory-pack-card-preview,
+.archive-gallery-thumb {
+  min-height: 220px !important;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(233,210,166,.16), transparent 12rem),
+    linear-gradient(135deg, rgba(111,37,30,.2), transparent 60%),
+    rgba(0,0,0,.34) !important;
+}
+
+.memory-pack-action,
+.archive-gallery-action {
+  border-color: rgba(233,210,166,.3) !important;
+  background:
+    linear-gradient(135deg, rgba(233,210,166,.16), rgba(183,146,93,.08)),
+    rgba(0,0,0,.28) !important;
+  color: var(--gen-ivory) !important;
+}
+
+/* Archive: museum wall */
+.archive-gallery-section {
+  background:
+    linear-gradient(180deg, rgba(5,4,3,.18), rgba(5,4,3,.86)),
+    var(--gen-archive);
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid rgba(233,210,166,.12);
+}
+
+.archive-gallery-privacy,
+.archive-gallery-empty-note {
+  border-color: rgba(233,210,166,.18) !important;
+  border-radius: var(--gen-radius) !important;
+  background: rgba(0,0,0,.38) !important;
+  backdrop-filter: blur(12px);
+}
+
+.archive-gallery-empty-note strong,
+.archive-gallery-privacy strong {
+  color: var(--gen-gold) !important;
+}
+
+/* Access / portal polish carried into generators */
+.access-flow-card,
+.event-portal-module {
+  backdrop-filter: blur(14px);
+}
+
+.event-shell-entry-panel {
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(233,210,166,.12), transparent 18rem),
+    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018)),
+    rgba(0,0,0,.3) !important;
+}
+
+/* Cinematic micro-interactions */
+.pr-variant-card,
+.pr-mode-card,
+.memory-pack-card,
+.archive-gallery-card,
+.wr-central-card,
+.pr-document,
+.wr-document {
+  will-change: transform;
+}
+
+.pr-variant-card:hover,
+.pr-mode-card:hover,
+.memory-pack-card:hover,
+.archive-gallery-card:hover,
+.wr-central-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(233,210,166,.34) !important;
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .pr-page .vh-hero-compact,
+  .wr-page .vh-hero-compact {
+    min-height: auto !important;
+    padding: clamp(3rem, 13vw, 5rem) 0;
+  }
+
+  .pr-page .vh-hero-copy,
+  .wr-page .vh-hero-copy {
+    margin-bottom: 0;
+    border-radius: 26px;
+    backdrop-filter: blur(10px);
+  }
+
+  .pr-workspace,
+  .wr-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pr-document,
+  .wr-document {
+    transform: none;
+  }
+
+  .memory-pack-grid,
+  .archive-gallery-grid,
+  .pr-variant-grid,
+  .pr-mode-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .pr-page .vh-title,
+  .wr-page .vh-title {
+    font-size: clamp(3rem, 16vw, 5.2rem) !important;
+  }
+
+  .pr-form-actions,
+  .wr-actions,
+  .access-flow-actions {
+    flex-direction: column !important;
+  }
+
+  .pr-form-actions .vh-button,
+  .wr-actions .vh-button,
+  .access-flow-actions .vh-button,
+  .memory-pack-action,
+  .archive-gallery-action {
+    width: 100% !important;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pr-variant-card,
+  .pr-mode-card,
+  .memory-pack-card,
+  .archive-gallery-card,
+  .wr-central-card,
+  .pr-document,
+  .wr-document,
+  .vh-button {
+    transition: none !important;
+    transform: none !important;
+  }
+}
