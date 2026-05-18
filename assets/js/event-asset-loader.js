@@ -20,6 +20,26 @@
     doc.style.setProperty(name, `url('${value}')`);
   }
 
+  function loadStylesheet(href) {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.appendChild(script);
+    });
+  }
+
   async function imageExists(path) {
     if (!path) return false;
     try {
@@ -108,7 +128,15 @@
     document.body.appendChild(node);
   }
 
+  function bootArtworkAudit() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('artworkAudit') !== '1') return;
+    loadStylesheet('/assets/css/artwork-audit-panel.css');
+    loadScript('/assets/js/artwork-audit-panel.js');
+  }
+
   resolveAssets();
   addAtmosphere();
   markReadiness();
+  bootArtworkAudit();
 })();
