@@ -52,10 +52,13 @@
       '/assets/css/event-shell.css',
       '/assets/css/generator-cinematic.css',
       '/assets/css/generator-masterpiece.css',
+      '/assets/css/premium-asset-integration.css',
       '/assets/css/event-portal.css',
       '/assets/css/archive-gallery.css'
     ],
     js: [
+      '/assets/js/event-asset-manifest.js',
+      '/assets/js/event-asset-loader.js',
       '/assets/js/event-portal-config.js',
       '/assets/js/event-portal-renderer.js',
       '/assets/js/archive-gallery-config.js',
