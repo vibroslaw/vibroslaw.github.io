@@ -2,6 +2,33 @@
   const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
     document.body.classList.contains('reduce-motion');
 
+  function loadStylesheet(href) {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.appendChild(script);
+    });
+  }
+
+  function bootPremiumAssets() {
+    if (!document.querySelector('.event-shell-page')) return;
+    loadStylesheet('/assets/css/premium-asset-integration.css');
+    loadScript('/assets/js/event-asset-manifest.js')
+      .then(() => loadScript('/assets/js/event-asset-loader.js'));
+  }
+
   function copyText(value, statusNode, copiedText, fallbackText) {
     if (!value) return;
     if (!navigator.clipboard) {
@@ -89,6 +116,7 @@
   }
 
   function boot() {
+    bootPremiumAssets();
     bootCopyAndShare();
     bootSmoothAnchors();
     bootAtmosphere();
