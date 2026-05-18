@@ -5,6 +5,23 @@
   const isWitness = root.matches('[data-witness-report]');
   const lang = root.dataset.lang === 'en' ? 'en' : 'pl';
 
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const script = document.createElement('script');
+      script.src = src;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.appendChild(script);
+    });
+  }
+
+  function bootPremiumAssets() {
+    loadScript('/assets/js/event-asset-manifest.js')
+      .then(() => loadScript('/assets/js/event-asset-loader.js'));
+  }
+
   const copy = {
     pl: {
       flowKicker: 'PROCES TWORZENIA',
@@ -216,6 +233,7 @@
 
   function boot() {
     document.documentElement.classList.add('generator-masterpiece-ready');
+    bootPremiumAssets();
     insertFlow();
     insertStageLabels();
     ensureSuccessPanel();
