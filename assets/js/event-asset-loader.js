@@ -35,35 +35,68 @@
     }
   }
 
-  function applyEventAssets() {
+  async function firstExisting(paths) {
+    const list = Array.isArray(paths) ? paths.filter(Boolean) : [paths].filter(Boolean);
+    for (const path of list) {
+      if (await imageExists(path)) return path;
+    }
+    return list[0] || '';
+  }
+
+  async function resolveAssets() {
     const key = eventKey();
     const eventAssets = manifest.events?.[key];
+    const candidates = manifest.assetCandidates || {};
     const shared = manifest.shared || {};
-    setCss('--event-hero-image', eventAssets?.lobby || shared.lobby);
-    setCss('--event-hero-mobile-image', eventAssets?.lobbyMobile || eventAssets?.lobby || shared.lobbyMobile || shared.lobby);
-    setCss('--event-pass-image', shared.eventPass);
+    const procedural = manifest.procedural || {};
+
+    const lobby = await firstExisting([eventAssets?.lobby, eventAssets?.fallbackLobby, ...(candidates.lobby || [shared.lobby, procedural.lobby])]);
+    const lobbyMobile = await firstExisting([eventAssets?.lobbyMobile, eventAssets?.fallbackMobile, ...(candidates.lobbyMobile || [shared.lobbyMobile, procedural.lobbyMobile, lobby])]);
+    const eventPass = await firstExisting(candidates.eventPass || [shared.eventPass, procedural.eventPass]);
+    const witnessDesk = await firstExisting(candidates.witnessDesk || [shared.witnessDesk, procedural.witnessDesk]);
+    const documentAtelier = await firstExisting(candidates.documentAtelier || [shared.documentAtelier, procedural.documentAtelier]);
+    const memoryCase = await firstExisting(candidates.memoryCase || [shared.memoryCase, procedural.memoryCase]);
+    const archiveEmpty = await firstExisting(candidates.archiveEmpty || [shared.archiveEmpty, procedural.archiveEmpty]);
+    const finalRoom = await firstExisting(candidates.finalRoom || [shared.finalRoom, procedural.finalRoom]);
+
+    setCss('--event-hero-image', lobby);
+    setCss('--event-hero-mobile-image', lobbyMobile);
+    setCss('--event-pass-image', eventPass);
     setCss('--event-shell-beam', shared.beam);
-    setCss('--scene-witness-image', shared.witnessDesk);
-    setCss('--scene-document-image', shared.documentAtelier);
-    setCss('--scene-memory-image', shared.memoryCase);
-    setCss('--scene-archive-image', shared.archiveEmpty || shared.archiveWall);
-    setCss('--scene-final-image', shared.finalRoom);
-    setCss('--gen-document', shared.documentAtelier);
-    setCss('--gen-desk', shared.witnessDesk);
-    setCss('--gen-memory', shared.memoryCase);
-    setCss('--gen-archive', shared.archiveEmpty || shared.archiveWall);
+    setCss('--scene-witness-image', witnessDesk);
+    setCss('--scene-document-image', documentAtelier);
+    setCss('--scene-memory-image', memoryCase);
+    setCss('--scene-archive-image', archiveEmpty);
+    setCss('--scene-final-image', finalRoom);
+    setCss('--gen-hero', lobby);
+    setCss('--gen-document', documentAtelier);
+    setCss('--gen-desk', witnessDesk);
+    setCss('--gen-memory', memoryCase);
+    setCss('--gen-archive', archiveEmpty);
+    doc.classList.add('has-resolved-cinematic-assets');
   }
 
   async function markReadiness() {
     const required = manifest.requiredForWow || [];
-    const checks = await Promise.all(required.map(async (path) => ({ path, ok: await imageExists(path) })));
-    const missing = checks.filter((item) => !item.ok).map((item) => item.path);
-    doc.classList.toggle('has-premium-assets', missing.length === 0);
-    doc.classList.toggle('has-missing-premium-assets', missing.length > 0);
-    if (missing.length) {
-      root.dataset.missingPremiumAssets = String(missing.length);
-      if (window.console?.info) console.info('Rap-Ort premium cinematic assets missing:', missing);
+    const procedural = manifest.requiredProcedural || [];
+    const webpChecks = await Promise.all(required.map(async (path) => ({ path, ok: await imageExists(path) })));
+    const proceduralChecks = await Promise.all(procedural.map(async (path) => ({ path, ok: await imageExists(path) })));
+    const missingWebp = webpChecks.filter((item) => !item.ok).map((item) => item.path);
+    const missingProcedural = proceduralChecks.filter((item) => !item.ok).map((item) => item.path);
+
+    doc.classList.toggle('has-premium-assets', missingWebp.length === 0);
+    doc.classList.toggle('has-missing-premium-assets', missingWebp.length > 0);
+    doc.classList.toggle('has-procedural-cinematic-assets', missingProcedural.length === 0);
+    doc.classList.toggle('has-missing-procedural-assets', missingProcedural.length > 0);
+
+    if (missingWebp.length && window.console?.info) {
+      console.info('Rap-Ort final WebP premium cinematic assets missing; procedural SVG fallbacks are used when available:', missingWebp);
     }
+    if (missingProcedural.length && window.console?.warn) {
+      console.warn('Rap-Ort procedural cinematic fallback assets missing:', missingProcedural);
+    }
+    root.dataset.missingPremiumAssets = String(missingWebp.length);
+    root.dataset.missingProceduralAssets = String(missingProcedural.length);
   }
 
   function addAtmosphere() {
@@ -75,7 +108,7 @@
     document.body.appendChild(node);
   }
 
-  applyEventAssets();
+  resolveAssets();
   addAtmosphere();
   markReadiness();
 })();
