@@ -51,6 +51,7 @@
       '/assets/css/event-experience.css',
       '/assets/css/event-shell.css',
       '/assets/css/generator-cinematic.css',
+      '/assets/css/generator-masterpiece.css',
       '/assets/css/event-portal.css',
       '/assets/css/archive-gallery.css'
     ],
@@ -58,7 +59,8 @@
       '/assets/js/event-portal-config.js',
       '/assets/js/event-portal-renderer.js',
       '/assets/js/archive-gallery-config.js',
-      '/assets/js/archive-gallery-renderer.js'
+      '/assets/js/archive-gallery-renderer.js',
+      '/assets/js/generator-masterpiece.js'
     ]
   };
 
