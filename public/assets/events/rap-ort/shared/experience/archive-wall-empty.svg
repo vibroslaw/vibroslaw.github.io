@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Dark empty museum archive wall under soft spotlights">
+  <defs><radialGradient id="s1" cx="30%" cy="22%" r="30%"><stop offset="0" stop-color="#f8edd9" stop-opacity=".18"/><stop offset="1" stop-color="#050403" stop-opacity="0"/></radialGradient><radialGradient id="s2" cx="68%" cy="20%" r="34%"><stop offset="0" stop-color="#ecd3a3" stop-opacity=".14"/><stop offset="1" stop-color="#050403" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1920" height="1080" fill="#050403"/><rect width="1920" height="1080" fill="url(#s1)"/><rect width="1920" height="1080" fill="url(#s2)"/>
+  <g opacity=".35"><rect x="300" y="280" width="300" height="420" rx="12" fill="#0b0806" stroke="#ecd3a3" stroke-opacity=".18"/><rect x="810" y="240" width="300" height="420" rx="12" fill="#0b0806" stroke="#ecd3a3" stroke-opacity=".18"/><rect x="1320" y="300" width="300" height="420" rx="12" fill="#0b0806" stroke="#ecd3a3" stroke-opacity=".18"/></g>
+  <g opacity=".2"><rect x="350" y="330" width="200" height="16" rx="8" fill="#f8edd9"/><rect x="860" y="290" width="200" height="16" rx="8" fill="#f8edd9"/><rect x="1370" y="350" width="200" height="16" rx="8" fill="#f8edd9"/></g>
+  <path d="M0 760 C450 720 980 730 1920 760 L1920 1080 L0 1080 Z" fill="#070504"/>
+  <path d="M540 0 L1220 1080" stroke="#ecd3a3" stroke-opacity=".08" stroke-width="140"/>
+</svg>

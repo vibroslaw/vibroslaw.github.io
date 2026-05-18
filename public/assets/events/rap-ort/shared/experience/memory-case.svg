@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Open archival memory case with blank keepsake cards">
+  <defs><radialGradient id="light" cx="54%" cy="20%" r="62%"><stop offset="0" stop-color="#f8edd9" stop-opacity=".28"/><stop offset=".5" stop-color="#b98f57" stop-opacity=".08"/><stop offset="1" stop-color="#050403" stop-opacity="0"/></radialGradient><filter id="shadow"><feDropShadow dx="0" dy="34" stdDeviation="28" flood-color="#000" flood-opacity=".7"/></filter></defs>
+  <rect width="1920" height="1080" fill="#050403"/><rect width="1920" height="1080" fill="url(#light)"/><rect y="650" width="1920" height="430" fill="#090604"/>
+  <g filter="url(#shadow)"><rect x="430" y="520" width="1040" height="340" rx="38" fill="#24160d"/><rect x="475" y="560" width="950" height="240" rx="24" fill="#120b07" stroke="#ecd3a3" stroke-opacity=".16"/><rect x="560" y="610" width="260" height="170" rx="16" fill="#e6d4ad" transform="rotate(-6 690 695)" opacity=".82"/><rect x="840" y="600" width="280" height="180" rx="16" fill="#f3e4c4" transform="rotate(3 980 690)" opacity=".72"/><rect x="1130" y="615" width="250" height="160" rx="16" fill="#d1b780" transform="rotate(7 1255 695)" opacity=".65"/></g>
+  <path d="M300 0 L1220 1080" stroke="#ecd3a3" stroke-opacity=".1" stroke-width="140"/>
+</svg>
