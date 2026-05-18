@@ -1,0 +1,205 @@
+/* PR77 — Premium Cinematic Asset Integration
+   Connects the event/generator shell to final visual assets and provides dignified fallbacks. */
+
+:root {
+  --asset-lobby: url('/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-hero.webp');
+  --asset-lobby-mobile: url('/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-mobile.webp');
+  --asset-beam: url('/public/assets/events/rap-ort/shared/experience/projection-beam-overlay.webp');
+  --asset-pass: url('/public/assets/events/rap-ort/shared/experience/event-pass-premium.webp');
+  --asset-desk: url('/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp');
+  --asset-paper: url('/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp');
+  --asset-document: url('/public/assets/events/rap-ort/shared/experience/document-atelier.webp');
+  --asset-samples: url('/public/assets/events/rap-ort/shared/experience/document-print-samples.webp');
+  --asset-memory: url('/public/assets/events/rap-ort/shared/experience/memory-case.webp');
+  --asset-archive: url('/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp');
+  --asset-final: url('/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp');
+}
+
+.event-shell-page,
+.pr-page,
+.wr-page {
+  --event-hero-image: var(--asset-lobby);
+  --event-hero-mobile-image: var(--asset-lobby-mobile);
+  --event-shell-beam: var(--asset-beam);
+  --event-pass-image: var(--asset-pass);
+  --scene-witness-image: var(--asset-desk);
+  --scene-document-image: var(--asset-document);
+  --scene-memory-image: var(--asset-memory);
+  --scene-archive-image: var(--asset-archive);
+  --scene-final-image: var(--asset-final);
+  --gen-hero: var(--asset-lobby);
+  --gen-document: var(--asset-document);
+  --gen-desk: var(--asset-desk);
+  --gen-memory: var(--asset-memory);
+  --gen-archive: var(--asset-archive);
+}
+
+.event-shell-oswiecim {
+  --event-hero-image: url('/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'), var(--asset-lobby);
+  --event-hero-mobile-image: url('/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby-mobile.webp'), var(--asset-lobby-mobile);
+}
+
+.event-shell-sydney {
+  --event-hero-image: url('/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'), var(--asset-lobby);
+  --event-hero-mobile-image: url('/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby-mobile.webp'), var(--asset-lobby-mobile);
+}
+
+.event-shell-scene-media[style*='witness-writing-desk'],
+.wr-central-section,
+.wr-preview-card {
+  --scene-image: var(--scene-witness-image);
+}
+
+.event-shell-scene-media[style*='document-atelier'],
+.pr-preview-wrap {
+  --scene-image: var(--scene-document-image);
+}
+
+.event-shell-scene-media[style*='memory-case'],
+.memory-pack-section {
+  --scene-image: var(--scene-memory-image);
+}
+
+.event-shell-scene-media[style*='archive-wall'],
+.archive-gallery-section {
+  --scene-image: var(--scene-archive-image);
+}
+
+.has-premium-assets .event-shell-hero::before,
+.has-premium-assets .pr-page .vh-hero-compact::before,
+.has-premium-assets .wr-page .vh-hero-compact::before {
+  filter: saturate(.96) contrast(1.12) brightness(.98);
+}
+
+.has-missing-premium-assets .event-shell-hero::before,
+.has-missing-premium-assets .event-shell-scene-media,
+.has-missing-premium-assets .event-pass-visual,
+.has-missing-premium-assets .pr-preview-wrap,
+.has-missing-premium-assets .wr-preview-card,
+.has-missing-premium-assets .memory-pack-section,
+.has-missing-premium-assets .archive-gallery-section {
+  background-blend-mode: normal, screen, normal;
+}
+
+.has-missing-premium-assets .event-shell-hero::after,
+.has-missing-premium-assets .pr-page .vh-hero-compact::after,
+.has-missing-premium-assets .wr-page .vh-hero-compact::after {
+  opacity: .92;
+}
+
+.event-asset-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 52% 9%, rgba(251,239,216,.09), transparent 28rem),
+    linear-gradient(108deg, transparent 0 24%, rgba(236,211,163,.08) 36%, transparent 62%);
+  mix-blend-mode: screen;
+  opacity: .72;
+}
+
+.event-shell-hero,
+.pr-page .vh-hero-compact,
+.wr-page .vh-hero-compact {
+  background-color: #050403;
+}
+
+.event-shell-hero::after,
+.pr-page .vh-hero-compact::after,
+.wr-page .vh-hero-compact::after {
+  animation: premiumProjectionBreath 14s ease-in-out infinite;
+}
+
+@keyframes premiumProjectionBreath {
+  0%, 100% { opacity: .62; transform: translate3d(0,0,0) scale(1); }
+  50% { opacity: .92; transform: translate3d(.4%, -.2%, 0) scale(1.015); }
+}
+
+.event-shell-scene-media,
+.event-pass-visual,
+.pr-preview-wrap,
+.wr-preview-card,
+.memory-pack-section,
+.archive-gallery-section {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.event-shell-scene-media::before,
+.event-pass-visual::before,
+.pr-preview-wrap::before,
+.wr-preview-card::before {
+  background:
+    linear-gradient(108deg, transparent 0 24%, rgba(236,211,163,.14) 38%, transparent 62%),
+    radial-gradient(ellipse at 50% 0%, rgba(251,239,216,.13), transparent 24rem) !important;
+}
+
+.event-shell-scene-media::after,
+.event-pass-visual::after {
+  box-shadow: inset 0 0 80px rgba(0,0,0,.42);
+}
+
+.pr-variant-card::before,
+.memory-pack-card::before,
+.archive-gallery-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 0 22%, rgba(236,211,163,.08) 38%, transparent 62%);
+  opacity: .45;
+}
+
+.pr-variant-card,
+.memory-pack-card,
+.archive-gallery-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.memory-pack-card-preview,
+.archive-gallery-thumb {
+  background-image:
+    radial-gradient(circle at 50% 24%, rgba(251,239,216,.12), transparent 12rem),
+    linear-gradient(135deg, rgba(111,37,30,.22), transparent 62%),
+    var(--asset-memory),
+    linear-gradient(135deg,#110d0a,#050403) !important;
+}
+
+.archive-gallery-thumb {
+  background-image:
+    radial-gradient(circle at 50% 24%, rgba(251,239,216,.12), transparent 12rem),
+    linear-gradient(135deg, rgba(111,37,30,.18), transparent 62%),
+    var(--asset-archive),
+    linear-gradient(135deg,#110d0a,#050403) !important;
+}
+
+.has-missing-premium-assets .event-shell-scene-media::after,
+.has-missing-premium-assets .event-pass-visual::after {
+  content: "Premium visual asset pending";
+  display: grid;
+  place-items: end start;
+  padding: 1rem;
+  color: rgba(251,239,216,.42);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 880px) {
+  .event-shell-hero::after,
+  .pr-page .vh-hero-compact::after,
+  .wr-page .vh-hero-compact::after {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-shell-hero::after,
+  .pr-page .vh-hero-compact::after,
+  .wr-page .vh-hero-compact::after {
+    animation: none !important;
+  }
+}
