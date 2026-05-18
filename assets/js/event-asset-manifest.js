@@ -22,21 +22,43 @@ window.RapOrtEventAssets = (() => {
     finalRoom: `${sharedRoot}final-question-dark-room.webp`
   };
 
+  const procedural = {
+    lobby: `${sharedRoot}event-lobby-cinematic-hero.svg`,
+    lobbyMobile: `${sharedRoot}event-lobby-cinematic-mobile.svg`,
+    eventPass: `${sharedRoot}event-pass-premium.svg`,
+    witnessDesk: `${sharedRoot}witness-writing-desk.svg`,
+    documentAtelier: `${sharedRoot}document-atelier.svg`,
+    memoryCase: `${sharedRoot}memory-case.svg`,
+    archiveEmpty: `${sharedRoot}archive-wall-empty.svg`,
+    finalRoom: `${sharedRoot}final-question-dark-room.svg`
+  };
+
   return {
-    version: '0.1.0-pr77-premium-asset-manifest',
+    version: '0.2.0-pr78-procedural-cinematic-asset-pack',
     shared,
+    procedural,
+    assetCandidates: {
+      lobby: [shared.lobby, procedural.lobby],
+      lobbyMobile: [shared.lobbyMobile, procedural.lobbyMobile, procedural.lobby],
+      eventPass: [shared.eventPass, procedural.eventPass],
+      witnessDesk: [shared.witnessDesk, procedural.witnessDesk],
+      documentAtelier: [shared.documentAtelier, procedural.documentAtelier],
+      memoryCase: [shared.memoryCase, procedural.memoryCase],
+      archiveEmpty: [shared.archiveEmpty, procedural.archiveEmpty],
+      finalRoom: [shared.finalRoom, procedural.finalRoom]
+    },
     events: {
       oswiecim20260525: {
         lobby: `${oswRoot}oswiecim-event-lobby.webp`,
         lobbyMobile: `${oswRoot}oswiecim-event-lobby-mobile.webp`,
-        fallbackLobby: shared.lobby,
-        fallbackMobile: shared.lobbyMobile
+        fallbackLobby: procedural.lobby,
+        fallbackMobile: procedural.lobbyMobile
       },
       syd2026: {
         lobby: `${sydRoot}sydney-event-lobby.webp`,
         lobbyMobile: `${sydRoot}sydney-event-lobby-mobile.webp`,
-        fallbackLobby: shared.lobby,
-        fallbackMobile: shared.lobbyMobile
+        fallbackLobby: procedural.lobby,
+        fallbackMobile: procedural.lobbyMobile
       }
     },
     requiredForWow: [
@@ -47,6 +69,15 @@ window.RapOrtEventAssets = (() => {
       shared.memoryCase,
       shared.archiveEmpty,
       shared.finalRoom
+    ],
+    requiredProcedural: [
+      procedural.lobby,
+      procedural.eventPass,
+      procedural.witnessDesk,
+      procedural.documentAtelier,
+      procedural.memoryCase,
+      procedural.archiveEmpty,
+      procedural.finalRoom
     ],
     recommended: [
       shared.lobbyMobile,
