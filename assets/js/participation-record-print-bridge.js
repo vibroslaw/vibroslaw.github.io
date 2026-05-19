@@ -18,11 +18,11 @@
     title: 'ZAPIS UCZESTNICTWA',
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     forLabel: 'DLA',
+    nameGuide: 'IMIĘ I NAZWISKO UCZESTNIKA — OPCJONALNIE',
     dateLabel: 'DATA WYDARZENIA',
     placeLabel: 'MIEJSCE',
     numberLabel: 'NUMER DOKUMENTU',
     authorRole: 'AUTOR PROJEKTU',
-    noName: 'uczestnika wydarzenia',
     body: [
       'Dokument upamiętnia udział w projekcji audiowizualnej',
       '„Rap-Ort: Prawda Sumienia”',
@@ -44,11 +44,11 @@
     title: 'RECORD OF PARTICIPATION',
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     forLabel: 'FOR',
+    nameGuide: 'PARTICIPANT NAME — OPTIONAL',
     dateLabel: 'EVENT DATE',
     placeLabel: 'PLACE',
     numberLabel: 'DOCUMENT NUMBER',
     authorRole: 'PROJECT AUTHOR',
-    noName: 'the event participant',
     body: [
       'This document commemorates participation in the audiovisual screening of',
       '“Rap-Ort: Prawda Sumienia”',
@@ -106,6 +106,24 @@
   const pageProfiles = {
     standard: { width: 841.89, height: 595.28, suffix: 'A4', scale: 1 },
     wall: { width: 1190.55, height: 841.89, suffix: 'A3-Wall-Edition', scale: 1190.55 / 841.89 }
+  };
+
+  const layout = {
+    standard: {
+      sealX: 122, sealY: 384, sealSize: 64,
+      titleY: 407, titleW: 360,
+      projectY: 391, projectSize: 6.8,
+      ruleY: 382, ruleW: 300,
+      bodyY: 354, bodySize: 12.1, bodyW: 485, bodyLH: 1.28,
+      nameLabelY: 266, nameY: 244, nameRuleY: 258, nameRuleW: 300,
+      fieldsY: 199, dateX: 198, placeX: 421, numberX: 644,
+      dateW: 158, placeW: 312, numberW: 170,
+      dateSize: 9.3, placeSize: 8.8, numberSize: 7.2, fieldLabelSize: 5.7,
+      accentY: 151, accentW: 36,
+      closingY: 128, closingSize: 9.1, closingW: 520,
+      signatureY: 56, signatureW: 142,
+      authorY: 34, microY: 17, microSize: 4.35
+    }
   };
 
   const $ = (sel) => root.querySelector(sel);
@@ -211,11 +229,11 @@
     return lines;
   }
 
-  function wrappedCentered(page, lines, font, size, x, y, maxWidth, color, lineHeight = 1.36) {
+  function wrappedCentered(page, lines, font, size, x, y, maxWidth, color, lineHeight = 1.28) {
     let offset = 0;
     for (const rawLine of lines) {
       if (!rawLine) {
-        offset += size * 0.78;
+        offset += size * 0.68;
         continue;
       }
       for (const line of wrap(font, rawLine, size, maxWidth)) {
@@ -226,28 +244,28 @@
     return offset;
   }
 
-  function fit(font, text, preferred, maxWidth, min = 7) {
+  function fit(font, text, preferred, maxWidth, min = 6.2) {
     let size = preferred;
-    while (font.widthOfTextAtSize(String(text || ''), size) > maxWidth && size > min) size -= 0.5;
+    while (font.widthOfTextAtSize(String(text || ''), size) > maxWidth && size > min) size -= 0.35;
     return size;
   }
 
   function drawField(page, fonts, label, value, x, lineY, width, colors, scale, opts = {}) {
-    const lineColor = colors.line;
     const valueFont = opts.mono ? fonts.mono : fonts.body;
-    const maxValueWidth = width - 16 * scale;
-    const valueSize = fit(valueFont, value, (opts.valueSize || 9.4) * scale, maxValueWidth, 6.2 * scale);
-    page.drawLine({ start: { x: x - width / 2, y: lineY }, end: { x: x + width / 2, y: lineY }, thickness: 0.55 * scale, color: lineColor });
-    const wrapped = wrap(valueFont, value, valueSize, maxValueWidth).slice(0, opts.maxLines || 2);
-    const topY = lineY + (wrapped.length > 1 ? 21 * scale : 18 * scale);
-    wrapped.forEach((line, i) => centerText(page, line, valueFont, valueSize, x, topY - i * valueSize * 1.18, colors.ivory));
-    centerText(page, label, fonts.meta, 6.2 * scale, x, lineY - 17 * scale, colors.label);
+    const maxValueWidth = width - 12 * scale;
+    const valueSize = fit(valueFont, value, (opts.valueSize || 9.2) * scale, maxValueWidth, 6.1 * scale);
+    page.drawLine({ start: { x: x - width / 2, y: lineY }, end: { x: x + width / 2, y: lineY }, thickness: 0.48 * scale, color: colors.line });
+    const valueLines = wrap(valueFont, value, valueSize, maxValueWidth).slice(0, opts.maxLines || 2);
+    const firstY = lineY + (valueLines.length > 1 ? 21 * scale : 17 * scale);
+    valueLines.forEach((line, i) => centerText(page, line, valueFont, valueSize, x, firstY - i * valueSize * 1.15, colors.ivory));
+    centerText(page, label, fonts.meta, (opts.labelSize || 5.7) * scale, x, lineY - 16 * scale, colors.label);
   }
 
   async function buildPdf(mode) {
     const { PDFDocument, StandardFonts, rgb } = pdfLib();
     const profile = pageProfiles[mode] || pageProfiles.standard;
-    const scale = profile.scale;
+    const scale = mode === 'wall' ? pageProfiles.wall.scale : 1;
+    const L = layout.standard;
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([profile.width, profile.height]);
 
@@ -261,11 +279,11 @@
     };
     const colors = {
       gold: rgb(0.91, 0.74, 0.39),
-      ivory: rgb(0.93, 0.86, 0.67),
-      muted: rgb(0.70, 0.59, 0.39),
-      label: rgb(0.56, 0.47, 0.31),
-      line: rgb(0.60, 0.48, 0.29),
-      micro: rgb(0.43, 0.36, 0.25),
+      ivory: rgb(0.91, 0.82, 0.61),
+      muted: rgb(0.66, 0.55, 0.36),
+      label: rgb(0.52, 0.44, 0.30),
+      line: rgb(0.56, 0.45, 0.27),
+      micro: rgb(0.36, 0.31, 0.23),
       black: rgb(0.025, 0.02, 0.015)
     };
     const cx = profile.width / 2;
@@ -275,51 +293,56 @@
     if (bg) page.drawImage(bg, { x: 0, y: 0, width: profile.width, height: profile.height });
     else page.drawRectangle({ x: 0, y: 0, width: profile.width, height: profile.height, color: colors.black });
 
-    const seal = await embedAsset(pdfDoc, eventData.seal, 1800);
-    if (seal) {
-      const size = 62 * scale;
-      page.drawImage(seal, { x: cx - size / 2, y: 500 * scale, width: size, height: size });
-    }
-
-    centerText(page, `${copy.project} · ${eventData.edition}`.toUpperCase(), fonts.metaBold, 7.2 * scale, cx, 479 * scale, colors.muted);
-
     const titlePlate = await embedAsset(pdfDoc, eventData.title, 3400);
     if (titlePlate) {
-      const width = 390 * scale;
+      const width = L.titleW * scale;
       const height = width * (titlePlate.height / titlePlate.width);
-      page.drawImage(titlePlate, { x: cx - width / 2, y: 407 * scale, width, height });
+      page.drawImage(titlePlate, { x: cx - width / 2, y: L.titleY * scale, width, height });
     } else {
-      centerText(page, copy.title, fonts.title, 31 * scale, cx, 420 * scale, colors.gold);
+      centerText(page, copy.title, fonts.title, 30 * scale, cx, (L.titleY + 20) * scale, colors.gold);
     }
 
-    page.drawLine({ start: { x: cx - 165 * scale, y: 390 * scale }, end: { x: cx + 165 * scale, y: 390 * scale }, thickness: 0.45 * scale, color: colors.line });
-    wrappedCentered(page, copy.body, fonts.body, 12.3 * scale, cx, 361 * scale, 495 * scale, colors.ivory, 1.34);
+    const seal = await embedAsset(pdfDoc, eventData.seal, 1800);
+    if (seal) {
+      const size = L.sealSize * scale;
+      page.drawImage(seal, { x: L.sealX * scale, y: L.sealY * scale, width: size, height: size });
+    }
+
+    centerText(page, `${copy.project} · ${eventData.edition}`.toUpperCase(), fonts.metaBold, L.projectSize * scale, cx, L.projectY * scale, colors.muted);
+    page.drawLine({ start: { x: cx - L.ruleW * scale / 2, y: L.ruleY * scale }, end: { x: cx + L.ruleW * scale / 2, y: L.ruleY * scale }, thickness: 0.42 * scale, color: colors.line });
+    wrappedCentered(page, copy.body, fonts.body, L.bodySize * scale, cx, L.bodyY * scale, L.bodyW * scale, colors.ivory, L.bodyLH);
 
     const name = participantName();
-    centerText(page, copy.forLabel, fonts.meta, 6.6 * scale, cx, 269 * scale, colors.label);
-    centerText(page, (name || copy.noName).toUpperCase(), fonts.body, fit(fonts.body, (name || copy.noName).toUpperCase(), 15.8 * scale, 520 * scale, 9 * scale), cx, 247 * scale, colors.ivory);
+    if (name) {
+      centerText(page, copy.forLabel, fonts.meta, 6.1 * scale, cx, L.nameLabelY * scale, colors.label);
+      centerText(page, name.toUpperCase(), fonts.body, fit(fonts.body, name.toUpperCase(), 15.2 * scale, 440 * scale, 9 * scale), cx, L.nameY * scale, colors.ivory);
+      page.drawLine({ start: { x: cx - L.nameRuleW * scale / 2, y: L.nameRuleY * scale }, end: { x: cx + L.nameRuleW * scale / 2, y: L.nameRuleY * scale }, thickness: 0.45 * scale, color: colors.line });
+    } else {
+      page.drawLine({ start: { x: cx - L.nameRuleW * scale / 2, y: L.nameRuleY * scale }, end: { x: cx + L.nameRuleW * scale / 2, y: L.nameRuleY * scale }, thickness: 0.45 * scale, color: colors.line });
+      centerText(page, copy.nameGuide, fonts.meta, 5.7 * scale, cx, (L.nameRuleY - 16) * scale, colors.label);
+    }
 
-    const lineY = 204 * scale;
-    drawField(page, fonts, copy.dateLabel, eventData.date, 197 * scale, lineY, 150 * scale, colors, scale);
-    drawField(page, fonts, copy.placeLabel, eventData.place, cx, lineY, 250 * scale, colors, scale, { valueSize: 8.3, maxLines: 2 });
-    drawField(page, fonts, copy.numberLabel, docNumber(), 646 * scale, lineY, 150 * scale, colors, scale, { mono: true, valueSize: 7.4, maxLines: 1 });
+    const lineY = L.fieldsY * scale;
+    drawField(page, fonts, copy.dateLabel, eventData.date, L.dateX * scale, lineY, L.dateW * scale, colors, scale, { valueSize: L.dateSize, labelSize: L.fieldLabelSize, maxLines: 1 });
+    drawField(page, fonts, copy.placeLabel, eventData.place, L.placeX * scale, lineY, L.placeW * scale, colors, scale, { valueSize: L.placeSize, labelSize: L.fieldLabelSize, maxLines: 2 });
+    drawField(page, fonts, copy.numberLabel, docNumber(), L.numberX * scale, lineY, L.numberW * scale, colors, scale, { mono: true, valueSize: L.numberSize, labelSize: L.fieldLabelSize, maxLines: 1 });
 
     const accent = await embedAsset(pdfDoc, eventData.accent, 900);
     if (accent) {
-      const width = 42 * scale;
-      page.drawImage(accent, { x: cx - width / 2, y: 144 * scale, width, height: width * (accent.height / accent.width) });
+      const width = L.accentW * scale;
+      page.drawImage(accent, { x: cx - width / 2, y: L.accentY * scale, width, height: width * (accent.height / accent.width) });
     }
-    wrappedCentered(page, copy.closing, fonts.italic, 9.5 * scale, cx, 124 * scale, 525 * scale, colors.ivory, 1.32);
+    wrappedCentered(page, copy.closing, fonts.italic, L.closingSize * scale, cx, L.closingY * scale, L.closingW * scale, colors.ivory, 1.28);
 
     const signature = await embedAsset(pdfDoc, ['/public/assets/reports/author-signature-gold.svg', '/public/assets/reports/author-signature-gold@2x.png', '/public/assets/reports/author-signature-placeholder.svg'], 2600);
     if (signature) {
-      const width = 154 * scale;
-      page.drawImage(signature, { x: cx - width / 2, y: 50 * scale, width, height: width * (signature.height / signature.width) });
+      const width = L.signatureW * scale;
+      page.drawImage(signature, { x: cx - width / 2, y: L.signatureY * scale, width, height: width * (signature.height / signature.width) });
     } else {
-      centerText(page, 'Piotr Jakub Lichwała', fonts.italic, 14 * scale, cx, 66 * scale, colors.ivory);
+      centerText(page, 'Piotr Jakub Lichwała', fonts.italic, 12 * scale, cx, (L.signatureY + 10) * scale, colors.ivory);
     }
-    centerText(page, copy.authorRole, fonts.meta, 6.2 * scale, cx, 36 * scale, colors.label);
-    centerText(page, `${copy.micro} · ${eventData.edition}`.toUpperCase(), fonts.meta, 4.7 * scale, cx, 18 * scale, colors.micro);
+    centerText(page, copy.authorRole, fonts.meta, 5.8 * scale, cx, L.authorY * scale, colors.label);
+    centerText(page, `${copy.micro} · ${eventData.edition}`.toUpperCase(), fonts.meta, L.microSize * scale, cx, L.microY * scale, colors.micro);
 
     pdfDoc.setTitle(`${copy.title} — ${docNumber()}`);
     pdfDoc.setAuthor('Piotr Jakub Lichwała / Vibrosław');
