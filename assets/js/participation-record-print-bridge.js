@@ -110,7 +110,7 @@
 
   const layout = {
     standard: {
-      sealX: 122, sealY: 384, sealSize: 64,
+      sealX: 650, sealY: 382, sealSize: 72,
       titleY: 407, titleW: 360,
       projectY: 391, projectSize: 6.8,
       ruleY: 382, ruleW: 300,
@@ -261,6 +261,20 @@
     centerText(page, label, fonts.meta, (opts.labelSize || 5.7) * scale, x, lineY - 16 * scale, colors.label);
   }
 
+  function drawPdfAnniversarySeal(page, fonts, x, y, size, colors, scale = 1) {
+    const { rgb } = window.PDFLib;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    page.drawCircle({ x: cx, y: cy, size: size / 2, color: rgb(0.035, 0.028, 0.018), borderColor: colors.gold, borderWidth: 1.5 * scale });
+    page.drawCircle({ x: cx, y: cy, size: size * 0.435, borderColor: colors.line, borderWidth: 0.75 * scale });
+    page.drawCircle({ x: cx, y: cy, size: size * 0.315, color: rgb(0.12, 0.09, 0.045), borderColor: colors.gold, borderWidth: 0.5 * scale });
+    centerText(page, 'RAP-ORT', fonts.metaBold, 6.2 * scale, cx, cy + 18 * scale, colors.gold);
+    centerText(page, 'PRAWDA SUMIENIA', fonts.metaBold, 4.2 * scale, cx, cy + 9 * scale, colors.ivory);
+    centerText(page, 'OŚWIĘCIM', fonts.metaBold, 5.1 * scale, cx, cy - 4 * scale, colors.gold);
+    centerText(page, '25 MAJA 2026', fonts.meta, 4.4 * scale, cx, cy - 14 * scale, colors.ivory);
+    centerText(page, 'EDYCJA ROCZNICOWA', fonts.meta, 3.3 * scale, cx, cy - 25 * scale, colors.label);
+  }
+
   async function buildPdf(mode) {
     const { PDFDocument, StandardFonts, rgb } = pdfLib();
     const profile = pageProfiles[mode] || pageProfiles.standard;
@@ -306,6 +320,9 @@
     if (seal) {
       const size = L.sealSize * scale;
       page.drawImage(seal, { x: L.sealX * scale, y: L.sealY * scale, width: size, height: size });
+    }
+    if (eventKey === 'oswiecim20260525') {
+      drawPdfAnniversarySeal(page, fonts, L.sealX * scale, L.sealY * scale, L.sealSize * scale, colors, scale);
     }
 
     centerText(page, `${copy.project} · ${eventData.edition}`.toUpperCase(), fonts.metaBold, L.projectSize * scale, cx, L.projectY * scale, colors.muted);
