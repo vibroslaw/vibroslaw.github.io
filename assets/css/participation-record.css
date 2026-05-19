@@ -543,6 +543,103 @@
 .pr-document.layout-ceremonial .pr-fields { width: 78%; }
 .pr-document.layout-ceremonial .pr-closing { max-width: 68%; }
 
+/* Event-specific premium Participation Record */
+.pr-event-specific .pr-generator .vh-section-head .vh-section-title::after {
+  content: " · edycja wydarzenia";
+  color: rgba(231, 211, 174, 0.58);
+  font-size: 0.42em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pr-event-specific .pr-step:first-child p {
+  font-size: 0;
+}
+
+.pr-event-specific .pr-step:first-child p::after {
+  content: "Wersja wydarzenia jest ustawiona z linku QR.";
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.pr-premium-seal {
+  width: min(8vw, 72px);
+  height: min(8vw, 72px);
+  min-width: 38px;
+  min-height: 38px;
+  object-fit: contain;
+  margin: 0 auto 1.5%;
+  opacity: 0.95;
+  filter: drop-shadow(0 8px 22px rgba(0,0,0,.42));
+}
+
+.pr-premium-title-plate {
+  display: block;
+  width: min(62%, 520px);
+  max-height: 92px;
+  object-fit: contain;
+  margin: 0 auto 2%;
+  filter: drop-shadow(0 7px 20px rgba(0,0,0,.36));
+}
+
+.pr-premium-title-plate:not([hidden]) + .pr-title {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pr-premium-accent {
+  width: min(12vw, 92px);
+  max-height: 52px;
+  object-fit: contain;
+  margin: auto auto 1%;
+  opacity: 0.78;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.32));
+}
+
+.pr-premium-microprint {
+  max-width: 86%;
+  margin: 1.2% auto 0;
+  font-family: Arial, sans-serif;
+  font-size: clamp(0.36rem, 0.62vw, 0.56rem);
+  line-height: 1.45;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 206, 150, 0.42);
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-document-content {
+  inset: 7.2% 11.8% 6.8%;
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-project {
+  margin-bottom: 2%;
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-body {
+  max-width: 76%;
+  font-size: clamp(0.58rem, 1.02vw, 0.96rem);
+  line-height: 1.44;
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-fields {
+  margin: 2% auto;
+  width: 84%;
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-closing {
+  max-width: 76%;
+  font-size: clamp(0.5rem, 0.9vw, 0.82rem);
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-author {
+  margin-top: 1%;
+}
+
+.pr-event-specific .pr-document.layout-ceremonial .pr-author img {
+  width: min(22vw, 220px);
+}
+
 /* Print */
 .pr-print-stage {
   display: none;
@@ -590,6 +687,10 @@
 .pr-print-content.layout-ceremonial { inset: 27mm 36mm 22mm; }
 .pr-print-content.layout-ceremonial .pr-title { font-size: 46px; }
 .pr-print-content.layout-ceremonial .pr-body { max-width: 190mm; }
+.pr-print-content .pr-premium-seal { width: 25mm; height: 25mm; min-width: 0; min-height: 0; margin-bottom: 3mm; }
+.pr-print-content .pr-premium-title-plate { width: 152mm; max-height: 25mm; margin-bottom: 5mm; }
+.pr-print-content .pr-premium-accent { width: 22mm; max-height: 13mm; margin: auto auto 2mm; }
+.pr-print-content .pr-premium-microprint { font-size: 7.6px; max-width: 220mm; margin-top: 2mm; }
 
 @media print {
   body > *:not(.pr-print-stage) { display: none !important; }
