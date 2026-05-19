@@ -1,5 +1,5 @@
 window.RAPORT_EVENTS = {
-  version: '0.1.0-events-foundation',
+  version: '0.2.0-qr-generators',
   accessKeys: {
     oswiecim20260525: 'VH-OSW-2026-0525',
     syd2026: 'VH-SYD-2026'
@@ -8,34 +8,38 @@ window.RAPORT_EVENTS = {
     oswiecim20260525: {
       id: 'oswiecim20260525',
       status: 'upcoming',
-      access: 'qr-or-code',
+      access: 'qr-only-after-workshop',
       pl: {
         title: 'Rap-Ort: Prawda Sumienia — Oświęcim 2026',
         edition: 'Edycja rocznicowa',
         date: '25 maja 2026',
-        time: 'po projekcji',
+        time: 'po projekcji i rozmowie warsztatowej',
         place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu',
         shortPlace: 'Oświęcim',
-        summary: 'Strona warsztatowa po projekcji: współczesny patriotyzm, wybory moralne, pamięć historyczna, odpowiedzialność jednostki i nowe narzędzia narracyjne, w tym AI.',
+        summary: 'Strona wydarzenia pozostaje zapleczem instytucjonalnym, natomiast QR dla studentów prowadzą bezpośrednio do dwóch artefaktów po warsztacie: Raportu Świadka i Zapisu Uczestnictwa.',
         externalLabel: 'Informacje organizacyjne'
       },
       en: {
         title: 'Rap-Ort: Prawda Sumienia — Oświęcim 2026',
         edition: 'Anniversary edition',
         date: '25 May 2026',
-        time: 'after the screening',
+        time: 'after the screening and workshop conversation',
         place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim',
         shortPlace: 'Oświęcim',
-        summary: 'Post-screening university workshop: contemporary patriotism, moral choices, historical memory, individual responsibility and new narrative tools, including AI.',
+        summary: 'The event page remains an institutional showcase, while in-room QR links take participants directly to the Witness Report and Record of Participation artefacts.',
         externalLabel: 'Organisational information'
       },
       links: {
         pl: '/rap-ort/wydarzenia/oswiecim-2026-05-25/',
         en: '/rap-ort/events/oswiecim-2026-05-25/',
-        participationPl: '/rap-ort/uczestnictwo/?event=oswiecim20260525',
-        participationEn: '/rap-ort/participation/?event=oswiecim20260525',
-        witnessPl: '/rap-ort/raport-swiadka/generator/?event=oswiecim20260525',
-        witnessEn: '/rap-ort/witness-report/generator/?event=oswiecim20260525'
+        participationPl: '/rap-ort/oswiecim/zapis-uczestnictwa/',
+        participationEn: '/rap-ort/oswiecim/zapis-uczestnictwa/',
+        witnessPl: '/rap-ort/oswiecim/raport-swiadka/',
+        witnessEn: '/rap-ort/oswiecim/raport-swiadka/'
+      },
+      qr: {
+        witness: '/rap-ort/oswiecim/raport-swiadka/',
+        participation: '/rap-ort/oswiecim/zapis-uczestnictwa/'
       },
       assetsRoot: '/public/assets/events/rap-ort/oswiecim20260525/'
     },
@@ -70,6 +74,10 @@ window.RAPORT_EVENTS = {
         participationEn: '/rap-ort/participation/?event=syd2026',
         witnessPl: '/rap-ort/raport-swiadka/generator/?event=syd2026',
         witnessEn: '/rap-ort/witness-report/generator/?event=syd2026'
+      },
+      qr: {
+        witness: '/rap-ort/raport-swiadka/generator/?event=syd2026',
+        participation: '/rap-ort/participation/?event=syd2026'
       },
       assetsRoot: '/public/assets/events/rap-ort/syd2026/'
     }
