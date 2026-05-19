@@ -12,7 +12,7 @@
   const pdfLib = () => window.PDFLib;
 
   const copy = lang === 'pl' ? {
-    preparing: 'Przygotowuję finalny PDF premium z selem wydarzenia…',
+    preparing: 'Przygotowuję finalny PDF premium z Twoim plikiem SVG seala…',
     ready: 'Finalny PDF premium został przygotowany i pobrany.',
     error: 'Nie udało się wygenerować PDF premium. Odśwież stronę i spróbuj ponownie.',
     title: 'ZAPIS UCZESTNICTWA',
@@ -38,7 +38,7 @@
     micro: 'Pamiątkowy zapis uczestnictwa · dokument generowany lokalnie w przeglądarce · nie oznacza patronatu instytucji.',
     filename: 'Rap-Ort-Zapis-Uczestnictwa'
   } : {
-    preparing: 'Preparing the final premium PDF with the event seal…',
+    preparing: 'Preparing the final premium PDF with your SVG seal file…',
     ready: 'The final premium PDF has been prepared and downloaded.',
     error: 'Could not generate the premium PDF. Refresh the page and try again.',
     title: 'RECORD OF PARTICIPATION',
@@ -81,7 +81,7 @@
       title: lang === 'pl'
         ? [`${base}oswiecim20260525/title-plates/title-zapis-uczestnictwa-anniversary-gold.svg`, `${base}oswiecim20260525/title-plates/title-zapis-uczestnictwa-gold.svg`, '/public/assets/reports/title-plates/title-zapis-uczestnictwa-gold.svg']
         : [`${base}oswiecim20260525/title-plates/title-record-of-participation-anniversary-gold.svg`, `${base}oswiecim20260525/title-plates/title-record-of-participation-gold.svg`, '/public/assets/reports/title-plates/title-record-of-participation-gold.svg'],
-      seal: [`${base}oswiecim20260525/accents/anniversary-edition-seal-gold.svg`, `${base}oswiecim20260525/accents/event-seal-gold.svg`, `${base}shared/seals/anniversary-edition-seal-gold.svg`, `${base}shared/seals/rap-ort-seal-gold.svg`],
+      seal: [`${base}oswiecim20260525/accents/anniversary-edition-seal-gold.svg`],
       accent: [`${base}oswiecim20260525/accents/event-accent-gold.svg`, `${base}shared/seals/vh-seal-gold.svg`]
     },
     syd2026: {
@@ -152,30 +152,27 @@
   }
 
   async function svgToPngBytes(svgBytes, width = 1800) {
-    const svgText = new TextDecoder('utf-8').decode(svgBytes);
-    const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    try {
-      const img = new Image();
-      img.decoding = 'async';
-      img.crossOrigin = 'anonymous';
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = url;
-      });
-      const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1;
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = Math.max(1, Math.round(width / ratio));
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      const pngBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-      return new Uint8Array(await pngBlob.arrayBuffer());
-    } finally {
-      URL.revokeObjectURL(url);
-    }
+    const svgText = new TextDecoder('utf-8').decode(svgBytes)
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/href=/g, 'xlink:href=');
+    const dataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`;
+    const img = new Image();
+    img.decoding = 'async';
+    img.crossOrigin = 'anonymous';
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
+    const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = Math.max(1, Math.round(width / ratio));
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const pngBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+    return new Uint8Array(await pngBlob.arrayBuffer());
   }
 
   async function embedAsset(pdfDoc, candidates, svgWidth = 1800) {
@@ -261,20 +258,6 @@
     centerText(page, label, fonts.meta, (opts.labelSize || 5.7) * scale, x, lineY - 16 * scale, colors.label);
   }
 
-  function drawPdfAnniversarySeal(page, fonts, x, y, size, colors, scale = 1) {
-    const { rgb } = window.PDFLib;
-    const cx = x + size / 2;
-    const cy = y + size / 2;
-    page.drawCircle({ x: cx, y: cy, size: size / 2, color: rgb(0.035, 0.028, 0.018), borderColor: colors.gold, borderWidth: 1.5 * scale });
-    page.drawCircle({ x: cx, y: cy, size: size * 0.435, borderColor: colors.line, borderWidth: 0.75 * scale });
-    page.drawCircle({ x: cx, y: cy, size: size * 0.315, color: rgb(0.12, 0.09, 0.045), borderColor: colors.gold, borderWidth: 0.5 * scale });
-    centerText(page, 'RAP-ORT', fonts.metaBold, 6.2 * scale, cx, cy + 18 * scale, colors.gold);
-    centerText(page, 'PRAWDA SUMIENIA', fonts.metaBold, 4.2 * scale, cx, cy + 9 * scale, colors.ivory);
-    centerText(page, 'OŚWIĘCIM', fonts.metaBold, 5.1 * scale, cx, cy - 4 * scale, colors.gold);
-    centerText(page, '25 MAJA 2026', fonts.meta, 4.4 * scale, cx, cy - 14 * scale, colors.ivory);
-    centerText(page, 'EDYCJA ROCZNICOWA', fonts.meta, 3.3 * scale, cx, cy - 25 * scale, colors.label);
-  }
-
   async function buildPdf(mode) {
     const { PDFDocument, StandardFonts, rgb } = pdfLib();
     const profile = pageProfiles[mode] || pageProfiles.standard;
@@ -316,13 +299,10 @@
       centerText(page, copy.title, fonts.title, 30 * scale, cx, (L.titleY + 20) * scale, colors.gold);
     }
 
-    const seal = await embedAsset(pdfDoc, eventData.seal, 1800);
+    const seal = await embedAsset(pdfDoc, eventData.seal, 2400);
     if (seal) {
       const size = L.sealSize * scale;
       page.drawImage(seal, { x: L.sealX * scale, y: L.sealY * scale, width: size, height: size });
-    }
-    if (eventKey === 'oswiecim20260525') {
-      drawPdfAnniversarySeal(page, fonts, L.sealX * scale, L.sealY * scale, L.sealSize * scale, colors, scale);
     }
 
     centerText(page, `${copy.project} · ${eventData.edition}`.toUpperCase(), fonts.metaBold, L.projectSize * scale, cx, L.projectY * scale, colors.muted);
