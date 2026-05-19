@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="260" viewBox="0 0 1800 260">
+  <defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff1b8"/><stop offset=".45" stop-color="#d7b76a"/><stop offset="1" stop-color="#8f6b2f"/></linearGradient></defs>
+  <path d="M70 48h1660M70 212h1660" stroke="url(#gold)" stroke-width="4" stroke-opacity=".58"/>
+  <path d="M160 78h1480M160 182h1480" stroke="url(#gold)" stroke-width="1.4" stroke-opacity=".34"/>
+  <text x="900" y="154" text-anchor="middle" font-family="Georgia,serif" font-size="86" letter-spacing="18" fill="url(#gold)">ZAPIS UCZESTNICTWA</text>
+</svg>
