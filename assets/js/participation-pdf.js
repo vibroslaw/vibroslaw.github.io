@@ -2,6 +2,12 @@
   const root = document.querySelector('[data-participation-record]');
   if (!root) return;
 
+  const params = new URLSearchParams(window.location.search);
+  const eventKey = String(params.get('event') || params.get('key') || '').toLowerCase();
+  if (['oswiecim20260525', 'oswiecim', 'mup', 'syd2026'].includes(eventKey)) {
+    return;
+  }
+
   const lang = root.dataset.lang === 'en' ? 'en' : 'pl';
   const master = window.VH_DOCUMENTS?.printMaster || {};
 
@@ -101,9 +107,6 @@
     ceremonial: { layout: 'ceremonial', a4: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a4.jpg', '/public/assets/reports/participation-record-bg-a4-300dpi3.jpg'], a3: ['/public/assets/reports/participation-record-bg-03-ceremonial-frame-a3.jpg'] }
   };
 
-  // Pixel coordinates are designed against the source A4 background: 3508 × 2480.
-  // Values were tuned for the current ornamental black/gold wall layout: title stays high,
-  // inscription is calmer, metadata values sit ABOVE lines, labels sit BELOW lines.
   const layoutPresets = {
     cinema: { projectY: 300, titleY: 505, titleSize: 118, titlePlateWidth: 2180, bodyY: 760, bodySize: 43, nameLabelY: 1085, nameY: 1160, fieldsY: 1455, closingY: 1818, signatureY: 2090, fieldWidth: 700, placeWidth: 780, signatureWidth: 840, textMaxWidth: 1740, closingMaxWidth: 1540, microprintY: 2328 },
     museum: { projectY: 285, titleY: 495, titleSize: 120, titlePlateWidth: 2220, bodyY: 745, bodySize: 42, nameLabelY: 1065, nameY: 1138, fieldsY: 1438, closingY: 1795, signatureY: 2065, fieldWidth: 720, placeWidth: 820, signatureWidth: 805, textMaxWidth: 1700, closingMaxWidth: 1500, microprintY: 2328 },
