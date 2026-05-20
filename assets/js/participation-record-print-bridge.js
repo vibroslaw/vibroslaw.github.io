@@ -12,7 +12,7 @@
   const pdfLib = () => window.PDFLib;
 
   const copy = lang === 'pl' ? {
-    preparing: 'Przygotowuję finalny PDF premium z Twoim plikiem SVG seala…',
+    preparing: 'Przygotowuję finalny PDF premium z oryginalnym plikiem SVG seala…',
     ready: 'Finalny PDF premium został przygotowany i pobrany.',
     error: 'Nie udało się wygenerować PDF premium. Odśwież stronę i spróbuj ponownie.',
     title: 'ZAPIS UCZESTNICTWA',
@@ -38,7 +38,7 @@
     micro: 'Pamiątkowy zapis uczestnictwa · dokument generowany lokalnie w przeglądarce · nie oznacza patronatu instytucji.',
     filename: 'Rap-Ort-Zapis-Uczestnictwa'
   } : {
-    preparing: 'Preparing the final premium PDF with your SVG seal file…',
+    preparing: 'Preparing the final premium PDF with the original SVG seal file…',
     ready: 'The final premium PDF has been prepared and downloaded.',
     error: 'Could not generate the premium PDF. Refresh the page and try again.',
     title: 'RECORD OF PARTICIPATION',
@@ -126,7 +126,6 @@
     }
   };
 
-  const $ = (sel) => root.querySelector(sel);
   const status = (text) => root.querySelectorAll('[data-pr-status]').forEach((node) => { node.textContent = text; });
   const abs = (path) => new URL(path, location.origin).href;
   const cleanFile = (text) => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 120);
@@ -151,28 +150,48 @@
     return null;
   }
 
-  async function svgToPngBytes(svgBytes, width = 1800) {
-    const svgText = new TextDecoder('utf-8').decode(svgBytes)
-      .replace(/<script[\s\S]*?<\/script>/gi, '')
-      .replace(/href=/g, 'xlink:href=');
-    const dataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`;
+  async function loadImage(source) {
     const img = new Image();
     img.decoding = 'async';
-    img.crossOrigin = 'anonymous';
     await new Promise((resolve, reject) => {
       img.onload = resolve;
       img.onerror = reject;
-      img.src = dataUrl;
+      img.src = source;
     });
-    const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1;
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = Math.max(1, Math.round(width / ratio));
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    const pngBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-    return new Uint8Array(await pngBlob.arrayBuffer());
+    return img;
+  }
+
+  async function svgToPngBytes(svgBytes, width = 1800) {
+    const svgText = new TextDecoder('utf-8').decode(svgBytes).replace(/<script[\s\S]*?<\/script>/gi, '');
+    const sources = [];
+    const blobUrl = URL.createObjectURL(new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' }));
+    sources.push(blobUrl);
+    sources.push(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`);
+    sources.push(`data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`);
+
+    let lastError = null;
+    try {
+      for (const source of sources) {
+        try {
+          const img = await loadImage(source);
+          const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1;
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = Math.max(1, Math.round(width / ratio));
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const pngBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+          if (!pngBlob) throw new Error('Canvas did not return PNG data.');
+          return new Uint8Array(await pngBlob.arrayBuffer());
+        } catch (err) {
+          lastError = err;
+        }
+      }
+    } finally {
+      URL.revokeObjectURL(blobUrl);
+    }
+    throw lastError || new Error('SVG could not be rasterized.');
   }
 
   async function embedAsset(pdfDoc, candidates, svgWidth = 1800) {
