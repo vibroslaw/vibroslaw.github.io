@@ -164,6 +164,55 @@
     }
   }
 
+  function ensureModal() {
+    let modal = document.querySelector('[data-qr-modal]');
+    if (modal) return modal;
+    modal = document.createElement('div');
+    modal.className = 'qr-modal';
+    modal.setAttribute('data-qr-modal', '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.innerHTML = `
+      <div class="qr-modal-card" data-qr-modal-card>
+        <div class="qr-sealmark" aria-hidden="true">✓</div>
+        <h2 data-qr-modal-title>Dokument gotowy</h2>
+        <p data-qr-modal-text>Plik został przygotowany lokalnie w przeglądarce.</p>
+        <button class="btn primary" type="button" data-qr-modal-close>Zamknij</button>
+      </div>`;
+    document.body.appendChild(modal);
+    const close = () => modal.classList.remove('is-open');
+    modal.querySelector('[data-qr-modal-close]').addEventListener('click', close);
+    modal.addEventListener('click', (ev) => { if (ev.target === modal) close(); });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') close(); });
+    return modal;
+  }
+
+  function showModal({ title, text, error = false }) {
+    const modal = ensureModal();
+    const card = modal.querySelector('[data-qr-modal-card]');
+    card.classList.toggle('qr-error-card', error);
+    modal.querySelector('[data-qr-modal-title]').textContent = title;
+    modal.querySelector('[data-qr-modal-text]').textContent = text;
+    modal.querySelector('.qr-sealmark').textContent = error ? '!' : '✓';
+    modal.classList.add('is-open');
+  }
+
+  function pulseDocument() {
+    const doc = document.getElementById('doc');
+    if (!doc) return;
+    doc.classList.remove('pulse');
+    void doc.offsetWidth;
+    doc.classList.add('pulse');
+  }
+
+  function showError() {
+    showModal({
+      error: true,
+      title: 'Nie udało się przygotować pliku',
+      text: 'Odśwież stronę i spróbuj ponownie. Dane nie zostały nigdzie wysłane.'
+    });
+  }
+
   async function drawParticipation() {
     const W = 3508;
     const H = 2480;
@@ -301,30 +350,51 @@
   }
 
   async function handleParticipation(button) {
-    setBusy(button, true, 'Generuję PDF...');
+    setBusy(button, true, 'Przygotowuję dokument...');
     try {
       const { canvas, name } = await drawParticipation();
       const pdf = makeImagePdf(canvas, A4_L, 0.93);
       downloadBlob(pdf, `Zapis-Uczestnictwa-Oswiecim-${escapeFile(name)}.pdf`);
+      pulseDocument();
+      showModal({ title: 'Dokument został przygotowany', text: 'Zapis Uczestnictwa został pobrany jako gotowy plik PDF. Możesz go zachować, wysłać albo wydrukować.' });
     } catch (err) {
       console.error(err);
-      alert('Nie udało się wygenerować pliku. Spróbuj odświeżyć stronę albo użyj opcji drukowania z przeglądarki.');
+      showError();
     } finally { setBusy(button, false); }
   }
 
   async function handleWitness(button, anonymous) {
-    setBusy(button, true, 'Generuję PDF...');
+    setBusy(button, true, 'Przygotowuję raport...');
     try {
       const { canvas, name } = await drawWitness(anonymous);
       const pdf = makeImagePdf(canvas, A4_P, 0.93);
       downloadBlob(pdf, `${anonymous ? 'Anonimowy-' : ''}Raport-Swiadka-Oswiecim-${escapeFile(name || 'uczestnik')}.pdf`);
+      pulseDocument();
+      showModal({
+        title: anonymous ? 'Anonimowy raport gotowy' : 'Raport został przygotowany',
+        text: anonymous ? 'Anonimowy Raport Świadka został pobrany jako gotowy plik PDF. Nie zawiera imienia, nazwiska ani podpisu.' : 'Osobisty Raport Świadka został pobrany jako gotowy plik PDF. To pamiątkowy ślad refleksji po spotkaniu ze świadectwem.'
+      });
     } catch (err) {
       console.error(err);
-      alert('Nie udało się wygenerować pliku. Spróbuj odświeżyć stronę albo użyj opcji drukowania z przeglądarki.');
+      showError();
     } finally { setBusy(button, false); }
   }
 
+  function enhanceWitnessChips() {
+    document.querySelectorAll('[data-reflection-prompt]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const field = document.getElementById('reflection');
+        const hint = chip.getAttribute('data-reflection-prompt');
+        if (!field) return;
+        field.placeholder = hint;
+        field.focus({ preventScroll: false });
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    ensureModal();
+    enhanceWitnessChips();
     if (isParticipation) {
       const button = document.getElementById('printBtn');
       if (button) {
