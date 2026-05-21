@@ -3,6 +3,7 @@
   if (window.location.pathname.replace(/\/+$/, '/') !== route) return;
 
   const legalNote = ' Pamiątkowy dokument od autora projektu · nie jest dyplomem ani dokumentem urzędowym · generowany lokalnie w przeglądarce uczestnika.';
+  const previewNote = 'Podgląd jest uproszczony dla szybkiego działania na telefonie. Finalny PDF zawiera pełną wersję graficzną.';
 
   function stylePreview() {
     const style = document.createElement('style');
@@ -23,8 +24,76 @@
       .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.58)!important;font-size:clamp(.27rem,.46vw,.43rem)!important;line-height:1!important;letter-spacing:.20em!important;white-space:nowrap!important;}
       .qr-participation .quote,.qr-participation .micro,.qr-participation .signatureBlock{display:none!important;}
       .qr-participation #doc > canvas[aria-hidden='true'],.qr-calibration-note{display:none!important;opacity:0!important;visibility:hidden!important;}
+      .qr-mobile-preview-note{margin:.75rem auto 0;max-width:32rem;text-align:center;font-size:.76rem;line-height:1.45;color:rgba(232,208,154,.70);letter-spacing:.02em;}
+      .qr-mobile-status{display:none;margin:.7rem auto 0;max-width:30rem;text-align:center;font-size:.82rem;line-height:1.4;color:rgba(255,241,207,.86);}
+      .qr-mobile-status.is-visible{display:block;}
+      .qr-name-warning{display:none;margin:.55rem 0 0;font-size:.78rem;line-height:1.35;color:rgba(255,210,145,.88);}
+      .qr-name-warning.is-visible{display:block;}
+      @media (max-width: 760px){
+        body{padding-bottom:6.8rem!important;}
+        .qr-participation .titleText{top:13.2%!important;font-size:clamp(1rem,6vw,1.7rem)!important;letter-spacing:.10em!important;width:86%!important;}
+        .qr-participation .memorialLine{top:32.3%!important;width:78%!important;font-size:clamp(.52rem,3vw,.82rem)!important;}
+        .qr-participation .mainCopy{top:62.8%!important;width:70%!important;font-size:clamp(.50rem,2.8vw,.78rem)!important;}
+        .qr-participation .for{top:72.1%!important;width:82%!important;font-size:clamp(.66rem,3.4vw,.98rem)!important;}
+        .qr-participation .fields{top:84.5%!important;width:86%!important;gap:.65rem!important;}
+        .qr-participation .field strong{font-size:clamp(.36rem,2.4vw,.58rem)!important;}
+        .qr-participation .field span{font-size:clamp(.21rem,1.65vw,.34rem)!important;letter-spacing:.12em!important;}
+        #printBtn{position:fixed!important;left:1rem!important;right:1rem!important;bottom:calc(1rem + env(safe-area-inset-bottom,0px))!important;z-index:9999!important;width:auto!important;min-height:56px!important;border-radius:999px!important;box-shadow:0 18px 42px rgba(0,0,0,.55),0 0 0 1px rgba(232,208,154,.22)!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+        #printBtn[disabled]{opacity:.82!important;}
+        input,button{font-size:16px!important;}
+      }
     `;
     document.head.appendChild(style);
+  }
+
+  function normalizeName(value) {
+    return String(value || '')
+      .replace(/\s+/g, ' ')
+      .replace(/[\u0000-\u001f\u007f]/g, '')
+      .trim()
+      .slice(0, 42);
+  }
+
+  function installNameGuard() {
+    const input = document.getElementById('name');
+    if (!input || input.dataset.mobileGuard === '1') return;
+    input.dataset.mobileGuard = '1';
+    input.setAttribute('maxlength', '42');
+    input.setAttribute('autocomplete', 'name');
+    input.setAttribute('inputmode', 'text');
+    const warning = document.createElement('div');
+    warning.className = 'qr-name-warning';
+    warning.textContent = 'Wpis został skrócony, żeby zachować elegancki skład dokumentu.';
+    input.insertAdjacentElement('afterend', warning);
+    input.addEventListener('input', () => {
+      const clean = normalizeName(input.value);
+      const changed = clean !== input.value;
+      input.value = clean;
+      warning.classList.toggle('is-visible', changed || clean.length >= 42);
+      window.dispatchEvent(new CustomEvent('osw:participant-interaction'));
+    }, { passive: true });
+    input.addEventListener('focus', () => window.dispatchEvent(new CustomEvent('osw:participant-interaction')), { passive: true });
+  }
+
+  function addPreviewNote() {
+    if (document.querySelector('.qr-mobile-preview-note')) return;
+    const docEl = document.getElementById('doc') || document.querySelector('.qr-participation');
+    if (!docEl?.parentElement) return;
+    const note = document.createElement('div');
+    note.className = 'qr-mobile-preview-note';
+    note.textContent = previewNote;
+    docEl.parentElement.insertBefore(note, docEl.nextSibling);
+  }
+
+  function addMobileStatus() {
+    if (document.querySelector('.qr-mobile-status')) return;
+    const button = document.getElementById('printBtn');
+    if (!button?.parentElement) return;
+    const status = document.createElement('div');
+    status.className = 'qr-mobile-status';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    button.parentElement.insertBefore(status, button.nextSibling);
   }
 
   function tunePreview() {
@@ -50,6 +119,9 @@
       note.textContent = legalNote;
       noteTarget.appendChild(note);
     }
+    installNameGuard();
+    addPreviewNote();
+    addMobileStatus();
   }
 
   function lockButtonUntilFinalRendererLoads() {
@@ -66,7 +138,7 @@
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-13`;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-14-mobile`;
     script.async = false;
     script.dataset.pr98FinalRhythm = '1';
     script.onload = () => {
@@ -83,7 +155,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     stylePreview();
     lockButtonUntilFinalRendererLoads();
-    [0, 100, 280].forEach((delay) => window.setTimeout(tunePreview, delay));
+    [0, 100, 280, 650].forEach((delay) => window.setTimeout(tunePreview, delay));
     loadFinalRenderer();
   });
 })();
