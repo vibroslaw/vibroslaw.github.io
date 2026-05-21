@@ -1,7 +1,7 @@
 window.RAPORT_EVENTS = {
-  version: '0.2.1-oswiecim-qr-live',
+  version: '0.2.2-oswiecim-qr-live-locked',
   accessKeys: {
-    oswiecim20260525: 'VH-OSW-2026-0525',
+    oswiecim20260525: 'VH-OSW-0525-RS-7Q4M9',
     syd2026: 'VH-SYD-2026'
   },
   events: {
@@ -32,17 +32,20 @@ window.RAPORT_EVENTS = {
       links: {
         pl: '/rap-ort/wydarzenia/oswiecim-2026-05-25/',
         en: '/rap-ort/events/oswiecim-2026-05-25/',
-        participationPl: '/rap-ort/oswiecim/zapis-uczestnictwa/',
-        participationEn: '/rap-ort/oswiecim/zapis-uczestnictwa/',
-        witnessPl: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-2026-0525',
-        witnessEn: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-2026-0525',
+        participationPl: '/rap-ort/oswiecim/zapis-uczestnictwa/?key=VH-OSW-0525-RS-7Q4M9',
+        participationEn: '/rap-ort/oswiecim/zapis-uczestnictwa/?key=VH-OSW-0525-RS-7Q4M9',
+        witnessPl: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-0525-RS-7Q4M9',
+        witnessEn: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-0525-RS-7Q4M9',
+        experiencePl: '/rap-ort/experience/oswiecim20260525/?key=VH-OSW-0525-RS-7Q4M9',
+        experienceEn: '/rap-ort/experience/oswiecim20260525/?key=VH-OSW-0525-RS-7Q4M9',
         afterPl: '/rap-ort/oswiecim/po-wydarzeniu/',
         afterEn: '/rap-ort/oswiecim/po-wydarzeniu/'
       },
       qr: {
-        witness: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-2026-0525',
+        witness: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-0525-RS-7Q4M9',
+        experience: '/rap-ort/experience/oswiecim20260525/?key=VH-OSW-0525-RS-7Q4M9',
         after: '/rap-ort/oswiecim/po-wydarzeniu/',
-        participation: '/rap-ort/oswiecim/zapis-uczestnictwa/'
+        participation: '/rap-ort/oswiecim/zapis-uczestnictwa/?key=VH-OSW-0525-RS-7Q4M9'
       },
       assetsRoot: '/public/assets/events/rap-ort/oswiecim20260525/'
     },
