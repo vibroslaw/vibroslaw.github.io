@@ -82,16 +82,17 @@ window.RapOrtAccessFlows = (() => {
           accessLabel: 'Link wydarzenia',
           accessCode: 'OSWIECIM20260525',
           participantUrl: '/rap-ort/uczestnictwo/?event=oswiecim20260525',
-          witnessUrl: '/rap-ort/raport-swiadka/generator/?event=oswiecim20260525',
+          witnessUrl: '',
           dateLabel: '25 maja 2026',
           location: 'Oświęcim / MUP',
           mode: 'event',
           steps: [
             'Otwórz link lub zeskanuj QR po projekcji.',
             'Utwórz Zapis Uczestnictwa w wersji Oświęcim / MUP.',
+            'Raport Świadka pozostaje osobnym rytuałem uruchamianym przez QR podczas wydarzenia.',
             'Pobierz PDF, a następnie przejdź do Pakietu Uczestnika.'
           ],
-          note: 'Dostęp wydarzenia porządkuje doświadczenie uczestnika. Nie jest oficjalnym zabezpieczeniem ani potwierdzeniem patronatu instytucji.'
+          note: 'Dostęp wydarzenia porządkuje doświadczenie uczestnika. Raport Świadka jest uruchamiany osobnym QR na sali, bez publicznego przycisku w tym flow.'
         }),
         en: flow({
           id: 'oswiecim20260525',
@@ -102,16 +103,17 @@ window.RapOrtAccessFlows = (() => {
           accessLabel: 'Event link',
           accessCode: 'OSWIECIM20260525',
           participantUrl: '/rap-ort/participation/?event=oswiecim20260525',
-          witnessUrl: '/rap-ort/witness-report/generator/?event=oswiecim20260525',
+          witnessUrl: '',
           dateLabel: '25 May 2026',
           location: 'Oświęcim / MUP',
           mode: 'event',
           steps: [
             'Open the link or scan the QR after the screening.',
             'Create the Oświęcim / MUP Participation Record.',
+            'The Witness Report remains a separate ritual opened by QR during the event.',
             'Download the PDF, then continue to the Memory Pack.'
           ],
-          note: 'The event access path organises the participant experience. It is not an official security layer or institutional endorsement.'
+          note: 'The event access path organises the participant experience. The Witness Report is opened by a separate in-room QR, without a public button in this flow.'
         })
       },
       syd2026: {
