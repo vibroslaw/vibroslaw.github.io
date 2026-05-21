@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3508 2480" width="3508" height="2480">
+  <defs>
+    <radialGradient id="centerGlow" cx="50%" cy="46%" r="62%">
+      <stop offset="0" stop-color="#3a2a13" stop-opacity=".42"/>
+      <stop offset=".42" stop-color="#15100a" stop-opacity=".66"/>
+      <stop offset="1" stop-color="#050403"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop offset="0" stop-color="#7a5b2a"/>
+      <stop offset=".5" stop-color="#f0d897"/>
+      <stop offset="1" stop-color="#7a5b2a"/>
+    </linearGradient>
+    <filter id="softShadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity=".35"/></filter>
+    <pattern id="grain" width="90" height="90" patternUnits="userSpaceOnUse">
+      <rect width="90" height="90" fill="transparent"/>
+      <circle cx="12" cy="19" r="1" fill="#f0d897" opacity=".055"/>
+      <circle cx="68" cy="44" r="1.2" fill="#fff2bd" opacity=".04"/>
+      <circle cx="31" cy="76" r=".9" fill="#000" opacity=".16"/>
+      <path d="M0 45H90" stroke="#fff3bf" stroke-opacity=".018"/>
+    </pattern>
+    <g id="corner">
+      <path d="M0 0H310M0 0V310" fill="none" stroke="url(#gold)" stroke-width="5"/>
+      <path d="M42 42H250M42 42V250" fill="none" stroke="#e8d09a" stroke-opacity=".45" stroke-width="2"/>
+      <path d="M82 36C120 88 172 96 224 76C188 138 134 178 66 178C124 198 158 236 170 300" fill="none" stroke="#e8d09a" stroke-opacity=".38" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="84" cy="84" r="10" fill="#e8d09a" opacity=".42"/>
+      <circle cx="168" cy="168" r="5" fill="#e8d09a" opacity=".3"/>
+    </g>
+  </defs>
+  <rect width="3508" height="2480" fill="#050403"/>
+  <rect width="3508" height="2480" fill="url(#centerGlow)"/>
+  <rect width="3508" height="2480" fill="url(#grain)" opacity=".9"/>
+  <rect x="74" y="74" width="3360" height="2332" rx="22" fill="none" stroke="url(#gold)" stroke-width="6"/>
+  <rect x="112" y="112" width="3284" height="2256" rx="18" fill="none" stroke="#e8d09a" stroke-opacity=".36" stroke-width="2"/>
+  <rect x="172" y="172" width="3164" height="2136" rx="12" fill="none" stroke="#e8d09a" stroke-opacity=".14" stroke-width="2"/>
+  <use href="#corner" x="132" y="132"/>
+  <use href="#corner" x="3376" y="132" transform="scale(-1 1)"/>
+  <use href="#corner" x="132" y="2348" transform="scale(1 -1)"/>
+  <use href="#corner" x="3376" y="2348" transform="scale(-1 -1)"/>
+  <path d="M640 275H2868" stroke="url(#gold)" stroke-width="2" opacity=".42"/>
+  <path d="M890 820H2618" stroke="url(#gold)" stroke-width="2" opacity=".30"/>
+  <path d="M1080 1348H2428" stroke="#f0d897" stroke-width="3" opacity=".44"/>
+  <path d="M1220 1382H2288" stroke="#f0d897" stroke-width="1" opacity=".18"/>
+  <g opacity=".92">
+    <path d="M370 1488H1190M1344 1488H2164M2318 1488H3138" stroke="#e8d09a" stroke-width="3" opacity=".44"/>
+    <path d="M370 1646H1190M1344 1646H2164M2318 1646H3138" stroke="#e8d09a" stroke-width="1" opacity=".16"/>
+    <path d="M1260 1440V1692M2248 1440V1692" stroke="#e8d09a" stroke-width="1" opacity=".13"/>
+  </g>
+  <g filter="url(#softShadow)">
+    <circle cx="1754" cy="1840" r="174" fill="none" stroke="url(#gold)" stroke-width="5" opacity=".5"/>
+    <circle cx="1754" cy="1840" r="134" fill="none" stroke="#e8d09a" stroke-width="2" opacity=".24"/>
+    <circle cx="1754" cy="1840" r="96" fill="#e8d09a" opacity=".035"/>
+  </g>
+  <path d="M560 1988H1360M2148 1988H2948" stroke="#e8d09a" stroke-width="2" opacity=".28"/>
+  <path d="M820 2168H1450M2058 2168H2688" stroke="#e8d09a" stroke-width="2" opacity=".25"/>
+  <path d="M740 2232H2768" stroke="url(#gold)" stroke-width="2" opacity=".20"/>
+  <path d="M1170 1872C1320 1828 1482 1828 1636 1872M1872 1872C2026 1828 2188 1828 2338 1872" fill="none" stroke="#e8d09a" stroke-width="2" opacity=".18"/>
+  <circle cx="1754" cy="1240" r="780" fill="none" stroke="#e8d09a" stroke-opacity=".035" stroke-width="2"/>
+</svg>
