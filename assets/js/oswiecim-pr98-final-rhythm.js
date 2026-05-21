@@ -15,17 +15,19 @@
     signature: '/public/assets/reports/author-signature-gold.svg'
   };
   const L = {
-    title: [1754, 405, 2940, 670],
-    lead: [1754, 850, 2520],
-    seal: [1754, 1248, 590, 590],
-    motto: [1754, 1588, 1860],
-    person: [1754, 1768, 2300],
-    metaY: 1992,
-    metaLabelY: 2020,
-    author: [1754, 2114],
-    sig: [1754, 2190, 500, 116],
-    leftSeal: [610, 2248, 245, 245],
-    rightSeal: [2898, 2248, 245, 245]
+    title: [1754, 480, 2860, 628],
+    lead: [1754, 910, 2480],
+    seal: [1754, 1325, 535, 535],
+    motto: [1754, 1705, 1840],
+    person: [1754, 1865, 2300],
+    dateMeta: [715, 2038, 620],
+    placeMeta: [2793, 2038, 620],
+    author: [1754, 2115],
+    sig: [1754, 2184, 485, 112],
+    docNo: [1754, 2290, 900],
+    docNoLabelY: 2318,
+    leftSeal: [715, 2284, 214, 214],
+    rightSeal: [2793, 2284, 214, 214]
   };
   const lead = 'Pamiątkowy zapis udziału\nw projekcji audiowizualnej „Rap-Ort: Prawda Sumienia”\npoświęconej świadectwu, pamięci, sumieniu i odpowiedzialności.';
   const motto = 'Prawda nie kończy się w dokumencie.\nZaczyna się w sumieniu.';
@@ -113,15 +115,25 @@
     }
     return min;
   }
-  function meta(ctx, label, value, x, w, size) {
+  function metaAt(ctx, label, value, x, valueY, w, size) {
     const valueSize = fitMetaSize(ctx, value, w - 24, size, 26);
     font(ctx, valueSize);
     ctx.fillStyle = '#fff0ca';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText(value, x, L.metaY - 20);
-    rule(ctx, x, L.metaY, w, .38);
-    glow(ctx, label, x, L.metaLabelY, { size: 18, fill: 'rgba(232,208,154,.62)', blur: 4 });
+    ctx.fillText(value, x, valueY);
+    rule(ctx, x, valueY + 23, w, .34);
+    glow(ctx, label, x, valueY + 52, { size: 18, fill: 'rgba(232,208,154,.62)', blur: 4 });
+  }
+  function docNumber(ctx, value) {
+    const [x, y, w] = L.docNo;
+    const valueSize = fitMetaSize(ctx, value, w - 24, 28, 22);
+    font(ctx, valueSize, 'Georgia, Times New Roman, serif', 400);
+    ctx.fillStyle = 'rgba(255,240,202,.76)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(value, x, y);
+    glow(ctx, 'NUMER DOKUMENTU', x, L.docNoLabelY, { size: 14, fill: 'rgba(232,208,154,.44)', blur: 3 });
   }
   function bytes(str) {
     const out = new Uint8Array(str.length);
@@ -183,10 +195,10 @@
     ]);
     cover(ctx, bg, 0, 0, doc.w, doc.h);
     if (texture) { ctx.save(); ctx.globalAlpha = .12; ctx.globalCompositeOperation = 'soft-light'; cover(ctx, texture, 0, 0, doc.w, doc.h); ctx.restore(); }
-    let aura = ctx.createRadialGradient(1754, 415, 80, 1754, 415, 760);
-    aura.addColorStop(0, 'rgba(255,232,174,.11)'); aura.addColorStop(.5, 'rgba(255,232,174,.026)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
-    aura = ctx.createRadialGradient(L.seal[0], L.seal[1], 95, L.seal[0], L.seal[1], 740);
-    aura.addColorStop(0, 'rgba(255,232,174,.115)'); aura.addColorStop(.42, 'rgba(255,232,174,.028)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
+    let aura = ctx.createRadialGradient(1754, 490, 80, 1754, 490, 760);
+    aura.addColorStop(0, 'rgba(255,232,174,.10)'); aura.addColorStop(.5, 'rgba(255,232,174,.024)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
+    aura = ctx.createRadialGradient(L.seal[0], L.seal[1], 95, L.seal[0], L.seal[1], 780);
+    aura.addColorStop(0, 'rgba(255,232,174,.105)'); aura.addColorStop(.42, 'rgba(255,232,174,.026)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
 
     const name = document.getElementById('name')?.value.trim() || '';
     let seq = localStorage.getItem('vh-zu-osw-seq');
@@ -194,19 +206,20 @@
     const no = `VH-ZU-2026-0525-OSW-${seq}`;
 
     if (title) contain(ctx, title, ...L.title);
-    else glow(ctx, 'ZAPIS UCZESTNICTWA', 1754, 495, { size: 214, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', blur: 34 });
-    rule(ctx, 1754, 756, 1340, .22);
-    write(ctx, lead, ...L.lead, 46, 62, 3, { style: 'italic', fill: 'rgba(250,238,216,.96)' });
+    else glow(ctx, 'ZAPIS UCZESTNICTWA', 1754, 565, { size: 204, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', blur: 32 });
+    rule(ctx, 1754, 808, 1240, .16);
+    write(ctx, lead, ...L.lead, 44, 62, 3, { style: 'italic', fill: 'rgba(250,238,216,.94)' });
     if (medal) contain(ctx, medal, ...L.seal);
-    rule(ctx, 1754, 1550, 610, .15);
-    write(ctx, motto, ...L.motto, 39, 66, 2, { style: 'italic', fill: 'rgba(255,241,207,.84)' });
-    rule(ctx, 1754, 1740, 610, .12);
-    if (name) glow(ctx, `Dla: ${name}`, L.person[0], L.person[1], { size: fit(ctx, `Dla: ${name}`, L.person[2], 68, 40), family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', blur: 12 });
-    meta(ctx, 'DATA', '25.05.2026', 650, 660, 36);
-    meta(ctx, 'NUMER DOKUMENTU', no, 1754, 900, 34);
-    meta(ctx, 'MIEJSCE', 'OŚWIĘCIM', 2858, 620, 36);
+    rule(ctx, 1754, 1640, 560, .12);
+    write(ctx, motto, ...L.motto, 38, 66, 2, { style: 'italic', fill: 'rgba(255,241,207,.82)' });
+    rule(ctx, 1754, 1818, 560, .10);
+    if (name) glow(ctx, `Dla: ${name}`, L.person[0], L.person[1], { size: fit(ctx, `Dla: ${name}`, L.person[2], 64, 38), family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', blur: 11 });
+
+    metaAt(ctx, 'DATA', '25.05.2026', L.dateMeta[0], L.dateMeta[1], L.dateMeta[2], 35);
+    metaAt(ctx, 'MIEJSCE', 'OŚWIĘCIM', L.placeMeta[0], L.placeMeta[1], L.placeMeta[2], 35);
     glow(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', ...L.author, { size: 14, fill: 'rgba(232,208,154,.40)', blur: 3 });
-    if (sig) { ctx.save(); ctx.globalAlpha = .68; contain(ctx, sig, ...L.sig); ctx.restore(); }
+    if (sig) { ctx.save(); ctx.globalAlpha = .66; contain(ctx, sig, ...L.sig); ctx.restore(); }
+    docNumber(ctx, no);
     if (raport) contain(ctx, raport, ...L.leftSeal);
     if (vh) contain(ctx, vh, ...L.rightSeal);
     return { canvas, name };
