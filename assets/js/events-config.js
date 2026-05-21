@@ -1,5 +1,5 @@
 window.RAPORT_EVENTS = {
-  version: '0.2.0-qr-generators',
+  version: '0.2.1-oswiecim-qr-live',
   accessKeys: {
     oswiecim20260525: 'VH-OSW-2026-0525',
     syd2026: 'VH-SYD-2026'
@@ -8,7 +8,7 @@ window.RAPORT_EVENTS = {
     oswiecim20260525: {
       id: 'oswiecim20260525',
       status: 'upcoming',
-      access: 'qr-only-after-workshop',
+      access: 'qr-only-live-workshop',
       pl: {
         title: 'Rap-Ort: Prawda Sumienia — Oświęcim 2026',
         edition: 'Edycja rocznicowa',
@@ -16,7 +16,7 @@ window.RAPORT_EVENTS = {
         time: 'po projekcji i rozmowie warsztatowej',
         place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu',
         shortPlace: 'Oświęcim',
-        summary: 'Strona wydarzenia pozostaje zapleczem instytucjonalnym, natomiast QR dla studentów prowadzą bezpośrednio do dwóch artefaktów po warsztacie: Raportu Świadka i Zapisu Uczestnictwa.',
+        summary: 'Strona wydarzenia pozostaje zapleczem instytucjonalnym, natomiast QR dla studentów prowadzi do zamkniętego rytuału Raportu Świadka oraz po wydarzeniu do materiałów refleksyjnych.',
         externalLabel: 'Informacje organizacyjne'
       },
       en: {
@@ -26,7 +26,7 @@ window.RAPORT_EVENTS = {
         time: 'after the screening and workshop conversation',
         place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim',
         shortPlace: 'Oświęcim',
-        summary: 'The event page remains an institutional showcase, while in-room QR links take participants directly to the Witness Report and Record of Participation artefacts.',
+        summary: 'The event page remains an institutional showcase, while in-room QR links lead to a closed Witness Report ritual and post-event reflection materials.',
         externalLabel: 'Organisational information'
       },
       links: {
@@ -34,11 +34,14 @@ window.RAPORT_EVENTS = {
         en: '/rap-ort/events/oswiecim-2026-05-25/',
         participationPl: '/rap-ort/oswiecim/zapis-uczestnictwa/',
         participationEn: '/rap-ort/oswiecim/zapis-uczestnictwa/',
-        witnessPl: '/rap-ort/oswiecim/raport-swiadka/',
-        witnessEn: '/rap-ort/oswiecim/raport-swiadka/'
+        witnessPl: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-2026-0525',
+        witnessEn: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-2026-0525',
+        afterPl: '/rap-ort/oswiecim/po-wydarzeniu/',
+        afterEn: '/rap-ort/oswiecim/po-wydarzeniu/'
       },
       qr: {
-        witness: '/rap-ort/oswiecim/raport-swiadka/',
+        witness: '/rap-ort/oswiecim/raport-swiadka/?key=VH-OSW-2026-0525',
+        after: '/rap-ort/oswiecim/po-wydarzeniu/',
         participation: '/rap-ort/oswiecim/zapis-uczestnictwa/'
       },
       assetsRoot: '/public/assets/events/rap-ort/oswiecim20260525/'
