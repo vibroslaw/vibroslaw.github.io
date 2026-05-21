@@ -32,7 +32,11 @@
   const lead = 'Pamiątkowy zapis udziału\nw projekcji audiowizualnej „Rap-Ort: Prawda Sumienia”\npoświęconej świadectwu, pamięci, sumieniu i odpowiedzialności.';
   const motto = 'Prawda nie kończy się w dokumencie.\nZaczyna się w sumieniu.';
   const assetCache = new Map();
+  const tick = () => new Promise((resolve) => requestAnimationFrame(resolve));
 
+  function iOSLike() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
   function lowMemoryPhone() {
     return window.matchMedia?.('(max-width: 760px)').matches && (navigator.deviceMemory || 4) <= 2;
   }
@@ -43,6 +47,16 @@
     if (lowMemoryPhone()) return 0.72;
     if (constrainedPhone()) return 0.82;
     return 0.88;
+  }
+  function sequence() {
+    const fallback = () => String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+    try {
+      let seq = localStorage.getItem('vh-zu-osw-seq');
+      if (!/^\d{4}$/.test(seq || '')) { seq = fallback(); localStorage.setItem('vh-zu-osw-seq', seq); }
+      return seq;
+    } catch (_) {
+      return fallback();
+    }
   }
   function updateStatus(text, visible = true, linkUrl = '') {
     const status = document.querySelector('.qr-mobile-status');
@@ -219,7 +233,7 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    if (iOSLike()) {
       updateStatus('PDF został przygotowany.', true, url);
       setTimeout(() => URL.revokeObjectURL(url), 120000);
     } else {
@@ -251,9 +265,7 @@
     aura.addColorStop(0, 'rgba(255,232,174,.105)'); aura.addColorStop(.42, 'rgba(255,232,174,.026)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
 
     const name = String(document.getElementById('name')?.value || '').replace(/\s+/g, ' ').trim().slice(0, 42);
-    let seq = localStorage.getItem('vh-zu-osw-seq');
-    if (!/^\d{4}$/.test(seq || '')) { seq = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0'); localStorage.setItem('vh-zu-osw-seq', seq); }
-    const no = `VH-ZU-2026-0525-OSW-${seq}`;
+    const no = `VH-ZU-2026-0525-OSW-${sequence()}`;
 
     if (title) contain(ctx, title, ...L.title);
     else glow(ctx, 'ZAPIS UCZESTNICTWA', 1754, 565, { size: 204, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', blur: 32 });
@@ -302,10 +314,14 @@
           updateStatus('Przygotowuję lżejszą wersję zgodną z Twoim urządzeniem…');
           result = await renderFinal({ safe: true });
         }
+        await tick();
         updateStatus('Finalizuję PDF…');
+        await tick();
         save(pdf(result.canvas, result.safe ? .90 : .96), `Zapis-Uczestnictwa-Oswiecim-${safe(result.name)}.pdf`);
-        if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) updateStatus('Gotowe. Dokument został przygotowany.', true);
-        document.querySelector('[data-qr-modal]')?.classList.add('is-open');
+        if (!iOSLike()) {
+          updateStatus('Gotowe. Dokument został przygotowany.', true);
+          document.querySelector('[data-qr-modal]')?.classList.add('is-open');
+        }
       } catch (error) {
         console.error(error);
         updateStatus('Nie udało się pobrać pełnych elementów graficznych. Sprawdź połączenie i spróbuj ponownie.', true);

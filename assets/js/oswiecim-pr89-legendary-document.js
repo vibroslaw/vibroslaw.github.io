@@ -40,15 +40,22 @@
         .qr-participation .fields{top:84.5%!important;width:86%!important;gap:.65rem!important;}
         .qr-participation .field strong{font-size:clamp(.36rem,2.4vw,.58rem)!important;}
         .qr-participation .field span{font-size:clamp(.21rem,1.65vw,.34rem)!important;letter-spacing:.12em!important;}
-        #printBtn{position:fixed!important;left:1rem!important;right:1rem!important;bottom:calc(1rem + env(safe-area-inset-bottom,0px))!important;z-index:9999!important;width:auto!important;min-height:56px!important;border-radius:999px!important;box-shadow:0 18px 42px rgba(0,0,0,.55),0 0 0 1px rgba(232,208,154,.22)!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+        #printBtn{position:fixed!important;left:1rem!important;right:1rem!important;bottom:1rem!important;bottom:calc(1rem + env(safe-area-inset-bottom,0px))!important;z-index:9999!important;width:auto!important;min-height:56px!important;border-radius:999px!important;box-shadow:0 18px 42px rgba(0,0,0,.55),0 0 0 1px rgba(232,208,154,.22)!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
         #printBtn[disabled]{opacity:.84!important;}
-        .qr-mobile-status.is-visible{position:fixed;left:1rem;right:1rem;bottom:calc(5.3rem + env(safe-area-inset-bottom,0px));z-index:9998;max-width:none;margin:0;padding:.65rem .85rem;border-radius:1rem;background:rgba(16,12,8,.88);border:1px solid rgba(232,208,154,.18);box-shadow:0 14px 34px rgba(0,0,0,.38);backdrop-filter:blur(10px);}
+        .qr-mobile-status.is-visible{position:fixed;left:1rem;right:1rem;bottom:5.3rem;bottom:calc(5.3rem + env(safe-area-inset-bottom,0px));z-index:9998;max-width:none;margin:0;padding:.65rem .85rem;border-radius:1rem;background:rgba(16,12,8,.94);border:1px solid rgba(232,208,154,.18);box-shadow:0 14px 34px rgba(0,0,0,.38);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
+        body.qr-keyboard-open #printBtn{position:static!important;display:block!important;margin:1rem auto 0!important;width:100%!important;}
+        body.qr-keyboard-open .qr-mobile-status.is-visible{position:static!important;margin:.75rem auto 0!important;}
         input,button{font-size:16px!important;}
       }
       @media (max-width: 380px){
         .qr-participation .fields{gap:.42rem!important;width:89%!important;}
         .qr-participation .field span{letter-spacing:.08em!important;}
         .qr-mobile-preview-note{font-size:.70rem;padding:0 .55rem;}
+      }
+      @media (max-height: 520px) and (orientation: landscape){
+        body{padding-bottom:2rem!important;}
+        #printBtn{position:static!important;margin:1rem auto 0!important;width:100%!important;}
+        .qr-mobile-status.is-visible{position:static!important;margin:.75rem auto 0!important;}
       }
     `;
     document.head.appendChild(style);
@@ -81,8 +88,14 @@
       warning.classList.toggle('is-visible', changed || clean.length >= 42);
       window.dispatchEvent(new CustomEvent('osw:participant-interaction'));
     });
-    input.addEventListener('blur', () => { input.value = input.value.trim(); });
-    input.addEventListener('focus', () => window.dispatchEvent(new CustomEvent('osw:participant-interaction')), { passive: true });
+    input.addEventListener('focus', () => {
+      document.body.classList.add('qr-keyboard-open');
+      window.dispatchEvent(new CustomEvent('osw:participant-interaction'));
+    }, { passive: true });
+    input.addEventListener('blur', () => {
+      input.value = input.value.trim();
+      window.setTimeout(() => document.body.classList.remove('qr-keyboard-open'), 180);
+    });
   }
 
   function addPreviewNote() {
@@ -158,7 +171,7 @@
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-15-mobile-perfect`;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-16-mobile-edge`;
     script.async = false;
     script.dataset.pr98FinalRhythm = '1';
     script.onload = () => {
