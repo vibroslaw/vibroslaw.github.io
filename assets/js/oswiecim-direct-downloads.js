@@ -18,19 +18,19 @@
       width: 3508,
       height: 2480,
       page: A4_L,
-      background: '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/participation-record-bg.jpg',
+      background: '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/participation-record-bg-final.svg',
       seal: { src: '/public/assets/events/rap-ort/oswiecim20260525/accents/event-seal-gold.svg', x: 1754, y: 463, w: 196, h: 196, label: 'seal' },
       signature: { src: '/public/assets/reports/author-signature-gold.svg', x: 1494, y: 2044, w: 520, h: 120, label: 'author signature' },
       overlays: {
-        glow: { x: 1754, y: 1190, inner: 160, outer: 1450, from: 'rgba(255,232,174,0.08)', to: 'rgba(0,0,0,0.16)' }
+        glow: { x: 1754, y: 1190, inner: 160, outer: 1450, from: 'rgba(255,232,174,0.04)', to: 'rgba(0,0,0,0.08)' }
       },
       fields: {
-        projectLine: { x: 1754, y: 320, align: 'center', size: 36, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(245,225,175,0.82)', tracking: 8, label: 'project line' },
+        projectLine: { x: 1754, y: 322, align: 'center', size: 36, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(245,225,175,0.82)', tracking: 8, label: 'project line' },
         title: { x: 1754, y: 700, align: 'center', size: 132, weight: 400, family: 'Georgia, Times New Roman, serif', fill: '#f4dfad', shadow: true, label: 'main title' },
         eventLine: { x: 1754, y: 790, align: 'center', size: 34, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(242,219,169,0.78)', label: 'event line' },
         intro: { x: 1754, y: 905, width: 2400, align: 'center', size: 43, lineHeight: 58, maxLines: 2, style: 'italic', family: 'Georgia, Times New Roman, serif', fill: 'rgba(248,235,209,0.90)', label: 'intro' },
         body: { x: 1754, y: 1072, width: 2550, align: 'center', size: 38, lineHeight: 54, maxLines: 4, family: 'Georgia, Times New Roman, serif', fill: 'rgba(248,235,209,0.90)', label: 'body' },
-        participantName: { x: 1754, y: 1340, width: 2100, align: 'center', size: 58, minSize: 36, family: 'Georgia, Times New Roman, serif', fill: '#fff0bd', label: 'participant name' },
+        participantName: { x: 1754, y: 1334, width: 2100, align: 'center', size: 58, minSize: 36, family: 'Georgia, Times New Roman, serif', fill: '#fff0bd', label: 'participant name' },
         quote: { x: 1754, y: 1885, width: 2100, align: 'center', size: 36, lineHeight: 50, maxLines: 2, style: 'italic', family: 'Georgia, Times New Roman, serif', fill: 'rgba(247,229,190,0.75)', label: 'quote' },
         author: { x: 1754, y: 2205, align: 'center', size: 23, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(232,208,154,0.62)', label: 'author line' },
         micro: { x: 1754, y: 2292, width: 2450, align: 'center', size: 17, lineHeight: 28, maxLines: 2, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(232,208,154,0.42)', label: 'microcopy' }
@@ -46,20 +46,17 @@
       width: 2480,
       height: 3508,
       page: A4_P,
-      background: '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/witness-report-bg.svg',
+      background: '/public/assets/events/rap-ort/oswiecim20260525/backgrounds/witness-report-bg-final.svg',
       fields: {
         projectLine: { x: 1240, y: 430, align: 'center', size: 31, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(66,46,22,0.68)', label: 'project line' },
         title: { x: 1240, y: 675, align: 'center', size: 108, weight: 400, family: 'Georgia, Times New Roman, serif', fill: '#2a1d11', label: 'main title' },
         quote: { x: 1240, y: 890, width: 1680, align: 'center', size: 46, lineHeight: 65, maxLines: 3, style: 'italic', family: 'Georgia, Times New Roman, serif', fill: '#2b2015', label: 'quote' },
         footer: { x: 1240, y: 3305, width: 1780, align: 'center', size: 20, lineHeight: 30, maxLines: 2, weight: 700, family: 'Arial, sans-serif', fill: 'rgba(66,46,22,0.48)', label: 'footer' }
       },
-      dividers: [
-        { x1: 430, y1: 1185, x2: 2050, y2: 1185, color: 'rgba(66,46,22,0.23)', label: 'reflection top rule' },
-        { x1: 430, y1: 2145, x2: 2050, y2: 2145, color: 'rgba(66,46,22,0.23)', label: 'reflection bottom rule' }
-      ],
+      dividers: [],
       reflection: {
         x: 500,
-        firstBaseline: 1295,
+        firstBaseline: 1285,
         width: 1480,
         lineHeight: 62,
         maxLines: 13,
@@ -573,8 +570,8 @@
     new ResizeObserver(render).observe(doc);
 
     const badge = document.createElement('div');
+    badge.className = 'qr-calibration-note';
     badge.textContent = 'CALIBRATION MODE · ?calibratePdf=1 adds grid to exported PDF';
-    badge.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:60;padding:8px 10px;border:1px solid rgba(232,208,154,.4);border-radius:999px;background:rgba(0,0,0,.72);color:#e8d09a;font:700 11px Arial,sans-serif;letter-spacing:.08em;';
     document.body.appendChild(badge);
   }
 
