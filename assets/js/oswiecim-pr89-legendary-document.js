@@ -21,16 +21,15 @@
   };
 
   const layout = {
-    title: { x: 1754, y: 335, w: 2940, h: 670 },
-    lead: { x: 1754, y: 735, w: 2420 },
-    centralSeal: { x: 1754, y: 1118, w: 595, h: 595 },
-    motto: { x: 1754, y: 1440, w: 1860 },
-    participantName: { x: 1754, y: 1628, w: 2300 },
-    signature: { x: 1754, y: 1806, w: 360, h: 82 },
-    author: { x: 1754, y: 1878 },
-    metaRuleY: 2022,
-    metaLabelY: 2050,
-    bottomEventSeal: { x: 1754, y: 2248, w: 1940, h: 200 },
+    title: { x: 1754, y: 372, w: 2940, h: 670 },
+    lead: { x: 1754, y: 812, w: 2420 },
+    centralSeal: { x: 1754, y: 1255, w: 580, h: 580 },
+    motto: { x: 1754, y: 1625, w: 1860 },
+    participantName: { x: 1754, y: 1815, w: 2300 },
+    signature: { x: 1754, y: 2236, w: 460, h: 104 },
+    author: { x: 1754, y: 2168 },
+    metaRuleY: 2040,
+    metaLabelY: 2068,
     bottomRaportSeal: { x: 610, y: 2248, w: 245, h: 245 },
     bottomVeritasSeal: { x: 2898, y: 2248, w: 245, h: 245 }
   };
@@ -61,13 +60,6 @@
   }
 
   function contain(ctx, img, cx, cy, maxW, maxH) {
-    const scale = Math.min(maxW / img.width, maxH / img.height);
-    const w = img.width * scale;
-    const h = img.height * scale;
-    ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h);
-  }
-
-  function containWidth(ctx, img, cx, cy, maxW, maxH) {
     const scale = Math.min(maxW / img.width, maxH / img.height);
     const w = img.width * scale;
     const h = img.height * scale;
@@ -243,8 +235,8 @@
     canvas.width = doc.w;
     canvas.height = doc.h;
     const ctx = canvas.getContext('2d');
-    const [bg, texture, title, eventSeal, raportSeal, centralSeal, vhSeal, signature] = await Promise.all([
-      loadImage(doc.bg), optionalImage(doc.texture), optionalImage(doc.title), optionalImage(doc.eventSeal), optionalImage(doc.raportSeal), optionalImage(doc.anniversarySeal), optionalImage(doc.veritasSeal), optionalImage(doc.signature)
+    const [bg, texture, title, raportSeal, centralSeal, vhSeal, signature] = await Promise.all([
+      loadImage(doc.bg), optionalImage(doc.texture), optionalImage(doc.title), optionalImage(doc.raportSeal), optionalImage(doc.anniversarySeal), optionalImage(doc.veritasSeal), optionalImage(doc.signature)
     ]);
 
     cover(ctx, bg, 0, 0, doc.w, doc.h);
@@ -256,7 +248,7 @@
       ctx.restore();
     }
 
-    const titleAura = ctx.createRadialGradient(1754, 345, 80, 1754, 345, 760);
+    const titleAura = ctx.createRadialGradient(1754, 380, 80, 1754, 380, 760);
     titleAura.addColorStop(0, 'rgba(255,232,174,.11)');
     titleAura.addColorStop(.50, 'rgba(255,232,174,.026)');
     titleAura.addColorStop(1, 'rgba(0,0,0,0)');
@@ -278,39 +270,31 @@
     const docNo = `VH-ZU-2026-0525-OSW-${seq}`;
 
     if (title) contain(ctx, title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
-    else glowText(ctx, 'ZAPIS UCZESTNICTWA', 1754, 430, { size: 214, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', shadowBlur: 34 });
-    drawRule(ctx, 1754, 650, 1340, .22);
+    else glowText(ctx, 'ZAPIS UCZESTNICTWA', 1754, 462, { size: 214, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', shadowBlur: 34 });
+    drawRule(ctx, 1754, 730, 1340, .22);
 
     wrapped(ctx, ceremonialLead, layout.lead.x, layout.lead.y, layout.lead.w, 41, 58, 3, { style: 'italic', fill: 'rgba(250,238,216,.91)' });
 
     if (centralSeal) contain(ctx, centralSeal, layout.centralSeal.x, layout.centralSeal.y, layout.centralSeal.w, layout.centralSeal.h);
-    drawRule(ctx, 1754, 1342, 610, .15);
+    drawRule(ctx, 1754, 1550, 610, .15);
     wrapped(ctx, ceremonialMotto, layout.motto.x, layout.motto.y, layout.motto.w, 39, 66, 2, { style: 'italic', fill: 'rgba(255,241,207,.84)' });
-    drawRule(ctx, 1754, 1552, 610, .15);
+    drawRule(ctx, 1754, 1740, 610, .12);
 
     if (name) {
       const text = `Dla: ${name}`;
-      const size = fit(ctx, text, layout.participantName.w, 66, 40, 'Georgia, Times New Roman, serif', 400);
-      glowText(ctx, text, layout.participantName.x, layout.participantName.y, { size, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', shadowBlur: 14 });
+      const size = fit(ctx, text, layout.participantName.w, 64, 38, 'Georgia, Times New Roman, serif', 400);
+      glowText(ctx, text, layout.participantName.x, layout.participantName.y, { size, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', shadowBlur: 12 });
     }
-
-    if (signature) {
-      ctx.save();
-      ctx.globalAlpha = 0.62;
-      contain(ctx, signature, layout.signature.x, layout.signature.y, layout.signature.w, layout.signature.h);
-      ctx.restore();
-    }
-    drawRule(ctx, 1754, 1846, 760, .14);
-    glowText(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', layout.author.x, layout.author.y, { size: 15, fill: 'rgba(232,208,154,.42)', shadowBlur: 4 });
 
     meta(ctx, 'DATA', '25.05.2026', 650, 540, 36, 1, 35);
     meta(ctx, 'NUMER DOKUMENTU', docNo, 1754, 780, 32, 1, 35);
     meta(ctx, 'MIEJSCE', 'OŚWIĘCIM', 2858, 540, 36, 1, 35);
 
-    if (eventSeal) {
+    glowText(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', layout.author.x, layout.author.y, { size: 14, fill: 'rgba(232,208,154,.40)', shadowBlur: 3 });
+    if (signature) {
       ctx.save();
-      ctx.globalAlpha = 0.30;
-      containWidth(ctx, eventSeal, layout.bottomEventSeal.x, layout.bottomEventSeal.y, layout.bottomEventSeal.w, layout.bottomEventSeal.h);
+      ctx.globalAlpha = 0.68;
+      contain(ctx, signature, layout.signature.x, layout.signature.y, layout.signature.w, layout.signature.h);
       ctx.restore();
     }
     if (raportSeal) contain(ctx, raportSeal, layout.bottomRaportSeal.x, layout.bottomRaportSeal.y, layout.bottomRaportSeal.w, layout.bottomRaportSeal.h);
@@ -323,27 +307,22 @@
   function stylePreview() {
     const style = document.createElement('style');
     style.textContent = `
-      .qr-participation .doc-bg::after{content:"";position:absolute;inset:0;background:url('/public/assets/reports/certificate-dark-texture.webp') center/cover no-repeat;opacity:.12;mix-blend-mode:soft-light;pointer-events:none;}
+      .qr-participation .doc-bg{background:none!important;background-color:#0d0b09!important;}
+      .qr-participation .doc-bg::after{display:none!important;content:none!important;}
       .qr-participation .doc-content{inset:0!important;display:block!important;text-align:center!important;font-family:Georgia,'Times New Roman',serif!important;}
       .qr-participation .topline,.qr-participation .subTitle,.qr-participation .topVeritasSealPreview{display:none!important;}
-      .qr-participation .seal{display:none!important;}
-      .qr-participation .titlePlate{position:absolute;left:50%;top:13.50%;transform:translate(-50%,-50%);width:83.8%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 24px 48px rgba(0,0,0,.64));}
-      .qr-participation .memorialLine{position:absolute;left:50%;top:29.65%;transform:translate(-50%,-50%);width:69%;max-width:none!important;font-size:clamp(.56rem,.98vw,.96rem)!important;line-height:1.42!important;margin:0!important;color:rgba(250,238,216,.91)!important;}
-      .qr-participation .mainCopy{position:absolute;left:50%;top:58.05%;transform:translate(-50%,-50%);width:55%;max-width:none!important;font-size:clamp(.54rem,.94vw,.91rem)!important;line-height:1.52!important;font-style:italic!important;margin:0!important;color:rgba(255,241,207,.84)!important;}
-      .qr-participation .for{position:absolute;left:50%;top:65.65%;transform:translate(-50%,-50%);width:70%;margin:0!important;font-size:clamp(.72rem,1.20vw,1.15rem)!important;text-shadow:0 2px 9px rgba(0,0,0,.62);}
-      .qr-participation .fields{position:absolute!important;left:50%;top:81.75%;transform:translate(-50%,-50%);width:79.2%!important;margin:0!important;grid-template-columns:.86fr 1.26fr .86fr!important;gap:clamp(1.1rem,2.4vw,2rem)!important;}
+      .qr-participation .seal,.qr-participation .titlePlate,.qr-participation .anniversarySealPreview,.qr-participation .bottomEventSealWidePreview,.qr-participation .eventSealMirrorPreview,.qr-participation .veritasSealPreview,.qr-participation .sig{display:none!important;}
+      .qr-participation .titleText{position:absolute;left:50%;top:14.6%;transform:translate(-50%,-50%);width:82%!important;margin:0!important;font-family:Georgia,'Times New Roman',serif!important;font-size:clamp(1.15rem,2.7vw,2.65rem)!important;font-weight:400!important;letter-spacing:.12em!important;color:#f4dfad!important;text-shadow:0 2px 18px rgba(0,0,0,.72);}
+      .qr-participation .memorialLine{position:absolute;left:50%;top:32.75%;transform:translate(-50%,-50%);width:70%;max-width:none!important;font-size:clamp(.56rem,.98vw,.96rem)!important;line-height:1.42!important;margin:0!important;color:rgba(250,238,216,.91)!important;}
+      .qr-participation .mainCopy{position:absolute;left:50%;top:63.15%;transform:translate(-50%,-50%);width:55%;max-width:none!important;font-size:clamp(.54rem,.94vw,.91rem)!important;line-height:1.52!important;font-style:italic!important;margin:0!important;color:rgba(255,241,207,.84)!important;}
+      .qr-participation .for{position:absolute;left:50%;top:71.95%;transform:translate(-50%,-50%);width:70%;margin:0!important;font-size:clamp(.72rem,1.20vw,1.15rem)!important;text-shadow:0 2px 9px rgba(0,0,0,.62);}
+      .qr-participation .fields{position:absolute!important;left:50%;top:83.45%;transform:translate(-50%,-50%);width:79.2%!important;margin:0!important;grid-template-columns:.86fr 1.26fr .86fr!important;gap:clamp(1.1rem,2.4vw,2rem)!important;}
       .qr-participation .field{display:flex!important;flex-direction:column!important;gap:.16rem!important;padding:0!important;border-top:0!important;border-bottom:0!important;align-items:stretch!important;}
-      .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.46),rgba(255,235,184,.62),rgba(232,208,154,.46),transparent);order:2;margin:.30rem 0 .16rem!important;}
+      .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.38),rgba(255,235,184,.54),rgba(232,208,154,.38),transparent);order:2;margin:.30rem 0 .16rem!important;}
       .qr-participation .field strong{order:1;color:#fff0ca!important;font-size:clamp(.44rem,.72vw,.70rem)!important;line-height:1.12!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:1.95em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;}
-      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.62)!important;font-size:clamp(.27rem,.46vw,.43rem)!important;line-height:1!important;letter-spacing:.20em!important;}
-      .qr-participation .anniversarySealPreview{position:absolute;left:50%;top:45.08%;transform:translate(-50%,-50%);width:16.95%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 20px 44px rgba(0,0,0,.58));}
-      .qr-participation .bottomEventSealWidePreview{position:absolute!important;left:50%;top:90.65%;transform:translate(-50%,-50%);width:55.3%!important;max-width:none!important;opacity:.30!important;filter:drop-shadow(0 10px 26px rgba(0,0,0,.48));}
-      .qr-participation .eventSealMirrorPreview{position:absolute!important;left:17.4%;top:90.65%;transform:translate(-50%,-50%);width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
-      .qr-participation .veritasSealPreview{position:absolute!important;left:82.6%;top:90.65%;transform:translate(-50%,-50%);right:auto!important;width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
+      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.58)!important;font-size:clamp(.27rem,.46vw,.43rem)!important;line-height:1!important;letter-spacing:.20em!important;}
       .qr-participation .quote,.qr-participation .micro{display:none!important;}
-      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:72.82%;transform:translate(-50%,-50%);margin:0!important;width:24%;opacity:.62!important;}
-      .qr-participation .sig{width:61%!important;max-height:none!important;}
-      .qr-participation .author{font-size:clamp(.22rem,.40vw,.37rem)!important;color:rgba(232,208,154,.42)!important;}
+      .qr-participation .signatureBlock{display:none!important;}
       .qr-participation #doc > canvas[aria-hidden='true'],.qr-calibration-note{display:none!important;opacity:0!important;visibility:hidden!important;}
     `;
     document.head.appendChild(style);
@@ -386,42 +365,10 @@
   }
 
   function tunePreview() {
-    document.querySelectorAll('#doc > canvas[aria-hidden="true"], .qr-calibration-note, .topVeritasSealPreview').forEach((el) => el.remove());
+    document.querySelectorAll('#doc > canvas[aria-hidden="true"], .qr-calibration-note, .topVeritasSealPreview, .titlePlate, .anniversarySealPreview, .bottomEventSealWidePreview, .eventSealMirrorPreview, .veritasSealPreview').forEach((el) => el.remove());
     syncCeremonialCopy();
     syncPreviewMetadata();
     moveLegalNoteToPage();
-    const titleText = document.querySelector('.qr-participation .titleText');
-    if (titleText) {
-      const img = document.createElement('img');
-      img.className = 'titlePlate';
-      img.src = doc.title;
-      img.alt = 'Zapis Uczestnictwa';
-      titleText.replaceWith(img);
-    }
-    const content = document.querySelector('.qr-participation .doc-content');
-    const sigBlock = document.querySelector('.qr-participation .signatureBlock');
-    if (sigBlock && !document.querySelector('.anniversarySealPreview')) {
-      const seal = document.createElement('img');
-      seal.className = 'anniversarySealPreview';
-      seal.src = doc.anniversarySeal;
-      seal.alt = '';
-      sigBlock.before(seal);
-      const wide = document.createElement('img');
-      wide.className = 'bottomEventSealWidePreview';
-      wide.src = doc.eventSeal;
-      wide.alt = '';
-      content?.appendChild(wide);
-      const raport = document.createElement('img');
-      raport.className = 'eventSealMirrorPreview';
-      raport.src = doc.raportSeal;
-      raport.alt = '';
-      content?.appendChild(raport);
-      const vh = document.createElement('img');
-      vh.className = 'veritasSealPreview';
-      vh.src = doc.veritasSeal;
-      vh.alt = '';
-      content?.appendChild(vh);
-    }
   }
 
   function modal() {
