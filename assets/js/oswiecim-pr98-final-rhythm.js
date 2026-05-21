@@ -31,15 +31,36 @@
   };
   const lead = 'Pamiątkowy zapis udziału\nw projekcji audiowizualnej „Rap-Ort: Prawda Sumienia”\npoświęconej świadectwu, pamięci, sumieniu i odpowiedzialności.';
   const motto = 'Prawda nie kończy się w dokumencie.\nZaczyna się w sumieniu.';
+  const assetCache = new Map();
 
-  const load = (src) => new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
+  function mobileSafeMode() {
+    return window.matchMedia?.('(max-width: 760px)').matches && (navigator.deviceMemory || 4) <= 2;
+  }
+  function updateStatus(text, visible = true) {
+    const status = document.querySelector('.qr-mobile-status');
+    if (!status) return;
+    status.textContent = text;
+    status.classList.toggle('is-visible', visible);
+  }
+  const load = (src) => {
+    if (assetCache.has(src)) return assetCache.get(src);
+    const promise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+    assetCache.set(src, promise);
+    return promise;
+  };
   const opt = async (src) => { try { return await load(src); } catch (_) { return null; } };
+  function warmAssets() {
+    if (window.__oswAssetsWarmed) return;
+    window.__oswAssetsWarmed = true;
+    [doc.bg, doc.texture, doc.title, doc.raportSeal, doc.anniversarySeal, doc.veritasSeal, doc.signature].forEach((src) => opt(src));
+  }
+  window.addEventListener('osw:participant-interaction', warmAssets, { once: true });
 
   function cover(ctx, img, x, y, w, h) {
     const s = Math.max(w / img.width, h / img.height);
@@ -147,8 +168,8 @@
     parts.forEach((p) => { out.set(p, offset); offset += p.length; });
     return out;
   }
-  function pdf(canvas) {
-    const data = atob(canvas.toDataURL('image/jpeg', .96).split(',')[1]);
+  function pdf(canvas, quality = .96) {
+    const data = atob(canvas.toDataURL('image/jpeg', quality).split(',')[1]);
     const jpg = new Uint8Array(data.length);
     for (let i = 0; i < data.length; i += 1) jpg[i] = data.charCodeAt(i);
     const mm = 72 / 25.4;
@@ -179,20 +200,29 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1200);
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      setTimeout(() => {
+        updateStatus('PDF został przygotowany. Gdyby pobieranie nie ruszyło, otwórz plik w nowej karcie i wybierz „Zapisz”.', true);
+      }, 900);
+    }
   }
   function safe(value) {
     return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'uczestnik';
   }
 
-  async function renderFinal() {
+  async function renderFinal(options = {}) {
+    const scale = options.safe ? 0.82 : 1;
     const canvas = document.createElement('canvas');
-    canvas.width = doc.w;
-    canvas.height = doc.h;
+    canvas.width = Math.round(doc.w * scale);
+    canvas.height = Math.round(doc.h * scale);
     const ctx = canvas.getContext('2d');
+    if (scale !== 1) ctx.scale(scale, scale);
+    updateStatus('Przygotowuję elementy dokumentu…');
     const [bg, texture, title, raport, medal, vh, sig] = await Promise.all([
       load(doc.bg), opt(doc.texture), opt(doc.title), opt(doc.raportSeal), opt(doc.anniversarySeal), opt(doc.veritasSeal), opt(doc.signature)
     ]);
+    updateStatus(options.safe ? 'Składam lżejszą wersję zgodną z urządzeniem…' : 'Składam wersję do druku…');
     cover(ctx, bg, 0, 0, doc.w, doc.h);
     if (texture) { ctx.save(); ctx.globalAlpha = .12; ctx.globalCompositeOperation = 'soft-light'; cover(ctx, texture, 0, 0, doc.w, doc.h); ctx.restore(); }
     let aura = ctx.createRadialGradient(1754, 490, 80, 1754, 490, 760);
@@ -200,7 +230,7 @@
     aura = ctx.createRadialGradient(L.seal[0], L.seal[1], 95, L.seal[0], L.seal[1], 780);
     aura.addColorStop(0, 'rgba(255,232,174,.105)'); aura.addColorStop(.42, 'rgba(255,232,174,.026)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
 
-    const name = document.getElementById('name')?.value.trim() || '';
+    const name = String(document.getElementById('name')?.value || '').replace(/\s+/g, ' ').trim().slice(0, 42);
     let seq = localStorage.getItem('vh-zu-osw-seq');
     if (!/^\d{4}$/.test(seq || '')) { seq = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0'); localStorage.setItem('vh-zu-osw-seq', seq); }
     const no = `VH-ZU-2026-0525-OSW-${seq}`;
@@ -222,7 +252,7 @@
     docNumber(ctx, no);
     if (raport) contain(ctx, raport, ...L.leftSeal);
     if (vh) contain(ctx, vh, ...L.rightSeal);
-    return { canvas, name };
+    return { canvas, name, safe: options.safe };
   }
 
   function bindFinal() {
@@ -230,27 +260,43 @@
     if (!old) return;
     const button = old.cloneNode(true);
     old.replaceWith(button);
+    button.addEventListener('pointerenter', warmAssets, { once: true, passive: true });
+    button.addEventListener('touchstart', warmAssets, { once: true, passive: true });
     button.addEventListener('click', async (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
+      if (window.__oswPdfRendering) return;
+      window.__oswPdfRendering = true;
+      warmAssets();
       const original = button.textContent;
       button.disabled = true;
       button.setAttribute('aria-busy', 'true');
-      button.textContent = 'Przygotowuję kompletną wersję finalną...';
+      button.textContent = 'Przygotowuję dokument…';
       try {
-        const { canvas, name } = await renderFinal();
-        save(pdf(canvas), `Zapis-Uczestnictwa-Oswiecim-${safe(name)}.pdf`);
+        let result;
+        try {
+          result = await renderFinal({ safe: false });
+        } catch (firstError) {
+          console.warn(firstError);
+          updateStatus('Przygotowuję lżejszą wersję zgodną z Twoim urządzeniem…');
+          result = await renderFinal({ safe: true });
+        }
+        updateStatus('Finalizuję PDF…');
+        save(pdf(result.canvas, result.safe ? .92 : .96), `Zapis-Uczestnictwa-Oswiecim-${safe(result.name)}.pdf`);
+        updateStatus('Gotowe. Dokument został przygotowany.', true);
         document.querySelector('[data-qr-modal]')?.classList.add('is-open');
       } catch (error) {
         console.error(error);
-        alert('Nie udało się przygotować pliku. Odśwież stronę i spróbuj ponownie.');
+        updateStatus('Nie udało się pobrać pełnych elementów graficznych. Sprawdź połączenie i spróbuj ponownie.', true);
       } finally {
+        window.__oswPdfRendering = false;
         button.disabled = false;
         button.removeAttribute('aria-busy');
         button.textContent = original;
       }
     }, { capture: true });
     window.__oswFinalRendererBound = true;
+    if (mobileSafeMode()) updateStatus('Generator działa w trybie zgodnym ze słabszym urządzeniem.', true);
   }
 
   function runBindFinalNow() {
