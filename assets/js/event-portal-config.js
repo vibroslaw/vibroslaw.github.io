@@ -28,8 +28,8 @@ window.RapOrtEventPortals = (() => {
         id: 'witness',
         label: 'Raport Świadka',
         title: 'Zapisz to, co zostało po projekcji',
-        description: 'Prywatny raport PDF oraz anonimowa wersja JPG do przyszłego archiwum wydarzenia.',
-        href: '/rap-ort/raport-swiadka/generator/',
+        description: 'Prywatny raport PDF oraz anonimowa wersja do zachowania lub dobrowolnego przekazania prowadzącemu.',
+        href: '/rap-ort/oswiecim/raport-swiadka/',
         status: 'Moduł refleksji'
       },
       {
@@ -70,8 +70,8 @@ window.RapOrtEventPortals = (() => {
         id: 'witness',
         label: 'Witness Report',
         title: 'Record what remains after the screening',
-        description: 'A private PDF report and an anonymous JPG version prepared for a future event archive.',
-        href: '/rap-ort/witness-report/generator/',
+        description: 'A private PDF report and an anonymous version to keep or pass to the facilitator voluntarily.',
+        href: '/rap-ort/oswiecim/raport-swiadka/',
         status: 'Reflection module'
       },
       {
@@ -102,7 +102,7 @@ window.RapOrtEventPortals = (() => {
   };
 
   return {
-    version: '0.1.0-pr69-event-portal',
+    version: '0.1.1-oswiecim-witness-ritual',
     defaultPortalId: 'default',
     portals: {
       default: {
@@ -145,9 +145,9 @@ window.RapOrtEventPortals = (() => {
           description: 'Po projekcji uczestnik przechodzi przez refleksję, dokument, pamiątkowy pakiet i fundament anonimowego archiwum wydarzenia.',
           eventDate: '25 maja 2026',
           location: 'Oświęcim / MUP',
-          modules: modules.pl.map((module) => module.id === 'witness' ? { ...module, href: '/rap-ort/raport-swiadka/generator/?event=oswiecim20260525' } : module),
+          modules: modules.pl.map((module) => module.id === 'witness' ? { ...module, href: '/rap-ort/oswiecim/raport-swiadka/' } : module),
           closingLine: 'Nie chodzi o jedną poprawną odpowiedź. Chodzi o odpowiedzialną rozmowę po spotkaniu ze świadectwem.',
-          privacyNote: 'Anonimowa wersja Raportu Świadka nie zawiera imienia, nazwiska, podpisu ani danych osobowych. Wersja archiwalna jest pobierana lokalnie i może być przekazana prowadzącemu ręcznie.',
+          privacyNote: 'Anonimowa wersja Raportu Świadka nie zawiera imienia, nazwiska, podpisu ani danych osobowych. Dokument powstaje lokalnie i może zostać zachowany prywatnie albo przekazany prowadzącemu ręcznie.',
           facilitatorNote: 'Portal nie zastępuje prowadzącego. Porządkuje rytm pracy po projekcji: wejście, refleksja, dokument, pamiątka, archiwum.'
         }),
         en: portal({
@@ -159,9 +159,9 @@ window.RapOrtEventPortals = (() => {
           description: 'After the screening, the participant moves through reflection, document creation, memory pack and the foundation of an anonymous event archive.',
           eventDate: '25 May 2026',
           location: 'Oświęcim / MUP',
-          modules: modules.en.map((module) => module.id === 'witness' ? { ...module, href: '/rap-ort/witness-report/generator/?event=oswiecim20260525' } : module),
+          modules: modules.en.map((module) => module.id === 'witness' ? { ...module, href: '/rap-ort/oswiecim/raport-swiadka/' } : module),
           closingLine: 'It is not about one correct answer. It is about responsible conversation after encountering testimony.',
-          privacyNote: 'The anonymous Witness Report version contains no name, no signature and no personal data. The archive version is downloaded locally and may be passed to the facilitator manually.',
+          privacyNote: 'The anonymous Witness Report version contains no name, no signature and no personal data. The document is generated locally and may be kept privately or passed to the facilitator manually.',
           facilitatorNote: 'The portal does not replace the facilitator. It organises the post-screening rhythm: entry, reflection, document, keepsake, archive.'
         })
       },
