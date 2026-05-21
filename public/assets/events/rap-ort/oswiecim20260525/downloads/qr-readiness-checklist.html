@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Checklist QA — Oświęcim QR Documents</title>
+  <style>
+    :root{--bg:#070503;--panel:#120d08;--gold:#e8d09a;--ivory:#f7edda;--muted:rgba(247,237,218,.72);--line:rgba(232,208,154,.22)}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,rgba(232,208,154,.14),transparent 32rem),var(--bg);color:var(--ivory);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}.wrap{width:min(1040px,92vw);margin:auto;padding:clamp(2rem,6vw,5rem) 0}.kicker{color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-size:.75rem;font-weight:700}.title{font-family:Georgia,"Times New Roman",serif;color:var(--gold);font-size:clamp(2.3rem,7vw,5.4rem);line-height:.95;letter-spacing:.08em;text-transform:uppercase;margin:.55rem 0 1rem}.lead{max-width:780px;color:var(--muted);font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.card{border:1px solid var(--line);border-radius:26px;background:linear-gradient(145deg,rgba(28,20,12,.88),rgba(8,6,4,.96));box-shadow:0 28px 90px rgba(0,0,0,.36);padding:1.2rem}.card h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:.1rem 0 .7rem;font-size:1.45rem}.check{display:grid;gap:.7rem;margin:.8rem 0 0}.check label{display:grid;grid-template-columns:auto 1fr;gap:.65rem;align-items:start;color:var(--muted)}input[type="checkbox"]{width:1.05rem;height:1.05rem;margin-top:.28rem;accent-color:#caa65f}.routes{display:grid;gap:.55rem;margin-top:1rem}a{color:#f4dfad;text-decoration:none;border-bottom:1px solid rgba(232,208,154,.25)}code{display:inline-block;max-width:100%;overflow-wrap:anywhere;border:1px solid rgba(232,208,154,.18);border-radius:12px;padding:.2rem .45rem;background:rgba(0,0,0,.24);color:#f4dfad}.full{grid-column:1/-1}.note{margin-top:2rem;border:1px solid rgba(232,208,154,.22);border-radius:24px;background:rgba(0,0,0,.2);padding:1rem;color:var(--muted)}@media(max-width:820px){.grid{grid-template-columns:1fr}.wrap{width:min(94vw,720px)}}@media print{body{background:#fff;color:#111}.card,.note{box-shadow:none;border-color:#bbb;background:#fff}.kicker,.title,.card h2,a,code{color:#111}.lead,.check label,.note{color:#333}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="kicker">RAP-ORT · OŚWIĘCIM 2026 · QA</p>
+    <h1 class="title">QR Readiness Checklist</h1>
+    <p class="lead">Lista kontrolna do ostatniego sprawdzenia generatorów QR przed użyciem na wydarzeniu. Dokument nie zbiera danych i może być wydrukowany jako arkusz testowy dla organizatora.</p>
+
+    <section class="grid">
+      <article class="card full">
+        <h2>Trasy do sprawdzenia</h2>
+        <div class="routes">
+          <div><code>/rap-ort/oswiecim/zapis-uczestnictwa/</code></div>
+          <div><code>/rap-ort/oswiecim/raport-swiadka/</code></div>
+          <div><code>/rap-ort/oswiecim/zapis-uczestnictwa/?calibrate=1</code></div>
+          <div><code>/rap-ort/oswiecim/raport-swiadka/?calibrate=1</code></div>
+          <div><code>?calibrate=1&amp;calibratePdf=1</code> — PDF z siatką kalibracyjną.</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Telefon</h2>
+        <div class="check">
+          <label><input type="checkbox"> Strona otwiera się szybko po skanie QR.</label>
+          <label><input type="checkbox"> Formularz mieści się bez poziomego scrolla.</label>
+          <label><input type="checkbox"> Przyciski PDF są widoczne i wygodne do kliknięcia.</label>
+          <label><input type="checkbox"> Modal potwierdzenia nie zasłania nawigacji systemowej.</label>
+          <label><input type="checkbox"> Pobieranie działa na Android Chrome.</label>
+          <label><input type="checkbox"> Pobieranie działa na iPhone Safari / Chrome.</label>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Laptop</h2>
+        <div class="check">
+          <label><input type="checkbox"> Preview i PDF używają tego samego tła.</label>
+          <label><input type="checkbox"> PDF otwiera się poprawnie w Chrome.</label>
+          <label><input type="checkbox"> PDF otwiera się poprawnie w Adobe Reader.</label>
+          <label><input type="checkbox"> Nazwa pliku nie zawiera problematycznych znaków.</label>
+          <label><input type="checkbox"> Długi ekran nie gubi CTA po scrollu.</label>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Zapis Uczestnictwa</h2>
+        <div class="check">
+          <label><input type="checkbox"> Puste imię generuje dokument bez błędu.</label>
+          <label><input type="checkbox"> Krótkie imię wygląda elegancko.</label>
+          <label><input type="checkbox"> Długie imię i nazwisko nie wychodzi poza pole.</label>
+          <label><input type="checkbox"> Seal jest na środku medalionu.</label>
+          <label><input type="checkbox"> Podpis autora nie koliduje z mikrocopy.</label>
+          <label><input type="checkbox"> Wydruk A4 landscape ma właściwe proporcje.</label>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Raport Świadka</h2>
+        <div class="check">
+          <label><input type="checkbox"> Pusta refleksja używa tekstu zastępczego.</label>
+          <label><input type="checkbox"> Krótka refleksja siedzi nad pierwszą linią.</label>
+          <label><input type="checkbox"> Długa refleksja jest ucięta bez psucia layoutu.</label>
+          <label><input type="checkbox"> Wersja anonimowa usuwa podpis i imię.</label>
+          <label><input type="checkbox"> Wersja osobista zachowuje status uczestnika.</label>
+          <label><input type="checkbox"> Wydruk A4 portrait ma właściwe proporcje.</label>
+        </div>
+      </article>
+
+      <article class="card full">
+        <h2>Test treści granicznych</h2>
+        <div class="check">
+          <label><input type="checkbox"> Imię testowe: <code>Aleksandra Maria Katarzyna Nowak-Kowalska</code></label>
+          <label><input type="checkbox"> Refleksja testowa: 800–1200 znaków z polskimi znakami.</label>
+          <label><input type="checkbox"> Refleksja testowa z długim słowem bez spacji.</label>
+          <label><input type="checkbox"> Ponowne pobranie nie zmienia dokumentu poza lokalnym numerem sekwencji.</label>
+        </div>
+      </article>
+    </section>
+
+    <div class="note">
+      <strong>Decyzja końcowa:</strong> generator jest gotowy do użycia na wydarzeniu dopiero po zaznaczeniu testów telefonu, laptopa, kalibracji PDF i fizycznego wydruku A4.
+    </div>
+  </main>
+</body>
+</html>
