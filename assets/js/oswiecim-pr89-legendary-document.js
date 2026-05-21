@@ -19,8 +19,8 @@
       .qr-participation .fields{position:absolute!important;left:50%;top:83.45%;transform:translate(-50%,-50%);width:79.2%!important;margin:0!important;grid-template-columns:.86fr 1.26fr .86fr!important;gap:clamp(1.1rem,2.4vw,2rem)!important;}
       .qr-participation .field{display:flex!important;flex-direction:column!important;gap:.16rem!important;padding:0!important;border-top:0!important;border-bottom:0!important;align-items:stretch!important;}
       .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.38),rgba(255,235,184,.54),rgba(232,208,154,.38),transparent);order:2;margin:.30rem 0 .16rem!important;}
-      .qr-participation .field strong{order:1;color:#fff0ca!important;font-size:clamp(.44rem,.72vw,.70rem)!important;line-height:1.12!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:1.95em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;}
-      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.58)!important;font-size:clamp(.27rem,.46vw,.43rem)!important;line-height:1!important;letter-spacing:.20em!important;}
+      .qr-participation .field strong{order:1;color:#fff0ca!important;font-size:clamp(.44rem,.72vw,.70rem)!important;line-height:1.12!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:1.95em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;white-space:nowrap!important;}
+      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.58)!important;font-size:clamp(.27rem,.46vw,.43rem)!important;line-height:1!important;letter-spacing:.20em!important;white-space:nowrap!important;}
       .qr-participation .quote,.qr-participation .micro,.qr-participation .signatureBlock{display:none!important;}
       .qr-participation #doc > canvas[aria-hidden='true'],.qr-calibration-note{display:none!important;opacity:0!important;visibility:hidden!important;}
     `;
@@ -59,14 +59,14 @@
     cleanButton.disabled = true;
     cleanButton.setAttribute('aria-busy', 'true');
     cleanButton.dataset.waitingForFinalRenderer = '1';
-    cleanButton.textContent = 'Ładuję finalny generator...';
+    cleanButton.textContent = 'Ładuję finalną wersję generatora...';
     button.replaceWith(cleanButton);
   }
 
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-2`;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-12`;
     script.async = false;
     script.dataset.pr98FinalRhythm = '1';
     script.onload = () => {
@@ -74,7 +74,7 @@
       if (button && button.dataset.waitingForFinalRenderer) {
         button.disabled = false;
         button.removeAttribute('aria-busy');
-        button.textContent = 'Pobierz gotowy PDF';
+        button.textContent = 'Pobierz finalny PDF';
       }
     };
     document.body.appendChild(script);
