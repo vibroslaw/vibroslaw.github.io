@@ -27,10 +27,12 @@
       .qr-mobile-preview-note{margin:.75rem auto 0;max-width:32rem;text-align:center;font-size:.76rem;line-height:1.45;color:rgba(232,208,154,.70);letter-spacing:.02em;}
       .qr-mobile-status{display:none;margin:.7rem auto 0;max-width:30rem;text-align:center;font-size:.82rem;line-height:1.4;color:rgba(255,241,207,.86);}
       .qr-mobile-status.is-visible{display:block;}
+      .qr-mobile-status a{color:#f4dfad;text-decoration:underline;text-underline-offset:.18em;}
       .qr-name-warning{display:none;margin:.55rem 0 0;font-size:.78rem;line-height:1.35;color:rgba(255,210,145,.88);}
       .qr-name-warning.is-visible{display:block;}
+      body.qr-modal-open #printBtn,body.qr-modal-open .qr-mobile-status{display:none!important;}
       @media (max-width: 760px){
-        body{padding-bottom:6.8rem!important;}
+        body{padding-bottom:7.8rem!important;}
         .qr-participation .titleText{top:13.2%!important;font-size:clamp(1rem,6vw,1.7rem)!important;letter-spacing:.10em!important;width:86%!important;}
         .qr-participation .memorialLine{top:32.3%!important;width:78%!important;font-size:clamp(.52rem,3vw,.82rem)!important;}
         .qr-participation .mainCopy{top:62.8%!important;width:70%!important;font-size:clamp(.50rem,2.8vw,.78rem)!important;}
@@ -39,8 +41,14 @@
         .qr-participation .field strong{font-size:clamp(.36rem,2.4vw,.58rem)!important;}
         .qr-participation .field span{font-size:clamp(.21rem,1.65vw,.34rem)!important;letter-spacing:.12em!important;}
         #printBtn{position:fixed!important;left:1rem!important;right:1rem!important;bottom:calc(1rem + env(safe-area-inset-bottom,0px))!important;z-index:9999!important;width:auto!important;min-height:56px!important;border-radius:999px!important;box-shadow:0 18px 42px rgba(0,0,0,.55),0 0 0 1px rgba(232,208,154,.22)!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
-        #printBtn[disabled]{opacity:.82!important;}
+        #printBtn[disabled]{opacity:.84!important;}
+        .qr-mobile-status.is-visible{position:fixed;left:1rem;right:1rem;bottom:calc(5.3rem + env(safe-area-inset-bottom,0px));z-index:9998;max-width:none;margin:0;padding:.65rem .85rem;border-radius:1rem;background:rgba(16,12,8,.88);border:1px solid rgba(232,208,154,.18);box-shadow:0 14px 34px rgba(0,0,0,.38);backdrop-filter:blur(10px);}
         input,button{font-size:16px!important;}
+      }
+      @media (max-width: 380px){
+        .qr-participation .fields{gap:.42rem!important;width:89%!important;}
+        .qr-participation .field span{letter-spacing:.08em!important;}
+        .qr-mobile-preview-note{font-size:.70rem;padding:0 .55rem;}
       }
     `;
     document.head.appendChild(style);
@@ -50,7 +58,7 @@
     return String(value || '')
       .replace(/\s+/g, ' ')
       .replace(/[\u0000-\u001f\u007f]/g, '')
-      .trim()
+      .trimStart()
       .slice(0, 42);
   }
 
@@ -66,12 +74,14 @@
     warning.textContent = 'Wpis został skrócony, żeby zachować elegancki skład dokumentu.';
     input.insertAdjacentElement('afterend', warning);
     input.addEventListener('input', () => {
-      const clean = normalizeName(input.value);
-      const changed = clean !== input.value;
-      input.value = clean;
+      const before = input.value;
+      const clean = normalizeName(before);
+      const changed = clean !== before;
+      if (changed) input.value = clean;
       warning.classList.toggle('is-visible', changed || clean.length >= 42);
       window.dispatchEvent(new CustomEvent('osw:participant-interaction'));
-    }, { passive: true });
+    });
+    input.addEventListener('blur', () => { input.value = input.value.trim(); });
     input.addEventListener('focus', () => window.dispatchEvent(new CustomEvent('osw:participant-interaction')), { passive: true });
   }
 
@@ -94,6 +104,15 @@
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
     button.parentElement.insertBefore(status, button.nextSibling);
+  }
+
+  function installModalStateObserver() {
+    const modal = document.querySelector('[data-qr-modal]');
+    if (!modal || modal.dataset.mobileObserved === '1') return;
+    modal.dataset.mobileObserved = '1';
+    const sync = () => document.body.classList.toggle('qr-modal-open', modal.classList.contains('is-open') || modal.getAttribute('aria-hidden') === 'false');
+    sync();
+    new MutationObserver(sync).observe(modal, { attributes: true, attributeFilter: ['class', 'aria-hidden'] });
   }
 
   function tunePreview() {
@@ -122,6 +141,7 @@
     installNameGuard();
     addPreviewNote();
     addMobileStatus();
+    installModalStateObserver();
   }
 
   function lockButtonUntilFinalRendererLoads() {
@@ -138,7 +158,7 @@
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-14-mobile`;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-15-mobile-perfect`;
     script.async = false;
     script.dataset.pr98FinalRhythm = '1';
     script.onload = () => {
@@ -155,7 +175,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     stylePreview();
     lockButtonUntilFinalRendererLoads();
-    [0, 100, 280, 650].forEach((delay) => window.setTimeout(tunePreview, delay));
+    [0, 100, 280, 650, 1200].forEach((delay) => window.setTimeout(tunePreview, delay));
     loadFinalRenderer();
   });
 })();
