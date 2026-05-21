@@ -17,16 +17,16 @@
   const L = {
     title: [1754, 480, 2860, 628],
     lead: [1754, 910, 2480],
-    person: [1754, 1142, 2140],
-    personLabelY: 1196,
-    seal: [1754, 1390, 505, 505],
-    motto: [1754, 1745, 1840],
+    person: [1754, 1140, 2140],
+    personLabelY: 1194,
+    seal: [1754, 1492, 460, 460],
+    motto: [1754, 1818, 1840],
     dateMeta: [715, 2038, 620],
     placeMeta: [2793, 2038, 620],
-    author: [1754, 2098],
-    sig: [1754, 2164, 485, 112],
-    docNo: [1754, 2296, 900],
-    docNoLabelY: 2324,
+    author: [1754, 2106],
+    sig: [1754, 2168, 470, 108],
+    docNo: [1754, 2304, 900],
+    docNoLabelY: 2332,
     leftSeal: [715, 2284, 214, 214],
     rightSeal: [2793, 2284, 214, 214]
   };
@@ -182,7 +182,7 @@
     const [x, y, w] = L.person;
     const text = String(value || '').trim();
     if (!text) return;
-    const size = fit(ctx, text, w, 66, 40);
+    const size = fit(ctx, text, w, 64, 40);
     glow(ctx, text, x, y, { size, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', blur: 12 });
     glow(ctx, 'UCZESTNIK PROJEKCJI', x, L.personLabelY, { size: 16, fill: 'rgba(232,208,154,.46)', blur: 3 });
     rule(ctx, x, L.personLabelY + 24, 520, .13);
@@ -283,9 +283,9 @@
     write(ctx, lead, ...L.lead, 44, 62, 3, { style: 'italic', fill: 'rgba(250,238,216,.94)' });
     participant(ctx, name);
     if (medal) contain(ctx, medal, ...L.seal);
-    rule(ctx, 1754, 1658, 560, .12);
+    rule(ctx, 1754, 1752, 560, .12);
     write(ctx, motto, ...L.motto, 38, 66, 2, { style: 'italic', fill: 'rgba(255,241,207,.82)' });
-    rule(ctx, 1754, 1858, 560, .10);
+    rule(ctx, 1754, 1940, 560, .10);
 
     metaAt(ctx, 'DATA', '25.05.2026', L.dateMeta[0], L.dateMeta[1], L.dateMeta[2], 35);
     metaAt(ctx, 'MIEJSCE', 'OŚWIĘCIM', L.placeMeta[0], L.placeMeta[1], L.placeMeta[2], 35);
