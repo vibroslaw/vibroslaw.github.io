@@ -66,7 +66,7 @@
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-12`;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-13`;
     script.async = false;
     script.dataset.pr98FinalRhythm = '1';
     script.onload = () => {
