@@ -52,18 +52,38 @@
     }
   }
 
+  function lockButtonUntilFinalRendererLoads() {
+    const button = document.getElementById('printBtn');
+    if (!button) return;
+    const cleanButton = button.cloneNode(true);
+    cleanButton.disabled = true;
+    cleanButton.setAttribute('aria-busy', 'true');
+    cleanButton.dataset.waitingForFinalRenderer = '1';
+    cleanButton.textContent = 'Ładuję finalny generator...';
+    button.replaceWith(cleanButton);
+  }
+
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = '/assets/js/oswiecim-pr98-final-rhythm.js';
-    script.defer = true;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-2`;
+    script.async = false;
     script.dataset.pr98FinalRhythm = '1';
+    script.onload = () => {
+      const button = document.getElementById('printBtn');
+      if (button && button.dataset.waitingForFinalRenderer) {
+        button.disabled = false;
+        button.removeAttribute('aria-busy');
+        button.textContent = 'Pobierz gotowy PDF';
+      }
+    };
     document.body.appendChild(script);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     stylePreview();
+    lockButtonUntilFinalRendererLoads();
     [0, 100, 280].forEach((delay) => window.setTimeout(tunePreview, delay));
-    window.setTimeout(loadFinalRenderer, 320);
+    loadFinalRenderer();
   });
 })();
