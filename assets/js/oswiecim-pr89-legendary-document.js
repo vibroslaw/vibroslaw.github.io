@@ -31,7 +31,7 @@
     centralSeal: { x: 1754, y: 1782, w: 470, h: 470 },
     signature: { x: 1754, y: 2040, w: 620, h: 148 },
     author: { x: 1754, y: 2158 },
-    bottomEventSeal: { x: 1754, y: 2248, w: 2285, h: 230 },
+    bottomEventSeal: { x: 1754, y: 2248, w: 2040, h: 215 },
     bottomRaportSeal: { x: 610, y: 2248, w: 245, h: 245 },
     bottomVeritasSeal: { x: 2898, y: 2248, w: 245, h: 245 },
     micro: { x: 1754, y: 2380, w: 2550 }
@@ -292,7 +292,7 @@
     if (centralSeal) contain(ctx, centralSeal, layout.centralSeal.x, layout.centralSeal.y, layout.centralSeal.w, layout.centralSeal.h);
     if (eventSeal) {
       ctx.save();
-      ctx.globalAlpha = 0.36;
+      ctx.globalAlpha = 0.34;
       containWidth(ctx, eventSeal, layout.bottomEventSeal.x, layout.bottomEventSeal.y, layout.bottomEventSeal.w, layout.bottomEventSeal.h);
       ctx.restore();
     }
@@ -322,9 +322,10 @@
       .qr-participation .field{display:flex!important;flex-direction:column!important;gap:.18rem!important;padding:0!important;border-top:0!important;border-bottom:0!important;align-items:stretch!important;}
       .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.58),rgba(255,235,184,.76),rgba(232,208,154,.58),transparent);order:2;margin:.34rem 0 .18rem!important;}
       .qr-participation .field strong{order:1;color:#faeeca!important;font-size:clamp(.46rem,.76vw,.72rem)!important;line-height:1.14!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:2.15em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;}
+      .qr-participation .field.field-place strong{min-height:3.45em!important;line-height:1.12!important;display:block!important;}
       .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.72)!important;font-size:clamp(.30rem,.54vw,.49rem)!important;line-height:1!important;letter-spacing:.18em!important;}
       .qr-participation .anniversarySealPreview{position:absolute;left:50%;top:71.85%;transform:translate(-50%,-50%);width:13.4%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 14px 34px rgba(0,0,0,.54));}
-      .qr-participation .bottomEventSealWidePreview{position:absolute!important;left:50%;top:90.65%;transform:translate(-50%,-50%);width:65.2%!important;max-width:none!important;opacity:.36!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.50));}
+      .qr-participation .bottomEventSealWidePreview{position:absolute!important;left:50%;top:90.65%;transform:translate(-50%,-50%);width:58.2%!important;max-width:none!important;opacity:.34!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.50));}
       .qr-participation .eventSealMirrorPreview{position:absolute!important;left:17.4%;top:90.65%;transform:translate(-50%,-50%);width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
       .qr-participation .veritasSealPreview{position:absolute!important;left:82.6%;top:90.65%;transform:translate(-50%,-50%);right:auto!important;width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
       .qr-participation .quote{display:none!important;}
@@ -337,8 +338,28 @@
     document.head.appendChild(style);
   }
 
+  function syncPreviewMetadata() {
+    const fields = Array.from(document.querySelectorAll('.qr-participation .field'));
+    if (fields.length < 3) return;
+    const docNo = document.getElementById('num')?.textContent || 'VH-ZU-2026-0525-OSW-0001';
+    const data = [
+      { label: 'DATA', value: '25.05.2026' },
+      { label: 'MIEJSCE', value: 'Małopolska Uczelnia Państwowa<br>im. Witolda Pileckiego<br>w Oświęcimiu', place: true },
+      { label: 'NUMER DOKUMENTU', value: docNo }
+    ];
+    data.forEach((item, index) => {
+      const field = fields[index];
+      const label = field.querySelector('span');
+      const value = field.querySelector('strong');
+      if (item.place) field.classList.add('field-place');
+      if (label) label.textContent = item.label;
+      if (value) value.innerHTML = item.value;
+    });
+  }
+
   function tunePreview() {
     document.querySelectorAll('#doc > canvas[aria-hidden="true"], .qr-calibration-note, .topVeritasSealPreview').forEach((el) => el.remove());
+    syncPreviewMetadata();
     const titleText = document.querySelector('.qr-participation .titleText');
     if (titleText) {
       const img = document.createElement('img');
