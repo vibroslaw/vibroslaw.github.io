@@ -142,11 +142,14 @@
   }
 
   function meta(ctx, label, value, x, width, size = 31, maxLines = 2, lineHeight = 35) {
-    wrapped(ctx, value, x, layout.metaValueY, width - 18, size, lineHeight, maxLines, {
-      fill: '#faeeca',
-      family: 'Georgia, Times New Roman, serif',
-      weight: 400
-    });
+    setFont(ctx, size, 'Georgia, Times New Roman, serif', 400);
+    ctx.fillStyle = '#faeeca';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    const lines = wrapLines(ctx, value, width - 18).slice(0, maxLines);
+    const lastLineY = layout.metaRuleY - 24;
+    const firstLineY = lastLineY - Math.max(lines.length - 1, 0) * lineHeight;
+    lines.forEach((line, index) => ctx.fillText(line, x, firstLineY + index * lineHeight));
     drawRule(ctx, x, layout.metaRuleY, width, .44);
     glowText(ctx, label, x, layout.metaLabelY, {
       size: 21,
