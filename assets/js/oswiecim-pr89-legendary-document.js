@@ -171,7 +171,7 @@
   function loadFinalRenderer() {
     if (document.querySelector('script[data-pr98-final-rhythm]')) return;
     const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-16-mobile-edge`;
+    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-17-final-hierarchy`;
     script.async = false;
     script.dataset.pr98FinalRhythm = '1';
     script.onload = () => {
