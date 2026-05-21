@@ -17,15 +17,16 @@
   const L = {
     title: [1754, 480, 2860, 628],
     lead: [1754, 910, 2480],
-    seal: [1754, 1325, 535, 535],
-    motto: [1754, 1705, 1840],
-    person: [1754, 1865, 2300],
+    person: [1754, 1142, 2140],
+    personLabelY: 1196,
+    seal: [1754, 1390, 505, 505],
+    motto: [1754, 1745, 1840],
     dateMeta: [715, 2038, 620],
     placeMeta: [2793, 2038, 620],
-    author: [1754, 2115],
-    sig: [1754, 2184, 485, 112],
-    docNo: [1754, 2290, 900],
-    docNoLabelY: 2318,
+    author: [1754, 2098],
+    sig: [1754, 2164, 485, 112],
+    docNo: [1754, 2296, 900],
+    docNoLabelY: 2324,
     leftSeal: [715, 2284, 214, 214],
     rightSeal: [2793, 2284, 214, 214]
   };
@@ -177,6 +178,15 @@
     rule(ctx, x, valueY + 23, w, .34);
     glow(ctx, label, x, valueY + 52, { size: 18, fill: 'rgba(232,208,154,.62)', blur: 4 });
   }
+  function participant(ctx, value) {
+    const [x, y, w] = L.person;
+    const text = String(value || '').trim();
+    if (!text) return;
+    const size = fit(ctx, text, w, 66, 40);
+    glow(ctx, text, x, y, { size, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', blur: 12 });
+    glow(ctx, 'UCZESTNIK PROJEKCJI', x, L.personLabelY, { size: 16, fill: 'rgba(232,208,154,.46)', blur: 3 });
+    rule(ctx, x, L.personLabelY + 24, 520, .13);
+  }
   function docNumber(ctx, value) {
     const [x, y, w] = L.docNo;
     const valueSize = fitMetaSize(ctx, value, w - 24, 28, 22);
@@ -271,11 +281,11 @@
     else glow(ctx, 'ZAPIS UCZESTNICTWA', 1754, 565, { size: 204, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', blur: 32 });
     rule(ctx, 1754, 808, 1240, .16);
     write(ctx, lead, ...L.lead, 44, 62, 3, { style: 'italic', fill: 'rgba(250,238,216,.94)' });
+    participant(ctx, name);
     if (medal) contain(ctx, medal, ...L.seal);
-    rule(ctx, 1754, 1640, 560, .12);
+    rule(ctx, 1754, 1658, 560, .12);
     write(ctx, motto, ...L.motto, 38, 66, 2, { style: 'italic', fill: 'rgba(255,241,207,.82)' });
-    rule(ctx, 1754, 1818, 560, .10);
-    if (name) glow(ctx, `Dla: ${name}`, L.person[0], L.person[1], { size: fit(ctx, `Dla: ${name}`, L.person[2], 64, 38), family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', blur: 11 });
+    rule(ctx, 1754, 1858, 560, .10);
 
     metaAt(ctx, 'DATA', '25.05.2026', L.dateMeta[0], L.dateMeta[1], L.dateMeta[2], 35);
     metaAt(ctx, 'MIEJSCE', 'OŚWIĘCIM', L.placeMeta[0], L.placeMeta[1], L.placeMeta[2], 35);
