@@ -29,8 +29,8 @@
     metaRuleY: 1466,
     metaLabelY: 1498,
     centralSeal: { x: 1754, y: 1782, w: 470, h: 470 },
-    signature: { x: 1754, y: 2040, w: 620, h: 148 },
-    author: { x: 1754, y: 2158 },
+    signature: { x: 1754, y: 2078, w: 470, h: 104 },
+    author: { x: 1754, y: 2164 },
     bottomEventSeal: { x: 1754, y: 2248, w: 2040, h: 215 },
     bottomRaportSeal: { x: 610, y: 2248, w: 245, h: 245 },
     bottomVeritasSeal: { x: 2898, y: 2248, w: 245, h: 245 },
@@ -301,9 +301,14 @@
     }
     if (raportSeal) contain(ctx, raportSeal, layout.bottomRaportSeal.x, layout.bottomRaportSeal.y, layout.bottomRaportSeal.w, layout.bottomRaportSeal.h);
     if (vhSeal) contain(ctx, vhSeal, layout.bottomVeritasSeal.x, layout.bottomVeritasSeal.y, layout.bottomVeritasSeal.w, layout.bottomVeritasSeal.h);
-    if (signature) contain(ctx, signature, layout.signature.x, layout.signature.y, layout.signature.w, layout.signature.h);
-    drawRule(ctx, 1754, 2130, 1220, .30);
-    glowText(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', layout.author.x, layout.author.y, { size: 24, fill: 'rgba(232,208,154,.70)', shadowBlur: 8 });
+    if (signature) {
+      ctx.save();
+      ctx.globalAlpha = 0.72;
+      contain(ctx, signature, layout.signature.x, layout.signature.y, layout.signature.w, layout.signature.h);
+      ctx.restore();
+    }
+    drawRule(ctx, 1754, 2130, 1220, .24);
+    glowText(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', layout.author.x, layout.author.y, { size: 18, fill: 'rgba(232,208,154,.52)', shadowBlur: 5 });
     wrapped(ctx, 'Pamiątkowy dokument od autora projektu · nie jest dyplomem ani dokumentem urzędowym · wygenerowany lokalnie w przeglądarce uczestnika.', layout.micro.x, layout.micro.y, layout.micro.w, 18, 29, 2, { family: 'Arial, sans-serif', weight: 700, fill: 'rgba(232,208,154,.48)' });
 
     calibration(ctx);
@@ -332,9 +337,9 @@
       .qr-participation .eventSealMirrorPreview{position:absolute!important;left:17.4%;top:90.65%;transform:translate(-50%,-50%);width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
       .qr-participation .veritasSealPreview{position:absolute!important;left:82.6%;top:90.65%;transform:translate(-50%,-50%);right:auto!important;width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
       .qr-participation .quote{display:none!important;}
-      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:82.3%;transform:translate(-50%,-50%);margin:0!important;width:37%;}
-      .qr-participation .sig{width:86%!important;max-height:none!important;}
-      .qr-participation .author{font-size:clamp(.35rem,.66vw,.60rem)!important;color:rgba(232,208,154,.70)!important;}
+      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:83.8%;transform:translate(-50%,-50%);margin:0!important;width:30%;opacity:.76!important;}
+      .qr-participation .sig{width:72%!important;max-height:none!important;}
+      .qr-participation .author{font-size:clamp(.27rem,.48vw,.43rem)!important;color:rgba(232,208,154,.52)!important;}
       .qr-participation .micro{position:absolute;left:50%;top:95.95%;transform:translate(-50%,-50%);width:76%;max-width:none!important;margin:0!important;color:rgba(232,208,154,.48)!important;}
       .qr-participation #doc > canvas[aria-hidden='true'],.qr-calibration-note{display:none!important;opacity:0!important;visibility:hidden!important;}
     `;
