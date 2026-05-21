@@ -33,13 +33,30 @@
   const motto = 'Prawda nie kończy się w dokumencie.\nZaczyna się w sumieniu.';
   const assetCache = new Map();
 
-  function mobileSafeMode() {
+  function lowMemoryPhone() {
     return window.matchMedia?.('(max-width: 760px)').matches && (navigator.deviceMemory || 4) <= 2;
   }
-  function updateStatus(text, visible = true) {
+  function constrainedPhone() {
+    return window.matchMedia?.('(max-width: 420px)').matches && (navigator.deviceMemory || 4) <= 3;
+  }
+  function safeScale() {
+    if (lowMemoryPhone()) return 0.72;
+    if (constrainedPhone()) return 0.82;
+    return 0.88;
+  }
+  function updateStatus(text, visible = true, linkUrl = '') {
     const status = document.querySelector('.qr-mobile-status');
     if (!status) return;
-    status.textContent = text;
+    status.textContent = '';
+    status.appendChild(document.createTextNode(text));
+    if (linkUrl) {
+      const link = document.createElement('a');
+      link.href = linkUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = ' Otwórz PDF';
+      status.appendChild(link);
+    }
     status.classList.toggle('is-visible', visible);
   }
   const load = (src) => {
@@ -169,7 +186,9 @@
     return out;
   }
   function pdf(canvas, quality = .96) {
-    const data = atob(canvas.toDataURL('image/jpeg', quality).split(',')[1]);
+    const dataUrl = canvas.toDataURL('image/jpeg', quality);
+    if (!dataUrl || !dataUrl.includes(',')) throw new Error('PDF image export failed');
+    const data = atob(dataUrl.split(',')[1]);
     const jpg = new Uint8Array(data.length);
     for (let i = 0; i < data.length; i += 1) jpg[i] = data.charCodeAt(i);
     const mm = 72 / 25.4;
@@ -200,11 +219,11 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-      setTimeout(() => {
-        updateStatus('PDF został przygotowany. Gdyby pobieranie nie ruszyło, otwórz plik w nowej karcie i wybierz „Zapisz”.', true);
-      }, 900);
+      updateStatus('PDF został przygotowany.', true, url);
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    } else {
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
     }
   }
   function safe(value) {
@@ -212,11 +231,12 @@
   }
 
   async function renderFinal(options = {}) {
-    const scale = options.safe ? 0.82 : 1;
+    const scale = options.safe ? safeScale() : 1;
     const canvas = document.createElement('canvas');
     canvas.width = Math.round(doc.w * scale);
     canvas.height = Math.round(doc.h * scale);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) throw new Error('Canvas unavailable');
     if (scale !== 1) ctx.scale(scale, scale);
     updateStatus('Przygotowuję elementy dokumentu…');
     const [bg, texture, title, raport, medal, vh, sig] = await Promise.all([
@@ -274,16 +294,17 @@
       button.textContent = 'Przygotowuję dokument…';
       try {
         let result;
+        const preferSafe = lowMemoryPhone();
         try {
-          result = await renderFinal({ safe: false });
+          result = await renderFinal({ safe: preferSafe });
         } catch (firstError) {
           console.warn(firstError);
           updateStatus('Przygotowuję lżejszą wersję zgodną z Twoim urządzeniem…');
           result = await renderFinal({ safe: true });
         }
         updateStatus('Finalizuję PDF…');
-        save(pdf(result.canvas, result.safe ? .92 : .96), `Zapis-Uczestnictwa-Oswiecim-${safe(result.name)}.pdf`);
-        updateStatus('Gotowe. Dokument został przygotowany.', true);
+        save(pdf(result.canvas, result.safe ? .90 : .96), `Zapis-Uczestnictwa-Oswiecim-${safe(result.name)}.pdf`);
+        if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) updateStatus('Gotowe. Dokument został przygotowany.', true);
         document.querySelector('[data-qr-modal]')?.classList.add('is-open');
       } catch (error) {
         console.error(error);
@@ -296,7 +317,7 @@
       }
     }, { capture: true });
     window.__oswFinalRendererBound = true;
-    if (mobileSafeMode()) updateStatus('Generator działa w trybie zgodnym ze słabszym urządzeniem.', true);
+    if (lowMemoryPhone()) updateStatus('Generator uruchomi lżejszą wersję zgodną ze słabszym telefonem.', true);
   }
 
   function runBindFinalNow() {
