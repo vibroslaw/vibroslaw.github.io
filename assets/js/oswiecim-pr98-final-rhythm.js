@@ -208,6 +208,10 @@
     const old = document.getElementById('printBtn');
     if (!old) return;
     const button = old.cloneNode(true);
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    delete button.dataset.waitingForFinalRenderer;
+    button.textContent = 'Pobierz gotowy PDF';
     old.replaceWith(button);
     button.addEventListener('click', async (event) => {
       event.preventDefault();
@@ -228,7 +232,18 @@
         button.textContent = original;
       }
     });
+    window.__raportFinalPdfRendererBound = true;
   }
 
-  document.addEventListener('DOMContentLoaded', () => window.setTimeout(bindFinal, 500));
+  function bootFinalRenderer() {
+    window.setTimeout(bindFinal, 0);
+    window.setTimeout(bindFinal, 150);
+    window.setTimeout(bindFinal, 500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootFinalRenderer, { once: true });
+  } else {
+    bootFinalRenderer();
+  }
 })();
