@@ -25,17 +25,17 @@
     intro: { x: 1754, y: 790, w: 2630 },
     body: { x: 1754, y: 975, w: 2680 },
     participantName: { x: 1754, y: 1208, w: 2300 },
-    metaValueY: 1360,
     metaRuleY: 1466,
     metaLabelY: 1498,
     centralSeal: { x: 1754, y: 1782, w: 470, h: 470 },
-    signature: { x: 1754, y: 2040, w: 620, h: 148 },
-    author: { x: 1754, y: 2158 },
+    signature: { x: 1754, y: 2086, w: 430, h: 96 },
+    author: { x: 1754, y: 2164 },
     bottomEventSeal: { x: 1754, y: 2248, w: 2040, h: 215 },
     bottomRaportSeal: { x: 610, y: 2248, w: 245, h: 245 },
-    bottomVeritasSeal: { x: 2898, y: 2248, w: 245, h: 245 },
-    micro: { x: 1754, y: 2380, w: 2550 }
+    bottomVeritasSeal: { x: 2898, y: 2248, w: 245, h: 245 }
   };
+
+  const legalNote = 'Pamiątkowy dokument od autora projektu · nie jest dyplomem ani dokumentem urzędowym · generowany lokalnie w przeglądarce uczestnika.';
 
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -126,15 +126,15 @@
     return min;
   }
 
-  function drawRule(ctx, x, y, w, alpha = .45) {
+  function drawRule(ctx, x, y, w, alpha = .48) {
     const grad = ctx.createLinearGradient(x - w / 2, y, x + w / 2, y);
     grad.addColorStop(0, 'rgba(232,208,154,0)');
     grad.addColorStop(.16, `rgba(232,208,154,${alpha})`);
-    grad.addColorStop(.5, `rgba(255,235,184,${Math.min(alpha + .20, .82)})`);
+    grad.addColorStop(.5, `rgba(255,235,184,${Math.min(alpha + .18, .84)})`);
     grad.addColorStop(.84, `rgba(232,208,154,${alpha})`);
     grad.addColorStop(1, 'rgba(232,208,154,0)');
     ctx.strokeStyle = grad;
-    ctx.lineWidth = 2.6;
+    ctx.lineWidth = 2.7;
     ctx.beginPath();
     ctx.moveTo(x - w / 2, y);
     ctx.lineTo(x + w / 2, y);
@@ -143,20 +143,20 @@
 
   function meta(ctx, label, value, x, width, size = 31, maxLines = 2, lineHeight = 35) {
     setFont(ctx, size, 'Georgia, Times New Roman, serif', 400);
-    ctx.fillStyle = '#faeeca';
+    ctx.fillStyle = '#fff1cf';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     const lines = wrapLines(ctx, value, width - 18).slice(0, maxLines);
-    const lastLineY = layout.metaRuleY - 24;
+    const lastLineY = layout.metaRuleY - 22;
     const firstLineY = lastLineY - Math.max(lines.length - 1, 0) * lineHeight;
     lines.forEach((line, index) => ctx.fillText(line, x, firstLineY + index * lineHeight));
-    drawRule(ctx, x, layout.metaRuleY, width, .44);
+    drawRule(ctx, x, layout.metaRuleY, width, .47);
     glowText(ctx, label, x, layout.metaLabelY, {
-      size: 21,
+      size: 22,
       family: 'Arial, sans-serif',
       weight: 700,
-      fill: 'rgba(232,208,154,.70)',
-      shadowBlur: 7
+      fill: 'rgba(232,208,154,.74)',
+      shadowBlur: 6
     });
   }
 
@@ -288,9 +288,9 @@
       glowText(ctx, text, layout.participantName.x, layout.participantName.y, { size, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', shadowBlur: 18 });
     }
 
-    meta(ctx, 'DATA', '25.05.2026', 880, 720, 38, 1, 35);
-    meta(ctx, 'MIEJSCE', 'Małopolska Uczelnia Państwowa\nim. Witolda Pileckiego\nw Oświęcimiu', 1754, 930, 29, 3, 33);
-    meta(ctx, 'NUMER DOKUMENTU', docNo, 2628, 720, 34, 1, 35);
+    meta(ctx, 'DATA', '25.05.2026', 880, 720, 40, 1, 35);
+    meta(ctx, 'MIEJSCE', 'Małopolska Uczelnia Państwowa\nim. Witolda Pileckiego\nw Oświęcimiu', 1754, 930, 31, 3, 35);
+    meta(ctx, 'NUMER DOKUMENTU', docNo, 2628, 720, 36, 1, 35);
 
     if (centralSeal) contain(ctx, centralSeal, layout.centralSeal.x, layout.centralSeal.y, layout.centralSeal.w, layout.centralSeal.h);
     if (eventSeal) {
@@ -301,10 +301,14 @@
     }
     if (raportSeal) contain(ctx, raportSeal, layout.bottomRaportSeal.x, layout.bottomRaportSeal.y, layout.bottomRaportSeal.w, layout.bottomRaportSeal.h);
     if (vhSeal) contain(ctx, vhSeal, layout.bottomVeritasSeal.x, layout.bottomVeritasSeal.y, layout.bottomVeritasSeal.w, layout.bottomVeritasSeal.h);
-    if (signature) contain(ctx, signature, layout.signature.x, layout.signature.y, layout.signature.w, layout.signature.h);
-    drawRule(ctx, 1754, 2130, 1220, .30);
-    glowText(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', layout.author.x, layout.author.y, { size: 24, fill: 'rgba(232,208,154,.70)', shadowBlur: 8 });
-    wrapped(ctx, 'Pamiątkowy dokument od autora projektu · nie jest dyplomem ani dokumentem urzędowym · wygenerowany lokalnie w przeglądarce uczestnika.', layout.micro.x, layout.micro.y, layout.micro.w, 18, 29, 2, { family: 'Arial, sans-serif', weight: 700, fill: 'rgba(232,208,154,.48)' });
+    if (signature) {
+      ctx.save();
+      ctx.globalAlpha = 0.70;
+      contain(ctx, signature, layout.signature.x, layout.signature.y, layout.signature.w, layout.signature.h);
+      ctx.restore();
+    }
+    drawRule(ctx, 1754, 2130, 1220, .22);
+    glowText(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', layout.author.x, layout.author.y, { size: 18, fill: 'rgba(232,208,154,.50)', shadowBlur: 5 });
 
     calibration(ctx);
     return { canvas, name };
@@ -324,18 +328,17 @@
       .qr-participation .fields{position:absolute!important;left:50%;top:58.9%;transform:translate(-50%,-50%);width:79.5%!important;margin:0!important;grid-template-columns:.95fr 1.35fr .95fr!important;gap:clamp(.85rem,1.9vw,1.55rem)!important;}
       .qr-participation .field{display:flex!important;flex-direction:column!important;gap:.18rem!important;padding:0!important;border-top:0!important;border-bottom:0!important;align-items:stretch!important;}
       .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.58),rgba(255,235,184,.76),rgba(232,208,154,.58),transparent);order:2;margin:.34rem 0 .18rem!important;}
-      .qr-participation .field strong{order:1;color:#faeeca!important;font-size:clamp(.46rem,.76vw,.72rem)!important;line-height:1.14!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:2.15em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;}
-      .qr-participation .field.field-place strong{min-height:3.45em!important;line-height:1.12!important;display:block!important;}
-      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.72)!important;font-size:clamp(.30rem,.54vw,.49rem)!important;line-height:1!important;letter-spacing:.18em!important;}
+      .qr-participation .field strong{order:1;color:#fff1cf!important;font-size:clamp(.49rem,.81vw,.78rem)!important;line-height:1.14!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:2.15em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;}
+      .qr-participation .field.field-place strong{min-height:3.45em!important;line-height:1.14!important;display:block!important;}
+      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.74)!important;font-size:clamp(.31rem,.56vw,.51rem)!important;line-height:1!important;letter-spacing:.18em!important;}
       .qr-participation .anniversarySealPreview{position:absolute;left:50%;top:71.85%;transform:translate(-50%,-50%);width:13.4%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 14px 34px rgba(0,0,0,.54));}
       .qr-participation .bottomEventSealWidePreview{position:absolute!important;left:50%;top:90.65%;transform:translate(-50%,-50%);width:58.2%!important;max-width:none!important;opacity:.34!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.50));}
       .qr-participation .eventSealMirrorPreview{position:absolute!important;left:17.4%;top:90.65%;transform:translate(-50%,-50%);width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
       .qr-participation .veritasSealPreview{position:absolute!important;left:82.6%;top:90.65%;transform:translate(-50%,-50%);right:auto!important;width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
-      .qr-participation .quote{display:none!important;}
-      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:82.3%;transform:translate(-50%,-50%);margin:0!important;width:37%;}
-      .qr-participation .sig{width:86%!important;max-height:none!important;}
-      .qr-participation .author{font-size:clamp(.35rem,.66vw,.60rem)!important;color:rgba(232,208,154,.70)!important;}
-      .qr-participation .micro{position:absolute;left:50%;top:95.95%;transform:translate(-50%,-50%);width:76%;max-width:none!important;margin:0!important;color:rgba(232,208,154,.48)!important;}
+      .qr-participation .quote,.qr-participation .micro{display:none!important;}
+      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:83.9%;transform:translate(-50%,-50%);margin:0!important;width:28%;opacity:.72!important;}
+      .qr-participation .sig{width:68%!important;max-height:none!important;}
+      .qr-participation .author{font-size:clamp(.27rem,.48vw,.43rem)!important;color:rgba(232,208,154,.50)!important;}
       .qr-participation #doc > canvas[aria-hidden='true'],.qr-calibration-note{display:none!important;opacity:0!important;visibility:hidden!important;}
     `;
     document.head.appendChild(style);
@@ -360,9 +363,20 @@
     });
   }
 
+  function moveLegalNoteToPage() {
+    if (document.querySelector('.qr-print-legal-note')) return;
+    const target = document.querySelector('.qr-privacy-note') || document.querySelector('.panel .note');
+    if (!target) return;
+    const note = document.createElement('span');
+    note.className = 'qr-print-legal-note';
+    note.textContent = ` ${legalNote}`;
+    target.appendChild(note);
+  }
+
   function tunePreview() {
     document.querySelectorAll('#doc > canvas[aria-hidden="true"], .qr-calibration-note, .topVeritasSealPreview').forEach((el) => el.remove());
     syncPreviewMetadata();
+    moveLegalNoteToPage();
     const titleText = document.querySelector('.qr-participation .titleText');
     if (titleText) {
       const img = document.createElement('img');
