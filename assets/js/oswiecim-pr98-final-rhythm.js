@@ -15,14 +15,14 @@
     signature: '/public/assets/reports/author-signature-gold.svg'
   };
   const L = {
-    title: [1754, 400, 2940, 670],
-    lead: [1754, 840, 2500],
-    seal: [1754, 1245, 590, 590],
-    motto: [1754, 1585, 1860],
-    person: [1754, 1765, 2300],
-    metaY: 1995,
-    metaLabelY: 2023,
-    author: [1754, 2115],
+    title: [1754, 405, 2940, 670],
+    lead: [1754, 850, 2520],
+    seal: [1754, 1248, 590, 590],
+    motto: [1754, 1588, 1860],
+    person: [1754, 1768, 2300],
+    metaY: 1992,
+    metaLabelY: 2020,
+    author: [1754, 2114],
     sig: [1754, 2190, 500, 116],
     leftSeal: [610, 2248, 245, 245],
     rightSeal: [2898, 2248, 245, 245]
@@ -106,12 +106,20 @@
     ctx.lineTo(x + w / 2, y);
     ctx.stroke();
   }
+  function fitMetaSize(ctx, value, maxW, start, min) {
+    for (let s = start; s >= min; s -= 1) {
+      font(ctx, s);
+      if (ctx.measureText(value).width <= maxW) return s;
+    }
+    return min;
+  }
   function meta(ctx, label, value, x, w, size) {
-    font(ctx, size);
+    const valueSize = fitMetaSize(ctx, value, w - 24, size, 26);
+    font(ctx, valueSize);
     ctx.fillStyle = '#fff0ca';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
-    split(ctx, value, w - 18).slice(0, 1).forEach((line) => ctx.fillText(line, x, L.metaY - 20));
+    ctx.fillText(value, x, L.metaY - 20);
     rule(ctx, x, L.metaY, w, .38);
     glow(ctx, label, x, L.metaLabelY, { size: 18, fill: 'rgba(232,208,154,.62)', blur: 4 });
   }
@@ -175,7 +183,7 @@
     ]);
     cover(ctx, bg, 0, 0, doc.w, doc.h);
     if (texture) { ctx.save(); ctx.globalAlpha = .12; ctx.globalCompositeOperation = 'soft-light'; cover(ctx, texture, 0, 0, doc.w, doc.h); ctx.restore(); }
-    let aura = ctx.createRadialGradient(1754, 410, 80, 1754, 410, 760);
+    let aura = ctx.createRadialGradient(1754, 415, 80, 1754, 415, 760);
     aura.addColorStop(0, 'rgba(255,232,174,.11)'); aura.addColorStop(.5, 'rgba(255,232,174,.026)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
     aura = ctx.createRadialGradient(L.seal[0], L.seal[1], 95, L.seal[0], L.seal[1], 740);
     aura.addColorStop(0, 'rgba(255,232,174,.115)'); aura.addColorStop(.42, 'rgba(255,232,174,.028)'); aura.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = aura; ctx.fillRect(0, 0, doc.w, doc.h);
@@ -186,17 +194,17 @@
     const no = `VH-ZU-2026-0525-OSW-${seq}`;
 
     if (title) contain(ctx, title, ...L.title);
-    else glow(ctx, 'ZAPIS UCZESTNICTWA', 1754, 490, { size: 214, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', blur: 34 });
-    rule(ctx, 1754, 752, 1340, .22);
+    else glow(ctx, 'ZAPIS UCZESTNICTWA', 1754, 495, { size: 214, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#f4dfad', blur: 34 });
+    rule(ctx, 1754, 756, 1340, .22);
     write(ctx, lead, ...L.lead, 46, 62, 3, { style: 'italic', fill: 'rgba(250,238,216,.96)' });
     if (medal) contain(ctx, medal, ...L.seal);
     rule(ctx, 1754, 1550, 610, .15);
     write(ctx, motto, ...L.motto, 39, 66, 2, { style: 'italic', fill: 'rgba(255,241,207,.84)' });
     rule(ctx, 1754, 1740, 610, .12);
     if (name) glow(ctx, `Dla: ${name}`, L.person[0], L.person[1], { size: fit(ctx, `Dla: ${name}`, L.person[2], 68, 40), family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', blur: 12 });
-    meta(ctx, 'DATA', '25.05.2026', 650, 540, 36);
-    meta(ctx, 'NUMER DOKUMENTU', no, 1754, 780, 32);
-    meta(ctx, 'MIEJSCE', 'OŚWIĘCIM', 2858, 540, 36);
+    meta(ctx, 'DATA', '25.05.2026', 650, 660, 36);
+    meta(ctx, 'NUMER DOKUMENTU', no, 1754, 900, 34);
+    meta(ctx, 'MIEJSCE', 'OŚWIĘCIM', 2858, 620, 36);
     glow(ctx, 'PIOTR JAKUB LICHWAŁA · AUTOR PROJEKTU', ...L.author, { size: 14, fill: 'rgba(232,208,154,.40)', blur: 3 });
     if (sig) { ctx.save(); ctx.globalAlpha = .68; contain(ctx, sig, ...L.sig); ctx.restore(); }
     if (raport) contain(ctx, raport, ...L.leftSeal);
@@ -215,7 +223,7 @@
       const original = button.textContent;
       button.disabled = true;
       button.setAttribute('aria-busy', 'true');
-      button.textContent = 'Przygotowuję wersję finalną...';
+      button.textContent = 'Przygotowuję kompletną wersję finalną...';
       try {
         const { canvas, name } = await renderFinal();
         save(pdf(canvas), `Zapis-Uczestnictwa-Oswiecim-${safe(name)}.pdf`);
