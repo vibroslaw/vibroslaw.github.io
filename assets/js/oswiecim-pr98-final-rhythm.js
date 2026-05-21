@@ -211,6 +211,7 @@
     old.replaceWith(button);
     button.addEventListener('click', async (event) => {
       event.preventDefault();
+      event.stopImmediatePropagation();
       const original = button.textContent;
       button.disabled = true;
       button.setAttribute('aria-busy', 'true');
@@ -227,8 +228,18 @@
         button.removeAttribute('aria-busy');
         button.textContent = original;
       }
-    });
+    }, { capture: true });
+    window.__oswFinalRendererBound = true;
   }
 
-  document.addEventListener('DOMContentLoaded', () => window.setTimeout(bindFinal, 500));
+  function runBindFinalNow() {
+    if (window.__oswFinalRendererBound) return;
+    bindFinal();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runBindFinalNow, { once: true });
+  } else {
+    runBindFinalNow();
+  }
 })();
