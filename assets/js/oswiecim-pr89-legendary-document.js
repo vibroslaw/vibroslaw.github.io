@@ -21,20 +21,20 @@
   };
 
   const layout = {
-    title: { x: 1754, y: 395, w: 3260, h: 780 },
-    intro: { x: 1754, y: 790, w: 2650 },
+    title: { x: 1754, y: 385, w: 3280, h: 800 },
+    intro: { x: 1754, y: 790, w: 2630 },
     body: { x: 1754, y: 975, w: 2680 },
-    participantName: { x: 1754, y: 1222, w: 2300 },
-    metaValueY: 1394,
-    metaRuleY: 1482,
-    metaLabelY: 1549,
+    participantName: { x: 1754, y: 1208, w: 2300 },
+    metaValueY: 1360,
+    metaRuleY: 1466,
+    metaLabelY: 1498,
     centralSeal: { x: 1754, y: 1782, w: 470, h: 470 },
-    signature: { x: 1754, y: 2042, w: 620, h: 148 },
-    author: { x: 1754, y: 2162 },
-    bottomEventSeal: { x: 1754, y: 2256, w: 2310, h: 260 },
-    bottomRaportSeal: { x: 650, y: 2248, w: 255, h: 255 },
-    bottomVeritasSeal: { x: 2858, y: 2248, w: 255, h: 255 },
-    micro: { x: 1754, y: 2378, w: 2550 }
+    signature: { x: 1754, y: 2040, w: 620, h: 148 },
+    author: { x: 1754, y: 2158 },
+    bottomEventSeal: { x: 1754, y: 2248, w: 2040, h: 215 },
+    bottomRaportSeal: { x: 610, y: 2248, w: 245, h: 245 },
+    bottomVeritasSeal: { x: 2898, y: 2248, w: 245, h: 245 },
+    micro: { x: 1754, y: 2380, w: 2550 }
   };
 
   function loadImage(src) {
@@ -89,19 +89,22 @@
   }
 
   function wrapLines(ctx, text, maxWidth) {
-    const words = String(text || '').split(/\s+/).filter(Boolean);
+    const segments = String(text || '').split(/\n+/);
     const lines = [];
-    let line = '';
-    words.forEach((word) => {
-      const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > maxWidth && line) {
-        lines.push(line);
-        line = word;
-      } else {
-        line = test;
-      }
+    segments.forEach((segment) => {
+      const words = segment.split(/\s+/).filter(Boolean);
+      let line = '';
+      words.forEach((word) => {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      });
+      if (line) lines.push(line);
     });
-    if (line) lines.push(line);
     return lines;
   }
 
@@ -138,19 +141,22 @@
     ctx.stroke();
   }
 
-  function meta(ctx, label, value, x, width, size = 31, maxLines = 2) {
-    wrapped(ctx, value, x, layout.metaValueY, width - 12, size, 36, maxLines, {
-      fill: '#faeeca',
-      family: 'Georgia, Times New Roman, serif',
-      weight: 400
-    });
+  function meta(ctx, label, value, x, width, size = 31, maxLines = 2, lineHeight = 35) {
+    setFont(ctx, size, 'Georgia, Times New Roman, serif', 400);
+    ctx.fillStyle = '#faeeca';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    const lines = wrapLines(ctx, value, width - 18).slice(0, maxLines);
+    const lastLineY = layout.metaRuleY - 24;
+    const firstLineY = lastLineY - Math.max(lines.length - 1, 0) * lineHeight;
+    lines.forEach((line, index) => ctx.fillText(line, x, firstLineY + index * lineHeight));
     drawRule(ctx, x, layout.metaRuleY, width, .44);
     glowText(ctx, label, x, layout.metaLabelY, {
-      size: 23,
+      size: 21,
       family: 'Arial, sans-serif',
       weight: 700,
-      fill: 'rgba(232,208,154,.68)',
-      shadowBlur: 8
+      fill: 'rgba(232,208,154,.70)',
+      shadowBlur: 7
     });
   }
 
@@ -242,13 +248,13 @@
     cover(ctx, bg, 0, 0, doc.w, doc.h);
     if (texture) {
       ctx.save();
-      ctx.globalAlpha = 0.14;
+      ctx.globalAlpha = 0.12;
       ctx.globalCompositeOperation = 'soft-light';
       cover(ctx, texture, 0, 0, doc.w, doc.h);
       ctx.restore();
     }
 
-    const titleAura = ctx.createRadialGradient(1754, 400, 80, 1754, 400, 980);
+    const titleAura = ctx.createRadialGradient(1754, 390, 80, 1754, 390, 980);
     titleAura.addColorStop(0, 'rgba(255,232,174,.13)');
     titleAura.addColorStop(.50, 'rgba(255,232,174,.032)');
     titleAura.addColorStop(1, 'rgba(0,0,0,0)');
@@ -282,14 +288,14 @@
       glowText(ctx, text, layout.participantName.x, layout.participantName.y, { size, family: 'Georgia, Times New Roman, serif', weight: 400, fill: '#fff0bd', shadowBlur: 18 });
     }
 
-    meta(ctx, 'DATA WYDARZENIA', '25.05.2026', 780, 830, 36, 1);
-    meta(ctx, 'MIEJSCE', 'Małopolska Uczelnia Państwowa im. Witolda Pileckiego w Oświęcimiu', 1754, 980, 30, 3);
-    meta(ctx, 'NUMER DOKUMENTU', docNo, 2728, 830, 34, 1);
+    meta(ctx, 'DATA', '25.05.2026', 880, 720, 38, 1, 35);
+    meta(ctx, 'MIEJSCE', 'Małopolska Uczelnia Państwowa\nim. Witolda Pileckiego\nw Oświęcimiu', 1754, 930, 29, 3, 33);
+    meta(ctx, 'NUMER DOKUMENTU', docNo, 2628, 720, 34, 1, 35);
 
     if (centralSeal) contain(ctx, centralSeal, layout.centralSeal.x, layout.centralSeal.y, layout.centralSeal.w, layout.centralSeal.h);
     if (eventSeal) {
       ctx.save();
-      ctx.globalAlpha = 0.46;
+      ctx.globalAlpha = 0.34;
       containWidth(ctx, eventSeal, layout.bottomEventSeal.x, layout.bottomEventSeal.y, layout.bottomEventSeal.w, layout.bottomEventSeal.h);
       ctx.restore();
     }
@@ -307,35 +313,56 @@
   function stylePreview() {
     const style = document.createElement('style');
     style.textContent = `
-      .qr-participation .doc-bg::after{content:"";position:absolute;inset:0;background:url('/public/assets/reports/certificate-dark-texture.webp') center/cover no-repeat;opacity:.14;mix-blend-mode:soft-light;pointer-events:none;}
+      .qr-participation .doc-bg::after{content:"";position:absolute;inset:0;background:url('/public/assets/reports/certificate-dark-texture.webp') center/cover no-repeat;opacity:.12;mix-blend-mode:soft-light;pointer-events:none;}
       .qr-participation .doc-content{inset:0!important;display:block!important;text-align:center!important;font-family:Georgia,'Times New Roman',serif!important;}
       .qr-participation .topline,.qr-participation .subTitle,.qr-participation .topVeritasSealPreview{display:none!important;}
       .qr-participation .seal{display:none!important;}
-      .qr-participation .titlePlate{position:absolute;left:50%;top:15.95%;transform:translate(-50%,-50%);width:93.0%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 28px 54px rgba(0,0,0,.66));}
+      .qr-participation .titlePlate{position:absolute;left:50%;top:15.55%;transform:translate(-50%,-50%);width:93.5%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 28px 54px rgba(0,0,0,.66));}
       .qr-participation .memorialLine{position:absolute;left:50%;top:31.85%;transform:translate(-50%,-50%);width:78%;max-width:none!important;font-size:clamp(.70rem,1.18vw,1.15rem)!important;margin:0!important;}
       .qr-participation .mainCopy{position:absolute;left:50%;top:40.0%;transform:translate(-50%,-50%);width:80%;max-width:none!important;font-size:clamp(.61rem,1.06vw,1rem)!important;margin:0!important;}
-      .qr-participation .for{position:absolute;left:50%;top:49.3%;transform:translate(-50%,-50%);width:72%;margin:0!important;font-size:clamp(.80rem,1.34vw,1.28rem)!important;text-shadow:0 2px 10px rgba(0,0,0,.66);}
-      .qr-participation .fields{position:absolute!important;left:50%;top:57.8%;transform:translate(-50%,-50%);width:88.5%!important;margin:0!important;}
-      .qr-participation .field{display:flex!important;flex-direction:column-reverse!important;gap:.32rem!important;padding-top:0!important;padding-bottom:0!important;border-top:0!important;border-bottom:0!important;}
-      .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.54),rgba(255,235,184,.72),rgba(232,208,154,.54),transparent);order:2;}
-      .qr-participation .field span{order:3;margin:.30rem 0 0!important;color:rgba(232,208,154,.70)!important;}
-      .qr-participation .field strong{order:1;color:#faeeca!important;font-size:clamp(.48rem,.80vw,.76rem)!important;line-height:1.18!important;}
+      .qr-participation .for{position:absolute;left:50%;top:48.8%;transform:translate(-50%,-50%);width:72%;margin:0!important;font-size:clamp(.80rem,1.34vw,1.28rem)!important;text-shadow:0 2px 10px rgba(0,0,0,.66);}
+      .qr-participation .fields{position:absolute!important;left:50%;top:58.9%;transform:translate(-50%,-50%);width:79.5%!important;margin:0!important;grid-template-columns:.95fr 1.35fr .95fr!important;gap:clamp(.85rem,1.9vw,1.55rem)!important;}
+      .qr-participation .field{display:flex!important;flex-direction:column!important;gap:.18rem!important;padding:0!important;border-top:0!important;border-bottom:0!important;align-items:stretch!important;}
+      .qr-participation .field::before{content:"";display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,208,154,.58),rgba(255,235,184,.76),rgba(232,208,154,.58),transparent);order:2;margin:.34rem 0 .18rem!important;}
+      .qr-participation .field strong{order:1;color:#faeeca!important;font-size:clamp(.46rem,.76vw,.72rem)!important;line-height:1.14!important;font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;min-height:2.15em!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;}
+      .qr-participation .field.field-place strong{min-height:3.45em!important;line-height:1.12!important;display:block!important;}
+      .qr-participation .field span{order:3;margin:0!important;color:rgba(232,208,154,.72)!important;font-size:clamp(.30rem,.54vw,.49rem)!important;line-height:1!important;letter-spacing:.18em!important;}
       .qr-participation .anniversarySealPreview{position:absolute;left:50%;top:71.85%;transform:translate(-50%,-50%);width:13.4%!important;max-width:none!important;margin:0!important;filter:drop-shadow(0 14px 34px rgba(0,0,0,.54));}
-      .qr-participation .bottomEventSealWidePreview{position:absolute!important;left:50%;top:91.0%;transform:translate(-50%,-50%);width:65.8%!important;max-width:none!important;opacity:.46!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.50));}
-      .qr-participation .eventSealMirrorPreview{position:absolute!important;left:18.55%;top:90.65%;transform:translate(-50%,-50%);width:7.3%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
-      .qr-participation .veritasSealPreview{position:absolute!important;left:81.45%;top:90.65%;transform:translate(-50%,-50%);right:auto!important;width:7.3%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
+      .qr-participation .bottomEventSealWidePreview{position:absolute!important;left:50%;top:90.65%;transform:translate(-50%,-50%);width:58.2%!important;max-width:none!important;opacity:.34!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.50));}
+      .qr-participation .eventSealMirrorPreview{position:absolute!important;left:17.4%;top:90.65%;transform:translate(-50%,-50%);width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
+      .qr-participation .veritasSealPreview{position:absolute!important;left:82.6%;top:90.65%;transform:translate(-50%,-50%);right:auto!important;width:7.0%!important;max-width:none!important;opacity:.96!important;filter:drop-shadow(0 12px 28px rgba(0,0,0,.48));}
       .qr-participation .quote{display:none!important;}
-      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:82.4%;transform:translate(-50%,-50%);margin:0!important;width:37%;}
+      .qr-participation .signatureBlock{position:absolute!important;left:50%;top:82.3%;transform:translate(-50%,-50%);margin:0!important;width:37%;}
       .qr-participation .sig{width:86%!important;max-height:none!important;}
       .qr-participation .author{font-size:clamp(.35rem,.66vw,.60rem)!important;color:rgba(232,208,154,.70)!important;}
-      .qr-participation .micro{position:absolute;left:50%;top:95.9%;transform:translate(-50%,-50%);width:76%;max-width:none!important;margin:0!important;color:rgba(232,208,154,.48)!important;}
+      .qr-participation .micro{position:absolute;left:50%;top:95.95%;transform:translate(-50%,-50%);width:76%;max-width:none!important;margin:0!important;color:rgba(232,208,154,.48)!important;}
       .qr-participation #doc > canvas[aria-hidden='true'],.qr-calibration-note{display:none!important;opacity:0!important;visibility:hidden!important;}
     `;
     document.head.appendChild(style);
   }
 
+  function syncPreviewMetadata() {
+    const fields = Array.from(document.querySelectorAll('.qr-participation .field'));
+    if (fields.length < 3) return;
+    const docNo = document.getElementById('num')?.textContent || 'VH-ZU-2026-0525-OSW-0001';
+    const data = [
+      { label: 'DATA', value: '25.05.2026' },
+      { label: 'MIEJSCE', value: 'Małopolska Uczelnia Państwowa<br>im. Witolda Pileckiego<br>w Oświęcimiu', place: true },
+      { label: 'NUMER DOKUMENTU', value: docNo }
+    ];
+    data.forEach((item, index) => {
+      const field = fields[index];
+      const label = field.querySelector('span');
+      const value = field.querySelector('strong');
+      if (item.place) field.classList.add('field-place');
+      if (label) label.textContent = item.label;
+      if (value) value.innerHTML = item.value;
+    });
+  }
+
   function tunePreview() {
     document.querySelectorAll('#doc > canvas[aria-hidden="true"], .qr-calibration-note, .topVeritasSealPreview').forEach((el) => el.remove());
+    syncPreviewMetadata();
     const titleText = document.querySelector('.qr-participation .titleText');
     if (titleText) {
       const img = document.createElement('img');
