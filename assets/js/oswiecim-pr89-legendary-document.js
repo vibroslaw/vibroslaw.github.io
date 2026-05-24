@@ -157,38 +157,8 @@
     installModalStateObserver();
   }
 
-  function lockButtonUntilFinalRendererLoads() {
-    const button = document.getElementById('printBtn');
-    if (!button) return;
-    const cleanButton = button.cloneNode(true);
-    cleanButton.disabled = true;
-    cleanButton.setAttribute('aria-busy', 'true');
-    cleanButton.dataset.waitingForFinalRenderer = '1';
-    cleanButton.textContent = 'Ładuję finalną wersję generatora...';
-    button.replaceWith(cleanButton);
-  }
-
-  function loadFinalRenderer() {
-    if (document.querySelector('script[data-pr98-final-rhythm]')) return;
-    const script = document.createElement('script');
-    script.src = `/assets/js/oswiecim-pr98-final-rhythm.js?v=final-20260521-17-final-hierarchy`;
-    script.async = false;
-    script.dataset.pr98FinalRhythm = '1';
-    script.onload = () => {
-      const button = document.getElementById('printBtn');
-      if (button && button.dataset.waitingForFinalRenderer) {
-        button.disabled = false;
-        button.removeAttribute('aria-busy');
-        button.textContent = 'Pobierz finalny PDF';
-      }
-    };
-    document.body.appendChild(script);
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     stylePreview();
-    lockButtonUntilFinalRendererLoads();
     [0, 100, 280, 650, 1200].forEach((delay) => window.setTimeout(tunePreview, delay));
-    loadFinalRenderer();
   });
 })();
