@@ -11,9 +11,16 @@ The goal is to help institutions, educators, diaspora audiences and internationa
 - `/rap-ort/prawda-sumienia/chapters/`
 - `/rap-ort/prawda-sumienia/pl/rozdzialy/`
 
+## Existing routes linked
+
+- `/rap-ort/prawda-sumienia/`
+- `/rap-ort/prawda-sumienia/pl/`
+- `/rap-ort/prawda-sumienia/report-journey/`
+- `/rap-ort/prawda-sumienia/pl/sciezka-raportu/`
+
 ## Scope
 
-This PR adds only static public orientation pages.
+This PR adds static public orientation pages and link integration from existing Prawda Sumienia pages.
 
 It does not change:
 
@@ -53,7 +60,15 @@ Sensitive areas are handled cautiously:
 - Auschwitz is not used for spectacle.
 - Pilecki's mission is framed as a moral and historical anchor.
 - Post-war material is framed as pressure, silence and political machinery without overclaiming.
-- Chapter seven is deliberately marked as title-to-confirm because the final public title is not yet locked.
+- Chapter seven is deliberately marked as an interlude / title-to-confirm because the final public title is not yet locked.
+
+## UX refinements added after audit
+
+- Chapter cards are grouped into acts instead of one uninterrupted list.
+- EN and PL pages now include Open Graph and Twitter card metadata.
+- Public Prawda Sumienia pages link directly to the chapter system.
+- Journey of the Report pages link directly to the chapter system.
+- Chapter Seven / Rozdział siódmy is presented as an interlude to reduce the unfinished feel.
 
 ## Bilingual approach
 
@@ -65,6 +80,13 @@ The Polish page is not a literal translation of the English page. It is native P
 - [x] PL route added.
 - [x] Canonical URLs added.
 - [x] hreflang alternates added.
+- [x] Open Graph metadata added.
+- [x] Twitter card metadata added.
+- [x] Pages grouped into acts for better mobile scanning.
+- [x] Public EN Prawda Sumienia page linked.
+- [x] Public PL Prawda Sumienia page linked.
+- [x] EN Journey of the Report page linked.
+- [x] PL Ścieżka Raportu page linked.
 - [x] Mailto only, no data collection.
 - [x] No new JS.
 - [x] No new external dependencies.
@@ -76,4 +98,4 @@ The Polish page is not a literal translation of the English page. It is native P
 
 ## Recommended next step
 
-After visual QA, link the chapter pages from the existing Prawda Sumienia public pages and, if useful, from the Journey of the Report pages.
+Run final PR audit. If no content issues appear, mark the PR ready for review and merge after visual QA.
