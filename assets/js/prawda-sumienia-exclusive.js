@@ -2,15 +2,227 @@
   const root = document.querySelector('[data-psx-page]');
   if (!root) return;
 
+  const lang = root.dataset.lang || document.documentElement.lang || 'en';
   const params = new URLSearchParams(window.location.search);
-  const event = params.get('event');
-  if (!event) return;
+  const eventId = params.get('event') || root.dataset.defaultEvent || '';
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
 
-  root.querySelectorAll('[data-psx-event-link]').forEach((link) => {
-    try {
-      const url = new URL(link.getAttribute('href'), window.location.origin);
-      url.searchParams.set('event', event);
-      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
-    } catch (_) {}
+  const copyText = {
+    en: {
+      copied: 'QR link copied.',
+      failed: 'Copy failed. Use the address bar link.'
+    },
+    pl: {
+      copied: 'Link QR skopiowany.',
+      failed: 'Nie udało się skopiować. Użyj linku z paska adresu.'
+    }
+  };
+
+  const routeMap = {
+    en: {
+      witness: '/rap-ort/witness-report/generator/',
+      participation: '/rap-ort/participation/',
+      archive: '/rap-ort/participation/#archive-gallery'
+    },
+    pl: {
+      witness: '/rap-ort/raport-swiadka/generator/',
+      participation: '/rap-ort/uczestnictwo/',
+      archive: '/rap-ort/uczestnictwo/#archive-gallery'
+    }
+  };
+
+  const routes = routeMap[lang] || routeMap.en;
+
+  const buildEventUrl = (path) => {
+    const url = new URL(path, window.location.origin);
+    if (eventId) url.searchParams.set('event', eventId);
+    return `${url.pathname}${url.search}${url.hash}`;
+  };
+
+  root.querySelectorAll('[data-psx-link-type]').forEach((link) => {
+    const type = link.dataset.psxLinkType;
+    if (!routes[type]) return;
+    link.setAttribute('href', buildEventUrl(routes[type]));
   });
+
+  if (eventId) {
+    root.querySelectorAll('.psx-language-switch[href]').forEach((link) => {
+      const url = new URL(link.getAttribute('href'), window.location.origin);
+      url.searchParams.set('event', eventId);
+      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
+    });
+  }
+
+  const eventConfig = window.RAPORT_EVENTS?.events?.[eventId];
+  const localizedEvent = eventConfig?.[lang];
+  const eventName = root.querySelector('[data-psx-event-name]');
+  const eventDetail = root.querySelector('[data-psx-event-detail]');
+
+  if (localizedEvent && eventName && eventDetail) {
+    eventName.textContent = localizedEvent.shortPlace || localizedEvent.title || eventId;
+    const detailParts = [localizedEvent.date, localizedEvent.place].filter(Boolean);
+    eventDetail.textContent = detailParts.join(' / ');
+  }
+
+  const currentExperienceUrl = () => {
+    const url = new URL(window.location.href);
+    if (eventId) url.searchParams.set('event', eventId);
+    return url.href;
+  };
+
+  root.querySelectorAll('[data-copy-current]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const status = root.querySelector('[data-copy-status]');
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(currentExperienceUrl());
+        if (status) status.textContent = copyText[lang]?.copied || copyText.en.copied;
+      } catch (_) {
+        if (status) status.textContent = copyText[lang]?.failed || copyText.en.failed;
+      }
+    });
+  });
+
+  const revealItems = Array.from(root.querySelectorAll('[data-psx-reveal]'));
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    revealItems.forEach((item) => item.classList.add('is-visible'));
+  } else if (revealItems.length) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, {
+      rootMargin: '0px 0px -12% 0px',
+      threshold: 0.08
+    });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
+
+  const navLinks = Array.from(root.querySelectorAll('.psx-orbit-nav a[href^="#"]'));
+  if (navLinks.length && 'IntersectionObserver' in window) {
+    const sectionById = new Map(
+      navLinks
+        .map((link) => [link.getAttribute('href').slice(1), link])
+        .filter(([id]) => id)
+    );
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((link) => link.classList.remove('is-active'));
+        sectionById.get(entry.target.id)?.classList.add('is-active');
+      });
+    }, {
+      rootMargin: '-40% 0px -52% 0px',
+      threshold: 0.01
+    });
+
+    sectionById.forEach((_, id) => {
+      const section = document.getElementById(id);
+      if (section) navObserver.observe(section);
+    });
+  }
+
+  const timelineNodes = Array.from(root.querySelectorAll('[data-timeline-node]'));
+  timelineNodes.forEach((node) => {
+    node.addEventListener('click', () => {
+      timelineNodes.forEach((candidate) => {
+        candidate.classList.remove('is-active');
+        candidate.setAttribute('aria-pressed', 'false');
+      });
+      node.classList.add('is-active');
+      node.setAttribute('aria-pressed', 'true');
+    });
+  });
+
+  const rail = root.querySelector('[data-track-rail]');
+  const prev = root.querySelector('[data-track-prev]');
+  const next = root.querySelector('[data-track-next]');
+
+  const railStep = () => Math.max(280, Math.round((rail?.clientWidth || 640) * 0.78));
+  const scrollRail = (direction) => {
+    if (!rail) return;
+    rail.scrollBy({
+      left: direction * railStep(),
+      behavior: reducedMotion ? 'auto' : 'smooth'
+    });
+  };
+
+  prev?.addEventListener('click', () => scrollRail(-1));
+  next?.addEventListener('click', () => scrollRail(1));
+
+  rail?.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    scrollRail(event.key === 'ArrowLeft' ? -1 : 1);
+  });
+
+  const setPanel = (button, panel, open) => {
+    button.setAttribute('aria-expanded', String(open));
+    if (panel) panel.hidden = !open;
+  };
+
+  root.querySelectorAll('[data-panel-toggle]').forEach((button) => {
+    const panel = document.getElementById(button.dataset.panelToggle);
+    if (!panel) return;
+
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      setPanel(button, panel, open);
+    });
+  });
+
+  const sourceButtons = Array.from(root.querySelectorAll('[data-source-toggle]'));
+  const sourcePanels = Array.from(root.querySelectorAll('.psx-source-detail[id]'));
+  const sourceDrawer = root.querySelector('[data-source-drawer]');
+
+  sourceButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const key = button.dataset.sourceToggle;
+      const panel = document.getElementById(`source-${key}`);
+      if (!panel) return;
+      const open = button.getAttribute('aria-expanded') !== 'true';
+
+      sourcePanels.forEach((candidate) => {
+        candidate.hidden = candidate !== panel || !open;
+      });
+
+      sourceButtons.forEach((candidate) => {
+        candidate.setAttribute(
+          'aria-expanded',
+          String(open && candidate.dataset.sourceToggle === key)
+        );
+      });
+
+      if (open && sourceDrawer) {
+        const drawerTop = sourceDrawer.getBoundingClientRect().top;
+        const drawerVisible = drawerTop > 0 && drawerTop < window.innerHeight * 0.75;
+        if (!drawerVisible) {
+          sourceDrawer.scrollIntoView({
+            behavior: reducedMotion ? 'auto' : 'smooth',
+            block: 'start'
+          });
+        }
+      }
+    });
+  });
+
+  let ticking = false;
+  const updateScrollProgress = () => {
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, window.scrollY / max));
+    document.documentElement.style.setProperty('--psx-scroll-progress', `${(progress * 100).toFixed(2)}%`);
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (ticking || reducedMotion) return;
+    ticking = true;
+    window.requestAnimationFrame(updateScrollProgress);
+  }, { passive: true });
+
+  updateScrollProgress();
 })();
