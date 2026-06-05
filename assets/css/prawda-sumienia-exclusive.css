@@ -1,140 +1,173 @@
 :root {
-  --psx-bg: #050504;
-  --psx-panel: #0d0c0a;
-  --psx-panel-2: #14110d;
-  --psx-line: rgba(220, 190, 125, 0.23);
-  --psx-line-strong: rgba(226, 198, 134, 0.42);
-  --psx-gold: #d7b66c;
-  --psx-gold-soft: #ead6a0;
-  --psx-ivory: #f4ead2;
-  --psx-muted: rgba(244, 234, 210, 0.68);
-  --psx-dim: rgba(244, 234, 210, 0.44);
+  --psx-black: #040403;
+  --psx-charcoal: #0b0a08;
+  --psx-charcoal-2: #14110d;
+  --psx-ink: #19130d;
+  --psx-gold: #d6b56d;
+  --psx-gold-soft: #efdbab;
+  --psx-gold-dim: rgba(214, 181, 109, 0.58);
+  --psx-ivory: #f5ead4;
+  --psx-muted: rgba(245, 234, 212, 0.70);
+  --psx-dim: rgba(245, 234, 212, 0.48);
+  --psx-line: rgba(214, 181, 109, 0.22);
+  --psx-line-strong: rgba(239, 219, 171, 0.48);
+  --psx-red: #6f241e;
+  --psx-serif: Georgia, "Times New Roman", serif;
+  --psx-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --psx-shadow: 0 28px 90px rgba(0, 0, 0, 0.62);
 }
 
+.psx-page,
+.psx-page * {
+  box-sizing: border-box;
+}
+
 .psx-page {
+  min-height: 100vh;
   background:
-    radial-gradient(circle at 72% 12%, rgba(173, 134, 62, 0.12), transparent 34rem),
-    radial-gradient(circle at 12% 24%, rgba(255, 235, 183, 0.07), transparent 24rem),
-    var(--psx-bg);
+    linear-gradient(180deg, rgba(214, 181, 109, 0.08), transparent 32rem),
+    linear-gradient(120deg, rgba(111, 36, 30, 0.10), transparent 26rem),
+    var(--psx-black);
   color: var(--psx-ivory);
+  font-family: var(--psx-sans);
 }
 
 .psx-main {
+  position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 22rem);
+  background:
+    linear-gradient(90deg, rgba(214, 181, 109, 0.035) 1px, transparent 1px),
+    linear-gradient(rgba(214, 181, 109, 0.025) 1px, transparent 1px);
+  background-size: 92px 92px;
 }
 
 .psx-wrap {
-  width: min(1160px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
-}
-
-.psx-section {
-  position: relative;
-  padding: clamp(4rem, 8vw, 7rem) 0;
-  border-top: 1px solid rgba(220, 190, 125, 0.12);
 }
 
 .psx-hero {
   position: relative;
-  min-height: min(92vh, 900px);
+  min-height: 96vh;
   display: grid;
   align-items: end;
-  padding: 7.5rem 0 0;
+  padding: 7.25rem 0 0;
   isolation: isolate;
-  border-bottom: 1px solid rgba(220, 190, 125, 0.18);
+  border-bottom: 1px solid var(--psx-line);
 }
 
-.psx-hero-bg {
+.psx-hero-bg,
+.psx-final-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background:
+    linear-gradient(90deg, rgba(4, 4, 3, 0.98) 0%, rgba(4, 4, 3, 0.86) 42%, rgba(4, 4, 3, 0.48) 100%),
+    linear-gradient(180deg, rgba(4, 4, 3, 0.24), #040403 92%),
+    url("/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp") center / cover no-repeat,
+    linear-gradient(135deg, #120d09, #040403);
+  filter: saturate(0.9) contrast(1.1);
+}
+
+.psx-hero::before,
+.psx-final::before {
+  content: "";
   position: absolute;
   inset: 0;
   z-index: -2;
+  pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(5, 5, 4, 0.96) 0%, rgba(5, 5, 4, 0.78) 42%, rgba(5, 5, 4, 0.32) 100%),
-    linear-gradient(180deg, rgba(5, 5, 4, 0.22), #050504 92%),
-    url('/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp') center / cover no-repeat;
-  filter: saturate(0.78) contrast(1.06);
+    linear-gradient(108deg, transparent 0 20%, rgba(239, 219, 171, 0.11) 36%, transparent 58%),
+    linear-gradient(180deg, rgba(214, 181, 109, 0.10), transparent 34%);
+  mix-blend-mode: screen;
+  opacity: 0.58;
 }
 
 .psx-hero::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: auto 0 0;
+  height: 38%;
   z-index: -1;
+  pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(215, 182, 108, 0.10) 0 1px, transparent 1px 100%),
-    linear-gradient(rgba(215, 182, 108, 0.045) 0 1px, transparent 1px 100%);
-  background-size: 92px 92px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent 72%);
+    linear-gradient(180deg, transparent, rgba(4, 4, 3, 0.92)),
+    linear-gradient(90deg, transparent, rgba(214, 181, 109, 0.13), transparent);
 }
 
 .psx-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.58fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.54fr);
+  gap: 4rem;
   align-items: end;
-  padding-bottom: clamp(3rem, 7vw, 6rem);
+  padding-bottom: 4.5rem;
 }
 
 .psx-kicker {
-  margin: 0 0 1rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  margin: 0 0 0.9rem;
   color: var(--psx-gold);
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .psx-hero h1,
-.psx-section h2 {
-  font-family: Georgia, 'Times New Roman', serif;
+.psx-section h2,
+.psx-final h2,
+.psx-event-pass strong {
+  font-family: var(--psx-serif);
   font-weight: 400;
-  letter-spacing: 0.045em;
-  line-height: 0.94;
 }
 
 .psx-hero h1 {
-  font-size: clamp(3rem, 10vw, 8.2rem);
+  max-width: 10ch;
   margin: 0;
+  color: var(--psx-ivory);
+  font-size: 6.9rem;
+  line-height: 0.92;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
-  text-shadow: 0 18px 60px rgba(0, 0, 0, 0.86);
-}
-
-.psx-hero h1 span {
-  color: var(--psx-gold-soft);
-}
-
-.psx-subtitle {
-  max-width: 52rem;
-  margin: 1.35rem 0 0;
-  font-size: clamp(1.05rem, 2.1vw, 1.55rem);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(244, 234, 210, 0.88);
+  text-shadow: 0 22px 70px rgba(0, 0, 0, 0.92);
 }
 
 .psx-translation-title {
-  margin: 0.65rem 0 0;
+  margin: 1rem 0 0;
   color: var(--psx-gold-soft);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
+.psx-subtitle {
+  max-width: 52rem;
+  margin: 1.2rem 0 0;
+  color: rgba(245, 234, 212, 0.92);
+  font-size: 1.35rem;
+  line-height: 1.48;
+}
+
 .psx-lead,
 .psx-copy p,
-.psx-path-card p,
-.psx-chapter-card p,
-.psx-context-grid p,
-.psx-hero-card p,
-.psx-foundation-note {
+.psx-event-pass p,
+.psx-section-note,
+.psx-principles p,
+.psx-ledger-panel li,
+.psx-pressure-copy p,
+.psx-pressure-board p,
+.psx-timeline p,
+.psx-track-card p,
+.psx-gateway-card p,
+.psx-trace-wall p,
+.psx-final p {
   color: var(--psx-muted);
   line-height: 1.75;
 }
 
 .psx-lead {
-  max-width: 44rem;
+  max-width: 47rem;
   margin: 1rem 0 0;
   font-size: 1rem;
 }
@@ -142,291 +175,592 @@
 .psx-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.85rem;
-  margin-top: 1.8rem;
+  gap: 0.8rem;
+  margin-top: 1.7rem;
 }
 
-.psx-button {
+.psx-actions-center {
+  justify-content: center;
+}
+
+.psx-button,
+.psx-copy-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 46px;
-  padding: 0.85rem 1.15rem;
+  padding: 0.86rem 1.15rem;
   border: 1px solid var(--psx-line-strong);
-  background: linear-gradient(135deg, var(--psx-gold-soft), #b99446);
-  color: #110d07 !important;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--psx-gold-soft), #ad873e);
+  color: #130d07 !important;
+  font: 800 0.76rem / 1.2 var(--psx-sans);
+  letter-spacing: 0.08em;
   text-decoration: none;
-  font-weight: 800;
-  letter-spacing: 0.07em;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.40);
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
 }
 
-.psx-button.secondary {
-  background: rgba(8, 7, 6, 0.55);
+.psx-button.secondary,
+.psx-copy-link {
+  background: rgba(4, 4, 3, 0.68);
   color: var(--psx-ivory) !important;
 }
 
 .psx-button:hover,
-.psx-path-card:hover {
+.psx-copy-link:hover,
+.psx-gateway-card:hover,
+.psx-source-chip:hover {
   transform: translateY(-2px);
+  border-color: rgba(239, 219, 171, 0.76);
 }
 
 .psx-button:focus-visible,
-.psx-path-card:focus-visible,
-.psx-text-link:focus-visible,
+.psx-copy-link:focus-visible,
+.psx-orbit-nav a:focus-visible,
+.psx-gateway-card:focus-visible,
+.psx-source-chip:focus-visible,
 .psx-footer a:focus-visible {
   outline: 2px solid var(--psx-gold-soft);
   outline-offset: 4px;
 }
 
-.psx-hero-card {
-  padding: 1.5rem;
+.psx-event-pass {
   border: 1px solid var(--psx-line);
-  background: linear-gradient(145deg, rgba(18, 15, 12, 0.82), rgba(5, 5, 4, 0.62));
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(20, 17, 13, 0.88), rgba(4, 4, 3, 0.78)),
+    url("/public/assets/events/rap-ort/shared/experience/event-pass-texture.webp") center / cover no-repeat;
+  padding: 1.35rem;
   box-shadow: var(--psx-shadow);
   backdrop-filter: blur(12px);
 }
 
-.psx-card-number,
-.psx-path-card span,
-.psx-chapter-card span,
-.psx-timeline span {
-  color: var(--psx-gold);
-  font-family: Georgia, 'Times New Roman', serif;
+.psx-event-pass strong {
+  display: block;
+  margin: 0.25rem 0 0.35rem;
+  color: var(--psx-ivory);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.psx-event-pass span:not(.psx-panel-label) {
+  display: block;
+  color: var(--psx-gold-soft);
+  font-size: 0.82rem;
   letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.psx-hero-card h2 {
-  font-size: 1.55rem;
-  line-height: 1.15;
-  margin: 0.8rem 0 0.4rem;
+.psx-pass-line {
+  height: 1px;
+  margin: 1.2rem 0;
+  background: linear-gradient(90deg, transparent, var(--psx-gold), transparent);
 }
 
-.psx-quote {
-  border-top: 1px solid rgba(220, 190, 125, 0.14);
-  background: rgba(0, 0, 0, 0.35);
-  text-align: center;
-  padding: 1.15rem 1rem;
-  color: var(--psx-dim);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  letter-spacing: 0.06em;
+.psx-copy-link {
+  width: 100%;
+  margin-top: 0.8rem;
+  cursor: pointer;
+}
+
+.psx-copy-status {
+  min-height: 1.2rem;
+  margin: 0.6rem 0 0;
+  color: var(--psx-gold-soft) !important;
+  font-size: 0.82rem;
+}
+
+.psx-orbit-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  overflow-x: auto;
+  border-top: 1px solid rgba(214, 181, 109, 0.16);
+  background: rgba(4, 4, 3, 0.78);
+  scrollbar-width: thin;
+}
+
+.psx-orbit-nav a {
+  flex: 0 0 auto;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border-right: 1px solid rgba(214, 181, 109, 0.13);
+  color: var(--psx-dim) !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.psx-orbit-nav a.is-active,
+.psx-orbit-nav a:hover {
+  color: var(--psx-gold-soft) !important;
+  background: rgba(214, 181, 109, 0.08);
+}
+
+.psx-section {
+  position: relative;
+  padding: 6.2rem 0;
+  border-top: 1px solid rgba(214, 181, 109, 0.12);
+}
+
+.psx-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0 58%, rgba(214, 181, 109, 0.035) 58% 59%, transparent 59%),
+    linear-gradient(90deg, rgba(245, 234, 212, 0.018) 1px, transparent 1px);
+  background-size: auto, 38px 38px;
+  opacity: 0.72;
 }
 
 .psx-two {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(1.5rem, 5vw, 5rem);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 4rem;
   align-items: start;
 }
 
 .psx-section h2 {
-  font-size: clamp(2rem, 5vw, 4rem);
   margin: 0;
+  color: var(--psx-ivory);
+  font-size: 3.4rem;
+  line-height: 1.04;
+  letter-spacing: 0.025em;
 }
 
 .psx-section-head {
-  max-width: 760px;
+  max-width: 780px;
   margin-bottom: 2rem;
 }
 
-.psx-foundation-note {
-  max-width: 44rem;
+.psx-section-note {
+  max-width: 48rem;
   margin: 1rem 0 0;
   padding-left: 1rem;
   border-left: 1px solid var(--psx-line-strong);
-  font-size: 0.95rem;
 }
 
-.psx-path-grid {
+.psx-copy strong {
+  color: var(--psx-gold-soft);
+  font-weight: 800;
+}
+
+.psx-principles {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.psx-principles article,
+.psx-ledger-panel,
+.psx-pressure-board,
+.psx-timeline,
+.psx-track-card,
+.psx-gateway-card,
+.psx-trace-wall article {
+  position: relative;
+  border: 1px solid var(--psx-line);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(20, 17, 13, 0.82), rgba(8, 7, 6, 0.88));
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.30);
+}
+
+.psx-principles article {
+  min-height: 13rem;
+  padding: 1.1rem;
+}
+
+.psx-principles span,
+.psx-timeline span,
+.psx-track-card span,
+.psx-gateway-card span,
+.psx-trace-wall span,
+.psx-act-heading span {
+  color: var(--psx-gold);
+  font-family: var(--psx-serif);
+  letter-spacing: 0.14em;
+}
+
+.psx-principles h3,
+.psx-ledger-panel h3,
+.psx-pressure-board strong,
+.psx-timeline h3,
+.psx-track-card h4,
+.psx-gateway-card h3,
+.psx-act-heading h3,
+.psx-trace-wall p {
+  font-family: var(--psx-serif);
+  font-weight: 400;
+}
+
+.psx-principles h3,
+.psx-ledger-panel h3,
+.psx-pressure-board strong,
+.psx-timeline h3,
+.psx-gateway-card h3 {
+  color: var(--psx-ivory);
+}
+
+.psx-principles h3 {
+  margin: 1.1rem 0 0.55rem;
+  font-size: 1.35rem;
+}
+
+.psx-ledger-section {
+  background:
+    linear-gradient(180deg, rgba(111, 36, 30, 0.08), transparent 52%),
+    var(--psx-black);
+}
+
+.psx-ledger {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.psx-path-card,
-.psx-chapter-card,
-.psx-context-grid article {
-  position: relative;
-  display: block;
-  min-height: 14rem;
-  padding: 1.15rem;
-  border: 1px solid var(--psx-line);
-  background: linear-gradient(180deg, rgba(18, 15, 12, 0.78), rgba(9, 8, 7, 0.86));
-  text-decoration: none;
-  color: var(--psx-ivory) !important;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+.psx-ledger-panel {
+  padding: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(20, 17, 13, 0.92), rgba(6, 5, 4, 0.94)),
+    url("/public/assets/events/rap-ort/shared/experience/archival-dark-texture.webp") center / cover no-repeat;
 }
 
-.psx-path-card::before,
-.psx-chapter-card::before {
+.psx-ledger-panel-alt {
+  background:
+    linear-gradient(180deg, rgba(23, 15, 12, 0.92), rgba(6, 5, 4, 0.94)),
+    url("/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp") center / cover no-repeat;
+}
+
+.psx-panel-label {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(214, 181, 109, 0.25);
+  padding: 0.36rem 0.5rem;
+  color: var(--psx-gold-soft);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.psx-ledger-panel h3 {
+  margin: 0 0 1rem;
+  font-size: 1.85rem;
+  line-height: 1.15;
+}
+
+.psx-check-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.psx-check-list li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.psx-check-list li::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 70% 0%, rgba(215, 182, 108, 0.13), transparent 52%);
-  opacity: 0.9;
-  pointer-events: none;
+  left: 0;
+  top: 0.78em;
+  width: 0.42rem;
+  height: 1px;
+  background: var(--psx-gold);
 }
 
-.psx-path-card h3,
-.psx-chapter-card h3,
-.psx-context-grid h3 {
-  position: relative;
-  margin: 1.2rem 0 0.6rem;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+.psx-pressure-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 3rem;
+  align-items: center;
 }
 
-.psx-path-card p,
-.psx-chapter-card p {
-  position: relative;
-  font-size: 0.92rem;
+.psx-pressure-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
 }
 
-.psx-path-card em {
-  position: absolute;
-  left: 1.15rem;
-  bottom: 1rem;
+.psx-pressure-board div {
+  min-height: 12rem;
+  padding: 1.2rem;
+  border-right: 1px solid rgba(214, 181, 109, 0.14);
+  border-bottom: 1px solid rgba(214, 181, 109, 0.14);
+}
+
+.psx-pressure-board span {
   color: var(--psx-gold);
-  font-style: normal;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-.psx-path-card:hover {
-  border-color: rgba(234, 214, 160, 0.65);
+.psx-pressure-board strong {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 1.55rem;
 }
 
-.psx-ritual {
-  padding: clamp(3.5rem, 7vw, 5rem) 0;
-  background: linear-gradient(90deg, transparent, rgba(215, 182, 108, 0.06), transparent);
-}
-
-.psx-ritual-inner {
-  max-width: 780px;
-  text-align: center;
-}
-
-.psx-ritual p {
-  margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.35rem, 3vw, 2.35rem);
-  line-height: 1.45;
-  color: rgba(244, 234, 210, 0.86);
-  font-style: italic;
+.psx-timeline-section {
+  background: linear-gradient(180deg, rgba(214, 181, 109, 0.03), rgba(111, 36, 30, 0.05));
 }
 
 .psx-timeline {
-  position: relative;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1rem;
-  padding: 2rem 1rem;
-  border: 1px solid var(--psx-line);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(9, 8, 7, 0.84), rgba(3, 3, 3, 0.9)),
-    url('/public/assets/events/rap-ort/shared/experience/archive-wall.webp') center / cover no-repeat;
-  box-shadow: var(--psx-shadow);
-}
-
-.psx-timeline::before {
-  content: "";
-  position: absolute;
-  left: 7%;
-  right: 7%;
-  top: 3.15rem;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--psx-gold), transparent);
+    linear-gradient(180deg, rgba(6, 5, 4, 0.88), rgba(4, 4, 3, 0.94)),
+    url("/public/assets/events/rap-ort/shared/experience/archive-wall.webp") center / cover no-repeat;
 }
 
 .psx-timeline article {
-  position: relative;
-  padding-top: 1.6rem;
+  min-height: 17rem;
+  padding: 1rem;
+  border-right: 1px solid rgba(214, 181, 109, 0.13);
 }
 
-.psx-timeline article::before {
-  content: "";
-  position: absolute;
-  top: 0.86rem;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--psx-gold);
-  box-shadow: 0 0 18px rgba(215, 182, 108, 0.68);
-}
-
-.psx-timeline strong {
+.psx-timeline span {
   display: block;
-  margin: 0.25rem 0;
-  color: var(--psx-ivory);
-  font-family: Georgia, 'Times New Roman', serif;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  min-height: 2.5rem;
+  color: var(--psx-gold-soft);
+  font-size: 1.05rem;
+}
+
+.psx-timeline h3 {
+  margin: 0.6rem 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
 }
 
 .psx-timeline p {
   margin: 0;
-  color: var(--psx-muted);
   font-size: 0.9rem;
-  line-height: 1.55;
 }
 
-.psx-chapter-grid,
-.psx-context-grid {
+.psx-act {
+  padding: 2rem 0 0;
+}
+
+.psx-act + .psx-act {
+  margin-top: 1rem;
+}
+
+.psx-act-heading {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(214, 181, 109, 0.18);
+  padding-bottom: 0.8rem;
+}
+
+.psx-act-heading h3 {
+  margin: 0;
+  color: var(--psx-ivory);
+  font-size: 1.6rem;
+}
+
+.psx-track-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.psx-track-card {
+  min-height: 15rem;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.psx-track-card::before,
+.psx-gateway-card::before,
+.psx-trace-wall article::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(132deg, transparent 0 36%, rgba(214, 181, 109, 0.10) 46%, transparent 62%);
+  opacity: 0.56;
+}
+
+.psx-track-card h4 {
+  position: relative;
+  margin: 1.4rem 0 0.65rem;
+  color: var(--psx-ivory);
+  font-size: 1.2rem;
+  line-height: 1.18;
+}
+
+.psx-track-card p {
+  position: relative;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.psx-source-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2.2rem;
+}
+
+.psx-source-chip {
+  display: flex;
+  min-height: 6rem;
+  align-items: flex-end;
+  border: 1px solid var(--psx-line);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(20, 17, 13, 0.80), rgba(6, 5, 4, 0.92));
+  color: var(--psx-gold-soft) !important;
+  padding: 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.psx-gateway-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.psx-chapter-card {
-  min-height: 12.5rem;
-}
-
-.psx-context {
-  background: linear-gradient(180deg, rgba(215, 182, 108, 0.035), transparent);
-}
-
-.psx-context-grid article {
-  min-height: 11rem;
-}
-
-.psx-text-link {
-  display: inline-flex;
-  margin-top: 0.8rem;
-  color: var(--psx-gold-soft) !important;
+.psx-gateway-card {
+  min-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem;
+  color: var(--psx-ivory) !important;
   text-decoration: none;
-  letter-spacing: 0.08em;
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.psx-gateway-card h3 {
+  position: relative;
+  margin: 2rem 0 0.8rem;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+.psx-gateway-card p {
+  position: relative;
+  margin: 0;
+}
+
+.psx-gateway-card em {
+  position: relative;
+  margin-top: auto;
+  color: var(--psx-gold-soft);
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 0.78rem;
+}
+
+.psx-wall-section {
+  background:
+    linear-gradient(180deg, rgba(4, 4, 3, 0.16), rgba(111, 36, 30, 0.08)),
+    var(--psx-black);
+}
+
+.psx-trace-wall {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+}
+
+.psx-trace-wall article {
+  min-height: 13rem;
+  padding: 1rem;
+  background:
+    linear-gradient(180deg, rgba(20, 17, 13, 0.82), rgba(6, 5, 4, 0.92)),
+    url("/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp") center / cover no-repeat;
+}
+
+.psx-trace-wall span {
+  position: relative;
+  display: block;
+  color: var(--psx-gold-soft);
+  font-size: 0.8rem;
+}
+
+.psx-trace-wall p {
+  position: relative;
+  margin: 1.4rem 0 0;
+  color: rgba(245, 234, 212, 0.86);
+  font-size: 1.18rem;
+  line-height: 1.48;
+}
+
+.psx-final {
+  position: relative;
+  min-height: 72vh;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  padding: 6rem 0;
+  text-align: center;
+  border-top: 1px solid var(--psx-line);
+}
+
+.psx-final-bg {
+  background:
+    linear-gradient(180deg, rgba(4, 4, 3, 0.45), #040403 94%),
+    linear-gradient(90deg, rgba(4, 4, 3, 0.92), rgba(4, 4, 3, 0.40), rgba(4, 4, 3, 0.92)),
+    url("/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-hero.webp") center / cover no-repeat,
+    linear-gradient(135deg, #140f0b, #040403);
+}
+
+.psx-final-inner {
+  max-width: 860px;
+}
+
+.psx-final h2 {
+  margin: 0;
+  color: var(--psx-ivory);
+  font-size: 4rem;
+  line-height: 1.04;
+}
+
+.psx-final p {
+  max-width: 700px;
+  margin: 1rem auto 0;
 }
 
 .psx-footer {
   border-top: 1px solid var(--psx-line);
 }
 
-@media (max-width: 980px) {
-  .psx-hero {
-    min-height: auto;
-    padding-top: 6.5rem;
+@media (max-width: 1120px) {
+  .psx-hero h1 {
+    font-size: 5.4rem;
   }
 
-  .psx-hero-grid,
-  .psx-two {
-    grid-template-columns: 1fr;
-  }
-
-  .psx-hero-card {
-    max-width: 34rem;
-  }
-
-  .psx-path-grid {
+  .psx-track-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -434,59 +768,78 @@
     grid-template-columns: 1fr;
   }
 
-  .psx-timeline::before {
-    left: 1.35rem;
-    right: auto;
-    top: 2rem;
-    bottom: 2rem;
-    width: 1px;
-    height: auto;
-  }
-
   .psx-timeline article {
-    padding-left: 1.4rem;
-    padding-top: 0;
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(214, 181, 109, 0.13);
   }
 
-  .psx-timeline article::before {
-    top: 0.45rem;
+  .psx-source-grid,
+  .psx-trace-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .psx-hero {
+    min-height: auto;
+    padding-top: 6.2rem;
   }
 
-  .psx-chapter-grid,
-  .psx-context-grid {
-    grid-template-columns: 1fr 1fr;
+  .psx-hero-grid,
+  .psx-two,
+  .psx-pressure-grid,
+  .psx-ledger,
+  .psx-gateway-grid,
+  .psx-principles {
+    grid-template-columns: 1fr;
+  }
+
+  .psx-hero-grid {
+    gap: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .psx-event-pass {
+    max-width: 36rem;
+  }
+
+  .psx-section {
+    padding: 4.5rem 0;
+  }
+
+  .psx-section h2,
+  .psx-final h2 {
+    font-size: 2.75rem;
+  }
+
+  .psx-pressure-board {
+    grid-template-columns: 1fr;
+  }
+
+  .psx-pressure-board div {
+    min-height: auto;
+    border-right: 0;
   }
 }
 
 @media (max-width: 640px) {
   .psx-wrap {
-    width: min(100% - 1.1rem, 1160px);
-  }
-
-  .psx-section {
-    padding: 3.25rem 0;
+    width: min(100% - 1.1rem, 1180px);
   }
 
   .psx-hero {
-    padding-top: 5.75rem;
-  }
-
-  .psx-hero-grid {
-    padding-bottom: 2.5rem;
+    padding-top: 5.5rem;
   }
 
   .psx-hero h1 {
-    font-size: clamp(2.55rem, 15vw, 4.8rem);
+    max-width: 8ch;
+    font-size: 3.55rem;
+    line-height: 0.96;
   }
 
   .psx-subtitle {
-    font-size: 0.88rem;
-    line-height: 1.5;
-  }
-
-  .psx-translation-title {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    font-size: 1.04rem;
   }
 
   .psx-lead {
@@ -497,56 +850,68 @@
     display: grid;
   }
 
-  .psx-button {
+  .psx-button,
+  .psx-copy-link {
     width: 100%;
     min-height: 52px;
   }
 
-  .psx-path-grid,
-  .psx-chapter-grid,
-  .psx-context-grid {
+  .psx-orbit-nav {
+    justify-content: flex-start;
+  }
+
+  .psx-section h2,
+  .psx-final h2 {
+    font-size: 2.2rem;
+  }
+
+  .psx-copy p,
+  .psx-pressure-copy p,
+  .psx-final p {
+    font-size: 0.96rem;
+  }
+
+  .psx-act-heading {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .psx-track-grid,
+  .psx-source-grid,
+  .psx-trace-wall {
     grid-template-columns: 1fr;
   }
 
-  .psx-path-card {
-    min-height: 10.5rem;
+  .psx-track-card,
+  .psx-gateway-card {
+    min-height: 12rem;
   }
 
-  .psx-chapter-card,
-  .psx-context-grid article {
-    min-height: auto;
+  .psx-gateway-card h3 {
+    font-size: 1.55rem;
   }
 
-  .psx-hero-card {
-    padding: 1rem;
+  .psx-event-pass strong {
+    font-size: 1.6rem;
   }
 
-  .psx-section h2 {
-    font-size: clamp(1.9rem, 10vw, 3rem);
-  }
-
-  .psx-ritual p {
-    font-size: 1.28rem;
-  }
-
-  .psx-quote {
-    font-size: 0.85rem;
-  }
-
-  .psx-page .site-header {
-    backdrop-filter: blur(14px);
+  .psx-source-chip {
+    min-height: 4.75rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .psx-button,
-  .psx-path-card,
-  .psx-chapter-card {
+  .psx-copy-link,
+  .psx-gateway-card,
+  .psx-source-chip {
     transition: none;
   }
 
   .psx-button:hover,
-  .psx-path-card:hover {
+  .psx-copy-link:hover,
+  .psx-gateway-card:hover,
+  .psx-source-chip:hover {
     transform: none;
   }
 }
