@@ -39,7 +39,7 @@
     },
     pl: {
       copied: 'Link QR skopiowany.',
-      failed: 'Nie udalo sie skopiowac. Uzyj linku z paska adresu.'
+      failed: 'Nie udało się skopiować. Użyj linku z paska adresu.'
     }
   };
 
@@ -196,6 +196,7 @@
       const active = candidate === node;
       candidate.classList.toggle('is-active', active);
       candidate.setAttribute('aria-pressed', String(active));
+      findTimelineCard(candidate)?.classList.toggle('is-active', active);
     });
     updateTimelineDetail(node);
     if (shouldFocus) node.focus({ preventScroll: true });
