@@ -13,11 +13,34 @@
   --psx-line-strong: rgba(200, 164, 97, 0.55);
   --psx-glow: rgba(200, 164, 97, 0.28);
   --psx-shadow: rgba(0, 0, 0, 0.72);
-  --psx-red: #4b1715;
   --psx-radius: 6px;
   --psx-serif: Georgia, "Times New Roman", serif;
   --psx-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --psx-scroll-progress: 0%;
+  --psx-hero-image: url("/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-hero.webp");
+  --psx-hero-mobile-image: url("/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-mobile.webp");
+  --psx-final-image: url("/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp");
+  --psx-asset-beam: url("/public/assets/events/rap-ort/shared/experience/projection-beam-overlay.webp");
+  --psx-asset-pass: url("/public/assets/events/rap-ort/shared/experience/event-pass-premium.webp");
+  --psx-asset-witness: url("/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp");
+  --psx-asset-paper: url("/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp");
+  --psx-asset-document: url("/public/assets/events/rap-ort/shared/experience/document-atelier.webp");
+  --psx-asset-print: url("/public/assets/events/rap-ort/shared/experience/document-print-samples.webp");
+  --psx-asset-memory: url("/public/assets/events/rap-ort/shared/experience/memory-case.webp");
+  --psx-asset-memory-stack: url("/public/assets/events/rap-ort/shared/experience/memory-card-stack.webp");
+  --psx-asset-archive: url("/public/assets/events/rap-ort/shared/experience/archive-wall.webp");
+  --psx-asset-archive-empty: url("/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp");
+  --psx-asset-texture: url("/public/assets/events/rap-ort/shared/experience/archival-dark-texture.webp");
+  --psx-asset-ornament: url("/public/assets/events/rap-ort/shared/experience/subtle-gold-line-ornament.webp");
+  --psx-card-image: var(--psx-asset-texture);
+}
+
+body[data-lang="en"] {
+  --psx-hero-image: url("/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp");
+}
+
+body[data-lang="pl"] {
+  --psx-hero-image: url("/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp");
 }
 
 html,
@@ -88,7 +111,7 @@ body.psx-page.vh-page,
     linear-gradient(rgba(200, 164, 97, 0.035) 1px, transparent 1px),
     repeating-linear-gradient(112deg, rgba(241, 230, 207, 0.032) 0 1px, transparent 1px 18px);
   background-size: 110px 110px, 110px 110px, 260px 260px;
-  opacity: 0.42;
+  opacity: 0.38;
   mask-image: linear-gradient(180deg, transparent 0, #000 9rem, #000 92%, transparent);
 }
 
@@ -101,7 +124,7 @@ body.psx-page.vh-page,
 
 .psx-atmosphere {
   z-index: 1;
-  opacity: 0.22;
+  opacity: 0.20;
   mix-blend-mode: screen;
   background-image:
     radial-gradient(circle at 24% 16%, rgba(255, 232, 174, 0.22), transparent 5rem),
@@ -132,6 +155,7 @@ body.psx-page.vh-page,
 
 .psx-section {
   position: relative;
+  overflow: clip;
   padding: clamp(5rem, 8vw, 7rem) 0;
 }
 
@@ -212,14 +236,30 @@ body.psx-page.vh-page,
   position: absolute;
   inset: 0;
   z-index: -4;
-  background:
-    radial-gradient(circle at 72% 32%, rgba(255, 216, 142, 0.32), transparent 20rem),
-    radial-gradient(circle at 22% 14%, rgba(200, 164, 97, 0.18), transparent 18rem),
-    linear-gradient(90deg, rgba(3, 4, 3, 0.86) 0%, rgba(3, 4, 3, 0.68) 36%, rgba(3, 4, 3, 0.24) 72%, rgba(3, 4, 3, 0.74) 100%),
-    linear-gradient(180deg, rgba(3, 4, 3, 0.06) 0%, rgba(3, 4, 3, 0.30) 58%, #030403 100%),
-    url("/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp") center / cover no-repeat,
-    radial-gradient(circle at 68% 36%, #332414 0%, #15100b 34%, #030403 78%);
-  filter: saturate(0.95) contrast(1.12);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.98) contrast(1.10);
+}
+
+.psx-hero-bg {
+  background-image:
+    radial-gradient(circle at 72% 32%, rgba(255, 216, 142, 0.28), transparent 20rem),
+    radial-gradient(circle at 22% 14%, rgba(200, 164, 97, 0.14), transparent 18rem),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.78) 0%, rgba(3, 4, 3, 0.52) 36%, rgba(3, 4, 3, 0.18) 72%, rgba(3, 4, 3, 0.62) 100%),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.02) 0%, rgba(3, 4, 3, 0.22) 58%, #030403 100%),
+    var(--psx-asset-beam),
+    var(--psx-hero-image),
+    radial-gradient(circle at 68% 36%, #3a2918 0%, #15100b 34%, #030403 78%);
+}
+
+.psx-final-bg {
+  opacity: 0.86;
+  background-image:
+    radial-gradient(circle at 50% 34%, rgba(255, 216, 142, 0.20), transparent 18rem),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.88), rgba(3, 4, 3, 0.38), rgba(3, 4, 3, 0.88)),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.08), rgba(3, 4, 3, 0.88)),
+    var(--psx-final-image),
+    radial-gradient(circle at 68% 36%, #25190e 0%, #030403 78%);
 }
 
 .psx-hero::before,
@@ -230,9 +270,9 @@ body.psx-page.vh-page,
   z-index: -3;
   pointer-events: none;
   background:
-    linear-gradient(112deg, transparent 0 24%, rgba(244, 209, 139, 0.20) 39%, transparent 56%),
-    radial-gradient(circle at 72% 46%, rgba(200, 164, 97, 0.22), transparent 18rem),
-    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.42) 78%, rgba(0, 0, 0, 0.86) 100%);
+    linear-gradient(112deg, transparent 0 24%, rgba(244, 209, 139, 0.18) 39%, transparent 56%),
+    radial-gradient(circle at 72% 46%, rgba(200, 164, 97, 0.18), transparent 18rem),
+    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.36) 78%, rgba(0, 0, 0, 0.80) 100%);
 }
 
 .psx-hero::after,
@@ -243,9 +283,9 @@ body.psx-page.vh-page,
   z-index: -2;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(3, 4, 3, 0.08), transparent 24%, rgba(3, 4, 3, 0.88)),
-    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.032) 0 1px, transparent 1px 3px);
-  opacity: 0.78;
+    linear-gradient(180deg, rgba(3, 4, 3, 0.04), transparent 24%, rgba(3, 4, 3, 0.84)),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.028) 0 1px, transparent 1px 3px);
+  opacity: 0.74;
 }
 
 .psx-topbar {
@@ -262,7 +302,7 @@ body.psx-page.vh-page,
   padding: 0.65rem 0.75rem;
   border: 1px solid rgba(200, 164, 97, 0.24);
   border-radius: var(--psx-radius);
-  background: rgba(3, 4, 3, 0.58);
+  background: rgba(3, 4, 3, 0.54);
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.36);
   backdrop-filter: blur(18px);
 }
@@ -416,7 +456,7 @@ body.psx-page.vh-page,
   padding: 1.35rem;
   background:
     linear-gradient(140deg, rgba(255, 239, 198, 0.11), transparent 42%),
-    linear-gradient(180deg, rgba(17, 15, 11, 0.86), rgba(8, 8, 7, 0.74));
+    linear-gradient(180deg, rgba(17, 15, 11, 0.84), rgba(8, 8, 7, 0.72));
   box-shadow: 0 28px 90px var(--psx-shadow), inset 0 1px 0 rgba(255, 245, 216, 0.10);
   backdrop-filter: blur(12px);
 }
@@ -634,6 +674,7 @@ body.psx-page.vh-page,
 }
 
 .psx-path-card {
+  --psx-card-image: var(--psx-asset-pass);
   display: flex;
   min-height: 20rem;
   flex-direction: column;
@@ -646,6 +687,12 @@ body.psx-page.vh-page,
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
+.psx-path-card:nth-child(1) { --psx-card-image: var(--psx-asset-witness); }
+.psx-path-card:nth-child(2) { --psx-card-image: var(--psx-asset-pass); }
+.psx-path-card:nth-child(3) { --psx-card-image: var(--psx-asset-memory); }
+.psx-path-card:nth-child(4) { --psx-card-image: var(--psx-asset-document); }
+.psx-path-card:nth-child(5) { --psx-card-image: var(--psx-asset-archive-empty); }
+
 .psx-path-card::before,
 .psx-chapter-plate::before,
 .psx-curatorial-card::before,
@@ -657,8 +704,34 @@ body.psx-page.vh-page,
   background:
     linear-gradient(135deg, rgba(255, 240, 205, 0.12), transparent 30%),
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 6px);
-  opacity: 0.28;
+  opacity: 0.30;
   transition: opacity 180ms ease;
+}
+
+.psx-path-card::after,
+.psx-curatorial-card::after,
+.psx-trace-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(180deg, rgba(3, 4, 3, 0.18), rgba(3, 4, 3, 0.82)),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.72), transparent 72%),
+    var(--psx-card-image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.24;
+  filter: saturate(0.88) contrast(1.12);
+  transition: opacity 180ms ease, transform 600ms ease;
+}
+
+.psx-path-card > *,
+.psx-curatorial-card > *,
+.psx-trace-card > * {
+  position: relative;
+  z-index: 2;
 }
 
 .psx-path-card:hover,
@@ -679,6 +752,14 @@ body.psx-page.vh-page,
 .psx-curatorial-card:hover::before,
 .psx-trace-card:hover::before {
   opacity: 0.72;
+}
+
+.psx-path-card:hover::after,
+.psx-path-card:focus-visible::after,
+.psx-curatorial-card:hover::after,
+.psx-trace-card:hover::after {
+  opacity: 0.34;
+  transform: scale(1.045);
 }
 
 .psx-path-primary {
@@ -715,13 +796,11 @@ body.psx-page.vh-page,
 
 .psx-path-card strong {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   font-size: 1.38rem;
 }
 
 .psx-path-note {
-  position: relative;
-  z-index: 1;
   display: block;
   margin-top: auto;
   padding-top: 1rem;
@@ -777,6 +856,7 @@ body.psx-page.vh-page,
   transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
+.psx-timeline-card.is-active,
 .psx-timeline-card:has(.psx-timeline-node.is-active),
 .psx-timeline-card:has(.psx-timeline-node[aria-pressed="true"]) {
   border-color: rgba(200, 164, 97, 0.56);
@@ -945,6 +1025,31 @@ body.psx-page.vh-page,
     radial-gradient(circle at 80% 20%, rgba(200, 164, 97, 0.11), transparent 22rem);
 }
 
+.psx-tracks::after,
+.psx-sources::after,
+.psx-wall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.18;
+  filter: saturate(0.85) contrast(1.12);
+}
+
+.psx-tracks::after {
+  background-image:
+    linear-gradient(180deg, rgba(3, 4, 3, 0.62), rgba(3, 4, 3, 0.90)),
+    var(--psx-asset-ornament),
+    var(--psx-asset-texture);
+  background-size: cover, min(980px, 90vw) auto, cover;
+  background-position: center, center 3rem, center;
+  background-repeat: no-repeat;
+  opacity: 0.24;
+}
+
 .psx-track-toolbar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1002,6 +1107,15 @@ body.psx-page.vh-page,
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
+.psx-chapter-plate::before {
+  background-image:
+    linear-gradient(180deg, rgba(3, 4, 3, 0.34), rgba(3, 4, 3, 0.86)),
+    var(--psx-asset-memory-stack);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.18;
+}
+
 .psx-chapter-plate::after {
   content: "";
   position: absolute;
@@ -1054,12 +1168,20 @@ body.psx-page.vh-page,
 }
 
 .psx-curatorial-card {
+  --psx-card-image: var(--psx-asset-paper);
   min-height: 24rem;
   padding: 1.3rem;
   background:
     linear-gradient(180deg, rgba(23, 19, 13, 0.91), rgba(8, 9, 8, 0.90)),
     repeating-linear-gradient(0deg, rgba(241, 230, 207, 0.025) 0 1px, transparent 1px 7px);
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.psx-curatorial-card:nth-child(2) { --psx-card-image: var(--psx-asset-document); }
+.psx-curatorial-card:nth-child(3) { --psx-card-image: var(--psx-asset-print); }
+
+.psx-curatorial-card::after {
+  opacity: 0.18;
 }
 
 .psx-curatorial-icon {
@@ -1118,6 +1240,17 @@ body.psx-page.vh-page,
   padding-top: 5.8rem;
 }
 
+.psx-sources::after {
+  background-image:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.88), rgba(3, 4, 3, 0.54), rgba(3, 4, 3, 0.92)),
+    var(--psx-asset-paper),
+    var(--psx-asset-print);
+  background-position: center, 15% 50%, 86% 50%;
+  background-size: cover, min(34rem, 70vw) auto, min(34rem, 70vw) auto;
+  background-repeat: no-repeat;
+  opacity: 0.22;
+}
+
 .psx-source-catalogue {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1174,7 +1307,15 @@ body.psx-page.vh-page,
     radial-gradient(circle at 84% 58%, rgba(87, 37, 28, 0.13), transparent 20rem);
 }
 
+.psx-wall::after {
+  background-image:
+    linear-gradient(180deg, rgba(3, 4, 3, 0.78), rgba(3, 4, 3, 0.92)),
+    var(--psx-asset-archive-empty);
+  opacity: 0.22;
+}
+
 .psx-trace-card {
+  --psx-card-image: var(--psx-asset-archive);
   min-height: 19rem;
   margin: 0;
   padding: 1.35rem;
@@ -1185,19 +1326,10 @@ body.psx-page.vh-page,
 }
 
 .psx-trace-card::after {
-  content: "\201C";
-  position: absolute;
-  top: 0.15rem;
-  right: 1rem;
-  color: rgba(200, 164, 97, 0.14);
-  font-family: var(--psx-serif);
-  font-size: 8rem;
-  line-height: 1;
+  opacity: 0.20;
 }
 
 .psx-trace-card blockquote {
-  position: relative;
-  z-index: 1;
   margin: 0;
   color: var(--psx-cream);
   font-family: var(--psx-serif);
@@ -1210,7 +1342,7 @@ body.psx-page.vh-page,
   right: 1.35rem;
   bottom: 1.25rem;
   left: 1.35rem;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -1233,11 +1365,6 @@ body.psx-page.vh-page,
   overflow: hidden;
   isolation: isolate;
   padding: 6rem 0;
-}
-
-.psx-final-bg {
-  opacity: 0.80;
-  filter: saturate(0.78) contrast(1.15);
 }
 
 .psx-final-inner {
@@ -1404,14 +1531,21 @@ body.psx-page.vh-page,
   }
 
   .psx-hero-bg {
-    background-position: 61% center;
+    background-position: 58% center;
+    background-image:
+      radial-gradient(circle at 58% 36%, rgba(255, 216, 142, 0.22), transparent 14rem),
+      linear-gradient(90deg, rgba(3, 4, 3, 0.80), rgba(3, 4, 3, 0.38), rgba(3, 4, 3, 0.72)),
+      linear-gradient(180deg, rgba(3, 4, 3, 0.02), rgba(3, 4, 3, 0.34) 58%, #030403 100%),
+      var(--psx-asset-beam),
+      var(--psx-hero-mobile-image),
+      radial-gradient(circle at 68% 36%, #3a2918 0%, #15100b 34%, #030403 78%);
   }
 
   .psx-hero::before {
     background:
-      linear-gradient(90deg, rgba(3, 4, 3, 0.86), rgba(3, 4, 3, 0.48), rgba(3, 4, 3, 0.82)),
-      radial-gradient(circle at 58% 42%, rgba(200, 164, 97, 0.28), transparent 14rem),
-      radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.58) 72%, rgba(0, 0, 0, 0.92) 100%);
+      linear-gradient(90deg, rgba(3, 4, 3, 0.82), rgba(3, 4, 3, 0.42), rgba(3, 4, 3, 0.78)),
+      radial-gradient(circle at 58% 42%, rgba(200, 164, 97, 0.24), transparent 14rem),
+      radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.54) 72%, rgba(0, 0, 0, 0.88) 100%);
   }
 
   .psx-hero h1 {
