@@ -2,10 +2,35 @@
   const root = document.querySelector('[data-psx-page]');
   if (!root) return;
 
+  root.classList.add('psx-js-ready');
+  document.documentElement.classList.add('psx-js-ready');
+
   const lang = root.dataset.lang || document.documentElement.lang || 'en';
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get('event') || root.dataset.defaultEvent || '';
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
+
+  const revealItems = Array.from(root.querySelectorAll('[data-psx-reveal]'));
+  const showRevealItems = () => {
+    revealItems.forEach((item) => item.classList.add('is-visible'));
+  };
+
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    showRevealItems();
+  } else if (revealItems.length) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, {
+      rootMargin: '0px 0px -12% 0px',
+      threshold: 0.08
+    });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
 
   const copyText = {
     en: {
@@ -83,24 +108,6 @@
     });
   });
 
-  const revealItems = Array.from(root.querySelectorAll('[data-psx-reveal]'));
-  if (reducedMotion || !('IntersectionObserver' in window)) {
-    revealItems.forEach((item) => item.classList.add('is-visible'));
-  } else if (revealItems.length) {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      });
-    }, {
-      rootMargin: '0px 0px -12% 0px',
-      threshold: 0.08
-    });
-
-    revealItems.forEach((item) => revealObserver.observe(item));
-  }
-
   const navLinks = Array.from(root.querySelectorAll('.psx-orbit-nav a[href^="#"]'));
   if (navLinks.length && 'IntersectionObserver' in window) {
     const sectionById = new Map(
@@ -127,16 +134,98 @@
   }
 
   const timelineNodes = Array.from(root.querySelectorAll('[data-timeline-node]'));
-  timelineNodes.forEach((node) => {
-    node.addEventListener('click', () => {
-      timelineNodes.forEach((candidate) => {
-        candidate.classList.remove('is-active');
-        candidate.setAttribute('aria-pressed', 'false');
+  const timelineShell = root.querySelector('.psx-timeline-shell');
+  let timelineDetail = root.querySelector('[data-timeline-detail]');
+
+  if (timelineNodes.length && timelineShell && !timelineDetail) {
+    timelineDetail = document.createElement('article');
+    timelineDetail.className = 'psx-timeline-detail';
+    timelineDetail.dataset.timelineDetail = '';
+    timelineDetail.setAttribute('aria-live', 'polite');
+    timelineShell.appendChild(timelineDetail);
+  }
+
+  const findTimelineCard = (node) => node.closest('.psx-timeline-card');
+
+  const updateTimelineDetail = (node) => {
+    if (!timelineDetail || !node) return;
+    const card = findTimelineCard(node);
+    const year = node.querySelector('.psx-year')?.textContent?.trim() || '';
+    const title = node.querySelector('strong')?.textContent?.trim() || '';
+    const body = card?.querySelector('p')?.textContent?.trim() || '';
+    const sourceLabels = Array.from(card?.querySelectorAll('.psx-source-chip') || [])
+      .map((chip) => chip.textContent.trim())
+      .filter(Boolean);
+
+    timelineDetail.textContent = '';
+
+    if (year) {
+      const yearNode = document.createElement('span');
+      yearNode.className = 'psx-year';
+      yearNode.textContent = year;
+      timelineDetail.appendChild(yearNode);
+    }
+
+    if (title) {
+      const titleNode = document.createElement('h3');
+      titleNode.textContent = title;
+      timelineDetail.appendChild(titleNode);
+    }
+
+    if (body) {
+      const bodyNode = document.createElement('p');
+      bodyNode.textContent = body;
+      timelineDetail.appendChild(bodyNode);
+    }
+
+    if (sourceLabels.length) {
+      const sourceList = document.createElement('div');
+      sourceList.className = 'psx-timeline-detail-sources';
+      sourceLabels.forEach((label) => {
+        const source = document.createElement('span');
+        source.textContent = label;
+        sourceList.appendChild(source);
       });
-      node.classList.add('is-active');
-      node.setAttribute('aria-pressed', 'true');
+      timelineDetail.appendChild(sourceList);
+    }
+  };
+
+  const activateTimelineNode = (node, shouldFocus = false) => {
+    if (!node) return;
+    timelineNodes.forEach((candidate) => {
+      const active = candidate === node;
+      candidate.classList.toggle('is-active', active);
+      candidate.setAttribute('aria-pressed', String(active));
+      findTimelineCard(candidate)?.classList.toggle('is-active', active);
+    });
+    updateTimelineDetail(node);
+    if (shouldFocus) node.focus({ preventScroll: true });
+  };
+
+  timelineNodes.forEach((node, index) => {
+    node.addEventListener('click', () => activateTimelineNode(node));
+
+    node.addEventListener('keydown', (event) => {
+      const key = event.key;
+      if (key === 'Enter' || key === ' ') {
+        event.preventDefault();
+        activateTimelineNode(node);
+        return;
+      }
+
+      const forward = key === 'ArrowRight' || key === 'ArrowDown';
+      const backward = key === 'ArrowLeft' || key === 'ArrowUp';
+      if (!forward && !backward) return;
+
+      event.preventDefault();
+      const nextIndex = forward
+        ? Math.min(timelineNodes.length - 1, index + 1)
+        : Math.max(0, index - 1);
+      activateTimelineNode(timelineNodes[nextIndex], true);
     });
   });
+
+  activateTimelineNode(timelineNodes.find((node) => node.classList.contains('is-active')) || timelineNodes[0]);
 
   const rail = root.querySelector('[data-track-rail]');
   const prev = root.querySelector('[data-track-prev]');
@@ -179,6 +268,16 @@
   const sourcePanels = Array.from(root.querySelectorAll('.psx-source-detail[id]'));
   const sourceDrawer = root.querySelector('[data-source-drawer]');
 
+  const closeSourcePanels = () => {
+    sourcePanels.forEach((candidate) => {
+      candidate.hidden = true;
+    });
+    sourceButtons.forEach((candidate) => {
+      candidate.classList.remove('is-selected');
+      candidate.setAttribute('aria-expanded', 'false');
+    });
+  };
+
   sourceButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const key = button.dataset.sourceToggle;
@@ -186,18 +285,14 @@
       if (!panel) return;
       const open = button.getAttribute('aria-expanded') !== 'true';
 
-      sourcePanels.forEach((candidate) => {
-        candidate.hidden = candidate !== panel || !open;
-      });
+      closeSourcePanels();
+      if (!open) return;
 
-      sourceButtons.forEach((candidate) => {
-        candidate.setAttribute(
-          'aria-expanded',
-          String(open && candidate.dataset.sourceToggle === key)
-        );
-      });
+      panel.hidden = false;
+      button.classList.add('is-selected');
+      button.setAttribute('aria-expanded', 'true');
 
-      if (open && sourceDrawer) {
+      if (sourceDrawer) {
         const drawerTop = sourceDrawer.getBoundingClientRect().top;
         const drawerVisible = drawerTop > 0 && drawerTop < window.innerHeight * 0.75;
         if (!drawerVisible) {
