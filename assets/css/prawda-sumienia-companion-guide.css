@@ -1,0 +1,57 @@
+.psx-page .psx-hero h1,
+.psx-page .psx-hero-line,
+.psx-page .psx-hero-words,
+.psx-page .psx-inscription-text,
+.psx-page .psx-inscription-note,
+.psx-page .psx-event-pass dd,
+.psx-page .psx-path-card strong,
+.psx-page .psx-path-note,
+.psx-page .psx-chapter-plate h3,
+.psx-page .psx-chapter-plate p,
+.psx-page .psx-source-detail h3,
+.psx-page .psx-source-detail p,
+.psx-page .psx-source-detail a {
+  overflow-wrap: anywhere;
+}
+
+.psx-page .psx-source-detail a {
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .psx-page .psx-hero-line {
+    max-width: 100%;
+    font-size: clamp(1.08rem, 5.7vw, 1.34rem);
+    line-height: 1.28;
+  }
+
+  .psx-page .psx-hero-words {
+    max-width: 100%;
+    font-size: 0.98rem;
+  }
+
+  .psx-page .psx-event-pass div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .psx-page .psx-event-pass dd {
+    line-height: 1.45;
+  }
+
+  .psx-page .psx-chapter-plate p {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .psx-page .psx-hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.05rem, 10vw, 2.62rem);
+    line-height: 1.02;
+  }
+
+  .psx-page .psx-hero-line {
+    font-size: 1.14rem;
+  }
+}
