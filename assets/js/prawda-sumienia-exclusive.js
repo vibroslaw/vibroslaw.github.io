@@ -41,7 +41,7 @@
     },
     pl: {
       copied: 'Link QR skopiowany.',
-      failed: 'Nie udalo sie skopiowac. Uzyj linku z paska adresu.'
+      failed: 'Nie udało się skopiować. Użyj linku z paska adresu.'
     }
   };
 
