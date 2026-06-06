@@ -32,6 +32,8 @@
     revealItems.forEach((item) => revealObserver.observe(item));
   }
 
+  window.setTimeout(showRevealItems, reducedMotion ? 0 : 900);
+
   const copyText = {
     en: {
       copied: 'QR link copied.',
@@ -69,6 +71,37 @@
     if (!routes[type]) return;
     link.setAttribute('href', buildEventUrl(routes[type]));
   });
+
+  const finalActionCopy = {
+    en: {
+      participation: 'Participation Record'
+    },
+    pl: {
+      participation: 'Zapis uczestnictwa'
+    }
+  };
+
+  const ensureFinalRitualActions = () => {
+    const finalActions = root.querySelector('.psx-final .psx-actions');
+    if (!finalActions || !routes.participation) return;
+    if (finalActions.querySelector('[data-psx-link-type="participation"]')) return;
+
+    const link = document.createElement('a');
+    link.className = 'psx-button psx-button-quiet psx-button-participation';
+    link.dataset.psxLinkType = 'participation';
+    link.dataset.psxEventLink = '';
+    link.href = buildEventUrl(routes.participation);
+    link.textContent = finalActionCopy[lang]?.participation || finalActionCopy.en.participation;
+
+    const archiveLink = finalActions.querySelector('[data-psx-link-type="archive"]');
+    if (archiveLink) {
+      finalActions.insertBefore(link, archiveLink);
+    } else {
+      finalActions.appendChild(link);
+    }
+  };
+
+  ensureFinalRitualActions();
 
   if (eventId) {
     root.querySelectorAll('.psx-language-switch[href]').forEach((link) => {
