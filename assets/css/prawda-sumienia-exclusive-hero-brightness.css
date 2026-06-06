@@ -1,49 +1,506 @@
-/* Prawda Sumienia exclusive hero brightness rescue.
-   Scoped to the exclusive page only. Keeps final section darker. */
+/* Prawda Sumienia exclusive hero and journey map visual redesign.
+   Loaded via hub.css; scoped to the exclusive page and does not affect the final section. */
+
+body.psx-page .psx-hero {
+  min-height: max(860px, 100svh);
+  justify-content: center;
+  padding-block: clamp(7.5rem, 10vh, 9rem) clamp(4.5rem, 7vh, 6rem);
+  background:
+    radial-gradient(circle at 64% 22%, rgba(255, 220, 150, 0.20), transparent 30rem),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.10), rgba(3, 4, 3, 0.82));
+}
 
 body.psx-page .psx-hero-bg {
+  opacity: 0.58;
+  transform: scale(1.03);
   background-image:
-    radial-gradient(circle at 68% 36%, rgba(255, 220, 150, 0.38), transparent 26rem),
-    radial-gradient(circle at 24% 14%, rgba(200, 164, 97, 0.18), transparent 20rem),
-    linear-gradient(90deg, rgba(3, 4, 3, 0.44) 0%, rgba(3, 4, 3, 0.22) 36%, rgba(3, 4, 3, 0.08) 72%, rgba(3, 4, 3, 0.30) 100%),
-    linear-gradient(180deg, rgba(3, 4, 3, 0.02) 0%, rgba(3, 4, 3, 0.08) 56%, rgba(3, 4, 3, 0.50) 100%),
+    radial-gradient(circle at 64% 34%, rgba(255, 224, 160, 0.30), transparent 25rem),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.42) 0%, rgba(3, 4, 3, 0.12) 48%, rgba(3, 4, 3, 0.30) 100%),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.00) 0%, rgba(3, 4, 3, 0.16) 62%, rgba(3, 4, 3, 0.62) 100%),
     var(--psx-asset-beam),
     var(--psx-hero-image),
-    radial-gradient(circle at 68% 36%, #3a2918 0%, #15100b 34%, #030403 78%);
+    radial-gradient(circle at 68% 36%, #4a321d 0%, #1f160d 36%, #030403 82%);
+  filter: saturate(1.08) contrast(1.02) brightness(1.12);
 }
 
 body.psx-page .psx-hero::before {
   background:
-    linear-gradient(112deg, transparent 0 24%, rgba(244, 209, 139, 0.20) 39%, transparent 56%),
-    radial-gradient(circle at 72% 46%, rgba(200, 164, 97, 0.20), transparent 18rem),
-    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.18) 78%, rgba(0, 0, 0, 0.48) 100%);
+    linear-gradient(108deg, transparent 0 30%, rgba(244, 209, 139, 0.18) 43%, transparent 60%),
+    radial-gradient(circle at 66% 42%, rgba(200, 164, 97, 0.24), transparent 22rem),
+    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.12) 72%, rgba(0, 0, 0, 0.38) 100%);
 }
 
 body.psx-page .psx-hero::after {
   background:
-    linear-gradient(180deg, rgba(3, 4, 3, 0.02), transparent 30%, rgba(3, 4, 3, 0.46)),
-    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.022) 0 1px, transparent 1px 3px);
-  opacity: 0.55;
+    linear-gradient(180deg, rgba(3, 4, 3, 0.00), transparent 34%, rgba(3, 4, 3, 0.42)),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.018) 0 1px, transparent 1px 3px);
+  opacity: 0.44;
+}
+
+body.psx-page.psx-hero-has-visual .psx-hero-grid {
+  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 0.98fr);
+  grid-template-areas:
+    "copy visual"
+    "copy inscription";
+  gap: clamp(1.4rem, 3vw, 2.5rem) clamp(2rem, 5vw, 4.8rem);
+  align-items: center;
+}
+
+body.psx-page.psx-hero-has-visual .psx-hero-copy {
+  grid-area: copy;
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+  padding: clamp(1rem, 2vw, 1.5rem) 0;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.78);
+}
+
+body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+  content: "";
+  position: absolute;
+  inset: -2rem -2.5rem -2.25rem -1.4rem;
+  z-index: -1;
+  border-left: 1px solid rgba(200, 164, 97, 0.34);
+  background:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.68), rgba(3, 4, 3, 0.28) 68%, transparent),
+    radial-gradient(circle at 20% 42%, rgba(200, 164, 97, 0.14), transparent 18rem);
+  box-shadow: -34px 0 90px rgba(0, 0, 0, 0.50);
+}
+
+body.psx-page.psx-hero-has-visual .psx-hero h1 {
+  max-width: 11.5ch;
+  font-size: clamp(3.4rem, 7.4vw, 6.35rem);
+  letter-spacing: 0.015em;
+  line-height: 0.90;
+  text-shadow: 0 20px 74px rgba(0, 0, 0, 0.86), 0 0 34px rgba(200, 164, 97, 0.18);
+}
+
+body.psx-page .psx-hero-visual {
+  grid-area: visual;
+  position: relative;
+  align-self: stretch;
+  min-height: clamp(420px, 54vh, 620px);
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(222, 187, 110, 0.52);
+  border-radius: 8px;
+  background: #0b0906;
+  box-shadow:
+    0 34px 120px rgba(0, 0, 0, 0.72),
+    0 0 80px rgba(200, 164, 97, 0.18),
+    inset 0 1px 0 rgba(255, 245, 216, 0.18);
+  transform: translateZ(0);
+}
+
+body.psx-page .psx-hero-visual::before,
+body.psx-page .psx-hero-visual::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+body.psx-page .psx-hero-visual::before {
+  inset: 0.75rem;
+  z-index: 3;
+  border: 1px solid rgba(255, 229, 168, 0.25);
+  border-radius: 5px;
+}
+
+body.psx-page .psx-hero-visual::after {
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.10), transparent 40%, rgba(3, 4, 3, 0.22)),
+    linear-gradient(180deg, rgba(255, 232, 170, 0.08), transparent 38%, rgba(3, 4, 3, 0.38)),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.020) 0 1px, transparent 1px 4px);
+  mix-blend-mode: normal;
+}
+
+body.psx-page .psx-hero-visual picture,
+body.psx-page .psx-hero-visual-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+body.psx-page .psx-hero-visual-image {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(1.10) contrast(1.04) brightness(1.18);
+}
+
+body.psx-page .psx-hero-visual-beam {
+  position: absolute;
+  inset: -18% -12% auto auto;
+  z-index: 4;
+  width: 54%;
+  height: 74%;
+  transform: rotate(12deg);
+  background: linear-gradient(110deg, transparent, rgba(255, 224, 158, 0.22), transparent 68%);
+  filter: blur(1px);
+  opacity: 0.86;
+  pointer-events: none;
+}
+
+body.psx-page.psx-hero-has-visual .psx-hero-inscription {
+  grid-area: inscription;
+  z-index: 4;
+  max-width: 560px;
+  justify-self: end;
+  margin-top: -2.2rem;
+  background:
+    linear-gradient(140deg, rgba(255, 239, 198, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(20, 17, 12, 0.90), rgba(8, 8, 7, 0.80));
+  backdrop-filter: blur(18px);
+}
+
+body.psx-page .psx-journey {
+  background:
+    radial-gradient(circle at 30% 8%, rgba(200, 164, 97, 0.16), transparent 24rem),
+    linear-gradient(180deg, rgba(12, 10, 7, 0.72), rgba(3, 4, 3, 0.94));
+}
+
+body.psx-page .psx-timeline-shell.psx-map-board {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.25rem, 2.6vw, 2rem);
+  border: 1px solid rgba(200, 164, 97, 0.42);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 239, 198, 0.10), transparent 32%),
+    linear-gradient(180deg, rgba(17, 14, 10, 0.92), rgba(6, 6, 5, 0.86)),
+    var(--psx-asset-paper),
+    var(--psx-asset-texture),
+    #080706;
+  background-size: auto, auto, cover, cover, auto;
+  box-shadow: 0 38px 120px rgba(0, 0, 0, 0.66), inset 0 1px 0 rgba(255, 245, 216, 0.12);
+}
+
+body.psx-page .psx-timeline-shell.psx-map-board::before {
+  content: "";
+  position: absolute;
+  inset: 0.85rem;
+  z-index: 0;
+  border: 1px solid rgba(200, 164, 97, 0.18);
+  border-radius: 7px;
+  pointer-events: none;
+}
+
+body.psx-page .psx-route-canvas {
+  position: absolute;
+  inset: clamp(3.5rem, 7vw, 5rem) clamp(2rem, 5vw, 4rem) auto;
+  z-index: 1;
+  height: clamp(230px, 28vw, 330px);
+  pointer-events: none;
+}
+
+body.psx-page .psx-route-canvas svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+body.psx-page .psx-route-shadow,
+body.psx-page .psx-route-line,
+body.psx-page .psx-route-pulse {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+body.psx-page .psx-route-shadow {
+  stroke: rgba(0, 0, 0, 0.72);
+  stroke-width: 16;
+}
+
+body.psx-page .psx-route-line {
+  stroke: rgba(200, 164, 97, 0.90);
+  stroke-width: 5;
+  filter: drop-shadow(0 0 14px rgba(200, 164, 97, 0.32));
+}
+
+body.psx-page .psx-route-pulse {
+  stroke: rgba(255, 237, 186, 0.60);
+  stroke-width: 1.5;
+  stroke-dasharray: 10 22;
+}
+
+body.psx-page .psx-map-board .psx-timeline-track {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(74px, 1fr));
+  gap: 0;
+  min-height: clamp(310px, 34vw, 410px);
+  margin: 0;
+  padding: clamp(1.4rem, 3vw, 2.2rem) 0 0;
+  list-style: none;
+}
+
+body.psx-page .psx-map-board .psx-timeline-track::before {
+  display: none;
+}
+
+body.psx-page .psx-map-board .psx-timeline-card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+body.psx-page .psx-map-board .psx-timeline-card:nth-child(odd) {
+  align-items: flex-end;
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+body.psx-page .psx-map-board .psx-timeline-card:nth-child(even) {
+  align-items: flex-start;
+  padding-top: clamp(1rem, 4vw, 3rem);
+}
+
+body.psx-page .psx-map-board .psx-timeline-card > p,
+body.psx-page .psx-map-board .psx-timeline-card > .psx-chip-row {
+  display: none;
+}
+
+body.psx-page .psx-map-board .psx-timeline-node {
+  position: relative;
+  width: min(8.8rem, 100%);
+  min-height: 8.8rem;
+  display: grid;
+  place-items: center;
+  gap: 0.42rem;
+  padding: 0.9rem 0.7rem;
+  border: 1px solid rgba(200, 164, 97, 0.46);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 239, 198, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(26, 21, 13, 0.96), rgba(8, 7, 6, 0.94));
+  color: var(--psx-cream);
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 245, 216, 0.18);
+  text-align: center;
+}
+
+body.psx-page .psx-map-board .psx-timeline-node::before {
+  content: "";
+  position: absolute;
+  inset: -0.45rem;
+  border: 1px solid rgba(200, 164, 97, 0.24);
+  border-radius: inherit;
+}
+
+body.psx-page .psx-map-board .psx-timeline-node::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.62rem;
+  height: 0.62rem;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: rgba(255, 234, 181, 0.92);
+  box-shadow: 0 0 24px rgba(200, 164, 97, 0.62);
+}
+
+body.psx-page .psx-map-board .psx-timeline-node .psx-year {
+  color: var(--psx-gold);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.04rem, 1.5vw, 1.32rem);
+  line-height: 1;
+}
+
+body.psx-page .psx-map-board .psx-timeline-node strong {
+  max-width: 10ch;
+  color: rgba(241, 230, 207, 0.92);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.28;
+  text-transform: uppercase;
+}
+
+body.psx-page .psx-map-board .psx-timeline-node.is-active {
+  transform: translateY(-4px) scale(1.05);
+  border-color: rgba(255, 230, 166, 0.95);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 239, 198, 0.42), transparent 42%),
+    linear-gradient(180deg, rgba(64, 45, 22, 0.98), rgba(16, 12, 8, 0.96));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.70), 0 0 54px rgba(200, 164, 97, 0.34), inset 0 1px 0 rgba(255, 245, 216, 0.25);
+}
+
+body.psx-page .psx-map-board .psx-timeline-detail {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+  margin: clamp(1.4rem, 3vw, 2.2rem) auto 0;
+  padding: clamp(1rem, 2vw, 1.35rem) clamp(1rem, 2.4vw, 1.6rem);
+  border: 1px solid rgba(200, 164, 97, 0.36);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 239, 198, 0.10), transparent 38%),
+    rgba(5, 5, 4, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 245, 216, 0.10), 0 20px 60px rgba(0, 0, 0, 0.42);
+}
+
+body.psx-page .psx-map-board .psx-timeline-detail .psx-year {
+  color: var(--psx-gold);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.4rem, 2.3vw, 2rem);
+}
+
+body.psx-page .psx-map-board .psx-timeline-detail h3 {
+  margin: 0.25rem 0 0.55rem;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+body.psx-page .psx-map-board .psx-timeline-detail-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.95rem;
+}
+
+body.psx-page .psx-map-board .psx-timeline-detail-sources span {
+  min-height: 2.2rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(200, 164, 97, 0.38);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  color: var(--psx-gold);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 1100px) {
+  body.psx-page.psx-hero-has-visual .psx-hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "visual"
+      "inscription";
+  }
+
+  body.psx-page .psx-hero-visual {
+    min-height: clamp(340px, 52vw, 520px);
+  }
+
+  body.psx-page.psx-hero-has-visual .psx-hero-inscription {
+    justify-self: stretch;
+    max-width: none;
+    margin-top: -1rem;
+  }
 }
 
 @media (max-width: 760px) {
+  body.psx-page .psx-hero {
+    min-height: auto;
+    padding-block: 6.4rem 3.5rem;
+  }
+
   body.psx-page .psx-hero-bg {
+    opacity: 0.68;
     background-image:
-      radial-gradient(circle at 58% 38%, rgba(255, 220, 150, 0.34), transparent 18rem),
-      linear-gradient(90deg, rgba(3, 4, 3, 0.48), rgba(3, 4, 3, 0.18), rgba(3, 4, 3, 0.44)),
-      linear-gradient(180deg, rgba(3, 4, 3, 0.02), rgba(3, 4, 3, 0.44)),
+      radial-gradient(circle at 58% 38%, rgba(255, 220, 150, 0.28), transparent 17rem),
+      linear-gradient(90deg, rgba(3, 4, 3, 0.44), rgba(3, 4, 3, 0.10), rgba(3, 4, 3, 0.36)),
+      linear-gradient(180deg, rgba(3, 4, 3, 0.00), rgba(3, 4, 3, 0.46)),
       var(--psx-hero-mobile-image),
       var(--psx-hero-image),
       radial-gradient(circle at 60% 40%, #3a2918 0%, #15100b 38%, #030403 82%);
   }
 
-  body.psx-page .psx-hero::before {
-    background:
-      radial-gradient(circle at 58% 42%, rgba(200, 164, 97, 0.22), transparent 14rem),
-      linear-gradient(180deg, rgba(3, 4, 3, 0.10), rgba(3, 4, 3, 0.44));
+  body.psx-page.psx-hero-has-visual .psx-hero-grid {
+    gap: 1.1rem;
   }
 
-  body.psx-page .psx-hero::after {
-    opacity: 0.45;
+  body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+    inset: -1rem;
+    background: linear-gradient(180deg, rgba(3, 4, 3, 0.66), rgba(3, 4, 3, 0.22));
+  }
+
+  body.psx-page.psx-hero-has-visual .psx-hero h1 {
+    max-width: 10.5ch;
+    font-size: clamp(2.65rem, 14vw, 4rem);
+  }
+
+  body.psx-page .psx-hero-visual {
+    min-height: clamp(260px, 76vw, 360px);
+    border-radius: 7px;
+  }
+
+  body.psx-page .psx-timeline-shell.psx-map-board {
+    padding: 1.2rem;
+  }
+
+  body.psx-page .psx-route-canvas {
+    display: none;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-track {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    min-height: 0;
+    padding: 0 0 0 1.3rem;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-track::after {
+    content: "";
+    position: absolute;
+    left: 0.42rem;
+    top: 0.8rem;
+    bottom: 9.5rem;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(200, 164, 97, 0.90), rgba(200, 164, 97, 0.18));
+    box-shadow: 0 0 18px rgba(200, 164, 97, 0.34);
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-card,
+  body.psx-page .psx-map-board .psx-timeline-card:nth-child(odd),
+  body.psx-page .psx-map-board .psx-timeline-card:nth-child(even) {
+    justify-content: stretch;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-node {
+    width: 100%;
+    min-height: 4.6rem;
+    grid-template-columns: 4.4rem 1fr;
+    place-items: center start;
+    border-radius: 8px;
+    text-align: left;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-node::before {
+    inset: 0.38rem;
+    border-radius: 5px;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-node::after {
+    left: -0.92rem;
+    width: 0.74rem;
+    height: 0.74rem;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-node strong {
+    max-width: none;
+    font-size: 0.72rem;
+  }
+
+  body.psx-page .psx-map-board .psx-timeline-detail {
+    margin-top: 1rem;
   }
 }
