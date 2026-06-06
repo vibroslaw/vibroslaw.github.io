@@ -89,6 +89,61 @@
     eventDetail.textContent = detailParts.join(' / ');
   }
 
+  const heroAssets = {
+    en: {
+      desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
+    },
+    pl: {
+      desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'
+    }
+  };
+
+  const sharedHeroAssets = {
+    desktop: '/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-hero.webp',
+    mobile: '/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-mobile.webp'
+  };
+
+  const installHeroVisual = () => {
+    const heroGrid = root.querySelector('.psx-hero-grid');
+    const inscription = root.querySelector('.psx-hero-inscription');
+    if (!heroGrid || !inscription || heroGrid.querySelector('.psx-hero-visual')) return;
+
+    const assets = heroAssets[lang] || sharedHeroAssets;
+    const figure = document.createElement('figure');
+    figure.className = 'psx-hero-visual';
+    figure.setAttribute('aria-hidden', 'true');
+
+    const picture = document.createElement('picture');
+    const mobileSource = document.createElement('source');
+    mobileSource.media = '(max-width: 760px)';
+    mobileSource.srcset = assets.mobile || sharedHeroAssets.mobile;
+
+    const image = document.createElement('img');
+    image.className = 'psx-hero-visual-image';
+    image.src = assets.desktop || sharedHeroAssets.desktop;
+    image.alt = '';
+    image.decoding = 'async';
+    image.fetchPriority = 'high';
+    image.loading = 'eager';
+    image.addEventListener('error', () => {
+      if (image.dataset.fallbackApplied) return;
+      image.dataset.fallbackApplied = 'true';
+      mobileSource.srcset = sharedHeroAssets.mobile;
+      image.src = sharedHeroAssets.desktop;
+    }, { once: true });
+
+    picture.append(mobileSource, image);
+
+    const beam = document.createElement('span');
+    beam.className = 'psx-hero-visual-beam';
+
+    figure.append(picture, beam);
+    heroGrid.insertBefore(figure, inscription);
+    root.classList.add('psx-hero-has-visual');
+  };
+
+  installHeroVisual();
+
   const currentExperienceUrl = () => {
     const url = new URL(window.location.href);
     if (eventId) url.searchParams.set('event', eventId);
@@ -136,6 +191,48 @@
   const timelineNodes = Array.from(root.querySelectorAll('[data-timeline-node]'));
   const timelineShell = root.querySelector('.psx-timeline-shell');
   let timelineDetail = root.querySelector('[data-timeline-detail]');
+
+  const upgradeJourneyMap = () => {
+    if (!timelineNodes.length || !timelineShell || timelineShell.dataset.psxMapUpgraded) return;
+    const track = timelineShell.querySelector('.psx-timeline-track');
+    if (!track) return;
+
+    timelineShell.dataset.psxMapUpgraded = 'true';
+    timelineShell.classList.add('psx-map-board');
+    track.setAttribute('role', 'list');
+
+    const route = document.createElement('div');
+    route.className = 'psx-route-canvas';
+    route.setAttribute('aria-hidden', 'true');
+
+    const namespace = 'http://www.w3.org/2000/svg';
+    const pathData = 'M64 238 C182 82 292 82 392 184 S585 326 706 174 S930 74 1136 206';
+    const svg = document.createElementNS(namespace, 'svg');
+    svg.setAttribute('viewBox', '0 0 1200 360');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('focusable', 'false');
+
+    ['psx-route-shadow', 'psx-route-line', 'psx-route-pulse'].forEach((className) => {
+      const path = document.createElementNS(namespace, 'path');
+      path.setAttribute('class', className);
+      path.setAttribute('d', pathData);
+      svg.appendChild(path);
+    });
+
+    route.appendChild(svg);
+    timelineShell.insertBefore(route, track);
+
+    timelineNodes.forEach((node, index) => {
+      const card = node.closest('.psx-timeline-card');
+      const year = node.querySelector('.psx-year')?.textContent?.trim() || '';
+      const title = node.querySelector('strong')?.textContent?.trim() || '';
+      node.style.setProperty('--psx-station', String(index + 1));
+      node.setAttribute('aria-label', [year, title].filter(Boolean).join(' - '));
+      card?.style.setProperty('--psx-station', String(index + 1));
+    });
+  };
+
+  upgradeJourneyMap();
 
   if (timelineNodes.length && timelineShell && !timelineDetail) {
     timelineDetail = document.createElement('article');
