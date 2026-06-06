@@ -32,6 +32,8 @@
     revealItems.forEach((item) => revealObserver.observe(item));
   }
 
+  window.setTimeout(showRevealItems, reducedMotion ? 0 : 900);
+
   const copyText = {
     en: {
       copied: 'QR link copied.',
