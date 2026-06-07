@@ -6,6 +6,9 @@
 .psx-page .psx-event-pass dd,
 .psx-page .psx-path-card strong,
 .psx-page .psx-path-note,
+.psx-page .psx-atlas-pin,
+.psx-page .psx-atlas-ledger h3,
+.psx-page .psx-atlas-ledger p,
 .psx-page .psx-chapter-plate h3,
 .psx-page .psx-chapter-plate p,
 .psx-page .psx-source-detail h3,
@@ -22,6 +25,10 @@
 .psx-page .psx-event-pass,
 .psx-page .psx-event-pass div,
 .psx-page .psx-path-card,
+.psx-page .psx-memory-atlas,
+.psx-page .psx-atlas-panel,
+.psx-page .psx-atlas-map,
+.psx-page .psx-atlas-ledger li,
 .psx-page .psx-chapter-plate,
 .psx-page .psx-source-detail {
   min-width: 0;
@@ -29,6 +36,265 @@
 
 .psx-page .psx-source-detail a {
   display: inline-block;
+}
+
+.psx-page .psx-memory-atlas {
+  position: relative;
+}
+
+.psx-page .psx-atlas-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(22rem, 0.82fr);
+  gap: clamp(1.1rem, 3vw, 2rem);
+  overflow: hidden;
+  border: 1px solid rgba(200, 164, 97, 0.28);
+  border-radius: var(--psx-radius);
+  padding: clamp(1rem, 2.6vw, 1.55rem);
+  background:
+    linear-gradient(90deg, rgba(200, 164, 97, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(200, 164, 97, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 22% 18%, rgba(200, 164, 97, 0.16), transparent 18rem),
+    radial-gradient(circle at 78% 72%, rgba(99, 68, 31, 0.22), transparent 20rem),
+    linear-gradient(180deg, rgba(17, 14, 10, 0.96), rgba(5, 6, 5, 0.97));
+  background-size: 84px 84px, 84px 84px, auto, auto, auto;
+  box-shadow: 0 34px 110px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 245, 216, 0.10);
+}
+
+.psx-page .psx-atlas-panel::before,
+.psx-page .psx-atlas-panel::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.psx-page .psx-atlas-panel::before {
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 32%, rgba(244, 209, 139, 0.10) 43%, transparent 58%),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.025) 0 1px, transparent 1px 7px);
+  opacity: 0.54;
+}
+
+.psx-page .psx-atlas-panel::after {
+  inset: 0.7rem;
+  border: 1px solid rgba(200, 164, 97, 0.18);
+  border-radius: 4px;
+  box-shadow: inset 0 0 42px rgba(200, 164, 97, 0.05);
+}
+
+.psx-page .psx-atlas-map,
+.psx-page .psx-atlas-ledger {
+  position: relative;
+  z-index: 1;
+}
+
+.psx-page .psx-atlas-map {
+  min-height: clamp(28rem, 45vw, 36rem);
+  overflow: hidden;
+  border: 1px solid rgba(200, 164, 97, 0.18);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 47% 47%, rgba(200, 164, 97, 0.18), transparent 9rem),
+    radial-gradient(circle at 92% 30%, rgba(200, 164, 97, 0.13), transparent 11rem),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.10), rgba(3, 4, 3, 0.42));
+}
+
+.psx-page .psx-atlas-map::before {
+  content: "Memory Atlas";
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: rgba(241, 230, 207, 0.44);
+  font: 800 0.66rem/1 var(--psx-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+body[data-lang="pl"] .psx-atlas-map::before {
+  content: "Atlas pamięci";
+}
+
+.psx-page .psx-atlas-map::after {
+  content: "";
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgba(241, 230, 207, 0.08);
+  border-radius: 4px;
+}
+
+.psx-page .psx-atlas-line {
+  position: absolute;
+  inset: 8% 4%;
+  width: 92%;
+  height: 84%;
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgba(200, 164, 97, 0.24));
+}
+
+.psx-page .psx-atlas-line path {
+  fill: none;
+  stroke: rgba(200, 164, 97, 0.78);
+  stroke-dasharray: 1 12;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.psx-page .psx-atlas-pin {
+  position: absolute;
+  left: var(--atlas-x);
+  top: var(--atlas-y);
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 0.42rem;
+  transform: translate(-50%, -50%);
+}
+
+.psx-page .psx-atlas-pin b {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid rgba(241, 230, 207, 0.62);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(241, 230, 207, 0.18), rgba(200, 164, 97, 0.18) 42%, rgba(3, 4, 3, 0.92) 72%);
+  box-shadow: 0 0 0 5px rgba(200, 164, 97, 0.10), 0 0 30px rgba(200, 164, 97, 0.20);
+  color: var(--psx-cream);
+  font: 800 0.78rem/1 var(--psx-sans);
+  letter-spacing: 0.06em;
+}
+
+.psx-page .psx-atlas-pin-core b,
+.psx-page .psx-atlas-pin-final b {
+  border-color: rgba(200, 164, 97, 0.90);
+  background:
+    radial-gradient(circle, rgba(255, 239, 198, 0.42), rgba(200, 164, 97, 0.38) 42%, rgba(42, 30, 16, 0.96) 75%);
+  color: #130e08;
+}
+
+.psx-page .psx-atlas-pin em {
+  max-width: 8.6rem;
+  border: 1px solid rgba(200, 164, 97, 0.20);
+  border-radius: 999px;
+  padding: 0.32rem 0.48rem;
+  background: rgba(3, 4, 3, 0.72);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
+  color: rgba(241, 230, 207, 0.86);
+  font: 800 0.62rem/1.2 var(--psx-sans);
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.psx-page .psx-atlas-ledger {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.psx-page .psx-atlas-ledger li {
+  display: grid;
+  grid-template-columns: 2.65rem minmax(0, 1fr);
+  gap: 0.85rem;
+  border-bottom: 1px solid rgba(200, 164, 97, 0.14);
+  padding: 0.75rem 0;
+}
+
+.psx-page .psx-atlas-ledger li:first-child {
+  padding-top: 0;
+}
+
+.psx-page .psx-atlas-ledger li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.psx-page .psx-atlas-ledger li > span {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid rgba(200, 164, 97, 0.38);
+  border-radius: 50%;
+  color: var(--psx-gold);
+  font: 800 0.7rem/1 var(--psx-sans);
+  letter-spacing: 0.08em;
+}
+
+.psx-page .psx-atlas-ledger small {
+  display: block;
+  margin: 0 0 0.28rem;
+  color: rgba(200, 164, 97, 0.78);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.psx-page .psx-atlas-ledger h3 {
+  margin: 0;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.05rem, 1.4vw, 1.24rem);
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+.psx-page .psx-atlas-ledger p {
+  margin: 0.28rem 0 0;
+  color: var(--psx-muted);
+  font-size: 0.88rem;
+  line-height: 1.56;
+}
+
+.psx-page .psx-chapter-plate {
+  display: flex;
+  flex-direction: column;
+  min-height: 27rem;
+  box-shadow: 0 26px 82px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 245, 216, 0.08);
+}
+
+.psx-page .psx-chapter-plate:hover,
+.psx-page .psx-chapter-plate:focus-within,
+.psx-page .psx-path-card:hover,
+.psx-page .psx-path-card:focus-visible,
+.psx-page .psx-curatorial-card:hover,
+.psx-page .psx-trace-card:hover {
+  transform: translateY(-2px);
+}
+
+.psx-page .psx-plate-number {
+  color: rgba(224, 184, 101, 0.58);
+  font-size: 4.15rem;
+}
+
+.psx-page .psx-chapter-plate h3 {
+  min-height: 3.6rem;
+  margin-top: 1.05rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(200, 164, 97, 0.16);
+  letter-spacing: 0.06em;
+}
+
+.psx-page .psx-chapter-plate p {
+  min-height: 0;
+  margin-top: 0.9rem;
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.psx-page .psx-chapter-plate p strong {
+  color: rgba(241, 230, 207, 0.92);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 760px) {
@@ -58,8 +324,52 @@
     line-height: 1.45;
   }
 
+  .psx-page .psx-atlas-panel {
+    grid-template-columns: 1fr;
+    padding: 0.8rem;
+  }
+
+  .psx-page .psx-atlas-map {
+    min-height: 20rem;
+  }
+
+  .psx-page .psx-atlas-pin em {
+    display: none;
+  }
+
+  .psx-page .psx-atlas-pin b {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.68rem;
+  }
+
+  .psx-page .psx-atlas-ledger {
+    position: relative;
+    padding: 0.3rem 0.2rem 0.1rem;
+  }
+
+  .psx-page .psx-atlas-ledger::before {
+    content: "";
+    position: absolute;
+    left: 1.34rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(200, 164, 97, 0.62), rgba(200, 164, 97, 0.08));
+  }
+
+  .psx-page .psx-atlas-ledger li {
+    position: relative;
+    z-index: 1;
+    padding: 0.85rem 0;
+  }
+
   .psx-page .psx-chapter-plate p {
     min-height: 0;
+  }
+
+  .psx-page .psx-chapter-plate {
+    min-height: 25.5rem;
   }
 }
 
@@ -73,5 +383,22 @@
   .psx-page .psx-hero-line {
     max-width: 22ch;
     font-size: 1.14rem;
+  }
+
+  .psx-page .psx-atlas-map {
+    min-height: 17rem;
+  }
+
+  .psx-page .psx-atlas-panel::after {
+    inset: 0.45rem;
+  }
+
+  .psx-page .psx-atlas-ledger li {
+    grid-template-columns: 2.35rem minmax(0, 1fr);
+    gap: 0.7rem;
+  }
+
+  .psx-page .psx-atlas-ledger p {
+    font-size: 0.84rem;
   }
 }
