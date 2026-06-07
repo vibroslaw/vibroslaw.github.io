@@ -142,8 +142,21 @@
     const title = document.createElement('h3');
     title.className = 'psx-context-modal-title';
 
-    const body = document.createElement('p');
+    const body = document.createElement('div');
     body.className = 'psx-context-modal-body';
+
+    const renderModalBody = (text) => {
+      body.textContent = '';
+      String(text || '')
+        .split(/\n{2,}/)
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .forEach((part) => {
+          const paragraph = document.createElement('p');
+          paragraph.textContent = part;
+          body.appendChild(paragraph);
+        });
+    };
 
     panel.append(close, kicker, title, body);
     modal.appendChild(panel);
@@ -161,7 +174,7 @@
       lastFocus = trigger;
       kicker.textContent = trigger.dataset.psxModalKicker || '';
       title.textContent = trigger.dataset.psxModalTitle || '';
-      body.textContent = trigger.dataset.psxModalBody || '';
+      renderModalBody(trigger.dataset.psxModalBody || '');
       modal.hidden = false;
       document.documentElement.classList.add('psx-modal-open');
       close.focus({ preventScroll: true });
@@ -444,6 +457,39 @@
   });
 
   activateTimelineNode(timelineNodes.find((node) => node.classList.contains('is-active')) || timelineNodes[0]);
+
+
+  const setupMemoryAtlas = () => {
+    const points = Array.from(root.querySelectorAll('[data-psx-map-point]'));
+    const panels = Array.from(root.querySelectorAll('[data-psx-map-panel]'));
+    if (!points.length || !panels.length) return;
+
+    const selectPoint = (key) => {
+      points.forEach((point) => {
+        point.classList.toggle('is-selected', point.dataset.psxMapPoint === key);
+      });
+      panels.forEach((panel) => {
+        panel.classList.toggle('is-selected', panel.dataset.psxMapPanel === key);
+      });
+    };
+
+    points.forEach((point) => {
+      point.addEventListener('click', () => selectPoint(point.dataset.psxMapPoint));
+      point.addEventListener('mouseenter', () => selectPoint(point.dataset.psxMapPoint));
+      point.addEventListener('focus', () => selectPoint(point.dataset.psxMapPoint));
+    });
+  };
+
+  setupMemoryAtlas();
+
+  root.querySelectorAll('.psx-chapter-drawer').forEach((drawer) => {
+    drawer.addEventListener('toggle', () => {
+      if (!drawer.open) return;
+      root.querySelectorAll('.psx-chapter-drawer[open]').forEach((candidate) => {
+        if (candidate !== drawer) candidate.open = false;
+      });
+    });
+  });
 
   const rail = root.querySelector('[data-track-rail]');
   const prev = root.querySelector('[data-track-prev]');
