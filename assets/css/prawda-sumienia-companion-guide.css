@@ -3,6 +3,7 @@
 .psx-page .psx-hero-words,
 .psx-page .psx-inscription-text,
 .psx-page .psx-inscription-note,
+.psx-page .psx-event-pass dt,
 .psx-page .psx-event-pass dd,
 .psx-page .psx-path-card strong,
 .psx-page .psx-path-note,
@@ -11,11 +12,24 @@
 .psx-page .psx-source-detail h3,
 .psx-page .psx-source-detail p,
 .psx-page .psx-source-detail a {
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
   overflow-wrap: anywhere;
 }
 
+.psx-page .psx-hero-copy,
+.psx-page .psx-hero-inscription,
+.psx-page .psx-event-pass,
+.psx-page .psx-event-pass div,
+.psx-page .psx-path-card,
+.psx-page .psx-chapter-plate,
+.psx-page .psx-source-detail {
+  min-width: 0;
+}
+
 .psx-page .psx-source-detail a {
-  max-width: 100%;
+  display: inline-block;
 }
 
 @media (max-width: 760px) {
