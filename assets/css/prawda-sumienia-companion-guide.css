@@ -513,3 +513,112 @@ body[data-lang="pl"] .psx-atlas-map::before {
     font-size: 0.84rem;
   }
 }
+
+
+/* PR2: museum chapter plates metadata hierarchy */
+.psx-page .psx-plate-meta,
+.psx-page .psx-plate-row,
+.psx-page .psx-plate-row dd,
+.psx-page .psx-plate-question,
+.psx-page .psx-plate-question p,
+.psx-page .psx-plate-source {
+  min-width: 0;
+}
+
+.psx-page .psx-plate-meta {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.psx-page .psx-plate-row {
+  display: grid;
+  grid-template-columns: 5.75rem minmax(0, 1fr);
+  gap: 0.72rem;
+  align-items: start;
+  border-top: 1px solid rgba(200, 164, 97, 0.12);
+  padding-top: 0.55rem;
+}
+
+.psx-page .psx-plate-row dt,
+.psx-page .psx-plate-question span,
+.psx-page .psx-plate-source > span {
+  color: rgba(200, 164, 97, 0.82);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.psx-page .psx-plate-row dd {
+  margin: 0;
+  color: rgba(241, 230, 207, 0.78);
+  font-size: 0.86rem;
+  line-height: 1.46;
+  overflow-wrap: anywhere;
+}
+
+.psx-page .psx-plate-question {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.95rem;
+  border-left: 2px solid rgba(200, 164, 97, 0.46);
+  padding: 0.72rem 0 0.72rem 0.85rem;
+  background: linear-gradient(90deg, rgba(200, 164, 97, 0.075), transparent 72%);
+}
+
+.psx-page .psx-plate-question p {
+  min-height: 0;
+  margin: 0.36rem 0 0;
+  color: rgba(241, 230, 207, 0.88);
+  font-family: var(--psx-serif);
+  font-size: 1.02rem;
+  line-height: 1.42;
+}
+
+.psx-page .psx-plate-source {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.48rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+
+.psx-page .psx-plate-source .psx-chip-row {
+  padding-left: 0;
+}
+
+.psx-page .psx-plate-source .psx-source-chip {
+  min-height: 2.25rem;
+}
+
+@media (max-width: 760px) {
+  .psx-page .psx-plate-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .psx-page .psx-plate-question p {
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .psx-page .psx-plate-meta {
+    gap: 0.48rem;
+  }
+
+  .psx-page .psx-plate-row dd {
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
+
+  .psx-page .psx-plate-question {
+    padding-left: 0.7rem;
+  }
+}
