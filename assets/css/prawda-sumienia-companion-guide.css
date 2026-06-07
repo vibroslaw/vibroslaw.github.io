@@ -622,3 +622,146 @@ body[data-lang="pl"] .psx-atlas-map::before {
     padding-left: 0.7rem;
   }
 }
+
+.psx-page .psx-glossary-index {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 2rem;
+  border: 1px solid rgba(200, 164, 97, 0.22);
+  background: rgba(200, 164, 97, 0.14);
+}
+
+.psx-page .psx-glossary-index .psx-source-detail {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 0.46fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  border: 0;
+  border-radius: 0;
+  padding: 0.9rem 1rem;
+  background:
+    linear-gradient(90deg, rgba(255, 239, 198, 0.055), transparent 40%),
+    rgba(7, 8, 7, 0.90);
+  box-shadow: inset 0 1px 0 rgba(255, 245, 216, 0.045);
+}
+
+.psx-page .psx-glossary-index .psx-source-detail::before {
+  content: "INDEX";
+  position: absolute;
+  right: 0.8rem;
+  top: 0.72rem;
+  color: rgba(200, 164, 97, 0.28);
+  font: 850 0.56rem/1 var(--psx-sans);
+  letter-spacing: 0.16em;
+}
+
+body[data-lang="pl"] .psx-glossary-index .psx-source-detail::before {
+  content: "INDEKS";
+}
+
+.psx-page .psx-glossary-index .psx-source-detail h3 {
+  margin: 0;
+  color: var(--psx-cream);
+  font-family: var(--psx-sans);
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.psx-page .psx-glossary-index .psx-source-detail p {
+  margin: 0;
+  color: var(--psx-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.psx-page .psx-source-map {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: stretch;
+  margin-top: 2.2rem;
+  border: 1px solid rgba(200, 164, 97, 0.28);
+  border-radius: var(--psx-radius);
+  padding: clamp(1rem, 2.6vw, 1.4rem);
+  background:
+    linear-gradient(135deg, rgba(255, 239, 198, 0.09), transparent 34%),
+    linear-gradient(180deg, rgba(15, 13, 9, 0.94), rgba(6, 7, 6, 0.92));
+  box-shadow: 0 28px 86px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 245, 216, 0.08);
+}
+
+.psx-page .psx-source-map-head {
+  border-right: 1px solid rgba(200, 164, 97, 0.16);
+  padding-right: clamp(1rem, 2vw, 1.35rem);
+}
+
+.psx-page .psx-source-map-head h3 {
+  margin: 0;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.28rem, 2vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+.psx-page .psx-source-map-head p {
+  margin: 0.75rem 0 0;
+  color: var(--psx-muted);
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.psx-page .psx-source-map-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  background: rgba(200, 164, 97, 0.14);
+  border: 1px solid rgba(200, 164, 97, 0.16);
+}
+
+.psx-page .psx-source-map-grid div {
+  min-width: 0;
+  padding: 0.85rem 0.9rem;
+  background: rgba(3, 4, 3, 0.72);
+}
+
+.psx-page .psx-source-map-grid dt {
+  margin: 0 0 0.32rem;
+  color: rgba(200, 164, 97, 0.84);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.psx-page .psx-source-map-grid dd {
+  margin: 0;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 760px) {
+  .psx-page .psx-source-map,
+  .psx-page .psx-glossary-index,
+  .psx-page .psx-glossary-index .psx-source-detail,
+  .psx-page .psx-source-map-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .psx-page .psx-source-map-head {
+    border-right: 0;
+    border-bottom: 1px solid rgba(200, 164, 97, 0.16);
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+}
+
