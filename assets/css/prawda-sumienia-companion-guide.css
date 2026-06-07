@@ -765,3 +765,64 @@ body[data-lang="pl"] .psx-glossary-index .psx-source-detail::before {
   }
 }
 
+.psx-page .psx-final-response .psx-final-inner {
+  max-width: 900px;
+}
+
+.psx-page .psx-final-ritual {
+  display: grid;
+  gap: 0.38rem;
+  margin: clamp(1.2rem, 3vw, 1.8rem) 0 1.1rem;
+  border-block: 1px solid rgba(200, 164, 97, 0.24);
+  padding: clamp(1.1rem, 2.8vw, 1.55rem) 0;
+}
+
+.psx-page .psx-final-ritual p {
+  max-width: 18ch;
+  margin: 0;
+  color: rgba(241, 230, 207, 0.94);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.62rem, 4.2vw, 3rem);
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.psx-page .psx-final-ritual p:nth-child(2) {
+  color: rgba(241, 230, 207, 0.76);
+}
+
+.psx-page .psx-final-ritual p:nth-child(3) {
+  color: var(--psx-gold);
+}
+
+.psx-page .psx-final-copy {
+  max-width: 43rem;
+  margin: 0.95rem 0 0;
+  color: rgba(241, 230, 207, 0.84);
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.72;
+}
+
+.psx-page .psx-final-question {
+  max-width: 38rem;
+  margin: 1rem 0 0;
+  border-left: 2px solid rgba(200, 164, 97, 0.62);
+  padding-left: 0.9rem;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.18rem, 2.4vw, 1.55rem);
+  line-height: 1.35;
+}
+
+@media (max-width: 760px) {
+  .psx-page .psx-final-ritual p {
+    max-width: 100%;
+  }
+
+  .psx-page .psx-final-response .psx-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
