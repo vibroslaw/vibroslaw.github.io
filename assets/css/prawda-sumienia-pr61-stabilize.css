@@ -1,0 +1,185 @@
+/* =========================================================
+   PR6.1 — Companion Guide stabilization layer
+   Purpose: safe wrapping, mobile overflow hardening, static hero fallback,
+   calmer atlas/timeline behavior, and final CTA stability.
+   ========================================================= */
+
+.psx-page,
+.psx-page * {
+  box-sizing: border-box;
+}
+
+html.psx-modal-open,
+body.psx-page {
+  overflow-x: clip;
+}
+
+body.psx-page {
+  --psx-hero-image: url("/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp");
+}
+
+body.psx-page[data-lang="pl"],
+body[data-lang="pl"].psx-page {
+  --psx-hero-image: url("/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp");
+}
+
+/* Static hero fallback. The JS figure can enhance this, but the first viewport
+   must remain legible even before JS has installed the picture layer. */
+body.psx-page .psx-hero {
+  background-color: #050403;
+  background-image:
+    radial-gradient(circle at 72% 24%, rgba(255, 226, 164, 0.16), transparent 23rem),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.78) 0%, rgba(3, 4, 3, 0.46) 42%, rgba(3, 4, 3, 0.18) 72%, rgba(3, 4, 3, 0.46) 100%),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.04) 0%, rgba(3, 4, 3, 0.14) 55%, rgba(3, 4, 3, 0.70) 100%),
+    var(--psx-hero-image),
+    radial-gradient(circle at 62% 35%, #4b321c, #030403 72%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Do not split normal words such as “Prezentacja”. Keep aggressive wrapping only for URLs. */
+.psx-page .psx-hero-line,
+.psx-page .psx-hero-words,
+.psx-page .psx-inscription-text,
+.psx-page .psx-inscription-note,
+.psx-page .psx-event-pass dt,
+.psx-page .psx-event-pass dd,
+.psx-page .psx-path-card strong,
+.psx-page .psx-path-note,
+.psx-page .psx-atlas-pin,
+.psx-page .psx-atlas-ledger h3,
+.psx-page .psx-atlas-ledger p,
+.psx-page .psx-chapter-plate h3,
+.psx-page .psx-chapter-plate p,
+.psx-page .psx-chapter-drawer summary strong,
+.psx-page .psx-person-card h3,
+.psx-page .psx-person-role,
+.psx-page .psx-glossary-term,
+.psx-page .psx-book-card,
+.psx-page .psx-source-detail h3,
+.psx-page .psx-source-detail p,
+.psx-page .psx-button,
+.psx-page .psx-topbar a,
+.psx-page .psx-orbit-nav a,
+.psx-page .psx-language-switch,
+.psx-page .psx-mark {
+  hyphens: none !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
+}
+
+.psx-page .psx-source-detail a,
+.psx-page .psx-copy a {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+.psx-page .psx-event-pass dt,
+.psx-page .psx-language-switch,
+.psx-page .psx-mark,
+.psx-page .psx-button {
+  white-space: nowrap;
+}
+
+.psx-page .psx-event-pass dd,
+.psx-page .psx-inscription-note,
+.psx-page .psx-hero-words {
+  white-space: normal;
+}
+
+/* Prevent small, hard-to-debug horizontal overflow on narrow screens. */
+.psx-page .psx-wrap,
+.psx-page .psx-hero-grid,
+.psx-page .psx-topbar,
+.psx-page .psx-orbit-nav,
+.psx-page .psx-atlas-panel,
+.psx-page .psx-memory-atlas,
+.psx-page .psx-final-inner,
+.psx-page .psx-final-inner .psx-actions {
+  max-width: 100%;
+}
+
+.psx-page .psx-button {
+  max-width: 100%;
+}
+
+.psx-page .psx-final-inner .psx-actions {
+  justify-items: center;
+}
+
+/* Make the premium atlas feel interactive without forcing accidental modal openings visually. */
+.psx-page .psx-memory-premium .psx-atlas-pin,
+.psx-page .psx-atlas-interactive-ledger button {
+  touch-action: manipulation;
+}
+
+.psx-page .psx-memory-premium .psx-atlas-pin:focus-visible,
+.psx-page .psx-atlas-interactive-ledger button:focus-visible {
+  outline: 2px solid rgba(255, 230, 170, 0.74);
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  body.psx-page .psx-topbar {
+    width: min(100% - 1rem, 100%);
+    margin-inline: auto;
+  }
+
+  body.psx-page .psx-topbar-links,
+  body.psx-page .psx-orbit-nav {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 760px) {
+  body.psx-page .psx-hero {
+    min-height: auto;
+    background-image:
+      linear-gradient(90deg, rgba(3, 4, 3, 0.86), rgba(3, 4, 3, 0.58)),
+      linear-gradient(180deg, rgba(3, 4, 3, 0.08), rgba(3, 4, 3, 0.74)),
+      var(--psx-hero-image),
+      radial-gradient(circle at 58% 32%, #3a2918, #030403 72%);
+  }
+
+  .psx-page .psx-hero h1,
+  .psx-page .psx-hero-line,
+  .psx-page .psx-hero-words {
+    max-width: 100%;
+  }
+
+  .psx-page .psx-event-pass div {
+    min-width: 0;
+  }
+
+  .psx-page .psx-legendary-timeline .psx-timeline-track {
+    grid-template-columns: repeat(14, minmax(14rem, 86vw));
+  }
+
+  .psx-page .psx-artifact-node {
+    min-height: auto;
+  }
+
+  .psx-page .psx-memory-premium .psx-atlas-map {
+    min-height: 24rem;
+  }
+
+  .psx-page .psx-final-inner .psx-actions {
+    width: min(100%, 24rem) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .psx-page .psx-event-pass dd,
+  .psx-page .psx-inscription-note,
+  .psx-page .psx-hero-words {
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+
+  .psx-page .psx-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
