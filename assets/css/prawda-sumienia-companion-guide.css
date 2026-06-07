@@ -826,3 +826,220 @@ body[data-lang="pl"] .psx-glossary-index .psx-source-detail::before {
   }
 }
 
+
+/* PR5: final visual silence / museum QA polish
+   CSS-only pass: quieter motion, more gallery air, mobile containment. */
+body.psx-page {
+  --psx-glow: rgba(200, 164, 97, 0.18);
+}
+
+body.psx-page .psx-section {
+  padding-block: clamp(5.4rem, 8.6vw, 7.8rem);
+}
+
+body.psx-page .psx-section-head,
+body.psx-page .psx-track-toolbar,
+body.psx-page .psx-two {
+  margin-bottom: clamp(2rem, 4vw, 2.8rem);
+}
+
+body.psx-page .psx-section-head p:not(.psx-kicker),
+body.psx-page .psx-track-toolbar p:not(.psx-kicker),
+body.psx-page .psx-copy p {
+  text-wrap: pretty;
+}
+
+body.psx-page .psx-spine-inner,
+body.psx-page .psx-atlas-panel,
+body.psx-page .psx-source-map,
+body.psx-page .psx-final-inner {
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 245, 216, 0.08);
+}
+
+body.psx-page .psx-atlas-line {
+  filter: drop-shadow(0 0 10px rgba(200, 164, 97, 0.16));
+}
+
+body.psx-page .psx-atlas-line path {
+  stroke: rgba(200, 164, 97, 0.66);
+  stroke-width: 2.4;
+}
+
+body.psx-page .psx-atlas-pin b {
+  box-shadow: 0 0 0 4px rgba(200, 164, 97, 0.08), 0 0 18px rgba(200, 164, 97, 0.14);
+}
+
+body.psx-page .psx-atlas-pin em {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+}
+
+body.psx-page .psx-path-card,
+body.psx-page .psx-chapter-plate,
+body.psx-page .psx-curatorial-card,
+body.psx-page .psx-trace-card,
+body.psx-page .psx-source-detail {
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+body.psx-page .psx-path-card:hover,
+body.psx-page .psx-path-card:focus-visible,
+body.psx-page .psx-chapter-plate:hover,
+body.psx-page .psx-chapter-plate:focus-within,
+body.psx-page .psx-curatorial-card:hover,
+body.psx-page .psx-trace-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(200, 164, 97, 0.50);
+  box-shadow: 0 24px 78px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 245, 216, 0.10);
+}
+
+body.psx-page .psx-path-card:hover::before,
+body.psx-page .psx-path-card:focus-visible::before,
+body.psx-page .psx-chapter-plate:hover::before,
+body.psx-page .psx-chapter-plate:focus-within::before,
+body.psx-page .psx-curatorial-card:hover::before,
+body.psx-page .psx-trace-card:hover::before {
+  opacity: 0.42;
+}
+
+body.psx-page .psx-path-card:hover::after,
+body.psx-page .psx-path-card:focus-visible::after,
+body.psx-page .psx-curatorial-card:hover::after,
+body.psx-page .psx-trace-card:hover::after {
+  opacity: 0.26;
+  transform: none;
+}
+
+body.psx-page .psx-chapter-plate {
+  min-height: 27.5rem;
+}
+
+body.psx-page .psx-chapter-plate h3 {
+  text-wrap: balance;
+}
+
+body.psx-page .psx-plate-question {
+  background: linear-gradient(90deg, rgba(200, 164, 97, 0.055), transparent 74%);
+}
+
+body.psx-page .psx-source-map-grid div,
+body.psx-page .psx-glossary-index .psx-source-detail,
+body.psx-page .psx-source-catalogue .psx-source-detail {
+  box-shadow: none;
+}
+
+body.psx-page .psx-source-detail a:hover,
+body.psx-page .psx-source-detail a:focus-visible {
+  color: var(--psx-cream);
+}
+
+body.psx-page .psx-final-response {
+  min-height: min(880px, 100svh);
+}
+
+body.psx-page .psx-final-ritual {
+  border-color: rgba(200, 164, 97, 0.20);
+}
+
+@media (max-width: 820px) {
+  body.psx-page .psx-section {
+    padding-block: clamp(4.4rem, 10vw, 6.2rem);
+  }
+
+  body.psx-page .psx-track-toolbar {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  body.psx-page .psx-rail-controls {
+    width: min(100%, 18rem);
+  }
+
+  body.psx-page .psx-spine-inner,
+  body.psx-page .psx-atlas-panel,
+  body.psx-page .psx-source-map,
+  body.psx-page .psx-final-inner {
+    box-shadow: 0 22px 68px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(255, 245, 216, 0.07);
+  }
+}
+
+@media (max-width: 430px) {
+  body.psx-page .psx-wrap,
+  body.psx-page .psx-track-rail-wrap {
+    width: min(100% - 1.25rem, 1180px);
+  }
+
+  body.psx-page .psx-spine,
+  body.psx-page .psx-section {
+    overflow-x: clip;
+  }
+
+  body.psx-page .psx-spine-inner,
+  body.psx-page .psx-atlas-panel,
+  body.psx-page .psx-source-map,
+  body.psx-page .psx-final-inner {
+    padding: 0.78rem;
+  }
+
+  body.psx-page .psx-atlas-map {
+    min-height: 15.5rem;
+  }
+
+  body.psx-page .psx-chapter-plate {
+    min-height: auto;
+  }
+
+  body.psx-page .psx-plate-number {
+    font-size: 3.25rem;
+  }
+
+  body.psx-page .psx-source-map-grid dd {
+    font-size: 0.95rem;
+  }
+
+  body.psx-page .psx-final-ritual p {
+    font-size: clamp(1.42rem, 8vw, 2.18rem);
+  }
+}
+
+@media (max-width: 360px) {
+  body.psx-page .psx-topbar-links a,
+  body.psx-page .psx-orbit-nav a {
+    font-size: 0.66rem;
+    letter-spacing: 0.10em;
+  }
+
+  body.psx-page .psx-atlas-map {
+    min-height: 14.5rem;
+  }
+
+  body.psx-page .psx-atlas-ledger li {
+    grid-template-columns: 2.1rem minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+
+  body.psx-page .psx-atlas-ledger li > span {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.psx-page .psx-path-card,
+  body.psx-page .psx-chapter-plate,
+  body.psx-page .psx-curatorial-card,
+  body.psx-page .psx-trace-card,
+  body.psx-page .psx-source-chip,
+  body.psx-page .psx-button,
+  body.psx-page .psx-rail-button {
+    transition: none;
+  }
+
+  body.psx-page .psx-path-card:hover,
+  body.psx-page .psx-path-card:focus-visible,
+  body.psx-page .psx-chapter-plate:hover,
+  body.psx-page .psx-chapter-plate:focus-within,
+  body.psx-page .psx-curatorial-card:hover,
+  body.psx-page .psx-trace-card:hover {
+    transform: none;
+  }
+}
