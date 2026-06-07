@@ -211,7 +211,7 @@
       desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
     },
     pl: {
-      desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'
+      desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
     }
   };
 
