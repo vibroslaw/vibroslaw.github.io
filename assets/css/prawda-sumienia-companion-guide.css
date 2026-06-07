@@ -1099,3 +1099,115 @@ body.psx-page .psx-final .psx-button {
     width: min(100%, 22rem);
   }
 }
+
+
+/* =========================================================
+   PASS 6D — visible full-bleed hero + stronger final CTA symmetry
+   ========================================================= */
+
+/* Keep the same premium image in EN and PL and use it also as the full-bleed hero. */
+body.psx-page {
+  --psx-hero-image: url("/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp");
+}
+
+/* Full hero must show as the room/background, while the right panel remains the premium framed artifact. */
+body.psx-page .psx-hero-bg,
+body.psx-page.psx-hero-has-visual .psx-hero-bg {
+  opacity: 0.94;
+  transform: scale(1.018);
+  background-image:
+    radial-gradient(circle at 70% 30%, rgba(255, 226, 164, 0.22), transparent 24rem),
+    radial-gradient(circle at 18% 28%, rgba(200, 164, 97, 0.08), transparent 20rem),
+    linear-gradient(112deg, transparent 0 34%, rgba(244, 209, 139, 0.10) 45%, transparent 60%),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.40) 0%, rgba(3, 4, 3, 0.18) 33%, rgba(3, 4, 3, 0.04) 64%, rgba(3, 4, 3, 0.26) 100%),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.00) 0%, rgba(3, 4, 3, 0.07) 52%, rgba(3, 4, 3, 0.42) 100%),
+    var(--psx-asset-beam),
+    var(--psx-hero-image),
+    radial-gradient(circle at 68% 36%, #3a2918 0%, #15100b 34%, #030403 78%);
+  background-size: cover, cover, cover, cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, center, center, center, center;
+  filter: saturate(1.12) contrast(1.08) brightness(1.18);
+  mix-blend-mode: normal;
+}
+
+/* Bring back the cinematic light, but make it a veil over the image, not a wall hiding it. */
+body.psx-page .psx-hero::before {
+  background:
+    linear-gradient(108deg, transparent 0 31%, rgba(244, 209, 139, 0.12) 43%, transparent 63%),
+    radial-gradient(circle at 69% 42%, rgba(200, 164, 97, 0.14), transparent 22rem),
+    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.10) 74%, rgba(0, 0, 0, 0.32) 100%);
+  opacity: 0.72;
+}
+
+body.psx-page .psx-hero::after {
+  background:
+    linear-gradient(180deg, rgba(3, 4, 3, 0.00), transparent 38%, rgba(3, 4, 3, 0.30)),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.016) 0 1px, transparent 1px 3px);
+  opacity: 0.30;
+}
+
+/* Keep the copy readable without turning the whole hero into a black gradient. */
+body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+  inset: -2rem -2.2rem -2.35rem -1.35rem;
+  background:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.58), rgba(3, 4, 3, 0.30) 60%, transparent),
+    radial-gradient(circle at 18% 42%, rgba(209, 176, 103, 0.12), transparent 17rem);
+  box-shadow: -28px 0 72px rgba(0, 0, 0, 0.38);
+}
+
+/* The framed right hero stays premium, but it must not look like the only image on the page. */
+body.psx-page .psx-hero-visual {
+  transform: translateZ(0) rotateY(-1.2deg) rotateX(0.55deg);
+  box-shadow:
+    0 38px 118px rgba(0, 0, 0, 0.70),
+    0 0 82px rgba(209, 176, 103, 0.18),
+    inset 0 1px 0 rgba(255, 245, 216, 0.20);
+}
+
+/* Force final buttons to be identical in width and aligned to opposite sides on desktop. */
+body.psx-page .psx-final-inner .psx-actions {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: clamp(1.25rem, 4vw, 2.1rem) !important;
+  width: min(56rem, 100%) !important;
+  max-width: 56rem !important;
+  margin: 2.2rem auto 0 !important;
+  justify-content: stretch !important;
+  align-items: stretch !important;
+}
+
+body.psx-page .psx-final-inner .psx-actions .psx-button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  justify-self: stretch !important;
+  text-align: center !important;
+}
+
+body.psx-page .psx-final-inner .psx-actions .psx-button:first-child {
+  justify-self: stretch !important;
+}
+
+body.psx-page .psx-final-inner .psx-actions .psx-button:last-child {
+  justify-self: stretch !important;
+}
+
+@media (max-width: 760px) {
+  body.psx-page .psx-hero-bg,
+  body.psx-page.psx-hero-has-visual .psx-hero-bg {
+    opacity: 0.78;
+    filter: saturate(1.08) contrast(1.05) brightness(1.08);
+  }
+
+  body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+    background:
+      linear-gradient(90deg, rgba(3, 4, 3, 0.68), rgba(3, 4, 3, 0.42) 68%, transparent),
+      radial-gradient(circle at 18% 42%, rgba(209, 176, 103, 0.10), transparent 15rem);
+  }
+
+  body.psx-page .psx-final-inner .psx-actions {
+    grid-template-columns: 1fr !important;
+    width: min(100%, 23rem) !important;
+    gap: 0.95rem !important;
+  }
+}
