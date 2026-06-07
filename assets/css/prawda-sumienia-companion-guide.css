@@ -1211,3 +1211,114 @@ body.psx-page .psx-final-inner .psx-actions .psx-button:last-child {
     gap: 0.95rem !important;
   }
 }
+
+/* =========================================================
+   PASS 6E — parent hero image layer fix
+   Issue: the full-bleed hero image was appearing briefly on refresh and then
+   becoming hidden under overlay/gradient layers after JS initialized.
+   Fix: make the section itself carry the full-bleed image; use .psx-hero-bg
+   only as a light/beam atmosphere layer above the image and below the content.
+   ========================================================= */
+
+body.psx-page {
+  --psx-hero-image: url("/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp");
+}
+
+body.psx-page .psx-hero,
+body.psx-page.psx-hero-has-visual .psx-hero {
+  background-image:
+    radial-gradient(circle at 72% 30%, rgba(255, 226, 164, 0.18), transparent 25rem),
+    radial-gradient(circle at 16% 26%, rgba(200, 164, 97, 0.08), transparent 20rem),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.50) 0%, rgba(3, 4, 3, 0.26) 34%, rgba(3, 4, 3, 0.06) 66%, rgba(3, 4, 3, 0.24) 100%),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.00) 0%, rgba(3, 4, 3, 0.04) 55%, rgba(3, 4, 3, 0.36) 100%),
+    var(--psx-hero-image),
+    radial-gradient(circle at 68% 36%, #4f3219 0%, #15100b 38%, #030403 82%);
+  background-size: cover, cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, center, center;
+  background-repeat: no-repeat;
+}
+
+/* The dedicated bg element is no longer responsible for the image.
+   It is now a translucent projection-light veil only. */
+body.psx-page .psx-hero-bg,
+body.psx-page.psx-hero-has-visual .psx-hero-bg {
+  z-index: 0 !important;
+  opacity: 0.62 !important;
+  transform: none !important;
+  mix-blend-mode: screen !important;
+  filter: none !important;
+  background-image:
+    linear-gradient(112deg, transparent 0 34%, rgba(255, 229, 168, 0.16) 45%, transparent 62%),
+    radial-gradient(circle at 72% 30%, rgba(255, 226, 164, 0.24), transparent 23rem),
+    radial-gradient(circle at 22% 18%, rgba(200, 164, 97, 0.10), transparent 18rem),
+    var(--psx-asset-beam);
+  background-size: cover, cover, cover, cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* Keep all light/vignette layers above the section background but below content. */
+body.psx-page .psx-hero::before,
+body.psx-page.psx-hero-has-visual .psx-hero::before {
+  z-index: 1 !important;
+  opacity: 0.58 !important;
+  background:
+    linear-gradient(108deg, transparent 0 34%, rgba(244, 209, 139, 0.08) 45%, transparent 65%),
+    radial-gradient(circle at 69% 42%, rgba(200, 164, 97, 0.10), transparent 22rem),
+    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.08) 76%, rgba(0, 0, 0, 0.24) 100%) !important;
+}
+
+body.psx-page .psx-hero::after,
+body.psx-page.psx-hero-has-visual .psx-hero::after {
+  z-index: 1 !important;
+  opacity: 0.24 !important;
+  background:
+    linear-gradient(180deg, rgba(3, 4, 3, 0.00), transparent 44%, rgba(3, 4, 3, 0.20)),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.012) 0 1px, transparent 1px 3px) !important;
+}
+
+body.psx-page .psx-topbar {
+  z-index: 6 !important;
+}
+
+body.psx-page .psx-hero-grid,
+body.psx-page .psx-hero-footer {
+  z-index: 4 !important;
+}
+
+/* Reduce the copy shadow just enough for the full image to remain present. */
+body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+  background:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.52), rgba(3, 4, 3, 0.24) 62%, transparent),
+    radial-gradient(circle at 18% 42%, rgba(209, 176, 103, 0.10), transparent 17rem) !important;
+  box-shadow: -22px 0 58px rgba(0, 0, 0, 0.30) !important;
+}
+
+@media (min-width: 961px) {
+  body.psx-page .psx-hero,
+  body.psx-page.psx-hero-has-visual .psx-hero {
+    background-image:
+      radial-gradient(circle at 74% 30%, rgba(255, 226, 164, 0.14), transparent 24rem),
+      linear-gradient(90deg, rgba(3, 4, 3, 0.46) 0%, rgba(3, 4, 3, 0.22) 32%, rgba(3, 4, 3, 0.03) 64%, rgba(3, 4, 3, 0.20) 100%),
+      linear-gradient(180deg, rgba(3, 4, 3, 0.00) 0%, rgba(3, 4, 3, 0.03) 58%, rgba(3, 4, 3, 0.30) 100%),
+      var(--psx-hero-image),
+      radial-gradient(circle at 68% 36%, #4f3219 0%, #15100b 38%, #030403 82%);
+  }
+}
+
+@media (max-width: 760px) {
+  body.psx-page .psx-hero,
+  body.psx-page.psx-hero-has-visual .psx-hero {
+    background-image:
+      radial-gradient(circle at 68% 18%, rgba(255, 226, 164, 0.13), transparent 20rem),
+      linear-gradient(90deg, rgba(3, 4, 3, 0.72) 0%, rgba(3, 4, 3, 0.46) 60%, rgba(3, 4, 3, 0.28) 100%),
+      linear-gradient(180deg, rgba(3, 4, 3, 0.05) 0%, rgba(3, 4, 3, 0.22) 60%, rgba(3, 4, 3, 0.58) 100%),
+      var(--psx-hero-image),
+      radial-gradient(circle at 68% 36%, #3a2918 0%, #15100b 38%, #030403 82%);
+  }
+
+  body.psx-page .psx-hero-bg,
+  body.psx-page.psx-hero-has-visual .psx-hero-bg {
+    opacity: 0.44 !important;
+  }
+}
