@@ -951,3 +951,151 @@ body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
     width: 100%;
   }
 }
+
+
+/* =========================================================
+   PASS 6C — hero visibility / EN-PL symmetry / final buttons
+   ========================================================= */
+
+/* Use the background layer as atmosphere only: beam + soft light, no duplicate photo. */
+body.psx-page .psx-hero-bg,
+body.psx-page.psx-hero-has-visual .psx-hero-bg {
+  opacity: 0.72;
+  background-image:
+    radial-gradient(circle at 68% 32%, rgba(255, 226, 164, 0.26), transparent 25rem),
+    radial-gradient(circle at 18% 30%, rgba(200, 164, 97, 0.10), transparent 20rem),
+    linear-gradient(112deg, transparent 0 34%, rgba(244, 209, 139, 0.16) 45%, transparent 58%),
+    linear-gradient(90deg, rgba(3, 4, 3, 0.48) 0%, rgba(3, 4, 3, 0.18) 40%, rgba(3, 4, 3, 0.06) 68%, rgba(3, 4, 3, 0.44) 100%),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.02) 0%, rgba(3, 4, 3, 0.10) 58%, rgba(3, 4, 3, 0.54) 100%),
+    var(--psx-asset-beam),
+    radial-gradient(circle at 68% 36%, #3a2918 0%, #15100b 34%, #030403 78%);
+  filter: saturate(1.06) contrast(1.03) brightness(1.06);
+  mix-blend-mode: screen;
+}
+
+/* Lower the dark gradient placed behind copy so the image can actually breathe. */
+body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+  inset: -2rem -2.2rem -2.35rem -1.35rem;
+  background:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.62), rgba(3, 4, 3, 0.30) 64%, transparent),
+    radial-gradient(circle at 18% 42%, rgba(209, 176, 103, 0.14), transparent 17rem);
+  box-shadow: -34px 0 86px rgba(0, 0, 0, 0.46);
+}
+
+body.psx-page .psx-hero::before {
+  background:
+    linear-gradient(108deg, transparent 0 30%, rgba(244, 209, 139, 0.16) 43%, transparent 62%),
+    radial-gradient(circle at 69% 44%, rgba(200, 164, 97, 0.18), transparent 22rem),
+    radial-gradient(circle at 50% 50%, transparent 0, rgba(0, 0, 0, 0.16) 72%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+body.psx-page .psx-hero::after {
+  opacity: 0.34;
+}
+
+/* Make the actual injected hero image visible and premium on desktop. */
+body.psx-page .psx-hero-visual {
+  opacity: 1;
+  background: rgba(7, 6, 4, 0.92);
+  border-color: rgba(222, 187, 110, 0.64);
+  box-shadow:
+    0 40px 126px rgba(0, 0, 0, 0.72),
+    0 0 94px rgba(209, 176, 103, 0.22),
+    inset 0 1px 0 rgba(255, 245, 216, 0.21);
+}
+
+body.psx-page .psx-hero-visual-image {
+  opacity: 0.96;
+  filter: saturate(1.14) contrast(1.05) brightness(1.22);
+}
+
+body.psx-page .psx-hero-visual::after {
+  background:
+    linear-gradient(90deg, rgba(3, 4, 3, 0.06), transparent 46%, rgba(3, 4, 3, 0.10)),
+    linear-gradient(180deg, rgba(255, 232, 170, 0.08), transparent 42%, rgba(3, 4, 3, 0.16)),
+    radial-gradient(circle at 72% 18%, rgba(255, 226, 164, 0.18), transparent 17rem),
+    repeating-linear-gradient(0deg, rgba(255, 245, 214, 0.014) 0 1px, transparent 1px 4px);
+}
+
+body.psx-page .psx-hero-visual-beam {
+  opacity: 0.64;
+  background: linear-gradient(110deg, transparent, rgba(255, 226, 164, 0.19), transparent 72%);
+}
+
+/* EN/PL hero typography parity. EN already used this cinematic title split; PL now follows it. */
+body[data-lang="pl"].psx-page.psx-hero-has-visual .psx-hero-copy::after {
+  content: "PRAWDA SUMIENIA";
+  order: -2;
+  margin: 0 0 0.35rem;
+  max-width: 11.5ch;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(3.45rem, 7.5vw, 6.45rem);
+  font-weight: 500;
+  letter-spacing: 0.014em;
+  line-height: 0.90;
+  text-shadow: 0 22px 78px rgba(0, 0, 0, 0.90), 0 0 38px rgba(209, 176, 103, 0.20);
+  text-transform: uppercase;
+}
+
+body[data-lang="pl"].psx-page.psx-hero-has-visual .psx-hero h1 {
+  order: -1;
+  max-width: none;
+  margin-top: 0.25rem;
+  color: var(--psx-gold);
+  font-family: var(--psx-sans);
+  font-size: clamp(1.02rem, 2vw, 1.42rem);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+}
+
+/* Make final CTA buttons truly symmetrical; override flex rules with a fixed two-column grid. */
+.psx-page .psx-final .psx-actions,
+body.psx-page .psx-final .psx-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 1.55rem);
+  width: min(48rem, 100%);
+  margin: 2.15rem auto 0;
+}
+
+.psx-page .psx-final .psx-button,
+body.psx-page .psx-final .psx-button {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.25rem;
+  padding-inline: 1rem;
+}
+
+@media (max-width: 760px) {
+  body.psx-page .psx-hero-bg,
+  body.psx-page.psx-hero-has-visual .psx-hero-bg {
+    opacity: 0.58;
+  }
+
+  body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+    background:
+      linear-gradient(90deg, rgba(3, 4, 3, 0.72), rgba(3, 4, 3, 0.42) 68%, transparent),
+      radial-gradient(circle at 18% 42%, rgba(209, 176, 103, 0.12), transparent 15rem);
+  }
+
+  body[data-lang="pl"].psx-page.psx-hero-has-visual .psx-hero-copy::after {
+    max-width: 10.5ch;
+    font-size: clamp(2.7rem, 12vw, 4.3rem);
+    line-height: 0.92;
+  }
+
+  body[data-lang="pl"].psx-page.psx-hero-has-visual .psx-hero h1 {
+    font-size: clamp(0.88rem, 3.4vw, 1.08rem);
+    line-height: 1.28;
+  }
+
+  .psx-page .psx-final .psx-actions,
+  body.psx-page .psx-final .psx-actions {
+    grid-template-columns: 1fr;
+    width: min(100%, 22rem);
+  }
+}
