@@ -1322,3 +1322,473 @@ body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
     opacity: 0.44 !important;
   }
 }
+
+
+/* =========================================================
+   PR6 — Museum-grade Companion Guide rebuild
+   Purpose: visible hero, no broken words, premium navigation,
+   modal questions, artifact timeline, interactive memory map,
+   expanded people, chapter accordions, glossary/sources, final CTA.
+   ========================================================= */
+
+body.psx-page {
+  --psx-hero-image: url("/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp");
+  --psx-museum-card: rgba(11, 9, 6, 0.78);
+  --psx-museum-border: rgba(224, 184, 101, 0.28);
+  --psx-museum-glow: rgba(224, 184, 101, 0.18);
+}
+
+/* Stop Polish and English interface words being split letter-by-letter. */
+.psx-page .psx-event-pass dt,
+.psx-page .psx-event-pass dd,
+.psx-page .psx-topbar a,
+.psx-page .psx-orbit-nav a,
+.psx-page .psx-button,
+.psx-page .psx-rail-button,
+.psx-page .psx-language-switch,
+.psx-page .psx-mark {
+  hyphens: none !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
+  white-space: nowrap;
+}
+
+/* Hero visibility / contrast fix. Image lives on the hero itself; overlays are transparent veils, not walls. */
+body.psx-page .psx-hero,
+body.psx-page.psx-hero-has-visual .psx-hero {
+  isolation: isolate;
+  background-color: #050403;
+  background-image:
+    radial-gradient(circle at 74% 22%, rgba(255, 226, 164, 0.16), transparent 24rem),
+    linear-gradient(90deg, rgba(3,4,3,0.74) 0%, rgba(3,4,3,0.46) 36%, rgba(3,4,3,0.12) 66%, rgba(3,4,3,0.42) 100%),
+    linear-gradient(180deg, rgba(3,4,3,0.08) 0%, rgba(3,4,3,0.16) 58%, rgba(3,4,3,0.68) 100%),
+    var(--psx-hero-image),
+    radial-gradient(circle at 60% 35%, #4b321c, #030403 72%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+body.psx-page .psx-hero-bg,
+body.psx-page.psx-hero-has-visual .psx-hero-bg {
+  z-index: 0 !important;
+  opacity: 0.45 !important;
+  mix-blend-mode: screen !important;
+  background-image:
+    linear-gradient(112deg, transparent 0 34%, rgba(255,229,168,0.16) 45%, transparent 62%),
+    radial-gradient(circle at 72% 30%, rgba(255,226,164,0.20), transparent 23rem),
+    var(--psx-asset-beam) !important;
+  pointer-events: none;
+}
+
+body.psx-page .psx-hero::before,
+body.psx-page .psx-hero::after { pointer-events: none; }
+
+body.psx-page .psx-hero-copy,
+body.psx-page .psx-hero-inscription,
+body.psx-page .psx-hero-visual,
+body.psx-page .psx-topbar,
+body.psx-page .psx-hero-footer { position: relative; z-index: 4; }
+
+body.psx-page.psx-hero-has-visual .psx-hero-copy::before {
+  inset: -2rem -1.4rem -2rem -1.35rem;
+  border: 1px solid rgba(224,184,101,0.13);
+  border-radius: 2rem;
+  background:
+    linear-gradient(90deg, rgba(3,4,3,0.78), rgba(3,4,3,0.42) 66%, rgba(3,4,3,0.12)),
+    radial-gradient(circle at 22% 42%, rgba(224,184,101,0.16), transparent 18rem) !important;
+  box-shadow: 0 32px 90px rgba(0,0,0,0.48) !important;
+}
+
+body.psx-page .psx-hero h1 {
+  text-shadow: 0 10px 45px rgba(0,0,0,0.82), 0 0 32px rgba(224,184,101,0.12);
+}
+
+body.psx-page .psx-hero-line {
+  color: rgba(255,245,216,0.96) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.psx-page .psx-hero-words {
+  color: rgba(246,238,218,0.90) !important;
+  max-width: 42rem;
+}
+
+body.psx-page .psx-hero-inscription {
+  background:
+    linear-gradient(180deg, rgba(12,10,7,0.84), rgba(3,4,3,0.72)),
+    radial-gradient(circle at 20% 0%, rgba(224,184,101,0.16), transparent 16rem);
+  border: 1px solid rgba(224,184,101,0.28);
+  box-shadow: 0 34px 110px rgba(0,0,0,0.58), inset 0 1px 0 rgba(255,245,216,0.10);
+  backdrop-filter: blur(12px);
+}
+
+/* Navigation polish */
+body.psx-page .psx-topbar {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(4,4,3,0.62);
+  backdrop-filter: blur(16px);
+}
+
+body.psx-page .psx-topbar-links {
+  justify-content: center;
+  gap: 0.22rem;
+  min-width: 0;
+}
+
+body.psx-page .psx-topbar-links a,
+body.psx-page .psx-language-switch,
+body.psx-page .psx-mark {
+  min-height: 2.28rem;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+}
+
+body.psx-page .psx-topbar-links a:hover,
+body.psx-page .psx-topbar-links a:focus-visible,
+body.psx-page .psx-orbit-nav a:hover,
+body.psx-page .psx-orbit-nav a:focus-visible,
+body.psx-page .psx-orbit-nav a.is-active {
+  color: #fff2cf;
+  background: rgba(224,184,101,0.14);
+  border-color: rgba(224,184,101,0.36);
+}
+
+body.psx-page .psx-orbit-nav {
+  position: sticky;
+  top: 0.7rem;
+  z-index: 20;
+  width: min(1180px, calc(100% - 1rem));
+  margin: -1.4rem auto 2rem;
+  padding: 0.42rem;
+  border: 1px solid rgba(224,184,101,0.20);
+  border-radius: 999px;
+  background: rgba(5,5,4,0.70);
+  box-shadow: 0 20px 70px rgba(0,0,0,0.34);
+  backdrop-filter: blur(16px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+body.psx-page .psx-orbit-nav::-webkit-scrollbar { display: none; }
+
+/* Context modal upgrade */
+.psx-context-modal-panel {
+  width: min(48rem, calc(100vw - 2rem));
+  border: 1px solid rgba(224,184,101,0.36);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(224,184,101,0.16), transparent 15rem),
+    linear-gradient(180deg, rgba(17,14,10,0.98), rgba(4,5,4,0.98));
+  box-shadow: 0 42px 140px rgba(0,0,0,0.72), inset 0 1px 0 rgba(255,245,216,0.10);
+}
+
+.psx-context-modal-body p { margin: 0.85rem 0 0; }
+.psx-context-modal-body p:first-child { margin-top: 0; }
+
+/* Before projection cards */
+.psx-page .psx-question-museum-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.psx-page .psx-question-card {
+  min-height: 18rem;
+  border-color: rgba(224,184,101,0.24);
+  background:
+    linear-gradient(180deg, rgba(18,15,10,0.80), rgba(6,6,5,0.84)),
+    radial-gradient(circle at 20% 0%, rgba(224,184,101,0.12), transparent 14rem);
+}
+
+.psx-page .psx-question-card .psx-card-medallion {
+  box-shadow: 0 0 0 7px rgba(224,184,101,0.08), 0 0 30px rgba(224,184,101,0.15);
+}
+
+/* Legendary timeline artifact */
+.psx-page .psx-legendary-timeline {
+  position: relative;
+  border: 1px solid rgba(224,184,101,0.30);
+  border-radius: var(--psx-radius);
+  padding: clamp(1rem, 3vw, 1.7rem);
+  background:
+    linear-gradient(90deg, rgba(224,184,101,0.07) 1px, transparent 1px),
+    linear-gradient(rgba(224,184,101,0.055) 1px, transparent 1px),
+    radial-gradient(circle at 20% 10%, rgba(224,184,101,0.16), transparent 22rem),
+    linear-gradient(180deg, rgba(14,12,8,0.96), rgba(4,5,4,0.98));
+  background-size: 92px 92px, 92px 92px, auto, auto;
+  box-shadow: 0 36px 120px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,245,216,0.08);
+  overflow: hidden;
+}
+
+.psx-page .psx-legendary-timeline::before {
+  content: "";
+  position: absolute;
+  left: 2rem;
+  right: 2rem;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(224,184,101,0.62), transparent);
+  opacity: 0.8;
+}
+
+.psx-page .psx-legendary-timeline .psx-timeline-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(14, minmax(16rem, 1fr));
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.6rem 0.1rem 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: rgba(224,184,101,0.36) rgba(255,255,255,0.04);
+}
+
+.psx-page .psx-artifact-node {
+  scroll-snap-align: start;
+  position: relative;
+  min-height: 24rem;
+  border: 1px solid rgba(224,184,101,0.22);
+  border-radius: 1.1rem;
+  padding: 1rem;
+  background: rgba(5,5,4,0.74);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.38);
+}
+
+.psx-page .psx-artifact-node .psx-timeline-node {
+  width: 100%;
+  text-align: left;
+  border-radius: 0.9rem;
+}
+
+.psx-page .psx-timeline-thumb {
+  display: grid;
+  min-height: 8.5rem;
+  margin: 0.9rem 0;
+  place-items: center;
+  border: 1px dashed rgba(224,184,101,0.28);
+  border-radius: 0.9rem;
+  background:
+    linear-gradient(135deg, rgba(224,184,101,0.08), transparent 42%),
+    rgba(255,245,216,0.035);
+}
+
+.psx-page .psx-timeline-thumb span {
+  color: rgba(241,230,207,0.50);
+  font: 800 0.64rem/1.35 var(--psx-sans);
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Interactive Memory Atlas */
+.psx-page .psx-memory-premium .psx-atlas-map { min-height: clamp(30rem, 48vw, 40rem); }
+.psx-page .psx-memory-premium .psx-atlas-pin {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+.psx-page .psx-memory-premium .psx-atlas-pin.is-selected b,
+.psx-page .psx-memory-premium .psx-atlas-pin:hover b,
+.psx-page .psx-memory-premium .psx-atlas-pin:focus-visible b {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 7px rgba(224,184,101,0.16), 0 0 42px rgba(224,184,101,0.36);
+}
+.psx-page .psx-atlas-interactive-ledger li { padding: 0; }
+.psx-page .psx-atlas-interactive-ledger button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2.65rem minmax(0, 1fr);
+  gap: 0.85rem;
+  border: 0;
+  padding: 0.8rem 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+.psx-page .psx-atlas-interactive-ledger li.is-selected,
+.psx-page .psx-atlas-interactive-ledger li:hover {
+  background: linear-gradient(90deg, rgba(224,184,101,0.10), transparent);
+}
+.psx-page .psx-atlas-interactive-ledger p strong { color: rgba(255,245,216,0.88); }
+
+/* People */
+.psx-page .psx-people-grid-expanded {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+.psx-page .psx-person-card {
+  min-height: 18rem;
+  border: 1px solid rgba(224,184,101,0.22);
+  border-radius: 1.2rem;
+  padding: 1.15rem;
+  background: linear-gradient(180deg, rgba(16,13,9,0.78), rgba(5,5,4,0.82));
+  box-shadow: 0 24px 70px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,245,216,0.06);
+}
+.psx-page .psx-person-card > span {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid rgba(224,184,101,0.38);
+  border-radius: 50%;
+  color: var(--psx-gold);
+  font: 900 0.82rem/1 var(--psx-sans);
+}
+.psx-page .psx-person-card h3 {
+  margin: 1rem 0 0.45rem;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: 1.2rem;
+}
+.psx-page .psx-person-role {
+  color: rgba(224,184,101,0.86);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.10em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+/* Chapter accordions */
+.psx-page .psx-chapter-accordion {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.psx-page .psx-chapter-drawer {
+  border: 1px solid rgba(224,184,101,0.22);
+  border-radius: 1.2rem;
+  background: linear-gradient(180deg, rgba(16,13,9,0.80), rgba(5,5,4,0.86));
+  box-shadow: 0 24px 70px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,245,216,0.06);
+  overflow: hidden;
+}
+.psx-page .psx-chapter-drawer summary {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+.psx-page .psx-chapter-drawer summary::-webkit-details-marker { display: none; }
+.psx-page .psx-chapter-drawer summary::after {
+  content: "+";
+  position: absolute;
+  right: 1rem;
+  color: rgba(224,184,101,0.88);
+  font-size: 1.5rem;
+}
+.psx-page .psx-chapter-drawer[open] summary::after { content: "–"; }
+.psx-page .psx-chapter-drawer summary strong {
+  display: block;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.14;
+  padding-right: 2rem;
+}
+.psx-page .psx-chapter-drawer .psx-plate-label {
+  display: block;
+  margin-bottom: 0.32rem;
+  color: rgba(224,184,101,0.72);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.psx-page .psx-chapter-drawer-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  border-top: 1px solid rgba(224,184,101,0.14);
+  padding: 1rem;
+}
+.psx-page .psx-chapter-drawer-body div {
+  border: 1px solid rgba(255,245,216,0.08);
+  border-radius: 0.9rem;
+  padding: 0.85rem;
+  background: rgba(255,245,216,0.035);
+}
+.psx-page .psx-chapter-drawer-body h4 {
+  margin: 0 0 0.4rem;
+  color: rgba(224,184,101,0.84);
+  font-size: 0.67rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.psx-page .psx-chapter-drawer-body p { margin: 0; color: var(--psx-muted); line-height: 1.58; }
+
+/* Glossary and sources */
+.psx-page .psx-glossary-grid,
+.psx-page .psx-source-catalogue {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.psx-page .psx-glossary-term,
+.psx-page .psx-book-card,
+.psx-page .psx-source-catalogue .psx-source-detail {
+  min-height: 13rem;
+  border-color: rgba(224,184,101,0.22);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(224,184,101,0.10), transparent 12rem),
+    linear-gradient(180deg, rgba(16,13,9,0.78), rgba(5,5,4,0.86));
+}
+.psx-page .psx-source-shelf { margin-top: clamp(2rem, 4vw, 3rem); }
+.psx-page .psx-source-shelf > .psx-kicker { margin-bottom: 1rem; }
+
+/* Final */
+.psx-page .psx-final-inner {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+.psx-page .psx-final-copy,
+.psx-page .psx-final-question { max-width: 46rem; margin-left: auto; margin-right: auto; }
+.psx-page .psx-final-question { color: #fff0c4; }
+body.psx-page .psx-final-inner .psx-actions {
+  grid-template-columns: repeat(2, minmax(0, 18rem)) !important;
+  justify-content: center !important;
+  width: min(100%, 40rem) !important;
+}
+
+@media (max-width: 1180px) {
+  .psx-page .psx-question-museum-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .psx-page .psx-people-grid-expanded { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 900px) {
+  body.psx-page .psx-topbar { grid-template-columns: 1fr auto; border-radius: 1.2rem; }
+  body.psx-page .psx-topbar-links { grid-column: 1 / -1; justify-content: flex-start; overflow-x: auto; padding-bottom: 0.15rem; }
+  .psx-page .psx-chapter-accordion,
+  .psx-page .psx-glossary-grid,
+  .psx-page .psx-source-catalogue { grid-template-columns: 1fr; }
+  .psx-page .psx-chapter-drawer-body { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  body.psx-page .psx-hero,
+  body.psx-page.psx-hero-has-visual .psx-hero {
+    background-image:
+      linear-gradient(90deg, rgba(3,4,3,0.84), rgba(3,4,3,0.58)),
+      linear-gradient(180deg, rgba(3,4,3,0.08), rgba(3,4,3,0.72)),
+      var(--psx-hero-image),
+      radial-gradient(circle at 60% 35%, #3a2918, #030403 72%);
+  }
+  .psx-page .psx-question-museum-grid,
+  .psx-page .psx-people-grid-expanded { grid-template-columns: 1fr; }
+  .psx-page .psx-question-card,
+  .psx-page .psx-person-card { min-height: auto; }
+  .psx-page .psx-memory-premium .psx-atlas-map { min-height: 22rem; }
+  .psx-page .psx-atlas-interactive-ledger button { grid-template-columns: 2.35rem minmax(0,1fr); }
+  body.psx-page .psx-final-inner .psx-actions { grid-template-columns: 1fr !important; width: min(100%, 23rem) !important; }
+}
