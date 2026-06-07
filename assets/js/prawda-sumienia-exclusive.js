@@ -103,6 +103,90 @@
 
   ensureFinalRitualActions();
 
+  const modalText = {
+    en: {
+      close: 'Close',
+      aria: 'Orientation note'
+    },
+    pl: {
+      close: 'Zamknij',
+      aria: 'Nota orientacyjna'
+    }
+  };
+
+  const setupContextModal = () => {
+    const triggers = Array.from(root.querySelectorAll('[data-psx-modal-title]'));
+    if (!triggers.length) return;
+
+    const dictionary = modalText[lang] || modalText.en;
+    const modal = document.createElement('div');
+    modal.className = 'psx-context-modal';
+    modal.hidden = true;
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', dictionary.aria);
+
+    const panel = document.createElement('div');
+    panel.className = 'psx-context-modal-panel';
+
+    const close = document.createElement('button');
+    close.className = 'psx-context-modal-close';
+    close.type = 'button';
+    close.dataset.psxModalClose = '';
+    close.setAttribute('aria-label', dictionary.close);
+    close.textContent = '×';
+
+    const kicker = document.createElement('p');
+    kicker.className = 'psx-kicker psx-context-modal-kicker';
+
+    const title = document.createElement('h3');
+    title.className = 'psx-context-modal-title';
+
+    const body = document.createElement('p');
+    body.className = 'psx-context-modal-body';
+
+    panel.append(close, kicker, title, body);
+    modal.appendChild(panel);
+    document.body.appendChild(modal);
+
+    let lastFocus = null;
+
+    const closeModal = () => {
+      modal.hidden = true;
+      document.documentElement.classList.remove('psx-modal-open');
+      lastFocus?.focus?.();
+    };
+
+    const openModal = (trigger) => {
+      lastFocus = trigger;
+      kicker.textContent = trigger.dataset.psxModalKicker || '';
+      title.textContent = trigger.dataset.psxModalTitle || '';
+      body.textContent = trigger.dataset.psxModalBody || '';
+      modal.hidden = false;
+      document.documentElement.classList.add('psx-modal-open');
+      close.focus({ preventScroll: true });
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => openModal(trigger));
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-psx-modal-close]')) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.hidden) {
+        closeModal();
+      }
+    });
+  };
+
+  setupContextModal();
+
+
   if (eventId) {
     root.querySelectorAll('.psx-language-switch[href]').forEach((link) => {
       const url = new URL(link.getAttribute('href'), window.location.origin);
@@ -139,7 +223,11 @@
   const installHeroVisual = () => {
     const heroGrid = root.querySelector('.psx-hero-grid');
     const inscription = root.querySelector('.psx-hero-inscription');
-    if (!heroGrid || !inscription || heroGrid.querySelector('.psx-hero-visual')) return;
+    if (!heroGrid || !inscription) return;
+
+    const legacyPlaceholder = heroGrid.querySelector('.psx-hero-visual[hidden]');
+    if (legacyPlaceholder) legacyPlaceholder.remove();
+    if (heroGrid.querySelector('figure.psx-hero-visual')) return;
 
     const assets = heroAssets[lang] || sharedHeroAssets;
     const figure = document.createElement('figure');
