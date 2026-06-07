@@ -2,6 +2,14 @@
   const root = document.querySelector('[data-psx-page]');
   if (!root) return;
 
+  const companionStylesheet = '/assets/css/prawda-sumienia-companion-guide.css';
+  if (!document.querySelector(`link[href="${companionStylesheet}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = companionStylesheet;
+    document.head.appendChild(link);
+  }
+
   root.classList.add('psx-js-ready');
   document.documentElement.classList.add('psx-js-ready');
 
