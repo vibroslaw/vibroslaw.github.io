@@ -38,6 +38,117 @@
   display: inline-block;
 }
 
+
+/* Narrative spine: Report → Route → Response */
+.psx-page .psx-spine {
+  padding-block: clamp(3.2rem, 6vw, 4.8rem);
+  background:
+    radial-gradient(circle at 18% 30%, rgba(200, 164, 97, 0.09), transparent 18rem),
+    linear-gradient(180deg, rgba(3, 4, 3, 0.92), rgba(10, 9, 7, 0.82), rgba(3, 4, 3, 0.92));
+}
+
+.psx-page .psx-spine-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1.25rem, 4vw, 3rem);
+  align-items: stretch;
+  border: 1px solid rgba(200, 164, 97, 0.24);
+  border-radius: var(--psx-radius);
+  padding: clamp(1rem, 2.8vw, 1.55rem);
+  background:
+    linear-gradient(90deg, rgba(200, 164, 97, 0.09), transparent 42%),
+    linear-gradient(180deg, rgba(16, 14, 10, 0.90), rgba(7, 8, 7, 0.88));
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 245, 216, 0.08);
+}
+
+.psx-page .psx-spine-head {
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  border-right: 1px solid rgba(200, 164, 97, 0.16);
+  padding-right: clamp(1rem, 3vw, 2rem);
+}
+
+.psx-page .psx-spine-head h2 {
+  margin: 0;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.75rem, 4vw, 2.65rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.06;
+}
+
+.psx-page .psx-spine-head p:not(.psx-kicker) {
+  max-width: 36rem;
+  margin: 0.85rem 0 0;
+  color: var(--psx-muted);
+  font-size: 0.98rem;
+  line-height: 1.68;
+}
+
+.psx-page .psx-spine-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  min-width: 0;
+  border: 1px solid rgba(200, 164, 97, 0.18);
+  background: rgba(200, 164, 97, 0.16);
+}
+
+.psx-page .psx-spine-item {
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  background:
+    linear-gradient(145deg, rgba(255, 241, 204, 0.055), transparent 38%),
+    rgba(6, 7, 6, 0.90);
+}
+
+.psx-page .psx-spine-item span {
+  display: inline-grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border: 1px solid rgba(200, 164, 97, 0.38);
+  border-radius: 50%;
+  color: var(--psx-gold);
+  font: 800 0.68rem/1 var(--psx-sans);
+  letter-spacing: 0.08em;
+}
+
+.psx-page .psx-spine-item h3 {
+  margin: 1rem 0 0;
+  color: var(--psx-cream);
+  font-family: var(--psx-serif);
+  font-size: clamp(1.15rem, 1.8vw, 1.42rem);
+  font-weight: 500;
+  line-height: 1.16;
+}
+
+.psx-page .psx-spine-item p {
+  margin: 0.45rem 0 0;
+  color: var(--psx-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .psx-page .psx-spine-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .psx-page .psx-spine-head {
+    border-right: 0;
+    border-bottom: 1px solid rgba(200, 164, 97, 0.16);
+    padding-right: 0;
+    padding-bottom: 1.15rem;
+  }
+
+  .psx-page .psx-spine-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .psx-page .psx-memory-atlas {
   position: relative;
 }
