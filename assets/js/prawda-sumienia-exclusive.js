@@ -2,13 +2,18 @@
   const root = document.querySelector('[data-psx-page]');
   if (!root) return;
 
-  const pr61Stylesheet = '/assets/css/prawda-sumienia-pr61-stabilize.css';
-  if (!document.querySelector(`link[href="${pr61Stylesheet}"]`)) {
+  const managedStylesheets = [
+    '/assets/css/prawda-sumienia-pr61-stabilize.css',
+    '/assets/css/prawda-sumienia-pr63-route-deck.css'
+  ];
+
+  managedStylesheets.forEach((href) => {
+    if (document.querySelector(`link[href="${href}"]`)) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = pr61Stylesheet;
+    link.href = href;
     document.head.appendChild(link);
-  }
+  });
 
   root.classList.add('psx-js-ready');
   document.documentElement.classList.add('psx-js-ready');
@@ -436,8 +441,86 @@
 
     if (!points.length || !panels.length) return;
 
+    const atlasCopy = {
+      en: {
+        previous: 'Previous',
+        next: 'Continue route',
+        progress: (index, total) => `Route point ${index} of ${total}`
+      },
+      pl: {
+        previous: 'Poprzedni',
+        next: 'Kontynuuj trasę',
+        progress: (index, total) => `Punkt trasy ${index} z ${total}`
+      }
+    };
+
+    const dictionary = atlasCopy[lang] || atlasCopy.en;
+    const orderedKeys = panels
+      .map((panel) => panel.dataset.psxMapPanel)
+      .filter(Boolean);
+    const total = orderedKeys.length;
+    let activeKey = orderedKeys[0] || points[0]?.dataset.psxMapPoint || '';
+
+    const indexOfKey = (key) => {
+      const index = orderedKeys.indexOf(key);
+      return index >= 0 ? index : 0;
+    };
+
+    const keyAtOffset = (offset) => {
+      if (!orderedKeys.length) return activeKey;
+      const currentIndex = indexOfKey(activeKey);
+      return orderedKeys[(currentIndex + offset + orderedKeys.length) % orderedKeys.length];
+    };
+
+    const installRouteDeckControls = () => {
+      panels.forEach((panel, index) => {
+        const key = panel.dataset.psxMapPanel;
+        const primaryButton = panel.querySelector('button[data-psx-map-point]');
+        const content = primaryButton?.querySelector('div');
+
+        if (content && !content.querySelector('.psx-atlas-route-count')) {
+          const count = document.createElement('span');
+          count.className = 'psx-atlas-route-count';
+          count.textContent = dictionary.progress(String(index + 1).padStart(2, '0'), String(total).padStart(2, '0'));
+          content.insertBefore(count, content.firstChild);
+        }
+
+        if (!key || panel.querySelector('.psx-atlas-route-controls')) return;
+
+        const controls = document.createElement('div');
+        controls.className = 'psx-atlas-route-controls';
+        controls.setAttribute('aria-label', dictionary.progress(String(index + 1).padStart(2, '0'), String(total).padStart(2, '0')));
+
+        const previous = document.createElement('button');
+        previous.type = 'button';
+        previous.dataset.psxAtlasPrevious = '';
+        previous.textContent = dictionary.previous;
+
+        const next = document.createElement('button');
+        next.type = 'button';
+        next.dataset.psxAtlasNext = '';
+        next.textContent = dictionary.next;
+
+        previous.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          selectPoint(keyAtOffset(-1));
+        });
+
+        next.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          selectPoint(keyAtOffset(1));
+        });
+
+        controls.append(previous, next);
+        panel.appendChild(controls);
+      });
+    };
+
     const selectPoint = (key) => {
       if (!key) return;
+      activeKey = key;
 
       points.forEach((point) => {
         const active = point.dataset.psxMapPoint === key;
@@ -452,6 +535,8 @@
         panel.classList.toggle('is-selected', panel.dataset.psxMapPanel === key);
       });
     };
+
+    installRouteDeckControls();
 
     mapPins.forEach((point) => {
       const key = point.dataset.psxMapPoint;
@@ -472,7 +557,7 @@
       });
     });
 
-    selectPoint((mapPins[0] || ledgerControls[0] || points[0])?.dataset.psxMapPoint);
+    selectPoint(activeKey);
   };
 
   setupMemoryAtlas();
