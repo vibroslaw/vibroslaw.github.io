@@ -89,12 +89,8 @@
   });
 
   const finalActionCopy = {
-    en: {
-      participation: 'Participation Record'
-    },
-    pl: {
-      participation: 'Zapis uczestnictwa'
-    }
+    en: { participation: 'Participation Record' },
+    pl: { participation: 'Zapis uczestnictwa' }
   };
 
   const ensureFinalRitualActions = () => {
@@ -120,18 +116,13 @@
   ensureFinalRitualActions();
 
   const modalText = {
-    en: {
-      close: 'Close',
-      aria: 'Orientation note'
-    },
-    pl: {
-      close: 'Zamknij',
-      aria: 'Nota orientacyjna'
-    }
+    en: { close: 'Close', aria: 'Orientation note' },
+    pl: { close: 'Zamknij', aria: 'Nota orientacyjna' }
   };
 
   const setupContextModal = () => {
-    const triggers = Array.from(root.querySelectorAll('[data-psx-modal-title]'));
+    const triggers = Array.from(root.querySelectorAll('[data-psx-modal-title]'))
+      .filter((trigger) => !trigger.closest('.psx-memory-atlas'));
     if (!triggers.length) return;
 
     const dictionary = modalText[lang] || modalText.en;
@@ -215,7 +206,6 @@
 
   setupContextModal();
 
-
   root.querySelectorAll('.psx-language-switch[href]').forEach((link) => {
     const url = applySafeParams(new URL(link.getAttribute('href'), window.location.origin));
     if (window.location.hash) url.hash = window.location.hash;
@@ -234,12 +224,8 @@
   }
 
   const heroAssets = {
-    en: {
-      desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
-    },
-    pl: {
-      desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'
-    }
+    en: { desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp' },
+    pl: { desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp' }
   };
 
   const sharedHeroAssets = {
@@ -390,17 +376,37 @@
     timelineShell.appendChild(timelineDetail);
   }
 
+  const fillTimelineDetail = (year, title, body) => {
+    if (!timelineDetail) return;
+    timelineDetail.textContent = '';
+
+    const yearNode = document.createElement('span');
+    yearNode.textContent = year;
+
+    const titleNode = document.createElement('h3');
+    titleNode.textContent = title;
+
+    const bodyNode = document.createElement('p');
+    bodyNode.textContent = body;
+
+    timelineDetail.append(yearNode, titleNode, bodyNode);
+  };
+
   const setTimelineDetail = (button) => {
     if (!timelineDetail || !button) return;
     const card = button.closest('.psx-timeline-card');
     const year = button.querySelector('.psx-year')?.textContent?.trim() || '';
     const title = button.querySelector('strong')?.textContent?.trim() || '';
-    const body = button.querySelector('p')?.textContent?.trim() || '';
+    const body = card?.querySelector(':scope > p')?.textContent?.trim()
+      || button.dataset.psxModalBody?.split(/\n{2,}/)[0]?.trim()
+      || '';
 
     timelineNodes.forEach((node) => {
       const selected = node === button;
       node.classList.toggle('is-selected', selected);
+      node.classList.toggle('is-active', selected);
       node.setAttribute('aria-expanded', String(selected));
+      node.setAttribute('aria-pressed', String(selected));
     });
 
     if (card) {
@@ -409,11 +415,7 @@
       });
     }
 
-    timelineDetail.innerHTML = `
-      <span>${year}</span>
-      <h3>${title}</h3>
-      <p>${body}</p>
-    `;
+    fillTimelineDetail(year, title, body);
   };
 
   timelineNodes.forEach((button) => {
@@ -424,24 +426,34 @@
   if (timelineNodes[0]) setTimelineDetail(timelineNodes[0]);
 
   const setupMemoryAtlas = () => {
-    const points = Array.from(root.querySelectorAll('[data-psx-map-point]'));
-    const panels = Array.from(root.querySelectorAll('[data-psx-map-panel]'));
+    const atlas = root.querySelector('.psx-memory-atlas');
+    if (!atlas) return;
+
+    const points = Array.from(atlas.querySelectorAll('[data-psx-map-point]'));
+    const panels = Array.from(atlas.querySelectorAll('[data-psx-map-panel]'));
+    const mapPins = points.filter((point) => point.closest('.psx-atlas-map'));
+    const ledgerControls = points.filter((point) => point.closest('.psx-atlas-ledger'));
+
     if (!points.length || !panels.length) return;
 
     const selectPoint = (key) => {
+      if (!key) return;
+
       points.forEach((point) => {
         const active = point.dataset.psxMapPoint === key;
         point.classList.toggle('is-selected', active);
         if (point.tagName === 'BUTTON') {
           point.setAttribute('aria-pressed', String(active));
+          point.setAttribute('aria-current', active ? 'true' : 'false');
         }
       });
+
       panels.forEach((panel) => {
         panel.classList.toggle('is-selected', panel.dataset.psxMapPanel === key);
       });
     };
 
-    points.forEach((point) => {
+    mapPins.forEach((point) => {
       const key = point.dataset.psxMapPoint;
       if (!key) return;
       point.addEventListener('click', () => selectPoint(key));
@@ -449,7 +461,18 @@
       point.addEventListener('focus', () => selectPoint(key));
     });
 
-    selectPoint(points[0].dataset.psxMapPoint);
+    ledgerControls.forEach((point) => {
+      const key = point.dataset.psxMapPoint;
+      if (!key) return;
+      point.addEventListener('click', () => selectPoint(key));
+      point.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        selectPoint(key);
+      });
+    });
+
+    selectPoint((mapPins[0] || ledgerControls[0] || points[0])?.dataset.psxMapPoint);
   };
 
   setupMemoryAtlas();
@@ -545,9 +568,17 @@
     });
   });
 
+  let ticking = false;
+  const updateScrollProgress = () => {
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, window.scrollY / max));
+    document.documentElement.style.setProperty('--psx-scroll-progress', `${(progress * 100).toFixed(2)}%`);
+    ticking = false;
+  };
+
   const resetTransientUi = () => {
     document.documentElement.classList.remove('psx-modal-open');
-    root.querySelectorAll('.psx-context-modal').forEach((modal) => {
+    document.querySelectorAll('.psx-context-modal').forEach((modal) => {
       modal.hidden = true;
     });
     sourcePanels.forEach((panel) => {
@@ -568,14 +599,6 @@
     if (event.persisted) resetTransientUi();
     updateScrollProgress();
   });
-
-  let ticking = false;
-  const updateScrollProgress = () => {
-    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = Math.min(1, Math.max(0, window.scrollY / max));
-    document.documentElement.style.setProperty('--psx-scroll-progress', `${(progress * 100).toFixed(2)}%`);
-    ticking = false;
-  };
 
   window.addEventListener('scroll', () => {
     if (ticking || reducedMotion) return;
