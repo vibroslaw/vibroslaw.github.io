@@ -2,12 +2,29 @@
   const root = document.querySelector('[data-psx-page]');
   if (!root) return;
 
+  const pr61Stylesheet = '/assets/css/prawda-sumienia-pr61-stabilize.css';
+  if (!document.querySelector(`link[href="${pr61Stylesheet}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = pr61Stylesheet;
+    document.head.appendChild(link);
+  }
+
   root.classList.add('psx-js-ready');
   document.documentElement.classList.add('psx-js-ready');
 
   const lang = root.dataset.lang || document.documentElement.lang || 'en';
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get('event') || root.dataset.defaultEvent || '';
+  const safeForwardParams = ['event', 'ref', 'utm_source', 'utm_medium', 'utm_campaign', 'screening'];
+  const applySafeParams = (url) => {
+    safeForwardParams.forEach((key) => {
+      const value = params.get(key);
+      if (value) url.searchParams.set(key, value);
+    });
+    if (eventId) url.searchParams.set('event', eventId);
+    return url;
+  };
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
 
   const revealItems = Array.from(root.querySelectorAll('[data-psx-reveal]'));
@@ -61,8 +78,7 @@
   const routes = routeMap[lang] || routeMap.en;
 
   const buildEventUrl = (path) => {
-    const url = new URL(path, window.location.origin);
-    if (eventId) url.searchParams.set('event', eventId);
+    const url = applySafeParams(new URL(path, window.location.origin));
     return `${url.pathname}${url.search}${url.hash}`;
   };
 
@@ -200,13 +216,11 @@
   setupContextModal();
 
 
-  if (eventId) {
-    root.querySelectorAll('.psx-language-switch[href]').forEach((link) => {
-      const url = new URL(link.getAttribute('href'), window.location.origin);
-      url.searchParams.set('event', eventId);
-      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
-    });
-  }
+  root.querySelectorAll('.psx-language-switch[href]').forEach((link) => {
+    const url = applySafeParams(new URL(link.getAttribute('href'), window.location.origin));
+    if (window.location.hash) url.hash = window.location.hash;
+    link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
+  });
 
   const eventConfig = window.RAPORT_EVENTS?.events?.[eventId];
   const localizedEvent = eventConfig?.[lang];
@@ -224,7 +238,7 @@
       desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
     },
     pl: {
-      desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
+      desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'
     }
   };
 
@@ -376,88 +390,38 @@
     timelineShell.appendChild(timelineDetail);
   }
 
-  const findTimelineCard = (node) => node.closest('.psx-timeline-card');
+  const setTimelineDetail = (button) => {
+    if (!timelineDetail || !button) return;
+    const card = button.closest('.psx-timeline-card');
+    const year = button.querySelector('.psx-year')?.textContent?.trim() || '';
+    const title = button.querySelector('strong')?.textContent?.trim() || '';
+    const body = button.querySelector('p')?.textContent?.trim() || '';
 
-  const updateTimelineDetail = (node) => {
-    if (!timelineDetail || !node) return;
-    const card = findTimelineCard(node);
-    const year = node.querySelector('.psx-year')?.textContent?.trim() || '';
-    const title = node.querySelector('strong')?.textContent?.trim() || '';
-    const body = card?.querySelector('p')?.textContent?.trim() || '';
-    const sourceLabels = Array.from(card?.querySelectorAll('.psx-source-chip') || [])
-      .map((chip) => chip.textContent.trim())
-      .filter(Boolean);
+    timelineNodes.forEach((node) => {
+      const selected = node === button;
+      node.classList.toggle('is-selected', selected);
+      node.setAttribute('aria-expanded', String(selected));
+    });
 
-    timelineDetail.textContent = '';
-
-    if (year) {
-      const yearNode = document.createElement('span');
-      yearNode.className = 'psx-year';
-      yearNode.textContent = year;
-      timelineDetail.appendChild(yearNode);
-    }
-
-    if (title) {
-      const titleNode = document.createElement('h3');
-      titleNode.textContent = title;
-      timelineDetail.appendChild(titleNode);
-    }
-
-    if (body) {
-      const bodyNode = document.createElement('p');
-      bodyNode.textContent = body;
-      timelineDetail.appendChild(bodyNode);
-    }
-
-    if (sourceLabels.length) {
-      const sourceList = document.createElement('div');
-      sourceList.className = 'psx-timeline-detail-sources';
-      sourceLabels.forEach((label) => {
-        const source = document.createElement('span');
-        source.textContent = label;
-        sourceList.appendChild(source);
+    if (card) {
+      timelineShell.querySelectorAll('.psx-timeline-card').forEach((candidate) => {
+        candidate.classList.toggle('is-selected', candidate === card);
       });
-      timelineDetail.appendChild(sourceList);
     }
+
+    timelineDetail.innerHTML = `
+      <span>${year}</span>
+      <h3>${title}</h3>
+      <p>${body}</p>
+    `;
   };
 
-  const activateTimelineNode = (node, shouldFocus = false) => {
-    if (!node) return;
-    timelineNodes.forEach((candidate) => {
-      const active = candidate === node;
-      candidate.classList.toggle('is-active', active);
-      candidate.setAttribute('aria-pressed', String(active));
-      findTimelineCard(candidate)?.classList.toggle('is-active', active);
-    });
-    updateTimelineDetail(node);
-    if (shouldFocus) node.focus({ preventScroll: true });
-  };
-
-  timelineNodes.forEach((node, index) => {
-    node.addEventListener('click', () => activateTimelineNode(node));
-
-    node.addEventListener('keydown', (event) => {
-      const key = event.key;
-      if (key === 'Enter' || key === ' ') {
-        event.preventDefault();
-        activateTimelineNode(node);
-        return;
-      }
-
-      const forward = key === 'ArrowRight' || key === 'ArrowDown';
-      const backward = key === 'ArrowLeft' || key === 'ArrowUp';
-      if (!forward && !backward) return;
-
-      event.preventDefault();
-      const nextIndex = forward
-        ? Math.min(timelineNodes.length - 1, index + 1)
-        : Math.max(0, index - 1);
-      activateTimelineNode(timelineNodes[nextIndex], true);
-    });
+  timelineNodes.forEach((button) => {
+    button.setAttribute('aria-expanded', 'false');
+    button.addEventListener('click', () => setTimelineDetail(button));
   });
 
-  activateTimelineNode(timelineNodes.find((node) => node.classList.contains('is-active')) || timelineNodes[0]);
-
+  if (timelineNodes[0]) setTimelineDetail(timelineNodes[0]);
 
   const setupMemoryAtlas = () => {
     const points = Array.from(root.querySelectorAll('[data-psx-map-point]'));
@@ -466,7 +430,11 @@
 
     const selectPoint = (key) => {
       points.forEach((point) => {
-        point.classList.toggle('is-selected', point.dataset.psxMapPoint === key);
+        const active = point.dataset.psxMapPoint === key;
+        point.classList.toggle('is-selected', active);
+        if (point.tagName === 'BUTTON') {
+          point.setAttribute('aria-pressed', String(active));
+        }
       });
       panels.forEach((panel) => {
         panel.classList.toggle('is-selected', panel.dataset.psxMapPanel === key);
@@ -474,10 +442,14 @@
     };
 
     points.forEach((point) => {
-      point.addEventListener('click', () => selectPoint(point.dataset.psxMapPoint));
-      point.addEventListener('mouseenter', () => selectPoint(point.dataset.psxMapPoint));
-      point.addEventListener('focus', () => selectPoint(point.dataset.psxMapPoint));
+      const key = point.dataset.psxMapPoint;
+      if (!key) return;
+      point.addEventListener('click', () => selectPoint(key));
+      point.addEventListener('mouseenter', () => selectPoint(key));
+      point.addEventListener('focus', () => selectPoint(key));
     });
+
+    selectPoint(points[0].dataset.psxMapPoint);
   };
 
   setupMemoryAtlas();
@@ -492,10 +464,14 @@
   });
 
   const rail = root.querySelector('[data-track-rail]');
-  const prev = root.querySelector('[data-track-prev]');
-  const next = root.querySelector('[data-track-next]');
+  const prev = root.querySelector('[data-rail-prev]');
+  const next = root.querySelector('[data-rail-next]');
 
-  const railStep = () => Math.max(280, Math.round((rail?.clientWidth || 640) * 0.78));
+  const railStep = () => {
+    const firstCard = rail?.querySelector('.psx-track-card');
+    return firstCard ? firstCard.getBoundingClientRect().width + 24 : 340;
+  };
+
   const scrollRail = (direction) => {
     if (!rail) return;
     rail.scrollBy({
@@ -567,6 +543,30 @@
         }
       }
     });
+  });
+
+  const resetTransientUi = () => {
+    document.documentElement.classList.remove('psx-modal-open');
+    root.querySelectorAll('.psx-context-modal').forEach((modal) => {
+      modal.hidden = true;
+    });
+    sourcePanels.forEach((panel) => {
+      panel.hidden = true;
+    });
+    sourceButtons.forEach((button) => {
+      button.classList.remove('is-selected');
+      button.setAttribute('aria-expanded', 'false');
+    });
+    root.querySelectorAll('[data-panel-toggle]').forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+      const panel = document.getElementById(button.dataset.panelToggle);
+      if (panel) panel.hidden = true;
+    });
+  };
+
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) resetTransientUi();
+    updateScrollProgress();
   });
 
   let ticking = false;
