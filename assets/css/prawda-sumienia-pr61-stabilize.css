@@ -47,7 +47,6 @@ body.psx-page .psx-hero {
 .psx-page .psx-event-pass dd,
 .psx-page .psx-path-card strong,
 .psx-page .psx-path-note,
-.psx-page .psx-atlas-pin,
 .psx-page .psx-atlas-ledger h3,
 .psx-page .psx-atlas-ledger p,
 .psx-page .psx-chapter-plate h3,
@@ -109,6 +108,49 @@ body.psx-page .psx-hero {
   justify-items: center;
 }
 
+/* PR6.1 hotfix: atlas pins are absolutely positioned buttons.
+   If their intrinsic width collapses, labels render as vertical letters.
+   Give pins and their labels a real inline width without forcing page overflow. */
+.psx-page .psx-atlas-pin,
+.psx-page .psx-memory-premium .psx-atlas-pin {
+  width: max-content !important;
+  min-width: 5.75rem;
+  max-width: 10rem;
+  justify-items: center;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+.psx-page .psx-atlas-pin em,
+.psx-page .psx-memory-premium .psx-atlas-pin em {
+  display: block;
+  width: max-content;
+  min-width: 5.75rem;
+  max-width: 9.25rem;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
+  hyphens: none !important;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.psx-page .psx-atlas-interactive-ledger,
+.psx-page .psx-atlas-interactive-ledger li,
+.psx-page .psx-atlas-interactive-ledger button,
+.psx-page .psx-atlas-interactive-ledger h3,
+.psx-page .psx-atlas-interactive-ledger p,
+.psx-page .psx-atlas-interactive-ledger small {
+  min-width: 0;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
 /* Make the premium atlas feel interactive without forcing accidental modal openings visually. */
 .psx-page .psx-memory-premium .psx-atlas-pin,
 .psx-page .psx-atlas-interactive-ledger button {
@@ -165,6 +207,20 @@ body.psx-page .psx-hero {
     min-height: 24rem;
   }
 
+  .psx-page .psx-atlas-pin,
+  .psx-page .psx-memory-premium .psx-atlas-pin {
+    min-width: 4.9rem;
+    max-width: 8rem;
+  }
+
+  .psx-page .psx-atlas-pin em,
+  .psx-page .psx-memory-premium .psx-atlas-pin em {
+    min-width: 4.9rem;
+    max-width: 7.6rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+  }
+
   .psx-page .psx-final-inner .psx-actions {
     width: min(100%, 24rem) !important;
   }
@@ -181,5 +237,9 @@ body.psx-page .psx-hero {
   .psx-page .psx-button {
     width: 100%;
     justify-content: center;
+  }
+
+  .psx-page .psx-memory-premium .psx-atlas-map {
+    min-height: 25rem;
   }
 }
