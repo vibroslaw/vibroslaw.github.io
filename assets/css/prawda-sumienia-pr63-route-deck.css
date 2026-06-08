@@ -1,13 +1,39 @@
 /* =========================================================
    PR6.3 — Memory Atlas route deck controls
-   Purpose: make the atlas feel intentionally sequential and curatorial.
+   Purpose: one stable active curatorial card; no shifting chip deck.
    ========================================================= */
+
+/* The right side now behaves as a single active exhibit card.
+   Hidden non-active ledger items still exist in the DOM and can be activated
+   from the map pins, but they no longer create a jumping grid. */
+body.psx-page .psx-atlas-ledger,
+body.psx-page .psx-atlas-interactive-ledger {
+  display: block !important;
+  max-width: 100% !important;
+}
+
+body.psx-page .psx-atlas-ledger li,
+body.psx-page .psx-atlas-interactive-ledger li {
+  display: none !important;
+  grid-column: auto !important;
+  order: 0 !important;
+}
+
+body.psx-page .psx-atlas-ledger li.is-selected,
+body.psx-page .psx-atlas-interactive-ledger li.is-selected {
+  display: block !important;
+}
+
+body.psx-page .psx-atlas-ledger li.is-selected button,
+body.psx-page .psx-atlas-interactive-ledger li.is-selected button {
+  min-height: clamp(13.5rem, 24vw, 17rem) !important;
+}
 
 body.psx-page .psx-atlas-route-count {
   display: block !important;
-  margin: 0 0 0.72rem !important;
+  margin: 0 0 0.62rem !important;
   color: rgba(224, 184, 101, 0.82) !important;
-  font: 900 0.66rem/1.2 var(--psx-sans) !important;
+  font: 900 0.62rem/1.2 var(--psx-sans) !important;
   letter-spacing: 0.14em !important;
   text-transform: uppercase !important;
 }
@@ -23,26 +49,29 @@ body.psx-page .psx-atlas-route-controls {
 
 body.psx-page .psx-atlas-ledger li.is-selected .psx-atlas-route-controls,
 body.psx-page .psx-atlas-interactive-ledger li.is-selected .psx-atlas-route-controls {
-  display: grid !important;
-  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr) !important;
-  gap: 0.72rem !important;
-  margin: 0.82rem 0 0 3.85rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.48rem !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin: 0.72rem 0 0 0 !important;
 }
 
 body.psx-page .psx-atlas-route-controls button {
-  width: 100% !important;
-  min-height: 2.85rem !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 2.08rem !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border: 1px solid rgba(224, 184, 101, 0.28) !important;
+  border: 1px solid rgba(224, 184, 101, 0.26) !important;
   border-radius: 999px !important;
-  padding: 0.78rem 0.95rem !important;
-  background: rgba(255, 245, 216, 0.045) !important;
-  color: rgba(241, 230, 207, 0.82) !important;
+  padding: 0.48rem 0.72rem !important;
+  background: rgba(255, 245, 216, 0.04) !important;
+  color: rgba(241, 230, 207, 0.76) !important;
   cursor: pointer !important;
-  font: 850 0.68rem/1 var(--psx-sans) !important;
-  letter-spacing: 0.10em !important;
+  font: 850 0.56rem/1 var(--psx-sans) !important;
+  letter-spacing: 0.09em !important;
   text-align: center !important;
   text-transform: uppercase !important;
   transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease !important;
@@ -50,19 +79,19 @@ body.psx-page .psx-atlas-route-controls button {
 
 body.psx-page .psx-atlas-route-controls button[data-psx-atlas-next] {
   background:
-    linear-gradient(135deg, rgba(224, 184, 101, 0.22), rgba(224, 184, 101, 0.08)) !important;
-  border-color: rgba(224, 184, 101, 0.46) !important;
+    linear-gradient(135deg, rgba(224, 184, 101, 0.17), rgba(224, 184, 101, 0.06)) !important;
+  border-color: rgba(224, 184, 101, 0.42) !important;
   color: #fff1c8 !important;
-  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 245, 216, 0.11) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 245, 216, 0.10) !important;
 }
 
 body.psx-page .psx-atlas-route-controls button:hover,
 body.psx-page .psx-atlas-route-controls button:focus-visible {
-  border-color: rgba(255, 225, 158, 0.62) !important;
-  background: rgba(224, 184, 101, 0.13) !important;
+  border-color: rgba(255, 225, 158, 0.56) !important;
+  background: rgba(224, 184, 101, 0.12) !important;
   color: #fff4d6 !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.28), 0 0 34px rgba(224, 184, 101, 0.13) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22), 0 0 22px rgba(224, 184, 101, 0.10) !important;
   outline: 0 !important;
 }
 
@@ -76,13 +105,19 @@ body.psx-page .psx-atlas-interactive-ledger li.is-selected button[aria-current="
 }
 
 @media (max-width: 760px) {
+  body.psx-page .psx-atlas-ledger li.is-selected button,
+  body.psx-page .psx-atlas-interactive-ledger li.is-selected button {
+    min-height: auto !important;
+  }
+
   body.psx-page .psx-atlas-ledger li.is-selected .psx-atlas-route-controls,
   body.psx-page .psx-atlas-interactive-ledger li.is-selected .psx-atlas-route-controls {
-    margin-left: 0 !important;
-    grid-template-columns: 1fr !important;
+    gap: 0.42rem !important;
   }
 
   body.psx-page .psx-atlas-route-controls button {
-    min-height: 2.95rem !important;
+    min-height: 2.1rem !important;
+    padding: 0.5rem 0.68rem !important;
+    font-size: 0.54rem !important;
   }
 }
