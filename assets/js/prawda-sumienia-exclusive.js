@@ -57,14 +57,8 @@
   window.setTimeout(showRevealItems, reducedMotion ? 0 : 900);
 
   const copyText = {
-    en: {
-      copied: 'QR link copied.',
-      failed: 'Copy failed. Use the address bar link.'
-    },
-    pl: {
-      copied: 'Link QR skopiowany.',
-      failed: 'Nie udało się skopiować. Użyj linku z paska adresu.'
-    }
+    en: { copied: 'QR link copied.', failed: 'Copy failed. Use the address bar link.' },
+    pl: { copied: 'Link QR skopiowany.', failed: 'Nie udało się skopiować. Użyj linku z paska adresu.' }
   };
 
   const routeMap = {
@@ -197,15 +191,11 @@
     });
 
     modal.addEventListener('click', (event) => {
-      if (event.target === modal || event.target.closest('[data-psx-modal-close]')) {
-        closeModal();
-      }
+      if (event.target === modal || event.target.closest('[data-psx-modal-close]')) closeModal();
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !modal.hidden) {
-        closeModal();
-      }
+      if (event.key === 'Escape' && !modal.hidden) closeModal();
     });
   };
 
@@ -305,9 +295,7 @@
   const navLinks = Array.from(root.querySelectorAll('.psx-orbit-nav a[href^="#"]'));
   if (navLinks.length && 'IntersectionObserver' in window) {
     const sectionById = new Map(
-      navLinks
-        .map((link) => [link.getAttribute('href').slice(1), link])
-        .filter(([id]) => id)
+      navLinks.map((link) => [link.getAttribute('href').slice(1), link]).filter(([id]) => id)
     );
 
     const navObserver = new IntersectionObserver((entries) => {
@@ -442,81 +430,24 @@
     if (!points.length || !panels.length) return;
 
     const atlasCopy = {
-      en: {
-        previous: 'Previous',
-        next: 'Continue route',
-        progress: (index, total) => `Route point ${index} of ${total}`
-      },
-      pl: {
-        previous: 'Poprzedni',
-        next: 'Kontynuuj trasę',
-        progress: (index, total) => `Punkt trasy ${index} z ${total}`
-      }
+      en: { progress: (index, total) => `Route point ${index} of ${total}` },
+      pl: { progress: (index, total) => `Punkt trasy ${index} z ${total}` }
     };
 
     const dictionary = atlasCopy[lang] || atlasCopy.en;
-    const orderedKeys = panels
-      .map((panel) => panel.dataset.psxMapPanel)
-      .filter(Boolean);
+    const orderedKeys = panels.map((panel) => panel.dataset.psxMapPanel).filter(Boolean);
     const total = orderedKeys.length;
     let activeKey = orderedKeys[0] || points[0]?.dataset.psxMapPoint || '';
 
-    const indexOfKey = (key) => {
-      const index = orderedKeys.indexOf(key);
-      return index >= 0 ? index : 0;
-    };
-
-    const keyAtOffset = (offset) => {
-      if (!orderedKeys.length) return activeKey;
-      const currentIndex = indexOfKey(activeKey);
-      return orderedKeys[(currentIndex + offset + orderedKeys.length) % orderedKeys.length];
-    };
-
-    const installRouteDeckControls = () => {
-      panels.forEach((panel, index) => {
-        const key = panel.dataset.psxMapPanel;
-        const primaryButton = panel.querySelector('button[data-psx-map-point]');
-        const content = primaryButton?.querySelector('div');
-
-        if (content && !content.querySelector('.psx-atlas-route-count')) {
-          const count = document.createElement('span');
-          count.className = 'psx-atlas-route-count';
-          count.textContent = dictionary.progress(String(index + 1).padStart(2, '0'), String(total).padStart(2, '0'));
-          content.insertBefore(count, content.firstChild);
-        }
-
-        if (!key || panel.querySelector('.psx-atlas-route-controls')) return;
-
-        const controls = document.createElement('div');
-        controls.className = 'psx-atlas-route-controls';
-        controls.setAttribute('aria-label', dictionary.progress(String(index + 1).padStart(2, '0'), String(total).padStart(2, '0')));
-
-        const previous = document.createElement('button');
-        previous.type = 'button';
-        previous.dataset.psxAtlasPrevious = '';
-        previous.textContent = dictionary.previous;
-
-        const next = document.createElement('button');
-        next.type = 'button';
-        next.dataset.psxAtlasNext = '';
-        next.textContent = dictionary.next;
-
-        previous.addEventListener('click', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          selectPoint(keyAtOffset(-1));
-        });
-
-        next.addEventListener('click', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          selectPoint(keyAtOffset(1));
-        });
-
-        controls.append(previous, next);
-        panel.appendChild(controls);
-      });
-    };
+    panels.forEach((panel, index) => {
+      const primaryButton = panel.querySelector('button[data-psx-map-point]');
+      const content = primaryButton?.querySelector('div');
+      if (!content || content.querySelector('.psx-atlas-route-count')) return;
+      const count = document.createElement('span');
+      count.className = 'psx-atlas-route-count';
+      count.textContent = dictionary.progress(String(index + 1).padStart(2, '0'), String(total).padStart(2, '0'));
+      content.insertBefore(count, content.firstChild);
+    });
 
     const selectPoint = (key) => {
       if (!key) return;
@@ -535,8 +466,6 @@
         panel.classList.toggle('is-selected', panel.dataset.psxMapPanel === key);
       });
     };
-
-    installRouteDeckControls();
 
     mapPins.forEach((point) => {
       const key = point.dataset.psxMapPoint;
@@ -617,9 +546,7 @@
   const sourceDrawer = root.querySelector('[data-source-drawer]');
 
   const closeSourcePanels = () => {
-    sourcePanels.forEach((candidate) => {
-      candidate.hidden = true;
-    });
+    sourcePanels.forEach((candidate) => { candidate.hidden = true; });
     sourceButtons.forEach((candidate) => {
       candidate.classList.remove('is-selected');
       candidate.setAttribute('aria-expanded', 'false');
@@ -644,10 +571,7 @@
         const drawerTop = sourceDrawer.getBoundingClientRect().top;
         const drawerVisible = drawerTop > 0 && drawerTop < window.innerHeight * 0.75;
         if (!drawerVisible) {
-          sourceDrawer.scrollIntoView({
-            behavior: reducedMotion ? 'auto' : 'smooth',
-            block: 'start'
-          });
+          sourceDrawer.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
         }
       }
     });
@@ -663,12 +587,8 @@
 
   const resetTransientUi = () => {
     document.documentElement.classList.remove('psx-modal-open');
-    document.querySelectorAll('.psx-context-modal').forEach((modal) => {
-      modal.hidden = true;
-    });
-    sourcePanels.forEach((panel) => {
-      panel.hidden = true;
-    });
+    document.querySelectorAll('.psx-context-modal').forEach((modal) => { modal.hidden = true; });
+    sourcePanels.forEach((panel) => { panel.hidden = true; });
     sourceButtons.forEach((button) => {
       button.classList.remove('is-selected');
       button.setAttribute('aria-expanded', 'false');
