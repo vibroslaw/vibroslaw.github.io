@@ -486,13 +486,17 @@
   });
 
   preset?.addEventListener('change', () => {
+    if (generator.hidden) return;
     applyPreset();
     sequence = loadOrCreateSequence();
     updatePreview();
   });
 
-  form?.addEventListener('input', updatePreview);
-  form?.addEventListener('change', updatePreview);
+  const updateUnlockedPreview = () => {
+    if (!generator.hidden) updatePreview();
+  };
+  form?.addEventListener('input', updateUnlockedPreview);
+  form?.addEventListener('change', updateUnlockedPreview);
 
   root.querySelector('[data-pr-regenerate]')?.addEventListener('click', () => {
     updateNumber(true);
@@ -512,7 +516,7 @@
   root.querySelectorAll('[name="recordVariant"]').forEach((input) => {
     input.addEventListener('change', () => {
       root.querySelectorAll('.pr-variant-card').forEach((card) => card.classList.toggle('is-selected', card.contains(input) && input.checked));
-      updatePreview();
+      updateUnlockedPreview();
     });
   });
 

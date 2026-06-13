@@ -18,6 +18,79 @@
   root.classList.add('psx-js-ready');
   document.documentElement.classList.add('psx-js-ready');
 
+  const deferredArtworkGroups = [
+    {
+      selector: '.psx-pathway',
+      assets: {
+        '--psx-asset-pass': '/public/assets/events/rap-ort/shared/experience/event-pass-premium.webp',
+        '--psx-asset-witness': '/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp',
+        '--psx-asset-document': '/public/assets/events/rap-ort/shared/experience/document-atelier.webp',
+        '--psx-asset-memory': '/public/assets/events/rap-ort/shared/experience/memory-case.webp',
+        '--psx-asset-archive-empty': '/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp'
+      }
+    },
+    {
+      selector: '.psx-facts',
+      assets: {
+        '--psx-asset-paper': '/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp',
+        '--psx-asset-document': '/public/assets/events/rap-ort/shared/experience/document-atelier.webp',
+        '--psx-asset-print': '/public/assets/events/rap-ort/shared/experience/document-print-samples.webp'
+      }
+    },
+    {
+      selector: '.psx-tracks',
+      assets: {
+        '--psx-asset-texture': '/public/assets/events/rap-ort/shared/experience/archival-dark-texture.webp',
+        '--psx-asset-ornament': '/public/assets/events/rap-ort/shared/experience/subtle-gold-line-ornament.webp',
+        '--psx-asset-memory-stack': '/public/assets/events/rap-ort/shared/experience/memory-card-stack.webp'
+      }
+    },
+    {
+      selector: '.psx-sources',
+      assets: {
+        '--psx-asset-paper': '/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp',
+        '--psx-asset-print': '/public/assets/events/rap-ort/shared/experience/document-print-samples.webp'
+      }
+    },
+    {
+      selector: '.psx-wall',
+      assets: {
+        '--psx-asset-archive': '/public/assets/events/rap-ort/shared/experience/archive-wall.webp',
+        '--psx-asset-archive-empty': '/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp'
+      }
+    },
+    {
+      selector: '.psx-final',
+      assets: {
+        '--psx-final-image': '/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp'
+      }
+    }
+  ];
+
+  const activateArtwork = (element, assets) => {
+    Object.entries(assets).forEach(([property, path]) => {
+      element.style.setProperty(property, `url("${path}")`);
+    });
+  };
+
+  const artworkTargets = deferredArtworkGroups.flatMap(({ selector, assets }) => (
+    Array.from(root.querySelectorAll(selector), (element) => ({ element, assets }))
+  ));
+
+  if ('IntersectionObserver' in window) {
+    const artworkObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = artworkTargets.find(({ element }) => element === entry.target);
+        if (target) activateArtwork(target.element, target.assets);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '600px 0px', threshold: 0.01 });
+    artworkTargets.forEach(({ element }) => artworkObserver.observe(element));
+  } else {
+    artworkTargets.forEach(({ element, assets }) => activateArtwork(element, assets));
+  }
+
   const lang = root.dataset.lang || document.documentElement.lang || 'en';
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get('event') || root.dataset.defaultEvent || '';

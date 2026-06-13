@@ -66,6 +66,7 @@
       '/assets/js/generator-masterpiece.js'
     ]
   };
+  let extensionsPromise = null;
 
   function loadStylesheet(href) {
     if (document.querySelector(`link[href="${href}"]`)) return;
@@ -88,9 +89,16 @@
   }
 
   function loadPostScreeningExtensions() {
-    if (!document.querySelector('[data-participation-record]')) return;
+    if (!document.querySelector('[data-participation-record]')) return Promise.resolve();
+    if (extensionsPromise) return extensionsPromise;
     extensionAssets.css.forEach(loadStylesheet);
-    extensionAssets.js.reduce((chain, src) => chain.then(() => loadScript(src)), Promise.resolve());
+    extensionsPromise = extensionAssets.js.reduce((chain, src) => chain.then(() => loadScript(src)), Promise.resolve());
+    return extensionsPromise;
+  }
+
+  function syncPostScreeningExtensions(root) {
+    const generator = root?.querySelector('[data-pr-generator]');
+    if (generator && !generator.hidden) loadPostScreeningExtensions();
   }
 
   function pageLang(root) {
@@ -250,9 +258,10 @@
   function boot() {
     const root = document.querySelector('[data-participation-record]');
     if (!root) return;
-    loadPostScreeningExtensions();
     const scheduleRender = () => window.setTimeout(() => renderActive(root), 0);
+    const scheduleExtensionSync = () => window.setTimeout(() => syncPostScreeningExtensions(root), 0);
     scheduleRender();
+    syncPostScreeningExtensions(root);
 
     root.addEventListener('change', (event) => {
       if (event.target?.matches('[name="eventPreset"]')) scheduleRender();
@@ -267,13 +276,21 @@
         if (event.target.closest('[data-access-share]')) shareLink(section, flow, lang);
         return;
       }
-      if (event.target?.closest('[data-pr-unlock], [data-pr-clear], [data-pr-regenerate]')) scheduleRender();
+      if (event.target?.closest('[data-pr-unlock], [data-pr-clear], [data-pr-regenerate]')) {
+        scheduleRender();
+        scheduleExtensionSync();
+      }
     }, true);
 
     document.addEventListener('raport:participation-updated', scheduleRender);
     const observer = new MutationObserver(scheduleRender);
     observer.observe(root, { attributes: true, attributeFilter: ['data-document-pack'] });
     observer.observe(document.body, { attributes: true, attributeFilter: ['data-document-pack'] });
+    const generator = root.querySelector('[data-pr-generator]');
+    if (generator) {
+      const unlockObserver = new MutationObserver(() => syncPostScreeningExtensions(root));
+      unlockObserver.observe(generator, { attributes: true, attributeFilter: ['hidden'] });
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

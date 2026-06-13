@@ -10,6 +10,30 @@
   const lang = root.dataset.lang === 'en' ? 'en' : 'pl';
   const base = '/public/assets/events/rap-ort/';
   const pdfLib = () => window.PDFLib;
+  const dependencyPromises = new Map();
+
+  function loadDependency(src, isReady) {
+    if (isReady()) return Promise.resolve();
+    if (dependencyPromises.has(src)) return dependencyPromises.get(src);
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => (isReady() ? resolve() : reject(new Error(`Dependency unavailable: ${src}`)));
+      script.onerror = () => reject(new Error(`Dependency failed: ${src}`));
+      document.head.appendChild(script);
+    });
+    dependencyPromises.set(src, promise);
+    return promise;
+  }
+
+  async function ensurePdfDependencies() {
+    await loadDependency('/public/assets/vendor/pdf-lib.min.js', () => Boolean(window.PDFLib?.PDFDocument));
+    try {
+      await loadDependency('/public/assets/vendor/fontkit.umd.min.js', () => Boolean(window.fontkit || window.Fontkit));
+    } catch (error) {
+      console.warn('Fontkit unavailable; PDF generation will use standard fonts.', error);
+    }
+  }
 
   const copy = lang === 'pl' ? {
     preparing: 'Przygotowuję finalny PDF premium z oryginalnym plikiem SVG seala…',
@@ -381,10 +405,6 @@
   }
 
   async function createPdf(mode, button) {
-    if (!pdfLib()?.PDFDocument) {
-      status(copy.error);
-      return;
-    }
     const previousLabel = button?.textContent;
     if (button) {
       button.disabled = true;
@@ -392,6 +412,7 @@
     }
     try {
       status(copy.preparing);
+      await ensurePdfDependencies();
       const bytes = await buildPdf(mode);
       download(bytes, mode);
       status(copy.ready);

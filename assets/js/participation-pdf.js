@@ -10,6 +10,34 @@
 
   const lang = root.dataset.lang === 'en' ? 'en' : 'pl';
   const master = window.VH_DOCUMENTS?.printMaster || {};
+  const dependencyPromises = new Map();
+
+  function loadDependency(src, isReady) {
+    if (isReady()) return Promise.resolve();
+    if (dependencyPromises.has(src)) return dependencyPromises.get(src);
+    const promise = new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+      const script = existing || document.createElement('script');
+      const done = () => (isReady() ? resolve() : reject(new Error(`Dependency unavailable: ${src}`)));
+      script.addEventListener('load', done, { once: true });
+      script.addEventListener('error', () => reject(new Error(`Dependency failed: ${src}`)), { once: true });
+      if (!existing) {
+        script.src = src;
+        document.head.appendChild(script);
+      }
+    });
+    dependencyPromises.set(src, promise);
+    return promise;
+  }
+
+  async function ensurePdfDependencies() {
+    await loadDependency('/public/assets/vendor/pdf-lib.min.js', () => Boolean(window.PDFLib?.PDFDocument));
+    try {
+      await loadDependency('/public/assets/vendor/fontkit.umd.min.js', () => Boolean(window.fontkit || window.Fontkit));
+    } catch (error) {
+      console.warn('Fontkit unavailable; PDF generation will use standard fonts.', error);
+    }
+  }
 
   const TEXT = {
     pl: {
@@ -133,7 +161,7 @@
   premiumButton.insertAdjacentElement('afterend', wallButton);
 
   const preflightPanel = createPreflightPanel();
-  runPreflight();
+  if (!root.querySelector('[data-pr-generator]')?.hidden) runPreflight();
 
   function status(message) { all('[data-pr-status]').forEach((node) => { node.textContent = message || ''; }); }
   function abs(path) { return new URL(path, window.location.origin).href; }
@@ -484,6 +512,7 @@
     active.disabled = true;
     try {
       status(TEXT.preparing);
+      await ensurePdfDependencies();
       await runPreflight();
       const bytes = await buildPdf(d, exportMode);
       download(bytes, `${filenamePrefix(d, exportMode)}-${safeName(d.number)}.pdf`);
@@ -501,7 +530,10 @@
     }
   }
 
-  root.addEventListener('change', (event) => { if (event.target?.matches('[name="recordVariant"], [name="eventPreset"]')) runPreflight(); });
+  root.addEventListener('change', (event) => {
+    const generator = root.querySelector('[data-pr-generator]');
+    if (!generator?.hidden && event.target?.matches('[name="recordVariant"], [name="eventPreset"]')) runPreflight();
+  });
   premiumButton.addEventListener('click', () => createPdf('standard'));
   wallButton.addEventListener('click', () => createPdf('wall'));
 })();
