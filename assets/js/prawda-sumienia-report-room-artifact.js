@@ -5,15 +5,19 @@
 
   const pins = Array.from(root.querySelectorAll('[data-rr-place]'));
   const panels = Array.from(root.querySelectorAll('[data-rr-place-panel]'));
+  const ledgerButtons = Array.from(root.querySelectorAll('[data-rr-atlas-jump]'));
+
   const updateMap = (id) => {
     const index = Math.max(0, pins.findIndex((pin) => pin.dataset.rrPlace === id));
     const progress = pins.length > 1 ? (index + 1) / pins.length : 1;
     const selected = pins.find((pin) => pin.dataset.rrPlace === id);
     root.style.setProperty('--rr-map-progress', progress.toFixed(3));
+
     if (selected) {
       root.style.setProperty('--rr-map-active-x', selected.style.getPropertyValue('--x') || '44%');
       root.style.setProperty('--rr-map-active-y', selected.style.getPropertyValue('--y') || '34%');
       root.dataset.rrActivePlaceType = selected.dataset.rrPlaceType || '';
+
       const readout = root.querySelector('.rr-map-active-readout');
       if (readout) {
         const h = readout.querySelector('h3');
@@ -26,22 +30,21 @@
         if (source) source.textContent = (root.dataset.lang === 'pl' ? 'Źródła: ' : 'Sources: ') + (selected.dataset.rrPlaceSource || '');
       }
     }
+
     pins.forEach((pin) => {
       const active = pin.dataset.rrPlace === id;
       pin.classList.toggle('is-active', active);
       pin.setAttribute('aria-pressed', String(active));
     });
     panels.forEach((panel) => panel.toggleAttribute('data-rr-active-artifact', panel.dataset.rrPlacePanel === id));
-    if (typeof ledgerButtons !== 'undefined') {
-      ledgerButtons.forEach((button) => {
-        const active = button.dataset.rrAtlasJump === id;
-        button.classList.toggle('is-active', active);
-        button.setAttribute('aria-pressed', String(active));
-      });
-    }
+    ledgerButtons.forEach((button) => {
+      const active = button.dataset.rrAtlasJump === id;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
   };
+
   pins.forEach((pin) => pin.addEventListener('click', () => updateMap(pin.dataset.rrPlace)));
-  const ledgerButtons = Array.from(root.querySelectorAll('[data-rr-atlas-jump]'));
   ledgerButtons.forEach((button) => button.addEventListener('click', () => updateMap(button.dataset.rrAtlasJump)));
   const activePin = pins.find((pin) => pin.classList.contains('is-active')) || pins[0];
   if (activePin) updateMap(activePin.dataset.rrPlace);
@@ -159,25 +162,21 @@
   atlasLayerButtons.forEach((button) => button.addEventListener('click', () => setAtlasLayer(button.dataset.rrAtlasLayer)));
   if (atlasLayerButtons.length) setAtlasLayer('all');
 
-
   const displayButtons = Array.from(root.querySelectorAll('[data-rr-display-mode]'));
   const applyDisplayMode = (mode) => {
-    root.dataset.rrDisplayMode = mode;
-    root.classList.toggle('rr-focus-mode', mode === 'focus');
-    root.classList.toggle('rr-projection-mode', mode === 'projection');
+    const validMode = ['standard', 'focus', 'projection'].includes(mode) ? mode : 'standard';
+    root.dataset.rrDisplayMode = validMode;
+    root.classList.toggle('rr-focus-mode', validMode === 'focus');
+    root.classList.toggle('rr-projection-mode', validMode === 'projection');
     displayButtons.forEach((button) => {
-      const active = button.dataset.rrDisplayMode === mode;
+      const active = button.dataset.rrDisplayMode === validMode;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
-    try { sessionStorage.setItem('rrDisplayMode', mode); } catch (error) {}
   };
   if (displayButtons.length) {
-    let savedMode = 'standard';
-    try { savedMode = sessionStorage.getItem('rrDisplayMode') || 'standard'; } catch (error) {}
-    const validMode = displayButtons.some((button) => button.dataset.rrDisplayMode === savedMode) ? savedMode : 'standard';
     displayButtons.forEach((button) => button.addEventListener('click', () => applyDisplayMode(button.dataset.rrDisplayMode)));
-    applyDisplayMode(validMode);
+    applyDisplayMode('standard');
   }
 
   const toolStatus = root.querySelector('[data-rr-tool-status]');
@@ -205,7 +204,6 @@
     });
   });
 
-
   const pathButtons = Array.from(root.querySelectorAll('[data-rr-path]'));
   const pathPanels = Array.from(root.querySelectorAll('[data-rr-path-panel]'));
   const setReadingPath = (path) => {
@@ -223,7 +221,6 @@
   };
   pathButtons.forEach((button) => button.addEventListener('click', () => setReadingPath(button.dataset.rrPath)));
   if (pathButtons.length) setReadingPath(pathButtons.find((button) => button.classList.contains('is-active'))?.dataset.rrPath || pathButtons[0].dataset.rrPath);
-
 
   const cinemaFrames = Array.from(root.querySelectorAll('.rr-cinema-frame'));
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -255,9 +252,6 @@
     updateCinemaDepth();
   }
 
-
-
-  // 14.0 Digital Museum Room — spatial room plan interaction.
   const roomNodes = Array.from(root.querySelectorAll('[data-rr-room-node]'));
   const roomTitle = root.querySelector('[data-rr-room-readout-title]');
   const roomRole = root.querySelector('[data-rr-room-readout-role]');
@@ -279,5 +273,4 @@
     node.setAttribute('aria-pressed', node.classList.contains('is-active') ? 'true' : 'false');
     node.addEventListener('click', () => updateRoomPlan(node));
   });
-
 })();
