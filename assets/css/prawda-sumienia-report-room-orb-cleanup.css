@@ -1,0 +1,123 @@
+/* =========================================================
+   PR8 — Report Room orb cleanup
+   Purpose: remove decorative blurred glow circles from visual assets
+   while preserving the dark museum atmosphere, borders, labels, pins,
+   shadows and source/interpretation framing.
+   ========================================================= */
+
+body.rr-page.rr-orb-cleanup {
+  background:
+    linear-gradient(180deg, #010101 0, #080706 28rem, #030302 100%) !important;
+}
+
+body.rr-page.rr-orb-cleanup::before {
+  background:
+    linear-gradient(90deg, rgba(255, 244, 214, 0.012) 1px, transparent 1px),
+    linear-gradient(rgba(255, 244, 214, 0.010) 1px, transparent 1px) !important;
+  background-size: 92px 92px, 92px 92px !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-main::before,
+body.rr-page.rr-orb-cleanup.rr-artifact-13 .rr-main::after,
+body.rr-page.rr-orb-cleanup.rr-artifact-139.rr-artifact-140 .rr-main::before {
+  background: linear-gradient(180deg, transparent, rgba(240, 201, 121, 0.22) 18%, rgba(240, 201, 121, 0.05) 82%, transparent) !important;
+  box-shadow: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 0.42 !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-hero,
+body.rr-page.rr-orb-cleanup .rr-hero-bg,
+body.rr-page.rr-orb-cleanup .rr-final::before {
+  background:
+    linear-gradient(100deg, rgba(0, 0, 0, 0.94) 0 34%, rgba(0, 0, 0, 0.50) 58%, rgba(0, 0, 0, 0.90)) !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-hero::before,
+body.rr-page.rr-orb-cleanup .rr-hero-copy::before,
+body.rr-page.rr-orb-cleanup .rr-spine::before,
+body.rr-page.rr-orb-cleanup .rr-section-head::before,
+body.rr-page.rr-orb-cleanup .rr-head::before {
+  box-shadow: none !important;
+  mix-blend-mode: normal !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-visual {
+  background:
+    linear-gradient(135deg, rgba(223, 183, 101, 0.065) 0 1px, transparent 1px 34px),
+    linear-gradient(45deg, rgba(255, 244, 214, 0.032) 0 1px, transparent 1px 26px),
+    linear-gradient(180deg, rgba(23, 18, 12, 0.96), rgba(4, 4, 3, 0.96)) !important;
+  background-size: 34px 34px, 26px 26px, auto !important;
+  box-shadow:
+    0 24px 78px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(255, 244, 214, 0.07) !important;
+}
+
+body.rr-page.rr-orb-cleanup.rr-cinematic .rr-visual,
+body.rr-page.rr-orb-cleanup .rr-hero .rr-artifact-frame,
+body.rr-page.rr-orb-cleanup .rr-network-stage,
+body.rr-page.rr-orb-cleanup .rr-artifact-map-board {
+  box-shadow:
+    0 28px 96px rgba(0, 0, 0, 0.58),
+    inset 0 1px 0 rgba(255, 244, 214, 0.06) !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-img {
+  filter: sepia(0.10) saturate(0.95) contrast(1.08) brightness(0.80) !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-visual:hover .rr-img {
+  filter: sepia(0.08) saturate(1.00) contrast(1.10) brightness(0.84) !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-map-room,
+body.rr-page.rr-orb-cleanup .rr-atlas-map,
+body.rr-page.rr-orb-cleanup .rr-map,
+body.rr-page.rr-orb-cleanup .rr-map-board,
+body.rr-page.rr-orb-cleanup .rr-artifact-map-board,
+body.rr-page.rr-orb-cleanup .rr-network-stage {
+  background:
+    linear-gradient(90deg, rgba(240, 201, 121, 0.035) 1px, transparent 1px),
+    linear-gradient(rgba(240, 201, 121, 0.026) 1px, transparent 1px),
+    linear-gradient(140deg, rgba(18, 13, 8, 0.94), rgba(6, 5, 3, 0.96)) !important;
+  background-size: 70px 70px, 70px 70px, auto !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-artifact-map-board::before {
+  background:
+    linear-gradient(90deg, rgba(255, 244, 214, 0.020) 1px, transparent 1px),
+    linear-gradient(rgba(255, 244, 214, 0.014) 1px, transparent 1px) !important;
+  background-size: 58px 58px !important;
+  mask-image: none !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-map-pin span,
+body.rr-page.rr-orb-cleanup .rr-atlas-pin span,
+body.rr-page.rr-orb-cleanup .rr-pin span,
+body.rr-page.rr-orb-cleanup .rr-memory-node,
+body.rr-page.rr-orb-cleanup .rr-living-thread-matrix span,
+body.rr-page.rr-orb-cleanup .rr-artifact-seal span,
+body.rr-page.rr-orb-cleanup .rr-person-card span {
+  background: rgba(6, 5, 3, 0.88) !important;
+  box-shadow: none !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-map-pin.is-active,
+body.rr-page.rr-orb-cleanup .rr-memory-node:hover,
+body.rr-page.rr-orb-cleanup .rr-memory-node.is-active {
+  filter: none !important;
+  box-shadow: 0 0 0 1px rgba(246, 207, 127, 0.34) !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-thread-map,
+body.rr-page.rr-orb-cleanup .rr-map-route-depth span,
+body.rr-page.rr-orb-cleanup .rr-source-section .rr-source-grid::before,
+body.rr-page.rr-orb-cleanup .rr-living-thread-matrix .rr-thread-line,
+body.rr-page.rr-orb-cleanup .rr-network-stage path {
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+body.rr-page.rr-orb-cleanup .rr-cinema-light {
+  display: none !important;
+}
