@@ -122,6 +122,8 @@
     ["/rap-ort/pl/", "/rap-ort/"],
     ["/rap-ort/prawda-sumienia/", "/rap-ort/prawda-sumienia/pl/"],
     ["/rap-ort/prawda-sumienia/pl/", "/rap-ort/prawda-sumienia/"],
+    ["/rap-ort/prawda-sumienia/exclusive/", "/rap-ort/prawda-sumienia/exclusive/pl/"],
+    ["/rap-ort/prawda-sumienia/exclusive/pl/", "/rap-ort/prawda-sumienia/exclusive/"],
     ["/rap-ort/conscience-report/", "/rap-ort/pl/"],
     ["/rap-ort/witness-report/", "/rap-ort/raport-swiadka/"],
     ["/rap-ort/raport-swiadka/", "/rap-ort/witness-report/"],
