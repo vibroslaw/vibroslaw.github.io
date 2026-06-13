@@ -80,8 +80,6 @@
     button.addEventListener('focus', () => selectPlace(button.dataset.rrPlace));
   });
 
-
-
   const setVisualMode = (mode) => {
     const chosen = mode === 'lite' ? 'lite' : 'cinematic';
     document.body.classList.toggle('rr-lite', chosen === 'lite');
@@ -92,13 +90,9 @@
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
-    try { sessionStorage.setItem('rrVisualMode', chosen); } catch (_) {}
   };
   root.querySelectorAll('[data-rr-visual-mode]').forEach((button) => button.addEventListener('click', () => setVisualMode(button.dataset.rrVisualMode)));
-  let visualMode = 'cinematic';
-  try { visualMode = sessionStorage.getItem('rrVisualMode') || 'cinematic'; } catch (_) {}
-  if (reducedMotion) visualMode = 'lite';
-  setVisualMode(visualMode);
+  setVisualMode(reducedMotion ? 'lite' : 'cinematic');
 
   const setMode = (mode) => {
     ['viewer', 'student', 'educator', 'researcher'].forEach((name) => root.classList.remove(`rr-mode-${name}`));
@@ -108,14 +102,11 @@
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
-    try { sessionStorage.setItem('rrMode', mode); } catch (_) {}
   };
   root.querySelectorAll('[data-rr-mode]').forEach((button) => {
     button.addEventListener('click', () => setMode(button.dataset.rrMode));
   });
-  let storedMode = 'viewer';
-  try { storedMode = sessionStorage.getItem('rrMode') || 'viewer'; } catch (_) {}
-  setMode(storedMode);
+  setMode('viewer');
 
   window.addEventListener('pageshow', () => {
     updateProgress();
