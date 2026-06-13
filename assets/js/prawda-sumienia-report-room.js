@@ -2,6 +2,15 @@
   const root = document.querySelector('[data-report-room]');
   if (!root) return;
 
+  const orbCleanupStylesheet = '/assets/css/prawda-sumienia-report-room-orb-cleanup.css';
+  if (!document.querySelector(`link[href="${orbCleanupStylesheet}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = orbCleanupStylesheet;
+    document.head.appendChild(link);
+  }
+  document.body.classList.add('rr-orb-cleanup');
+
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
   if (reducedMotion) root.classList.add('rr-reduced-motion');
 
