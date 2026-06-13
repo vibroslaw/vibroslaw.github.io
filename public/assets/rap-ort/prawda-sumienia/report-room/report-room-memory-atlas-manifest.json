@@ -1,0 +1,196 @@
+{
+  "version": "14.2-final-release-cleanup",
+  "scope": "Report Room Memory Atlas EN/PL",
+  "principle": "The atlas is interpretive: it connects verified places, public memory, project encounters and diaspora routes without treating symbolic visuals as archival evidence.",
+  "layers": [
+    "historical",
+    "memory",
+    "project",
+    "diaspora"
+  ],
+  "places_en": [
+    {
+      "id": "01",
+      "name": "Olonets",
+      "date": "1901",
+      "role": "Origin / biography",
+      "type": "historical",
+      "sources": "[S13]",
+      "summary": "A life begins in exile memory, before the report becomes a document."
+    },
+    {
+      "id": "02",
+      "name": "Sukurcze",
+      "date": "interwar years",
+      "role": "Home / formation",
+      "type": "historical",
+      "sources": "[S13], [B02]",
+      "summary": "Land, family, faith and service form the human background of testimony."
+    },
+    {
+      "id": "03",
+      "name": "Warsaw",
+      "date": "19 September 1940",
+      "role": "Decision / occupation",
+      "type": "historical",
+      "sources": "[S01], [S02]",
+      "summary": "The roundup becomes the entrance into an underground mission."
+    },
+    {
+      "id": "04",
+      "name": "KL Auschwitz / Auschwitz I",
+      "date": "22 September 1940",
+      "role": "Camp / testimony",
+      "type": "historical",
+      "sources": "[S02], [S03], [S10]",
+      "summary": "The report’s central place: number, organization, witness and danger."
+    },
+    {
+      "id": "05",
+      "name": "Nowy Wiśnicz",
+      "date": "after 26/27 April 1943",
+      "role": "After the escape",
+      "type": "historical",
+      "sources": "[S03], [S04], [S05]",
+      "summary": "The report leaves the wire and becomes a responsibility outside the camp."
+    },
+    {
+      "id": "06",
+      "name": "Rakowiecka",
+      "date": "1947–1948",
+      "role": "Trial / repression",
+      "type": "historical",
+      "sources": "[S14], [B08]",
+      "summary": "The witness is placed under a new system of fear and political accusation."
+    },
+    {
+      "id": "07",
+      "name": "Brzeszcze",
+      "date": "local memory",
+      "role": "Memory site",
+      "type": "memory",
+      "sources": "Project memory record",
+      "summary": "A nearby landscape of remembrance, teaching and local responsibility."
+    },
+    {
+      "id": "08",
+      "name": "Oświęcim / MUP",
+      "date": "25 May 2026",
+      "role": "Project encounter",
+      "type": "project",
+      "sources": "Project event record",
+      "summary": "The contemporary project returns to the educational landscape of Oświęcim."
+    },
+    {
+      "id": "09",
+      "name": "Sydney / Ashfield",
+      "date": "diaspora screening",
+      "role": "Diaspora route",
+      "type": "diaspora",
+      "sources": "Project diaspora record",
+      "summary": "Memory travels beyond Poland through language, audience and responsibility."
+    }
+  ],
+  "places_pl": [
+    {
+      "id": "01",
+      "name": "Ołoniec / Olonets",
+      "date": "1901",
+      "role": "Początek / biografia",
+      "type": "historical",
+      "sources": "[S13]",
+      "summary": "Życie zaczyna się w pamięci wygnania, zanim raport stanie się dokumentem."
+    },
+    {
+      "id": "02",
+      "name": "Sukurcze",
+      "date": "lata międzywojenne",
+      "role": "Dom / formacja",
+      "type": "historical",
+      "sources": "[S13], [B02]",
+      "summary": "Ziemia, rodzina, wiara i służba tworzą ludzkie tło świadectwa."
+    },
+    {
+      "id": "03",
+      "name": "Warszawa",
+      "date": "19 września 1940",
+      "role": "Decyzja / okupacja",
+      "type": "historical",
+      "sources": "[S01], [S02]",
+      "summary": "Łapanka staje się wejściem w misję konspiracyjną."
+    },
+    {
+      "id": "04",
+      "name": "KL Auschwitz / Auschwitz I",
+      "date": "22 września 1940",
+      "role": "Obóz / świadectwo",
+      "type": "historical",
+      "sources": "[S02], [S03], [S10]",
+      "summary": "Centralne miejsce raportu: numer, organizacja, świadek i niebezpieczeństwo."
+    },
+    {
+      "id": "05",
+      "name": "Nowy Wiśnicz",
+      "date": "po 26/27 kwietnia 1943",
+      "role": "Po ucieczce",
+      "type": "historical",
+      "sources": "[S03], [S04], [S05]",
+      "summary": "Raport wychodzi poza druty i staje się odpowiedzialnością poza obozem."
+    },
+    {
+      "id": "06",
+      "name": "Rakowiecka",
+      "date": "1947–1948",
+      "role": "Proces / represja",
+      "type": "historical",
+      "sources": "[S14], [B08]",
+      "summary": "Świadek zostaje postawiony wobec nowego systemu strachu i politycznego oskarżenia."
+    },
+    {
+      "id": "07",
+      "name": "Brzeszcze",
+      "date": "pamięć lokalna",
+      "role": "Miejsce pamięci",
+      "type": "memory",
+      "sources": "Rekord pamięci projektu",
+      "summary": "Lokalny krajobraz pamięci, nauczania i odpowiedzialności."
+    },
+    {
+      "id": "08",
+      "name": "Oświęcim / MUP",
+      "date": "25 maja 2026",
+      "role": "Spotkanie projektu",
+      "type": "project",
+      "sources": "Rekord wydarzenia projektu",
+      "summary": "Współczesny projekt wraca do edukacyjnego krajobrazu Oświęcimia."
+    },
+    {
+      "id": "09",
+      "name": "Sydney / Ashfield",
+      "date": "pokaz diaspory",
+      "role": "Trasa diaspory",
+      "type": "diaspora",
+      "sources": "Rekord diaspory projektu",
+      "summary": "Pamięć przekracza język i granice; odpowiedzialność staje się wspólna także poza Polską."
+    }
+  ],
+  "cinematicRestraint": {
+    "principle": "Light, texture and motion support attention without spectacle.",
+    "excludes": [
+      "glitch",
+      "shock animation",
+      "decorative spectacle",
+      "portfolio effects"
+    ],
+    "reducedMotionSafe": true
+  },
+  "artifact_version": "14.0",
+  "room_model": "digital-museum-room",
+  "features": [
+    "digital-museum-room-model",
+    "room-zone-plaques",
+    "spatial-room-plan"
+  ],
+  "releaseState": "deployment-ready",
+  "qaScope": "static validation plus live deployment checklist; historical content unchanged from 14.0/13.x source-aligned base"
+}

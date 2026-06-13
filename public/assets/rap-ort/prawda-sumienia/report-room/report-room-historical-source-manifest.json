@@ -1,0 +1,564 @@
+{
+  "version": "14.2-final-release-cleanup",
+  "basis": "Rap-Ort: Prawda Sumienia — Historical Companion & Source Guide, final institutional edition",
+  "rules": [
+    "Historical testimony, moral memory and artistic interpretation remain clearly separated.",
+    "Generated or AI-assisted visuals are symbolic unless explicitly labelled as archival/source material.",
+    "OW = Organizacja Wojskowa / Military Organization; variant terminology may appear in secondary literature.",
+    "Use KL Auschwitz / Auschwitz I for Pilecki’s 1940 arrival; explain Auschwitz-Birkenau for the later complex.",
+    "Nina is a symbolic figure, not a documented historical person or quotation.",
+    "References do not imply endorsement, partnership or patronage unless explicitly stated.",
+    "Release-facing captions must avoid the word “placeholder”; use “symbolic AI-assisted visual · not archival evidence”.",
+    "Level L = legal / public memory references used for civic symbols and public-memory context."
+  ],
+  "tracks_en": [
+    {
+      "no": "01",
+      "title": "WHERE MEMORY BEGINS",
+      "subtitle": "A threshold into testimony, silence and place.",
+      "sources": "[S07], [S10], [S19]"
+    },
+    {
+      "no": "02",
+      "title": "LACRIMOSA POLONIAE",
+      "subtitle": "A lament for Poland before the choice.",
+      "sources": "[S13], [S06], [S15], [S22]"
+    },
+    {
+      "no": "03",
+      "title": "THE MAN BEFORE AUSCHWITZ",
+      "subtitle": "Faith. Land. Honour.",
+      "sources": "[S13], [S01], [S02]"
+    },
+    {
+      "no": "04",
+      "title": "THE OTHER ROAD",
+      "subtitle": "Kraków before the storm.",
+      "sources": "[S06], [S15], [S28]"
+    },
+    {
+      "no": "05",
+      "title": "THE VOLUNTEER",
+      "subtitle": "Warsaw, September 1940.",
+      "sources": "[S01], [S02], [S03], [S21]"
+    },
+    {
+      "no": "06",
+      "title": "THE ARMY BENEATH THE STRIPES",
+      "subtitle": "OW inside KL Auschwitz.",
+      "sources": "[S01], [S02], [S03], [S24], [S25]"
+    },
+    {
+      "no": "07",
+      "title": "BEHIND THE SAME WIRE",
+      "subtitle": "Different prisoners, different hopes, one camp reality.",
+      "sources": "[S08], [S09], [S10], [S11], [S19]"
+    },
+    {
+      "no": "08",
+      "title": "NUMBER 62933",
+      "subtitle": "A note without a name.",
+      "sources": "[S06], [S16], [S11], [S15]"
+    },
+    {
+      "no": "09",
+      "title": "REPORT FROM HELL",
+      "subtitle": "The truth had to leave the camp.",
+      "sources": "[S01], [S02], [S03], [S05], [S12]"
+    },
+    {
+      "no": "10",
+      "title": "THE ESCAPE",
+      "subtitle": "The report had to survive.",
+      "sources": "[S03], [S04], [S05]"
+    },
+    {
+      "no": "11",
+      "title": "AFTER THE WIRE",
+      "subtitle": "Freedom was not peace.",
+      "sources": "[S01], [S02], [S03], [S05]"
+    },
+    {
+      "no": "12",
+      "title": "THE NEW POLAND",
+      "subtitle": "The war ended. The fear did not.",
+      "sources": "[S03], [S04], [S14], [S21]"
+    },
+    {
+      "no": "13",
+      "title": "THE TRIAL OF CONSCIENCE",
+      "subtitle": "Warsaw, 1948.",
+      "sources": "[S14], [S01], [S21]"
+    },
+    {
+      "no": "14",
+      "title": "THE PRAGMATIST",
+      "subtitle": "A confession without absolution.",
+      "sources": "[S06], [S15], [S16], [S28]"
+    },
+    {
+      "no": "15",
+      "title": "AFTER THE REPORT",
+      "subtitle": "Memory becomes freedom.",
+      "sources": "[S17], [S18], [S14]"
+    },
+    {
+      "no": "16",
+      "title": "EVERYONE HAS A REPORT",
+      "subtitle": "The question now belongs to us.",
+      "sources": "[S01], [S02], [S03], [S07], [S14]"
+    }
+  ],
+  "tracks_pl": [
+    {
+      "no": "01",
+      "title": "GDZIE ZACZYNA SIĘ PAMIĘĆ",
+      "subtitle": "Próg świadectwa, ciszy i miejsca.",
+      "sources": "[S07], [S10], [S19]"
+    },
+    {
+      "no": "02",
+      "title": "LACRIMOSA POLONIAE",
+      "subtitle": "Lament za Polską przed wyborem.",
+      "sources": "[S13], [S06], [S15], [S22]"
+    },
+    {
+      "no": "03",
+      "title": "CZŁOWIEK PRZED AUSCHWITZ",
+      "subtitle": "Wiara. Ziemia. Honor.",
+      "sources": "[S13], [S01], [S02]"
+    },
+    {
+      "no": "04",
+      "title": "DRUGA DROGA",
+      "subtitle": "Kraków przed burzą.",
+      "sources": "[S06], [S15], [S28]"
+    },
+    {
+      "no": "05",
+      "title": "OCHOTNIK",
+      "subtitle": "Warszawa, wrzesień 1940.",
+      "sources": "[S01], [S02], [S03], [S21]"
+    },
+    {
+      "no": "06",
+      "title": "ARMIA POD PASIAKAMI",
+      "subtitle": "OW wewnątrz KL Auschwitz.",
+      "sources": "[S01], [S02], [S03], [S24], [S25]"
+    },
+    {
+      "no": "07",
+      "title": "ZA TYM SAMYM DRUTEM",
+      "subtitle": "Różni więźniowie, różne nadzieje, jedna rzeczywistość obozowa.",
+      "sources": "[S08], [S09], [S10], [S11], [S19]"
+    },
+    {
+      "no": "08",
+      "title": "NUMER 62933",
+      "subtitle": "Gryps bez imienia.",
+      "sources": "[S06], [S16], [S11], [S15]"
+    },
+    {
+      "no": "09",
+      "title": "RAPORT Z PIEKŁA",
+      "subtitle": "Prawda musiała opuścić obóz.",
+      "sources": "[S01], [S02], [S03], [S05], [S12]"
+    },
+    {
+      "no": "10",
+      "title": "UCIECZKA",
+      "subtitle": "Raport musiał przetrwać.",
+      "sources": "[S03], [S04], [S05]"
+    },
+    {
+      "no": "11",
+      "title": "PO DRUGIEJ STRONIE DRUTÓW",
+      "subtitle": "Wolność nie była pokojem.",
+      "sources": "[S01], [S02], [S03], [S05]"
+    },
+    {
+      "no": "12",
+      "title": "NOWA POLSKA",
+      "subtitle": "Wojna się skończyła. Strach nie.",
+      "sources": "[S03], [S04], [S14], [S21]"
+    },
+    {
+      "no": "13",
+      "title": "PROCES SUMIENIA",
+      "subtitle": "Warszawa, 1948.",
+      "sources": "[S14], [S01], [S21]"
+    },
+    {
+      "no": "14",
+      "title": "PRAGMATYK",
+      "subtitle": "Wyznanie bez rozgrzeszenia.",
+      "sources": "[S06], [S15], [S16], [S28]"
+    },
+    {
+      "no": "15",
+      "title": "PO RAPORCIE",
+      "subtitle": "Pamięć staje się wolnością.",
+      "sources": "[S17], [S18], [S14]"
+    },
+    {
+      "no": "16",
+      "title": "KAŻDY MA RAPORT",
+      "subtitle": "Pytanie należy teraz do nas.",
+      "sources": "[S01], [S02], [S03], [S07], [S14]"
+    }
+  ],
+  "source_links_en": [
+    {
+      "id": "LANG-01",
+      "topic": "Pilecki biography and formative years",
+      "title": "Muzeum Dom Rodziny Pileckich — About Witold",
+      "url": "https://muzeumpileckich.pl/en/about-witold/"
+    },
+    {
+      "id": "LANG-02",
+      "topic": "Poland regains independence in 1918",
+      "title": "IPN — National Independence Day",
+      "url": "https://eng.ipn.gov.pl/en/news/9969%2COn-11-November-Poland-celebrates-National-Independence-Day.html"
+    },
+    {
+      "id": "LANG-03",
+      "topic": "Pilecki’s mission and Auschwitz resistance",
+      "title": "Auschwitz Memorial — Story of Witold Pilecki",
+      "url": "https://www.auschwitz.org/en/education/e-learning/podcast/story-of-witold-pilecki-co-founder-of-resistance-in-auschwitz/"
+    },
+    {
+      "id": "LANG-04",
+      "topic": "OW / camp resistance",
+      "title": "Auschwitz Memorial online lesson — Resistance in KL Auschwitz",
+      "url": "https://lekcja.auschwitz.org/en_16_ruch_oporu/"
+    },
+    {
+      "id": "LANG-05",
+      "topic": "Escapes and reports from Auschwitz",
+      "title": "Auschwitz Memorial — Escapes and reports",
+      "url": "https://www.auschwitz.org/en/history/resistance/escapes-and-reports"
+    },
+    {
+      "id": "LANG-06",
+      "topic": "Report W / Pilecki’s testimony",
+      "title": "IPN — Report W publication page",
+      "url": "https://eng.ipn.gov.pl/en/digital-resources/publications/7837%2CReport-W-KL-AUSCHWITZ-1940-1943-by-Captain-Witold-Pilecki-Institute-of-National-.html"
+    },
+    {
+      "id": "LANG-07",
+      "topic": "Auschwitz victim numbers",
+      "title": "Auschwitz Memorial — The number of victims",
+      "url": "https://www.auschwitz.org/en/history/auschwitz-and-shoah/the-number-of-victims/"
+    },
+    {
+      "id": "LANG-08",
+      "topic": "Prisoner numbers",
+      "title": "Auschwitz Memorial — Prisoner numbers",
+      "url": "https://www.auschwitz.org/en/history/victims/prisoner-numbers/"
+    },
+    {
+      "id": "LANG-09",
+      "topic": "Józef Cyrankiewicz — prisoner record",
+      "title": "Auschwitz Prisoners Database — Józef Cyrankiewicz",
+      "url": "https://victims.auschwitz.org/victims/50897"
+    },
+    {
+      "id": "LANG-10",
+      "topic": "Trial, execution and rehabilitation",
+      "title": "IPN — 70th anniversary of Pilecki’s death",
+      "url": "https://eng.ipn.gov.pl/en/news/1165%2C70th-anniversary-of-the-death-of-Captain-Witold-Pilecki.html"
+    },
+    {
+      "id": "LANG-11",
+      "topic": "Polish state symbols",
+      "title": "Sejm — Constitution, Article 28",
+      "url": "https://www.sejm.gov.pl/prawo/konst/angielski/kon1.htm"
+    },
+    {
+      "id": "LANG-12",
+      "topic": "Pilecki reports — English edition",
+      "title": "Polish Museum Archives — Report W PDF",
+      "url": "https://www.polishmuseumarchives.org.au/Witold_Pilecki/OtherDocuments/Report_W.pdf"
+    },
+    {
+      "id": "LANG-13",
+      "topic": "Adam Cyra / Raport Witolda tradition",
+      "title": "Polish Museum Archives — Report W notes",
+      "url": "https://www.polishmuseumarchives.org.au/Witold_Pilecki/OtherDocuments/Report_W.pdf"
+    },
+    {
+      "id": "LANG-14",
+      "topic": "Jack Fairweather — The Volunteer",
+      "title": "Author page — The Volunteer",
+      "url": "https://www.jackfairweather.com/volunteer.shtml"
+    },
+    {
+      "id": "LANG-15",
+      "topic": "Józef Garliński — Fighting Auschwitz",
+      "title": "Aquila Polonica / PolandWW2 — Fighting Auschwitz",
+      "url": "https://www.polandww2.com/books/fighting-auschwitz/about-the-book/"
+    },
+    {
+      "id": "LANG-16",
+      "topic": "Nina Andrycz / Cyrankiewicz context",
+      "title": "REBIS — Nina i Józef (Polish contextual source)",
+      "url": "https://www.rebis.com.pl/pl/products/nina-i-jozef-sceny-z-zycia-ktore-minelo-7507.html"
+    }
+  ],
+  "source_links_pl": [
+    {
+      "id": "LANG-01",
+      "topic": "Biografia i formacja Pileckiego",
+      "title": "Muzeum Dom Rodziny Pileckich — O Witoldzie",
+      "url": "https://muzeumpileckich.pl/o-witoldzie/"
+    },
+    {
+      "id": "LANG-02",
+      "topic": "Odzyskanie niepodległości w 1918 roku",
+      "title": "IPN — Narodowe Święto Niepodległości",
+      "url": "https://ipn.gov.pl/pl/dla-mediow/materialy-do-pobrania/209112%2CNarodowe-Swieto-Niepodleglosci-11-listopada.html"
+    },
+    {
+      "id": "LANG-03",
+      "topic": "Misja Pileckiego i opór w Auschwitz",
+      "title": "Muzeum Auschwitz — historia Witolda Pileckiego",
+      "url": "https://www.auschwitz.org/edukacja/e-learning/podcasty/historia-witolda-pileckiego-wspoltworcy-ruchu-oporu-w-auschwitz/"
+    },
+    {
+      "id": "LANG-04",
+      "topic": "OW / opór obozowy",
+      "title": "Muzeum Auschwitz — Ruch oporu w KL Auschwitz",
+      "url": "https://lekcja.auschwitz.org/pl_16_ruch_oporu/"
+    },
+    {
+      "id": "LANG-05",
+      "topic": "Ucieczki i raporty z Auschwitz",
+      "title": "Muzeum Auschwitz — Ucieczki",
+      "url": "https://www.auschwitz.org/historia/ruch-oporu/ucieczki"
+    },
+    {
+      "id": "LANG-06",
+      "topic": "Raport W / świadectwo Pileckiego",
+      "title": "Przystanek Historia — Piekło po niemiecku według Pileckiego",
+      "url": "https://przystanekhistoria.pl/pa2/tematy/witold-pilecki/54631%2CPieklo-po-niemiecku-wedlug-Pileckiego.html"
+    },
+    {
+      "id": "LANG-07",
+      "topic": "Liczba ofiar Auschwitz",
+      "title": "Muzeum Auschwitz — Liczba ofiar",
+      "url": "https://www.auschwitz.org/historia/zaglada/liczba-ofiar/"
+    },
+    {
+      "id": "LANG-08",
+      "topic": "Serie numerowe więźniów",
+      "title": "Muzeum Auschwitz — Serie numerowe więźniów",
+      "url": "https://www.auschwitz.org/historia/informacja-o-ofiarach/serie-numerowe-wiezniow/"
+    },
+    {
+      "id": "LANG-09",
+      "topic": "Józef Cyrankiewicz — rekord więźnia",
+      "title": "Baza więźniów Auschwitz — Józef Cyrankiewicz",
+      "url": "https://victims.auschwitz.org/victims/50897"
+    },
+    {
+      "id": "LANG-10",
+      "topic": "Proces, egzekucja i rehabilitacja",
+      "title": "IPN — 70. rocznica śmierci rtm. Pileckiego",
+      "url": "https://ipn.gov.pl/pl/aktualnosci/52654%2C70-rocznica-smierci-rotmistrza-Witolda-Pileckiego.html"
+    },
+    {
+      "id": "LANG-11",
+      "topic": "Polskie symbole państwowe",
+      "title": "Sejm — Konstytucja RP, art. 28",
+      "url": "https://www.sejm.gov.pl/prawo/konst/polski/1.htm"
+    },
+    {
+      "id": "LANG-12",
+      "topic": "Raport W / polska tradycja źródłowa",
+      "title": "Wolne Lektury — Witold Pilecki, Raport W",
+      "url": "https://wolnelektury.pl/katalog/lektura/pilecki-raport-w.html"
+    },
+    {
+      "id": "LANG-13",
+      "topic": "Adam Cyra / Raport Witolda",
+      "title": "IPN — Klucz Pileckiego wciąż czeka na odnalezienie",
+      "url": "https://ipn.gov.pl/pl/wydawnictwo/o-ksiazkach/poczytaj/nie-tylko-o-ksiazkach/112217%2CKlucz-Pileckiego-wciaz-czeka-na-odnalezienie.html"
+    },
+    {
+      "id": "LANG-14",
+      "topic": "Jack Fairweather — Ochotnik",
+      "title": "Biblioteka Instytutu Pileckiego — Ochotnik",
+      "url": "https://biblioteka.instytutpileckiego.pl/bib/8266"
+    },
+    {
+      "id": "LANG-15",
+      "topic": "Józef Garliński — Oświęcim walczący",
+      "title": "Volumen — Oświęcim walczący",
+      "url": "https://owvolumen.pl/ksiegarnia/oswiecim-walczacy/"
+    },
+    {
+      "id": "LANG-16",
+      "topic": "Nina Andrycz / kontekst Cyrankiewicza",
+      "title": "REBIS — Nina i Józef",
+      "url": "https://www.rebis.com.pl/pl/products/nina-i-jozef-sceny-z-zycia-ktore-minelo-7507.html"
+    }
+  ],
+  "updated": "2026-06-09",
+  "note": "Historical alignment preserved from 12.5; 13.0 adds visual artifact structure without changing source safeguards.",
+  "artifact_upgrade": "13.1 Artifact UX & Transparency Patch",
+  "features": [
+    "accessible-source-filtering",
+    "active-memory-wall-panel",
+    "curatorial-version-record",
+    "digital-museum-room-model",
+    "map-artifact-modes",
+    "method-cards",
+    "room-zone-plaques",
+    "source-confidence-layer",
+    "spatial-room-plan",
+    "transparency-ledger"
+  ],
+  "notes": "13.2 preserves historical alignment while improving map and people-network interaction.",
+  "visualReplacement": {
+    "status": "Five key visuals replaced with cinematic symbolic artifact assets; not archival evidence.",
+    "replaced": [
+      "rr-hero-threshold.webp",
+      "rr-room-camp-and-report.webp",
+      "rr-people-constellation.webp",
+      "rr-source-chamber.webp",
+      "rr-your-report-room.webp"
+    ],
+    "principle": "Dark museum room, source discipline, symbolic interpretation, no gore, no fake archival claim."
+  },
+  "performanceFocus": {
+    "heroPreload": true,
+    "heroFetchPriority": "high",
+    "imageDimensions": "1600x900 declared for layout stability",
+    "displayModes": [
+      "standard",
+      "focus",
+      "projection"
+    ],
+    "tools": [
+      "open sources",
+      "chapter dossier",
+      "copy description",
+      "print/pdf"
+    ],
+    "storage": "sessionStorage only"
+  },
+  "artifactLayer": "Source / Method Superlayer",
+  "updatedFor": "Report Room Visual Artifact 13.6",
+  "deploymentQA": {
+    "scope": "Manual replacement package for exclusive EN/PL routes",
+    "preserves": "Historical and source-method alignment from 13.5",
+    "adds": [
+      "version label cleanup",
+      "deployment checklist",
+      "repository cleanup guidance",
+      "final static QA"
+    ]
+  },
+  "methodLayer": {
+    "version": "13.7",
+    "sourceConfidence": "Cards identify type, confidence level, support use and interpretive boundary.",
+    "provenance": "Language-routed source references retain no-endorsement boundaries."
+  },
+  "memory_atlas": [
+    {
+      "id": "01",
+      "name": "Olonets",
+      "date": "1901",
+      "role": "Origin / biography",
+      "type": "historical",
+      "sources": "[S13]",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "02",
+      "name": "Sukurcze",
+      "date": "interwar years",
+      "role": "Home / formation",
+      "type": "historical",
+      "sources": "[S13], [B02]",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "03",
+      "name": "Warsaw",
+      "date": "19 September 1940",
+      "role": "Decision / occupation",
+      "type": "historical",
+      "sources": "[S01], [S02]",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "04",
+      "name": "KL Auschwitz / Auschwitz I",
+      "date": "22 September 1940",
+      "role": "Camp / testimony",
+      "type": "historical",
+      "sources": "[S02], [S03], [S10]",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "05",
+      "name": "Nowy Wiśnicz",
+      "date": "after 26/27 April 1943",
+      "role": "After the escape",
+      "type": "historical",
+      "sources": "[S03], [S04], [S05]",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "06",
+      "name": "Rakowiecka",
+      "date": "1947–1948",
+      "role": "Trial / repression",
+      "type": "historical",
+      "sources": "[S14], [B08]",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "07",
+      "name": "Brzeszcze",
+      "date": "local memory",
+      "role": "Memory site",
+      "type": "memory",
+      "sources": "Project memory record",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "08",
+      "name": "Oświęcim / MUP",
+      "date": "25 May 2026",
+      "role": "Project encounter",
+      "type": "project",
+      "sources": "Project event record",
+      "boundary": "Symbolic place image; not archival evidence."
+    },
+    {
+      "id": "09",
+      "name": "Sydney / Ashfield",
+      "date": "diaspora screening",
+      "role": "Diaspora route",
+      "type": "diaspora",
+      "sources": "Project diaspora record",
+      "boundary": "Symbolic place image; not archival evidence."
+    }
+  ],
+  "cinematicRestraint": {
+    "principle": "Light, texture and motion support attention without spectacle.",
+    "excludes": [
+      "glitch",
+      "shock animation",
+      "decorative spectacle",
+      "portfolio effects"
+    ],
+    "reducedMotionSafe": true
+  },
+  "artifact_version": "14.0",
+  "room_model": "digital-museum-room",
+  "releaseState": "deployment-ready",
+  "qaScope": "static validation plus live deployment checklist; historical content unchanged from 14.0/13.x source-aligned base"
+}

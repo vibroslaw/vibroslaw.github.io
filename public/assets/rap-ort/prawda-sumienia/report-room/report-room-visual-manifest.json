@@ -1,0 +1,228 @@
+{
+  "version": "14.2-final-release-cleanup",
+  "scope": "exclusive Report Room EN/PL only",
+  "visualContract": "AI-assisted/generated visuals are symbolic and are not archival evidence. 14.2 removes release-facing placeholder language and preserves the visual contract.",
+  "places": [
+    {
+      "id": "01",
+      "name": "Olonets",
+      "image": "rr-place-01-olonets.webp",
+      "status": "symbolic visual",
+      "type": "historical",
+      "sourceRoute": "[S13]",
+      "role": "Origin / biography"
+    },
+    {
+      "id": "02",
+      "name": "Sukurcze",
+      "image": "rr-place-02-sukurcze.webp",
+      "status": "symbolic visual",
+      "type": "historical",
+      "sourceRoute": "[S13], [B02]",
+      "role": "Home / formation"
+    },
+    {
+      "id": "03",
+      "name": "Warsaw",
+      "image": "rr-place-03-warsaw.webp",
+      "status": "symbolic visual",
+      "type": "historical",
+      "sourceRoute": "[S01], [S02]",
+      "role": "Decision / occupation"
+    },
+    {
+      "id": "04",
+      "name": "KL Auschwitz",
+      "image": "rr-place-04-kl-auschwitz.webp",
+      "status": "symbolic visual",
+      "type": "historical",
+      "sourceRoute": "[S02], [S03], [S10]",
+      "role": "Camp / testimony"
+    },
+    {
+      "id": "05",
+      "name": "Nowy Wiśnicz",
+      "image": "rr-place-05-nowy-wisnicz.webp",
+      "status": "symbolic visual",
+      "type": "historical",
+      "sourceRoute": "[S03], [S04], [S05]",
+      "role": "After the escape"
+    },
+    {
+      "id": "06",
+      "name": "Rakowiecka",
+      "image": "rr-place-06-rakowiecka.webp",
+      "status": "symbolic visual",
+      "type": "historical",
+      "sourceRoute": "[S14], [B08]",
+      "role": "Trial / repression"
+    },
+    {
+      "id": "07",
+      "name": "Brzeszcze",
+      "image": "rr-place-07-brzeszcze.webp",
+      "status": "symbolic visual",
+      "type": "memory",
+      "sourceRoute": "Project memory record",
+      "role": "Memory site"
+    },
+    {
+      "id": "08",
+      "name": "Oświęcim / MUP",
+      "image": "rr-place-08-oswiecim-mup.webp",
+      "status": "symbolic visual",
+      "type": "project",
+      "sourceRoute": "Project event record",
+      "role": "Project encounter"
+    },
+    {
+      "id": "09",
+      "name": "Sydney / Ashfield",
+      "image": "rr-place-09-sydney-ashfield.webp",
+      "status": "symbolic visual",
+      "type": "diaspora",
+      "sourceRoute": "Project diaspora record",
+      "role": "Diaspora route"
+    }
+  ],
+  "images": [
+    "rr-hero-threshold.webp",
+    "rr-living-report-thread.webp",
+    "rr-og-exclusive-en.jpg",
+    "rr-og-exclusive-pl.jpg",
+    "rr-people-constellation.webp",
+    "rr-place-01-olonets.webp",
+    "rr-place-02-sukurcze.webp",
+    "rr-place-03-warsaw.webp",
+    "rr-place-04-kl-auschwitz.webp",
+    "rr-place-05-nowy-wisnicz.webp",
+    "rr-place-06-rakowiecka.webp",
+    "rr-place-07-brzeszcze.webp",
+    "rr-place-08-oswiecim-mup.webp",
+    "rr-place-09-sydney-ashfield.webp",
+    "rr-room-before-enter.webp",
+    "rr-room-camp-and-report.webp",
+    "rr-room-man-before-report.webp",
+    "rr-source-chamber.webp",
+    "rr-your-report-room.webp"
+  ],
+  "routes": [
+    "/rap-ort/prawda-sumienia/exclusive/",
+    "/rap-ort/prawda-sumienia/exclusive/pl/"
+  ],
+  "finalVisualAdditions": [
+    "Hero Threshold 2.0",
+    "Living Report Thread 2.0",
+    "visual status labels",
+    "Memory Atlas 2.0",
+    "People Constellation / Memory Wall",
+    "Source Chamber prestige layout",
+    "Final Ritual",
+    "Cinematic/Lite mode",
+    "Premium microinteractions",
+    "Typography prestige pass",
+    "Mobile cinematic cut",
+    "JSON manifest"
+  ],
+  "updated": "2026-06-09",
+  "notes": "13.2 adds map terrain/route/readout/timeline and typed relation filters for the People Wall.",
+  "upgrade": "Hero threshold, central memory map artifact, memory wall, chapter dossier, source shelves and final ritual.",
+  "artifactLayer": "Source / Method Superlayer",
+  "artifact_upgrade": "13.2 Map as Artifact + People Network Foundation",
+  "features": [
+    "accessible-source-filtering",
+    "active-memory-wall-panel",
+    "curatorial-version-record",
+    "digital-museum-room-model",
+    "map-active-readout",
+    "map-artifact-modes",
+    "map-terrain-layer",
+    "method-cards",
+    "people-relation-filters",
+    "room-zone-plaques",
+    "route-timeline",
+    "source-confidence-layer",
+    "spatial-room-plan",
+    "transparency-ledger",
+    "typed-memory-network"
+  ],
+  "visualReplacement": {
+    "status": "Five key visuals replaced with cinematic symbolic artifact assets; not archival evidence.",
+    "replaced": [
+      "rr-hero-threshold.webp",
+      "rr-room-camp-and-report.webp",
+      "rr-people-constellation.webp",
+      "rr-source-chamber.webp",
+      "rr-your-report-room.webp"
+    ],
+    "principle": "Dark museum room, source discipline, symbolic interpretation, no gore, no fake archival claim."
+  },
+  "performanceFocus": {
+    "heroPreload": true,
+    "heroFetchPriority": "high",
+    "imageDimensions": "1600x900 declared for layout stability",
+    "displayModes": [
+      "standard",
+      "focus",
+      "projection"
+    ],
+    "tools": [
+      "open sources",
+      "chapter dossier",
+      "copy description",
+      "print/pdf"
+    ],
+    "storage": "sessionStorage only"
+  },
+  "updatedFor": "Report Room Visual Artifact 13.6",
+  "deploymentQA": {
+    "scope": "Manual replacement package for exclusive EN/PL routes",
+    "preserves": "Historical and source-method alignment from 13.5",
+    "adds": [
+      "version label cleanup",
+      "deployment checklist",
+      "repository cleanup guidance",
+      "final static QA"
+    ]
+  },
+  "artifactUpgrade": {
+    "version": "13.7",
+    "name": "Museum Iconography & Metadata Pass",
+    "principles": [
+      "Subtle inline SVG icons only",
+      "Museum metadata fields on source cards",
+      "Provenance and confidence badges",
+      "No dashboard aesthetic"
+    ]
+  },
+  "memoryAtlasEngine": {
+    "layers": [
+      "all",
+      "historical",
+      "memory",
+      "project",
+      "diaspora"
+    ],
+    "routeModes": [
+      "route",
+      "place",
+      "source",
+      "memory"
+    ],
+    "principle": "Each place point is a museum record with status, source route and interpretive boundary."
+  },
+  "cinematicRestraint": {
+    "principle": "Light, texture and motion support attention without spectacle.",
+    "excludes": [
+      "glitch",
+      "shock animation",
+      "decorative spectacle",
+      "portfolio effects"
+    ],
+    "reducedMotionSafe": true
+  },
+  "artifact_version": "14.0",
+  "room_model": "digital-museum-room",
+  "releaseState": "deployment-ready",
+  "qaScope": "static validation plus live deployment checklist; historical content unchanged from 14.0/13.x source-aligned base"
+}
