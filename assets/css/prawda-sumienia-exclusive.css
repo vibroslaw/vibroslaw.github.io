@@ -19,19 +19,19 @@
   --psx-scroll-progress: 0%;
   --psx-hero-image: url("/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-hero.webp");
   --psx-hero-mobile-image: url("/public/assets/events/rap-ort/shared/experience/event-lobby-cinematic-mobile.webp");
-  --psx-final-image: url("/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp");
+  --psx-final-image: none;
   --psx-asset-beam: url("/public/assets/events/rap-ort/shared/experience/projection-beam-overlay.webp");
-  --psx-asset-pass: url("/public/assets/events/rap-ort/shared/experience/event-pass-premium.webp");
-  --psx-asset-witness: url("/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp");
-  --psx-asset-paper: url("/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp");
-  --psx-asset-document: url("/public/assets/events/rap-ort/shared/experience/document-atelier.webp");
-  --psx-asset-print: url("/public/assets/events/rap-ort/shared/experience/document-print-samples.webp");
-  --psx-asset-memory: url("/public/assets/events/rap-ort/shared/experience/memory-case.webp");
-  --psx-asset-memory-stack: url("/public/assets/events/rap-ort/shared/experience/memory-card-stack.webp");
-  --psx-asset-archive: url("/public/assets/events/rap-ort/shared/experience/archive-wall.webp");
-  --psx-asset-archive-empty: url("/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp");
-  --psx-asset-texture: url("/public/assets/events/rap-ort/shared/experience/archival-dark-texture.webp");
-  --psx-asset-ornament: url("/public/assets/events/rap-ort/shared/experience/subtle-gold-line-ornament.webp");
+  --psx-asset-pass: none;
+  --psx-asset-witness: none;
+  --psx-asset-paper: none;
+  --psx-asset-document: none;
+  --psx-asset-print: none;
+  --psx-asset-memory: none;
+  --psx-asset-memory-stack: none;
+  --psx-asset-archive: none;
+  --psx-asset-archive-empty: none;
+  --psx-asset-texture: none;
+  --psx-asset-ornament: none;
   --psx-card-image: var(--psx-asset-texture);
 }
 
