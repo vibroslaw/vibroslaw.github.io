@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Certificate and Witness Report - Rap-Ort</title>
+  <meta name="description" content="Create your approved Rap-Ort Certificate and Witness Report locally in your browser.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/navbar.css">
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css">
+  <link rel="stylesheet" href="/assets/css/cinematic.css">
+  <link rel="stylesheet" href="/assets/css/veritas.css">
+  <link rel="stylesheet" href="/assets/css/typewriter-sound.css">
+  <link rel="stylesheet" href="/assets/css/document-studio.css">
+</head>
+<body class="veritas-universe vh-page document-studio-page" data-lang="en" data-page="documents" data-document-mode="public" data-document-view="edit">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" role="banner"></header>
+  <main class="document-studio-main" id="main">
+    <div class="document-studio-wrap">
+      <header class="document-studio-hero">
+        <div class="document-studio-hero-copy"><p class="document-studio-kicker">RAP-ORT / PARTICIPANT DOCUMENTS</p><h1 class="document-studio-title" data-public-heading>Your trace after the screening</h1><p class="document-studio-lead" data-public-lead>The design and event details have already been approved. Add only the personal information you choose; generation happens locally on this device.</p><div class="document-hero-badges"><span data-quality-local>Generated locally</span><span>A4 / 300 DPI</span><span data-quality-private>Private by default</span></div></div>
+        <aside class="document-studio-note"><strong data-privacy-title>Nothing leaves this device</strong><span data-public-note>No name, report text or generated document is sent to a server. Anonymous sharing creates a clean copy without a name or signature.</span></aside>
+      </header>
+
+      <div class="document-view-switch" role="group" aria-label="Workspace view" data-view-switch-label>
+        <button type="button" data-document-view-button="edit" aria-pressed="true">Write</button>
+        <button type="button" data-document-view-button="preview" aria-pressed="false">Preview</button>
+      </div>
+
+      <div class="document-public-layout">
+        <section class="document-public-card" data-typewriter-scope>
+          <div class="document-tabs" role="tablist" aria-label="Choose document">
+            <button class="document-tab" type="button" role="tab" aria-selected="true" data-document-tab="certificate">Certificate</button>
+            <button class="document-tab" type="button" role="tab" aria-selected="false" data-document-tab="report">Witness Report</button>
+          </div>
+
+          <form class="document-panel" data-document-panel="certificate">
+            <h2 data-certificate-form-title>Create Certificate</h2>
+            <p data-certificate-form-copy>Enter the name that should appear on the approved certificate.</p>
+            <label class="document-field"><span data-name-label>Name</span><input name="certificateName" autocomplete="name" maxlength="90" required></label>
+            <div class="document-actions"><button class="document-action primary" type="button" data-export="certificate-pdf" data-save-pdf>Save PDF</button><button class="document-action" type="button" data-export="certificate-jpg" data-save-jpg>Save JPG</button></div>
+          </form>
+
+          <form class="document-panel" data-document-panel="report" data-typewriter-panel-target hidden>
+            <h2 data-report-form-title>Write the Witness Report</h2>
+            <p data-report-form-copy>Six lines, like an old field report. Write only what remains with you after the screening.</p>
+            <label class="document-field"><span data-report-label>Report</span><textarea name="reportText" maxlength="620" rows="6" placeholder="Write here..." aria-describedby="reportFitStatus"></textarea></label>
+            <div class="document-report-meter" id="reportFitStatus"><span data-report-lines>0 / 6 lines</span><span data-report-characters>0 / 620</span></div>
+            <div data-typewriter-sound-anchor></div>
+            <label class="document-field"><span data-report-name-label>Name - optional</span><input name="reportName" autocomplete="name" maxlength="90"></label>
+            <div class="document-actions"><button class="document-action primary" type="button" data-export="report-pdf" data-save-report>Save PDF</button><button class="document-action" type="button" data-export="report-anonymous-pdf" data-save-anonymous>Save anonymous PDF</button><button class="document-action share" type="button" data-export="report-share" data-share-anonymous>Send anonymous report</button></div>
+          </form>
+          <p class="document-status" data-document-status aria-live="polite"></p>
+          <p class="document-privacy" data-public-privacy>Generated locally. Anonymous copies contain no name or signature.</p>
+        </section>
+
+        <section class="document-proof-shell" aria-label="Live document proof" data-proof-shell>
+          <header class="document-proof-toolbar">
+            <div><span data-proof-kicker>Live proof</span><strong data-proof-title>Certificate / A4 landscape</strong></div>
+            <div class="document-proof-quality"><span>300 DPI</span><span data-proof-local>Local</span><span data-proof-ready>Print ready</span></div>
+            <div class="document-proof-actions"><button type="button" data-proof-zoom="out" aria-label="Zoom out">−</button><button type="button" data-proof-zoom="fit">Fit</button><button type="button" data-proof-zoom="in" aria-label="Zoom in">+</button><button type="button" data-proof-fullscreen>Full proof</button></div>
+          </header>
+          <div class="document-preview-stage" data-proof-stage>
+            <article class="document-sheet certificate" data-document-preview="certificate">
+              <div class="document-sheet-inner">
+                <span class="document-mark" data-preview-code></span>
+                <div class="certificate-top-meta">
+                  <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
+                  <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
+                </div>
+                <h2 class="document-sheet-title" data-preview-title></h2>
+                <p class="document-sheet-copy" data-preview-copy></p>
+                <div class="certificate-name-lockup"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
+                <p class="certificate-closing" data-preview-closing></p>
+              </div>
+              <img class="document-stamp" data-preview-stamp alt="">
+              <img class="document-author-signature" data-preview-author alt="Author signature">
+            </article>
+            <article class="document-sheet report" data-document-preview="report" hidden>
+              <div class="document-sheet-inner">
+                <span class="report-document-number" data-preview-code></span>
+                <div class="report-topline">
+                  <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
+                  <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
+                </div>
+                <h2 class="report-title-text" data-preview-title></h2>
+                <p class="report-quote" data-preview-quote></p>
+                <p class="report-copy" data-preview-copy></p>
+                <div class="report-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="report-signature-row"><span data-preview-signature-label>Witness signature</span><strong data-preview-witness></strong></div>
+              </div>
+              <p class="report-entry" data-preview-entry></p>
+              <img class="document-stamp" data-preview-stamp alt="">
+            </article>
+          </div>
+          <footer class="document-proof-footer"><span data-proof-footer-one>Live proof</span><span data-proof-footer-two>Full print quality on export</span></footer>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/navigation.js" defer></script>
+  <script src="/assets/js/transitions.js" defer></script>
+  <script src="/assets/js/cinematic.js" defer></script>
+  <script src="/assets/js/veritas.js" defer></script>
+  <script src="/assets/js/document-studio.js" defer></script>
+  <script src="/assets/js/typewriter-sound.js" defer></script>
+</body>
+</html>
