@@ -15,8 +15,6 @@ window.RapOrtEventAssets = (() => {
     documentSamples: `${sharedRoot}document-print-samples.webp`,
     memoryCase: `${sharedRoot}memory-case.webp`,
     memoryStack: `${sharedRoot}memory-card-stack.webp`,
-    archiveWall: `${sharedRoot}archive-wall.webp`,
-    archiveEmpty: `${sharedRoot}archive-wall-empty.webp`,
     darkTexture: `${sharedRoot}archival-dark-texture.webp`,
     goldLine: `${sharedRoot}subtle-gold-line-ornament.webp`,
     finalRoom: `${sharedRoot}final-question-dark-room.webp`
@@ -45,7 +43,6 @@ window.RapOrtEventAssets = (() => {
       shared.witnessDesk,
       shared.documentAtelier,
       shared.memoryCase,
-      shared.archiveEmpty,
       shared.finalRoom
     ],
     recommended: [
@@ -55,7 +52,6 @@ window.RapOrtEventAssets = (() => {
       shared.witnessPaper,
       shared.documentSamples,
       shared.memoryStack,
-      shared.archiveWall,
       shared.darkTexture,
       shared.goldLine,
       '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp',

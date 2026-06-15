@@ -25,8 +25,7 @@
         '--psx-asset-pass': '/public/assets/events/rap-ort/shared/experience/event-pass-premium.webp',
         '--psx-asset-witness': '/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp',
         '--psx-asset-document': '/public/assets/events/rap-ort/shared/experience/document-atelier.webp',
-        '--psx-asset-memory': '/public/assets/events/rap-ort/shared/experience/memory-case.webp',
-        '--psx-asset-archive-empty': '/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp'
+        '--psx-asset-memory': '/public/assets/events/rap-ort/shared/experience/memory-case.webp'
       }
     },
     {
@@ -50,13 +49,6 @@
       assets: {
         '--psx-asset-paper': '/public/assets/events/rap-ort/shared/experience/witness-report-paper-closeup.webp',
         '--psx-asset-print': '/public/assets/events/rap-ort/shared/experience/document-print-samples.webp'
-      }
-    },
-    {
-      selector: '.psx-wall',
-      assets: {
-        '--psx-asset-archive': '/public/assets/events/rap-ort/shared/experience/archive-wall.webp',
-        '--psx-asset-archive-empty': '/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp'
       }
     },
     {
@@ -137,17 +129,16 @@
   const routeMap = {
     en: {
       witness: '/rap-ort/witness-report/generator/',
-      participation: '/rap-ort/participation/',
-      archive: '/rap-ort/participation/#archive-gallery'
+      participation: '/rap-ort/participation/'
     },
     pl: {
       witness: '/rap-ort/raport-swiadka/generator/',
-      participation: '/rap-ort/uczestnictwo/',
-      archive: '/rap-ort/uczestnictwo/#archive-gallery'
+      participation: '/rap-ort/uczestnictwo/'
     }
   };
 
   const routes = routeMap[lang] || routeMap.en;
+  root.querySelectorAll('[data-psx-link-type="archive"], .psx-wall').forEach((element) => element.remove());
 
   const buildEventUrl = (path) => {
     const url = applySafeParams(new URL(path, window.location.origin));
@@ -177,12 +168,7 @@
     link.href = buildEventUrl(routes.participation);
     link.textContent = finalActionCopy[lang]?.participation || finalActionCopy.en.participation;
 
-    const archiveLink = finalActions.querySelector('[data-psx-link-type="archive"]');
-    if (archiveLink) {
-      finalActions.insertBefore(link, archiveLink);
-    } else {
-      finalActions.appendChild(link);
-    }
+    finalActions.appendChild(link);
   };
 
   ensureFinalRitualActions();
@@ -292,8 +278,12 @@
   }
 
   const heroAssets = {
-    en: { desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp' },
-    pl: { desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp' }
+    syd2026: {
+      desktop: '/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'
+    },
+    oswiecim20260525: {
+      desktop: '/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'
+    }
   };
 
   const sharedHeroAssets = {
@@ -310,7 +300,9 @@
     if (legacyPlaceholder) legacyPlaceholder.remove();
     if (heroGrid.querySelector('figure.psx-hero-visual')) return;
 
-    const assets = heroAssets[lang] || sharedHeroAssets;
+    const assets = heroAssets[eventId] || sharedHeroAssets;
+    document.body.style.setProperty('--psx-hero-image', `url("${assets.desktop}")`);
+    document.body.style.setProperty('--psx-hero-mobile-image', `url("${assets.mobile || sharedHeroAssets.mobile}")`);
     const figure = document.createElement('figure');
     figure.className = 'psx-hero-visual';
     figure.setAttribute('aria-hidden', 'true');

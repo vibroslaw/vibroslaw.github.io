@@ -1,6 +1,128 @@
 (() => {
   "use strict";
 
+  // Navigation is progressively enhanced without delaying ordinary links.
+
+  if (!window.__siteTransitions2026Initialized) {
+    window.__siteTransitions2026Initialized = true;
+
+    const html = document.documentElement;
+    const body = document.body;
+    const portalSelector = ".world-portal-card, .cinematic-entry-card, .project-link-card";
+    let temporaryPortal = null;
+    let temporaryHero = null;
+
+    const isReduced = () =>
+      html.dataset.experience === "reduced" ||
+      body?.classList.contains("reduced-motion") ||
+      body?.classList.contains("reduce-motion") ||
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+
+    const isCinematic = () =>
+      !isReduced() &&
+      (html.dataset.experience === "cinematic" || body?.classList.contains("cinematic-mode"));
+
+    const isHistoryTraversal = (event) =>
+      event?.activation?.navigationType === "traverse" ||
+      window.navigation?.activation?.navigationType === "traverse" ||
+      performance.getEntriesByType?.("navigation")?.[0]?.type === "back_forward";
+
+    const normalizePath2026 = (value) => {
+      try {
+        const url = new URL(value, window.location.href);
+        return url.pathname.replace(/\/index\.html$/i, "/").replace(/\/+$/, "") || "/";
+      } catch {
+        return "/";
+      }
+    };
+
+    const worldForPath = (path) => {
+      if (path.startsWith("/rap-ort")) return "raport";
+      if (path.startsWith("/sztab")) return "sztab";
+      if (path.startsWith("/music") || path.startsWith("/pl/music")) return "music";
+      if (path.includes("between-the-lines") || path.includes("miedzy-wierszami")) return "between";
+      return "veritas";
+    };
+
+    const clearTemporaryNames = () => {
+      temporaryPortal?.style.removeProperty("view-transition-name");
+      temporaryHero?.style.removeProperty("view-transition-name");
+      temporaryPortal = null;
+      temporaryHero = null;
+      html.classList.remove("view-transition-active", "cinematic-navigation-pending");
+      delete html.dataset.transitionFrom;
+      delete html.dataset.transitionTo;
+    };
+
+    document.addEventListener("click", (event) => {
+      if (!isCinematic() || event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const link = event.target.closest?.("a[href]");
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (link.target === "_blank" || link.hasAttribute("download") || link.hasAttribute("data-no-transition")) return;
+
+      let target;
+      try {
+        target = new URL(link.href, window.location.href);
+      } catch {
+        return;
+      }
+
+      if (target.origin !== window.location.origin) return;
+      if (target.hash && normalizePath2026(target.href) === normalizePath2026(window.location.href)) return;
+
+      html.dataset.transitionFrom = worldForPath(normalizePath2026(window.location.href));
+      html.dataset.transitionTo = worldForPath(normalizePath2026(target.href));
+      html.classList.add("cinematic-navigation-pending");
+
+      const portal = link.closest(portalSelector);
+      if (!portal) return;
+
+      const hero = document.querySelector(".vh-hero-media");
+      temporaryPortal = portal;
+      temporaryHero = hero;
+      hero?.style.setProperty("view-transition-name", "none");
+      portal.style.setProperty("view-transition-name", "page-hero");
+    }, true);
+
+    window.addEventListener("pageswap", (event) => {
+      if (!isCinematic() || isHistoryTraversal(event)) event.viewTransition?.skipTransition();
+      event.viewTransition?.finished?.finally(clearTemporaryNames);
+    });
+
+    window.addEventListener("pagereveal", (event) => {
+      if (!isCinematic() || isHistoryTraversal(event)) {
+        event.viewTransition?.skipTransition();
+        clearTemporaryNames();
+        return;
+      }
+      if (!event.viewTransition) return;
+      html.classList.add("view-transition-active");
+      event.viewTransition.finished.finally(() => {
+        html.classList.remove("view-transition-active");
+        delete html.dataset.transitionFrom;
+        delete html.dataset.transitionTo;
+      });
+    });
+
+    window.addEventListener("pagehide", clearTemporaryNames);
+    window.addEventListener("pageshow", clearTemporaryNames);
+    window.addEventListener("popstate", clearTemporaryNames);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) clearTemporaryNames();
+    });
+
+    html.classList.toggle(
+      "supports-cross-document-transitions",
+      typeof window.PageSwapEvent === "function" && typeof window.PageRevealEvent === "function"
+    );
+  }
+
+  // The legacy overlay and delayed-navigation engine remains in the file for
+  // rollback, but is intentionally inactive while the native path is enabled.
+  if (window.__siteTransitions2026Initialized) return;
+
   if (window.__siteTransitionsModuleInitialized) {
     return;
   }

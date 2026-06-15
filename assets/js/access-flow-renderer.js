@@ -53,16 +53,13 @@
       '/assets/css/generator-cinematic.css',
       '/assets/css/generator-masterpiece.css',
       '/assets/css/premium-asset-integration.css',
-      '/assets/css/event-portal.css',
-      '/assets/css/archive-gallery.css'
+      '/assets/css/event-portal.css'
     ],
     js: [
       '/assets/js/event-asset-manifest.js',
       '/assets/js/event-asset-loader.js',
       '/assets/js/event-portal-config.js',
       '/assets/js/event-portal-renderer.js',
-      '/assets/js/archive-gallery-config.js',
-      '/assets/js/archive-gallery-renderer.js',
       '/assets/js/generator-masterpiece.js'
     ]
   };
@@ -178,8 +175,8 @@
           <div class="event-shell-entry-panel">
             <h3>${escapeHtml(copy.experience)}</h3>
             <p>${lang === 'en'
-              ? 'Enter the cinematic event shell first, then continue into the document, reflection, memory pack and archive modules.'
-              : 'Najpierw wejdź do filmowej przestrzeni wydarzenia, a potem przejdź do dokumentu, refleksji, pakietu pamiątkowego i archiwum.'}</p>
+              ? 'Enter the cinematic event shell first, then continue into the document, reflection and memory pack.'
+              : 'Najpierw wejdź do filmowej przestrzeni wydarzenia, a potem przejdź do dokumentu, refleksji i pakietu pamiątkowego.'}</p>
             <div class="event-shell-entry-actions">
               <a class="event-shell-entry-link" href="${escapeHtml(shellUrl)}">${escapeHtml(copy.experience)}</a>
             </div>

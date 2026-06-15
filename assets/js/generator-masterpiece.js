@@ -28,7 +28,7 @@
       participationTitle: 'Atelier dokumentu po projekcji',
       witnessTitle: 'Rytuał refleksji po projekcji',
       participationLead: 'Zacznij od wydarzenia, wybierz charakter dokumentu, uzupełnij dane i przygotuj finalny PDF jako pamiątkowy artefakt.',
-      witnessLead: 'Zatrzymaj jedno zdanie po projekcji, zapisz ślad refleksji i przygotuj prywatny PDF albo anonimowy JPG do archiwum.',
+      witnessLead: 'Zatrzymaj jedno zdanie po projekcji, zapisz ślad refleksji i przygotuj prywatny PDF albo anonimową kopię do udostępnienia.',
       event: 'Wydarzenie',
       input: 'Zapis',
       preview: 'Podgląd',
@@ -44,7 +44,6 @@
       successText: 'Zachowaj go jako osobisty ślad uczestnictwa i wróć do pozostałych elementów doświadczenia.',
       portal: 'Wróć do portalu',
       memory: 'Pakiet Uczestnika',
-      archive: 'Anonimowe Archiwum',
       credential: 'Wersja doświadczenia',
       defaultEdition: 'Wersja publiczna'
     },
@@ -53,7 +52,7 @@
       participationTitle: 'Post-screening document atelier',
       witnessTitle: 'Post-screening reflection ritual',
       participationLead: 'Begin with the event, choose the document character, complete the details and prepare the final PDF as a commemorative artefact.',
-      witnessLead: 'Hold one sentence after the screening, write a trace of reflection and prepare a private PDF or anonymous JPG for the archive.',
+      witnessLead: 'Hold one sentence after the screening, write a trace of reflection and prepare a private PDF or anonymous copy to share.',
       event: 'Event',
       input: 'Record',
       preview: 'Preview',
@@ -69,7 +68,6 @@
       successText: 'Keep it as a personal trace of participation and return to the rest of the experience.',
       portal: 'Return to portal',
       memory: 'Memory Pack',
-      archive: 'Anonymous Archive',
       credential: 'Experience edition',
       defaultEdition: 'Public preview'
     }
@@ -196,7 +194,6 @@
       <div class="generator-master-success-actions">
         <a href="${portalUrl('')}">${copy.portal}</a>
         <a href="${portalUrl('#memory-pack')}">${copy.memory}</a>
-        <a href="${portalUrl('#archive-gallery')}">${copy.archive}</a>
       </div>`;
     const status = isWitness ? root.querySelector('[data-wr-status]') : root.querySelector('[data-pr-status]');
     if (status) status.insertAdjacentElement('afterend', panel);
@@ -213,7 +210,6 @@
       const links = panel.querySelectorAll('a');
       if (links[0]) links[0].href = portalUrl('');
       if (links[1]) links[1].href = portalUrl('#memory-pack');
-      if (links[2]) links[2].href = portalUrl('#archive-gallery');
     }
   }
 

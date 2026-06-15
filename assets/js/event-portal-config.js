@@ -28,7 +28,7 @@ window.RapOrtEventPortals = (() => {
         id: 'witness',
         label: 'Raport Świadka',
         title: 'Zapisz to, co zostało po projekcji',
-        description: 'Prywatny raport PDF oraz anonimowa wersja JPG do przyszłego archiwum wydarzenia.',
+        description: 'Prywatny raport PDF oraz anonimowa kopia gotowa do prostego udostępnienia.',
         href: '/rap-ort/raport-swiadka/generator/',
         status: 'Moduł refleksji'
       },
@@ -47,14 +47,6 @@ window.RapOrtEventPortals = (() => {
         description: 'Karty, tapety, pamiątkowe materiały i placeholdery pod assety przygotowane dla wydarzenia.',
         href: '#memory-pack',
         status: 'Aktywne'
-      },
-      {
-        id: 'archive',
-        label: 'Anonimowe Archiwum',
-        title: 'Zobacz fundament galerii śladów refleksji',
-        description: 'Statyczna galeria anonimowych raportów bez imienia, podpisu i danych osobowych.',
-        href: '#archive-gallery',
-        status: 'Fundament'
       }
     ],
     en: [
@@ -70,7 +62,7 @@ window.RapOrtEventPortals = (() => {
         id: 'witness',
         label: 'Witness Report',
         title: 'Record what remains after the screening',
-        description: 'A private PDF report and an anonymous JPG version prepared for a future event archive.',
+        description: 'A private PDF report and an anonymous copy ready for simple sharing.',
         href: '/rap-ort/witness-report/generator/',
         status: 'Reflection module'
       },
@@ -89,14 +81,6 @@ window.RapOrtEventPortals = (() => {
         description: 'Cards, wallpapers, commemorative materials and placeholders prepared for the event edition.',
         href: '#memory-pack',
         status: 'Active'
-      },
-      {
-        id: 'archive',
-        label: 'Anonymous Archive',
-        title: 'View the foundation of a reflection-trace gallery',
-        description: 'A static gallery of anonymous reports without name, signature or personal data.',
-        href: '#archive-gallery',
-        status: 'Foundation'
       }
     ]
   };
@@ -112,12 +96,12 @@ window.RapOrtEventPortals = (() => {
           label: 'Wersja publiczna',
           title: 'Portal Uczestnika',
           subtitle: 'Jedna ścieżka po projekcji',
-          description: 'Ten portal prowadzi uczestnika od linku wydarzenia przez dokument, refleksję, pakiet pamiątkowy i przyszłe anonimowe archiwum.',
+          description: 'Ten portal prowadzi uczestnika od linku wydarzenia przez dokument, refleksję i pakiet pamiątkowy.',
           eventDate: 'Data wydarzenia',
           location: 'Miejsce / instytucja',
           modules: modules.pl,
           closingLine: 'To nie jest ankieta. To ślad tego, co zostaje po spotkaniu ze świadectwem.',
-          privacyNote: 'Wszystkie dokumenty powstają lokalnie w przeglądarce. Archiwum w tej wersji jest statyczne i nie zapisuje danych użytkownika.',
+          privacyNote: 'Wszystkie dokumenty powstają lokalnie w przeglądarce i nie są zapisywane na serwerze.',
           facilitatorNote: 'Prowadzący może użyć tej strony jako spokojnej mapy działań po projekcji.'
         }),
         en: portal({
@@ -126,12 +110,12 @@ window.RapOrtEventPortals = (() => {
           label: 'Public Preview',
           title: 'Participant Portal',
           subtitle: 'One post-screening path',
-          description: 'This portal guides the participant from event link to document, reflection, memory pack and future anonymous archive.',
+          description: 'This portal guides the participant from event link to document, reflection and memory pack.',
           eventDate: 'Event date',
           location: 'Place / institution',
           modules: modules.en,
           closingLine: 'This is not a survey. It is a trace of what remains after encountering testimony.',
-          privacyNote: 'All documents are created locally in the browser. The archive in this version is static and does not store user data.',
+          privacyNote: 'All documents are created locally in the browser and are not stored on a server.',
           facilitatorNote: 'The facilitator can use this page as a calm post-screening action map.'
         })
       },
@@ -142,13 +126,13 @@ window.RapOrtEventPortals = (() => {
           label: 'Oświęcim / MUP',
           title: 'Portal Uczestnika — Oświęcim / MUP',
           subtitle: 'Warsztatowa ścieżka po projekcji',
-          description: 'Po projekcji uczestnik przechodzi przez refleksję, dokument, pamiątkowy pakiet i fundament anonimowego archiwum wydarzenia.',
+          description: 'Po projekcji uczestnik przechodzi przez refleksję, dokument i pamiątkowy pakiet.',
           eventDate: '25 maja 2026',
           location: 'Oświęcim / MUP',
           modules: modules.pl.map((module) => module.id === 'witness' ? { ...module, title: 'Raport Świadka przez QR na sali', description: 'Raport Świadka pozostaje osobnym rytuałem uruchamianym przez QR podczas wydarzenia.', href: '#access-flow-title', status: 'QR podczas wydarzenia' } : module),
           closingLine: 'Nie chodzi o jedną poprawną odpowiedź. Chodzi o odpowiedzialną rozmowę po spotkaniu ze świadectwem.',
-          privacyNote: 'Anonimowa wersja Raportu Świadka nie zawiera imienia, nazwiska, podpisu ani danych osobowych. Wersja archiwalna jest pobierana lokalnie i może być przekazana prowadzącemu ręcznie.',
-          facilitatorNote: 'Portal nie zastępuje prowadzącego. Porządkuje rytm pracy po projekcji: wejście, refleksja, dokument, pamiątka, archiwum.'
+          privacyNote: 'Anonimowa wersja Raportu Świadka nie zawiera imienia, nazwiska, podpisu ani danych osobowych i może być udostępniona bezpośrednio z urządzenia.',
+          facilitatorNote: 'Portal nie zastępuje prowadzącego. Porządkuje rytm pracy po projekcji: wejście, refleksja, dokument i pamiątka.'
         }),
         en: portal({
           id: 'oswiecim20260525',
@@ -156,13 +140,13 @@ window.RapOrtEventPortals = (() => {
           label: 'Oświęcim / MUP',
           title: 'Participant Portal — Oświęcim / MUP',
           subtitle: 'A workshop path after the screening',
-          description: 'After the screening, the participant moves through reflection, document creation, memory pack and the foundation of an anonymous event archive.',
+          description: 'After the screening, the participant moves through reflection, document creation and the memory pack.',
           eventDate: '25 May 2026',
           location: 'Oświęcim / MUP',
           modules: modules.en.map((module) => module.id === 'witness' ? { ...module, title: 'Witness Report through in-room QR', description: 'The Witness Report remains a separate ritual opened by QR during the event.', href: '#access-flow-title', status: 'QR during the event' } : module),
           closingLine: 'It is not about one correct answer. It is about responsible conversation after encountering testimony.',
-          privacyNote: 'The anonymous Witness Report version contains no name, no signature and no personal data. The archive version is downloaded locally and may be passed to the facilitator manually.',
-          facilitatorNote: 'The portal does not replace the facilitator. It organises the post-screening rhythm: entry, reflection, document, keepsake, archive.'
+          privacyNote: 'The anonymous Witness Report contains no name, signature or personal data and can be shared directly from the device.',
+          facilitatorNote: 'The portal does not replace the facilitator. It organises the post-screening rhythm: entry, reflection, document and keepsake.'
         })
       },
       syd2026: {
@@ -172,7 +156,7 @@ window.RapOrtEventPortals = (() => {
           label: 'Sydney 2026',
           title: 'Portal Uczestnika — Sydney 2026',
           subtitle: 'Ścieżka po projekcji i Q&A',
-          description: 'Portal prowadzi uczestnika projekcji i rozmowy online od dostępu przez dokument i pakiet pamiątkowy do przyszłego anonimowego archiwum.',
+          description: 'Portal prowadzi uczestnika projekcji i rozmowy online od dostępu przez dokument do pakietu pamiątkowego.',
           eventDate: '21 czerwca 2026',
           location: 'Polish Club Ashfield / Sydney',
           modules: modules.pl.map((module) => module.id === 'witness' ? { ...module, href: '/rap-ort/raport-swiadka/generator/?event=syd2026' } : module),
@@ -186,7 +170,7 @@ window.RapOrtEventPortals = (() => {
           label: 'Sydney 2026',
           title: 'Participant Portal — Sydney 2026',
           subtitle: 'Post-screening and Q&A path',
-          description: 'The portal guides screening and live online Q&A participants from access to document, memory pack and future anonymous archive.',
+          description: 'The portal guides screening and live online Q&A participants from access to document and the memory pack.',
           eventDate: '21 June 2026',
           location: 'Polish Club Ashfield / Sydney',
           modules: modules.en.map((module) => module.id === 'witness' ? { ...module, href: '/rap-ort/witness-report/generator/?event=syd2026' } : module),

@@ -8,6 +8,7 @@
 
   const CINEMATIC_STORAGE_KEY = "siteCinematicMode";
   const CINEMATIC_ARRIVAL_STORAGE_KEY = "siteCinematicArrival";
+  const REDUCED_MOTION_STORAGE_KEY = "siteReducedMotion";
   const MOBILE_CINEMATIC_FAB_ID = "mobileCinematicFab";
   const MOTION_SCRIPT_ID = "siteMotionScript";
   const MOTION_SCRIPT_SRC = "/assets/js/motion.js?v=9";
@@ -31,6 +32,7 @@
   let mobileCinematicFab = null;
 
   let cinematicModeInitialized = false;
+  let cinematicPreferenceRequested = false;
   let cinematicArrivalTimer = null;
   let cinematicArrivalFrame = null;
 
@@ -49,6 +51,7 @@
     return !!(
       document.getElementById("cinematicToggle") ||
       document.getElementById("cinematicHeroButton") ||
+      document.getElementById("mobileDockCinemaToggle") ||
       document.getElementById("mobileCinematicToggle")
     );
   }
@@ -64,6 +67,7 @@
     if (document.getElementById("cinematicToggle")) return;
 
     const hasCinematicEntry = !!(
+      document.getElementById("mobileDockCinemaToggle") ||
       document.getElementById("mobileCinematicToggle") ||
       document.getElementById("cinematicHeroButton")
     );
@@ -115,7 +119,11 @@
   function isReducedMotionEnabled() {
     const body = getBody();
 
-    if (body?.classList.contains("reduced-motion")) {
+    if (
+      body?.classList.contains("reduced-motion") ||
+      body?.classList.contains("reduce-motion") ||
+      readFromLocalStorage(REDUCED_MOTION_STORAGE_KEY) === "true"
+    ) {
       return true;
     }
 
@@ -270,7 +278,9 @@
   function cacheCinematicElements() {
     cinematicToggle = document.getElementById("cinematicToggle");
     cinematicHeroButton = document.getElementById("cinematicHeroButton");
-    mobileCinematicToggle = document.getElementById("mobileCinematicToggle");
+    mobileCinematicToggle =
+      document.getElementById("mobileDockCinemaToggle") ||
+      document.getElementById("mobileCinematicToggle");
     mobileCinematicFab = document.getElementById(MOBILE_CINEMATIC_FAB_ID);
   }
 
@@ -401,7 +411,6 @@
 
   function updateCinematicLabels() {
     ensureCinematicUtilityToggle();
-    ensureMobileCinematicFab();
     cacheCinematicElements();
 
     const labels = getCinematicLabels();
@@ -418,8 +427,9 @@
     });
 
     updateSingleButton(mobileCinematicToggle, {
-      text: active ? labels.mobileMenuExit : labels.mobileMenuEnter,
-      pressed: active
+      text: active ? labels.mobileFabExit : labels.mobileFabEnter,
+      pressed: active,
+      ariaLabel: active ? labels.mobileFabAriaExit : labels.mobileFabAriaEnter
     });
 
     updateSingleButton(mobileCinematicFab, {
@@ -455,13 +465,34 @@
     );
   }
 
+  function experienceForCurrentState() {
+    if (isReducedMotionEnabled()) return "reduced";
+    return cinematicPreferenceRequested ? "cinematic" : "lite";
+  }
+
   function setBodyCinematicState(active) {
     const body = getBody();
     if (!body) return;
 
-    body.classList.toggle("cinematic-mode", active);
-    body.dataset.cinematic = active ? "on" : "off";
-    document.documentElement.dataset.cinematic = active ? "on" : "off";
+    cinematicPreferenceRequested = !!active;
+    const experience = experienceForCurrentState();
+    const cinematicActive = experience === "cinematic";
+    const html = document.documentElement;
+
+    body.classList.toggle("cinematic-mode", cinematicActive);
+    body.classList.toggle("experience-lite", experience === "lite");
+    body.classList.toggle("experience-cinematic", cinematicActive);
+    body.classList.toggle("experience-reduced", experience === "reduced");
+    body.dataset.cinematic = cinematicActive ? "on" : experience === "reduced" && active ? "suspended" : "off";
+    body.dataset.experience = experience;
+    html.dataset.cinematic = body.dataset.cinematic;
+    html.dataset.experience = experience;
+
+    if (cinematicActive) ensureMotionModule();
+
+    document.dispatchEvent(new CustomEvent("site:experience-change", {
+      detail: { experience, cinematicRequested: cinematicPreferenceRequested }
+    }));
   }
 
   function clearCinematicArrivalState() {
@@ -556,9 +587,10 @@
     const body = getBody();
     if (!body) return;
 
-    const currentState = isCinematicModeActive();
+    const currentState = cinematicPreferenceRequested;
 
     if (currentState === active) {
+      setBodyCinematicState(active);
       updateCinematicLabels();
 
       if (persist) {
@@ -579,7 +611,7 @@
       finishCinematicArrival();
     }
 
-    if (source === "mobile-fab" || source === "mobile-button") {
+    if ((source === "mobile-fab" || source === "mobile-button") && !isReducedMotionEnabled()) {
       triggerHapticFeedback(active ? "firm" : "light");
       triggerMobileFabPulse();
     }
@@ -598,7 +630,7 @@
   }
 
   function toggleCinematicMode(source = "manual") {
-    setCinematicMode(!isCinematicModeActive(), {
+    setCinematicMode(!cinematicPreferenceRequested, {
       source,
       refreshUi: true
     });
@@ -799,9 +831,8 @@
 
   function handlePageShow() {
     ensureCinematicUtilityToggle();
-    ensureMotionModule();
-    ensureMobileCinematicFab();
     cacheCinematicElements();
+    setBodyCinematicState(cinematicPreferenceRequested);
     updateCinematicLabels();
     consumeAndApplyCinematicArrival();
     lastKnownScrollY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
@@ -832,6 +863,8 @@
     const enabled =
       event?.detail?.enabled === true || isReducedMotionEnabled();
 
+    setBodyCinematicState(cinematicPreferenceRequested);
+
     if (enabled) {
       finishCinematicArrival();
       clearMobileFabPulse();
@@ -845,7 +878,6 @@
     cinematicModeInitialized = true;
 
     ensureCinematicUtilityToggle();
-    ensureMobileCinematicFab();
     cacheCinematicElements();
 
     const shouldEnable = readCinematicPreference();
@@ -856,8 +888,6 @@
       source: "init",
       refreshUi: false
     });
-
-    ensureMotionModule();
 
     if (cinematicToggle) {
       cinematicToggle.addEventListener("click", handleCinematicButtonClick);
@@ -895,6 +925,12 @@
 
     document.addEventListener("site:reduced-motion-change", handleReducedMotionChange);
 
+    const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    reducedMotionQuery?.addEventListener?.("change", () => {
+      setBodyCinematicState(cinematicPreferenceRequested);
+      updateCinematicLabels();
+    });
+
     document.addEventListener("site:cinematic-arrival-start", () => {
       requestMobileFabStateUpdate(true);
     });
@@ -921,6 +957,7 @@
   window.setCinematicMode = setCinematicMode;
   window.toggleCinematicMode = toggleCinematicMode;
   window.isCinematicModeActive = isCinematicModeActive;
+  window.getSiteExperience = experienceForCurrentState;
   window.updateCinematicLabels = updateCinematicLabels;
   window.consumeAndApplyCinematicArrival = consumeAndApplyCinematicArrival;
   window.finishCinematicArrival = finishCinematicArrival;

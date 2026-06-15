@@ -41,9 +41,9 @@
     title: 'RAPORT ŚWIADKA',
     archiveTitle: 'ANONIMOWY RAPORT ŚWIADKA',
     button: 'Pobierz Raport Świadka PDF',
-    archiveButton: 'Zarchiwizuj anonimową wersję JPG',
+    archiveButton: 'Przygotuj anonimowy JPG',
     preparing: 'Przygotowuję finalny Raport Świadka jako print-master PDF…',
-    archivePreparing: 'Przygotowuję anonimową wersję JPG do archiwum wydarzenia…',
+    archivePreparing: 'Przygotowuję anonimową kopię JPG…',
     ready: 'Raport Świadka został przygotowany jako finalny print-master PDF.',
     archiveReady: 'Anonimowa wersja JPG została przygotowana. Plik nie zawiera imienia, nazwiska ani podpisu.',
     error: 'Nie udało się wygenerować Raportu Świadka. Sprawdź konsolę lub spróbuj ponownie.',
@@ -54,28 +54,28 @@
     place: 'Miejsce',
     number: 'Numer raportu',
     signature: 'Podpis świadka doświadczenia',
-    archiveNumber: 'Numer archiwalny',
+    archiveNumber: 'Numer kopii anonimowej',
     fallbackName: 'Świadek doświadczenia',
     fallbackPlace: 'Miejsce wydarzenia',
     file: 'Rap-Ort-Raport-Swiadka',
     archiveFile: 'raport-swiadka-anon',
     finale: 'Raport Świadka został zachowany jako osobisty ślad refleksji.',
-    archiveFinale: 'Możesz przekazać ten anonimowy JPG prowadzącemu, jeśli ma trafić do statycznego archiwum wydarzenia.',
+    archiveFinale: 'Anonimowy JPG jest gotowy do udostępnienia bezpośrednio z urządzenia.',
     microprint: 'To nie jest test wiedzy ani dokument urzędowy. To osobisty ślad refleksji po projekcji.',
-    archiveMicroprint: 'Wersja archiwalna anonimowa · bez imienia, nazwiska, podpisu i danych osobowych.',
+    archiveMicroprint: 'Kopia anonimowa · bez imienia, nazwiska, podpisu i danych osobowych.',
     fontFallback: 'Uwaga: użyto awaryjnych fontów PDF. Dla finalnej jakości sprawdź lokalne pliki fontów.',
     eventEdition: 'Wersja wydarzenia',
     publicEdition: 'Wersja publiczna',
     portal: 'Portal uczestnika',
-    archive: 'Anonimowe archiwum'
+    archive: 'Portal uczestnika'
   } : {
     project: 'RAP-ORT: PRAWDA SUMIENIA',
     title: 'WITNESS REPORT',
     archiveTitle: 'ANONYMOUS WITNESS REPORT',
     button: 'Download Witness Report PDF',
-    archiveButton: 'Archive anonymous JPG version',
+    archiveButton: 'Prepare anonymous JPG',
     preparing: 'Preparing the final Witness Report print-master PDF…',
-    archivePreparing: 'Preparing the anonymous archive JPG for this event…',
+    archivePreparing: 'Preparing the anonymous JPG copy…',
     ready: 'Witness Report has been prepared as a final print-master PDF.',
     archiveReady: 'Anonymous JPG version has been prepared. The file contains no name, surname or signature.',
     error: 'Could not generate the Witness Report. Check the console or try again.',
@@ -86,20 +86,20 @@
     place: 'Place',
     number: 'Report number',
     signature: 'Signature of the witness to the experience',
-    archiveNumber: 'Archive number',
+    archiveNumber: 'Anonymous copy number',
     fallbackName: 'Witness to the experience',
     fallbackPlace: 'Event place',
     file: 'Rap-Ort-Witness-Report',
     archiveFile: 'witness-report-anon',
     finale: 'The Witness Report has been preserved as a personal trace of reflection.',
-    archiveFinale: 'You may pass this anonymous JPG to the facilitator if it should become part of the static event archive.',
+    archiveFinale: 'The anonymous JPG is ready to share directly from this device.',
     microprint: 'This is not a knowledge test or an official document. It is a personal trace of reflection after the screening.',
-    archiveMicroprint: 'Anonymous archive version · no name, surname, signature or personal data.',
+    archiveMicroprint: 'Anonymous copy · no name, surname, signature or personal data.',
     fontFallback: 'Note: PDF fallback fonts were used. For final quality, check local font files.',
     eventEdition: 'Event edition',
     publicEdition: 'Public preview',
     portal: 'Participant portal',
-    archive: 'Anonymous archive'
+    archive: 'Participant portal'
   };
 
   const events = {
@@ -113,7 +113,7 @@
         en: 'Rap-Ort-Witness-Report-Oswiecim-2026-05-25'
       },
       portalUrl: { pl: '/rap-ort/uczestnictwo/?event=oswiecim20260525', en: '/rap-ort/participation/?event=oswiecim20260525' },
-      archiveUrl: { pl: '/rap-ort/uczestnictwo/?event=oswiecim20260525#archive-gallery', en: '/rap-ort/participation/?event=oswiecim20260525#archive-gallery' },
+      archiveUrl: { pl: '/rap-ort/uczestnictwo/?event=oswiecim20260525', en: '/rap-ort/participation/?event=oswiecim20260525' },
       pl: { place: 'Małopolska Uczelnia Państwowa im. rtm. Witolda Pileckiego w Oświęcimiu', label: '25 maja 2026', edition: 'Oświęcim / MUP' },
       en: { place: 'Małopolska State University named after Cavalry Captain Witold Pilecki in Oświęcim', label: '25 May 2026', edition: 'Oświęcim / MUP' }
     },
@@ -127,7 +127,7 @@
         en: 'Rap-Ort-Witness-Report-Sydney-2026'
       },
       portalUrl: { pl: '/rap-ort/uczestnictwo/?event=syd2026', en: '/rap-ort/participation/?event=syd2026' },
-      archiveUrl: { pl: '/rap-ort/uczestnictwo/?event=syd2026#archive-gallery', en: '/rap-ort/participation/?event=syd2026#archive-gallery' },
+      archiveUrl: { pl: '/rap-ort/uczestnictwo/?event=syd2026', en: '/rap-ort/participation/?event=syd2026' },
       pl: { place: 'Polish Club Ashfield / Sydney', label: '21 czerwca 2026', edition: 'Sydney 2026' },
       en: { place: 'Polish Club Ashfield / Sydney', label: '21 June 2026', edition: 'Sydney 2026' }
     }
@@ -254,11 +254,9 @@
     const event = activeEvent();
     const base = lang === 'pl' ? '/rap-ort/uczestnictwo/' : '/rap-ort/participation/';
     const portal = event?.portalUrl?.[lang] || `${base}?event=${encodeURIComponent(eventKey())}`;
-    const archive = event?.archiveUrl?.[lang] || `${base}?event=${encodeURIComponent(eventKey())}#archive-gallery`;
     root.querySelectorAll('[data-wr-participation-link]').forEach((link) => link.setAttribute('href', portal));
     root.querySelectorAll('.wr-return-row a[href*="uczestnictwo"], .wr-return-row a[href*="participation"]').forEach((link) => {
-      const isArchive = link.getAttribute('href')?.includes('#archive-gallery');
-      link.setAttribute('href', isArchive ? archive : portal);
+      link.setAttribute('href', portal);
     });
   }
 
