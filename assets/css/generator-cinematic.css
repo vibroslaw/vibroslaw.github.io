@@ -22,7 +22,6 @@
   --gen-document: url('/public/assets/events/rap-ort/shared/experience/document-atelier.webp');
   --gen-desk: url('/public/assets/events/rap-ort/shared/experience/witness-writing-desk.webp');
   --gen-memory: url('/public/assets/events/rap-ort/shared/experience/memory-case.webp');
-  --gen-archive: url('/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp');
   --gen-texture: url('/public/assets/events/rap-ort/shared/experience/archival-dark-texture.webp');
 }
 
@@ -487,15 +486,6 @@
 }
 
 /* Archive: museum wall */
-.archive-gallery-section {
-  background:
-    linear-gradient(180deg, rgba(5,4,3,.18), rgba(5,4,3,.86)),
-    var(--gen-archive);
-  background-size: cover;
-  background-position: center;
-  border-top: 1px solid rgba(233,210,166,.12);
-}
-
 .archive-gallery-privacy,
 .archive-gallery-empty-note {
   border-color: rgba(233,210,166,.18) !important;

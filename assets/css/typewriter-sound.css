@@ -31,11 +31,51 @@
   line-height: 1.55;
 }
 
+.typewriter-sound-panel summary {
+  list-style: none;
+}
+
+.typewriter-sound-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.typewriter-sound-panel summary::after {
+  content: "+";
+  float: right;
+  color: currentColor;
+}
+
+.typewriter-sound-panel[open] summary::after {
+  content: "−";
+}
+
 .typewriter-sound-controls {
   display: flex;
   flex-wrap: wrap;
   gap: .65rem;
   align-items: center;
+}
+
+.typewriter-volume {
+  display: grid;
+  min-width: min(100%, 180px);
+  gap: .35rem;
+  margin-left: auto;
+  color: rgba(244, 234, 215, .62);
+  font-size: .74rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.typewriter-volume input {
+  width: 100%;
+  accent-color: #d9bd80;
+  cursor: pointer;
+}
+
+.typewriter-volume input:focus-visible {
+  outline: 2px solid rgba(217, 189, 128, .82);
+  outline-offset: 4px;
 }
 
 .typewriter-sound-status {
@@ -54,5 +94,10 @@
   .typewriter-sound-controls .vh-button {
     width: 100%;
     justify-content: center;
+  }
+
+  .typewriter-volume {
+    width: 100%;
+    margin-left: 0;
   }
 }

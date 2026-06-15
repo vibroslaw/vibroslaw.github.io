@@ -11,7 +11,6 @@
   --asset-document: url('/public/assets/events/rap-ort/shared/experience/document-atelier.webp');
   --asset-samples: url('/public/assets/events/rap-ort/shared/experience/document-print-samples.webp');
   --asset-memory: url('/public/assets/events/rap-ort/shared/experience/memory-case.webp');
-  --asset-archive: url('/public/assets/events/rap-ort/shared/experience/archive-wall-empty.webp');
   --asset-final: url('/public/assets/events/rap-ort/shared/experience/final-question-dark-room.webp');
 }
 
@@ -25,13 +24,11 @@
   --scene-witness-image: var(--asset-desk);
   --scene-document-image: var(--asset-document);
   --scene-memory-image: var(--asset-memory);
-  --scene-archive-image: var(--asset-archive);
   --scene-final-image: var(--asset-final);
   --gen-hero: var(--asset-lobby);
   --gen-document: var(--asset-document);
   --gen-desk: var(--asset-desk);
   --gen-memory: var(--asset-memory);
-  --gen-archive: var(--asset-archive);
 }
 
 .event-shell-oswiecim {
@@ -58,11 +55,6 @@
 .event-shell-scene-media[style*='memory-case'],
 .memory-pack-section {
   --scene-image: var(--scene-memory-image);
-}
-
-.event-shell-scene-media[style*='archive-wall'],
-.archive-gallery-section {
-  --scene-image: var(--scene-archive-image);
 }
 
 .has-premium-assets .event-shell-hero::before,
@@ -165,14 +157,6 @@
     radial-gradient(circle at 50% 24%, rgba(251,239,216,.12), transparent 12rem),
     linear-gradient(135deg, rgba(111,37,30,.22), transparent 62%),
     var(--asset-memory),
-    linear-gradient(135deg,#110d0a,#050403) !important;
-}
-
-.archive-gallery-thumb {
-  background-image:
-    radial-gradient(circle at 50% 24%, rgba(251,239,216,.12), transparent 12rem),
-    linear-gradient(135deg, rgba(111,37,30,.18), transparent 62%),
-    var(--asset-archive),
     linear-gradient(135deg,#110d0a,#050403) !important;
 }
 

@@ -1,0 +1,307 @@
+/* Shared 2026 experience layer. Stable rules live here instead of runtime patches. */
+:root {
+  --premium-gold: #d0ad68;
+  --premium-ivory: #f1eadb;
+  --premium-focus: rgba(224, 188, 111, .96);
+  --world-accent: 208, 173, 104;
+  --world-accent-deep: 79, 55, 25;
+}
+
+html { overflow-y: auto !important; }
+body.veritas-universe { overflow: visible !important; }
+
+body[data-world="raport"] { --world-accent: 190, 124, 85; --world-accent-deep: 83, 35, 24; }
+body[data-world="sztab"] { --world-accent: 185, 137, 79; --world-accent-deep: 77, 47, 19; }
+body[data-world="music"] { --world-accent: 152, 133, 202; --world-accent-deep: 52, 42, 91; }
+body[data-world="between"] { --world-accent: 118, 169, 160; --world-accent-deep: 29, 70, 65; }
+
+html body.veritas-universe.veritas-nav-ready :is(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--premium-focus) !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 5px rgba(7, 6, 5, .86), 0 0 0 7px rgba(208, 173, 104, .28) !important;
+}
+
+body.experience-lite *,
+body.experience-lite *::before,
+body.experience-lite *::after {
+  scroll-behavior: auto;
+}
+
+body.experience-lite .vh-hero-media::before,
+body.experience-lite .world-portal-card::before,
+body.experience-lite .vh-card,
+body.experience-lite .reveal {
+  animation: none !important;
+  transition-duration: 140ms !important;
+}
+
+html[data-experience="lite"]::view-transition-group(root),
+html[data-experience="lite"]::view-transition-group(site-brand),
+html[data-experience="lite"]::view-transition-group(page-hero),
+html[data-experience="reduced"]::view-transition-group(root),
+html[data-experience="reduced"]::view-transition-group(site-brand),
+html[data-experience="reduced"]::view-transition-group(page-hero) {
+  animation-duration: 1ms !important;
+}
+
+html[data-experience="cinematic"]::view-transition-old(root) {
+  animation: premium-root-out 420ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+html[data-experience="cinematic"]::view-transition-new(root) {
+  animation: premium-root-in 520ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+html[data-experience="cinematic"]::view-transition-old(page-hero) {
+  animation: premium-hero-out 480ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+html[data-experience="cinematic"]::view-transition-new(page-hero) {
+  animation: premium-hero-in 620ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+@keyframes premium-root-out {
+  to { opacity: 0; filter: blur(10px) brightness(.66); }
+}
+
+@keyframes premium-root-in {
+  from { opacity: 0; filter: blur(12px) brightness(.62); }
+  to { opacity: 1; filter: none; }
+}
+
+@keyframes premium-hero-out {
+  from { transform: scale(1); filter: blur(0) saturate(1); }
+  to { transform: scale(1.13); filter: blur(13px) saturate(1.18) brightness(.66); }
+}
+
+@keyframes premium-hero-in {
+  from { transform: scale(1.14); filter: blur(16px) saturate(1.2) brightness(.65); }
+  to { transform: scale(1); filter: blur(0) saturate(1) brightness(1); }
+}
+
+body.veritas-universe .vh-section-title::after,
+body.veritas-universe .vh-card h3::after,
+body.veritas-universe .track-document h3::after {
+  content: "";
+  display: block;
+  width: min(9rem, 42%);
+  height: 1px;
+  margin-top: .72rem;
+  background: linear-gradient(90deg, rgba(var(--world-accent), .92), rgba(208, 173, 104, .24), transparent);
+  box-shadow: 0 0 18px rgba(var(--world-accent), .14);
+}
+
+body.veritas-universe::before {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(var(--world-accent), .07), transparent 32rem),
+    radial-gradient(circle at 88% 62%, rgba(var(--world-accent-deep), .12), transparent 38rem) !important;
+}
+
+body.experience-cinematic .vh-hero-copy {
+  transform: translate3d(calc(var(--hero-copy-x, 0px) * -.35), calc(var(--hero-copy-y, 0px) * -.35), 0);
+  transition: transform 500ms cubic-bezier(.16, 1, .3, 1);
+}
+
+body.page-home #worlds .vh-grid.four {
+  align-items: start;
+}
+
+body.page-home #worlds .world-portal-card {
+  aspect-ratio: 4 / 5;
+  min-height: 0 !important;
+  padding: clamp(1rem, 1.7vw, 1.45rem);
+  cursor: pointer;
+}
+
+body.page-home #worlds .world-portal-card p:nth-of-type(n + 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+body.experience-cinematic.page-home #worlds .world-portal-card:first-child {
+  grid-column: span 2;
+  aspect-ratio: 8 / 5;
+  min-height: clamp(27rem, 38vw, 34rem) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.experience-cinematic.page-home #worlds .world-portal-card {
+    transform: perspective(1100px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translate3d(var(--card-x, 0px), var(--card-y, 0px), 0) !important;
+  }
+
+  body.experience-cinematic.page-home #worlds .world-portal-card:hover,
+  body.experience-cinematic.page-home #worlds .world-portal-card:focus-within {
+    transform: perspective(1100px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translate3d(var(--card-x, 0px), calc(var(--card-y, 0px) - 10px), 34px) scale(1.025) !important;
+  }
+
+  body.experience-cinematic.page-home #worlds .world-portal-card::before {
+    transform: translate3d(var(--card-media-x, 0px), var(--card-media-y, 0px), 0) scale(1.1);
+  }
+}
+
+.experience-context-rail {
+  transform: translateY(-50%) !important;
+  transform-origin: center !important;
+  display: none;
+  gap: .48rem;
+  width: 176px;
+  padding: 14px 16px;
+  border: 1px solid rgba(var(--world-accent), .22);
+  border-radius: 16px;
+  background: rgba(7, 6, 5, .72);
+  backdrop-filter: blur(16px);
+}
+
+.experience-rail-label,
+.experience-rail-count {
+  color: rgba(var(--world-accent), .78);
+  font-size: .55rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.experience-rail-chapter {
+  overflow: hidden;
+  color: rgba(241, 234, 219, .76);
+  font: 500 .76rem/1.35 Georgia, serif;
+  letter-spacing: .02em;
+  text-transform: none;
+  text-overflow: ellipsis;
+}
+
+body.experience-rail-suppressed .experience-edge,
+body.experience-rail-suppressed .experience-progress-rail,
+body.experience-rail-suppressed .experience-context-rail {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.premium-content-gate {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  margin: 0;
+  padding: 3rem 1.2rem;
+  border-block: 1px solid rgba(var(--world-accent), .13);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(var(--world-accent), .12), transparent 25rem),
+    linear-gradient(180deg, rgba(7, 6, 5, .12), rgba(7, 6, 5, .72));
+}
+
+.premium-content-gate button {
+  min-height: 52px;
+  padding: 0 1.35rem;
+  border: 1px solid rgba(var(--world-accent), .4);
+  border-radius: 999px;
+  background: rgba(var(--world-accent), .1);
+  color: var(--premium-ivory);
+  font: 650 .7rem/1 Inter, sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .28);
+}
+
+.premium-content-gate button:hover {
+  border-color: rgba(var(--world-accent), .72);
+  background: rgba(var(--world-accent), .18);
+}
+
+.music-listening-dialog {
+  width: min(900px, calc(100vw - 24px));
+  max-height: min(780px, calc(100svh - 24px));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(201, 178, 143, .34);
+  border-radius: 28px;
+  background: #080705;
+  color: var(--premium-ivory);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, .8), 0 0 60px rgba(152, 133, 202, .12);
+}
+
+.music-listening-dialog::backdrop {
+  background: rgba(3, 3, 3, .82);
+  backdrop-filter: blur(14px) saturate(.72);
+}
+
+.music-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid rgba(201, 178, 143, .18);
+  background: radial-gradient(circle at 10% 0, rgba(152, 133, 202, .16), transparent 22rem);
+}
+
+.music-dialog-head strong {
+  font: 500 clamp(1.45rem, 3vw, 2.4rem)/1 Georgia, serif;
+}
+
+.music-dialog-close {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid rgba(201, 178, 143, .26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .04);
+  color: var(--premium-ivory);
+  cursor: pointer;
+}
+
+.music-dialog-stage {
+  min-height: 420px;
+  padding: 1rem;
+  background:
+    linear-gradient(rgba(152, 133, 202, .04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(152, 133, 202, .04) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.music-dialog-stage iframe {
+  width: 100%;
+  height: min(620px, calc(100svh - 150px));
+  border: 0;
+  border-radius: 18px;
+}
+
+@media (max-width: 760px) {
+  body { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
+
+  #mobileDockCinemaToggle { display: inline-flex !important; }
+
+  .mobile-action-dock {
+    top: auto !important;
+    transform: none !important;
+    contain: layout paint;
+  }
+
+  html body.veritas-universe .vh-hero,
+  html body.veritas-universe .vh-hero.vh-hero-compact {
+    min-height: clamp(620px, 84svh, 780px) !important;
+    padding-bottom: max(1.4rem, env(safe-area-inset-bottom));
+  }
+
+  body.page-home #worlds .world-portal-card,
+  body.experience-cinematic.page-home #worlds .world-portal-card:first-child {
+    grid-column: auto;
+    aspect-ratio: 4 / 5;
+    min-height: 0 !important;
+  }
+
+  .premium-content-gate { min-height: 170px; }
+  .music-listening-dialog { border-radius: 20px; }
+  .music-dialog-stage { min-height: 360px; padding: .6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
