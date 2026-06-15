@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Document Studio - Rap-Ort</title>
+  <meta name="description" content="Private publishing desk for Rap-Ort certificates and witness reports.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/navbar.css">
+  <link rel="stylesheet" href="/assets/css/mobile-nav.css">
+  <link rel="stylesheet" href="/assets/css/cinematic.css">
+  <link rel="stylesheet" href="/assets/css/veritas.css">
+  <link rel="stylesheet" href="/assets/css/document-studio.css">
+</head>
+<body class="veritas-universe vh-page document-studio-page" data-lang="en" data-page="document-studio" data-document-mode="admin" data-document-view="edit">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" role="banner"></header>
+  <main class="document-studio-main" id="main">
+    <div class="document-studio-wrap">
+      <header class="document-studio-hero">
+        <div class="document-studio-hero-copy">
+          <p class="document-studio-kicker">RAP-ORT / PRIVATE PUBLISHING DESK</p>
+          <h1 class="document-studio-title">Document Studio</h1>
+          <p class="document-studio-lead">Prepare the visual master for a Certificate and Witness Report, then issue one public participant link. The public page receives the approved design, not these controls.</p>
+          <div class="document-hero-badges" aria-label="Document quality">
+            <span>Local proofing</span><span>A4 print master</span><span>300 DPI export</span>
+          </div>
+        </div>
+        <aside class="document-studio-note"><strong>Privacy by design</strong><span>This route stores no participant data. The issue link contains design settings only. Protect the route at the hosting layer when strict administrator authentication is required.</span></aside>
+      </header>
+
+      <div class="document-view-switch" role="group" aria-label="Workspace view">
+        <button type="button" data-document-view-button="edit" aria-pressed="true">Edit</button>
+        <button type="button" data-document-view-button="preview" aria-pressed="false">Proof</button>
+      </div>
+
+      <div class="document-studio-grid">
+        <form class="document-control-panel" data-document-admin-form>
+          <div class="document-panel-heading"><span>01 / Configure</span><h2>Issue settings</h2><p>Approve the event identity and the visual treatment received by participants.</p></div>
+          <div class="document-tabs" role="tablist" aria-label="Document settings">
+            <button class="document-tab" type="button" role="tab" aria-selected="true" data-document-tab="certificate">Certificate</button>
+            <button class="document-tab" type="button" role="tab" aria-selected="false" data-document-tab="report">Report</button>
+          </div>
+
+          <fieldset class="document-fieldset" data-document-settings="shared">
+            <label class="document-field"><span>Language</span><select name="language"><option value="en">English</option><option value="pl">Polski</option></select></label>
+            <label class="document-field"><span>Event / edition</span><input name="eventTitle" value="Rap-Ort: Prawda Sumienia" maxlength="90"></label>
+            <div class="document-inline-fields">
+              <label class="document-field"><span>Date</span><input name="eventDate" type="date"></label>
+            </div>
+            <label class="document-field"><span>Place / institution</span><input name="eventPlace" placeholder="Event place or institution" maxlength="140"></label>
+          </fieldset>
+
+          <fieldset class="document-fieldset" data-document-settings="certificate">
+            <label class="document-field"><span>Certificate background</span><select name="certificateBackground"><option value="cinema">Archival Cinema</option><option value="museum">Museum Line</option><option value="ceremonial">Ceremonial Frame</option><option value="wall">Wall Edition</option></select></label>
+            <label class="document-field"><span>Stamp</span><select name="certificateStamp"><option value="dry">Dry archival seal</option><option value="event">Event gold accent</option><option value="none">No stamp</option></select></label>
+            <label class="document-field"><span>Participant signature style</span><select name="certificateSignature"><option value="script">Classical script</option><option value="serif">Editorial serif</option><option value="typewriter">Typewriter</option></select></label>
+            <label class="document-field"><span>Author signature</span><select name="certificateAuthorSignature"><option value="gold">Gold signature</option><option value="dark">Dark signature</option><option value="none">No author signature</option></select></label>
+          </fieldset>
+
+          <fieldset class="document-fieldset" data-document-settings="report" hidden>
+            <label class="document-field"><span>Report paper</span><select name="reportBackground"><option value="archival">Archival paper master</option><option value="pilecki">Historical report master</option></select></label>
+            <label class="document-field"><span>Report stamp</span><select name="reportStamp"><option value="dry">Dry archival seal</option><option value="event">Event dark accent</option><option value="none">No stamp</option></select></label>
+            <label class="document-field"><span>Witness signature style</span><select name="reportSignature"><option value="typewriter">Typewriter</option><option value="script">Classical script</option><option value="serif">Editorial serif</option></select></label>
+            <label class="document-field"><span>Opening report line</span><select name="reportQuote"><option value="question">The testimony has been spoken. Now the question remains with you.</option><option value="truth">Truth does not end on the screen. It remains in the decision a human being makes afterwards.</option><option value="silence">The silence after testimony is not empty. It is the place where conscience begins to work.</option></select></label>
+          </fieldset>
+
+          <div class="document-actions">
+            <button class="document-action primary" type="button" data-create-public-link>Prepare public link</button>
+            <button class="document-action" type="button" data-reset-document>Reset</button>
+          </div>
+          <p class="document-status" data-document-status aria-live="polite"></p>
+          <div class="document-share-result" data-share-result hidden>
+            <strong>Participant link</strong>
+            <input data-share-url readonly aria-label="Participant link">
+            <div class="document-actions"><button class="document-action" type="button" data-copy-share-link>Copy link</button><a class="document-action" data-open-share-link target="_blank" rel="noopener">Open public page</a></div>
+          </div>
+        </form>
+
+        <section class="document-proof-shell" aria-label="Approved document proof">
+          <header class="document-proof-toolbar">
+            <div><span>02 / Live proof</span><strong data-proof-title>Certificate / A4 landscape</strong></div>
+            <div class="document-proof-quality" aria-label="Export quality"><span>300 DPI</span><span>Local</span><span>Print ready</span></div>
+            <div class="document-proof-actions">
+              <button type="button" data-proof-zoom="out" aria-label="Zoom out">−</button>
+              <button type="button" data-proof-zoom="fit">Fit</button>
+              <button type="button" data-proof-zoom="in" aria-label="Zoom in">+</button>
+              <button type="button" data-proof-fullscreen>Full proof</button>
+            </div>
+          </header>
+          <div class="document-preview-stage" data-proof-stage>
+            <article class="document-sheet certificate" data-document-preview="certificate">
+              <div class="document-sheet-inner">
+                <span class="document-mark" data-preview-code></span>
+                <div class="certificate-top-meta">
+                  <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
+                  <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
+                </div>
+                <h2 class="document-sheet-title" data-preview-title>Certificate</h2>
+                <p class="document-sheet-copy" data-preview-copy></p>
+                <div class="certificate-name-lockup"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
+                <p class="certificate-closing" data-preview-closing></p>
+              </div>
+              <img class="document-stamp" data-preview-stamp alt="">
+              <img class="document-author-signature" data-preview-author alt="Author signature">
+            </article>
+            <article class="document-sheet report" data-document-preview="report" hidden>
+              <div class="document-sheet-inner">
+                <span class="report-document-number" data-preview-code></span>
+                <div class="report-topline">
+                  <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
+                  <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
+                </div>
+                <h2 class="report-title-text" data-preview-title>Witness Report</h2>
+                <p class="report-quote" data-preview-quote></p>
+                <p class="report-copy" data-preview-copy></p>
+                <div class="report-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="report-signature-row"><span data-preview-signature-label>Witness signature</span><strong data-preview-witness></strong></div>
+              </div>
+              <p class="report-entry" data-preview-entry>The participant will write here on the public page.</p>
+              <img class="document-stamp" data-preview-stamp alt="">
+            </article>
+          </div>
+          <footer class="document-proof-footer"><span>Screen proof uses lightweight assets</span><span>Full masters load only during export</span></footer>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/navigation.js" defer></script>
+  <script src="/assets/js/transitions.js" defer></script>
+  <script src="/assets/js/cinematic.js" defer></script>
+  <script src="/assets/js/veritas.js" defer></script>
+  <script src="/assets/js/document-studio.js" defer></script>
+</body>
+</html>
