@@ -65,34 +65,34 @@
           <div class="document-preview-stage" data-proof-stage>
             <article class="document-sheet certificate" data-document-preview="certificate">
               <div class="document-sheet-inner">
-                <span class="document-mark" data-preview-code></span>
-                <div class="certificate-top-meta">
+                <span class="document-mark" data-preview-code data-layout-fragment="code"></span>
+                <div class="certificate-top-meta" data-layout-fragment="meta">
                   <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
                   <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
                 </div>
-                <h2 class="document-sheet-title" data-preview-title></h2>
-                <p class="document-sheet-copy" data-preview-copy></p>
-                <div class="certificate-name-lockup"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
-                <p class="certificate-closing" data-preview-closing></p>
+                <h2 class="document-sheet-title" data-preview-title data-layout-fragment="title"></h2>
+                <p class="document-sheet-copy" data-preview-copy data-layout-fragment="body"></p>
+                <div class="certificate-name-lockup" data-layout-fragment="name"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
+                <p class="certificate-closing" data-preview-closing data-layout-fragment="closing"></p>
               </div>
-              <img class="document-stamp" data-preview-stamp alt="">
-              <img class="document-author-signature" data-preview-author alt="Author signature">
+              <img class="document-stamp" data-preview-stamp data-layout-fragment="stamp" alt="">
+              <img class="document-author-signature" data-preview-author data-layout-fragment="author" alt="Author signature">
             </article>
             <article class="document-sheet report" data-document-preview="report" hidden>
               <div class="document-sheet-inner">
-                <span class="report-document-number" data-preview-code></span>
-                <div class="report-topline">
+                <span class="report-document-number" data-preview-code data-layout-fragment="code"></span>
+                <div class="report-topline" data-layout-fragment="meta">
                   <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
                   <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
                 </div>
-                <h2 class="report-title-text" data-preview-title></h2>
-                <p class="report-quote" data-preview-quote></p>
-                <p class="report-copy" data-preview-copy></p>
-                <div class="report-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div class="report-signature-row"><span data-preview-signature-label>Witness signature</span><strong data-preview-witness></strong></div>
+                <h2 class="report-title-text" data-preview-title data-layout-fragment="title"></h2>
+                <p class="report-quote" data-preview-quote data-layout-fragment="quote"></p>
+                <p class="report-copy" data-preview-copy data-layout-fragment="instruction"></p>
+                <div class="report-lines" data-layout-fragment="lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="report-signature-row" data-layout-fragment="signature"><span data-preview-signature-label>Witness signature</span><strong data-preview-witness></strong></div>
               </div>
-              <p class="report-entry" data-preview-entry></p>
-              <img class="document-stamp" data-preview-stamp alt="">
+              <p class="report-entry" data-preview-entry data-layout-fragment="entry"></p>
+              <img class="document-stamp" data-preview-stamp data-layout-fragment="stamp" alt="">
             </article>
           </div>
           <footer class="document-proof-footer"><span data-proof-footer-one>Live proof</span><span data-proof-footer-two>Full print quality on export</span></footer>
