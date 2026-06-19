@@ -353,6 +353,34 @@ body.document-studio-page .floating-tools {
   gap: .65rem;
 }
 
+.document-layout-control-panel {
+  padding: .9rem;
+  border: 1px solid rgba(210, 175, 104, .16);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(210, 175, 104, .075), rgba(255, 255, 255, .025)),
+    rgba(0, 0, 0, .16);
+}
+
+.document-layout-number-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.document-layout-number-grid input {
+  padding-inline: .55rem;
+  text-align: center;
+}
+
+.document-actions.compact {
+  padding-top: 0;
+}
+
+.document-layout-hint {
+  margin: -.2rem 0 0;
+  color: rgba(241, 234, 219, .48);
+  font: 600 .68rem/1.45 Inter, sans-serif;
+}
+
 .document-visual-select-label {
   display: grid;
   gap: .35rem;
@@ -697,14 +725,45 @@ body[data-proof-grid="print"] .document-editor-grid {
 
 .document-sheet-inner {
   position: absolute;
-  inset: 7.5% 11%;
+  inset: 0;
   z-index: 3;
   text-align: center;
 }
 
 .document-sheet.report .document-sheet-inner {
-  inset: 4.7% 9%;
+  inset: 0;
   text-align: left;
+}
+
+.document-sheet [data-layout-fragment] {
+  box-sizing: border-box;
+  right: auto;
+  bottom: auto;
+  max-width: none;
+  transform: none;
+}
+
+body[data-document-mode="admin"] .document-sheet [data-layout-fragment] {
+  cursor: grab;
+  outline: 1px solid rgba(239, 213, 155, 0);
+  outline-offset: 3px;
+  transition: outline-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+body[data-document-mode="admin"] .document-sheet [data-layout-fragment]:hover,
+body[data-document-mode="admin"] .document-sheet [data-layout-fragment].is-layout-selected {
+  outline-color: rgba(239, 213, 155, .72);
+  box-shadow: 0 0 0 999px rgba(0, 0, 0, 0), 0 0 22px rgba(239, 213, 155, .18);
+}
+
+body[data-document-mode="admin"] .document-sheet [data-layout-fragment].is-layout-selected {
+  background: rgba(239, 213, 155, .055);
+}
+
+body[data-document-mode="admin"] .document-sheet [data-layout-fragment].is-layout-dragging {
+  cursor: grabbing;
+  outline-color: var(--doc-gold-bright);
+  box-shadow: 0 0 0 1px rgba(8, 6, 3, .5), 0 0 30px rgba(239, 213, 155, .28);
 }
 
 .document-mark {
@@ -738,6 +797,8 @@ body[data-proof-grid="print"] .document-editor-grid {
   line-height: .9;
   letter-spacing: .06em;
   text-transform: uppercase;
+  background: transparent;
+  mix-blend-mode: normal;
   font-kerning: normal;
   font-variant-ligatures: common-ligatures;
   text-shadow:
@@ -978,6 +1039,8 @@ body[data-proof-grid="print"] .document-editor-grid {
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
+  background: transparent;
+  mix-blend-mode: multiply;
 }
 
 .report-quote {
