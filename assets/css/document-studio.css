@@ -287,6 +287,28 @@ body.document-studio-page .floating-tools {
   transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
 }
 
+.document-range-field span {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  align-items: center;
+}
+
+.document-range-field output {
+  color: var(--doc-gold-bright);
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.document-field input[type="range"] {
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--doc-gold-bright);
+  cursor: pointer;
+}
+
 .document-field input:hover,
 .document-field select:hover,
 .document-field textarea:hover {
@@ -633,6 +655,46 @@ body.document-exporting .document-status::before {
   mix-blend-mode: multiply;
 }
 
+.document-editor-grid {
+  position: absolute;
+  z-index: 9;
+  inset: 7%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+body[data-document-mode="admin"] .document-editor-grid {
+  opacity: .72;
+}
+
+body[data-proof-grid="off"] .document-editor-grid,
+body[data-document-mode="public"] .document-editor-grid {
+  opacity: 0;
+}
+
+body[data-proof-grid="safe"] .document-editor-grid {
+  border: 1px solid rgba(239, 213, 155, .48);
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(239, 213, 155, .38) 50%, transparent calc(50% + .5px)),
+    linear-gradient(transparent calc(50% - .5px), rgba(239, 213, 155, .38) 50%, transparent calc(50% + .5px));
+  box-shadow: 0 0 0 1px rgba(7, 6, 4, .24), inset 0 0 0 1px rgba(7, 6, 4, .18);
+}
+
+body[data-proof-grid="thirds"] .document-editor-grid {
+  background:
+    linear-gradient(90deg, transparent 33.2%, rgba(239, 213, 155, .42) 33.3%, transparent 33.45%, transparent 66.55%, rgba(239, 213, 155, .42) 66.7%, transparent 66.8%),
+    linear-gradient(transparent 33.2%, rgba(239, 213, 155, .42) 33.3%, transparent 33.45%, transparent 66.55%, rgba(239, 213, 155, .42) 66.7%, transparent 66.8%);
+}
+
+body[data-proof-grid="print"] .document-editor-grid {
+  background:
+    repeating-linear-gradient(90deg, rgba(239, 213, 155, .28) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(rgba(239, 213, 155, .28) 0 1px, transparent 1px 32px),
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(239, 213, 155, .5) 50%, transparent calc(50% + .5px)),
+    linear-gradient(transparent calc(50% - .5px), rgba(239, 213, 155, .5) 50%, transparent calc(50% + .5px));
+}
+
 .document-sheet-inner {
   position: absolute;
   inset: 7.5% 11%;
@@ -666,11 +728,14 @@ body.document-exporting .document-status::before {
 
 .document-sheet-title {
   position: absolute;
-  top: 24%;
+  top: var(--cert-title-top, 24%);
   left: 5%;
   right: 5%;
   margin: 0;
-  font: 600 clamp(1.35rem, 3.1vw, 3.75rem)/.9 DocCinzel, serif;
+  font-family: DocCinzel, serif;
+  font-size: calc(clamp(1.35rem, 3.1vw, 3.75rem) * var(--cert-title-scale, 1));
+  font-weight: 600;
+  line-height: .9;
   letter-spacing: .06em;
   text-transform: uppercase;
   font-kerning: normal;
@@ -683,7 +748,7 @@ body.document-exporting .document-status::before {
 
 .certificate-top-meta {
   position: absolute;
-  top: 7%;
+  top: var(--cert-meta-top, 7%);
   left: 0;
   right: 0;
   display: grid;
@@ -725,7 +790,7 @@ body.document-exporting .document-status::before {
 
 .certificate-name-lockup {
   position: absolute;
-  top: 65.5%;
+  top: var(--cert-name-top, 65.5%);
   left: 50%;
   max-width: 70%;
   transform: translateX(-50%);
@@ -737,7 +802,11 @@ body.document-exporting .document-status::before {
   margin: 0;
   padding: 0 .55em .23em;
   color: #fff7dd;
-  font: 500 clamp(1.2rem, 3vw, 3.5rem)/1 DocSignature, serif;
+  font-family: DocSignature, serif;
+  font-size: calc(clamp(1.2rem, 3vw, 3.5rem) * var(--cert-name-scale, 1));
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
   text-shadow: 0 .5rem 1.8rem rgba(0, 0, 0, .42);
   white-space: nowrap;
 }
@@ -755,29 +824,35 @@ body.document-exporting .document-status::before {
 
 .document-sheet-copy {
   position: absolute;
-  top: 39%;
+  top: var(--cert-copy-top, 39%);
   left: 13%;
   right: 13%;
   margin: 0;
   color: rgba(246, 233, 200, .78);
-  font: 400 clamp(.45rem, .85vw, .8rem)/1.55 DocSerif, serif;
+  font-family: DocSerif, serif;
+  font-size: calc(clamp(.45rem, .85vw, .8rem) * var(--cert-body-scale, 1));
+  font-weight: 400;
+  line-height: 1.55;
   white-space: pre-line;
 }
 
 .certificate-closing {
   position: absolute;
-  top: 78%;
+  top: var(--cert-closing-top, 78%);
   left: 20%;
   right: 20%;
   margin: 0;
   color: rgba(246, 233, 200, .7);
-  font: 400 clamp(.38rem, .7vw, .66rem)/1.45 DocSerif, serif;
+  font-family: DocSerif, serif;
+  font-size: calc(clamp(.38rem, .7vw, .66rem) * var(--cert-body-scale, 1));
+  font-weight: 400;
+  line-height: 1.45;
 }
 
 .document-author-signature {
   position: absolute;
   left: 39%;
-  bottom: 6.5%;
+  bottom: var(--cert-author-bottom, 6.5%);
   width: 22%;
   max-height: 10%;
   object-fit: contain;
@@ -788,9 +863,9 @@ body.document-exporting .document-status::before {
 
 .document-stamp {
   position: absolute;
-  top: 17%;
-  left: 46.75%;
-  width: 6.5%;
+  top: var(--cert-stamp-top, 17%);
+  left: var(--cert-stamp-left, 46.75%);
+  width: var(--cert-stamp-width, 6.5%);
   aspect-ratio: 1;
   object-fit: contain;
   z-index: 4;
@@ -804,7 +879,7 @@ body.document-exporting .document-status::before {
 .document-sheet.report .document-stamp {
   top: auto;
   right: auto;
-  bottom: 8%;
+  bottom: var(--report-stamp-bottom, 8%);
   left: 8%;
   width: 18%;
   opacity: .76;
@@ -887,13 +962,16 @@ body.document-exporting .document-status::before {
 
 .report-title-text {
   position: absolute;
-  top: 13.2%;
+  top: var(--report-title-top, 13.2%);
   left: 8%;
   right: 8%;
   margin: 0;
   color: #292117;
   overflow: hidden;
-  font: 700 clamp(1rem, 6.2cqw, 2.4rem)/1 DocTypewriter, monospace;
+  font-family: DocTypewriter, monospace;
+  font-size: calc(clamp(1rem, 6.2cqw, 2.4rem) * var(--report-title-scale, 1));
+  font-weight: 700;
+  line-height: 1;
   letter-spacing: .055em;
   text-align: center;
   text-shadow: .7px .7px 0 rgba(58, 43, 26, .3), -.4px -.4px 0 rgba(255, 249, 228, .6);
@@ -904,7 +982,7 @@ body.document-exporting .document-status::before {
 
 .report-quote {
   position: absolute;
-  top: 22.5%;
+  top: var(--report-quote-top, 22.5%);
   left: 0;
   right: 0;
   margin: 0;
@@ -916,7 +994,7 @@ body.document-exporting .document-status::before {
 
 .report-copy {
   position: absolute;
-  top: 34.5%;
+  top: var(--report-copy-top, 34.5%);
   left: 0;
   right: 0;
   margin: 0;
@@ -925,10 +1003,10 @@ body.document-exporting .document-status::before {
 
 .report-lines {
   position: absolute;
-  top: 44%;
+  top: var(--report-lines-top, 44%);
   left: 0;
   right: 0;
-  height: 33.5%;
+  height: var(--report-lines-height, 33.5%);
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   border-top: 1px solid rgba(66, 50, 29, .28);
@@ -942,19 +1020,22 @@ body.document-exporting .document-status::before {
   position: absolute;
   left: 9%;
   right: 9%;
-  top: 45.5%;
+  top: var(--report-entry-top, 45.5%);
   z-index: 3;
   max-height: 31%;
   overflow: hidden;
   color: #282016;
-  font: 500 clamp(.5rem, .9vw, .78rem)/2.12 DocTypewriter, monospace;
+  font-family: DocTypewriter, monospace;
+  font-size: calc(clamp(.5rem, .9vw, .78rem) * var(--report-text-scale, 1));
+  font-weight: 500;
+  line-height: 2.12;
   white-space: pre-wrap;
 }
 
 .report-signature-row {
   position: absolute;
   right: 0;
-  bottom: 4.8%;
+  bottom: var(--report-signature-bottom, 4.8%);
   width: 46%;
   display: flex;
   flex-direction: column-reverse;
@@ -1086,6 +1167,11 @@ body.document-exporting .document-status::before {
     -webkit-backdrop-filter: blur(16px);
   }
 
+  body[data-document-mode="public"] .document-view-switch {
+    top: max(10px, env(safe-area-inset-top));
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .42);
+  }
+
   .document-studio-grid,
   .document-public-layout {
     grid-template-columns: 1fr;
@@ -1107,6 +1193,10 @@ body.document-exporting .document-status::before {
 
   .document-preview-stage {
     min-height: 64svh;
+  }
+
+  body[data-document-mode="public"][data-document-view="edit"] .document-public-card {
+    min-height: calc(100svh - 176px);
   }
 }
 
@@ -1144,6 +1234,24 @@ body.document-exporting .document-status::before {
     border-radius: 20px;
   }
 
+  body[data-document-mode="public"] .document-public-card {
+    padding-bottom: calc(5.6rem + env(safe-area-inset-bottom));
+  }
+
+  body[data-document-mode="public"] .document-panel {
+    gap: .9rem;
+  }
+
+  body[data-document-mode="public"] .document-field input,
+  body[data-document-mode="public"] .document-field textarea {
+    min-height: 54px;
+    font-size: 16px;
+  }
+
+  body[data-document-mode="public"] .document-field textarea {
+    min-height: min(34svh, 220px);
+  }
+
   .document-inline-fields,
   .document-visual-options {
     grid-template-columns: 1fr;
@@ -1158,8 +1266,22 @@ body.document-exporting .document-status::before {
     grid-template-columns: 1fr;
   }
 
+  body[data-document-mode="public"] .document-panel .document-actions {
+    position: sticky;
+    z-index: 20;
+    bottom: calc(.65rem + env(safe-area-inset-bottom));
+    padding: .5rem;
+    border: 1px solid rgba(210, 175, 104, .18);
+    border-radius: 18px;
+    background: rgba(8, 7, 5, .92);
+    box-shadow: 0 -18px 44px rgba(0, 0, 0, .42);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
   .document-action {
     width: 100%;
+    min-height: 48px;
   }
 
   .document-proof-toolbar {
@@ -1175,7 +1297,7 @@ body.document-exporting .document-status::before {
 
   .document-preview-stage {
     min-height: 62svh;
-    padding: .65rem;
+    padding: .55rem;
     place-items: start center;
   }
 

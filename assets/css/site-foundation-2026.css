@@ -1,0 +1,236 @@
+@layer reset, tokens, world, layout, components, effects, utilities;
+
+@layer tokens {
+  :root {
+    --world-accent: #e8cf97;
+    --world-accent-rgb: 232, 207, 151;
+    --world-gold: #efd89f;
+    --world-ink: #090705;
+    --world-ivory: #f7ecd6;
+    --world-muted: rgba(247, 236, 214, .72);
+    --world-edge: rgba(var(--world-accent-rgb), .22);
+    --world-edge-strong: rgba(var(--world-accent-rgb), .46);
+    --world-glow: rgba(var(--world-accent-rgb), .20);
+    --world-texture-opacity: .18;
+    --vh-hero-position: center top;
+    --vh-hero-position-mobile: center top;
+    --hero-cursor-x-px: 0px;
+    --hero-cursor-y-px: 0px;
+    --page-transition-lite-ms: 150ms;
+    --page-transition-cinematic-ms: 460ms;
+    --section-contain-size: 760px;
+  }
+
+  html[data-world="raport"] {
+    --world-accent: #dfb86f;
+    --world-accent-rgb: 223, 184, 111;
+    --world-gold: #f0d89e;
+    --vh-hero-position: center 18%;
+    --vh-hero-position-mobile: 54% 18%;
+  }
+
+  html[data-world="sztab"] {
+    --world-accent: #caa35f;
+    --world-accent-rgb: 202, 163, 95;
+    --world-gold: #f4d99b;
+    --vh-hero-position: center 20%;
+    --vh-hero-position-mobile: 50% 21%;
+  }
+
+  html[data-world="music"] {
+    --world-accent: #b9a7ff;
+    --world-accent-rgb: 185, 167, 255;
+    --world-gold: #ead7a0;
+    --vh-hero-position: 48% 26%;
+    --vh-hero-position-mobile: 50% 22%;
+  }
+
+  html[data-world="between"] {
+    --world-accent: #98c7da;
+    --world-accent-rgb: 152, 199, 218;
+    --world-gold: #ead59a;
+    --vh-hero-position: 50% 34%;
+    --vh-hero-position-mobile: 52% 28%;
+  }
+
+  html[data-world="prawda"] {
+    --world-accent: #d4b777;
+    --world-accent-rgb: 212, 183, 119;
+    --world-gold: #f0dcaa;
+    --vh-hero-position: center 18%;
+    --vh-hero-position-mobile: 52% 18%;
+  }
+
+  html[data-world="institution"] {
+    --world-accent: #d8c18a;
+    --world-accent-rgb: 216, 193, 138;
+    --vh-hero-position: 50% 24%;
+    --vh-hero-position-mobile: 50% 20%;
+  }
+}
+
+@layer world {
+  body[data-world] .vh-kicker,
+  body[data-world] .section-kicker,
+  body[data-world] .eyebrow {
+    color: var(--world-accent);
+  }
+
+  body[data-world] .vh-title,
+  body[data-world] .section-title {
+    text-shadow:
+      0 1px 0 rgba(255, 240, 197, .18),
+      0 18px 54px rgba(0, 0, 0, .52),
+      0 0 38px var(--world-glow);
+  }
+
+  body[data-world] .vh-hero-copy::after {
+    content: "";
+    display: block;
+    width: min(18rem, 54vw);
+    height: 1px;
+    margin-top: clamp(1rem, 2vw, 1.35rem);
+    background:
+      linear-gradient(90deg, transparent, var(--world-edge-strong), var(--world-gold), var(--world-edge-strong), transparent);
+    opacity: .72;
+  }
+
+  body[data-world] .world-portal-card,
+  body[data-world] .cinematic-entry-card,
+  body[data-world] .project-link-card {
+    border-color: var(--world-edge);
+    box-shadow: 0 30px 96px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .055);
+  }
+
+  body[data-world] .world-portal-card:is(:hover, :focus-within),
+  body[data-world] .cinematic-entry-card:is(:hover, :focus-within),
+  body[data-world] .project-link-card:is(:hover, :focus-within) {
+    border-color: var(--world-edge-strong);
+    box-shadow: 0 34px 118px rgba(0, 0, 0, .48), 0 0 42px var(--world-glow);
+  }
+}
+
+@layer layout {
+  body:not(.psx-page) .vh-main > .vh-section:nth-of-type(n + 3),
+  body:not(.psx-page) main > section:nth-of-type(n + 4) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto var(--section-contain-size);
+  }
+
+  [data-asset-tier="print"],
+  [data-lazy-master],
+  .asset-tier-print {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 520px;
+  }
+
+  @media (max-width: 760px) {
+    :root {
+      --section-contain-size: 620px;
+    }
+
+    body.veritas-universe .vh-hero,
+    body.veritas-universe .vh-hero.vh-hero-compact {
+      min-height: clamp(570px, 84svh, 720px);
+    }
+
+    body[data-world] .vh-hero-copy::after {
+      width: min(13rem, 70vw);
+      margin-top: .85rem;
+    }
+  }
+}
+
+@layer components {
+  [data-compressible][data-collapsed="true"] {
+    max-height: var(--collapsed-height, 36rem);
+    overflow: hidden;
+    position: relative;
+  }
+
+  [data-compressible][data-collapsed="true"]::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 9rem;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(5, 4, 3, 0), #050403 78%);
+  }
+
+  .content-reveal-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: 1rem;
+    padding: .75rem 1.05rem;
+    border: 1px solid var(--world-edge-strong);
+    border-radius: 999px;
+    background: rgba(var(--world-accent-rgb), .08);
+    color: var(--world-ivory);
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+@layer effects {
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-experience="cinematic"] body.veritas-universe .vh-hero-media::before {
+      transition: transform .24s ease-out, filter .24s ease-out;
+    }
+
+    html[data-experience="cinematic"] body.veritas-universe .world-portal-card,
+    html[data-experience="cinematic"] body.veritas-universe .cinematic-entry-card,
+    html[data-experience="cinematic"] body.veritas-universe .project-link-card {
+      transition: transform .22s ease-out, border-color .22s ease-out, box-shadow .22s ease-out;
+      transform: translate3d(var(--card-cursor-x, 0px), var(--card-cursor-y, 0px), 0);
+    }
+
+    html[data-experience="cinematic"]::view-transition-old(page-hero) {
+      animation-duration: var(--page-transition-cinematic-ms);
+      animation-timing-function: cubic-bezier(.2, .74, .2, 1);
+      filter: blur(10px) brightness(.88);
+      transform: scale(1.045);
+    }
+
+    html[data-experience="cinematic"]::view-transition-new(page-hero) {
+      animation-duration: var(--page-transition-cinematic-ms);
+      animation-timing-function: cubic-bezier(.2, .74, .2, 1);
+      transform: scale(1.035);
+    }
+
+    html:not([data-experience="cinematic"])::view-transition-old(root),
+    html:not([data-experience="cinematic"])::view-transition-new(root) {
+      animation-duration: var(--page-transition-lite-ms);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer utilities {
+  :where(a, button, input, textarea, select, summary, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid rgba(239, 216, 159, .9);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px rgba(239, 216, 159, .16);
+  }
+
+  .is-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
