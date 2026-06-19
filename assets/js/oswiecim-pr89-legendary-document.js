@@ -8,7 +8,7 @@
   function stylePreview() {
     const style = document.createElement('style');
     style.textContent = `
-      .qr-participation .doc-bg{background:none!important;background-color:#0d0b09!important;}
+      .qr-participation .doc-bg{background:url('/public/assets/reports/participation-record-bg-03-ceremonial-frame-preview.webp') center/cover no-repeat!important;background-color:#0d0b09!important;}
       .qr-participation .doc-bg::after{display:none!important;content:none!important;}
       .qr-participation .doc-content{inset:0!important;display:block!important;text-align:center!important;font-family:Georgia,'Times New Roman',serif!important;}
       .qr-participation .topline,.qr-participation .subTitle,.qr-participation .topVeritasSealPreview{display:none!important;}

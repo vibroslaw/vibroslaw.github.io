@@ -60,31 +60,168 @@
   };
 
   const defaults = {
-    version: 2,
+    version: 3,
     language: "en",
     eventTitle: "Rap-Ort: Prawda Sumienia",
     eventDate: isoToday,
     eventPlace: "",
+    studioPreset: "balanced",
+    proofGrid: "safe",
     certificateBackground: "cinema",
     certificateStamp: "dry",
     certificateSignature: "script",
     certificateAuthorSignature: "gold",
+    certificateLayout: "classic",
+    certificateTitleScale: 100,
+    certificateBodyScale: 100,
+    certificateNameScale: 100,
     reportBackground: "archival",
     reportStamp: "dry",
     reportSignature: "typewriter",
     reportQuote: "question",
+    reportLayout: "archive",
+    reportTitleScale: 100,
+    reportTextScale: 100,
   };
 
   const allowed = {
     language: ["en", "pl"],
+    studioPreset: ["balanced", "ceremony", "field", "minimal"],
+    proofGrid: ["off", "safe", "thirds", "print"],
     certificateBackground: Object.keys(assets.certificateBackgrounds),
     certificateStamp: ["dry", "event", "none"],
     certificateSignature: ["script", "serif", "typewriter"],
     certificateAuthorSignature: ["gold", "dark", "none"],
+    certificateLayout: ["classic", "gallery", "ceremonial"],
     reportBackground: Object.keys(assets.reportBackgrounds),
     reportStamp: ["dry", "event", "none"],
     reportSignature: ["script", "serif", "typewriter"],
     reportQuote: ["question", "truth", "silence"],
+    reportLayout: ["archive", "field", "compact"],
+  };
+
+  const numericFields = {
+    certificateTitleScale: [88, 116],
+    certificateBodyScale: [88, 112],
+    certificateNameScale: [86, 118],
+    reportTitleScale: [86, 116],
+    reportTextScale: [88, 112],
+  };
+
+  const studioPresets = {
+    balanced: {
+      certificateBackground: "cinema",
+      certificateStamp: "dry",
+      certificateSignature: "script",
+      certificateAuthorSignature: "gold",
+      certificateLayout: "classic",
+      certificateTitleScale: 100,
+      certificateBodyScale: 100,
+      certificateNameScale: 100,
+      reportBackground: "archival",
+      reportStamp: "dry",
+      reportSignature: "typewriter",
+      reportQuote: "question",
+      reportLayout: "archive",
+      reportTitleScale: 100,
+      reportTextScale: 100,
+    },
+    ceremony: {
+      certificateBackground: "ceremonial",
+      certificateStamp: "event",
+      certificateSignature: "script",
+      certificateAuthorSignature: "gold",
+      certificateLayout: "ceremonial",
+      certificateTitleScale: 106,
+      certificateBodyScale: 98,
+      certificateNameScale: 108,
+      reportBackground: "archival",
+      reportStamp: "event",
+      reportSignature: "typewriter",
+      reportQuote: "truth",
+      reportLayout: "field",
+      reportTitleScale: 104,
+      reportTextScale: 100,
+    },
+    field: {
+      certificateBackground: "museum",
+      certificateStamp: "dry",
+      certificateSignature: "serif",
+      certificateAuthorSignature: "dark",
+      certificateLayout: "gallery",
+      certificateTitleScale: 98,
+      certificateBodyScale: 102,
+      certificateNameScale: 100,
+      reportBackground: "pilecki",
+      reportStamp: "dry",
+      reportSignature: "typewriter",
+      reportQuote: "silence",
+      reportLayout: "field",
+      reportTitleScale: 96,
+      reportTextScale: 104,
+    },
+    minimal: {
+      certificateBackground: "cinema",
+      certificateStamp: "none",
+      certificateSignature: "serif",
+      certificateAuthorSignature: "none",
+      certificateLayout: "classic",
+      certificateTitleScale: 96,
+      certificateBodyScale: 96,
+      certificateNameScale: 98,
+      reportBackground: "archival",
+      reportStamp: "none",
+      reportSignature: "typewriter",
+      reportQuote: "question",
+      reportLayout: "compact",
+      reportTitleScale: 94,
+      reportTextScale: 98,
+    },
+  };
+
+  const certificateLayouts = {
+    classic: {
+      label: "Classic landing",
+      metaTop: 7, stampTop: 17, stampLeft: 46.75, stampWidth: 6.5,
+      titleTop: 24, copyTop: 39, nameTop: 65.5, closingTop: 78, authorBottom: 6.5,
+      canvas: { stampY: .17, stampW: .065, stampH: .07, titleY: .33, bodyY: .42, nameY: .695, closingY: .765, authorY: .84 },
+      pdf: { stampY: 455, stampW: 54, stampH: 39, titleY: 393, bodyY: 344, nameY: 181, underlineY: 169, closingY: 137, authorY: 40 },
+    },
+    gallery: {
+      label: "Gallery centred",
+      metaTop: 7.5, stampTop: 15.5, stampLeft: 46.95, stampWidth: 6.1,
+      titleTop: 22, copyTop: 37, nameTop: 67, closingTop: 80, authorBottom: 5.5,
+      canvas: { stampY: .155, stampW: .061, stampH: .064, titleY: .305, bodyY: .398, nameY: .71, closingY: .79, authorY: .85 },
+      pdf: { stampY: 468, stampW: 51, stampH: 36, titleY: 408, bodyY: 357, nameY: 172, underlineY: 160, closingY: 122, authorY: 34 },
+    },
+    ceremonial: {
+      label: "Ceremonial signature",
+      metaTop: 8, stampTop: 18.5, stampLeft: 46.5, stampWidth: 7,
+      titleTop: 25.5, copyTop: 41, nameTop: 62.5, closingTop: 75.5, authorBottom: 7.5,
+      canvas: { stampY: .185, stampW: .07, stampH: .076, titleY: .345, bodyY: .442, nameY: .67, closingY: .745, authorY: .835 },
+      pdf: { stampY: 442, stampW: 58, stampH: 42, titleY: 384, bodyY: 331, nameY: 196, underlineY: 184, closingY: 149, authorY: 45 },
+    },
+  };
+
+  const reportLayouts = {
+    archive: {
+      label: "Archive master",
+      titleTop: 13.2, quoteTop: 22.5, copyTop: 34.5, linesTop: 44, linesHeight: 33.5, entryTop: 45.5, stampBottom: 8, signatureBottom: 4.8,
+      canvas: { titleTop: .158, quoteY: .265, instructionY: .33, lineTop: .425, lineGap: .062, witnessY: .86, stampY: .77 },
+      pdf: { titleY: 642, quoteY: 615, instructionY: 560, lineY: 484, lineGap: 52, witnessY: 118, stampY: 76 },
+    },
+    field: {
+      label: "Field form",
+      titleTop: 12, quoteTop: 21, copyTop: 32, linesTop: 41, linesHeight: 36, entryTop: 42.4, stampBottom: 7.2, signatureBottom: 4.2,
+      canvas: { titleTop: .145, quoteY: .245, instructionY: .305, lineTop: .395, lineGap: .065, witnessY: .875, stampY: .765 },
+      pdf: { titleY: 654, quoteY: 632, instructionY: 581, lineY: 509, lineGap: 55, witnessY: 105, stampY: 80 },
+    },
+    compact: {
+      label: "Compact witness",
+      titleTop: 11.5, quoteTop: 20, copyTop: 30.5, linesTop: 39.5, linesHeight: 35, entryTop: 41, stampBottom: 7.8, signatureBottom: 5,
+      canvas: { titleTop: .135, quoteY: .235, instructionY: .292, lineTop: .382, lineGap: .061, witnessY: .855, stampY: .77 },
+      pdf: { titleY: 662, quoteY: 640, instructionY: 592, lineY: 520, lineGap: 51, witnessY: 123, stampY: 78 },
+    },
   };
 
   const copy = {
@@ -240,6 +377,10 @@
     Object.keys(allowed).forEach((key) => {
       if (allowed[key].includes(raw[key])) next[key] = raw[key];
     });
+    Object.entries(numericFields).forEach(([key, [min, max]]) => {
+      const number = Number(raw[key]);
+      next[key] = Number.isFinite(number) ? Math.min(max, Math.max(min, Math.round(number))) : defaults[key];
+    });
     next.eventTitle = clampText(raw.eventTitle || defaults.eventTitle, 90);
     next.eventDate = /^\d{4}-\d{2}-\d{2}$/.test(raw.eventDate || "") ? raw.eventDate : defaults.eventDate;
     next.eventPlace = clampText(raw.eventPlace, 140);
@@ -311,6 +452,62 @@
   const certificatePreview = () => assets.certificatePreviews[config.certificateBackground];
   const reportBackground = () => assets.reportBackgrounds[config.reportBackground];
   const reportPreview = () => assets.reportPreviews[config.reportBackground];
+  const percent = (value) => `${value}%`;
+  const scaleValue = (key) => Number(config[key] || 100) / 100;
+  const certificateLayout = () => certificateLayouts[config.certificateLayout] || certificateLayouts.classic;
+  const reportLayout = () => reportLayouts[config.reportLayout] || reportLayouts.archive;
+
+  function syncEditorTools() {
+    body.dataset.proofGrid = mode === "admin" ? config.proofGrid : "off";
+    $$("[data-range-output]").forEach((output) => {
+      const key = output.dataset.rangeOutput;
+      output.textContent = `${config[key] || defaults[key]}%`;
+    });
+  }
+
+  function ensureGridLayer(sheet) {
+    if (mode !== "admin") return;
+    if (!sheet || sheet.querySelector(".document-editor-grid")) return;
+    const layer = document.createElement("span");
+    layer.className = "document-editor-grid";
+    layer.setAttribute("aria-hidden", "true");
+    sheet.appendChild(layer);
+  }
+
+  function applySheetLayout(sheet, type) {
+    if (!sheet) return;
+    ensureGridLayer(sheet);
+    const style = sheet.style;
+    if (type === "certificate") {
+      const layout = certificateLayout();
+      sheet.dataset.layout = config.certificateLayout;
+      style.setProperty("--cert-meta-top", percent(layout.metaTop));
+      style.setProperty("--cert-stamp-top", percent(layout.stampTop));
+      style.setProperty("--cert-stamp-left", percent(layout.stampLeft));
+      style.setProperty("--cert-stamp-width", percent(layout.stampWidth));
+      style.setProperty("--cert-title-top", percent(layout.titleTop));
+      style.setProperty("--cert-copy-top", percent(layout.copyTop));
+      style.setProperty("--cert-name-top", percent(layout.nameTop));
+      style.setProperty("--cert-closing-top", percent(layout.closingTop));
+      style.setProperty("--cert-author-bottom", percent(layout.authorBottom));
+      style.setProperty("--cert-title-scale", scaleValue("certificateTitleScale").toFixed(2));
+      style.setProperty("--cert-body-scale", scaleValue("certificateBodyScale").toFixed(2));
+      style.setProperty("--cert-name-scale", scaleValue("certificateNameScale").toFixed(2));
+      return;
+    }
+    const layout = reportLayout();
+    sheet.dataset.layout = config.reportLayout;
+    style.setProperty("--report-title-top", percent(layout.titleTop));
+    style.setProperty("--report-quote-top", percent(layout.quoteTop));
+    style.setProperty("--report-copy-top", percent(layout.copyTop));
+    style.setProperty("--report-lines-top", percent(layout.linesTop));
+    style.setProperty("--report-lines-height", percent(layout.linesHeight));
+    style.setProperty("--report-entry-top", percent(layout.entryTop));
+    style.setProperty("--report-stamp-bottom", percent(layout.stampBottom));
+    style.setProperty("--report-signature-bottom", percent(layout.signatureBottom));
+    style.setProperty("--report-title-scale", scaleValue("reportTitleScale").toFixed(2));
+    style.setProperty("--report-text-scale", scaleValue("reportTextScale").toFixed(2));
+  }
 
   function stampAsset(type, preview = false) {
     const selection = type === "certificate" ? config.certificateStamp : config.reportStamp;
@@ -362,6 +559,7 @@
   function activateSheetAssets(sheet, type) {
     if (!sheet) return;
     const cert = type === "certificate";
+    applySheetLayout(sheet, type);
     sheet.style.setProperty("--document-background", `url('${cert ? certificatePreview() : reportPreview()}')`);
     setImageSource($("[data-preview-stamp]", sheet), stampAsset(type, true));
     setImageSource($("[data-preview-author]", sheet), cert ? authorAsset(type) : "");
@@ -392,7 +590,7 @@
     if (!String(text || "").trim()) return 0;
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-    ctx.font = "60px DocTypewriter, monospace";
+    ctx.font = `${60 * scaleValue("reportTextScale")}px DocTypewriter, monospace`;
     return wrapLines(ctx, text, 2066).length;
   }
 
@@ -427,6 +625,7 @@
       sheet.hidden = !isActive;
       if (isActive) activateSheetAssets(sheet, activeType);
     });
+    syncEditorTools();
     updateReportMeter();
   }
 
@@ -497,6 +696,7 @@
     config = sanitizeConfig(next);
     localStorage.setItem("vhDocumentStudioIssue", JSON.stringify(config));
     syncVisualOptions();
+    syncEditorTools();
     updatePreview();
   }
 
@@ -504,6 +704,17 @@
     Object.entries(config).forEach(([key, value]) => {
       const field = form.elements.namedItem(key);
       if (field) field.value = value;
+    });
+  }
+
+  function applyStudioPresetToForm(form, name) {
+    const preset = studioPresets[name];
+    if (!form || !preset) return;
+
+    Object.entries(preset).forEach(([key, value]) => {
+      const field = form.elements.namedItem(key);
+      if (!field) return;
+      field.value = value;
     });
   }
 
@@ -773,6 +984,10 @@
       loadImage(stampAsset("certificate")).catch(() => null),
       loadImage(authorAsset("certificate")).catch(() => null),
     ]);
+    const layout = certificateLayout().canvas;
+    const titleScale = scaleValue("certificateTitleScale");
+    const bodyScale = scaleValue("certificateBodyScale");
+    const nameScale = scaleValue("certificateNameScale");
     drawCover(ctx, background, width, height);
     drawTextureOverlay(ctx, texture, width, height, .13);
     const shade = ctx.createLinearGradient(0, 0, 0, height);
@@ -810,23 +1025,24 @@
     drawPremiumRule(ctx, metaLeft, metaLeft + metaWidth, height * .188, width);
     drawPremiumRule(ctx, metaRight - metaWidth, metaRight, height * .188, width);
 
-    drawSeal25D(ctx, stamp, width * .4675, height * .17, width * .065, height * .07, .92, true);
-    drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), width / 2, height * .33, {
-      size: Math.round(width * .052), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: width * .7,
+    drawSeal25D(ctx, stamp, width * ((1 - layout.stampW) / 2), height * layout.stampY, width * layout.stampW, height * layout.stampH, .92, true);
+    drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), width / 2, height * layout.titleY, {
+      size: Math.round(width * .052 * titleScale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: width * .7,
     });
     ctx.fillStyle = "rgba(245,230,196,.82)";
-    ctx.font = `${Math.round(width * .014)}px DocSerif, serif`;
-    drawCenteredLines(ctx, wrapLines(ctx, C().certificateBody, width * .62).slice(0, 9), width / 2, height * .42, height * .03);
+    const bodySize = Math.round(width * .014 * bodyScale);
+    ctx.font = `${bodySize}px DocSerif, serif`;
+    drawCenteredLines(ctx, wrapLines(ctx, C().certificateBody, width * .62).slice(0, 9), width / 2, height * layout.bodyY, height * .03 * bodyScale);
     ctx.fillStyle = "#fff4d5";
     const participantName = name || C().participant;
-    const nameSize = setCanvasFontToFit(ctx, participantName, Math.round(width * .041), Math.round(width * .024), width * .58, (size) => signatureFont(config.certificateSignature, size));
-    ctx.fillText(participantName, width / 2, height * .695);
+    const nameSize = setCanvasFontToFit(ctx, participantName, Math.round(width * .041 * nameScale), Math.round(width * .021), width * .58, (size) => signatureFont(config.certificateSignature, size));
+    ctx.fillText(participantName, width / 2, height * layout.nameY);
     const nameWidth = Math.min(ctx.measureText(participantName).width + nameSize * 1.2, width * .62);
-    drawPremiumRule(ctx, width / 2 - nameWidth / 2, width / 2 + nameWidth / 2, height * .716, width);
+    drawPremiumRule(ctx, width / 2 - nameWidth / 2, width / 2 + nameWidth / 2, height * (layout.nameY + .021), width);
     ctx.fillStyle = "rgba(245,230,196,.72)";
-    ctx.font = `${Math.round(width * .012)}px DocSerif, serif`;
-    drawCenteredLines(ctx, wrapLines(ctx, C().certificateClosing, width * .54).slice(0, 3), width / 2, height * .765, height * .024);
-    drawContained(ctx, author, width * .39, height * .84, width * .22, height * .095, .96);
+    ctx.font = `${Math.round(width * .012 * bodyScale)}px DocSerif, serif`;
+    drawCenteredLines(ctx, wrapLines(ctx, C().certificateClosing, width * .54).slice(0, 3), width / 2, height * layout.closingY, height * .024 * bodyScale);
+    drawContained(ctx, author, width * .39, height * layout.authorY, width * .22, height * .095, .96);
     return canvas;
   }
 
@@ -841,6 +1057,9 @@
       loadImage(reportBackground()), loadImage(assets.texture).catch(() => null),
       loadImage(stampAsset("report")).catch(() => null), loadImage(assets.reportTitles[config.language]).catch(() => null),
     ]);
+    const layout = reportLayout().canvas;
+    const titleScale = scaleValue("reportTitleScale");
+    const textScale = scaleValue("reportTextScale");
     drawCover(ctx, background, width, height);
     if (texture) {
       drawTextureOverlay(ctx, texture, width, height, .2);
@@ -879,23 +1098,25 @@
     ctx.lineTo(width - margin, height * .14);
     ctx.stroke();
 
-    drawContained(ctx, titlePlate, width * .18, height * .158, width * .64, height * .08, .96);
+    const titleWidth = width * Math.min(.76, .64 * titleScale);
+    const titleHeight = height * Math.min(.1, .08 * titleScale);
+    drawContained(ctx, titlePlate, (width - titleWidth) / 2, height * layout.titleTop, titleWidth, titleHeight, .96);
     if (anonymous) {
       ctx.textAlign = "center";
       ctx.fillStyle = "rgba(42,33,23,.72)";
       ctx.font = `700 ${Math.round(width * .011)}px DocTypewriter, monospace`;
-      drawTypewriterInk(ctx, C().anonymous.toUpperCase(), width / 2, height * .23);
+      drawTypewriterInk(ctx, C().anonymous.toUpperCase(), width / 2, height * (layout.titleTop + .072));
     }
     ctx.font = `700 ${Math.round(width * .019)}px DocTypewriter, monospace`;
     ctx.fillStyle = "#5a472f";
     ctx.textAlign = "center";
-    drawCenteredLines(ctx, wrapLines(ctx, quoteCopy[config.language][config.reportQuote], width * .72).slice(0, 3), width / 2, height * .265, height * .026);
+    drawCenteredLines(ctx, wrapLines(ctx, quoteCopy[config.language][config.reportQuote], width * .72).slice(0, 3), width / 2, height * layout.quoteY, height * .026);
     ctx.fillStyle = "#33291d";
     ctx.font = `${Math.round(width * .015)}px DocTypewriter, monospace`;
-    drawCenteredLines(ctx, wrapLines(ctx, C().reportInstruction, width * .78).slice(0, 4), width / 2, height * .33, height * .022);
+    drawCenteredLines(ctx, wrapLines(ctx, C().reportInstruction, width * .78).slice(0, 4), width / 2, height * layout.instructionY, height * .022);
 
-    const lineTop = height * .425;
-    const lineGap = height * .062;
+    const lineTop = height * layout.lineTop;
+    const lineGap = height * layout.lineGap;
     ctx.strokeStyle = "rgba(61,46,29,.44)";
     ctx.lineWidth = Math.max(1.5, width * .0008);
     for (let index = 0; index < 6; index += 1) {
@@ -907,7 +1128,7 @@
     }
     ctx.textAlign = "left";
     ctx.fillStyle = "#241d15";
-    ctx.font = `${Math.round(width * .024)}px DocTypewriter, monospace`;
+    ctx.font = `${Math.round(width * .024 * textScale)}px DocTypewriter, monospace`;
     const reportLines = wrapLines(ctx, text || C().reportPlaceholder, width - margin * 2.1);
     if (reportLines.length > 6) throw new Error(C().reportOverflow);
     reportLines.forEach((line, index) => drawTypewriterInk(ctx, line, margin * 1.05, lineTop - lineGap * .22 + index * lineGap));
@@ -917,16 +1138,16 @@
     ctx.textAlign = "right";
     const witnessName = anonymous ? C().anonymous : (name || C().witness);
     const witnessSize = setCanvasFontToFit(ctx, witnessName, Math.round(width * .027), Math.round(width * .017), width * .42, (size) => signatureFont(config.reportSignature, size));
-    ctx.fillText(witnessName, width - margin, height * .86);
+    ctx.fillText(witnessName, width - margin, height * layout.witnessY);
     const witnessWidth = Math.min(ctx.measureText(witnessName).width + witnessSize, width * .43);
     ctx.strokeStyle = "rgba(28,22,16,.78)";
     ctx.beginPath();
-    ctx.moveTo(width - margin - witnessWidth, height * .875);
-    ctx.lineTo(width - margin, height * .875);
+    ctx.moveTo(width - margin - witnessWidth, height * (layout.witnessY + .015));
+    ctx.lineTo(width - margin, height * (layout.witnessY + .015));
     ctx.stroke();
     ctx.font = `700 ${Math.round(width * .011)}px DocTypewriter, monospace`;
-    drawTypewriterInk(ctx, C().witness.toUpperCase(), width - margin, height * .9);
-    drawSeal25D(ctx, stamp, margin * .82, height * .77, width * .18, height * .14, .74, false);
+    drawTypewriterInk(ctx, C().witness.toUpperCase(), width - margin, height * (layout.witnessY + .04));
+    drawSeal25D(ctx, stamp, margin * .82, height * layout.stampY, width * .18, height * .14, .74, false);
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(46,35,24,.7)";
     ctx.font = `${Math.round(width * .011)}px DocTypewriter, monospace`;
@@ -1082,6 +1303,10 @@
       const [background, texture, stamp, author] = await Promise.all([
         embedPdfImage(pdf, certificateBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("certificate")), embedPdfImage(pdf, authorAsset("certificate")),
       ]);
+      const layout = certificateLayout().pdf;
+      const titleScale = scaleValue("certificateTitleScale");
+      const bodyScale = scaleValue("certificateBodyScale");
+      const nameScale = scaleValue("certificateNameScale");
       page.drawImage(background, { x: 0, y: 0, width, height });
       if (texture) page.drawImage(texture, { x: 0, y: 0, width, height, opacity: .12 });
       page.drawRectangle({ x: 0, y: 0, width, height, color: rgb(.02, .018, .012), opacity: .24 });
@@ -1101,27 +1326,32 @@
        pdfRight(page, placeText, serif, placeSize, metaRight, 484, palette.ivory);
        pdfPremiumRule(page, metaLeft, metaLeft + metaWidth, 476, palette);
        pdfPremiumRule(page, metaRight - metaWidth, metaRight, 476, palette);
-       pdfSeal25D(page, stamp, width / 2 - 27, 455, 54, 39, .92, rgb(.01, .008, .004));
-       pdfFinishedTitle(page, C().certificateTitle.toUpperCase(), cinzel, 43, 393, {
+       pdfSeal25D(page, stamp, width / 2 - layout.stampW / 2, layout.stampY, layout.stampW, layout.stampH, .92, rgb(.01, .008, .004));
+       pdfFinishedTitle(page, C().certificateTitle.toUpperCase(), cinzel, 43 * titleScale, layout.titleY, {
          highlight: rgb(1, .96, .82), main: rgb(.9, .77, .5), shadow: rgb(.25, .16, .06),
        });
-       const bodyLines = pdfWrap(serif, C().certificateBody, 11.5, 520).slice(0, 9);
-       bodyLines.forEach((line, index) => pdfCentered(page, line, serif, 11.5, 344 - index * 16.5, palette.ivory));
+       const bodySize = 11.5 * bodyScale;
+       const bodyLines = pdfWrap(serif, C().certificateBody, bodySize, 520).slice(0, 9);
+       bodyLines.forEach((line, index) => pdfCentered(page, line, serif, bodySize, layout.bodyY - index * 16.5 * bodyScale, palette.ivory));
        const nameFont = config.certificateSignature === "typewriter" ? typewriter : config.certificateSignature === "serif" ? serif : signature;
        const participantName = data.name || C().participant;
-       const nameSize = pdfSizeToFit(nameFont, participantName, 31, 19, 490);
-       pdfCentered(page, participantName, nameFont, nameSize, 181, palette.ivory);
+       const nameSize = pdfSizeToFit(nameFont, participantName, 31 * nameScale, 18, 490);
+       pdfCentered(page, participantName, nameFont, nameSize, layout.nameY, palette.ivory);
        const nameWidth = Math.min(nameFont.widthOfTextAtSize(participantName, nameSize) + nameSize * 1.2, 520);
-       pdfPremiumRule(page, width / 2 - nameWidth / 2, width / 2 + nameWidth / 2, 169, palette);
-       const closingLines = pdfWrap(serif, C().certificateClosing, 9.5, 470).slice(0, 3);
-       closingLines.forEach((line, index) => pdfCentered(page, line, serif, 9.5, 137 - index * 12.5, palette.ivory));
-       pdfContained(page, author, width / 2 - 78, 40, 156, 57, .96);
+       pdfPremiumRule(page, width / 2 - nameWidth / 2, width / 2 + nameWidth / 2, layout.underlineY, palette);
+       const closingSize = 9.5 * bodyScale;
+       const closingLines = pdfWrap(serif, C().certificateClosing, closingSize, 470).slice(0, 3);
+       closingLines.forEach((line, index) => pdfCentered(page, line, serif, closingSize, layout.closingY - index * 12.5 * bodyScale, palette.ivory));
+       pdfContained(page, author, width / 2 - 78, layout.authorY, 156, 57, .96);
      } else {
       const [width, height] = A4.portrait.pdf;
       const page = pdf.addPage([width, height]);
        const [background, texture, stamp, titlePlate] = await Promise.all([
          embedPdfImage(pdf, reportBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("report")), embedPdfImage(pdf, assets.reportTitles[config.language]),
        ]);
+       const layout = reportLayout().pdf;
+       const titleScale = scaleValue("reportTitleScale");
+       const textScale = scaleValue("reportTextScale");
       page.drawImage(background, { x: 0, y: 0, width, height });
       if (texture) page.drawImage(texture, { x: 0, y: 0, width, height, opacity: .19 });
       page.drawRectangle({ x: 31, y: 30, width: width - 62, height: height - 60, borderColor: palette.brown, borderWidth: 1.1, opacity: .82 });
@@ -1138,27 +1368,30 @@
        pdfRight(page, placeText, typewriter, placeSize, width - 53, 737, palette.ink);
        page.drawLine({ start: { x: 53, y: 725 }, end: { x: 53 + metaWidth, y: 725 }, thickness: 1, color: palette.ink, opacity: .9 });
        page.drawLine({ start: { x: width - 53 - metaWidth, y: 725 }, end: { x: width - 53, y: 725 }, thickness: 1, color: palette.ink, opacity: .9 });
-       pdfContained(page, titlePlate, 107, 642, 381, 67, .98);
-       if (data.anonymous) pdfCentered(page, C().anonymous.toUpperCase(), typewriter, 7.2, 635, palette.brown);
+       const titleWidth = Math.min(440, 381 * titleScale);
+       const titleHeight = Math.min(82, 67 * titleScale);
+       pdfContained(page, titlePlate, (width - titleWidth) / 2, layout.titleY, titleWidth, titleHeight, .98);
+       if (data.anonymous) pdfCentered(page, C().anonymous.toUpperCase(), typewriter, 7.2, layout.titleY - 7, palette.brown);
        const quoteLines = pdfWrap(typewriter, quoteCopy[config.language][config.reportQuote], 10.5, 420).slice(0, 4);
-       quoteLines.forEach((line, index) => pdfCentered(page, line, typewriter, 10.5, 615 - index * 14, palette.brown));
+       quoteLines.forEach((line, index) => pdfCentered(page, line, typewriter, 10.5, layout.quoteY - index * 14, palette.brown));
        const instructionLines = pdfWrap(typewriter, C().reportInstruction, 8.5, 450).slice(0, 4);
-       instructionLines.forEach((line, index) => pdfCentered(page, line, typewriter, 8.5, 560 - index * 12.5, palette.ink));
-       const reportLines = pdfWrap(typewriter, data.text || C().reportPlaceholder, 13.5, 465);
+       instructionLines.forEach((line, index) => pdfCentered(page, line, typewriter, 8.5, layout.instructionY - index * 12.5, palette.ink));
+       const reportSize = 13.5 * textScale;
+       const reportLines = pdfWrap(typewriter, data.text || C().reportPlaceholder, reportSize, 465);
        if (reportLines.length > 6) throw new Error(C().reportOverflow);
        for (let index = 0; index < 6; index += 1) {
-         const y = 484 - index * 52;
+         const y = layout.lineY - index * layout.lineGap;
          page.drawLine({ start: { x: 53, y }, end: { x: width - 53, y }, thickness: .65, color: palette.brown, opacity: .55 });
-         if (reportLines[index]) page.drawText(reportLines[index], { x: 58, y: y + 10, size: 13.5, font: typewriter, color: palette.ink });
+         if (reportLines[index]) page.drawText(reportLines[index], { x: 58, y: y + 10, size: reportSize, font: typewriter, color: palette.ink });
        }
        const witnessName = data.anonymous ? C().anonymous : (data.name || C().witness);
        const nameFont = config.reportSignature === "typewriter" ? typewriter : config.reportSignature === "serif" ? serif : signature;
        const witnessSize = pdfSizeToFit(nameFont, witnessName, 15, 10, 220);
-       pdfRight(page, witnessName, nameFont, witnessSize, width - 53, 118, palette.ink);
+       pdfRight(page, witnessName, nameFont, witnessSize, width - 53, layout.witnessY, palette.ink);
        const witnessWidth = Math.min(nameFont.widthOfTextAtSize(witnessName, witnessSize) + witnessSize, 225);
-       page.drawLine({ start: { x: width - 53 - witnessWidth, y: 105 }, end: { x: width - 53, y: 105 }, thickness: .9, color: palette.ink, opacity: .85 });
-       pdfRight(page, C().witness.toUpperCase(), typewriter, 6.8, width - 53, 84, palette.ink);
-       pdfSeal25D(page, stamp, 49, 76, 108, 86, .74, rgb(.24, .16, .08));
+       page.drawLine({ start: { x: width - 53 - witnessWidth, y: layout.witnessY - 13 }, end: { x: width - 53, y: layout.witnessY - 13 }, thickness: .9, color: palette.ink, opacity: .85 });
+       pdfRight(page, C().witness.toUpperCase(), typewriter, 6.8, width - 53, layout.witnessY - 34, palette.ink);
+       pdfSeal25D(page, stamp, 49, layout.stampY, 108, 86, .74, rgb(.24, .16, .08));
        pdfCentered(page, data.anonymous ? "ANONYMOUS COPY - NO PERSONAL DATA" : C().reportCode.toUpperCase(), typewriter, 7.2, 47, palette.brown);
     }
 
@@ -1321,7 +1554,12 @@
     enhanceVisualSelect("certificateBackground");
     enhanceVisualSelect("reportBackground");
     syncVisualOptions();
-    form.addEventListener("input", () => readAdminForm(form));
+    form.addEventListener("input", (event) => {
+      if (event.target?.name === "studioPreset") {
+        applyStudioPresetToForm(form, event.target.value);
+      }
+      readAdminForm(form);
+    });
     $("[data-create-public-link]")?.addEventListener("click", () => {
       readAdminForm(form);
       const url = new URL("/rap-ort/documents/", location.origin);
@@ -1350,6 +1588,7 @@
       fillAdminForm(form);
       localStorage.removeItem("vhDocumentStudioIssue");
       syncVisualOptions();
+      syncEditorTools();
       updatePreview();
       setStatus("");
     });

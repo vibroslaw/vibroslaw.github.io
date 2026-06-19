@@ -11,6 +11,10 @@
   const SCROLL_TOP_VISIBILITY_THRESHOLD = 560;
   const BODY_CLASS_ATTRIBUTE = "class";
   const VIEWPORT_HEIGHT_CSS_VARIABLE = "--vh";
+  const SITE_FOUNDATION_STYLE_ID = "siteFoundation2026";
+  const SITE_FOUNDATION_STYLE_SRC = "/assets/css/site-foundation-2026.css?v=1";
+  const SITE_ENHANCEMENTS_SCRIPT_ID = "siteEnhancements2026";
+  const SITE_ENHANCEMENTS_SCRIPT_SRC = "/assets/js/site-enhancements-2026.js?v=1";
   const CONTACT_FLOW_SCRIPT_ID = "siteContactFlowScript";
   const CONTACT_FLOW_SCRIPT_SRC = "/assets/js/contact-flow.js?v=1";
   const HERO_SEAMLESS_PATCH_STYLE_ID = "veritasHeroSeamlessPatch";
@@ -143,8 +147,8 @@
       body.veritas-universe .vh-hero::before{content:""!important;position:absolute!important;inset:0!important;z-index:-1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,0) 42%,rgba(5,4,3,.42) 70%,#050403 100%)!important;}
       body.veritas-universe .vh-hero::after{content:""!important;position:absolute!important;left:0!important;right:0!important;bottom:-1px!important;height:clamp(180px,26vh,320px)!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,.34) 34%,rgba(5,4,3,.76) 68%,#050403 100%)!important;opacity:1!important;}
       body.veritas-universe .vh-hero-media{position:absolute!important;inset:0!important;top:0!important;bottom:auto!important;height:100%!important;z-index:-2!important;background-color:#050403!important;}
-      body.veritas-universe .vh-hero-media.has-final-hero,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero{background-image:var(--vh-final-hero-image)!important;background-size:cover!important;background-position:center top!important;background-repeat:no-repeat!important;}
-      body.veritas-universe .vh-hero-media::before,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-2% -5% -8%!important;background-image:linear-gradient(180deg,rgba(5,4,3,.18) 0%,rgba(5,4,3,.06) 22%,rgba(5,4,3,.18) 46%,rgba(5,4,3,.70) 78%,#050403 100%),linear-gradient(90deg,rgba(5,4,3,.86) 0%,rgba(5,4,3,.38) 26%,rgba(5,4,3,.08) 52%,rgba(5,4,3,.50) 100%),radial-gradient(circle at 36% 18%,rgba(208,173,104,.20),transparent 32rem),var(--vh-final-hero-image,var(--vh-page-hero-image))!important;background-size:cover,cover,cover,cover!important;background-position:center top,center top,center top,center top!important;background-repeat:no-repeat!important;transform:translate3d(0,calc(var(--vh-parallax,0px) * .30),0) scale(1.045)!important;filter:saturate(1.10) contrast(1.08) brightness(1.06)!important;opacity:1!important;will-change:transform!important;}
+      body.veritas-universe .vh-hero-media.has-final-hero,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero{background-image:var(--vh-final-hero-image)!important;background-size:cover!important;background-position:var(--vh-hero-position,center top)!important;background-repeat:no-repeat!important;}
+      body.veritas-universe .vh-hero-media::before,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-2% -5% -8%!important;background-image:linear-gradient(180deg,rgba(5,4,3,.18) 0%,rgba(5,4,3,.06) 22%,rgba(5,4,3,.18) 46%,rgba(5,4,3,.70) 78%,#050403 100%),linear-gradient(90deg,rgba(5,4,3,.86) 0%,rgba(5,4,3,.38) 26%,rgba(5,4,3,.08) 52%,rgba(5,4,3,.50) 100%),radial-gradient(circle at 36% 18%,rgba(208,173,104,.20),transparent 32rem),var(--vh-final-hero-image,var(--vh-page-hero-image))!important;background-size:cover,cover,cover,cover!important;background-position:var(--vh-hero-position,center top),var(--vh-hero-position,center top),var(--vh-hero-position,center top),var(--vh-hero-position,center top)!important;background-repeat:no-repeat!important;transform:translate3d(var(--hero-cursor-x-px,0px),calc((var(--vh-parallax,0px) * .30) + var(--hero-cursor-y-px,0px)),0) scale(1.045)!important;filter:saturate(1.10) contrast(1.08) brightness(1.06)!important;opacity:1!important;will-change:transform!important;}
       body.veritas-universe .vh-hero-media::after,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::after{inset:0!important;opacity:.74!important;background:radial-gradient(circle at 72% 12%,rgba(241,234,219,.08),transparent 28rem),radial-gradient(circle at 24% 26%,rgba(208,173,104,.12),transparent 26rem),linear-gradient(180deg,rgba(5,4,3,.04) 0%,rgba(5,4,3,.08) 42%,rgba(5,4,3,.72) 82%,#050403 100%),repeating-linear-gradient(90deg,rgba(255,255,255,.016) 0 1px,transparent 1px 8px)!important;}
       body.veritas-universe .vh-hero-grid{position:relative!important;z-index:3!important;align-items:center!important;}
       body.veritas-universe .vh-hero-copy{position:relative!important;z-index:3!important;}
@@ -155,10 +159,10 @@
       body.veritas-universe .vh-lead{margin-top:14px!important;}
       body.veritas-universe .vh-hero .vh-actions{margin-top:22px!important;}
       body.veritas-universe.final-hero-ready .vh-hero-copy{background:linear-gradient(90deg,rgba(5,4,3,.42),rgba(5,4,3,.14),transparent)!important;}
-      body.cinematic-mode.veritas-universe .vh-hero-media.has-final-hero::before,body.cinematic-mode.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{transform:translate3d(0,calc(var(--vh-parallax,0px) * .52),0) scale(1.095)!important;filter:saturate(1.22) contrast(1.13) brightness(1.10)!important;}
+      body.cinematic-mode.veritas-universe .vh-hero-media.has-final-hero::before,body.cinematic-mode.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{transform:translate3d(var(--hero-cursor-x-px,0px),calc((var(--vh-parallax,0px) * .52) + var(--hero-cursor-y-px,0px)),0) scale(1.095)!important;filter:saturate(1.22) contrast(1.13) brightness(1.10)!important;}
       body.cinematic-mode.veritas-universe .vh-hero::after{height:clamp(220px,30vh,360px)!important;background:linear-gradient(180deg,rgba(5,4,3,0) 0%,rgba(5,4,3,.28) 28%,rgba(5,4,3,.82) 72%,#050403 100%)!important;}
       body.reduced-motion.veritas-universe .vh-hero-media::before,body.reduce-motion.veritas-universe .vh-hero-media::before{transform:scale(1.035)!important;will-change:auto!important;}
-      @media(max-width:760px){body.veritas-universe .breadcrumbs{display:none!important;}body.veritas-universe .vh-hero,body.veritas-universe .vh-hero.vh-hero-compact{min-height:clamp(600px,88svh,760px)!important;padding:clamp(100px,12vh,122px) 0 clamp(54px,7vh,72px)!important;}body.veritas-universe .vh-title,body.veritas-universe.page-home .vh-title{font-size:clamp(2.8rem,13vw,4.2rem)!important;}body.veritas-universe .vh-hero-compact .vh-title{font-size:clamp(2.5rem,11.5vw,3.8rem)!important;}body.veritas-universe .vh-subtitle{margin-top:14px!important;}body.veritas-universe .vh-lead{margin-top:12px!important;}body.veritas-universe .vh-hero .vh-actions{margin-top:18px!important;}body.veritas-universe .vh-hero-media::before,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-1% -4% -8%!important;background-image:linear-gradient(180deg,rgba(5,4,3,.18) 0%,rgba(5,4,3,.08) 32%,rgba(5,4,3,.62) 74%,#050403 100%),linear-gradient(90deg,rgba(5,4,3,.72),rgba(5,4,3,.16) 58%,rgba(5,4,3,.62)),var(--vh-final-hero-image,var(--vh-page-hero-image))!important;background-position:center top,center top,center top!important;background-size:cover,cover,cover!important;transform:scale(1.035)!important;}body.veritas-universe .vh-hero::after{height:clamp(150px,21vh,230px)!important;}}
+      @media(max-width:760px){body.veritas-universe .breadcrumbs{display:none!important;}body.veritas-universe .vh-hero,body.veritas-universe .vh-hero.vh-hero-compact{min-height:clamp(600px,88svh,760px)!important;padding:clamp(100px,12vh,122px) 0 clamp(54px,7vh,72px)!important;}body.veritas-universe .vh-title,body.veritas-universe.page-home .vh-title{font-size:clamp(2.8rem,13vw,4.2rem)!important;}body.veritas-universe .vh-hero-compact .vh-title{font-size:clamp(2.5rem,11.5vw,3.8rem)!important;}body.veritas-universe .vh-subtitle{margin-top:14px!important;}body.veritas-universe .vh-lead{margin-top:12px!important;}body.veritas-universe .vh-hero .vh-actions{margin-top:18px!important;}body.veritas-universe .vh-hero-media::before,body.veritas-universe.final-hero-ready .vh-hero-media.has-final-hero::before{inset:-1% -4% -8%!important;background-image:linear-gradient(180deg,rgba(5,4,3,.18) 0%,rgba(5,4,3,.08) 32%,rgba(5,4,3,.62) 74%,#050403 100%),linear-gradient(90deg,rgba(5,4,3,.72),rgba(5,4,3,.16) 58%,rgba(5,4,3,.62)),var(--vh-final-hero-image,var(--vh-page-hero-image))!important;background-position:var(--vh-hero-position-mobile,var(--vh-hero-position,center top)),var(--vh-hero-position-mobile,var(--vh-hero-position,center top)),var(--vh-hero-position-mobile,var(--vh-hero-position,center top))!important;background-size:cover,cover,cover!important;transform:scale(1.035)!important;}body.veritas-universe .vh-hero::after{height:clamp(150px,21vh,230px)!important;}}
     `;
 
     document.head.appendChild(style);
@@ -182,6 +186,38 @@
     const script = document.createElement("script");
     script.id = CONTACT_FLOW_SCRIPT_ID;
     script.src = CONTACT_FLOW_SCRIPT_SRC;
+    script.defer = true;
+
+    const target = document.body || document.head || document.documentElement;
+    if (target) target.appendChild(script);
+  }
+
+  function ensureSiteFoundationLayer() {
+    if (document.getElementById(SITE_FOUNDATION_STYLE_ID)) return;
+    if (document.querySelector('link[href*="/assets/css/site-foundation-2026.css"]')) return;
+
+    const link = document.createElement("link");
+    link.id = SITE_FOUNDATION_STYLE_ID;
+    link.rel = "stylesheet";
+    link.href = SITE_FOUNDATION_STYLE_SRC;
+
+    const firstRuntimeStyle = document.getElementById(HERO_SEAMLESS_PATCH_STYLE_ID);
+    if (firstRuntimeStyle?.parentNode) {
+      firstRuntimeStyle.parentNode.insertBefore(link, firstRuntimeStyle);
+      return;
+    }
+
+    document.head?.appendChild(link);
+  }
+
+  function ensureSiteEnhancementsModule() {
+    if (window.__siteEnhancements2026Initialized) return;
+    if (document.getElementById(SITE_ENHANCEMENTS_SCRIPT_ID)) return;
+    if (document.querySelector('script[src*="/assets/js/site-enhancements-2026.js"]')) return;
+
+    const script = document.createElement("script");
+    script.id = SITE_ENHANCEMENTS_SCRIPT_ID;
+    script.src = SITE_ENHANCEMENTS_SCRIPT_SRC;
     script.defer = true;
 
     const target = document.body || document.head || document.documentElement;
@@ -542,6 +578,8 @@
     updateScrollTopButtonLabel();
 
     updateViewportHeightVariable();
+    ensureSiteFoundationLayer();
+    ensureSiteEnhancementsModule();
     scheduleHeroSeamlessPatch();
     initRevealObserver();
     initBodyClassObserver();
