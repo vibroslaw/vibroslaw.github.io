@@ -46,24 +46,33 @@
           <fieldset class="document-fieldset" data-document-settings="shared">
             <label class="document-field"><span>Language</span><select name="language"><option value="en">English</option><option value="pl">Polski</option></select></label>
             <label class="document-field"><span>Event / edition</span><input name="eventTitle" value="Rap-Ort: Prawda Sumienia" maxlength="90"></label>
+            <label class="document-field"><span>Preset library</span><select name="studioPreset"><option value="balanced">Balanced premium</option><option value="ceremony">Ceremonial gold</option><option value="field">1940s field archive</option><option value="minimal">Minimal print proof</option></select></label>
             <div class="document-inline-fields">
               <label class="document-field"><span>Date</span><input name="eventDate" type="date"></label>
+              <label class="document-field"><span>Editor grid</span><select name="proofGrid"><option value="safe">Safe zones</option><option value="thirds">Rule of thirds</option><option value="print">Print grid</option><option value="off">Off</option></select></label>
             </div>
             <label class="document-field"><span>Place / institution</span><input name="eventPlace" placeholder="Event place or institution" maxlength="140"></label>
           </fieldset>
 
           <fieldset class="document-fieldset" data-document-settings="certificate">
             <label class="document-field"><span>Certificate background</span><select name="certificateBackground"><option value="cinema">Archival Cinema</option><option value="museum">Museum Line</option><option value="ceremonial">Ceremonial Frame</option><option value="wall">Wall Edition</option></select></label>
+            <label class="document-field"><span>Certificate layout</span><select name="certificateLayout"><option value="classic">Classic landing</option><option value="gallery">Gallery centred</option><option value="ceremonial">Ceremonial signature</option></select></label>
             <label class="document-field"><span>Stamp</span><select name="certificateStamp"><option value="dry">Dry archival seal</option><option value="event">Event gold accent</option><option value="none">No stamp</option></select></label>
             <label class="document-field"><span>Participant signature style</span><select name="certificateSignature"><option value="script">Classical script</option><option value="serif">Editorial serif</option><option value="typewriter">Typewriter</option></select></label>
             <label class="document-field"><span>Author signature</span><select name="certificateAuthorSignature"><option value="gold">Gold signature</option><option value="dark">Dark signature</option><option value="none">No author signature</option></select></label>
+            <label class="document-field document-range-field"><span>Title scale <output data-range-output="certificateTitleScale">100%</output></span><input name="certificateTitleScale" type="range" min="88" max="116" step="1" value="100"></label>
+            <label class="document-field document-range-field"><span>Body scale <output data-range-output="certificateBodyScale">100%</output></span><input name="certificateBodyScale" type="range" min="88" max="112" step="1" value="100"></label>
+            <label class="document-field document-range-field"><span>Name scale <output data-range-output="certificateNameScale">100%</output></span><input name="certificateNameScale" type="range" min="86" max="118" step="1" value="100"></label>
           </fieldset>
 
           <fieldset class="document-fieldset" data-document-settings="report" hidden>
             <label class="document-field"><span>Report paper</span><select name="reportBackground"><option value="archival">Archival paper master</option><option value="pilecki">Historical report master</option></select></label>
+            <label class="document-field"><span>Report layout</span><select name="reportLayout"><option value="archive">Archive master</option><option value="field">Field form</option><option value="compact">Compact witness</option></select></label>
             <label class="document-field"><span>Report stamp</span><select name="reportStamp"><option value="dry">Dry archival seal</option><option value="event">Event dark accent</option><option value="none">No stamp</option></select></label>
             <label class="document-field"><span>Witness signature style</span><select name="reportSignature"><option value="typewriter">Typewriter</option><option value="script">Classical script</option><option value="serif">Editorial serif</option></select></label>
             <label class="document-field"><span>Opening report line</span><select name="reportQuote"><option value="question">The testimony has been spoken. Now the question remains with you.</option><option value="truth">Truth does not end on the screen. It remains in the decision a human being makes afterwards.</option><option value="silence">The silence after testimony is not empty. It is the place where conscience begins to work.</option></select></label>
+            <label class="document-field document-range-field"><span>Title plate scale <output data-range-output="reportTitleScale">100%</output></span><input name="reportTitleScale" type="range" min="86" max="116" step="1" value="100"></label>
+            <label class="document-field document-range-field"><span>Typed text scale <output data-range-output="reportTextScale">100%</output></span><input name="reportTextScale" type="range" min="88" max="112" step="1" value="100"></label>
           </fieldset>
 
           <div class="document-actions">
