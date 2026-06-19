@@ -43,6 +43,21 @@
             <button class="document-tab" type="button" role="tab" aria-selected="false" data-document-tab="report">Report</button>
           </div>
 
+          <fieldset class="document-fieldset document-layout-control-panel" data-layout-control-panel>
+            <label class="document-field"><span>Free layout fragment</span><select name="layoutTarget" data-layout-target></select></label>
+            <div class="document-inline-fields document-layout-number-grid">
+              <label class="document-field"><span>X</span><input name="layoutX" data-layout-field="x" type="number" min="0" max="98" step="0.1"></label>
+              <label class="document-field"><span>Y</span><input name="layoutY" data-layout-field="y" type="number" min="0" max="98" step="0.1"></label>
+              <label class="document-field"><span>Width</span><input name="layoutW" data-layout-field="w" type="number" min="2" max="100" step="0.1"></label>
+              <label class="document-field"><span>Height</span><input name="layoutH" data-layout-field="h" type="number" min="2" max="100" step="0.1"></label>
+            </div>
+            <div class="document-actions compact">
+              <button class="document-action" type="button" data-reset-layout-fragment>Reset fragment</button>
+              <button class="document-action" type="button" data-reset-layout-all>Reset all layout</button>
+            </div>
+            <p class="document-layout-hint">Drag fragments directly on the proof, then fine tune here. Values are percentages of the document page.</p>
+          </fieldset>
+
           <fieldset class="document-fieldset" data-document-settings="shared">
             <label class="document-field"><span>Language</span><select name="language"><option value="en">English</option><option value="pl">Polski</option></select></label>
             <label class="document-field"><span>Event / edition</span><input name="eventTitle" value="Rap-Ort: Prawda Sumienia" maxlength="90"></label>
@@ -101,34 +116,34 @@
           <div class="document-preview-stage" data-proof-stage>
             <article class="document-sheet certificate" data-document-preview="certificate">
               <div class="document-sheet-inner">
-                <span class="document-mark" data-preview-code></span>
-                <div class="certificate-top-meta">
+                <span class="document-mark" data-preview-code data-layout-fragment="code"></span>
+                <div class="certificate-top-meta" data-layout-fragment="meta">
                   <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
                   <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
                 </div>
-                <h2 class="document-sheet-title" data-preview-title>Certificate</h2>
-                <p class="document-sheet-copy" data-preview-copy></p>
-                <div class="certificate-name-lockup"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
-                <p class="certificate-closing" data-preview-closing></p>
+                <h2 class="document-sheet-title" data-preview-title data-layout-fragment="title">Certificate</h2>
+                <p class="document-sheet-copy" data-preview-copy data-layout-fragment="body"></p>
+                <div class="certificate-name-lockup" data-layout-fragment="name"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
+                <p class="certificate-closing" data-preview-closing data-layout-fragment="closing"></p>
               </div>
-              <img class="document-stamp" data-preview-stamp alt="">
-              <img class="document-author-signature" data-preview-author alt="Author signature">
+              <img class="document-stamp" data-preview-stamp data-layout-fragment="stamp" alt="">
+              <img class="document-author-signature" data-preview-author data-layout-fragment="author" alt="Author signature">
             </article>
             <article class="document-sheet report" data-document-preview="report" hidden>
               <div class="document-sheet-inner">
-                <span class="report-document-number" data-preview-code></span>
-                <div class="report-topline">
+                <span class="report-document-number" data-preview-code data-layout-fragment="code"></span>
+                <div class="report-topline" data-layout-fragment="meta">
                   <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
                   <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
                 </div>
-                <h2 class="report-title-text" data-preview-title>Witness Report</h2>
-                <p class="report-quote" data-preview-quote></p>
-                <p class="report-copy" data-preview-copy></p>
-                <div class="report-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                <div class="report-signature-row"><span data-preview-signature-label>Witness signature</span><strong data-preview-witness></strong></div>
+                <h2 class="report-title-text" data-preview-title data-layout-fragment="title">Witness Report</h2>
+                <p class="report-quote" data-preview-quote data-layout-fragment="quote"></p>
+                <p class="report-copy" data-preview-copy data-layout-fragment="instruction"></p>
+                <div class="report-lines" data-layout-fragment="lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="report-signature-row" data-layout-fragment="signature"><span data-preview-signature-label>Witness signature</span><strong data-preview-witness></strong></div>
               </div>
-              <p class="report-entry" data-preview-entry>The participant will write here on the public page.</p>
-              <img class="document-stamp" data-preview-stamp alt="">
+              <p class="report-entry" data-preview-entry data-layout-fragment="entry">The participant will write here on the public page.</p>
+              <img class="document-stamp" data-preview-stamp data-layout-fragment="stamp" alt="">
             </article>
           </div>
           <footer class="document-proof-footer"><span>Screen proof uses lightweight assets</span><span>Full masters load only during export</span></footer>
