@@ -701,3 +701,69 @@ body.navbar-unified .experience-route-orb,
 body.navbar-unified .experience-world-orb{
   display:none !important;
 }
+
+/* Global compact navbar contract: keep every route at the Home-size header. */
+body.navbar-unified{
+  --nav-h:64px !important;
+}
+
+body.navbar-unified .site-header .header-inner{
+  min-height:var(--nav-h) !important;
+  padding-block:0 !important;
+  align-items:center !important;
+}
+
+body.navbar-unified .site-header .brand{
+  gap:2px !important;
+  min-height:0 !important;
+  max-width:min(300px, 28vw) !important;
+}
+
+body.navbar-unified .site-header .brand-name,
+body.navbar-unified .site-header .brand-name.unified-world-label{
+  font-size:clamp(.72rem, .86vw, .98rem) !important;
+  line-height:1 !important;
+  letter-spacing:.145em !important;
+}
+
+body.navbar-unified .site-header .brand-sub-desktop,
+body.navbar-unified .site-header .brand-sub-mobile{
+  font-size:.48rem !important;
+  line-height:1.05 !important;
+  letter-spacing:.18em !important;
+}
+
+body.navbar-unified .desktop-nav.desktop-nav-compact{
+  gap:clamp(1px, .18vw, 4px) !important;
+  align-items:center !important;
+}
+
+body.navbar-unified .desktop-nav-compact .nav-button{
+  min-height:30px !important;
+  padding-inline:clamp(5px, .48vw, 8px) !important;
+  font-size:clamp(.50rem, .50vw, .60rem) !important;
+  letter-spacing:.10em !important;
+}
+
+body.navbar-unified .experience-menu-toggle{
+  width:42px !important;
+  min-width:42px !important;
+  max-width:42px !important;
+  height:32px !important;
+  min-height:32px !important;
+}
+
+body.navbar-unified .experience-menu-favicon{
+  width:19px !important;
+  height:19px !important;
+}
+
+@media(max-width:760px){
+  body.navbar-unified{
+    --nav-h:64px !important;
+  }
+
+  body.navbar-unified .site-header .header-inner{
+    min-height:var(--nav-h) !important;
+  }
+}
