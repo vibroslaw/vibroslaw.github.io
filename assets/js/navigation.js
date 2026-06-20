@@ -61,7 +61,7 @@
       .experience-command-panel{position:relative;z-index:1;display:grid;gap:18px;padding:22px}
       .experience-menu-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,auto);gap:6px 16px;align-items:center;padding-bottom:17px;border-bottom:1px solid rgba(201,178,143,.16)}
       .experience-menu-heading span,.experience-command-label{color:rgba(208,173,104,.88);font-size:.62rem;letter-spacing:.17em;text-transform:uppercase}.experience-menu-heading small{font-family:Georgia,serif;font-size:1.08rem;letter-spacing:.04em}
-      .experience-menu-heading>span,.experience-menu-heading>small{grid-column:1}.experience-menu-heading>.experience-active-world{grid-column:2;grid-row:1/span 2}.experience-active-world{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;min-height:46px;padding:7px 10px;border:1px solid rgba(var(--experience-accent-rgb),.24);border-radius:17px;background:linear-gradient(135deg,rgba(var(--experience-accent-rgb),.12),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+      .experience-menu-heading>span,.experience-menu-heading>small{grid-column:1}.experience-menu-heading>.experience-active-world{grid-column:2;grid-row:1/span 2}.experience-active-world{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;align-items:center;min-height:46px;padding:7px 10px;border:1px solid rgba(var(--experience-accent-rgb),.24);border-radius:17px;background:linear-gradient(135deg,rgba(var(--experience-accent-rgb),.12),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
       .experience-world-orb,.experience-route-orb{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(var(--nav-accent-rgb),.34);border-radius:999px;background:radial-gradient(circle at 35% 24%,rgba(255,255,255,.22),transparent 34%),rgba(var(--nav-accent-rgb),.13);color:#f1eadb;font:700 .62rem/1 Inter,sans-serif;letter-spacing:.08em;box-shadow:0 0 22px rgba(var(--nav-accent-rgb),.10)}
       .experience-world-orb{--nav-accent-rgb:var(--experience-accent-rgb);width:34px;height:34px}.experience-route-orb{width:38px;height:38px;flex:0 0 auto}
       .experience-active-copy{display:grid;gap:2px;min-width:0}.experience-active-copy strong{font:600 .78rem/1.1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.experience-active-copy em{color:rgba(241,234,219,.56);font:.68rem/1.1 Inter,sans-serif;font-style:normal}
@@ -105,7 +105,7 @@
       html body.navbar-unified .experience-menu-heading{grid-template-columns:minmax(0,1fr) auto!important;padding-bottom:11px!important;border-bottom-color:rgba(var(--nav-luxury-gold),.16)!important}
       html body.navbar-unified .experience-menu-heading span,html body.navbar-unified .experience-command-label{color:rgba(var(--nav-luxury-gold),.86)!important;font-size:.54rem!important;letter-spacing:.20em!important}
       html body.navbar-unified .experience-menu-heading small{font-family:VeritasNavCinzel,Georgia,serif!important;color:#f5dfaa!important;font-size:.82rem!important;letter-spacing:.13em!important;text-transform:uppercase!important}
-      html body.navbar-unified .experience-active-world{min-height:36px!important;grid-template-columns:27px minmax(0,1fr)!important;padding:5px 8px!important;border-radius:13px!important;border-color:rgba(var(--nav-luxury-gold),.23)!important;background:linear-gradient(135deg,rgba(var(--nav-luxury-gold),.10),rgba(255,255,255,.018))!important}
+      html body.navbar-unified .experience-active-world{min-height:36px!important;grid-template-columns:42px minmax(0,1fr)!important;padding:5px 8px!important;border-radius:13px!important;border-color:rgba(var(--nav-luxury-gold),.23)!important;background:linear-gradient(135deg,rgba(var(--nav-luxury-gold),.10),rgba(255,255,255,.018))!important}
       html body.navbar-unified .experience-world-orb,html body.navbar-unified .experience-route-orb{border-color:rgba(var(--nav-luxury-gold),.36)!important;background:radial-gradient(circle at 35% 25%,rgba(255,245,215,.24),transparent 34%),rgba(var(--nav-luxury-gold),.10)!important;color:#f5dfaa!important;box-shadow:0 0 18px rgba(var(--nav-luxury-gold),.10)!important}
       html body.navbar-unified .experience-world-orb{width:27px!important;height:27px!important;font-size:.50rem!important}
       html body.navbar-unified .experience-route-orb{width:28px!important;height:28px!important;font-size:.50rem!important}
@@ -121,6 +121,29 @@
       html body.navbar-unified .experience-control:hover,html body.navbar-unified .experience-control:focus-visible,html body.navbar-unified .experience-control[aria-pressed="true"],html body.navbar-unified .experience-language a:hover,html body.navbar-unified .experience-language a:focus-visible,html body.navbar-unified .experience-language a.active{border-color:rgba(var(--nav-luxury-gold),.36)!important;background:rgba(var(--nav-luxury-gold),.075)!important;color:#f8e7bd!important}
       @media(min-width:901px) and (pointer:fine){html body.navbar-unified.experience-cinematic .site-header.nav-cinematic-hidden,html body.navbar-unified.cinematic-mode .site-header.nav-cinematic-hidden,html[data-experience="cinematic"] body.navbar-unified .site-header.nav-cinematic-hidden{opacity:.20!important;background:linear-gradient(180deg,rgba(var(--nav-luxury-black),.30),rgba(var(--nav-luxury-black),.05),transparent)!important}}
       @media(max-width:760px){html body.navbar-unified .mobile-action-dock{border-color:rgba(var(--nav-luxury-gold),.30)!important;background:rgba(var(--nav-luxury-black),.94)!important;box-shadow:0 22px 58px rgba(0,0,0,.52),0 0 28px rgba(var(--nav-luxury-gold),.06)!important}.mobile-dock-action{color:rgba(246,229,189,.72)!important}.mobile-dock-action:focus-visible,.mobile-dock-action[aria-pressed="true"]{border-color:rgba(var(--nav-luxury-gold),.38)!important;background:rgba(var(--nav-luxury-gold),.08)!important;color:#f8e7bd!important}}
+    `;
+    style.textContent += `
+      html body.navbar-unified .experience-menu-toggle{width:46px!important;min-width:46px!important;max-width:46px!important;height:36px!important;min-height:36px!important;display:grid!important;grid-template-columns:1fr!important;place-items:center!important;gap:0!important;padding:0!important;border-color:rgba(var(--nav-luxury-gold),.34)!important;background:linear-gradient(180deg,rgba(255,244,205,.07),rgba(var(--nav-luxury-gold),.035) 46%,rgba(0,0,0,.24)),rgba(3,3,2,.48)!important}
+      html body.navbar-unified .experience-menu-toggle::before{display:none!important}
+      html body.navbar-unified .experience-menu-toggle::after{position:absolute!important;right:7px!important;bottom:7px!important;width:4px!important;height:4px!important;border:0!important;border-radius:999px!important;background:rgba(var(--nav-luxury-gold),.78)!important;box-shadow:0 0 10px rgba(var(--nav-luxury-gold),.32)!important;transform:none!important;opacity:.72!important}
+      html body.navbar-unified .experience-menu-toggle[aria-expanded="true"]::after{opacity:1!important;transform:scale(1.55)!important;background:#f8e7bd!important}
+      html body.navbar-unified .experience-menu-favicon{display:block!important;width:21px!important;height:21px!important;background:url("/favicon.ico") center/contain no-repeat!important;filter:drop-shadow(0 0 8px rgba(var(--nav-luxury-gold),.20))!important;transition:transform .28s ease,filter .28s ease,opacity .28s ease!important}
+      html body.navbar-unified .experience-menu-label{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important}
+      html body.navbar-unified .experience-menu-toggle:hover .experience-menu-favicon,html body.navbar-unified .experience-menu-toggle:focus-visible .experience-menu-favicon,html body.navbar-unified .experience-menu-toggle[aria-expanded="true"] .experience-menu-favicon{transform:scale(1.08)!important;filter:drop-shadow(0 0 12px rgba(var(--nav-luxury-gold),.34))!important}
+      html body.navbar-unified .experience-route-card{grid-template-columns:52px minmax(0,1fr) 8px!important;min-height:48px!important}
+      html body.navbar-unified .experience-route-thumb,html body.navbar-unified .experience-world-thumb{position:relative!important;display:block!important;overflow:hidden!important;border:1px solid rgba(var(--nav-luxury-gold),.18)!important;background:rgba(0,0,0,.24)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 0 16px rgba(var(--nav-luxury-gold),.055)!important}
+      html body.navbar-unified .experience-route-thumb{width:52px!important;height:32px!important;border-radius:10px!important}
+      html body.navbar-unified .experience-world-thumb{width:42px!important;height:28px!important;border-radius:10px!important}
+      html body.navbar-unified .experience-route-thumb::before,html body.navbar-unified .experience-world-thumb::before{content:""!important;position:absolute!important;inset:-8%!important;background-image:linear-gradient(90deg,rgba(5,4,3,.42),rgba(5,4,3,.04),rgba(5,4,3,.46)),var(--route-thumb)!important;background-size:cover!important;background-position:center!important;opacity:.70!important;transform:scale(1.01)!important;transition:transform .34s cubic-bezier(.2,.72,.2,1),opacity .34s ease,filter .34s ease!important;filter:saturate(.88) contrast(1.05) brightness(.88)!important}
+      html body.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html body.navbar-unified .experience-active-world:hover .experience-world-thumb::before{opacity:.94!important;transform:scale(1.13)!important;filter:saturate(1.08) contrast(1.08) brightness(1.02)!important}
+      html body.reduced-motion.navbar-unified .experience-route-thumb::before,html body.reduced-motion.navbar-unified .experience-world-thumb::before,html body.reduce-motion.navbar-unified .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-world-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-world-thumb::before{transition:none!important;transform:scale(1.01)!important}
+      html body.reduced-motion.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.reduced-motion.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.reduced-motion.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html body.reduced-motion.navbar-unified .experience-active-world:hover .experience-world-thumb::before,html body.reduce-motion.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-active-world:hover .experience-world-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-active-world:hover .experience-world-thumb::before{transform:scale(1.01)!important}
+      @media(prefers-reduced-motion:reduce){html body.navbar-unified .experience-route-thumb::before,html body.navbar-unified .experience-world-thumb::before{transition:none!important;transform:scale(1.01)!important}html body.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html body.navbar-unified .experience-active-world:hover .experience-world-thumb::before{transform:scale(1.01)!important}}
+      html body.navbar-unified .experience-route-orb,html body.navbar-unified .experience-world-orb{display:none!important}
+      html body.document-studio-page.navbar-unified{--nav-h:78px!important}
+      html body.document-studio-page.navbar-unified .site-header .header-inner{min-height:var(--nav-h)!important}
+      html body.document-studio-page.navbar-unified .site-header .brand,html body.document-studio-page.navbar-unified .desktop-nav.desktop-nav-compact{align-self:center!important}
+      @media(max-width:760px){html body.document-studio-page.navbar-unified{--nav-h:64px!important}html body.document-studio-page.navbar-unified .site-header .header-inner{min-height:64px!important}}
     `;
     document.head.appendChild(style);
   };
@@ -421,26 +444,26 @@
 
   const navMeta = isPolish
     ? {
-        home: { monogram: "VH", description: "Glowna brama swiata Veritas.", group: "worlds" },
-        raport: { monogram: "RO", description: "Swiadectwo, pamiec i film.", group: "worlds" },
-        sztab: { monogram: "SZ", description: "Pamiec, historia i album.", group: "worlds" },
-        between: { monogram: "BT", description: "Kameralny swiat obrazu i slow.", group: "worlds" },
-        music: { monogram: "MU", description: "Mapa dzwieku Vibroslawa.", group: "worlds" },
-        institutions: { monogram: "IN", description: "Formaty dla instytucji.", group: "support" },
-        author: { monogram: "AU", description: "Profil autorski i metoda.", group: "support" },
-        press: { monogram: "PR", description: "Wzmianki, media i slady.", group: "support" },
-        contact: { monogram: "CT", description: "Kontakt i wspolpraca.", group: "support" },
+        home: { hero: "/public/assets/heroes/veritas-humanum-hero.webp", description: "Glowna brama swiata Veritas.", group: "worlds" },
+        raport: { hero: "/public/assets/heroes/rap-ort-hero.webp", description: "Swiadectwo, pamiec i film.", group: "worlds" },
+        sztab: { hero: "/public/assets/heroes/sztab-hero.webp", description: "Pamiec, historia i album.", group: "worlds" },
+        between: { hero: "/public/assets/heroes/between-the-lines-hero.webp", description: "Kameralny swiat obrazu i slow.", group: "worlds" },
+        music: { hero: "/public/assets/heroes/music-hero.webp", description: "Mapa dzwieku Vibroslawa.", group: "worlds" },
+        institutions: { hero: "/public/assets/heroes/for-institutions-hero.webp", description: "Formaty dla instytucji.", group: "support" },
+        author: { hero: "/public/assets/heroes/authorial-profile-hero.webp", description: "Profil autorski i metoda.", group: "support" },
+        press: { hero: "/public/assets/heroes/press-recognition-hero.webp", description: "Wzmianki, media i slady.", group: "support" },
+        contact: { hero: "/public/assets/heroes/contact-hero.webp", description: "Kontakt i wspolpraca.", group: "support" },
       }
     : {
-        home: { monogram: "VH", description: "Main gateway to Veritas.", group: "worlds" },
-        raport: { monogram: "RO", description: "Testimony, memory and film.", group: "worlds" },
-        sztab: { monogram: "SZ", description: "Memory, history and album.", group: "worlds" },
-        between: { monogram: "BT", description: "A quiet world of image and words.", group: "worlds" },
-        music: { monogram: "MU", description: "The sound map of Vibroslaw.", group: "worlds" },
-        institutions: { monogram: "IN", description: "Formats for institutions.", group: "support" },
-        author: { monogram: "AU", description: "Author profile and method.", group: "support" },
-        press: { monogram: "PR", description: "Mentions, media and traces.", group: "support" },
-        contact: { monogram: "CT", description: "Contact and collaboration.", group: "support" },
+        home: { hero: "/public/assets/heroes/veritas-humanum-hero.webp", description: "Main gateway to Veritas.", group: "worlds" },
+        raport: { hero: "/public/assets/heroes/rap-ort-hero.webp", description: "Testimony, memory and film.", group: "worlds" },
+        sztab: { hero: "/public/assets/heroes/sztab-hero.webp", description: "Memory, history and album.", group: "worlds" },
+        between: { hero: "/public/assets/heroes/between-the-lines-hero.webp", description: "A quiet world of image and words.", group: "worlds" },
+        music: { hero: "/public/assets/heroes/music-hero.webp", description: "The sound map of Vibroslaw.", group: "worlds" },
+        institutions: { hero: "/public/assets/heroes/for-institutions-hero.webp", description: "Formats for institutions.", group: "support" },
+        author: { hero: "/public/assets/heroes/authorial-profile-hero.webp", description: "Author profile and method.", group: "support" },
+        press: { hero: "/public/assets/heroes/press-recognition-hero.webp", description: "Mentions, media and traces.", group: "support" },
+        contact: { hero: "/public/assets/heroes/contact-hero.webp", description: "Contact and collaboration.", group: "support" },
       };
 
   const navItems = navConfig.map((item) => {
@@ -469,7 +492,7 @@
     const entry = isWorldPath(normalizePath(item.href)) ? ' data-cinematic-entry="true"' : "";
     const ariaCurrent = item.active ? ' aria-current="page"' : "";
     return `<a class="${classes}" href="${item.href}" data-nav-key="${item.key}" title="${item.mobileLabel}"${entry}${ariaCurrent}>
-      <span class="experience-route-orb" aria-hidden="true">${item.monogram}</span>
+      <span class="experience-route-thumb" style="--route-thumb:url('${item.hero}')" aria-hidden="true"></span>
       <span class="experience-route-copy"><strong>${item.mobileLabel}</strong><small>${item.description}</small></span>
       <span class="experience-route-marker" aria-hidden="true"></span>
     </a>`;
@@ -494,7 +517,8 @@
         <nav class="desktop-nav desktop-nav-compact site-nav-hub" aria-label="${isPolish ? "Nawigacja główna" : "Primary navigation"}">
           ${desktopLinks}
           <button class="experience-menu-toggle" id="experienceMenuToggle" type="button" popovertarget="experienceMenu" aria-expanded="false" aria-label="${isPolish ? "Więcej i ustawienia" : "More and experience settings"}">
-            <span>${isPolish ? "Więcej" : "More"}</span>
+            <span class="experience-menu-favicon" aria-hidden="true"></span>
+            <span class="experience-menu-label">${isPolish ? "Więcej" : "More"}</span>
           </button>
           <button class="mobile-nav-toggle desktop-menu-toggle" id="mobileNavToggle" type="button" aria-label="${isPolish ? "Otwórz menu strony" : "Open site menu"}" aria-expanded="false" aria-controls="mobileMenuOverlay">
             <span></span><span></span><span></span>
@@ -507,7 +531,7 @@
           <span>${isPolish ? "NAWIGACJA I WRAŻENIA" : "NAVIGATION AND EXPERIENCE"}</span>
           <small>${identity.label}</small>
           <div class="experience-active-world" data-nav-key="${activeItem.key}">
-            <span class="experience-world-orb" aria-hidden="true">${activeItem.monogram}</span>
+            <span class="experience-world-thumb" style="--route-thumb:url('${activeItem.hero}')" aria-hidden="true"></span>
             <span class="experience-active-copy"><strong>${activeItem.mobileLabel}</strong><em>${isPolish ? "Aktywna sciezka" : "Active route"}</em></span>
           </div>
         </div>
