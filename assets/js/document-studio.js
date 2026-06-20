@@ -11,12 +11,14 @@
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[char]));
   const clampText = (value, max = 160) => String(value || "").trim().slice(0, max);
   const clampNumber = (value, min, max) => Math.min(max, Math.max(min, value));
+  const cloneData = (value) => JSON.parse(JSON.stringify(value));
   const isoToday = new Date().toISOString().slice(0, 10);
   const A4 = {
     landscape: { width: 3508, height: 2480, pdf: [841.89, 595.28] },
     portrait: { width: 2480, height: 3508, pdf: [595.28, 841.89] },
   };
   const anonymousReportEmail = "peter.lichwala@gmail.com";
+  const presetStorageKey = "vhDocumentStudioPresets";
 
   const assets = {
     certificateBackgrounds: {
@@ -224,6 +226,45 @@
       reportTextScale: 98,
     },
   };
+
+  const builtinPresetLabels = {
+    balanced: "Balanced premium",
+    ceremony: "Ceremonial gold",
+    field: "1940s field archive",
+    minimal: "Minimal print proof",
+  };
+
+  Object.values(studioPresets).forEach((preset) => {
+    preset.layoutFragments = cloneLayoutFragments(preset.layoutFragments || layoutFragmentDefaults);
+    preset.layoutExtras = cloneLayoutExtras(preset.layoutExtras);
+  });
+
+  Object.assign(studioPresets.ceremony.layoutFragments.certificate, {
+    stamp: fragmentBox(46.4, 15.5, 7.2, 7.8, "center", "center", 50),
+    title: fragmentBox(10, 22, 80, 10.2, "center", "center", 40),
+    body: fragmentBox(23, 37.4, 54, 18.8, "center", "top", 30),
+    name: fragmentBox(23, 66.8, 54, 8.6, "center", "center", 60),
+    author: fragmentBox(38, 84.2, 24, 8.8, "center", "center", 80),
+  });
+  Object.assign(studioPresets.field.layoutFragments.report, {
+    title: fragmentBox(10, 14.4, 80, 7.8, "center", "center", 30),
+    quote: fragmentBox(9, 24.4, 82, 7.2, "left", "top", 40),
+    instruction: fragmentBox(9, 33.4, 82, 7, "left", "top", 50),
+    lines: fragmentBox(9, 42.5, 82, 35, "left", "top", 60),
+    entry: fragmentBox(10, 44, 80, 32.5, "left", "top", 70),
+    stamp: fragmentBox(7.5, 79, 19, 12.5, "center", "center", 90),
+  });
+  Object.assign(studioPresets.minimal.layoutFragments.certificate, {
+    stamp: { ...studioPresets.minimal.layoutFragments.certificate.stamp, hidden: true },
+    author: { ...studioPresets.minimal.layoutFragments.certificate.author, hidden: true },
+    title: fragmentBox(13, 24.8, 74, 8.8, "center", "center", 40),
+    body: fragmentBox(25, 41, 50, 16, "center", "top", 30),
+  });
+  Object.assign(studioPresets.minimal.layoutFragments.report, {
+    stamp: { ...studioPresets.minimal.layoutFragments.report.stamp, hidden: true },
+    quote: fragmentBox(12, 26, 76, 6.2, "center", "top", 40),
+    instruction: fragmentBox(12, 35.2, 76, 6.2, "center", "top", 50),
+  });
 
   const certificateLayouts = {
     classic: {
@@ -501,6 +542,59 @@
     return next;
   }
 
+  function normalizePresetName(value) {
+    let base = String(value || "studio-preset")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 38);
+    if (!base) base = "studio-preset";
+    if (studioPresets[base]) base = `${base}-custom`;
+    return base;
+  }
+
+  function ensurePresetAllowed(name) {
+    if (name && !allowed.studioPreset.includes(name)) allowed.studioPreset.push(name);
+  }
+
+  function normalizeStudioPresetRecord(raw = {}, fallbackName = "Studio preset") {
+    if (!raw || typeof raw !== "object") return null;
+    const label = clampText(raw.label || raw.title || raw.name || fallbackName, 70) || "Studio preset";
+    const name = normalizePresetName(raw.name || label);
+    ensurePresetAllowed(name);
+    const rawConfig = raw.config && typeof raw.config === "object" ? raw.config : raw;
+    const clean = sanitizeConfig({ ...rawConfig, studioPreset: name });
+    return {
+      version: 1,
+      name,
+      label,
+      createdAt: raw.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      config: clean,
+    };
+  }
+
+  function loadCustomStudioPresets() {
+    if (mode !== "admin") return {};
+    try {
+      const raw = JSON.parse(localStorage.getItem(presetStorageKey) || "{}");
+      const values = Array.isArray(raw) ? raw : Object.values(raw && typeof raw === "object" ? raw : {});
+      const next = {};
+      values.slice(0, 50).forEach((item, index) => {
+        const record = normalizeStudioPresetRecord(item, `Studio preset ${index + 1}`);
+        if (record) next[record.name] = record;
+      });
+      return next;
+    } catch {
+      localStorage.removeItem(presetStorageKey);
+      return {};
+    }
+  }
+
+  let customStudioPresets = loadCustomStudioPresets();
+
   function encodeConfig(value) {
     const bytes = new TextEncoder().encode(JSON.stringify(value));
     let binary = "";
@@ -526,6 +620,8 @@
   let proofZoom = 1;
   let reportOverflow = false;
   let exporting = false;
+  let pendingExportProof = null;
+  let exportProofUrl = "";
   const status = $("[data-document-status]");
   const imageCache = new Map();
   const bytesCache = new Map();
@@ -555,7 +651,10 @@
     try {
       config = sanitizeConfig(JSON.parse(snapshot));
       const form = $("[data-document-admin-form]");
-      if (form) fillAdminForm(form);
+      if (form) {
+        syncPresetSelect(form);
+        fillAdminForm(form);
+      }
       persistAdminConfig();
       syncVisualOptions();
       syncEditorTools();
@@ -1078,6 +1177,8 @@
     if (align) align.value = fragment.align || "center";
     if (valign) valign.value = fragment.valign || "center";
     $$("[data-lock-sensitive]").forEach((control) => { control.disabled = Boolean(fragment.locked); });
+    $$("[data-mobile-layer-name]").forEach((node) => { node.textContent = layerLabel(selection.type, selection.id); });
+    $$("[data-mobile-layer-state]").forEach((node) => { node.textContent = fragment.hidden ? "Hidden" : fragment.locked ? "Locked" : "Live"; });
     markSelectedLayoutFragment();
     renderLayerPanel();
   }
@@ -1131,6 +1232,16 @@
     updateLayoutFragment(selection.type, selection.id, updates);
     persistAdminConfig();
     updatePreview();
+  }
+
+  function nudgeSelectedFragment(mx, my, step = .5) {
+    const selection = ensureLayoutSelection();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (!fragment || fragment.locked) return;
+    updateSelectedLayer({
+      x: clampNumber(fragment.x + mx * step, 0, 100 - fragment.w),
+      y: clampNumber(fragment.y + my * step, 0, 100 - fragment.h),
+    });
   }
 
   function syncResizeOverlay() {
@@ -1249,12 +1360,9 @@
     const selectedFragment = layoutFragment(selection.type, selection.id);
     const name = $("[data-selected-layer-name]");
     if (name) name.textContent = layerLabel(selection.type, selection.id);
-    const lock = $("[data-layer-action='lock']");
-    if (lock) lock.textContent = selectedFragment?.locked ? "Unlock" : "Lock";
-    const hide = $("[data-layer-action='hide']");
-    if (hide) hide.textContent = selectedFragment?.hidden ? "Show" : "Hide";
-    const remove = $("[data-layer-action='remove']");
-    if (remove) remove.disabled = isBaseFragment(selection.type, selection.id);
+    $$("[data-layer-action='lock']").forEach((button) => { button.textContent = selectedFragment?.locked ? "Unlock" : "Lock"; });
+    $$("[data-layer-action='hide']").forEach((button) => { button.textContent = selectedFragment?.hidden ? "Show" : "Hide"; });
+    $$("[data-layer-action='remove']").forEach((button) => { button.disabled = isBaseFragment(selection.type, selection.id); });
   }
 
   function rectForFragment(fragment) {
@@ -1376,6 +1484,19 @@
 
     $$("[data-layout-snap-y]").forEach((button) => {
       button.addEventListener("click", () => snapSelectedFragment("y", button.dataset.layoutSnapY));
+    });
+
+    $$("[data-mobile-nudge]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const vectors = {
+          left: [-1, 0],
+          right: [1, 0],
+          up: [0, -1],
+          down: [0, 1],
+        };
+        const [mx, my] = vectors[button.dataset.mobileNudge] || [0, 0];
+        nudgeSelectedFragment(mx, my, Number(button.dataset.mobileNudgeStep) || .5);
+      });
     });
 
     $("[data-reset-layout-fragment]")?.addEventListener("click", () => {
@@ -1588,20 +1709,118 @@
   }
 
   function fillAdminForm(form) {
+    if (!form) return;
     Object.entries(config).forEach(([key, value]) => {
       const field = form.elements.namedItem(key);
       if (field) field.value = value;
     });
+    const presetName = $("[data-preset-name]", form);
+    if (presetName) presetName.value = customStudioPresets[config.studioPreset]?.label || builtinPresetLabels[config.studioPreset] || "";
   }
 
   function applyStudioPresetToForm(form, name) {
-    const preset = studioPresets[name];
+    const preset = getStudioPreset(name);
     if (!form || !preset) return;
+    ensurePresetAllowed(name);
+    config = sanitizeConfig({ ...config, ...preset, studioPreset: name });
+    fillAdminForm(form);
+  }
 
-    Object.entries(preset).forEach(([key, value]) => {
-      const field = form.elements.namedItem(key);
-      if (!field) return;
-      field.value = value;
+  function getStudioPreset(name) {
+    return studioPresets[name] || customStudioPresets[name]?.config || null;
+  }
+
+  function syncPresetSelect(form) {
+    const select = form?.elements?.namedItem("studioPreset");
+    if (!select) return;
+    const current = config.studioPreset;
+    const builtinOptions = Object.entries(builtinPresetLabels)
+      .map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`)
+      .join("");
+    const customOptions = Object.values(customStudioPresets)
+      .sort((a, b) => a.label.localeCompare(b.label))
+      .map((record) => `<option value="${record.name}">${escapeHtml(record.label)} (saved)</option>`)
+      .join("");
+    select.innerHTML = customOptions ? `${builtinOptions}<optgroup label="Saved presets">${customOptions}</optgroup>` : builtinOptions;
+    select.value = getStudioPreset(current) ? current : defaults.studioPreset;
+  }
+
+  function writeCustomStudioPresets() {
+    try {
+      localStorage.setItem(presetStorageKey, JSON.stringify(customStudioPresets));
+    } catch (error) {
+      console.warn("Could not save Document Studio presets.", error);
+    }
+  }
+
+  function currentStudioPresetRecord(labelValue) {
+    const label = clampText(labelValue || config.eventTitle || "Document Studio preset", 70) || "Document Studio preset";
+    const name = normalizePresetName(label);
+    ensurePresetAllowed(name);
+    const payload = {};
+    Object.keys(defaults).forEach((key) => {
+      if (key === "studioPreset") payload[key] = name;
+      else if (key === "layoutFragments") payload[key] = cloneLayoutFragments(config.layoutFragments);
+      else if (key === "layoutExtras") payload[key] = cloneLayoutExtras(config.layoutExtras);
+      else payload[key] = cloneData(config[key] ?? defaults[key]);
+    });
+    return {
+      version: 1,
+      name,
+      label,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      config: sanitizeConfig(payload),
+    };
+  }
+
+  function applyPresetRecord(record, form, save = true) {
+    if (!record) return;
+    ensurePresetAllowed(record.name);
+    if (save) {
+      customStudioPresets[record.name] = record;
+      writeCustomStudioPresets();
+    }
+    syncPresetSelect(form);
+    applyStudioPresetToForm(form, record.name);
+    persistAdminConfig();
+    syncVisualOptions();
+    syncEditorTools();
+    updatePreview();
+  }
+
+  async function importStudioPresetFile(file, form) {
+    if (!file) return;
+    try {
+      const raw = JSON.parse(await file.text());
+      const record = normalizeStudioPresetRecord(raw, file.name.replace(/\.json$/i, ""));
+      if (!record) throw new Error("Invalid preset file.");
+      pushHistory();
+      applyPresetRecord(record, form, true);
+      setStatus("Preset imported and applied.");
+    } catch (error) {
+      console.error("Document Studio preset import failed", error);
+      setStatus(error.message || "Could not import preset JSON.");
+    }
+  }
+
+  function installPresetControls(form) {
+    if (!form || mode !== "admin") return;
+    syncPresetSelect(form);
+    $("[data-save-studio-preset]", form)?.addEventListener("click", () => {
+      pushHistory();
+      const record = currentStudioPresetRecord($("[data-preset-name]", form)?.value);
+      applyPresetRecord(record, form, true);
+      setStatus("Studio preset saved with the full layout.");
+    });
+    $("[data-export-studio-preset]", form)?.addEventListener("click", () => {
+      const record = currentStudioPresetRecord($("[data-preset-name]", form)?.value);
+      downloadBlob(new Blob([JSON.stringify(record, null, 2)], { type: "application/json" }), `${safeFileName(record.label)}-document-studio-preset.json`);
+      setStatus("Preset JSON exported.");
+    });
+    $("[data-import-studio-preset]", form)?.addEventListener("change", (event) => {
+      importStudioPresetFile(event.target.files?.[0], form);
+      event.target.value = "";
     });
   }
 
@@ -2621,6 +2840,119 @@
     }
   }
 
+  function revokeExportProofUrl() {
+    if (!exportProofUrl) return;
+    URL.revokeObjectURL(exportProofUrl);
+    exportProofUrl = "";
+  }
+
+  function closeExportProof() {
+    const dialog = $("[data-export-proof]");
+    if (dialog) dialog.hidden = true;
+    pendingExportProof = null;
+    revokeExportProofUrl();
+  }
+
+  function ensureExportProofDialog() {
+    let dialog = $("[data-export-proof]");
+    if (dialog) return dialog;
+    dialog = document.createElement("section");
+    dialog.className = "document-export-proof";
+    dialog.dataset.exportProof = "true";
+    dialog.hidden = true;
+    dialog.innerHTML = `
+      <div class="document-export-proof-card" role="dialog" aria-modal="true" aria-labelledby="documentExportProofTitle">
+        <div class="document-export-proof-copy">
+          <span>Low-res proof</span>
+          <h2 id="documentExportProofTitle" data-export-proof-title>Review before final export</h2>
+          <p data-export-proof-copy>This preview is lightweight. The final file will render at print quality after confirmation.</p>
+        </div>
+        <img data-export-proof-image alt="Document proof preview">
+        <div class="document-export-proof-actions">
+          <button class="document-action" type="button" data-export-proof-cancel>Return to edit</button>
+          <button class="document-action primary" type="button" data-export-proof-confirm>Download final</button>
+        </div>
+      </div>`;
+    document.body.appendChild(dialog);
+    $("[data-export-proof-cancel]", dialog)?.addEventListener("click", () => {
+      closeExportProof();
+      setStatus("");
+    });
+    $("[data-export-proof-confirm]", dialog)?.addEventListener("click", async () => {
+      const payload = pendingExportProof;
+      closeExportProof();
+      if (payload) await finalizeExport(payload);
+    });
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        closeExportProof();
+        setStatus("");
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !dialog.hidden) {
+        closeExportProof();
+        setStatus("");
+      }
+    });
+    return dialog;
+  }
+
+  async function showExportProof(payload) {
+    const dialog = ensureExportProofDialog();
+    const image = $("[data-export-proof-image]", dialog);
+    const title = $("[data-export-proof-title]", dialog);
+    const confirm = $("[data-export-proof-confirm]", dialog);
+    const canvas = payload.type === "certificate"
+      ? await renderCertificate({ ...payload.data, width: 1100 })
+      : await renderReport({ ...payload.data, width: 850 });
+    const blob = await canvasBlob(canvas, "image/jpeg", .82);
+    revokeExportProofUrl();
+    exportProofUrl = URL.createObjectURL(blob);
+    pendingExportProof = payload;
+    if (image) image.src = exportProofUrl;
+    if (title) title.textContent = payload.action === "report-share" ? "Review anonymous email copy" : "Review before final export";
+    if (confirm) confirm.textContent = payload.action === "report-share" ? "Prepare email copy" : `Download final ${payload.action.endsWith("jpg") ? "JPG" : "PDF"}`;
+    dialog.hidden = false;
+    confirm?.focus();
+  }
+
+  async function finalizeExport(payload) {
+    setBusy(true);
+    setStatus(C().preparing);
+    try {
+      const { action, type, data, base } = payload;
+      if (type === "certificate") {
+        if (action.endsWith("pdf")) {
+          await downloadPdf("certificate", data, base);
+        } else {
+          const canvas = await renderCertificate(data);
+          downloadBlob(await canvasBlob(canvas), `${base}.jpg`);
+        }
+        setStatus(C().ready);
+        return;
+      }
+      if (action === "report-share") {
+        const canvas = await renderReport({ ...data, width: 1600 });
+        const blob = await canvasBlob(canvas, "image/jpeg", .92);
+        await shareAnonymousReport(blob, `${base}.jpg`);
+        return;
+      }
+      if (action.endsWith("pdf")) {
+        await downloadPdf("report", data, base);
+      } else {
+        const canvas = await renderReport(data);
+        downloadBlob(await canvasBlob(canvas, "image/jpeg", .96), `${base}.jpg`);
+      }
+      setStatus(C().ready);
+    } catch (error) {
+      console.error("Document Studio export failed", error);
+      setStatus(error.message || "Could not generate the document.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function handleExport(action) {
     const certificateName = $('[name="certificateName"]')?.value.trim() || "";
     const reportText = $('[name="reportText"]')?.value.trim() || "";
@@ -2645,35 +2977,28 @@
     try {
       const documentNumber = renewDocumentNumber();
       updatePreview();
+      let payload;
       if (action.startsWith("certificate")) {
-        const base = safeFileName(`${documentNumber}-${C().certificateTitle}-${certificateName}`);
-        if (action.endsWith("pdf")) {
-          await downloadPdf("certificate", { name: certificateName, documentNumber }, base);
-        } else {
-          const canvas = await renderCertificate({ name: certificateName, documentNumber });
-          downloadBlob(await canvasBlob(canvas), `${base}.jpg`);
-        }
-        setStatus(C().ready);
-        return;
-      }
-      const anonymous = action.includes("anonymous") || action.includes("share");
-      const base = safeFileName(`${documentNumber}-${C().reportTitle}-${anonymous ? "anonymous" : reportName || "witness"}`);
-      if (action === "report-share") {
-        const canvas = await renderReport({ text: reportText, name: "", anonymous: true, documentNumber, width: 1600 });
-        const blob = await canvasBlob(canvas, "image/jpeg", .92);
-        await shareAnonymousReport(blob, `${base}.jpg`);
-        return;
-      }
-      if (action.endsWith("pdf")) {
-        await downloadPdf("report", { text: reportText, name: reportName, anonymous, documentNumber }, base);
+        payload = {
+          action,
+          type: "certificate",
+          data: { name: certificateName, documentNumber },
+          base: safeFileName(`${documentNumber}-${C().certificateTitle}-${certificateName}`),
+        };
       } else {
-        const canvas = await renderReport({ text: reportText, name: reportName, anonymous, documentNumber });
-        downloadBlob(await canvasBlob(canvas, "image/jpeg", .96), `${base}.jpg`);
+        const anonymous = action.includes("anonymous") || action.includes("share");
+        payload = {
+          action,
+          type: "report",
+          data: { text: reportText, name: action === "report-share" ? "" : reportName, anonymous, documentNumber },
+          base: safeFileName(`${documentNumber}-${C().reportTitle}-${anonymous ? "anonymous" : reportName || "witness"}`),
+        };
       }
-      setStatus(C().ready);
+      await showExportProof(payload);
+      setStatus("Proof ready. Confirm the final export when it looks correct.");
     } catch (error) {
-      console.error("Document Studio export failed", error);
-      setStatus(error.message || "Could not generate the document.");
+      console.error("Document Studio export proof failed", error);
+      setStatus(error.message || "Could not prepare the proof preview.");
     } finally {
       setBusy(false);
     }
@@ -2733,13 +3058,16 @@
 
   if (mode === "admin") {
     const form = $("[data-document-admin-form]");
+    syncPresetSelect(form);
     fillAdminForm(form);
+    installPresetControls(form);
     enhanceVisualSelect("certificateBackground");
     enhanceVisualSelect("reportBackground");
     installLayoutEditor();
     syncVisualOptions();
     form.addEventListener("input", (event) => {
       if (event.target?.closest?.("[data-layout-control-panel]")) return;
+      if (event.target?.matches?.("[data-preset-name], [data-import-studio-preset]")) return;
       pushHistory();
       if (event.target?.name === "studioPreset") {
         applyStudioPresetToForm(form, event.target.value);
