@@ -33,12 +33,12 @@
 
 .event-shell-oswiecim {
   --event-hero-image: url('/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'), var(--asset-lobby);
-  --event-hero-mobile-image: url('/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby-mobile.webp'), var(--asset-lobby-mobile);
+  --event-hero-mobile-image: url('/public/assets/events/rap-ort/oswiecim20260525/experience/oswiecim-event-lobby.webp'), var(--asset-lobby-mobile);
 }
 
 .event-shell-sydney {
   --event-hero-image: url('/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'), var(--asset-lobby);
-  --event-hero-mobile-image: url('/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby-mobile.webp'), var(--asset-lobby-mobile);
+  --event-hero-mobile-image: url('/public/assets/events/rap-ort/syd2026/experience/sydney-event-lobby.webp'), var(--asset-lobby-mobile);
 }
 
 .event-shell-scene-media[style*='witness-writing-desk'],
