@@ -3,10 +3,17 @@
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.body.classList.contains('reduced-motion');
   $$('[data-rp-expand-card]').forEach(card=>{
     const btn=$('button',card);
-    const toggle=()=>{ const was=card.classList.contains('is-open'); $$('[data-rp-expand-card].is-open').forEach(c=>{if(c!==card)c.classList.remove('is-open')}); card.classList.toggle('is-open',!was); };
-    card.addEventListener('click',e=>{ if(e.target.closest('a')) return; toggle(); });
-    card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} if(e.key==='Escape') card.classList.remove('is-open');});
-    if(btn) btn.addEventListener('click',e=>{e.stopPropagation();toggle();});
+    const setOpen=(target,open)=>{
+      target.classList.toggle('is-open',open);
+      const targetBtn=$('button',target);
+      if(targetBtn) targetBtn.setAttribute('aria-expanded',open?'true':'false');
+    };
+    const toggle=()=>{ const was=card.classList.contains('is-open'); $$('[data-rp-expand-card].is-open').forEach(c=>{if(c!==card)setOpen(c,false)}); setOpen(card,!was); };
+    card.addEventListener('click',e=>{ if(e.target.closest('a,button')) return; toggle(); });
+    if(btn){
+      btn.addEventListener('click',e=>{e.stopPropagation();toggle();});
+      btn.addEventListener('keydown',e=>{ if(e.key==='Escape'){e.preventDefault();setOpen(card,false);} });
+    }
   });
   if(!reduced){
     $$('.rp-tilt').forEach(card=>{
@@ -41,14 +48,14 @@
     const grd=ctx.createLinearGradient(0,0,1600,1000); grd.addColorStop(0,'rgba(233,193,111,.24)'); grd.addColorStop(.55,'rgba(255,242,210,.04)'); grd.addColorStop(1,'rgba(233,193,111,.16)'); ctx.fillStyle=grd; ctx.fillRect(42,42,1516,916);
     ctx.strokeStyle='rgba(233,193,111,.78)'; ctx.lineWidth=4; ctx.strokeRect(70,70,1460,860); ctx.strokeStyle='rgba(255,242,210,.22)'; ctx.lineWidth=1; ctx.strokeRect(104,104,1392,792);
     ctx.textAlign='center'; ctx.fillStyle='#e9c16f'; ctx.font='700 36px Georgia, serif'; ctx.fillText('RAP-ORT: PRAWDA SUMIENIA',800,190);
-    ctx.fillStyle='#fff2d2'; ctx.font='500 78px Georgia, serif'; ctx.fillText(lang==='pl'?'Zapis uczestnictwa':'Screening Attendance Record',800,300);
+    ctx.fillStyle='#fff2d2'; ctx.font='500 78px Georgia, serif'; ctx.fillText(lang==='pl'?'Zapis uczestnictwa':'Screening Participant Record',800,300);
     ctx.fillStyle='rgba(255,242,210,.74)'; ctx.font='500 30px Arial, sans-serif'; ctx.fillText(lang==='pl'?'Potwierdza się udział osoby:':'This records the participation of:',800,390);
     ctx.fillStyle='#fff2d2'; ctx.font='600 64px Georgia, serif'; ctx.fillText(name,800,480);
     ctx.fillStyle='rgba(255,242,210,.78)'; ctx.font='500 30px Arial, sans-serif'; ctx.fillText(lang==='pl'?'w projekcji audiowizualnego dzieła historycznego inspirowanego raportami rtm. Witolda Pileckiego':'in the screening of an audiovisual historical work inspired by the reports of Cavalry Captain Witold Pilecki',800,560);
     ctx.fillStyle='#e9c16f'; ctx.font='600 28px Arial, sans-serif'; ctx.fillText(`${date} · ${place}`,800,650);
     ctx.fillStyle='rgba(255,242,210,.62)'; ctx.font='500 23px Arial, sans-serif'; ctx.fillText(lang==='pl'?'Wygenerowano lokalnie w przeglądarce. Dane nie zostały zapisane.':'Generated locally in the browser. No personal data was stored.',800,760);
     ctx.fillStyle='rgba(233,193,111,.78)'; ctx.font='700 24px Arial, sans-serif'; ctx.fillText('Piotr Lichwała / VIBROSŁAW',800,830);
-    canvas.toBlob(blob=>downloadBlob(blob,`rap-ort-attendance-record-${safeFile(name,'participant')}.png`),'image/png');
+    canvas.toBlob(blob=>downloadBlob(blob,`rap-ort-participant-record-${safeFile(name,'participant')}.png`),'image/png');
   }));
   $$('[data-rp-download-report]').forEach(btn=>btn.addEventListener('click',()=>{
     const box=btn.closest('[data-rp-anon-report]'); const t=(box?.querySelector('[data-rp-report-text]')?.value||'').trim(); if(!t) return;
@@ -57,7 +64,7 @@
 
 ${t}
 
-Wygenerowano lokalnie. Brak zapisu danych na stronie.`:`Anonymous report after Rap-Ort: Truth of Conscience
+Wygenerowano lokalnie. Brak zapisu danych na stronie.`:`Anonymous report after Rap-Ort: Prawda Sumienia
 
 ${t}
 
