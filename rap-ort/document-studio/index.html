@@ -9,8 +9,6 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/navbar.css">
   <link rel="stylesheet" href="/assets/css/mobile-nav.css">
-  <link rel="stylesheet" href="/assets/css/cinematic.css">
-  <link rel="stylesheet" href="/assets/css/veritas.css">
   <link rel="stylesheet" href="/assets/css/document-studio.css">
 </head>
 <body class="veritas-universe vh-page document-studio-page" data-lang="en" data-page="document-studio" data-document-mode="admin" data-document-view="edit">
@@ -99,6 +97,14 @@
             <label class="document-field"><span>Language</span><select name="language"><option value="en">English</option><option value="pl">Polski</option></select></label>
             <label class="document-field"><span>Event / edition</span><input name="eventTitle" value="Rap-Ort: Prawda Sumienia" maxlength="90"></label>
             <label class="document-field"><span>Preset library</span><select name="studioPreset"><option value="balanced">Balanced premium</option><option value="ceremony">Ceremonial gold</option><option value="field">1940s field archive</option><option value="minimal">Minimal print proof</option></select></label>
+            <div class="document-preset-tools">
+              <label class="document-field"><span>Preset name</span><input data-preset-name placeholder="Sydney final layout" maxlength="70"></label>
+              <div class="document-actions compact">
+                <button class="document-action" type="button" data-save-studio-preset>Save Studio Preset</button>
+                <button class="document-action" type="button" data-export-studio-preset>Export preset JSON</button>
+                <label class="document-action file-action">Import preset JSON<input data-import-studio-preset type="file" accept="application/json,.json"></label>
+              </div>
+            </div>
             <div class="document-inline-fields">
               <label class="document-field"><span>Date</span><input name="eventDate" type="date"></label>
               <label class="document-field"><span>Editor grid</span><select name="proofGrid"><option value="safe">Safe zones</option><option value="thirds">Rule of thirds</option><option value="print">Print grid</option><option value="off">Off</option></select></label>
@@ -138,6 +144,29 @@
             <div class="document-actions"><button class="document-action" type="button" data-copy-share-link>Copy link</button><a class="document-action" data-open-share-link target="_blank" rel="noopener">Open public page</a></div>
           </div>
         </form>
+
+        <aside class="document-mobile-inspector" data-mobile-inspector aria-label="Mobile layout inspector">
+          <div class="document-mobile-inspector-head"><span>Selected</span><strong data-mobile-layer-name>Title plate</strong><small data-mobile-layer-state>Live</small></div>
+          <div class="document-mobile-inspector-grid" aria-label="Move selected layer">
+            <button type="button" data-mobile-nudge="up">Up</button>
+            <button type="button" data-mobile-nudge="left">Left</button>
+            <button type="button" data-mobile-nudge="right">Right</button>
+            <button type="button" data-mobile-nudge="down">Down</button>
+          </div>
+          <div class="document-mobile-inspector-grid compact" aria-label="Snap selected layer">
+            <button type="button" data-layout-snap-x="left" data-lock-sensitive>Left</button>
+            <button type="button" data-layout-snap-x="center" data-lock-sensitive>Center</button>
+            <button type="button" data-layout-snap-x="right" data-lock-sensitive>Right</button>
+            <button type="button" data-layout-snap-y="top" data-lock-sensitive>Top</button>
+            <button type="button" data-layout-snap-y="center" data-lock-sensitive>Middle</button>
+            <button type="button" data-layout-snap-y="bottom" data-lock-sensitive>Bottom</button>
+          </div>
+          <div class="document-mobile-inspector-grid compact" aria-label="Layer actions">
+            <button type="button" data-layer-action="lock">Lock</button>
+            <button type="button" data-layer-action="hide">Hide</button>
+            <button type="button" data-layer-action="duplicate">Duplicate</button>
+          </div>
+        </aside>
 
         <section class="document-proof-shell" aria-label="Approved document proof">
           <header class="document-proof-toolbar">
@@ -190,9 +219,6 @@
   </main>
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/navigation.js" defer></script>
-  <script src="/assets/js/transitions.js" defer></script>
-  <script src="/assets/js/cinematic.js" defer></script>
-  <script src="/assets/js/veritas.js" defer></script>
   <script src="/assets/js/document-studio.js" defer></script>
 </body>
 </html>
