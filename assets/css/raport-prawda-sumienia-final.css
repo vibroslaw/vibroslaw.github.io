@@ -53,3 +53,286 @@
 .rp-events-page .rp-hero-card{border-color:rgba(247,217,148,.36);background:linear-gradient(180deg,rgba(34,25,14,.92),rgba(7,6,4,.74))}.rp-events-page .rp-hero h1{max-width:11ch}.rp-events-page .rp-event-list{gap:1.8rem}.rp-events-page .rp-button[href*="facebook"],.rp-event-link{position:relative}.rp-events-page .rp-button[href*="facebook"]:after,.rp-event-link:after{content:"↗";margin-left:.45rem}
 @media(max-width:1120px){.rp-case-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rp-proof-strip-wide{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){.rp-curatorial-quote .rp-wrap{grid-template-columns:1fr}.rp-journey-path{border-radius:22px}.rp-proof-strip,.rp-proof-strip-wide,.rp-case-grid{grid-template-columns:1fr}.rp-material-card:nth-child(n){transform:none}.rp-event-card figure{min-height:13rem}}
+
+/* PR — Exclusive final visual polish: Report Room artifact layer */
+.rp-report-room{
+  --rr-gold-soft: rgba(232,192,112,.18);
+  --rr-gold-mid: rgba(232,192,112,.34);
+  --rr-gold-strong: rgba(247,217,148,.70);
+  --rr-panel: rgba(12,9,6,.66);
+  --rr-panel-strong: rgba(22,16,9,.84);
+  --rr-ink: rgba(255,242,210,.90);
+  background:
+    radial-gradient(circle at 50% -10%, rgba(247,217,148,.13), transparent 28rem),
+    radial-gradient(circle at 8% 16%, rgba(232,192,112,.08), transparent 24rem),
+    radial-gradient(circle at 86% 24%, rgba(255,244,214,.045), transparent 24rem),
+    linear-gradient(180deg,#020201 0,#090806 42rem,#030302 100%);
+}
+.rp-report-room .rp-main:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(247,217,148,.06), transparent 30rem),
+    linear-gradient(90deg, transparent 0 8%, rgba(232,192,112,.045) 8.1%, transparent 8.2% 91.8%, rgba(232,192,112,.04) 91.9%, transparent 92%),
+    repeating-linear-gradient(90deg, rgba(255,244,214,.010) 0 1px, transparent 1px 9px);
+  opacity:.82;
+  mix-blend-mode:screen;
+}
+.rp-report-room .rp-hero{
+  min-height:min(96svh,64rem);
+  box-shadow:inset 0 -120px 160px rgba(0,0,0,.48);
+}
+.rp-report-room .rp-hero:before{
+  content:"";
+  position:absolute;
+  left:clamp(1rem,4vw,4rem);
+  right:clamp(1rem,4vw,4rem);
+  bottom:clamp(1rem,3vw,2.4rem);
+  z-index:1;
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--rr-gold-strong), rgba(255,244,214,.20), transparent);
+  opacity:.72;
+}
+.rp-report-room .rp-hero-media img{
+  filter:sepia(.16) saturate(.88) contrast(1.12) brightness(.68);
+  transform:scale(1.055);
+}
+.rp-report-room .rp-hero-media:after{
+  background:
+    radial-gradient(circle at 74% 26%, rgba(247,217,148,.10), transparent 28rem),
+    linear-gradient(90deg,rgba(2,2,1,.97) 0,rgba(2,2,1,.78) 34%,rgba(2,2,1,.22) 63%,rgba(2,2,1,.82)),
+    linear-gradient(180deg,rgba(2,2,1,.18),rgba(2,2,1,.94));
+}
+.rp-report-room .rp-hero-copy{
+  border-left-color:rgba(247,217,148,.36);
+  background:linear-gradient(90deg,rgba(5,4,3,.58),rgba(5,4,3,.18),transparent);
+  box-shadow:-32px 0 90px rgba(0,0,0,.30);
+}
+.rp-report-room .rp-hero h1{
+  letter-spacing:-.065em;
+  text-shadow:0 34px 100px rgba(0,0,0,.92),0 0 34px rgba(247,217,148,.10);
+}
+.rp-report-room .rp-hero-line{
+  text-wrap:balance;
+}
+.rp-report-room .rp-hero-card{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(247,217,148,.34);
+  background:
+    radial-gradient(circle at 28% 0%, rgba(247,217,148,.18), transparent 16rem),
+    linear-gradient(145deg,rgba(35,25,14,.88),rgba(6,5,4,.78));
+  box-shadow:0 36px 120px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,244,214,.08);
+}
+.rp-report-room .rp-hero-card:after{
+  content:"";
+  position:absolute;
+  inset:auto 1rem 1rem 1rem;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(247,217,148,.48), transparent);
+}
+.rp-report-room .rp-kicker{
+  color:rgba(247,217,148,.92);
+  text-shadow:0 0 28px rgba(247,217,148,.08);
+}
+.rp-report-room .rp-section-head{
+  max-width:920px;
+}
+.rp-report-room .rp-section-head h2{
+  text-wrap:balance;
+}
+.rp-report-room .rp-info-card,
+.rp-report-room .rp-format-card,
+.rp-report-room .rp-source-list,
+.rp-report-room .rp-material-card{
+  border-color:rgba(232,192,112,.19);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(247,217,148,.075), transparent 18rem),
+    linear-gradient(180deg,rgba(22,17,11,.80),rgba(7,6,4,.70));
+}
+.rp-report-room .rp-info-card:hover,
+.rp-report-room .rp-material-card:hover{
+  border-color:rgba(247,217,148,.36);
+  box-shadow:0 30px 96px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,244,214,.075);
+}
+.rp-report-room .rp-curatorial-quote{
+  background:
+    radial-gradient(circle at 12% 0%, rgba(247,217,148,.08), transparent 22rem),
+    linear-gradient(90deg,rgba(232,192,112,.06),rgba(255,244,214,.014),rgba(232,192,112,.04));
+}
+.rp-report-room .rp-curatorial-quote blockquote{
+  text-shadow:0 26px 80px rgba(0,0,0,.66);
+}
+.rp-report-room .rp-feature-image{
+  border-color:rgba(247,217,148,.20);
+  box-shadow:0 34px 110px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,244,214,.06);
+}
+.rp-report-room .rp-threshold-card{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(247,217,148,.32);
+  background:
+    linear-gradient(90deg,rgba(247,217,148,.11),rgba(255,244,214,.035),rgba(7,6,4,.72)),
+    linear-gradient(180deg,rgba(22,17,11,.86),rgba(7,6,4,.74));
+}
+.rp-report-room .rp-threshold-card:before{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  width:3px;
+  background:linear-gradient(180deg,transparent,rgba(247,217,148,.78),transparent);
+  box-shadow:0 0 30px rgba(247,217,148,.20);
+}
+.rp-report-room .rp-chapter-grid{
+  gap:clamp(.9rem,1.6vw,1.25rem);
+}
+.rp-report-room .rp-chapter-teaser{
+  isolation:isolate;
+  min-height:clamp(25rem,34vw,31rem);
+  border-color:rgba(232,192,112,.17);
+  background:#050403;
+}
+.rp-report-room .rp-chapter-teaser:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(247,217,148,.08),transparent 16%),
+    linear-gradient(90deg,rgba(255,244,214,.035),transparent 18%,transparent 82%,rgba(232,192,112,.035));
+  opacity:.0;
+  transition:opacity .28s ease;
+}
+.rp-report-room .rp-chapter-teaser:hover:before,
+.rp-report-room .rp-chapter-teaser:focus-within:before,
+.rp-report-room .rp-chapter-teaser.is-open:before{
+  opacity:1;
+}
+.rp-report-room .rp-chapter-teaser.is-open{
+  transform:translateY(-3px);
+  border-color:rgba(247,217,148,.66);
+  box-shadow:0 42px 130px rgba(0,0,0,.56),0 0 0 1px rgba(247,217,148,.09) inset;
+}
+.rp-report-room .rp-card-body{
+  padding:clamp(1rem,1.4vw,1.25rem);
+  background:linear-gradient(180deg,transparent,rgba(2,2,1,.18));
+}
+.rp-report-room .rp-card-body span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:2.1rem;
+  height:2.1rem;
+  margin-bottom:.42rem;
+  border:1px solid rgba(247,217,148,.34);
+  border-radius:999px;
+  background:rgba(3,3,2,.48);
+  box-shadow:0 0 0 5px rgba(247,217,148,.035);
+}
+.rp-report-room .rp-card-body h3{
+  line-height:1.05;
+  text-wrap:balance;
+}
+.rp-report-room .rp-card-body button{
+  min-height:2.45rem;
+  padding:.68rem .82rem;
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease;
+}
+.rp-report-room .rp-card-body button:hover,
+.rp-report-room .rp-card-body button:focus-visible,
+.rp-report-room .rp-card-body button[aria-expanded="true"]{
+  outline:0;
+  transform:translateY(-1px);
+  border-color:rgba(247,217,148,.78);
+  background:rgba(232,192,112,.18);
+  box-shadow:0 14px 42px rgba(0,0,0,.34),0 0 0 4px rgba(247,217,148,.07);
+}
+.rp-report-room .rp-card-reveal{
+  padding:clamp(1rem,1.5vw,1.3rem);
+  overflow-y:auto;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(247,217,148,.12), transparent 18rem),
+    linear-gradient(180deg,rgba(2,2,1,.42),rgba(2,2,1,.975));
+  backdrop-filter:blur(8px) saturate(1.08);
+  -webkit-backdrop-filter:blur(8px) saturate(1.08);
+}
+.rp-report-room .rp-card-reveal::-webkit-scrollbar{width:8px}.rp-report-room .rp-card-reveal::-webkit-scrollbar-thumb{background:rgba(247,217,148,.28);border-radius:999px}
+.rp-report-room .rp-card-reveal p{
+  max-width:38rem;
+}
+.rp-report-room .rp-source-list{
+  position:relative;
+}
+.rp-report-room .rp-source-list:before{
+  content:"";
+  position:absolute;
+  left:1.1rem;
+  right:1.1rem;
+  top:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(247,217,148,.42),transparent);
+}
+.rp-report-room .rp-materials{
+  background:
+    radial-gradient(circle at 50% 0%, rgba(247,217,148,.07), transparent 28rem),
+    linear-gradient(180deg,rgba(232,192,112,.035),rgba(2,2,1,.20));
+}
+.rp-report-room .rp-document-mockup{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(247,217,148,.16);
+}
+.rp-report-room .rp-document-mockup:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg,transparent 0 38%,rgba(255,255,255,.12) 48%,transparent 58% 100%);
+  transform:translateX(-130%);
+  transition:transform .7s ease;
+}
+.rp-report-room .rp-material-card:hover .rp-document-mockup:before{
+  transform:translateX(130%);
+}
+.rp-report-room .rp-button{
+  position:relative;
+  overflow:hidden;
+}
+.rp-report-room .rp-button:after{
+  content:"";
+  position:absolute;
+  inset:-60% auto -60% -35%;
+  width:28%;
+  transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);
+  opacity:0;
+  pointer-events:none;
+}
+.rp-report-room .rp-button:hover:after,
+.rp-report-room .rp-button:focus-visible:after{
+  animation:rpReportRoomShine 1.05s ease;
+}
+@keyframes rpReportRoomShine{0%{transform:translateX(0) rotate(18deg);opacity:0}20%{opacity:.85}100%{transform:translateX(560%) rotate(18deg);opacity:0}}
+@media(max-width:1120px){.rp-report-room .rp-chapter-teaser{min-height:28rem}}
+@media(max-width:860px){
+  .rp-report-room .rp-hero{padding:6.8rem 0 4.4rem;min-height:88svh}
+  .rp-report-room .rp-hero-copy{box-shadow:none}
+  .rp-report-room .rp-chapter-teaser{min-height:25rem}
+  .rp-report-room .rp-card-reveal{align-content:center}
+}
+@media(max-width:520px){
+  .rp-report-room .rp-hero-line{font-size:clamp(1.18rem,7vw,1.55rem)}
+  .rp-report-room .rp-chapter-teaser{min-height:24rem;border-radius:20px}
+  .rp-report-room .rp-card-body p{font-size:.94rem;line-height:1.48}
+  .rp-report-room .rp-card-reveal p{font-size:.84rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .rp-report-room .rp-button:after,
+  .rp-report-room .rp-document-mockup:before{display:none!important}
+  .rp-report-room .rp-chapter-teaser.is-open{transform:none!important}
+}
