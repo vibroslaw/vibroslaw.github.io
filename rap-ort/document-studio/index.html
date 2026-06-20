@@ -107,7 +107,7 @@
             </div>
             <div class="document-inline-fields">
               <label class="document-field"><span>Date</span><input name="eventDate" type="date"></label>
-              <label class="document-field"><span>Editor grid</span><select name="proofGrid"><option value="safe">Safe zones</option><option value="thirds">Rule of thirds</option><option value="print">Print grid</option><option value="off">Off</option></select></label>
+              <label class="document-field"><span>Editor grid</span><select name="proofGrid"><option value="safe">Safe zones</option><option value="thirds">Rule of thirds</option><option value="print">Print desk / baseline</option><option value="off">Off</option></select></label>
             </div>
             <label class="document-field"><span>Place / institution</span><input name="eventPlace" placeholder="Event place or institution" maxlength="140"></label>
           </fieldset>
@@ -179,6 +179,12 @@
               <button type="button" data-proof-fullscreen>Full proof</button>
             </div>
           </header>
+          <aside class="document-print-preflight" data-print-preflight aria-label="Print preflight score">
+            <span class="document-print-preflight-kicker">Preflight</span>
+            <strong data-print-preflight-score="ready">Ready for print</strong>
+            <p data-print-preflight-detail>Bleed, safe zone and required fragments pass.</p>
+            <ul data-print-preflight-list></ul>
+          </aside>
           <div class="document-preview-stage" data-proof-stage>
             <article class="document-sheet certificate" data-document-preview="certificate">
               <div class="document-sheet-inner">
