@@ -155,6 +155,16 @@
       html body.reduced-motion.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.reduced-motion.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.reduced-motion.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.reduce-motion.navbar-unified .experience-route-card.is-active .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html[data-experience="reduced"] body.navbar-unified .experience-route-card.is-active .experience-route-thumb::before{transform:scale(1.04)!important}
       @media(prefers-reduced-motion:reduce){html body.navbar-unified .experience-route-card:hover .experience-route-thumb::before,html body.navbar-unified .experience-route-card:focus-visible .experience-route-thumb::before,html body.navbar-unified .experience-route-card.is-active .experience-route-thumb::before{transform:scale(1.04)!important}}
       html body.navbar-unified .experience-route-orb,html body.navbar-unified .experience-world-orb{display:none!important}
+      html body.navbar-unified{--nav-h:64px!important}
+      html body.navbar-unified .site-header .header-inner{min-height:var(--nav-h)!important;padding-block:0!important;align-items:center!important}
+      html body.navbar-unified .site-header .brand{gap:2px!important;min-height:0!important;max-width:min(300px,28vw)!important}
+      html body.navbar-unified .site-header .brand-name,html body.navbar-unified .site-header .brand-name.unified-world-label{font-size:clamp(.72rem,.86vw,.98rem)!important;line-height:1!important;letter-spacing:.145em!important}
+      html body.navbar-unified .site-header .brand-sub-desktop,html body.navbar-unified .site-header .brand-sub-mobile{font-size:.48rem!important;line-height:1.05!important;letter-spacing:.18em!important}
+      html body.navbar-unified .desktop-nav.desktop-nav-compact{gap:clamp(1px,.18vw,4px)!important;align-items:center!important}
+      html body.navbar-unified .desktop-nav-compact .nav-button{min-height:30px!important;padding-inline:clamp(5px,.48vw,8px)!important;font-size:clamp(.50rem,.50vw,.60rem)!important;letter-spacing:.10em!important}
+      html body.navbar-unified .experience-menu-toggle{width:42px!important;min-width:42px!important;max-width:42px!important;height:32px!important;min-height:32px!important}
+      html body.navbar-unified .experience-menu-favicon{width:19px!important;height:19px!important}
+      @media(max-width:760px){html body.navbar-unified{--nav-h:64px!important}html body.navbar-unified .site-header .header-inner{min-height:var(--nav-h)!important}}
     `;
     document.head.appendChild(style);
   };
