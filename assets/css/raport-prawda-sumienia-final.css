@@ -336,3 +336,169 @@
   .rp-report-room .rp-document-mockup:before{display:none!important}
   .rp-report-room .rp-chapter-teaser.is-open{transform:none!important}
 }
+
+
+/* Exclusive World-Class Visual Upgrade — post-screening ritual + animated chapter rooms
+   Scope: .rp-report-room only. Global navbar remains controlled by main/navbar/mobile/veritas CSS. */
+.rp-report-room{
+  --rr-shadow-deep: 0 46px 150px rgba(0,0,0,.62);
+  --rr-glow-line: linear-gradient(90deg,transparent,rgba(247,217,148,.62),rgba(255,242,210,.24),transparent);
+}
+.rp-report-room .rp-section:before{
+  content:"";
+  position:absolute;
+  left:50%;top:0;
+  width:min(860px,78vw);height:1px;
+  transform:translateX(-50%);
+  background:var(--rr-glow-line);
+  opacity:.34;
+  pointer-events:none;
+}
+.rp-report-room .rp-hero:after{
+  content:"";
+  position:absolute;
+  left:clamp(1rem,4vw,4rem);right:clamp(1rem,4vw,4rem);bottom:clamp(1.1rem,3vw,2.6rem);
+  height:1px;
+  background:var(--rr-glow-line);
+  opacity:.68;
+  z-index:2;
+}
+.rp-report-room .rp-hero-card{
+  transform:translateY(0) rotate(.45deg);
+  transition:transform .42s cubic-bezier(.2,.72,.16,1), border-color .42s ease, box-shadow .42s ease;
+}
+.rp-report-room .rp-hero-card:hover{transform:translateY(-6px) rotate(0deg);border-color:rgba(247,217,148,.58);box-shadow:var(--rr-shadow-deep)}
+.rp-report-room .rp-after-path{
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(247,217,148,.10), transparent 26rem),
+    radial-gradient(circle at 86% 70%, rgba(232,192,112,.07), transparent 24rem),
+    linear-gradient(180deg,rgba(255,244,214,.012),rgba(232,192,112,.035));
+}
+.rp-report-room .rp-after-path .rp-section-head{max-width:940px}.rp-report-room .rp-after-path .rp-section-head h2{text-wrap:balance}
+.rp-report-room .rp-path-grid{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.75rem,1.5vw,1.1rem);counter-reset:pathstep}
+.rp-report-room .rp-path-grid:before{
+  content:"";position:absolute;left:7%;right:7%;top:2.55rem;height:1px;background:linear-gradient(90deg,transparent,rgba(247,217,148,.52),transparent);opacity:.52;pointer-events:none
+}
+.rp-report-room .rp-path-card{
+  position:relative;isolation:isolate;overflow:hidden;min-height:18rem;padding:clamp(1.05rem,2vw,1.45rem);border:1px solid rgba(232,192,112,.25);border-radius:26px;background:linear-gradient(150deg,rgba(26,19,11,.88),rgba(6,5,3,.78));box-shadow:inset 0 1px 0 rgba(255,244,214,.06),0 30px 90px rgba(0,0,0,.30);transition:transform .42s cubic-bezier(.2,.72,.16,1),border-color .42s ease,box-shadow .42s ease,background .42s ease
+}
+.rp-report-room .rp-path-card:before{content:"";position:absolute;inset:-40% -70%;z-index:-1;background:radial-gradient(circle at 50% 30%,rgba(247,217,148,.18),transparent 22rem);opacity:0;transform:translateY(20%);transition:opacity .42s ease,transform .42s ease}.rp-report-room .rp-path-card:after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(120deg,rgba(247,217,148,.16),transparent 18%,transparent 74%,rgba(232,192,112,.07));opacity:.72;pointer-events:none}
+.rp-report-room .rp-path-card:hover,.rp-report-room .rp-path-card.is-visible{border-color:rgba(247,217,148,.50);box-shadow:0 38px 130px rgba(0,0,0,.46),0 0 34px rgba(232,192,112,.08)}
+.rp-report-room .rp-path-card:hover{transform:translateY(-8px) rotateX(.7deg)}.rp-report-room .rp-path-card:hover:before{opacity:1;transform:translateY(0)}
+.rp-report-room .rp-path-card span{display:grid;place-items:center;width:3rem;height:3rem;margin-bottom:clamp(1.4rem,3vw,2.6rem);border:1px solid rgba(247,217,148,.48);border-radius:50%;background:rgba(5,4,3,.82);box-shadow:0 0 0 7px rgba(232,192,112,.055),0 18px 45px rgba(0,0,0,.28);color:var(--rp-gold-hot);font:950 .74rem/1 var(--rp-sans);letter-spacing:.12em}
+.rp-report-room .rp-path-card h3{margin:0 0 .55rem;color:var(--rp-cream);font-family:var(--rp-serif);font-size:clamp(1.35rem,2.1vw,1.95rem);font-weight:500;letter-spacing:-.025em}.rp-report-room .rp-path-card p{margin:0;color:rgba(236,220,184,.76);line-height:1.68}
+.rp-report-room .rp-chapter-grid{gap:clamp(1rem,1.8vw,1.35rem);perspective:1400px;align-items:stretch}
+.rp-report-room .rp-chapter-teaser{min-height:clamp(27rem,36vw,33rem);border-radius:30px;transform:translateZ(0);box-shadow:inset 0 1px 0 rgba(255,244,214,.07),0 30px 100px rgba(0,0,0,.38);transition:transform .48s cubic-bezier(.2,.72,.16,1),border-color .38s ease,box-shadow .38s ease,filter .38s ease}
+.rp-report-room .rp-chapter-teaser:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at calc(var(--spot-x,50)*1%) calc(var(--spot-y,42)*1%),rgba(255,242,210,.18),transparent 16rem),linear-gradient(120deg,transparent 0 35%,rgba(255,255,255,.08) 46%,transparent 55% 100%);opacity:0;transform:translateX(-12%);transition:opacity .35s ease,transform .55s ease;mix-blend-mode:screen}
+.rp-report-room .rp-chapter-teaser:hover:after,.rp-report-room .rp-chapter-teaser.is-open:after{opacity:.72;transform:translateX(0)}
+.rp-report-room .rp-chapter-teaser:hover{transform:translateY(-10px) perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));border-color:rgba(247,217,148,.70);box-shadow:0 54px 170px rgba(0,0,0,.58),0 0 42px rgba(232,192,112,.08)}
+.rp-report-room .rp-chapter-teaser.is-open{transform:translateY(-8px) scale(1.012);border-color:rgba(247,217,148,.82);box-shadow:0 64px 190px rgba(0,0,0,.68),0 0 58px rgba(247,217,148,.09)}
+.rp-report-room .rp-chapter-teaser figure:after{background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.44) 40%,rgba(0,0,0,.92)),radial-gradient(circle at 50% 8%,rgba(247,217,148,.16),transparent 18rem)}
+.rp-report-room .rp-chapter-teaser img{filter:sepia(.16) contrast(1.14) saturate(.90) brightness(.66);transition:transform .62s cubic-bezier(.2,.72,.16,1),filter .62s ease}.rp-report-room .rp-chapter-teaser:hover img,.rp-report-room .rp-chapter-teaser.is-open img{filter:sepia(.10) contrast(1.22) saturate(.98) brightness(.78);transform:scale(1.135) translate(var(--tilt-x,0),var(--tilt-y,0))}
+.rp-report-room .rp-card-body{left:clamp(.7rem,1.4vw,1rem);right:clamp(.7rem,1.4vw,1rem);bottom:clamp(.7rem,1.4vw,1rem);padding:clamp(.95rem,1.7vw,1.25rem);border:1px solid rgba(232,192,112,.18);border-radius:22px;background:linear-gradient(180deg,rgba(7,5,3,.68),rgba(5,4,3,.88));box-shadow:inset 0 1px 0 rgba(255,244,214,.055),0 20px 60px rgba(0,0,0,.32);backdrop-filter:blur(14px) saturate(112%);-webkit-backdrop-filter:blur(14px) saturate(112%)}
+.rp-report-room .rp-card-body span{display:inline-flex;align-items:center;gap:.42rem;padding:.38rem .55rem;border:1px solid rgba(232,192,112,.23);border-radius:999px;background:rgba(232,192,112,.075);color:rgba(247,217,148,.94);font-size:.62rem}.rp-report-room .rp-card-body h3{font-size:clamp(1.32rem,1.55vw,1.72rem);line-height:1.02;text-wrap:balance}.rp-report-room .rp-card-body p{font-size:.96rem}.rp-report-room .rp-card-body button{position:relative;overflow:hidden;margin-top:.55rem;min-height:2.35rem;padding:.62rem .85rem;border-color:rgba(247,217,148,.38);background:linear-gradient(135deg,rgba(232,192,112,.18),rgba(5,4,3,.42));box-shadow:0 14px 35px rgba(0,0,0,.24)}
+.rp-report-room .rp-card-body button:before{content:"";position:absolute;inset:-70% auto -70% -45%;width:35%;transform:rotate(16deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);opacity:0}.rp-report-room .rp-card-body button:hover:before,.rp-report-room .rp-card-body button:focus-visible:before{animation:rpButtonShine 1.1s ease}.rp-report-room .rp-card-reveal{padding:clamp(1.05rem,2vw,1.35rem);background:linear-gradient(180deg,rgba(3,2,1,.44),rgba(3,2,1,.94) 42%,rgba(5,4,3,.985));backdrop-filter:blur(12px) saturate(110%);-webkit-backdrop-filter:blur(12px) saturate(110%)}.rp-report-room .rp-card-reveal:before{content:"";position:absolute;left:clamp(1rem,2vw,1.35rem);right:clamp(1rem,2vw,1.35rem);top:clamp(1rem,2vw,1.35rem);height:1px;background:linear-gradient(90deg,rgba(247,217,148,.58),transparent)}
+.rp-report-room .rp-card-reveal p{font-size:.9rem}.rp-report-room .rp-source-mini{display:inline-flex;width:max-content;max-width:100%;padding:.42rem .58rem;border:1px solid rgba(232,192,112,.22);border-radius:999px;background:rgba(232,192,112,.055)}
+.rp-report-room .rp-memory-pack{background:radial-gradient(circle at 20% 16%,rgba(247,217,148,.09),transparent 26rem),linear-gradient(180deg,rgba(232,192,112,.028),rgba(2,2,1,.04))}.rp-report-room .rp-memory-pack .rp-section-head{max-width:980px}.rp-report-room .rp-memory-pack .rp-grid-4{perspective:1500px}.rp-report-room .rp-memory-pack .rp-material-card{min-height:100%;border-radius:28px}.rp-report-room .rp-memory-pack .rp-material-card:nth-child(1){transform:rotate(-.85deg)}.rp-report-room .rp-memory-pack .rp-material-card:nth-child(2){transform:translateY(12px) rotate(.42deg)}.rp-report-room .rp-memory-pack .rp-material-card:nth-child(3){transform:translateY(-5px) rotate(-.38deg)}.rp-report-room .rp-memory-pack .rp-material-card:nth-child(4){transform:translateY(9px) rotate(.55deg)}.rp-report-room .rp-memory-pack .rp-material-card:hover{transform:translateY(-10px) rotate(0deg);border-color:rgba(247,217,148,.62)}
+.rp-report-room .rp-room-visible{animation:rpRoomRise .85s cubic-bezier(.2,.72,.16,1) both;animation-delay:calc(var(--rp-stagger,0) * 55ms)}
+@keyframes rpRoomRise{from{opacity:.74;transform:translateY(18px);filter:blur(2px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}@keyframes rpButtonShine{0%{transform:translateX(0) rotate(16deg);opacity:0}20%{opacity:.9}100%{transform:translateX(520%) rotate(16deg);opacity:0}}
+@media(max-width:1180px){.rp-report-room .rp-path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rp-report-room .rp-path-grid:before{display:none}.rp-report-room .rp-chapter-teaser{min-height:29rem}}
+@media(max-width:860px){.rp-report-room .rp-path-grid{grid-template-columns:1fr}.rp-report-room .rp-path-card{min-height:auto}.rp-report-room .rp-chapter-teaser:hover,.rp-report-room .rp-chapter-teaser.is-open{transform:none}.rp-report-room .rp-memory-pack .rp-material-card:nth-child(n){transform:none}.rp-report-room .rp-card-body{border-radius:18px}.rp-report-room .rp-card-reveal{align-content:center}.rp-report-room .rp-chapter-teaser{min-height:28rem}}
+@media(max-width:520px){.rp-report-room .rp-chapter-teaser{min-height:26rem}.rp-report-room .rp-card-body{left:.55rem;right:.55rem;bottom:.55rem;padding:.82rem}.rp-report-room .rp-card-body h3{font-size:1.18rem}.rp-report-room .rp-card-body p{font-size:.88rem}.rp-report-room .rp-card-reveal p{font-size:.80rem}.rp-report-room .rp-path-card span{margin-bottom:1rem}}
+@media(prefers-reduced-motion:reduce){.rp-report-room .rp-room-visible{animation:none!important}.rp-report-room .rp-chapter-teaser,.rp-report-room .rp-path-card,.rp-report-room .rp-card-body button:before{transition:none!important}.rp-report-room .rp-chapter-teaser:hover,.rp-report-room .rp-chapter-teaser.is-open,.rp-report-room .rp-path-card:hover{transform:none!important}.rp-report-room .rp-card-body button:hover:before,.rp-report-room .rp-card-body button:focus-visible:before{animation:none!important}}
+
+
+/* Exclusive Source-Guide Alignment — evidence badges and public boundary note. Scope: .rp-report-room only. */
+.rp-report-room .rp-source-disclaimer{
+  position:relative;
+  overflow:hidden;
+  margin:0 0 clamp(1rem,2vw,1.4rem);
+  border-color:rgba(247,217,148,.32);
+  background:
+    radial-gradient(circle at 12% 0%,rgba(247,217,148,.12),transparent 22rem),
+    linear-gradient(135deg,rgba(20,14,8,.82),rgba(5,4,3,.88));
+}
+.rp-report-room .rp-source-disclaimer:after{
+  content:"";
+  position:absolute;
+  inset:auto clamp(1rem,2vw,1.5rem) 0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(247,217,148,.58),transparent);
+  opacity:.7;
+}
+.rp-report-room .rp-track-subtitle,
+.rp-report-room .rp-guide-title{
+  margin:.1rem 0 .48rem!important;
+  color:rgba(247,217,148,.84)!important;
+  font:700 .68rem/1.35 var(--rp-sans)!important;
+  letter-spacing:.105em;
+  text-transform:uppercase;
+}
+.rp-report-room .rp-guide-title strong{color:rgba(255,242,210,.72);font-weight:800}
+.rp-report-room .rp-card-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.42rem;
+  margin:.62rem 0 .1rem;
+}
+.rp-report-room .rp-card-meta em,
+.rp-report-room .rp-card-meta strong{
+  display:inline-flex;
+  align-items:center;
+  max-width:100%;
+  min-height:1.65rem;
+  padding:.34rem .5rem;
+  border:1px solid rgba(232,192,112,.22);
+  border-radius:999px;
+  background:rgba(232,192,112,.055);
+  color:rgba(236,220,184,.72);
+  font:800 .56rem/1.15 var(--rp-sans);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-style:normal;
+}
+.rp-report-room .rp-card-meta strong{
+  color:rgba(247,217,148,.88);
+  background:rgba(247,217,148,.075);
+  border-color:rgba(247,217,148,.28);
+}
+.rp-report-room .rp-card-reveal .rp-source-mini{
+  margin:.15rem 0 .1rem;
+  color:rgba(247,217,148,.88);
+  letter-spacing:.045em;
+}
+.rp-report-room .rp-card-reveal .rp-source-mini strong{color:rgba(255,242,210,.72)}
+@media(max-width:520px){
+  .rp-report-room .rp-track-subtitle,
+  .rp-report-room .rp-guide-title{font-size:.58rem!important;letter-spacing:.075em}
+  .rp-report-room .rp-card-meta em,
+  .rp-report-room .rp-card-meta strong{font-size:.50rem;line-height:1.2}
+}
+
+/* Final curatorial closing line */
+body.rp-report-room .rp-curatorial-line {
+  width: min(760px, 100%);
+  margin: clamp(1.3rem, 3vw, 2.2rem) auto 0;
+  padding: clamp(1.1rem, 2.8vw, 1.7rem);
+  border: 1px solid rgba(232,208,154,.24);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(232,208,154,.10), rgba(255,255,255,.025)),
+    radial-gradient(circle at 50% 0%, rgba(232,208,154,.16), transparent 18rem);
+  box-shadow: 0 24px 90px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.055);
+  color: rgba(247,237,218,.78);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.02rem, 2.5vw, 1.42rem);
+  line-height: 1.55;
+  text-align: center;
+}
+body.rp-report-room .rp-curatorial-line span,
+body.rp-report-room .rp-curatorial-line strong {
+  display: block;
+}
+body.rp-report-room .rp-curatorial-line strong {
+  color: #f4dfad;
+  font-weight: 500;
+  letter-spacing: .02em;
+}
