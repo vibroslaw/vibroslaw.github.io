@@ -107,7 +107,7 @@
     eventDate: isoToday,
     eventPlace: "",
     studioPreset: "balanced",
-    proofGrid: "safe",
+    proofGrid: "print",
     certificateBackground: "cinema",
     certificateStamp: "dry",
     certificateSignature: "script",
@@ -155,6 +155,7 @@
     align: ["left", "center", "right"],
     valign: ["top", "center", "bottom"],
   };
+  const snapThreshold = .65;
 
   const studioPresets = {
     balanced: {
@@ -956,9 +957,20 @@
   function ensureGridLayer(sheet) {
     if (mode !== "admin") return;
     if (!sheet || sheet.querySelector(".document-editor-grid")) return;
-    const layer = document.createElement("span");
-    layer.className = "document-editor-grid";
+    const layer = document.createElement("div");
+    layer.className = "document-editor-grid document-print-desk-overlay";
     layer.setAttribute("aria-hidden", "true");
+    layer.innerHTML = `
+      <span class="document-print-bleed"></span>
+      <span class="document-print-safe"></span>
+      <span class="document-print-thirds"></span>
+      <span class="document-print-baseline"></span>
+      <span class="document-print-center is-x"></span>
+      <span class="document-print-center is-y"></span>
+      <span class="document-print-snap-guide is-x" data-snap-guide-x></span>
+      <span class="document-print-snap-guide is-y" data-snap-guide-y></span>
+      <span class="document-print-desk-label is-bleed">3 mm bleed</span>
+      <span class="document-print-desk-label is-safe">safe zone</span>`;
     sheet.appendChild(layer);
   }
 
@@ -1234,6 +1246,138 @@
     updatePreview();
   }
 
+  function printDeskGuides(type, activeId) {
+    const fixedX = [
+      [2, "bleed"], [4, "trim warning"], [7, "safe"], [10, "inner safe"],
+      [33.333, "third"], [50, "centre"], [66.667, "third"],
+      [90, "inner safe"], [93, "safe"], [96, "trim warning"], [98, "bleed"],
+    ];
+    const fixedY = [
+      [2, "bleed"], [4, "trim warning"], [7, "safe"], [10, "inner safe"],
+      [25, "quarter"], [33.333, "third"], [50, "centre"], [66.667, "third"], [75, "quarter"],
+      [90, "inner safe"], [93, "safe"], [96, "trim warning"], [98, "bleed"],
+    ];
+    for (let value = 14; value < 90; value += 4) fixedY.push([value, "baseline"]);
+    layerItems(type).forEach((layer) => {
+      if (layer.id === activeId || layer.fragment.hidden) return;
+      fixedX.push([layer.fragment.x, `${layer.label} left`]);
+      fixedX.push([layer.fragment.x + layer.fragment.w / 2, `${layer.label} centre`]);
+      fixedX.push([layer.fragment.x + layer.fragment.w, `${layer.label} right`]);
+      fixedY.push([layer.fragment.y, `${layer.label} top`]);
+      fixedY.push([layer.fragment.y + layer.fragment.h / 2, `${layer.label} middle`]);
+      fixedY.push([layer.fragment.y + layer.fragment.h, `${layer.label} bottom`]);
+    });
+    const clean = (items) => [...new Map(items
+      .filter(([value]) => Number.isFinite(value) && value >= 0 && value <= 100)
+      .map(([value, label]) => [value.toFixed(3), { value, label }])).values()];
+    return { x: clean(fixedX), y: clean(fixedY) };
+  }
+
+  function nearestGuide(value, guides) {
+    let best = null;
+    guides.forEach((guide) => {
+      const delta = guide.value - value;
+      if (Math.abs(delta) > snapThreshold) return;
+      if (!best || Math.abs(delta) < Math.abs(best.delta)) best = { ...guide, delta };
+    });
+    return best;
+  }
+
+  function snapMovingAxis(box, axis, guides) {
+    const size = axis === "x" ? box.w : box.h;
+    const start = axis === "x" ? box.x : box.y;
+    const anchors = [
+      { edge: "start", value: start },
+      { edge: "center", value: start + size / 2 },
+      { edge: "end", value: start + size },
+    ];
+    let best = null;
+    anchors.forEach((anchor) => {
+      const guide = nearestGuide(anchor.value, guides);
+      if (!guide) return;
+      if (!best || Math.abs(guide.delta) < Math.abs(best.delta)) best = { ...guide, edge: "move", anchor: anchor.edge };
+    });
+    return best;
+  }
+
+  function snapResizeAxis(box, axis, guides, handle) {
+    const startEdge = axis === "x" ? "w" : "n";
+    const endEdge = axis === "x" ? "e" : "s";
+    const start = axis === "x" ? box.x : box.y;
+    const size = axis === "x" ? box.w : box.h;
+    if (handle.includes(startEdge)) {
+      const guide = nearestGuide(start, guides);
+      return guide ? { ...guide, edge: "start" } : null;
+    }
+    if (handle.includes(endEdge)) {
+      const guide = nearestGuide(start + size, guides);
+      return guide ? { ...guide, edge: "end" } : null;
+    }
+    return null;
+  }
+
+  function clampFragmentBox(box) {
+    const next = { ...box };
+    next.w = clampNumber(next.w, 2, 100);
+    next.h = clampNumber(next.h, 2, 100);
+    next.x = clampNumber(next.x, 0, 100 - next.w);
+    next.y = clampNumber(next.y, 0, 100 - next.h);
+    return next;
+  }
+
+  function applyAxisSnap(box, axis, snap) {
+    if (!snap) return box;
+    const next = { ...box };
+    const positionKey = axis === "x" ? "x" : "y";
+    const sizeKey = axis === "x" ? "w" : "h";
+    if (snap.edge === "start") {
+      const end = next[positionKey] + next[sizeKey];
+      next[positionKey] = snap.value;
+      next[sizeKey] = end - snap.value;
+    } else if (snap.edge === "end") {
+      next[sizeKey] = snap.value - next[positionKey];
+    } else {
+      next[positionKey] += snap.delta;
+    }
+    return clampFragmentBox(next);
+  }
+
+  function snapFragmentBox(type, id, box, mode = "move", handle = "") {
+    const guides = printDeskGuides(type, id);
+    const next = clampFragmentBox(box);
+    const snapX = mode === "resize" ? snapResizeAxis(next, "x", guides.x, handle) : snapMovingAxis(next, "x", guides.x);
+    const afterX = applyAxisSnap(next, "x", snapX);
+    const snapY = mode === "resize" ? snapResizeAxis(afterX, "y", guides.y, handle) : snapMovingAxis(afterX, "y", guides.y);
+    const afterY = applyAxisSnap(afterX, "y", snapY);
+    return {
+      box: afterY,
+      guides: {
+        x: snapX ? { value: snapX.value, label: snapX.label } : null,
+        y: snapY ? { value: snapY.value, label: snapY.label } : null,
+      },
+    };
+  }
+
+  function setSnapGuides(sheet, guides = {}) {
+    if (!sheet) return;
+    const xGuide = $("[data-snap-guide-x]", sheet);
+    const yGuide = $("[data-snap-guide-y]", sheet);
+    if (xGuide) {
+      xGuide.hidden = !guides.x;
+      if (guides.x) {
+        xGuide.style.left = percent(guides.x.value);
+        xGuide.dataset.guideLabel = guides.x.label || "";
+      }
+    }
+    if (yGuide) {
+      yGuide.hidden = !guides.y;
+      if (guides.y) {
+        yGuide.style.top = percent(guides.y.value);
+        yGuide.dataset.guideLabel = guides.y.label || "";
+      }
+    }
+  }
+
   function nudgeSelectedFragment(mx, my, step = .5) {
     const selection = ensureLayoutSelection();
     const fragment = layoutFragment(selection.type, selection.id);
@@ -1267,6 +1411,8 @@
     }
     overlay.hidden = false;
     overlay.dataset.locked = String(Boolean(fragment.locked));
+    overlay.dataset.fragmentLabel = layerLabel(selection.type, selection.id);
+    overlay.dataset.fragmentSize = `${fragment.w.toFixed(1)} x ${fragment.h.toFixed(1)}%`;
     overlay.style.left = percent(fragment.x);
     overlay.style.top = percent(fragment.y);
     overlay.style.width = percent(fragment.w);
@@ -1428,13 +1574,32 @@
     if (mode !== "admin") return;
     const list = $("[data-preflight-list]");
     const score = $("[data-preflight-score]");
+    const deskScore = $("[data-print-preflight-score]");
+    const deskDetail = $("[data-print-preflight-detail]");
+    const deskList = $("[data-print-preflight-list]");
     if (!list) return;
     const issues = preflightIssues();
     const critical = issues.filter((issue) => issue.level === "critical").length;
     const warnings = issues.filter((issue) => issue.level === "warning").length;
+    const level = critical ? "critical" : warnings ? "warning" : "ready";
+    const label = level === "ready" ? "Ready for print" : "Needs attention";
     if (score) {
-      score.textContent = critical ? "Needs fix" : warnings ? "Review" : "Ready";
-      score.dataset.preflightScore = critical ? "critical" : warnings ? "warning" : "ready";
+      score.textContent = label;
+      score.dataset.preflightScore = level;
+    }
+    if (deskScore) {
+      deskScore.textContent = label;
+      deskScore.dataset.printPreflightScore = level;
+    }
+    if (deskDetail) {
+      deskDetail.textContent = level === "ready"
+        ? "Bleed, safe zone and required fragments pass."
+        : `${critical} critical / ${warnings} warning ${critical + warnings === 1 ? "issue" : "issues"}`;
+    }
+    if (deskList) {
+      deskList.innerHTML = issues.length
+        ? issues.slice(0, 4).map((issue) => `<li data-preflight-level="${issue.level}">${escapeHtml(issue.text)}</li>`).join("")
+        : `<li data-preflight-level="ready">No critical print issues detected.</li>`;
     }
     list.innerHTML = issues.length
       ? issues.map((issue) => `<li data-preflight-level="${issue.level}">${escapeHtml(issue.text)}</li>`).join("")
@@ -1583,24 +1748,30 @@
           updates.h = clampNumber(box.h + box.y - nextY, minSize, 100 - nextY);
         }
         const selection = ensureLayoutSelection();
-        updateLayoutFragment(selection.type, selection.id, updates);
+        const snapped = snapFragmentBox(selection.type, selection.id, updates, "resize", resizeState.handle);
+        updateLayoutFragment(selection.type, selection.id, snapped.box);
         applyFragmentLayout(resizeState.sheet, selection.type);
+        setSnapGuides(resizeState.sheet, snapped.guides);
         syncLayoutControls();
         return;
       }
       if (!dragState || event.pointerId !== dragState.pointerId) return;
       const dx = (event.clientX - dragState.startX) / dragState.rect.width * 100;
       const dy = (event.clientY - dragState.startY) / dragState.rect.height * 100;
-      updateLayoutFragment(activeType, dragState.id, {
+      const snapped = snapFragmentBox(activeType, dragState.id, {
+        ...dragState.box,
         x: dragState.box.x + dx,
         y: dragState.box.y + dy,
-      });
+      }, "move");
+      updateLayoutFragment(activeType, dragState.id, snapped.box);
       applyFragmentLayout(dragState.sheet, activeType);
+      setSnapGuides(dragState.sheet, snapped.guides);
       syncLayoutControls();
     });
 
     document.addEventListener("pointerup", (event) => {
       if (resizeState && event.pointerId === resizeState.pointerId) {
+        setSnapGuides(resizeState.sheet);
         resizeState = null;
         persistAdminConfig();
         updatePreview();
@@ -1609,6 +1780,7 @@
       if (!dragState || event.pointerId !== dragState.pointerId) return;
       dragState.fragment.classList.remove("is-layout-dragging");
       dragState.fragment.releasePointerCapture?.(event.pointerId);
+      setSnapGuides(dragState.sheet);
       dragState = null;
       persistAdminConfig();
       updatePreview();
