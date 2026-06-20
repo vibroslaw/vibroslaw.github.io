@@ -44,18 +44,55 @@
           </div>
 
           <fieldset class="document-fieldset document-layout-control-panel" data-layout-control-panel>
+            <div class="document-editor-toolbar">
+              <button class="document-action" type="button" data-history-action="undo" disabled>Undo</button>
+              <button class="document-action" type="button" data-history-action="redo" disabled>Redo</button>
+            </div>
             <label class="document-field"><span>Free layout fragment</span><select name="layoutTarget" data-layout-target></select></label>
             <div class="document-inline-fields document-layout-number-grid">
-              <label class="document-field"><span>X</span><input name="layoutX" data-layout-field="x" type="number" min="0" max="98" step="0.1"></label>
-              <label class="document-field"><span>Y</span><input name="layoutY" data-layout-field="y" type="number" min="0" max="98" step="0.1"></label>
-              <label class="document-field"><span>Width</span><input name="layoutW" data-layout-field="w" type="number" min="2" max="100" step="0.1"></label>
-              <label class="document-field"><span>Height</span><input name="layoutH" data-layout-field="h" type="number" min="2" max="100" step="0.1"></label>
+              <label class="document-field"><span>X</span><input name="layoutX" data-layout-field="x" data-lock-sensitive type="number" min="0" max="98" step="0.1"></label>
+              <label class="document-field"><span>Y</span><input name="layoutY" data-layout-field="y" data-lock-sensitive type="number" min="0" max="98" step="0.1"></label>
+              <label class="document-field"><span>Width</span><input name="layoutW" data-layout-field="w" data-lock-sensitive type="number" min="2" max="100" step="0.1"></label>
+              <label class="document-field"><span>Height</span><input name="layoutH" data-layout-field="h" data-lock-sensitive type="number" min="2" max="100" step="0.1"></label>
+            </div>
+            <div class="document-inline-fields">
+              <label class="document-field"><span>Text align</span><select name="layoutAlign" data-layout-align data-lock-sensitive><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>
+              <label class="document-field"><span>Vertical anchor</span><select name="layoutValign" data-layout-valign data-lock-sensitive><option value="top">Top</option><option value="center">Center</option><option value="bottom">Bottom</option></select></label>
+            </div>
+            <div class="document-layout-snap-grid" aria-label="Auto place selected fragment">
+              <button class="document-action" type="button" data-layout-snap-x="left" data-lock-sensitive>Left</button>
+              <button class="document-action" type="button" data-layout-snap-x="center" data-lock-sensitive>Center</button>
+              <button class="document-action" type="button" data-layout-snap-x="right" data-lock-sensitive>Right</button>
+              <button class="document-action" type="button" data-layout-snap-y="top" data-lock-sensitive>Top</button>
+              <button class="document-action" type="button" data-layout-snap-y="center" data-lock-sensitive>Middle</button>
+              <button class="document-action" type="button" data-layout-snap-y="bottom" data-lock-sensitive>Bottom</button>
             </div>
             <div class="document-actions compact">
-              <button class="document-action" type="button" data-reset-layout-fragment>Reset fragment</button>
+              <button class="document-action" type="button" data-reset-layout-fragment data-lock-sensitive>Reset fragment</button>
               <button class="document-action" type="button" data-reset-layout-all>Reset all layout</button>
             </div>
-            <p class="document-layout-hint">Drag fragments directly on the proof, then fine tune here. Values are percentages of the document page.</p>
+            <p class="document-layout-hint">Drag or resize fragments on the proof. Arrow keys nudge by 0.1%, Shift by 1%, Alt by 0.05%.</p>
+          </fieldset>
+
+          <fieldset class="document-fieldset document-layer-panel">
+            <div class="document-panel-heading mini"><span>Layers</span><h3 data-selected-layer-name>Title plate</h3></div>
+            <div class="document-layer-list" data-layer-list aria-label="Document layers"></div>
+            <div class="document-layer-actions">
+              <button class="document-action" type="button" data-layer-action="lock">Lock</button>
+              <button class="document-action" type="button" data-layer-action="hide">Hide</button>
+              <button class="document-action" type="button" data-layer-action="duplicate">Duplicate</button>
+              <button class="document-action" type="button" data-layer-action="forward">Forward</button>
+              <button class="document-action" type="button" data-layer-action="backward">Backward</button>
+              <button class="document-action" type="button" data-layer-action="front">To front</button>
+              <button class="document-action" type="button" data-layer-action="back">To back</button>
+              <button class="document-action" type="button" data-layer-action="reset">Reset</button>
+              <button class="document-action danger" type="button" data-layer-action="remove">Remove copy</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="document-fieldset document-preflight-panel">
+            <div class="document-preflight-heading"><span>Preflight</span><strong data-preflight-score="ready">Ready</strong></div>
+            <ul class="document-preflight-list" data-preflight-list></ul>
           </fieldset>
 
           <fieldset class="document-fieldset" data-document-settings="shared">
