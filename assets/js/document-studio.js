@@ -17,6 +17,9 @@
     landscape: { width: 3508, height: 2480, pdf: [841.89, 595.28] },
     portrait: { width: 2480, height: 3508, pdf: [595.28, 841.89] },
   };
+  const finalJpegQuality = .985;
+  const proofJpegQuality = .88;
+  const shareJpegQuality = .95;
   const anonymousReportEmail = "peter.lichwala@gmail.com";
   const presetStorageKey = "vhDocumentStudioPresets";
 
@@ -625,6 +628,8 @@
   let exportProofUrl = "";
   const status = $("[data-document-status]");
   const imageCache = new Map();
+  const transparentImageCache = new Map();
+  const transparentUrlCache = new Map();
   const bytesCache = new Map();
   let pdfLibrariesReady;
   let documentToken = createDocumentToken();
@@ -791,6 +796,22 @@
       .sort((a, b) => (a.z || 30) - (b.z || 30));
   }
 
+  function visibleRenderLayers(type) {
+    return layerItems(type)
+      .filter((layer) => !layer.fragment.hidden)
+      .map((layer) => ({ ...layer.fragment, source: layer.source }))
+      .sort((a, b) => (a.z || 30) - (b.z || 30));
+  }
+
+  function hasCustomLayerStack(type) {
+    if (visibleExtras(type).length) return true;
+    return Object.keys(layoutFragmentDefaults[type] || {}).some((id) => {
+      const fragment = layoutFragment(type, id);
+      if (!fragment || fragment.hidden) return false;
+      return (fragment.z || 30) !== (layoutFragmentDefaults[type][id].z || 30);
+    });
+  }
+
   function layoutFragment(type, id) {
     const extra = layoutExtra(type, id);
     if (extra) return extra;
@@ -894,6 +915,30 @@
       width: width * fragment.w / 100,
       height: height * fragment.h / 100,
     };
+  }
+
+  function scaledRect(rect, scale = 1) {
+    const next = clampNumber(Number(scale) || 1, .82, 1.18);
+    return {
+      x: rect.x + rect.width * (1 - next) / 2,
+      y: rect.y + rect.height * (1 - next) / 2,
+      width: rect.width * next,
+      height: rect.height * next,
+    };
+  }
+
+  function paperHeight(paper, width) {
+    return Math.round(width * paper.height / paper.width);
+  }
+
+  function createPrintCanvas(width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    return { canvas, ctx };
   }
 
   function pdfFragmentRect(type, id, width, height) {
@@ -1024,14 +1069,32 @@
     return selection === "none" ? "" : assets.author[selection];
   }
 
-  function setImageSource(image, src) {
+  function reportTitleAsset() {
+    return assets.reportTitles[config.language] || assets.reportTitles.en;
+  }
+
+  function setImageSource(image, src, { removeWhite = false } = {}) {
     if (!image) return;
+    image.dataset.assetSource = src || "";
     if (!src) {
       image.hidden = true;
       image.removeAttribute("src");
       return;
     }
-    if (image.getAttribute("src") !== src) image.src = src;
+    if (!removeWhite) {
+      if (image.getAttribute("src") !== src) image.src = src;
+      image.hidden = false;
+      return;
+    }
+    transparentAssetUrl(src).then((url) => {
+      if (image.dataset.assetSource !== src) return;
+      if (image.getAttribute("src") !== url) image.src = url;
+      image.hidden = false;
+    }).catch(() => {
+      if (image.dataset.assetSource !== src) return;
+      if (image.getAttribute("src") !== src) image.src = src;
+      image.hidden = false;
+    });
     image.hidden = false;
   }
 
@@ -1063,16 +1126,17 @@
     const cert = type === "certificate";
     applySheetLayout(sheet, type);
     sheet.style.setProperty("--document-background", `url('${cert ? certificatePreview() : reportPreview()}')`);
-    setImageSource($("[data-preview-stamp]", sheet), stampAsset(type, true));
-    setImageSource($("[data-preview-author]", sheet), cert ? authorAsset(type) : "");
+    setImageSource($("[data-preview-stamp]", sheet), stampAsset(type, true), { removeWhite: true });
+    setImageSource($("[data-preview-author]", sheet), cert ? authorAsset(type) : "", { removeWhite: true });
   }
 
   function wrapLines(ctx, text, maxWidth) {
-    const paragraphs = String(text || "").split(/\n/);
+    const paragraphs = String(text ?? "").replace(/\r\n?/g, "\n").split("\n");
     const lines = [];
     paragraphs.forEach((paragraph) => {
-      if (!paragraph) { lines.push(""); return; }
-      const words = paragraph.trim().split(/\s+/);
+      const clean = paragraph.trim();
+      if (!clean) { lines.push(""); return; }
+      const words = clean.split(/\s+/);
       let line = "";
       words.forEach((word) => {
         const test = line ? `${line} ${word}` : word;
@@ -1099,7 +1163,7 @@
   function updateReportMeter() {
     const area = $('[name="reportText"]');
     if (!area) return;
-    const text = area.value.trim();
+    const text = printableInput(area.value);
     const lines = reportLineCount(text);
     reportOverflow = lines > 6;
     const meter = $(".document-report-meter");
@@ -1112,15 +1176,19 @@
     $$('[data-export^="report"]').forEach((button) => { button.disabled = exporting || reportOverflow; });
   }
 
+  function printableInput(value) {
+    return String(value ?? "").replace(/\r\n?/g, "\n").trim();
+  }
+
   function updatePreview() {
     $$('[data-document-preview="certificate"]').forEach((sheet) => updateSheetText(sheet, "certificate"));
     $$('[data-document-preview="report"]').forEach((sheet) => updateSheetText(sheet, "report"));
-    const certificateName = $('[name="certificateName"]')?.value.trim() || C().participant;
-    const reportText = $('[name="reportText"]')?.value.trim() || C().reportPlaceholder;
+    const certificateName = printableInput($('[name="certificateName"]')?.value) || C().participant;
+    const reportText = printableInput($('[name="reportText"]')?.value) || C().reportPlaceholder;
     $$('[data-document-preview="certificate"] [data-preview-name]').forEach((node) => { node.textContent = certificateName; });
     $$('[data-document-preview="report"] [data-preview-entry]').forEach((node) => { node.textContent = reportText; });
     $$('[data-document-preview="report"] [data-preview-signature-label]').forEach((node) => { node.textContent = C().witness; });
-    const reportName = $('[name="reportName"]')?.value.trim() || C().witness;
+    const reportName = printableInput($('[name="reportName"]')?.value) || C().witness;
     $$('[data-document-preview="report"] [data-preview-witness]').forEach((node) => { node.textContent = reportName; });
     $$('[data-document-preview]').forEach((sheet) => {
       const isActive = sheet.dataset.documentPreview === activeType;
@@ -1568,6 +1636,52 @@
     }
 
     return issues.slice(0, 12);
+  }
+
+  function printableLayerVisible(type, id) {
+    return layerItems(type).some((layer) => {
+      if (layer.source !== id || layer.fragment.hidden) return false;
+      return layer.fragment.w >= 2 && layer.fragment.h >= 2;
+    });
+  }
+
+  function exportGuardIssues(payload) {
+    const issues = [];
+    const data = payload?.data || {};
+    if (payload?.type === "certificate") {
+      if (!printableInput(data.name)) issues.push(C().missingName);
+      if (!printableLayerVisible("certificate", "name")) issues.push("Certificate name layer is hidden or too small.");
+      return issues;
+    }
+    if (payload?.type === "report") {
+      const reportText = printableInput(data.text);
+      const reportName = printableInput(data.name);
+      if (!reportText) issues.push(C().missingReport);
+      if (reportLineCount(reportText) > 6) issues.push(C().reportOverflow);
+      if (!printableLayerVisible("report", "entry")) issues.push("Report text layer is hidden or too small.");
+      if (reportName && !data.anonymous && !printableLayerVisible("report", "signature")) {
+        issues.push("Report name layer is hidden or too small.");
+      }
+      return issues;
+    }
+    issues.push("Document payload is incomplete.");
+    return issues;
+  }
+
+  function normalizeExportPayload(payload) {
+    const next = cloneData(payload || {});
+    next.data = next.data || {};
+    if (next.type === "certificate") {
+      next.data.name = printableInput(next.data.name);
+    }
+    if (next.type === "report") {
+      next.data.text = printableInput(next.data.text);
+      next.data.name = printableInput(next.data.name);
+      next.data.anonymous = Boolean(next.data.anonymous);
+    }
+    const issues = exportGuardIssues(next);
+    if (issues.length) throw new Error(issues[0]);
+    return next;
   }
 
   function renderPreflightPanel() {
@@ -2059,6 +2173,109 @@
     return promise;
   }
 
+  const assetWidth = (image) => Math.max(1, Math.round(image?.naturalWidth || image?.width || 1));
+  const assetHeight = (image) => Math.max(1, Math.round(image?.naturalHeight || image?.height || 1));
+
+  function whitePixelStrength(data, offset, { threshold = 238, feather = 30, spread = 38 } = {}) {
+    const alpha = data[offset + 3];
+    if (alpha < 4) return 0;
+    const red = data[offset];
+    const green = data[offset + 1];
+    const blue = data[offset + 2];
+    const light = Math.min(red, green, blue);
+    const chroma = Math.max(red, green, blue) - light;
+    if (chroma > spread || light <= threshold - feather) return 0;
+    if (light >= threshold) return 1;
+    return (light - (threshold - feather)) / feather;
+  }
+
+  function removeWhiteBackground(image, options = {}) {
+    if (!image) return image;
+    const width = assetWidth(image);
+    const height = assetHeight(image);
+    const { canvas, ctx } = createPrintCanvas(width, height);
+    ctx.drawImage(image, 0, 0, width, height);
+    let imageData;
+    try {
+      imageData = ctx.getImageData(0, 0, width, height);
+    } catch {
+      return image;
+    }
+    const data = imageData.data;
+    const visited = new Uint8Array(width * height);
+    const stack = [];
+    const seed = (index) => {
+      if (visited[index]) return;
+      if (whitePixelStrength(data, index * 4, options) < .78) return;
+      visited[index] = 1;
+      stack.push(index);
+    };
+    for (let x = 0; x < width; x += 1) {
+      seed(x);
+      seed((height - 1) * width + x);
+    }
+    for (let y = 1; y < height - 1; y += 1) {
+      seed(y * width);
+      seed(y * width + width - 1);
+    }
+    if (stack.length < Math.max(4, Math.round((width + height) * .006))) return image;
+    while (stack.length) {
+      const index = stack.pop();
+      const x = index % width;
+      const y = Math.floor(index / width);
+      const neighbours = [
+        x > 0 ? index - 1 : -1,
+        x < width - 1 ? index + 1 : -1,
+        y > 0 ? index - width : -1,
+        y < height - 1 ? index + width : -1,
+      ];
+      neighbours.forEach((next) => {
+        if (next < 0 || visited[next]) return;
+        if (whitePixelStrength(data, next * 4, options) <= 0) return;
+        visited[next] = 1;
+        stack.push(next);
+      });
+    }
+    let changed = 0;
+    for (let index = 0; index < visited.length; index += 1) {
+      if (!visited[index]) continue;
+      const offset = index * 4;
+      const strength = whitePixelStrength(data, offset, options);
+      if (strength <= 0) continue;
+      data[offset + 3] = Math.round(data[offset + 3] * (1 - strength));
+      changed += 1;
+    }
+    if (changed < Math.max(4, Math.round((width + height) * .006))) return image;
+    ctx.putImageData(imageData, 0, 0);
+    return canvas;
+  }
+
+  function loadPrintAsset(src, { removeWhite = false } = {}) {
+    if (!src) return Promise.resolve(null);
+    if (!removeWhite) return loadImage(src);
+    if (transparentImageCache.has(src)) return transparentImageCache.get(src);
+    const promise = loadImage(src).then((image) => removeWhiteBackground(image));
+    transparentImageCache.set(src, promise);
+    return promise;
+  }
+
+  function transparentAssetUrl(src) {
+    if (!src) return Promise.resolve("");
+    if (transparentUrlCache.has(src)) return transparentUrlCache.get(src);
+    const promise = loadPrintAsset(src, { removeWhite: true }).then(async (asset) => {
+      const width = assetWidth(asset);
+      const height = assetHeight(asset);
+      const canvas = asset instanceof HTMLCanvasElement ? asset : createPrintCanvas(width, height).canvas;
+      if (!(asset instanceof HTMLCanvasElement)) {
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(asset, 0, 0, width, height);
+      }
+      return URL.createObjectURL(await canvasBlob(canvas, "image/png"));
+    });
+    transparentUrlCache.set(src, promise);
+    return promise;
+  }
+
   function fetchBytes(src) {
     if (bytesCache.has(src)) return bytesCache.get(src);
     const promise = fetch(src).then((response) => {
@@ -2099,18 +2316,22 @@
 
   function drawCover(ctx, image, width, height) {
     if (!image) return;
-    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
-    const drawWidth = image.naturalWidth * scale;
-    const drawHeight = image.naturalHeight * scale;
+    const sourceWidth = assetWidth(image);
+    const sourceHeight = assetHeight(image);
+    const scale = Math.max(width / sourceWidth, height / sourceHeight);
+    const drawWidth = sourceWidth * scale;
+    const drawHeight = sourceHeight * scale;
     ctx.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
   }
 
   function drawContained(ctx, image, x, y, width, height, alpha = 1) {
     if (!image) return;
-    const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+    const sourceWidth = assetWidth(image);
+    const sourceHeight = assetHeight(image);
+    const scale = Math.min(width / sourceWidth, height / sourceHeight);
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.drawImage(image, x + (width - image.naturalWidth * scale) / 2, y + (height - image.naturalHeight * scale) / 2, image.naturalWidth * scale, image.naturalHeight * scale);
+    ctx.drawImage(image, x + (width - sourceWidth * scale) / 2, y + (height - sourceHeight * scale) / 2, sourceWidth * scale, sourceHeight * scale);
     ctx.restore();
   }
 
@@ -2127,27 +2348,30 @@
   }
 
   function drawFinishedTitle(ctx, text, x, y, { size, font = "DocCinzel, serif", light, mid, shadow, maxWidth, align = "center" } = {}) {
+    const fittedSize = maxWidth
+      ? setCanvasFontToFit(ctx, text, size, Math.max(14, size * .62), maxWidth, (value) => `${value}px ${font}`)
+      : size;
     ctx.save();
     ctx.textAlign = align;
-    ctx.font = `${size}px ${font}`;
+    ctx.font = `${fittedSize}px ${font}`;
     ctx.lineJoin = "round";
     ctx.shadowColor = shadow;
-    ctx.shadowBlur = Math.max(5, size * .11);
-    ctx.shadowOffsetX = Math.max(1, size * .025);
-    ctx.shadowOffsetY = Math.max(2, size * .045);
+    ctx.shadowBlur = Math.max(5, fittedSize * .11);
+    ctx.shadowOffsetX = Math.max(1, fittedSize * .025);
+    ctx.shadowOffsetY = Math.max(2, fittedSize * .045);
     ctx.strokeStyle = shadow;
-    ctx.lineWidth = Math.max(1.5, size * .035);
-    ctx.strokeText(text, x, y, maxWidth);
-    const gradient = ctx.createLinearGradient(0, y - size, 0, y + size * .25);
+    ctx.lineWidth = Math.max(1.5, fittedSize * .035);
+    ctx.strokeText(text, x, y);
+    const gradient = ctx.createLinearGradient(0, y - fittedSize, 0, y + fittedSize * .25);
     gradient.addColorStop(0, light);
     gradient.addColorStop(.48, mid);
     gradient.addColorStop(1, shadow);
     ctx.fillStyle = gradient;
-    ctx.fillText(text, x, y, maxWidth);
+    ctx.fillText(text, x, y);
     ctx.shadowColor = "transparent";
     ctx.globalAlpha = .58;
     ctx.fillStyle = light;
-    ctx.fillText(text, x - size * .009, y - size * .018, maxWidth);
+    ctx.fillText(text, x - fittedSize * .009, y - fittedSize * .018);
     ctx.restore();
   }
 
@@ -2167,11 +2391,22 @@
     ctx.restore();
   }
 
+  function drawReportTitleLayer(ctx, titlePlate, rect, scale = 1, fragment = {}) {
+    if (!titlePlate) {
+      drawTransparentReportTitle(ctx, C().reportTitle.toUpperCase(), rect, scale, fragment);
+      return;
+    }
+    const plateRect = scaledRect(rect, scale);
+    drawContained(ctx, titlePlate, plateRect.x, plateRect.y, plateRect.width, plateRect.height, .98);
+  }
+
   function drawSeal25D(ctx, image, x, y, width, height, alpha = .88, dark = false) {
     if (!image) return;
-    const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
-    const drawWidth = image.naturalWidth * scale;
-    const drawHeight = image.naturalHeight * scale;
+    const sourceWidth = assetWidth(image);
+    const sourceHeight = assetHeight(image);
+    const scale = Math.min(width / sourceWidth, height / sourceHeight);
+    const drawWidth = sourceWidth * scale;
+    const drawHeight = sourceHeight * scale;
     const drawX = x + (width - drawWidth) / 2;
     const drawY = y + (height - drawHeight) / 2;
     ctx.save();
@@ -2234,8 +2469,10 @@
     ctx.save();
     ctx.globalAlpha = .93;
     ctx.fillText(text, x, y);
-    ctx.globalAlpha = .1;
+    ctx.globalAlpha = .12;
     ctx.fillText(text, x + .8, y + .45);
+    ctx.globalAlpha = .045;
+    ctx.fillText(text, x - .45, y - .25);
     ctx.restore();
   }
 
@@ -2252,6 +2489,30 @@
       ctx.fillStyle = "#d9bd7e";
       setCanvasFontToFit(ctx, documentNumber, Math.round(width * .011), Math.round(width * .0075), rect.width, (size) => `700 ${size}px DocCinzel, serif`);
       ctx.fillText(documentNumber, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, 1, rect.height, rect.height * .7));
+    }
+    if (layer.source === "meta") {
+      const metaWidth = rect.width * .42;
+      const metaLeft = rect.x;
+      const metaRight = rect.x + rect.width;
+      const metaLabelY = rect.y + rect.height * .28;
+      const metaValueY = rect.y + rect.height * .62;
+      const metaRuleY = rect.y + rect.height * .76;
+      ctx.fillStyle = "rgba(221,190,122,.78)";
+      ctx.font = `700 ${Math.round(width * .008)}px DocCinzel, serif`;
+      ctx.textAlign = "left";
+      ctx.fillText(C().dateField.toUpperCase(), metaLeft, metaLabelY);
+      ctx.textAlign = "right";
+      ctx.fillText(C().placeField.toUpperCase(), metaRight, metaLabelY);
+      ctx.fillStyle = "#f7e9c4";
+      ctx.textAlign = "left";
+      setCanvasFontToFit(ctx, dateLabel(), Math.round(width * .012), Math.round(width * .009), metaWidth, (size) => `${size}px DocSerif, serif`);
+      ctx.fillText(dateLabel(), metaLeft, metaValueY);
+      ctx.textAlign = "right";
+      const placeText = config.eventPlace || config.eventTitle;
+      setCanvasFontToFit(ctx, placeText, Math.round(width * .012), Math.round(width * .008), metaWidth, (size) => `${size}px DocSerif, serif`);
+      ctx.fillText(placeText, metaRight, metaValueY);
+      drawPremiumRule(ctx, metaLeft, metaLeft + metaWidth, metaRuleY, width);
+      drawPremiumRule(ctx, metaRight - metaWidth, metaRight, metaRuleY, width);
     }
     if (layer.source === "stamp") drawSeal25D(ctx, stamp, rect.x, rect.y, rect.width, rect.height, .92, true);
     if (layer.source === "author") drawContained(ctx, author, rect.x, rect.y, rect.width, rect.height, .96);
@@ -2293,7 +2554,7 @@
   }
 
   function drawReportExtraLayer(ctx, layer, data) {
-    const { width, height, stamp, text, name, anonymous, documentNumber, titleScale, textScale } = data;
+    const { width, height, stamp, titlePlate, text, name, anonymous, documentNumber, titleScale, textScale } = data;
     const rect = fragmentBoxRect(layer, width, height);
     ctx.save();
     if (layer.source === "code") {
@@ -2302,8 +2563,36 @@
       setCanvasFontToFit(ctx, documentNumber, Math.round(width * .013), Math.round(width * .009), rect.width, (size) => `700 ${size}px DocTypewriter, monospace`);
       drawTypewriterInk(ctx, documentNumber, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, 1, rect.height, rect.height * .7));
     }
+    if (layer.source === "meta") {
+      const metaColumn = rect.width * .42;
+      const metaLeft = rect.x;
+      const metaRight = rect.x + rect.width;
+      const metaLabelY = rect.y + rect.height * .25;
+      const metaValueY = rect.y + rect.height * .64;
+      const metaRuleY = rect.y + rect.height * .82;
+      ctx.font = `700 ${Math.round(width * .012)}px DocTypewriter, monospace`;
+      ctx.textAlign = "left";
+      drawTypewriterInk(ctx, `${C().dateField.toUpperCase()}:`, metaLeft, metaLabelY);
+      ctx.textAlign = "right";
+      drawTypewriterInk(ctx, `${C().placeField.toUpperCase()}:`, metaRight, metaLabelY);
+      ctx.textAlign = "left";
+      setCanvasFontToFit(ctx, dateLabel(), Math.round(width * .016), Math.round(width * .011), metaColumn, (size) => `${size}px DocTypewriter, monospace`);
+      drawTypewriterInk(ctx, dateLabel(), metaLeft, metaValueY);
+      ctx.textAlign = "right";
+      const placeText = config.eventPlace || config.eventTitle;
+      setCanvasFontToFit(ctx, placeText, Math.round(width * .016), Math.round(width * .01), metaColumn, (size) => `${size}px DocTypewriter, monospace`);
+      drawTypewriterInk(ctx, placeText, metaRight, metaValueY);
+      ctx.strokeStyle = "rgba(28,22,16,.85)";
+      ctx.lineWidth = Math.max(2, width * .0011);
+      ctx.beginPath();
+      ctx.moveTo(metaLeft, metaRuleY);
+      ctx.lineTo(metaLeft + metaColumn, metaRuleY);
+      ctx.moveTo(metaRight - metaColumn, metaRuleY);
+      ctx.lineTo(metaRight, metaRuleY);
+      ctx.stroke();
+    }
     if (layer.source === "stamp") drawSeal25D(ctx, stamp, rect.x, rect.y, rect.width, rect.height, .74, false);
-    if (layer.source === "title") drawTransparentReportTitle(ctx, C().reportTitle.toUpperCase(), rect, titleScale, layer);
+    if (layer.source === "title") drawReportTitleLayer(ctx, titlePlate, rect, titleScale, layer);
     if (layer.source === "quote") {
       ctx.font = `700 ${Math.round(width * .019)}px DocTypewriter, monospace`;
       ctx.fillStyle = "#5a472f";
@@ -2337,7 +2626,8 @@
       ctx.fillStyle = "#241d15";
       const size = Math.round(width * .024 * textScale);
       ctx.font = `${size}px DocTypewriter, monospace`;
-      const lines = wrapLines(ctx, text || C().reportPlaceholder, rect.width).slice(0, 6);
+      const lines = wrapLines(ctx, text || C().reportPlaceholder, rect.width);
+      if (lines.length > 6) throw new Error(C().reportOverflow);
       const startY = canvasGroupBaseline(rect, layer, lines.length, gap, size);
       lines.forEach((line, index) => drawTypewriterInk(ctx, line, canvasTextX(rect, layer), startY + index * gap));
     }
@@ -2349,6 +2639,15 @@
       const y = canvasGroupBaseline(rect, layer, 1, size, size);
       const x = canvasTextX(rect, layer);
       ctx.fillText(witnessName, x, y);
+      const witnessWidth = Math.min(ctx.measureText(witnessName).width + size, rect.width);
+      const witnessCenter = layer.align === "left" ? rect.x + witnessWidth / 2 : layer.align === "right" ? rect.x + rect.width - witnessWidth / 2 : rect.x + rect.width / 2;
+      ctx.strokeStyle = "rgba(28,22,16,.78)";
+      ctx.beginPath();
+      ctx.moveTo(witnessCenter - witnessWidth / 2, y + size * .75);
+      ctx.lineTo(witnessCenter + witnessWidth / 2, y + size * .75);
+      ctx.stroke();
+      ctx.font = `700 ${Math.round(width * .011)}px DocTypewriter, monospace`;
+      drawTypewriterInk(ctx, C().witness.toUpperCase(), x, y + size * 1.42);
     }
     ctx.restore();
   }
@@ -2367,7 +2666,7 @@
       } catch {
         // Browser fallback remains available.
       }
-    }));
+    })).then(() => document.fonts?.ready || undefined);
     return fontsReady;
   }
 
@@ -2377,16 +2676,13 @@
 
   async function renderCertificate({ name, documentNumber = issueNumber(), width = A4.landscape.width } = {}) {
     await ensureFonts();
-    const height = Math.round(width / 1.414);
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
+    const height = paperHeight(A4.landscape, width);
+    const { canvas, ctx } = createPrintCanvas(width, height);
     const [background, texture, stamp, author] = await Promise.all([
       loadImage(certificateBackground()),
       loadImage(assets.texture).catch(() => null),
-      loadImage(stampAsset("certificate")).catch(() => null),
-      loadImage(authorAsset("certificate")).catch(() => null),
+      loadPrintAsset(stampAsset("certificate"), { removeWhite: true }).catch(() => null),
+      loadPrintAsset(authorAsset("certificate"), { removeWhite: true }).catch(() => null),
     ]);
     const layout = certificateLayout().canvas;
     const numberRect = fragmentRect("certificate", "code", width, height);
@@ -2415,6 +2711,12 @@
     ctx.strokeStyle = "rgba(221,190,122,.38)";
     ctx.lineWidth = width * .0008;
     ctx.strokeRect(width * .047, height * .066, width * .906, height * .868);
+
+    if (hasCustomLayerStack("certificate")) {
+      const layerData = { width, height, stamp, author, name, documentNumber, titleScale, bodyScale, nameScale };
+      visibleRenderLayers("certificate").forEach((layer) => drawCertificateExtraLayer(ctx, layer, layerData));
+      return canvas;
+    }
 
     if (fragmentVisible("certificate", "code")) {
       ctx.textAlign = "center";
@@ -2492,14 +2794,12 @@
 
   async function renderReport({ text, name, anonymous = false, documentNumber = issueNumber(), width = A4.portrait.width } = {}) {
     await ensureFonts();
-    const height = Math.round(width * 1.414);
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-    const [background, texture, stamp] = await Promise.all([
+    const height = paperHeight(A4.portrait, width);
+    const { canvas, ctx } = createPrintCanvas(width, height);
+    const [background, texture, stamp, titlePlate] = await Promise.all([
       loadImage(reportBackground()), loadImage(assets.texture).catch(() => null),
-      loadImage(stampAsset("report")).catch(() => null),
+      loadPrintAsset(stampAsset("report"), { removeWhite: true }).catch(() => null),
+      loadPrintAsset(reportTitleAsset(), { removeWhite: true }).catch(() => null),
     ]);
     const numberRect = fragmentRect("report", "code", width, height);
     const metaRect = fragmentRect("report", "meta", width, height);
@@ -2527,6 +2827,16 @@
     ctx.strokeStyle = "rgba(63,47,28,.64)";
     ctx.lineWidth = width * .0015;
     ctx.strokeRect(margin * .58, margin * .58, width - margin * 1.16, height - margin * 1.16);
+
+    if (hasCustomLayerStack("report")) {
+      const layerData = { width, height, stamp, titlePlate, text, name, anonymous, documentNumber, titleScale, textScale };
+      visibleRenderLayers("report").forEach((layer) => drawReportExtraLayer(ctx, layer, layerData));
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(46,35,24,.7)";
+      ctx.font = `${Math.round(width * .011)}px DocTypewriter, monospace`;
+      drawTypewriterInk(ctx, anonymous ? "ANONYMOUS COPY - NO PERSONAL DATA" : C().reportCode.toUpperCase(), width / 2, height * .958);
+      return canvas;
+    }
 
     if (fragmentVisible("report", "code")) {
       ctx.fillStyle = "#2a2117";
@@ -2564,7 +2874,7 @@
       ctx.stroke();
     }
 
-    if (fragmentVisible("report", "title")) drawTransparentReportTitle(ctx, C().reportTitle.toUpperCase(), titleRect, titleScale, titleFragment);
+    if (fragmentVisible("report", "title")) drawReportTitleLayer(ctx, titlePlate, titleRect, titleScale, titleFragment);
     if (anonymous && fragmentVisible("report", "title")) {
       ctx.textAlign = "center";
       ctx.fillStyle = "rgba(42,33,23,.72)";
@@ -2631,7 +2941,7 @@
     }
     if (fragmentVisible("report", "stamp")) drawSeal25D(ctx, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .74, false);
     visibleExtras("report").forEach((layer) => drawReportExtraLayer(ctx, layer, {
-      width, height, stamp, text, name, anonymous, documentNumber, titleScale, textScale,
+      width, height, stamp, titlePlate, text, name, anonymous, documentNumber, titleScale, textScale,
     }));
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(46,35,24,.7)";
@@ -2682,18 +2992,17 @@
     return true;
   }
 
-  async function rasterizeToPng(src, targetWidth = 1200) {
-    const image = await loadImage(src);
-    const ratio = image.naturalHeight / image.naturalWidth || 1;
-    const canvas = document.createElement("canvas");
-    canvas.width = targetWidth;
-    canvas.height = Math.max(1, Math.round(targetWidth * ratio));
-    canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+  async function rasterizeToPng(src, targetWidth = 1200, options = {}) {
+    const image = await loadPrintAsset(src, options);
+    const ratio = assetHeight(image) / assetWidth(image) || 1;
+    const { canvas, ctx } = createPrintCanvas(targetWidth, Math.max(1, Math.round(targetWidth * ratio)));
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     return (await canvasBlob(canvas, "image/png")).arrayBuffer();
   }
 
-  async function embedPdfImage(pdf, src) {
+  async function embedPdfImage(pdf, src, options = {}) {
     if (!src) return null;
+    if (options.removeWhite) return pdf.embedPng(await rasterizeToPng(src, options.targetWidth || 1600, options));
     if (/\.jpe?g(?:$|\?)/i.test(src)) return pdf.embedJpg(await fetchBytes(src));
     if (/\.png(?:$|\?)/i.test(src)) return pdf.embedPng(await fetchBytes(src));
     return pdf.embedPng(await rasterizeToPng(src));
@@ -2713,11 +3022,12 @@
   }
 
   function pdfFinishedTitle(page, text, font, size, y, colors, rect = null, fragment = {}) {
-    const width = font.widthOfTextAtSize(text, size);
-    const x = rect ? pdfTextX(rect, fragment, font, text, size) : (page.getWidth() - width) / 2;
-    page.drawText(text, { x: x + 1.7, y: y - 1.8, size, font, color: colors.shadow, opacity: .76 });
-    page.drawText(text, { x: x - .55, y: y + .7, size, font, color: colors.highlight, opacity: .62 });
-    page.drawText(text, { x, y, size, font, color: colors.main });
+    const fittedSize = rect ? pdfSizeToFit(font, text, size, Math.max(8, size * .62), rect.width) : size;
+    const width = font.widthOfTextAtSize(text, fittedSize);
+    const x = rect ? pdfTextX(rect, fragment, font, text, fittedSize) : (page.getWidth() - width) / 2;
+    page.drawText(text, { x: x + 1.7, y: y - 1.8, size: fittedSize, font, color: colors.shadow, opacity: .76 });
+    page.drawText(text, { x: x - .55, y: y + .7, size: fittedSize, font, color: colors.highlight, opacity: .62 });
+    page.drawText(text, { x, y, size: fittedSize, font, color: colors.main });
   }
 
   function pdfTransparentReportTitle(page, text, font, rect, color, scale = 1, fragment = {}) {
@@ -2756,9 +3066,10 @@
 
   function pdfWrap(font, text, size, maxWidth) {
     const lines = [];
-    String(text || "").split(/\n/).forEach((paragraph) => {
-      if (!paragraph) { lines.push(""); return; }
-      const words = paragraph.trim().split(/\s+/);
+    String(text ?? "").replace(/\r\n?/g, "\n").split("\n").forEach((paragraph) => {
+      const clean = paragraph.trim();
+      if (!clean) { lines.push(""); return; }
+      const words = clean.split(/\s+/);
       let line = "";
       words.forEach((word) => {
         const test = line ? `${line} ${word}` : word;
@@ -2795,7 +3106,9 @@
       const [width, height] = A4.landscape.pdf;
       const page = pdf.addPage([width, height]);
       const [background, texture, stamp, author] = await Promise.all([
-        embedPdfImage(pdf, certificateBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("certificate")), embedPdfImage(pdf, authorAsset("certificate")),
+        embedPdfImage(pdf, certificateBackground()), embedPdfImage(pdf, assets.texture),
+        embedPdfImage(pdf, stampAsset("certificate"), { removeWhite: true, targetWidth: 1600 }),
+        embedPdfImage(pdf, authorAsset("certificate"), { removeWhite: true, targetWidth: 1600 }),
       ]);
       const layout = certificateLayout().pdf;
       const numberRect = pdfFragmentRect("certificate", "code", width, height);
@@ -2877,8 +3190,10 @@
      } else {
       const [width, height] = A4.portrait.pdf;
       const page = pdf.addPage([width, height]);
-       const [background, texture, stamp] = await Promise.all([
-         embedPdfImage(pdf, reportBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("report")),
+       const [background, texture, stamp, titlePlate] = await Promise.all([
+         embedPdfImage(pdf, reportBackground()), embedPdfImage(pdf, assets.texture),
+         embedPdfImage(pdf, stampAsset("report"), { removeWhite: true, targetWidth: 1600 }),
+         embedPdfImage(pdf, reportTitleAsset(), { removeWhite: true, targetWidth: 1800 }),
        ]);
        const layout = reportLayout().pdf;
        const numberRect = pdfFragmentRect("report", "code", width, height);
@@ -2923,8 +3238,13 @@
        page.drawLine({ start: { x: metaRight - metaWidth, y: metaRuleY }, end: { x: metaRight, y: metaRuleY }, thickness: 1, color: palette.ink, opacity: .9 });
        }
        if (fragmentVisible("report", "title")) {
-         pdfTransparentReportTitle(page, C().reportTitle.toUpperCase(), typewriter, titleRect, palette.ink, titleScale, titleFragment);
-         if (data.anonymous) pdfCentered(page, C().anonymous.toUpperCase(), typewriter, 7.2, titleRect.y - 7, palette.brown);
+          if (titlePlate) {
+            const plateRect = scaledRect(titleRect, titleScale);
+            pdfContained(page, titlePlate, plateRect.x, plateRect.y, plateRect.width, plateRect.height, .98);
+          } else {
+            pdfTransparentReportTitle(page, C().reportTitle.toUpperCase(), typewriter, titleRect, palette.ink, titleScale, titleFragment);
+          }
+          if (data.anonymous) pdfCentered(page, C().anonymous.toUpperCase(), typewriter, 7.2, titleRect.y - 7, palette.brown);
        }
        if (fragmentVisible("report", "quote")) {
        const quoteLines = pdfWrap(typewriter, quoteCopy[config.language][config.reportQuote], 10.5, quoteRect.width).slice(0, 4);
@@ -2974,13 +3294,16 @@
     await ensurePdfLibraries();
     if (!window.PDFLib?.PDFDocument) throw new Error("PDF library unavailable");
     const pdf = await window.PDFLib.PDFDocument.create();
-    const jpgBytes = await (await canvasBlob(canvas, "image/jpeg", .97)).arrayBuffer();
-    const image = await pdf.embedJpg(jpgBytes);
+    const pngBytes = await (await canvasBlob(canvas, "image/png")).arrayBuffer();
+    const image = await pdf.embedPng(pngBytes);
     const pageSize = canvas.width > canvas.height ? A4.landscape.pdf : A4.portrait.pdf;
     const page = pdf.addPage(pageSize);
     page.drawImage(image, { x: 0, y: 0, width: pageSize[0], height: pageSize[1] });
     pdf.setTitle(fileName.replace(/-/g, " "));
+    pdf.setAuthor("Piotr Lichwała / Veritas Humanum");
     pdf.setCreator("Veritas Humanum Document Studio");
+    pdf.setProducer("Veritas Humanum Document Studio");
+    pdf.setCreationDate(new Date());
     downloadBlob(new Blob([await pdf.save()], { type: "application/pdf" }), `${fileName}.pdf`);
   }
 
@@ -2994,7 +3317,7 @@
 
   async function downloadPdf(type, data, base) {
     try {
-      if ((config.layoutExtras?.[type] || []).some((layer) => !layer.hidden)) {
+      if (hasCustomLayerStack(type)) {
         const canvas = type === "certificate"
           ? await renderCertificate({ name: data.name, documentNumber: data.documentNumber })
           : await renderReport({ text: data.text, name: data.name, anonymous: data.anonymous, documentNumber: data.documentNumber });
@@ -3071,20 +3394,21 @@
   }
 
   async function showExportProof(payload) {
+    const safePayload = normalizeExportPayload(payload);
     const dialog = ensureExportProofDialog();
     const image = $("[data-export-proof-image]", dialog);
     const title = $("[data-export-proof-title]", dialog);
     const confirm = $("[data-export-proof-confirm]", dialog);
-    const canvas = payload.type === "certificate"
-      ? await renderCertificate({ ...payload.data, width: 1100 })
-      : await renderReport({ ...payload.data, width: 850 });
-    const blob = await canvasBlob(canvas, "image/jpeg", .82);
+    const canvas = safePayload.type === "certificate"
+      ? await renderCertificate({ ...safePayload.data, width: 1100 })
+      : await renderReport({ ...safePayload.data, width: 850 });
+    const blob = await canvasBlob(canvas, "image/jpeg", proofJpegQuality);
     revokeExportProofUrl();
     exportProofUrl = URL.createObjectURL(blob);
-    pendingExportProof = payload;
+    pendingExportProof = safePayload;
     if (image) image.src = exportProofUrl;
-    if (title) title.textContent = payload.action === "report-share" ? "Review anonymous email copy" : "Review before final export";
-    if (confirm) confirm.textContent = payload.action === "report-share" ? "Prepare email copy" : `Download final ${payload.action.endsWith("jpg") ? "JPG" : "PDF"}`;
+    if (title) title.textContent = safePayload.action === "report-share" ? "Review anonymous email copy" : "Review before final export";
+    if (confirm) confirm.textContent = safePayload.action === "report-share" ? "Prepare email copy" : `Download final ${safePayload.action.endsWith("jpg") ? "JPG" : "PDF"}`;
     dialog.hidden = false;
     confirm?.focus();
   }
@@ -3093,20 +3417,20 @@
     setBusy(true);
     setStatus(C().preparing);
     try {
-      const { action, type, data, base } = payload;
+      const { action, type, data, base } = normalizeExportPayload(payload);
       if (type === "certificate") {
         if (action.endsWith("pdf")) {
           await downloadPdf("certificate", data, base);
         } else {
           const canvas = await renderCertificate(data);
-          downloadBlob(await canvasBlob(canvas), `${base}.jpg`);
+          downloadBlob(await canvasBlob(canvas, "image/jpeg", finalJpegQuality), `${base}.jpg`);
         }
         setStatus(C().ready);
         return;
       }
       if (action === "report-share") {
         const canvas = await renderReport({ ...data, width: 1600 });
-        const blob = await canvasBlob(canvas, "image/jpeg", .92);
+        const blob = await canvasBlob(canvas, "image/jpeg", shareJpegQuality);
         await shareAnonymousReport(blob, `${base}.jpg`);
         return;
       }
@@ -3114,7 +3438,7 @@
         await downloadPdf("report", data, base);
       } else {
         const canvas = await renderReport(data);
-        downloadBlob(await canvasBlob(canvas, "image/jpeg", .96), `${base}.jpg`);
+        downloadBlob(await canvasBlob(canvas, "image/jpeg", finalJpegQuality), `${base}.jpg`);
       }
       setStatus(C().ready);
     } catch (error) {
@@ -3126,9 +3450,9 @@
   }
 
   async function handleExport(action) {
-    const certificateName = $('[name="certificateName"]')?.value.trim() || "";
-    const reportText = $('[name="reportText"]')?.value.trim() || "";
-    const reportName = $('[name="reportName"]')?.value.trim() || "";
+    const certificateName = printableInput($('[name="certificateName"]')?.value);
+    const reportText = printableInput($('[name="reportText"]')?.value);
+    const reportName = printableInput($('[name="reportName"]')?.value);
     if (action.startsWith("certificate") && !certificateName) {
       setStatus(C().missingName);
       $('[name="certificateName"]')?.focus();
