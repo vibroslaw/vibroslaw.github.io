@@ -2193,6 +2193,7 @@
     if (!image) return image;
     const width = assetWidth(image);
     const height = assetHeight(image);
+    const settings = { includeInterior: true, ...options };
     const { canvas, ctx } = createPrintCanvas(width, height);
     ctx.drawImage(image, 0, 0, width, height);
     let imageData;
@@ -2204,11 +2205,29 @@
     const data = imageData.data;
     const visited = new Uint8Array(width * height);
     const stack = [];
-    const seed = (index) => {
+    const seed = (index, strong = true) => {
       if (visited[index]) return;
-      if (whitePixelStrength(data, index * 4, options) < .78) return;
+      const strength = whitePixelStrength(data, index * 4, settings);
+      if (strong ? strength < .78 : strength <= 0) return;
       visited[index] = 1;
       stack.push(index);
+    };
+    const flood = () => {
+      while (stack.length) {
+        const index = stack.pop();
+        const x = index % width;
+        const y = Math.floor(index / width);
+        const neighbours = [
+          x > 0 ? index - 1 : -1,
+          x < width - 1 ? index + 1 : -1,
+          y > 0 ? index - width : -1,
+          y < height - 1 ? index + width : -1,
+        ];
+        neighbours.forEach((next) => {
+          if (next < 0) return;
+          seed(next, false);
+        });
+      }
     };
     for (let x = 0; x < width; x += 1) {
       seed(x);
@@ -2219,28 +2238,20 @@
       seed(y * width + width - 1);
     }
     if (stack.length < Math.max(4, Math.round((width + height) * .006))) return image;
-    while (stack.length) {
-      const index = stack.pop();
-      const x = index % width;
-      const y = Math.floor(index / width);
-      const neighbours = [
-        x > 0 ? index - 1 : -1,
-        x < width - 1 ? index + 1 : -1,
-        y > 0 ? index - width : -1,
-        y < height - 1 ? index + width : -1,
-      ];
-      neighbours.forEach((next) => {
-        if (next < 0 || visited[next]) return;
-        if (whitePixelStrength(data, next * 4, options) <= 0) return;
-        visited[next] = 1;
-        stack.push(next);
-      });
+    flood();
+    if (settings.includeInterior !== false) {
+      for (let index = 0; index < visited.length; index += 1) {
+        if (visited[index]) continue;
+        if (whitePixelStrength(data, index * 4, settings) < .78) continue;
+        seed(index);
+        flood();
+      }
     }
     let changed = 0;
     for (let index = 0; index < visited.length; index += 1) {
       if (!visited[index]) continue;
       const offset = index * 4;
-      const strength = whitePixelStrength(data, offset, options);
+      const strength = whitePixelStrength(data, offset, settings);
       if (strength <= 0) continue;
       data[offset + 3] = Math.round(data[offset + 3] * (1 - strength));
       changed += 1;
