@@ -7,7 +7,10 @@
   const mode = body.dataset.documentMode || "public";
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+  const cssEscape = (value) => window.CSS?.escape ? CSS.escape(String(value)) : String(value).replace(/["\\]/g, "\\$&");
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[char]));
   const clampText = (value, max = 160) => String(value || "").trim().slice(0, max);
+  const clampNumber = (value, min, max) => Math.min(max, Math.max(min, value));
   const isoToday = new Date().toISOString().slice(0, 10);
   const A4 = {
     landscape: { width: 3508, height: 2480, pdf: [841.89, 595.28] },
@@ -59,6 +62,42 @@
     },
   };
 
+  const fragmentBox = (x, y, w, h, align = "center", valign = "center", z = 30) => ({
+    x, y, w, h, align, valign, z, locked: false, hidden: false,
+  });
+
+  const layoutFragmentDefaults = {
+    certificate: {
+      code: fragmentBox(23, 8.6, 54, 3.2, "center", "center", 10),
+      meta: fragmentBox(11, 12.8, 78, 7.5, "center", "top", 20),
+      stamp: fragmentBox(46.75, 17, 6.5, 7.4, "center", "center", 50),
+      title: fragmentBox(11, 24, 78, 10, "center", "center", 40),
+      body: fragmentBox(24, 39, 52, 19, "center", "top", 30),
+      name: fragmentBox(25, 65.5, 50, 8.2, "center", "center", 60),
+      closing: fragmentBox(27, 78, 46, 6.8, "center", "center", 70),
+      author: fragmentBox(39, 83.4, 22, 9.5, "center", "center", 80),
+    },
+    report: {
+      code: fragmentBox(13, 4.4, 74, 3.2, "center", "center", 10),
+      meta: fragmentBox(9, 9.5, 82, 6.6, "center", "top", 20),
+      title: fragmentBox(13, 15.4, 74, 8.2, "center", "center", 30),
+      quote: fragmentBox(10, 25.6, 80, 7.5, "center", "top", 40),
+      instruction: fragmentBox(10, 34.5, 80, 7, "center", "top", 50),
+      lines: fragmentBox(9, 44, 82, 33.5, "left", "top", 60),
+      entry: fragmentBox(10, 45.5, 80, 31, "left", "top", 70),
+      signature: fragmentBox(45, 86.5, 46, 7.5, "right", "bottom", 80),
+      stamp: fragmentBox(8, 79.5, 18, 12, "center", "center", 90),
+    },
+  };
+
+  function cloneLayoutFragments(source = layoutFragmentDefaults) {
+    return JSON.parse(JSON.stringify(source));
+  }
+
+  function cloneLayoutExtras(source = { certificate: [], report: [] }) {
+    return JSON.parse(JSON.stringify(source));
+  }
+
   const defaults = {
     version: 3,
     language: "en",
@@ -82,6 +121,8 @@
     reportLayout: "archive",
     reportTitleScale: 100,
     reportTextScale: 100,
+    layoutFragments: cloneLayoutFragments(),
+    layoutExtras: cloneLayoutExtras(),
   };
 
   const allowed = {
@@ -106,6 +147,11 @@
     certificateNameScale: [86, 118],
     reportTitleScale: [86, 116],
     reportTextScale: [88, 112],
+  };
+
+  const fragmentAlignments = {
+    align: ["left", "center", "right"],
+    valign: ["top", "center", "bottom"],
   };
 
   const studioPresets = {
@@ -372,6 +418,72 @@
     },
   };
 
+  function sanitizeFragmentBox(source, fallback) {
+    const next = { ...fallback };
+    if (!source || typeof source !== "object") return next;
+    ["x", "y", "w", "h"].forEach((key) => {
+      const value = Number(source[key]);
+      if (!Number.isFinite(value)) return;
+      const min = key === "w" || key === "h" ? 2 : 0;
+      const max = key === "w" || key === "h" ? 100 : 98;
+      next[key] = Math.min(max, Math.max(min, Math.round(value * 10) / 10));
+    });
+    next.x = Math.min(98, Math.max(0, next.x));
+    next.y = Math.min(98, Math.max(0, next.y));
+    next.w = Math.min(100 - next.x, Math.max(2, next.w));
+    next.h = Math.min(100 - next.y, Math.max(2, next.h));
+    if (fragmentAlignments.align.includes(source.align)) next.align = source.align;
+    if (fragmentAlignments.valign.includes(source.valign)) next.valign = source.valign;
+    const z = Number(source.z);
+    next.z = Number.isFinite(z) ? Math.min(999, Math.max(1, Math.round(z))) : fallback.z || 30;
+    next.locked = Boolean(source.locked);
+    next.hidden = Boolean(source.hidden);
+    return next;
+  }
+
+  function sanitizeLayoutFragments(raw) {
+    const next = cloneLayoutFragments();
+    if (!raw || typeof raw !== "object") return next;
+
+    ["certificate", "report"].forEach((type) => {
+      Object.keys(next[type]).forEach((id) => {
+        const source = raw[type]?.[id];
+        next[type][id] = sanitizeFragmentBox(source, next[type][id]);
+      });
+    });
+
+    return next;
+  }
+
+  function sanitizeLayoutExtras(raw, fragments) {
+    const next = cloneLayoutExtras();
+    if (!raw || typeof raw !== "object") return next;
+
+    ["certificate", "report"].forEach((type) => {
+      const sourceList = Array.isArray(raw[type]) ? raw[type] : [];
+      sourceList.slice(0, 24).forEach((source, index) => {
+        if (!source || typeof source !== "object") return;
+        const baseId = String(source.source || "");
+        if (!fragments[type]?.[baseId]) return;
+        const fallback = {
+          ...fragments[type][baseId],
+          x: Math.min(98, Math.max(0, Number(fragments[type][baseId].x) + 2)),
+          y: Math.min(98, Math.max(0, Number(fragments[type][baseId].y) + 2)),
+          z: (fragments[type][baseId].z || 30) + index + 1,
+          locked: false,
+          hidden: false,
+        };
+        const clean = sanitizeFragmentBox(source, fallback);
+        clean.id = /^[a-z0-9_-]{6,40}$/i.test(source.id || "") ? source.id : `extra-${baseId}-${index + 1}`;
+        clean.source = baseId;
+        clean.label = clampText(source.label || `${baseId} copy`, 40);
+        next[type].push(clean);
+      });
+    });
+
+    return next;
+  }
+
   function sanitizeConfig(raw = {}) {
     const next = { ...defaults };
     Object.keys(allowed).forEach((key) => {
@@ -384,6 +496,8 @@
     next.eventTitle = clampText(raw.eventTitle || defaults.eventTitle, 90);
     next.eventDate = /^\d{4}-\d{2}-\d{2}$/.test(raw.eventDate || "") ? raw.eventDate : defaults.eventDate;
     next.eventPlace = clampText(raw.eventPlace, 140);
+    next.layoutFragments = sanitizeLayoutFragments(raw.layoutFragments);
+    next.layoutExtras = sanitizeLayoutExtras(raw.layoutExtras, next.layoutFragments);
     return next;
   }
 
@@ -417,9 +531,61 @@
   const bytesCache = new Map();
   let pdfLibrariesReady;
   let documentToken = createDocumentToken();
+  let historyPast = [];
+  let historyFuture = [];
+  let restoringHistory = false;
 
   const C = () => copy[config.language];
   const setStatus = (message) => { if (status) status.textContent = message || ""; };
+  const configSnapshot = () => JSON.stringify(config);
+
+  function pushHistory() {
+    if (mode !== "admin" || restoringHistory) return;
+    const snapshot = configSnapshot();
+    if (historyPast[historyPast.length - 1] === snapshot) return;
+    historyPast.push(snapshot);
+    if (historyPast.length > 80) historyPast.shift();
+    historyFuture = [];
+    syncHistoryButtons();
+  }
+
+  function restoreSnapshot(snapshot) {
+    if (!snapshot) return;
+    restoringHistory = true;
+    try {
+      config = sanitizeConfig(JSON.parse(snapshot));
+      const form = $("[data-document-admin-form]");
+      if (form) fillAdminForm(form);
+      persistAdminConfig();
+      syncVisualOptions();
+      syncEditorTools();
+      updatePreview();
+      setStatus("");
+    } finally {
+      restoringHistory = false;
+    }
+  }
+
+  function undoHistory() {
+    if (!historyPast.length) return;
+    historyFuture.push(configSnapshot());
+    restoreSnapshot(historyPast.pop());
+    syncHistoryButtons();
+  }
+
+  function redoHistory() {
+    if (!historyFuture.length) return;
+    historyPast.push(configSnapshot());
+    restoreSnapshot(historyFuture.pop());
+    syncHistoryButtons();
+  }
+
+  function syncHistoryButtons() {
+    if (mode !== "admin") return;
+    $$("[data-history-action='undo']").forEach((button) => { button.disabled = historyPast.length === 0; });
+    $$("[data-history-action='redo']").forEach((button) => { button.disabled = historyFuture.length === 0; });
+  }
+
   const dateLabel = () => {
     if (!config.eventDate) return "";
     return new Intl.DateTimeFormat(config.language === "pl" ? "pl-PL" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date(`${config.eventDate}T12:00:00`));
@@ -456,6 +622,228 @@
   const scaleValue = (key) => Number(config[key] || 100) / 100;
   const certificateLayout = () => certificateLayouts[config.certificateLayout] || certificateLayouts.classic;
   const reportLayout = () => reportLayouts[config.reportLayout] || reportLayouts.archive;
+  const fragmentLabels = {
+    certificate: {
+      code: "Certificate number",
+      meta: "Date and place",
+      stamp: "Event stamp",
+      title: "Title plate",
+      body: "Certificate text",
+      name: "Participant name",
+      closing: "Closing text",
+      author: "Author signature",
+    },
+    report: {
+      code: "Report number",
+      meta: "Date and place",
+      title: "Title plate",
+      quote: "Opening line",
+      instruction: "Instruction text",
+      lines: "Typing lines",
+      entry: "Typed report text",
+      signature: "Witness signature",
+      stamp: "Event stamp",
+    },
+  };
+
+  function isBaseFragment(type, id) {
+    return Boolean(layoutFragmentDefaults[type]?.[id]);
+  }
+
+  function layoutExtra(type, id) {
+    return (config.layoutExtras?.[type] || []).find((layer) => layer.id === id);
+  }
+
+  function layerSource(type, id) {
+    return isBaseFragment(type, id) ? id : layoutExtra(type, id)?.source;
+  }
+
+  function layerLabel(type, id) {
+    if (isBaseFragment(type, id)) return fragmentLabels[type]?.[id] || id;
+    const extra = layoutExtra(type, id);
+    return extra?.label || `${fragmentLabels[type]?.[extra?.source] || "Layer"} copy`;
+  }
+
+  function layerItems(type = activeType) {
+    const base = Object.keys(layoutFragmentDefaults[type] || {}).map((id) => ({
+      id,
+      source: id,
+      base: true,
+      label: layerLabel(type, id),
+      fragment: layoutFragment(type, id),
+    }));
+    const extras = (config.layoutExtras?.[type] || []).map((layer) => ({
+      id: layer.id,
+      source: layer.source,
+      base: false,
+      label: layerLabel(type, layer.id),
+      fragment: layer,
+    }));
+    return [...base, ...extras].sort((a, b) => {
+      const z = (b.fragment.z || 30) - (a.fragment.z || 30);
+      return z || a.label.localeCompare(b.label);
+    });
+  }
+
+  function visibleExtras(type) {
+    return (config.layoutExtras?.[type] || [])
+      .filter((layer) => !layer.hidden)
+      .sort((a, b) => (a.z || 30) - (b.z || 30));
+  }
+
+  function layoutFragment(type, id) {
+    const extra = layoutExtra(type, id);
+    if (extra) return extra;
+    return config.layoutFragments?.[type]?.[id] || layoutFragmentDefaults[type]?.[id];
+  }
+
+  function updateLayoutFragment(type, id, updates) {
+    const extra = layoutExtra(type, id);
+    if (extra) {
+      const clean = sanitizeFragmentBox({ ...extra, ...updates }, extra);
+      Object.assign(extra, clean);
+      return extra;
+    }
+    if (!config.layoutFragments) config.layoutFragments = cloneLayoutFragments();
+    if (!config.layoutFragments[type]) config.layoutFragments[type] = cloneLayoutFragments()[type];
+    const current = { ...layoutFragment(type, id), ...updates };
+    const clean = sanitizeLayoutFragments({ [type]: { [id]: current } })[type][id];
+    config.layoutFragments[type][id] = clean;
+    return clean;
+  }
+
+  function resetLayoutFragment(type, id) {
+    const extra = layoutExtra(type, id);
+    if (extra) {
+      const source = layoutFragment(type, extra.source) || layoutFragmentDefaults[type]?.[extra.source];
+      Object.assign(extra, sanitizeFragmentBox({
+        ...source,
+        x: Math.min(98, source.x + 2),
+        y: Math.min(98, source.y + 2),
+        z: extra.z,
+        locked: false,
+        hidden: false,
+      }, source), { id: extra.id, source: extra.source, label: extra.label });
+      return;
+    }
+    if (!config.layoutFragments) config.layoutFragments = cloneLayoutFragments();
+    config.layoutFragments[type][id] = { ...layoutFragmentDefaults[type][id] };
+  }
+
+  function resetAllLayoutFragments() {
+    config.layoutFragments = cloneLayoutFragments();
+    config.layoutExtras = cloneLayoutExtras();
+  }
+
+  function applyFragmentBox(element, fragment) {
+    if (!element || !fragment) return;
+    const align = fragment.align || "center";
+    const valign = fragment.valign || "center";
+    const justifyContent = { top: "start", center: "center", bottom: "end" }[valign] || "center";
+    const objectPosition = `${align === "left" ? "left" : align === "right" ? "right" : "center"} ${valign === "top" ? "top" : valign === "bottom" ? "bottom" : "center"}`;
+    element.style.left = percent(fragment.x);
+    element.style.top = percent(fragment.y);
+    element.style.width = percent(fragment.w);
+    element.style.height = percent(fragment.h);
+    element.style.minHeight = percent(fragment.h);
+    element.style.setProperty("--fragment-text-align", align);
+    element.style.setProperty("--fragment-align-content", justifyContent);
+    element.style.setProperty("--fragment-object-position", objectPosition);
+    element.dataset.fragmentAlign = align;
+    element.dataset.fragmentValign = valign;
+    element.style.right = "auto";
+    element.style.bottom = "auto";
+    element.style.maxWidth = "none";
+    element.style.transform = "none";
+    element.style.zIndex = String(fragment.z || 30);
+    element.hidden = Boolean(fragment.hidden);
+    element.dataset.fragmentLocked = String(Boolean(fragment.locked));
+  }
+
+  function applyFragmentLayout(sheet, type) {
+    if (!sheet) return;
+    $$("[data-layout-extra]", sheet).forEach((element) => element.remove());
+    $$("[data-layout-fragment]:not([data-layout-extra])", sheet).forEach((element) => {
+      applyFragmentBox(element, layoutFragment(type, element.dataset.layoutFragment));
+    });
+    (config.layoutExtras?.[type] || []).forEach((layer) => {
+      const source = $(`[data-layout-fragment="${layer.source}"]:not([data-layout-extra])`, sheet);
+      if (!source) return;
+      const clone = source.cloneNode(true);
+      clone.removeAttribute("id");
+      clone.hidden = false;
+      clone.classList.add("document-duplicate-fragment");
+      clone.classList.remove("is-layout-selected", "is-layout-dragging");
+      clone.dataset.layoutFragment = layer.id;
+      clone.dataset.layoutSource = layer.source;
+      clone.dataset.layoutExtra = "true";
+      source.parentElement?.appendChild(clone);
+      applyFragmentBox(clone, layer);
+    });
+  }
+
+  function fragmentRect(type, id, width, height) {
+    const fragment = layoutFragment(type, id);
+    return fragmentBoxRect(fragment, width, height);
+  }
+
+  function fragmentBoxRect(fragment, width, height) {
+    return {
+      x: width * fragment.x / 100,
+      y: height * fragment.y / 100,
+      width: width * fragment.w / 100,
+      height: height * fragment.h / 100,
+    };
+  }
+
+  function pdfFragmentRect(type, id, width, height) {
+    return pdfBoxRect(layoutFragment(type, id), width, height);
+  }
+
+  function pdfBoxRect(fragment, width, height) {
+    const rect = fragmentBoxRect(fragment, width, height);
+    return {
+      x: rect.x,
+      y: height - rect.y - rect.height,
+      width: rect.width,
+      height: rect.height,
+    };
+  }
+
+  function fragmentVisible(type, id) {
+    return !layoutFragment(type, id)?.hidden;
+  }
+
+  function canvasTextX(rect, fragment) {
+    const align = fragment?.align || "center";
+    if (align === "left") return rect.x;
+    if (align === "right") return rect.x + rect.width;
+    return rect.x + rect.width / 2;
+  }
+
+  function canvasGroupBaseline(rect, fragment, lineCount, lineHeight, fontSize) {
+    const valign = fragment?.valign || "center";
+    const total = Math.max(fontSize, (Math.max(1, lineCount) - 1) * lineHeight + fontSize);
+    if (valign === "top") return rect.y + fontSize;
+    if (valign === "bottom") return rect.y + rect.height - total + fontSize;
+    return rect.y + (rect.height - total) / 2 + fontSize;
+  }
+
+  function pdfTextX(rect, fragment, font, text, size) {
+    const align = fragment?.align || "center";
+    const width = font.widthOfTextAtSize(text, size);
+    if (align === "left") return rect.x;
+    if (align === "right") return rect.x + rect.width - width;
+    return rect.x + (rect.width - width) / 2;
+  }
+
+  function pdfGroupBaseline(rect, fragment, lineCount, lineHeight, fontSize) {
+    const valign = fragment?.valign || "center";
+    const total = Math.max(fontSize, (Math.max(1, lineCount) - 1) * lineHeight + fontSize);
+    if (valign === "top") return rect.y + rect.height - fontSize;
+    if (valign === "bottom") return rect.y + total - fontSize;
+    return rect.y + (rect.height + total) / 2 - fontSize;
+  }
 
   function syncEditorTools() {
     body.dataset.proofGrid = mode === "admin" ? config.proofGrid : "off";
@@ -463,6 +851,7 @@
       const key = output.dataset.rangeOutput;
       output.textContent = `${config[key] || defaults[key]}%`;
     });
+    syncHistoryButtons();
   }
 
   function ensureGridLayer(sheet) {
@@ -493,6 +882,7 @@
       style.setProperty("--cert-title-scale", scaleValue("certificateTitleScale").toFixed(2));
       style.setProperty("--cert-body-scale", scaleValue("certificateBodyScale").toFixed(2));
       style.setProperty("--cert-name-scale", scaleValue("certificateNameScale").toFixed(2));
+      applyFragmentLayout(sheet, type);
       return;
     }
     const layout = reportLayout();
@@ -507,6 +897,7 @@
     style.setProperty("--report-signature-bottom", percent(layout.signatureBottom));
     style.setProperty("--report-title-scale", scaleValue("reportTitleScale").toFixed(2));
     style.setProperty("--report-text-scale", scaleValue("reportTextScale").toFixed(2));
+    applyFragmentLayout(sheet, type);
   }
 
   function stampAsset(type, preview = false) {
@@ -626,7 +1017,9 @@
       if (isActive) activateSheetAssets(sheet, activeType);
     });
     syncEditorTools();
+    syncLayoutControls();
     updateReportMeter();
+    renderPreflightPanel();
   }
 
   function updateProofTitle() {
@@ -635,6 +1028,499 @@
     title.textContent = activeType === "certificate"
       ? `${C().certificateTitle} / A4 landscape`
       : `${C().reportTitle} / A4 portrait`;
+  }
+
+  let selectedLayoutFragment = { type: "certificate", id: "title" };
+
+  function persistAdminConfig() {
+    if (mode === "admin") {
+      localStorage.setItem("vhDocumentStudioIssue", JSON.stringify(config));
+    }
+  }
+
+  function ensureLayoutSelection() {
+    if (selectedLayoutFragment.type !== activeType || !layoutFragment(activeType, selectedLayoutFragment.id)) {
+      selectedLayoutFragment = { type: activeType, id: activeType === "certificate" ? "title" : "entry" };
+    }
+    return selectedLayoutFragment;
+  }
+
+  function activeLayoutSheet() {
+    return $(`[data-document-preview="${activeType}"]`);
+  }
+
+  function markSelectedLayoutFragment() {
+    $$("[data-layout-fragment]").forEach((element) => element.classList.remove("is-layout-selected"));
+    const selection = ensureLayoutSelection();
+    const sheet = activeLayoutSheet();
+    $(`[data-layout-fragment="${cssEscape(selection.id)}"]`, sheet)?.classList.add("is-layout-selected");
+    syncResizeOverlay();
+  }
+
+  function syncLayoutControls() {
+    if (mode !== "admin") return;
+    const selection = ensureLayoutSelection();
+    const target = $("[data-layout-target]");
+    if (target) {
+      const options = layerItems(activeType)
+        .map((layer) => `<option value="${layer.id}">${layer.label}${layer.base ? "" : " *"}</option>`)
+        .join("");
+      target.innerHTML = options;
+      target.dataset.optionsFor = activeType;
+      target.value = selection.id;
+    }
+    const fragment = layoutFragment(activeType, selection.id);
+    $$("[data-layout-field]").forEach((field) => {
+      field.value = fragment[field.dataset.layoutField];
+    });
+    const align = $("[data-layout-align]");
+    const valign = $("[data-layout-valign]");
+    if (align) align.value = fragment.align || "center";
+    if (valign) valign.value = fragment.valign || "center";
+    $$("[data-lock-sensitive]").forEach((control) => { control.disabled = Boolean(fragment.locked); });
+    markSelectedLayoutFragment();
+    renderLayerPanel();
+  }
+
+  function setSelectedLayoutFragment(id) {
+    if (!layoutFragment(activeType, id)) return;
+    selectedLayoutFragment = { type: activeType, id };
+    syncLayoutControls();
+  }
+
+  function applyLayoutFieldChange(field) {
+    const key = field.dataset.layoutField;
+    if (!key) return;
+    const selection = ensureLayoutSelection();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (fragment.locked) return;
+    const value = Number(field.value);
+    if (!Number.isFinite(value)) return;
+    pushHistory();
+    updateLayoutFragment(selection.type, selection.id, { [key]: value });
+    persistAdminConfig();
+    updatePreview();
+  }
+
+  function applyLayoutAlignmentChange(key, value) {
+    const allowed = fragmentAlignments[key];
+    if (!allowed?.includes(value)) return;
+    const selection = ensureLayoutSelection();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (fragment.locked) return;
+    pushHistory();
+    updateLayoutFragment(selection.type, selection.id, { [key]: value });
+    persistAdminConfig();
+    updatePreview();
+  }
+
+  function snapSelectedFragment(axis, placement) {
+    const selection = ensureLayoutSelection();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (fragment.locked) return;
+    const updates = {};
+    if (axis === "x") {
+      updates.x = placement === "left" ? 0 : placement === "right" ? 100 - fragment.w : (100 - fragment.w) / 2;
+      updates.align = placement === "left" || placement === "right" ? placement : "center";
+    }
+    if (axis === "y") {
+      updates.y = placement === "top" ? 0 : placement === "bottom" ? 100 - fragment.h : (100 - fragment.h) / 2;
+      updates.valign = placement === "top" || placement === "bottom" ? placement : "center";
+    }
+    pushHistory();
+    updateLayoutFragment(selection.type, selection.id, updates);
+    persistAdminConfig();
+    updatePreview();
+  }
+
+  function syncResizeOverlay() {
+    if (mode !== "admin") return;
+    $$("[data-fragment-resize-box]").forEach((box) => box.hidden = true);
+    const selection = ensureLayoutSelection();
+    const sheet = activeLayoutSheet();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (!sheet || !fragment || fragment.hidden) return;
+    let overlay = $("[data-fragment-resize-box]", sheet);
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.className = "document-fragment-resize-box";
+      overlay.dataset.fragmentResizeBox = "true";
+      overlay.setAttribute("aria-hidden", "true");
+      ["nw", "n", "ne", "e", "se", "s", "sw", "w"].forEach((handle) => {
+        const node = document.createElement("span");
+        node.dataset.resizeHandle = handle;
+        node.className = `document-resize-handle handle-${handle}`;
+        overlay.appendChild(node);
+      });
+      sheet.appendChild(overlay);
+    }
+    overlay.hidden = false;
+    overlay.dataset.locked = String(Boolean(fragment.locked));
+    overlay.style.left = percent(fragment.x);
+    overlay.style.top = percent(fragment.y);
+    overlay.style.width = percent(fragment.w);
+    overlay.style.height = percent(fragment.h);
+    overlay.style.zIndex = String(Math.max(995, (fragment.z || 30) + 2));
+  }
+
+  function maxLayerZ(type) {
+    return Math.max(10, ...layerItems(type).map((layer) => Number(layer.fragment.z) || 30));
+  }
+
+  function duplicateSelectedLayer() {
+    const selection = ensureLayoutSelection();
+    const source = layerSource(selection.type, selection.id);
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (!source || !fragment) return;
+    if (!config.layoutExtras) config.layoutExtras = cloneLayoutExtras();
+    if (!config.layoutExtras[selection.type]) config.layoutExtras[selection.type] = [];
+    pushHistory();
+    const id = `copy-${source}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+    const layer = sanitizeFragmentBox({
+      ...fragment,
+      x: Math.min(98, fragment.x + 2),
+      y: Math.min(98, fragment.y + 2),
+      z: maxLayerZ(selection.type) + 10,
+      locked: false,
+      hidden: false,
+    }, fragment);
+    layer.id = id;
+    layer.source = source;
+    layer.label = `${layerLabel(selection.type, selection.id)} copy`;
+    config.layoutExtras[selection.type].push(layer);
+    selectedLayoutFragment = { type: selection.type, id };
+    persistAdminConfig();
+    updatePreview();
+  }
+
+  function updateSelectedLayer(updates, allowLocked = false) {
+    const selection = ensureLayoutSelection();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (!fragment || (fragment.locked && !allowLocked)) return;
+    pushHistory();
+    updateLayoutFragment(selection.type, selection.id, updates);
+    persistAdminConfig();
+    updatePreview();
+  }
+
+  function removeSelectedLayer() {
+    const selection = ensureLayoutSelection();
+    if (isBaseFragment(selection.type, selection.id)) return;
+    if (!config.layoutExtras?.[selection.type]) return;
+    pushHistory();
+    config.layoutExtras[selection.type] = config.layoutExtras[selection.type].filter((layer) => layer.id !== selection.id);
+    selectedLayoutFragment = { type: selection.type, id: activeType === "certificate" ? "title" : "entry" };
+    persistAdminConfig();
+    updatePreview();
+  }
+
+  function handleLayerAction(action) {
+    const selection = ensureLayoutSelection();
+    const fragment = layoutFragment(selection.type, selection.id);
+    if (!fragment) return;
+    if (action === "lock") updateSelectedLayer({ locked: !fragment.locked }, true);
+    if (action === "hide") updateSelectedLayer({ hidden: !fragment.hidden }, true);
+    if (action === "duplicate") duplicateSelectedLayer();
+    if (action === "front") updateSelectedLayer({ z: maxLayerZ(selection.type) + 10 }, true);
+    if (action === "back") updateSelectedLayer({ z: 1 }, true);
+    if (action === "forward") updateSelectedLayer({ z: (fragment.z || 30) + 10 }, true);
+    if (action === "backward") updateSelectedLayer({ z: Math.max(1, (fragment.z || 30) - 10) }, true);
+    if (action === "reset") {
+      pushHistory();
+      resetLayoutFragment(selection.type, selection.id);
+      persistAdminConfig();
+      updatePreview();
+    }
+    if (action === "remove") removeSelectedLayer();
+  }
+
+  function renderLayerPanel() {
+    if (mode !== "admin") return;
+    const list = $("[data-layer-list]");
+    if (!list) return;
+    const selection = ensureLayoutSelection();
+    list.innerHTML = layerItems(activeType).map((layer) => {
+      const selected = layer.id === selection.id;
+      const icon = layer.fragment.hidden ? "Hidden" : layer.fragment.locked ? "Locked" : "Live";
+      return `<button class="document-layer-item${selected ? " is-selected" : ""}${layer.fragment.hidden ? " is-hidden" : ""}" type="button" data-layer-select="${layer.id}">
+        <span>${escapeHtml(layer.label)}</span><small>${icon} / z${layer.fragment.z || 30}</small>
+      </button>`;
+    }).join("");
+    const selectedFragment = layoutFragment(selection.type, selection.id);
+    const name = $("[data-selected-layer-name]");
+    if (name) name.textContent = layerLabel(selection.type, selection.id);
+    const lock = $("[data-layer-action='lock']");
+    if (lock) lock.textContent = selectedFragment?.locked ? "Unlock" : "Lock";
+    const hide = $("[data-layer-action='hide']");
+    if (hide) hide.textContent = selectedFragment?.hidden ? "Show" : "Hide";
+    const remove = $("[data-layer-action='remove']");
+    if (remove) remove.disabled = isBaseFragment(selection.type, selection.id);
+  }
+
+  function rectForFragment(fragment) {
+    return { left: fragment.x, top: fragment.y, right: fragment.x + fragment.w, bottom: fragment.y + fragment.h, area: fragment.w * fragment.h };
+  }
+
+  function overlapRatio(a, b) {
+    const left = Math.max(a.left, b.left);
+    const right = Math.min(a.right, b.right);
+    const top = Math.max(a.top, b.top);
+    const bottom = Math.min(a.bottom, b.bottom);
+    if (right <= left || bottom <= top) return 0;
+    return ((right - left) * (bottom - top)) / Math.max(1, Math.min(a.area, b.area));
+  }
+
+  function preflightIssues() {
+    const issues = [];
+    const visible = layerItems(activeType).filter((layer) => !layer.fragment.hidden);
+    const required = activeType === "certificate"
+      ? ["code", "meta", "title", "body", "name"]
+      : ["code", "meta", "title", "lines", "entry"];
+
+    required.forEach((id) => {
+      if (layoutFragment(activeType, id)?.hidden) issues.push({ level: "critical", text: `${fragmentLabels[activeType][id]} is hidden.` });
+    });
+
+    visible.forEach((layer) => {
+      const box = rectForFragment(layer.fragment);
+      if (box.left < 4 || box.top < 4 || box.right > 96 || box.bottom > 96) {
+        issues.push({ level: "warning", text: `${layer.label} is close to the print edge.` });
+      }
+    });
+
+    for (let i = 0; i < visible.length; i += 1) {
+      for (let j = i + 1; j < visible.length; j += 1) {
+        const a = visible[i];
+        const b = visible[j];
+        if (overlapRatio(rectForFragment(a.fragment), rectForFragment(b.fragment)) > .18) {
+          issues.push({ level: "warning", text: `${a.label} overlaps ${b.label}.` });
+        }
+        if (issues.length > 10) break;
+      }
+    }
+
+    if (activeType === "report" && reportOverflow) issues.unshift({ level: "critical", text: C().reportOverflow });
+    if (activeType === "certificate" && config.certificateStamp !== "none" && layoutFragment("certificate", "stamp")?.hidden) {
+      issues.push({ level: "warning", text: "Certificate stamp is enabled but hidden." });
+    }
+    if (activeType === "certificate" && config.certificateAuthorSignature !== "none" && layoutFragment("certificate", "author")?.hidden) {
+      issues.push({ level: "warning", text: "Author signature is enabled but hidden." });
+    }
+    if (activeType === "report" && config.reportStamp !== "none" && layoutFragment("report", "stamp")?.hidden) {
+      issues.push({ level: "warning", text: "Report stamp is enabled but hidden." });
+    }
+    if (activeType === "report" && layoutFragment("report", "signature")?.hidden) {
+      issues.push({ level: "warning", text: "Witness signature layer is hidden." });
+    }
+
+    return issues.slice(0, 12);
+  }
+
+  function renderPreflightPanel() {
+    if (mode !== "admin") return;
+    const list = $("[data-preflight-list]");
+    const score = $("[data-preflight-score]");
+    if (!list) return;
+    const issues = preflightIssues();
+    const critical = issues.filter((issue) => issue.level === "critical").length;
+    const warnings = issues.filter((issue) => issue.level === "warning").length;
+    if (score) {
+      score.textContent = critical ? "Needs fix" : warnings ? "Review" : "Ready";
+      score.dataset.preflightScore = critical ? "critical" : warnings ? "warning" : "ready";
+    }
+    list.innerHTML = issues.length
+      ? issues.map((issue) => `<li data-preflight-level="${issue.level}">${escapeHtml(issue.text)}</li>`).join("")
+      : `<li data-preflight-level="ready">No critical print issues detected.</li>`;
+  }
+
+  function installLayoutEditor() {
+    if (mode !== "admin" || body.dataset.layoutEditorReady === "true") return;
+    body.dataset.layoutEditorReady = "true";
+
+    $("[data-layout-target]")?.addEventListener("input", (event) => {
+      setSelectedLayoutFragment(event.target.value);
+    });
+
+    $$("[data-history-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.dataset.historyAction === "undo") undoHistory();
+        if (button.dataset.historyAction === "redo") redoHistory();
+      });
+    });
+
+    $("[data-layer-list]")?.addEventListener("click", (event) => {
+      const button = event.target.closest?.("[data-layer-select]");
+      if (!button) return;
+      setSelectedLayoutFragment(button.dataset.layerSelect);
+    });
+
+    $$("[data-layer-action]").forEach((button) => {
+      button.addEventListener("click", () => handleLayerAction(button.dataset.layerAction));
+    });
+
+    $$("[data-layout-field]").forEach((field) => {
+      field.addEventListener("input", () => applyLayoutFieldChange(field));
+    });
+
+    $("[data-layout-align]")?.addEventListener("input", (event) => {
+      applyLayoutAlignmentChange("align", event.target.value);
+    });
+
+    $("[data-layout-valign]")?.addEventListener("input", (event) => {
+      applyLayoutAlignmentChange("valign", event.target.value);
+    });
+
+    $$("[data-layout-snap-x]").forEach((button) => {
+      button.addEventListener("click", () => snapSelectedFragment("x", button.dataset.layoutSnapX));
+    });
+
+    $$("[data-layout-snap-y]").forEach((button) => {
+      button.addEventListener("click", () => snapSelectedFragment("y", button.dataset.layoutSnapY));
+    });
+
+    $("[data-reset-layout-fragment]")?.addEventListener("click", () => {
+      const selection = ensureLayoutSelection();
+      pushHistory();
+      resetLayoutFragment(selection.type, selection.id);
+      persistAdminConfig();
+      updatePreview();
+    });
+
+    $("[data-reset-layout-all]")?.addEventListener("click", () => {
+      pushHistory();
+      resetAllLayoutFragments();
+      persistAdminConfig();
+      updatePreview();
+    });
+
+    let dragState = null;
+    let resizeState = null;
+    document.addEventListener("pointerdown", (event) => {
+      const handle = event.target.closest?.("[data-resize-handle]");
+      if (handle) {
+        const selection = ensureLayoutSelection();
+        const fragment = layoutFragment(selection.type, selection.id);
+        const sheet = activeLayoutSheet();
+        if (!fragment || !sheet || fragment.locked) return;
+        event.preventDefault();
+        pushHistory();
+        resizeState = {
+          pointerId: event.pointerId,
+          handle: handle.dataset.resizeHandle,
+          sheet,
+          rect: sheet.getBoundingClientRect(),
+          startX: event.clientX,
+          startY: event.clientY,
+          box: { ...fragment },
+        };
+        handle.setPointerCapture?.(event.pointerId);
+        return;
+      }
+
+      const fragment = event.target.closest?.("[data-layout-fragment]");
+      const sheet = fragment?.closest?.("[data-document-preview]");
+      if (!fragment || !sheet || sheet.hidden || sheet.dataset.documentPreview !== activeType) return;
+      if (event.button !== 0) return;
+      event.preventDefault();
+      const id = fragment.dataset.layoutFragment;
+      setSelectedLayoutFragment(id);
+      const rect = sheet.getBoundingClientRect();
+      const box = layoutFragment(activeType, id);
+      if (box.locked) return;
+      pushHistory();
+      dragState = {
+        pointerId: event.pointerId,
+        sheet,
+        fragment,
+        id,
+        rect,
+        startX: event.clientX,
+        startY: event.clientY,
+        box: { ...box },
+      };
+      fragment.classList.add("is-layout-dragging");
+      fragment.setPointerCapture?.(event.pointerId);
+    });
+
+    document.addEventListener("pointermove", (event) => {
+      if (resizeState && event.pointerId === resizeState.pointerId) {
+        const dx = (event.clientX - resizeState.startX) / resizeState.rect.width * 100;
+        const dy = (event.clientY - resizeState.startY) / resizeState.rect.height * 100;
+        const box = resizeState.box;
+        const minSize = 2;
+        const updates = { x: box.x, y: box.y, w: box.w, h: box.h };
+        if (resizeState.handle.includes("e")) updates.w = clampNumber(box.w + dx, minSize, 100 - box.x);
+        if (resizeState.handle.includes("s")) updates.h = clampNumber(box.h + dy, minSize, 100 - box.y);
+        if (resizeState.handle.includes("w")) {
+          const nextX = clampNumber(box.x + dx, 0, box.x + box.w - minSize);
+          updates.x = nextX;
+          updates.w = clampNumber(box.w + box.x - nextX, minSize, 100 - nextX);
+        }
+        if (resizeState.handle.includes("n")) {
+          const nextY = clampNumber(box.y + dy, 0, box.y + box.h - minSize);
+          updates.y = nextY;
+          updates.h = clampNumber(box.h + box.y - nextY, minSize, 100 - nextY);
+        }
+        const selection = ensureLayoutSelection();
+        updateLayoutFragment(selection.type, selection.id, updates);
+        applyFragmentLayout(resizeState.sheet, selection.type);
+        syncLayoutControls();
+        return;
+      }
+      if (!dragState || event.pointerId !== dragState.pointerId) return;
+      const dx = (event.clientX - dragState.startX) / dragState.rect.width * 100;
+      const dy = (event.clientY - dragState.startY) / dragState.rect.height * 100;
+      updateLayoutFragment(activeType, dragState.id, {
+        x: dragState.box.x + dx,
+        y: dragState.box.y + dy,
+      });
+      applyFragmentLayout(dragState.sheet, activeType);
+      syncLayoutControls();
+    });
+
+    document.addEventListener("pointerup", (event) => {
+      if (resizeState && event.pointerId === resizeState.pointerId) {
+        resizeState = null;
+        persistAdminConfig();
+        updatePreview();
+        return;
+      }
+      if (!dragState || event.pointerId !== dragState.pointerId) return;
+      dragState.fragment.classList.remove("is-layout-dragging");
+      dragState.fragment.releasePointerCapture?.(event.pointerId);
+      dragState = null;
+      persistAdminConfig();
+      updatePreview();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const active = document.activeElement;
+      const editing = active?.matches?.("input, textarea, select") || active?.isContentEditable;
+      if (editing) return;
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        if (event.shiftKey) redoHistory();
+        else undoHistory();
+        return;
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "y") {
+        event.preventDefault();
+        redoHistory();
+        return;
+      }
+      const arrows = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      if (!arrows[event.key]) return;
+      const selection = ensureLayoutSelection();
+      const fragment = layoutFragment(selection.type, selection.id);
+      if (!fragment || fragment.locked) return;
+      event.preventDefault();
+      const step = event.altKey ? .05 : event.shiftKey ? 1 : .1;
+      const [mx, my] = arrows[event.key];
+      updateSelectedLayer({
+        x: clampNumber(fragment.x + mx * step, 0, 100 - fragment.w),
+        y: clampNumber(fragment.y + my * step, 0, 100 - fragment.h),
+      });
+    });
   }
 
   function switchType(type) {
@@ -647,6 +1533,7 @@
     $$('[data-document-panel]').forEach((panel) => { panel.hidden = panel.dataset.documentPanel !== activeType; });
     updateProofTitle();
     updatePreview();
+    syncLayoutControls();
   }
 
   function setText(selector, value) {
@@ -848,9 +1735,9 @@
     ctx.restore();
   }
 
-  function drawFinishedTitle(ctx, text, x, y, { size, font = "DocCinzel, serif", light, mid, shadow, maxWidth } = {}) {
+  function drawFinishedTitle(ctx, text, x, y, { size, font = "DocCinzel, serif", light, mid, shadow, maxWidth, align = "center" } = {}) {
     ctx.save();
-    ctx.textAlign = "center";
+    ctx.textAlign = align;
     ctx.font = `${size}px ${font}`;
     ctx.lineJoin = "round";
     ctx.shadowColor = shadow;
@@ -870,6 +1757,22 @@
     ctx.globalAlpha = .58;
     ctx.fillStyle = light;
     ctx.fillText(text, x - size * .009, y - size * .018, maxWidth);
+    ctx.restore();
+  }
+
+  function drawTransparentReportTitle(ctx, text, rect, scale = 1, fragment = {}) {
+    const maxSize = Math.max(22, rect.height * .58 * scale);
+    const minSize = Math.max(14, rect.height * .28);
+    const size = setCanvasFontToFit(ctx, text, maxSize, minSize, rect.width * .96, (value) => `700 ${value}px DocTypewriter, monospace`);
+    ctx.save();
+    ctx.textAlign = fragment.align || "center";
+    ctx.font = `700 ${size}px DocTypewriter, monospace`;
+    ctx.fillStyle = "#2a2117";
+    ctx.shadowColor = "rgba(255,249,228,.55)";
+    ctx.shadowOffsetX = -1;
+    ctx.shadowOffsetY = -1;
+    ctx.shadowBlur = 0;
+    drawTypewriterInk(ctx, text, canvasTextX(rect, fragment), canvasGroupBaseline(rect, fragment, 1, size, size));
     ctx.restore();
   }
 
@@ -949,6 +1852,116 @@
     lines.forEach((line, index) => ctx.fillText(line, x, y + index * lineHeight));
   }
 
+  function drawCertificateExtraLayer(ctx, layer, data) {
+    const { width, height, stamp, author, name, documentNumber, titleScale, bodyScale, nameScale } = data;
+    const rect = fragmentBoxRect(layer, width, height);
+    ctx.save();
+    if (layer.source === "code") {
+      ctx.textAlign = layer.align || "center";
+      ctx.fillStyle = "#d9bd7e";
+      setCanvasFontToFit(ctx, documentNumber, Math.round(width * .011), Math.round(width * .0075), rect.width, (size) => `700 ${size}px DocCinzel, serif`);
+      ctx.fillText(documentNumber, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, 1, rect.height, rect.height * .7));
+    }
+    if (layer.source === "stamp") drawSeal25D(ctx, stamp, rect.x, rect.y, rect.width, rect.height, .92, true);
+    if (layer.source === "author") drawContained(ctx, author, rect.x, rect.y, rect.width, rect.height, .96);
+    if (layer.source === "title") {
+      drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, 1, rect.height, rect.height * .55), {
+        size: Math.round(Math.min(width * .052, rect.height * .55) * titleScale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: rect.width,
+        align: layer.align || "center",
+      });
+    }
+    if (layer.source === "body") {
+      ctx.fillStyle = "rgba(245,230,196,.82)";
+      const size = Math.round(width * .014 * bodyScale);
+      ctx.font = `${size}px DocSerif, serif`;
+      ctx.textAlign = layer.align || "center";
+      const lines = wrapLines(ctx, C().certificateBody, rect.width).slice(0, 9);
+      drawCenteredLines(ctx, lines, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, lines.length, height * .03 * bodyScale, size), height * .03 * bodyScale);
+    }
+    if (layer.source === "closing") {
+      ctx.fillStyle = "rgba(245,230,196,.72)";
+      const size = Math.round(width * .012 * bodyScale);
+      ctx.font = `${size}px DocSerif, serif`;
+      ctx.textAlign = layer.align || "center";
+      const lines = wrapLines(ctx, C().certificateClosing, rect.width).slice(0, 3);
+      drawCenteredLines(ctx, lines, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, lines.length, height * .024 * bodyScale, size), height * .024 * bodyScale);
+    }
+    if (layer.source === "name") {
+      ctx.fillStyle = "#fff4d5";
+      const participantName = name || C().participant;
+      const size = setCanvasFontToFit(ctx, participantName, Math.round(width * .041 * nameScale), Math.round(width * .021), rect.width, (fontSize) => signatureFont(config.certificateSignature, fontSize));
+      ctx.textAlign = layer.align || "center";
+      const y = canvasGroupBaseline(rect, layer, 1, size, size);
+      const x = canvasTextX(rect, layer);
+      ctx.fillText(participantName, x, y);
+      const ruleWidth = Math.min(ctx.measureText(participantName).width + size * 1.2, rect.width);
+      const center = layer.align === "left" ? rect.x + ruleWidth / 2 : layer.align === "right" ? rect.x + rect.width - ruleWidth / 2 : rect.x + rect.width / 2;
+      drawPremiumRule(ctx, center - ruleWidth / 2, center + ruleWidth / 2, y + size * .22, width);
+    }
+    ctx.restore();
+  }
+
+  function drawReportExtraLayer(ctx, layer, data) {
+    const { width, height, stamp, text, name, anonymous, documentNumber, titleScale, textScale } = data;
+    const rect = fragmentBoxRect(layer, width, height);
+    ctx.save();
+    if (layer.source === "code") {
+      ctx.fillStyle = "#2a2117";
+      ctx.textAlign = layer.align || "center";
+      setCanvasFontToFit(ctx, documentNumber, Math.round(width * .013), Math.round(width * .009), rect.width, (size) => `700 ${size}px DocTypewriter, monospace`);
+      drawTypewriterInk(ctx, documentNumber, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, 1, rect.height, rect.height * .7));
+    }
+    if (layer.source === "stamp") drawSeal25D(ctx, stamp, rect.x, rect.y, rect.width, rect.height, .74, false);
+    if (layer.source === "title") drawTransparentReportTitle(ctx, C().reportTitle.toUpperCase(), rect, titleScale, layer);
+    if (layer.source === "quote") {
+      ctx.font = `700 ${Math.round(width * .019)}px DocTypewriter, monospace`;
+      ctx.fillStyle = "#5a472f";
+      ctx.textAlign = layer.align || "center";
+      const lines = wrapLines(ctx, quoteCopy[config.language][config.reportQuote], rect.width).slice(0, 3);
+      drawCenteredLines(ctx, lines, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, lines.length, height * .026, Math.round(width * .019)), height * .026);
+    }
+    if (layer.source === "instruction") {
+      ctx.fillStyle = "#33291d";
+      const size = Math.round(width * .015);
+      ctx.font = `${size}px DocTypewriter, monospace`;
+      ctx.textAlign = layer.align || "center";
+      const lines = wrapLines(ctx, C().reportInstruction, rect.width).slice(0, 4);
+      drawCenteredLines(ctx, lines, canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, lines.length, height * .022, size), height * .022);
+    }
+    if (layer.source === "lines") {
+      const gap = rect.height / 6;
+      ctx.strokeStyle = "rgba(61,46,29,.44)";
+      ctx.lineWidth = Math.max(1.5, width * .0008);
+      for (let index = 0; index < 6; index += 1) {
+        const y = rect.y + (index + 1) * gap;
+        ctx.beginPath();
+        ctx.moveTo(rect.x, y);
+        ctx.lineTo(rect.x + rect.width, y);
+        ctx.stroke();
+      }
+    }
+    if (layer.source === "entry") {
+      const gap = rect.height / 6;
+      ctx.textAlign = layer.align || "left";
+      ctx.fillStyle = "#241d15";
+      const size = Math.round(width * .024 * textScale);
+      ctx.font = `${size}px DocTypewriter, monospace`;
+      const lines = wrapLines(ctx, text || C().reportPlaceholder, rect.width).slice(0, 6);
+      const startY = canvasGroupBaseline(rect, layer, lines.length, gap, size);
+      lines.forEach((line, index) => drawTypewriterInk(ctx, line, canvasTextX(rect, layer), startY + index * gap));
+    }
+    if (layer.source === "signature") {
+      ctx.fillStyle = "#2c2319";
+      ctx.textAlign = layer.align || "right";
+      const witnessName = anonymous ? C().anonymous : (name || C().witness);
+      const size = setCanvasFontToFit(ctx, witnessName, Math.round(width * .027), Math.round(width * .017), rect.width, (fontSize) => signatureFont(config.reportSignature, fontSize));
+      const y = canvasGroupBaseline(rect, layer, 1, size, size);
+      const x = canvasTextX(rect, layer);
+      ctx.fillText(witnessName, x, y);
+    }
+    ctx.restore();
+  }
+
   let fontsReady;
   function ensureFonts() {
     if (fontsReady) return fontsReady;
@@ -985,6 +1998,18 @@
       loadImage(authorAsset("certificate")).catch(() => null),
     ]);
     const layout = certificateLayout().canvas;
+    const numberRect = fragmentRect("certificate", "code", width, height);
+    const metaRect = fragmentRect("certificate", "meta", width, height);
+    const stampRect = fragmentRect("certificate", "stamp", width, height);
+    const titleRect = fragmentRect("certificate", "title", width, height);
+    const bodyRect = fragmentRect("certificate", "body", width, height);
+    const nameRect = fragmentRect("certificate", "name", width, height);
+    const closingRect = fragmentRect("certificate", "closing", width, height);
+    const authorRect = fragmentRect("certificate", "author", width, height);
+    const titleFragment = layoutFragment("certificate", "title");
+    const bodyFragment = layoutFragment("certificate", "body");
+    const nameFragment = layoutFragment("certificate", "name");
+    const closingFragment = layoutFragment("certificate", "closing");
     const titleScale = scaleValue("certificateTitleScale");
     const bodyScale = scaleValue("certificateBodyScale");
     const nameScale = scaleValue("certificateNameScale");
@@ -1000,49 +2025,77 @@
     ctx.lineWidth = width * .0008;
     ctx.strokeRect(width * .047, height * .066, width * .906, height * .868);
 
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#d9bd7e";
-    setCanvasFontToFit(ctx, documentNumber, Math.round(width * .011), Math.round(width * .0075), width * .56, (size) => `700 ${size}px DocCinzel, serif`);
-    ctx.fillText(documentNumber, width / 2, height * .115);
+    if (fragmentVisible("certificate", "code")) {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#d9bd7e";
+      setCanvasFontToFit(ctx, documentNumber, Math.round(width * .011), Math.round(width * .0075), numberRect.width, (size) => `700 ${size}px DocCinzel, serif`);
+      ctx.fillText(documentNumber, numberRect.x + numberRect.width / 2, numberRect.y + numberRect.height * .7);
+    }
 
-    const metaWidth = width * .27;
-    const metaLeft = width * .13;
-    const metaRight = width * .87;
-    ctx.fillStyle = "rgba(221,190,122,.78)";
-    ctx.font = `700 ${Math.round(width * .008)}px DocCinzel, serif`;
-    ctx.textAlign = "left";
-    ctx.fillText(C().dateField.toUpperCase(), metaLeft, height * .15);
-    ctx.textAlign = "right";
-    ctx.fillText(C().placeField.toUpperCase(), metaRight, height * .15);
-    ctx.fillStyle = "#f7e9c4";
-    ctx.textAlign = "left";
-    setCanvasFontToFit(ctx, dateLabel(), Math.round(width * .012), Math.round(width * .009), metaWidth, (size) => `${size}px DocSerif, serif`);
-    ctx.fillText(dateLabel(), metaLeft, height * .177);
-    ctx.textAlign = "right";
-    const placeText = config.eventPlace || config.eventTitle;
-    setCanvasFontToFit(ctx, placeText, Math.round(width * .012), Math.round(width * .008), metaWidth, (size) => `${size}px DocSerif, serif`);
-    ctx.fillText(placeText, metaRight, height * .177);
-    drawPremiumRule(ctx, metaLeft, metaLeft + metaWidth, height * .188, width);
-    drawPremiumRule(ctx, metaRight - metaWidth, metaRight, height * .188, width);
+    if (fragmentVisible("certificate", "meta")) {
+      const metaWidth = metaRect.width * .42;
+      const metaLeft = metaRect.x;
+      const metaRight = metaRect.x + metaRect.width;
+      const metaLabelY = metaRect.y + metaRect.height * .28;
+      const metaValueY = metaRect.y + metaRect.height * .62;
+      const metaRuleY = metaRect.y + metaRect.height * .76;
+      ctx.fillStyle = "rgba(221,190,122,.78)";
+      ctx.font = `700 ${Math.round(width * .008)}px DocCinzel, serif`;
+      ctx.textAlign = "left";
+      ctx.fillText(C().dateField.toUpperCase(), metaLeft, metaLabelY);
+      ctx.textAlign = "right";
+      ctx.fillText(C().placeField.toUpperCase(), metaRight, metaLabelY);
+      ctx.fillStyle = "#f7e9c4";
+      ctx.textAlign = "left";
+      setCanvasFontToFit(ctx, dateLabel(), Math.round(width * .012), Math.round(width * .009), metaWidth, (size) => `${size}px DocSerif, serif`);
+      ctx.fillText(dateLabel(), metaLeft, metaValueY);
+      ctx.textAlign = "right";
+      const placeText = config.eventPlace || config.eventTitle;
+      setCanvasFontToFit(ctx, placeText, Math.round(width * .012), Math.round(width * .008), metaWidth, (size) => `${size}px DocSerif, serif`);
+      ctx.fillText(placeText, metaRight, metaValueY);
+      drawPremiumRule(ctx, metaLeft, metaLeft + metaWidth, metaRuleY, width);
+      drawPremiumRule(ctx, metaRight - metaWidth, metaRight, metaRuleY, width);
+    }
 
-    drawSeal25D(ctx, stamp, width * ((1 - layout.stampW) / 2), height * layout.stampY, width * layout.stampW, height * layout.stampH, .92, true);
-    drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), width / 2, height * layout.titleY, {
-      size: Math.round(width * .052 * titleScale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: width * .7,
-    });
-    ctx.fillStyle = "rgba(245,230,196,.82)";
-    const bodySize = Math.round(width * .014 * bodyScale);
-    ctx.font = `${bodySize}px DocSerif, serif`;
-    drawCenteredLines(ctx, wrapLines(ctx, C().certificateBody, width * .62).slice(0, 9), width / 2, height * layout.bodyY, height * .03 * bodyScale);
-    ctx.fillStyle = "#fff4d5";
-    const participantName = name || C().participant;
-    const nameSize = setCanvasFontToFit(ctx, participantName, Math.round(width * .041 * nameScale), Math.round(width * .021), width * .58, (size) => signatureFont(config.certificateSignature, size));
-    ctx.fillText(participantName, width / 2, height * layout.nameY);
-    const nameWidth = Math.min(ctx.measureText(participantName).width + nameSize * 1.2, width * .62);
-    drawPremiumRule(ctx, width / 2 - nameWidth / 2, width / 2 + nameWidth / 2, height * (layout.nameY + .021), width);
-    ctx.fillStyle = "rgba(245,230,196,.72)";
-    ctx.font = `${Math.round(width * .012 * bodyScale)}px DocSerif, serif`;
-    drawCenteredLines(ctx, wrapLines(ctx, C().certificateClosing, width * .54).slice(0, 3), width / 2, height * layout.closingY, height * .024 * bodyScale);
-    drawContained(ctx, author, width * .39, height * layout.authorY, width * .22, height * .095, .96);
+    if (fragmentVisible("certificate", "stamp")) drawSeal25D(ctx, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .92, true);
+    if (fragmentVisible("certificate", "title")) {
+      drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), canvasTextX(titleRect, titleFragment), canvasGroupBaseline(titleRect, titleFragment, 1, titleRect.height, titleRect.height * .55), {
+        size: Math.round(Math.min(width * .052, titleRect.height * .55) * titleScale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: titleRect.width,
+        align: titleFragment.align || "center",
+      });
+    }
+    if (fragmentVisible("certificate", "body")) {
+      ctx.fillStyle = "rgba(245,230,196,.82)";
+      const bodySize = Math.round(width * .014 * bodyScale);
+      ctx.font = `${bodySize}px DocSerif, serif`;
+      ctx.textAlign = bodyFragment.align || "center";
+      const bodyLines = wrapLines(ctx, C().certificateBody, bodyRect.width).slice(0, 9);
+      drawCenteredLines(ctx, bodyLines, canvasTextX(bodyRect, bodyFragment), canvasGroupBaseline(bodyRect, bodyFragment, bodyLines.length, height * .03 * bodyScale, bodySize), height * .03 * bodyScale);
+    }
+    if (fragmentVisible("certificate", "name")) {
+      ctx.fillStyle = "#fff4d5";
+      const participantName = name || C().participant;
+      const nameSize = setCanvasFontToFit(ctx, participantName, Math.round(width * .041 * nameScale), Math.round(width * .021), nameRect.width, (size) => signatureFont(config.certificateSignature, size));
+      ctx.textAlign = nameFragment.align || "center";
+      const nameY = canvasGroupBaseline(nameRect, nameFragment, 1, nameSize, nameSize);
+      const nameX = canvasTextX(nameRect, nameFragment);
+      ctx.fillText(participantName, nameX, nameY);
+      const nameWidth = Math.min(ctx.measureText(participantName).width + nameSize * 1.2, nameRect.width);
+      const nameCenter = nameFragment.align === "left" ? nameRect.x + nameWidth / 2 : nameFragment.align === "right" ? nameRect.x + nameRect.width - nameWidth / 2 : nameRect.x + nameRect.width / 2;
+      drawPremiumRule(ctx, nameCenter - nameWidth / 2, nameCenter + nameWidth / 2, nameY + nameSize * .22, width);
+    }
+    if (fragmentVisible("certificate", "closing")) {
+      ctx.fillStyle = "rgba(245,230,196,.72)";
+      const closingSize = Math.round(width * .012 * bodyScale);
+      ctx.font = `${closingSize}px DocSerif, serif`;
+      ctx.textAlign = closingFragment.align || "center";
+      const closingLines = wrapLines(ctx, C().certificateClosing, closingRect.width).slice(0, 3);
+      drawCenteredLines(ctx, closingLines, canvasTextX(closingRect, closingFragment), canvasGroupBaseline(closingRect, closingFragment, closingLines.length, height * .024 * bodyScale, closingSize), height * .024 * bodyScale);
+    }
+    if (fragmentVisible("certificate", "author")) drawContained(ctx, author, authorRect.x, authorRect.y, authorRect.width, authorRect.height, .96);
+    visibleExtras("certificate").forEach((layer) => drawCertificateExtraLayer(ctx, layer, {
+      width, height, stamp, author, name, documentNumber, titleScale, bodyScale, nameScale,
+    }));
     return canvas;
   }
 
@@ -1053,11 +2106,24 @@
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
-    const [background, texture, stamp, titlePlate] = await Promise.all([
+    const [background, texture, stamp] = await Promise.all([
       loadImage(reportBackground()), loadImage(assets.texture).catch(() => null),
-      loadImage(stampAsset("report")).catch(() => null), loadImage(assets.reportTitles[config.language]).catch(() => null),
+      loadImage(stampAsset("report")).catch(() => null),
     ]);
-    const layout = reportLayout().canvas;
+    const numberRect = fragmentRect("report", "code", width, height);
+    const metaRect = fragmentRect("report", "meta", width, height);
+    const titleRect = fragmentRect("report", "title", width, height);
+    const quoteRect = fragmentRect("report", "quote", width, height);
+    const instructionRect = fragmentRect("report", "instruction", width, height);
+    const linesRect = fragmentRect("report", "lines", width, height);
+    const entryRect = fragmentRect("report", "entry", width, height);
+    const signatureRect = fragmentRect("report", "signature", width, height);
+    const stampRect = fragmentRect("report", "stamp", width, height);
+    const titleFragment = layoutFragment("report", "title");
+    const quoteFragment = layoutFragment("report", "quote");
+    const instructionFragment = layoutFragment("report", "instruction");
+    const entryFragment = layoutFragment("report", "entry");
+    const signatureFragment = layoutFragment("report", "signature");
     const titleScale = scaleValue("reportTitleScale");
     const textScale = scaleValue("reportTextScale");
     drawCover(ctx, background, width, height);
@@ -1071,83 +2137,111 @@
     ctx.lineWidth = width * .0015;
     ctx.strokeRect(margin * .58, margin * .58, width - margin * 1.16, height - margin * 1.16);
 
-    ctx.fillStyle = "#2a2117";
-    ctx.textAlign = "center";
-    setCanvasFontToFit(ctx, documentNumber, Math.round(width * .013), Math.round(width * .009), width * .76, (size) => `700 ${size}px DocTypewriter, monospace`);
-    drawTypewriterInk(ctx, documentNumber, width / 2, height * .062);
+    if (fragmentVisible("report", "code")) {
+      ctx.fillStyle = "#2a2117";
+      ctx.textAlign = "center";
+      setCanvasFontToFit(ctx, documentNumber, Math.round(width * .013), Math.round(width * .009), numberRect.width, (size) => `700 ${size}px DocTypewriter, monospace`);
+      drawTypewriterInk(ctx, documentNumber, numberRect.x + numberRect.width / 2, numberRect.y + numberRect.height * .7);
+    }
 
-    const metaColumn = width * .34;
-    ctx.font = `700 ${Math.round(width * .012)}px DocTypewriter, monospace`;
-    ctx.textAlign = "left";
-    drawTypewriterInk(ctx, `${C().dateField.toUpperCase()}:`, margin, height * .095);
-    ctx.textAlign = "right";
-    drawTypewriterInk(ctx, `${C().placeField.toUpperCase()}:`, width - margin, height * .095);
-    ctx.textAlign = "left";
-    setCanvasFontToFit(ctx, dateLabel(), Math.round(width * .016), Math.round(width * .011), metaColumn, (size) => `${size}px DocTypewriter, monospace`);
-    drawTypewriterInk(ctx, dateLabel(), margin, height * .125);
-    ctx.textAlign = "right";
-    const placeText = config.eventPlace || config.eventTitle;
-    setCanvasFontToFit(ctx, placeText, Math.round(width * .016), Math.round(width * .01), metaColumn, (size) => `${size}px DocTypewriter, monospace`);
-    drawTypewriterInk(ctx, placeText, width - margin, height * .125);
-    ctx.strokeStyle = "rgba(28,22,16,.85)";
-    ctx.lineWidth = Math.max(2, width * .0011);
-    ctx.beginPath();
-    ctx.moveTo(margin, height * .14);
-    ctx.lineTo(margin + metaColumn, height * .14);
-    ctx.moveTo(width - margin - metaColumn, height * .14);
-    ctx.lineTo(width - margin, height * .14);
-    ctx.stroke();
+    if (fragmentVisible("report", "meta")) {
+      const metaColumn = metaRect.width * .42;
+      const metaLeft = metaRect.x;
+      const metaRight = metaRect.x + metaRect.width;
+      const metaLabelY = metaRect.y + metaRect.height * .25;
+      const metaValueY = metaRect.y + metaRect.height * .64;
+      const metaRuleY = metaRect.y + metaRect.height * .82;
+      ctx.font = `700 ${Math.round(width * .012)}px DocTypewriter, monospace`;
+      ctx.textAlign = "left";
+      drawTypewriterInk(ctx, `${C().dateField.toUpperCase()}:`, metaLeft, metaLabelY);
+      ctx.textAlign = "right";
+      drawTypewriterInk(ctx, `${C().placeField.toUpperCase()}:`, metaRight, metaLabelY);
+      ctx.textAlign = "left";
+      setCanvasFontToFit(ctx, dateLabel(), Math.round(width * .016), Math.round(width * .011), metaColumn, (size) => `${size}px DocTypewriter, monospace`);
+      drawTypewriterInk(ctx, dateLabel(), metaLeft, metaValueY);
+      ctx.textAlign = "right";
+      const placeText = config.eventPlace || config.eventTitle;
+      setCanvasFontToFit(ctx, placeText, Math.round(width * .016), Math.round(width * .01), metaColumn, (size) => `${size}px DocTypewriter, monospace`);
+      drawTypewriterInk(ctx, placeText, metaRight, metaValueY);
+      ctx.strokeStyle = "rgba(28,22,16,.85)";
+      ctx.lineWidth = Math.max(2, width * .0011);
+      ctx.beginPath();
+      ctx.moveTo(metaLeft, metaRuleY);
+      ctx.lineTo(metaLeft + metaColumn, metaRuleY);
+      ctx.moveTo(metaRight - metaColumn, metaRuleY);
+      ctx.lineTo(metaRight, metaRuleY);
+      ctx.stroke();
+    }
 
-    const titleWidth = width * Math.min(.76, .64 * titleScale);
-    const titleHeight = height * Math.min(.1, .08 * titleScale);
-    drawContained(ctx, titlePlate, (width - titleWidth) / 2, height * layout.titleTop, titleWidth, titleHeight, .96);
-    if (anonymous) {
+    if (fragmentVisible("report", "title")) drawTransparentReportTitle(ctx, C().reportTitle.toUpperCase(), titleRect, titleScale, titleFragment);
+    if (anonymous && fragmentVisible("report", "title")) {
       ctx.textAlign = "center";
       ctx.fillStyle = "rgba(42,33,23,.72)";
       ctx.font = `700 ${Math.round(width * .011)}px DocTypewriter, monospace`;
-      drawTypewriterInk(ctx, C().anonymous.toUpperCase(), width / 2, height * (layout.titleTop + .072));
+      drawTypewriterInk(ctx, C().anonymous.toUpperCase(), titleRect.x + titleRect.width / 2, titleRect.y + titleRect.height + width * .014);
     }
-    ctx.font = `700 ${Math.round(width * .019)}px DocTypewriter, monospace`;
-    ctx.fillStyle = "#5a472f";
-    ctx.textAlign = "center";
-    drawCenteredLines(ctx, wrapLines(ctx, quoteCopy[config.language][config.reportQuote], width * .72).slice(0, 3), width / 2, height * layout.quoteY, height * .026);
-    ctx.fillStyle = "#33291d";
-    ctx.font = `${Math.round(width * .015)}px DocTypewriter, monospace`;
-    drawCenteredLines(ctx, wrapLines(ctx, C().reportInstruction, width * .78).slice(0, 4), width / 2, height * layout.instructionY, height * .022);
+    if (fragmentVisible("report", "quote")) {
+      ctx.font = `700 ${Math.round(width * .019)}px DocTypewriter, monospace`;
+      ctx.fillStyle = "#5a472f";
+      ctx.textAlign = quoteFragment.align || "center";
+      const quoteLines = wrapLines(ctx, quoteCopy[config.language][config.reportQuote], quoteRect.width).slice(0, 3);
+      drawCenteredLines(ctx, quoteLines, canvasTextX(quoteRect, quoteFragment), canvasGroupBaseline(quoteRect, quoteFragment, quoteLines.length, height * .026, Math.round(width * .019)), height * .026);
+    }
+    if (fragmentVisible("report", "instruction")) {
+      ctx.fillStyle = "#33291d";
+      const instructionSize = Math.round(width * .015);
+      ctx.font = `${instructionSize}px DocTypewriter, monospace`;
+      ctx.textAlign = instructionFragment.align || "center";
+      const instructionLines = wrapLines(ctx, C().reportInstruction, instructionRect.width).slice(0, 4);
+      drawCenteredLines(ctx, instructionLines, canvasTextX(instructionRect, instructionFragment), canvasGroupBaseline(instructionRect, instructionFragment, instructionLines.length, height * .022, instructionSize), height * .022);
+    }
 
-    const lineTop = height * layout.lineTop;
-    const lineGap = height * layout.lineGap;
-    ctx.strokeStyle = "rgba(61,46,29,.44)";
-    ctx.lineWidth = Math.max(1.5, width * .0008);
-    for (let index = 0; index < 6; index += 1) {
-      const y = lineTop + index * lineGap;
+    const lineGap = linesRect.height / 6;
+    if (fragmentVisible("report", "lines")) {
+      ctx.strokeStyle = "rgba(61,46,29,.44)";
+      ctx.lineWidth = Math.max(1.5, width * .0008);
+      for (let index = 0; index < 6; index += 1) {
+        const y = linesRect.y + (index + 1) * lineGap;
+        ctx.beginPath();
+        ctx.moveTo(linesRect.x, y);
+        ctx.lineTo(linesRect.x + linesRect.width, y);
+        ctx.stroke();
+      }
+    }
+    if (fragmentVisible("report", "entry")) {
+      ctx.textAlign = entryFragment.align || "left";
+      ctx.fillStyle = "#241d15";
+      const entrySize = Math.round(width * .024 * textScale);
+      ctx.font = `${entrySize}px DocTypewriter, monospace`;
+      const reportLines = wrapLines(ctx, text || C().reportPlaceholder, entryRect.width);
+      if (reportLines.length > 6) throw new Error(C().reportOverflow);
+      const entryStartY = canvasGroupBaseline(entryRect, entryFragment, reportLines.length, lineGap, entrySize);
+      reportLines.forEach((line, index) => drawTypewriterInk(ctx, line, canvasTextX(entryRect, entryFragment), entryStartY + index * lineGap));
+    }
+
+    if (fragmentVisible("report", "signature")) {
+      ctx.fillStyle = "#2c2319";
+      ctx.font = `700 ${Math.round(width * .016)}px DocTypewriter, monospace`;
+      ctx.textAlign = signatureFragment.align || "right";
+      const witnessName = anonymous ? C().anonymous : (name || C().witness);
+      const witnessSize = setCanvasFontToFit(ctx, witnessName, Math.round(width * .027), Math.round(width * .017), signatureRect.width, (size) => signatureFont(config.reportSignature, size));
+      const witnessY = canvasGroupBaseline(signatureRect, signatureFragment, 1, witnessSize, witnessSize);
+      const witnessX = canvasTextX(signatureRect, signatureFragment);
+      ctx.fillText(witnessName, witnessX, witnessY);
+      const witnessWidth = Math.min(ctx.measureText(witnessName).width + witnessSize, signatureRect.width);
+      ctx.strokeStyle = "rgba(28,22,16,.78)";
       ctx.beginPath();
-      ctx.moveTo(margin, y);
-      ctx.lineTo(width - margin, y);
+      const witnessCenter = signatureFragment.align === "left" ? signatureRect.x + witnessWidth / 2 : signatureFragment.align === "right" ? signatureRect.x + signatureRect.width - witnessWidth / 2 : signatureRect.x + signatureRect.width / 2;
+      ctx.moveTo(witnessCenter - witnessWidth / 2, witnessY + witnessSize * .75);
+      ctx.lineTo(witnessCenter + witnessWidth / 2, witnessY + witnessSize * .75);
       ctx.stroke();
+      ctx.font = `700 ${Math.round(width * .011)}px DocTypewriter, monospace`;
+      drawTypewriterInk(ctx, C().witness.toUpperCase(), witnessX, witnessY + witnessSize * 1.42);
     }
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#241d15";
-    ctx.font = `${Math.round(width * .024 * textScale)}px DocTypewriter, monospace`;
-    const reportLines = wrapLines(ctx, text || C().reportPlaceholder, width - margin * 2.1);
-    if (reportLines.length > 6) throw new Error(C().reportOverflow);
-    reportLines.forEach((line, index) => drawTypewriterInk(ctx, line, margin * 1.05, lineTop - lineGap * .22 + index * lineGap));
-
-    ctx.fillStyle = "#2c2319";
-    ctx.font = `700 ${Math.round(width * .016)}px DocTypewriter, monospace`;
-    ctx.textAlign = "right";
-    const witnessName = anonymous ? C().anonymous : (name || C().witness);
-    const witnessSize = setCanvasFontToFit(ctx, witnessName, Math.round(width * .027), Math.round(width * .017), width * .42, (size) => signatureFont(config.reportSignature, size));
-    ctx.fillText(witnessName, width - margin, height * layout.witnessY);
-    const witnessWidth = Math.min(ctx.measureText(witnessName).width + witnessSize, width * .43);
-    ctx.strokeStyle = "rgba(28,22,16,.78)";
-    ctx.beginPath();
-    ctx.moveTo(width - margin - witnessWidth, height * (layout.witnessY + .015));
-    ctx.lineTo(width - margin, height * (layout.witnessY + .015));
-    ctx.stroke();
-    ctx.font = `700 ${Math.round(width * .011)}px DocTypewriter, monospace`;
-    drawTypewriterInk(ctx, C().witness.toUpperCase(), width - margin, height * (layout.witnessY + .04));
-    drawSeal25D(ctx, stamp, margin * .82, height * layout.stampY, width * .18, height * .14, .74, false);
+    if (fragmentVisible("report", "stamp")) drawSeal25D(ctx, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .74, false);
+    visibleExtras("report").forEach((layer) => drawReportExtraLayer(ctx, layer, {
+      width, height, stamp, text, name, anonymous, documentNumber, titleScale, textScale,
+    }));
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(46,35,24,.7)";
     ctx.font = `${Math.round(width * .011)}px DocTypewriter, monospace`;
@@ -1227,12 +2321,21 @@
     page.drawText(text, { x: (page.getWidth() - width) / 2, y, size, font, color });
   }
 
-  function pdfFinishedTitle(page, text, font, size, y, colors) {
+  function pdfFinishedTitle(page, text, font, size, y, colors, rect = null, fragment = {}) {
     const width = font.widthOfTextAtSize(text, size);
-    const x = (page.getWidth() - width) / 2;
+    const x = rect ? pdfTextX(rect, fragment, font, text, size) : (page.getWidth() - width) / 2;
     page.drawText(text, { x: x + 1.7, y: y - 1.8, size, font, color: colors.shadow, opacity: .76 });
     page.drawText(text, { x: x - .55, y: y + .7, size, font, color: colors.highlight, opacity: .62 });
     page.drawText(text, { x, y, size, font, color: colors.main });
+  }
+
+  function pdfTransparentReportTitle(page, text, font, rect, color, scale = 1, fragment = {}) {
+    const size = pdfSizeToFit(font, text, Math.max(18, rect.height * .55 * scale), Math.max(10, rect.height * .28), rect.width * .96);
+    const x = pdfTextX(rect, fragment, font, text, size);
+    const y = pdfGroupBaseline(rect, fragment, 1, size, size);
+    page.drawText(text, { x: x + .8, y: y - .8, size, font, color, opacity: .22 });
+    page.drawText(text, { x: x - .35, y: y + .35, size, font, color, opacity: .55 });
+    page.drawText(text, { x, y, size, font, color, opacity: .95 });
   }
 
   function pdfSeal25D(page, image, x, y, width, height, opacity, shadowColor) {
@@ -1304,6 +2407,18 @@
         embedPdfImage(pdf, certificateBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("certificate")), embedPdfImage(pdf, authorAsset("certificate")),
       ]);
       const layout = certificateLayout().pdf;
+      const numberRect = pdfFragmentRect("certificate", "code", width, height);
+      const metaRect = pdfFragmentRect("certificate", "meta", width, height);
+      const stampRect = pdfFragmentRect("certificate", "stamp", width, height);
+      const titleRect = pdfFragmentRect("certificate", "title", width, height);
+      const bodyRect = pdfFragmentRect("certificate", "body", width, height);
+      const nameRect = pdfFragmentRect("certificate", "name", width, height);
+      const closingRect = pdfFragmentRect("certificate", "closing", width, height);
+      const authorRect = pdfFragmentRect("certificate", "author", width, height);
+      const titleFragment = layoutFragment("certificate", "title");
+      const bodyFragment = layoutFragment("certificate", "body");
+      const nameFragment = layoutFragment("certificate", "name");
+      const closingFragment = layoutFragment("certificate", "closing");
       const titleScale = scaleValue("certificateTitleScale");
       const bodyScale = scaleValue("certificateBodyScale");
       const nameScale = scaleValue("certificateNameScale");
@@ -1311,87 +2426,148 @@
       if (texture) page.drawImage(texture, { x: 0, y: 0, width, height, opacity: .12 });
       page.drawRectangle({ x: 0, y: 0, width, height, color: rgb(.02, .018, .012), opacity: .24 });
       page.drawRectangle({ x: 40, y: 38, width: width - 80, height: height - 76, borderColor: palette.gold, borderWidth: 1, opacity: .74 });
-       const documentNumber = data.documentNumber || issueNumber();
-       const numberSize = pdfSizeToFit(cinzel, documentNumber, 8.5, 6.2, 475);
-       pdfCentered(page, documentNumber, cinzel, numberSize, 520, palette.gold);
-       const metaLeft = 110;
-       const metaRight = width - 110;
-       const metaWidth = 220;
-       page.drawText(C().dateField.toUpperCase(), { x: metaLeft, y: 503, size: 6.5, font: cinzel, color: palette.gold, opacity: .88 });
-       pdfRight(page, C().placeField.toUpperCase(), cinzel, 6.5, metaRight, 503, palette.gold);
+       if (fragmentVisible("certificate", "code")) {
+         const documentNumber = data.documentNumber || issueNumber();
+         const numberSize = pdfSizeToFit(cinzel, documentNumber, 8.5, 6.2, numberRect.width);
+         page.drawText(documentNumber, { x: numberRect.x + (numberRect.width - cinzel.widthOfTextAtSize(documentNumber, numberSize)) / 2, y: numberRect.y + numberRect.height * .36, size: numberSize, font: cinzel, color: palette.gold });
+       }
+       if (fragmentVisible("certificate", "meta")) {
+       const metaLeft = metaRect.x;
+       const metaRight = metaRect.x + metaRect.width;
+       const metaWidth = metaRect.width * .42;
+       const metaLabelY = metaRect.y + metaRect.height * .62;
+       const metaValueY = metaRect.y + metaRect.height * .28;
+       const metaRuleY = metaRect.y + metaRect.height * .15;
+       page.drawText(C().dateField.toUpperCase(), { x: metaLeft, y: metaLabelY, size: 6.5, font: cinzel, color: palette.gold, opacity: .88 });
+       pdfRight(page, C().placeField.toUpperCase(), cinzel, 6.5, metaRight, metaLabelY, palette.gold);
        const dateSize = pdfSizeToFit(serif, dateLabel(), 9.5, 7.2, metaWidth);
-       page.drawText(dateLabel(), { x: metaLeft, y: 484, size: dateSize, font: serif, color: palette.ivory });
+       page.drawText(dateLabel(), { x: metaLeft, y: metaValueY, size: dateSize, font: serif, color: palette.ivory });
        const placeText = config.eventPlace || config.eventTitle;
        const placeSize = pdfSizeToFit(serif, placeText, 9.5, 6.8, metaWidth);
-       pdfRight(page, placeText, serif, placeSize, metaRight, 484, palette.ivory);
-       pdfPremiumRule(page, metaLeft, metaLeft + metaWidth, 476, palette);
-       pdfPremiumRule(page, metaRight - metaWidth, metaRight, 476, palette);
-       pdfSeal25D(page, stamp, width / 2 - layout.stampW / 2, layout.stampY, layout.stampW, layout.stampH, .92, rgb(.01, .008, .004));
-       pdfFinishedTitle(page, C().certificateTitle.toUpperCase(), cinzel, 43 * titleScale, layout.titleY, {
+       pdfRight(page, placeText, serif, placeSize, metaRight, metaValueY, palette.ivory);
+       pdfPremiumRule(page, metaLeft, metaLeft + metaWidth, metaRuleY, palette);
+       pdfPremiumRule(page, metaRight - metaWidth, metaRight, metaRuleY, palette);
+       }
+       if (fragmentVisible("certificate", "stamp")) pdfSeal25D(page, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .92, rgb(.01, .008, .004));
+       if (fragmentVisible("certificate", "title")) {
+       const certificateTitle = C().certificateTitle.toUpperCase();
+       const certificateTitleSize = Math.min(43, titleRect.height * .56) * titleScale;
+       pdfFinishedTitle(page, certificateTitle, cinzel, certificateTitleSize, pdfGroupBaseline(titleRect, titleFragment, 1, certificateTitleSize, certificateTitleSize), {
          highlight: rgb(1, .96, .82), main: rgb(.9, .77, .5), shadow: rgb(.25, .16, .06),
-       });
+       }, titleRect, titleFragment);
+       }
+       if (fragmentVisible("certificate", "body")) {
        const bodySize = 11.5 * bodyScale;
-       const bodyLines = pdfWrap(serif, C().certificateBody, bodySize, 520).slice(0, 9);
-       bodyLines.forEach((line, index) => pdfCentered(page, line, serif, bodySize, layout.bodyY - index * 16.5 * bodyScale, palette.ivory));
+       const bodyLines = pdfWrap(serif, C().certificateBody, bodySize, bodyRect.width).slice(0, 9);
+       const bodyLineHeight = 16.5 * bodyScale;
+       const bodyStartY = pdfGroupBaseline(bodyRect, bodyFragment, bodyLines.length, bodyLineHeight, bodySize);
+       bodyLines.forEach((line, index) => page.drawText(line, { x: pdfTextX(bodyRect, bodyFragment, serif, line, bodySize), y: bodyStartY - index * bodyLineHeight, size: bodySize, font: serif, color: palette.ivory }));
+       }
+       if (fragmentVisible("certificate", "name")) {
        const nameFont = config.certificateSignature === "typewriter" ? typewriter : config.certificateSignature === "serif" ? serif : signature;
        const participantName = data.name || C().participant;
-       const nameSize = pdfSizeToFit(nameFont, participantName, 31 * nameScale, 18, 490);
-       pdfCentered(page, participantName, nameFont, nameSize, layout.nameY, palette.ivory);
-       const nameWidth = Math.min(nameFont.widthOfTextAtSize(participantName, nameSize) + nameSize * 1.2, 520);
-       pdfPremiumRule(page, width / 2 - nameWidth / 2, width / 2 + nameWidth / 2, layout.underlineY, palette);
+       const nameSize = pdfSizeToFit(nameFont, participantName, 31 * nameScale, 18, nameRect.width);
+       const nameTextWidth = nameFont.widthOfTextAtSize(participantName, nameSize);
+       const nameX = pdfTextX(nameRect, nameFragment, nameFont, participantName, nameSize);
+       const nameY = pdfGroupBaseline(nameRect, nameFragment, 1, nameSize, nameSize);
+       page.drawText(participantName, { x: nameX, y: nameY, size: nameSize, font: nameFont, color: palette.ivory });
+       const nameWidth = Math.min(nameTextWidth + nameSize * 1.2, nameRect.width);
+       const nameCenter = nameFragment.align === "left" ? nameRect.x + nameWidth / 2 : nameFragment.align === "right" ? nameRect.x + nameRect.width - nameWidth / 2 : nameRect.x + nameRect.width / 2;
+       pdfPremiumRule(page, nameCenter - nameWidth / 2, nameCenter + nameWidth / 2, nameY - 12, palette);
+       }
+       if (fragmentVisible("certificate", "closing")) {
        const closingSize = 9.5 * bodyScale;
-       const closingLines = pdfWrap(serif, C().certificateClosing, closingSize, 470).slice(0, 3);
-       closingLines.forEach((line, index) => pdfCentered(page, line, serif, closingSize, layout.closingY - index * 12.5 * bodyScale, palette.ivory));
-       pdfContained(page, author, width / 2 - 78, layout.authorY, 156, 57, .96);
+       const closingLines = pdfWrap(serif, C().certificateClosing, closingSize, closingRect.width).slice(0, 3);
+       const closingLineHeight = 12.5 * bodyScale;
+       const closingStartY = pdfGroupBaseline(closingRect, closingFragment, closingLines.length, closingLineHeight, closingSize);
+       closingLines.forEach((line, index) => page.drawText(line, { x: pdfTextX(closingRect, closingFragment, serif, line, closingSize), y: closingStartY - index * closingLineHeight, size: closingSize, font: serif, color: palette.ivory }));
+       }
+       if (fragmentVisible("certificate", "author")) pdfContained(page, author, authorRect.x, authorRect.y, authorRect.width, authorRect.height, .96);
      } else {
       const [width, height] = A4.portrait.pdf;
       const page = pdf.addPage([width, height]);
-       const [background, texture, stamp, titlePlate] = await Promise.all([
-         embedPdfImage(pdf, reportBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("report")), embedPdfImage(pdf, assets.reportTitles[config.language]),
+       const [background, texture, stamp] = await Promise.all([
+         embedPdfImage(pdf, reportBackground()), embedPdfImage(pdf, assets.texture), embedPdfImage(pdf, stampAsset("report")),
        ]);
        const layout = reportLayout().pdf;
+       const numberRect = pdfFragmentRect("report", "code", width, height);
+       const metaRect = pdfFragmentRect("report", "meta", width, height);
+       const titleRect = pdfFragmentRect("report", "title", width, height);
+       const quoteRect = pdfFragmentRect("report", "quote", width, height);
+       const instructionRect = pdfFragmentRect("report", "instruction", width, height);
+       const linesRect = pdfFragmentRect("report", "lines", width, height);
+       const entryRect = pdfFragmentRect("report", "entry", width, height);
+       const signatureRect = pdfFragmentRect("report", "signature", width, height);
+       const stampRect = pdfFragmentRect("report", "stamp", width, height);
+       const titleFragment = layoutFragment("report", "title");
+       const quoteFragment = layoutFragment("report", "quote");
+       const instructionFragment = layoutFragment("report", "instruction");
+       const entryFragment = layoutFragment("report", "entry");
+       const signatureFragment = layoutFragment("report", "signature");
        const titleScale = scaleValue("reportTitleScale");
        const textScale = scaleValue("reportTextScale");
       page.drawImage(background, { x: 0, y: 0, width, height });
       if (texture) page.drawImage(texture, { x: 0, y: 0, width, height, opacity: .19 });
-      page.drawRectangle({ x: 31, y: 30, width: width - 62, height: height - 60, borderColor: palette.brown, borderWidth: 1.1, opacity: .82 });
-       const documentNumber = data.documentNumber || issueNumber();
-       const numberSize = pdfSizeToFit(typewriter, documentNumber, 7.5, 5.8, 450);
-       pdfCentered(page, documentNumber, typewriter, numberSize, 790, palette.ink);
-       page.drawText(`${C().dateField.toUpperCase()}:`, { x: 53, y: 762, size: 7, font: typewriter, color: palette.ink });
-       pdfRight(page, `${C().placeField.toUpperCase()}:`, typewriter, 7, width - 53, 762, palette.ink);
-       const metaWidth = 205;
+       page.drawRectangle({ x: 31, y: 30, width: width - 62, height: height - 60, borderColor: palette.brown, borderWidth: 1.1, opacity: .82 });
+       if (fragmentVisible("report", "code")) {
+         const documentNumber = data.documentNumber || issueNumber();
+         const numberSize = pdfSizeToFit(typewriter, documentNumber, 7.5, 5.8, numberRect.width);
+         page.drawText(documentNumber, { x: numberRect.x + (numberRect.width - typewriter.widthOfTextAtSize(documentNumber, numberSize)) / 2, y: numberRect.y + numberRect.height * .36, size: numberSize, font: typewriter, color: palette.ink });
+       }
+       if (fragmentVisible("report", "meta")) {
+       const metaLeft = metaRect.x;
+       const metaRight = metaRect.x + metaRect.width;
+       const metaWidth = metaRect.width * .42;
+       const metaLabelY = metaRect.y + metaRect.height * .58;
+       const metaValueY = metaRect.y + metaRect.height * .24;
+       const metaRuleY = metaRect.y + metaRect.height * .08;
+       page.drawText(`${C().dateField.toUpperCase()}:`, { x: metaLeft, y: metaLabelY, size: 7, font: typewriter, color: palette.ink });
+       pdfRight(page, `${C().placeField.toUpperCase()}:`, typewriter, 7, metaRight, metaLabelY, palette.ink);
        const dateSize = pdfSizeToFit(typewriter, dateLabel(), 9, 6.8, metaWidth);
-       page.drawText(dateLabel(), { x: 53, y: 737, size: dateSize, font: typewriter, color: palette.ink });
+       page.drawText(dateLabel(), { x: metaLeft, y: metaValueY, size: dateSize, font: typewriter, color: palette.ink });
        const placeText = config.eventPlace || config.eventTitle;
        const placeSize = pdfSizeToFit(typewriter, placeText, 9, 6.2, metaWidth);
-       pdfRight(page, placeText, typewriter, placeSize, width - 53, 737, palette.ink);
-       page.drawLine({ start: { x: 53, y: 725 }, end: { x: 53 + metaWidth, y: 725 }, thickness: 1, color: palette.ink, opacity: .9 });
-       page.drawLine({ start: { x: width - 53 - metaWidth, y: 725 }, end: { x: width - 53, y: 725 }, thickness: 1, color: palette.ink, opacity: .9 });
-       const titleWidth = Math.min(440, 381 * titleScale);
-       const titleHeight = Math.min(82, 67 * titleScale);
-       pdfContained(page, titlePlate, (width - titleWidth) / 2, layout.titleY, titleWidth, titleHeight, .98);
-       if (data.anonymous) pdfCentered(page, C().anonymous.toUpperCase(), typewriter, 7.2, layout.titleY - 7, palette.brown);
-       const quoteLines = pdfWrap(typewriter, quoteCopy[config.language][config.reportQuote], 10.5, 420).slice(0, 4);
-       quoteLines.forEach((line, index) => pdfCentered(page, line, typewriter, 10.5, layout.quoteY - index * 14, palette.brown));
-       const instructionLines = pdfWrap(typewriter, C().reportInstruction, 8.5, 450).slice(0, 4);
-       instructionLines.forEach((line, index) => pdfCentered(page, line, typewriter, 8.5, layout.instructionY - index * 12.5, palette.ink));
-       const reportSize = 13.5 * textScale;
-       const reportLines = pdfWrap(typewriter, data.text || C().reportPlaceholder, reportSize, 465);
-       if (reportLines.length > 6) throw new Error(C().reportOverflow);
-       for (let index = 0; index < 6; index += 1) {
-         const y = layout.lineY - index * layout.lineGap;
-         page.drawLine({ start: { x: 53, y }, end: { x: width - 53, y }, thickness: .65, color: palette.brown, opacity: .55 });
-         if (reportLines[index]) page.drawText(reportLines[index], { x: 58, y: y + 10, size: reportSize, font: typewriter, color: palette.ink });
+       pdfRight(page, placeText, typewriter, placeSize, metaRight, metaValueY, palette.ink);
+       page.drawLine({ start: { x: metaLeft, y: metaRuleY }, end: { x: metaLeft + metaWidth, y: metaRuleY }, thickness: 1, color: palette.ink, opacity: .9 });
+       page.drawLine({ start: { x: metaRight - metaWidth, y: metaRuleY }, end: { x: metaRight, y: metaRuleY }, thickness: 1, color: palette.ink, opacity: .9 });
        }
+       if (fragmentVisible("report", "title")) {
+         pdfTransparentReportTitle(page, C().reportTitle.toUpperCase(), typewriter, titleRect, palette.ink, titleScale, titleFragment);
+         if (data.anonymous) pdfCentered(page, C().anonymous.toUpperCase(), typewriter, 7.2, titleRect.y - 7, palette.brown);
+       }
+       if (fragmentVisible("report", "quote")) {
+       const quoteLines = pdfWrap(typewriter, quoteCopy[config.language][config.reportQuote], 10.5, quoteRect.width).slice(0, 4);
+       const quoteStartY = pdfGroupBaseline(quoteRect, quoteFragment, quoteLines.length, 14, 10.5);
+       quoteLines.forEach((line, index) => page.drawText(line, { x: pdfTextX(quoteRect, quoteFragment, typewriter, line, 10.5), y: quoteStartY - index * 14, size: 10.5, font: typewriter, color: palette.brown }));
+       }
+       if (fragmentVisible("report", "instruction")) {
+       const instructionLines = pdfWrap(typewriter, C().reportInstruction, 8.5, instructionRect.width).slice(0, 4);
+       const instructionStartY = pdfGroupBaseline(instructionRect, instructionFragment, instructionLines.length, 12.5, 8.5);
+       instructionLines.forEach((line, index) => page.drawText(line, { x: pdfTextX(instructionRect, instructionFragment, typewriter, line, 8.5), y: instructionStartY - index * 12.5, size: 8.5, font: typewriter, color: palette.ink }));
+       }
+       const reportSize = 13.5 * textScale;
+       const reportLines = pdfWrap(typewriter, data.text || C().reportPlaceholder, reportSize, entryRect.width);
+       if (reportLines.length > 6) throw new Error(C().reportOverflow);
+       const lineGap = linesRect.height / 6;
+       const reportStartY = pdfGroupBaseline(entryRect, entryFragment, reportLines.length, lineGap, reportSize);
+       for (let index = 0; index < 6; index += 1) {
+         const y = linesRect.y + linesRect.height - (index + 1) * lineGap;
+         if (fragmentVisible("report", "lines")) page.drawLine({ start: { x: linesRect.x, y }, end: { x: linesRect.x + linesRect.width, y }, thickness: .65, color: palette.brown, opacity: .55 });
+         if (fragmentVisible("report", "entry") && reportLines[index]) page.drawText(reportLines[index], { x: pdfTextX(entryRect, entryFragment, typewriter, reportLines[index], reportSize), y: reportStartY - index * lineGap, size: reportSize, font: typewriter, color: palette.ink });
+       }
+       if (fragmentVisible("report", "signature")) {
        const witnessName = data.anonymous ? C().anonymous : (data.name || C().witness);
        const nameFont = config.reportSignature === "typewriter" ? typewriter : config.reportSignature === "serif" ? serif : signature;
-       const witnessSize = pdfSizeToFit(nameFont, witnessName, 15, 10, 220);
-       pdfRight(page, witnessName, nameFont, witnessSize, width - 53, layout.witnessY, palette.ink);
-       const witnessWidth = Math.min(nameFont.widthOfTextAtSize(witnessName, witnessSize) + witnessSize, 225);
-       page.drawLine({ start: { x: width - 53 - witnessWidth, y: layout.witnessY - 13 }, end: { x: width - 53, y: layout.witnessY - 13 }, thickness: .9, color: palette.ink, opacity: .85 });
-       pdfRight(page, C().witness.toUpperCase(), typewriter, 6.8, width - 53, layout.witnessY - 34, palette.ink);
-       pdfSeal25D(page, stamp, 49, layout.stampY, 108, 86, .74, rgb(.24, .16, .08));
+       const witnessSize = pdfSizeToFit(nameFont, witnessName, 15, 10, signatureRect.width);
+       const witnessY = pdfGroupBaseline(signatureRect, signatureFragment, 1, witnessSize, witnessSize);
+       page.drawText(witnessName, { x: pdfTextX(signatureRect, signatureFragment, nameFont, witnessName, witnessSize), y: witnessY, size: witnessSize, font: nameFont, color: palette.ink });
+       const witnessWidth = Math.min(nameFont.widthOfTextAtSize(witnessName, witnessSize) + witnessSize, signatureRect.width);
+       const witnessCenter = signatureFragment.align === "left" ? signatureRect.x + witnessWidth / 2 : signatureFragment.align === "right" ? signatureRect.x + signatureRect.width - witnessWidth / 2 : signatureRect.x + signatureRect.width / 2;
+       page.drawLine({ start: { x: witnessCenter - witnessWidth / 2, y: witnessY - 13 }, end: { x: witnessCenter + witnessWidth / 2, y: witnessY - 13 }, thickness: .9, color: palette.ink, opacity: .85 });
+       const witnessLabel = C().witness.toUpperCase();
+       page.drawText(witnessLabel, { x: pdfTextX(signatureRect, signatureFragment, typewriter, witnessLabel, 6.8), y: witnessY - 34, size: 6.8, font: typewriter, color: palette.ink });
+       }
+       if (fragmentVisible("report", "stamp")) pdfSeal25D(page, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .74, rgb(.24, .16, .08));
        pdfCentered(page, data.anonymous ? "ANONYMOUS COPY - NO PERSONAL DATA" : C().reportCode.toUpperCase(), typewriter, 7.2, 47, palette.brown);
     }
 
@@ -1427,6 +2603,13 @@
 
   async function downloadPdf(type, data, base) {
     try {
+      if ((config.layoutExtras?.[type] || []).some((layer) => !layer.hidden)) {
+        const canvas = type === "certificate"
+          ? await renderCertificate({ name: data.name, documentNumber: data.documentNumber })
+          : await renderReport({ text: data.text, name: data.name, anonymous: data.anonymous, documentNumber: data.documentNumber });
+        await saveRasterPdf(canvas, base);
+        return;
+      }
       downloadBlob(await createVectorPdf(type, data), `${base}.pdf`);
     } catch (error) {
       if (error.message === C().reportOverflow) throw error;
@@ -1553,8 +2736,11 @@
     fillAdminForm(form);
     enhanceVisualSelect("certificateBackground");
     enhanceVisualSelect("reportBackground");
+    installLayoutEditor();
     syncVisualOptions();
     form.addEventListener("input", (event) => {
+      if (event.target?.closest?.("[data-layout-control-panel]")) return;
+      pushHistory();
       if (event.target?.name === "studioPreset") {
         applyStudioPresetToForm(form, event.target.value);
       }
@@ -1584,6 +2770,7 @@
       setStatus(C().copied);
     });
     $("[data-reset-document]")?.addEventListener("click", () => {
+      pushHistory();
       config = sanitizeConfig();
       fillAdminForm(form);
       localStorage.removeItem("vhDocumentStudioIssue");
