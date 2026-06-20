@@ -1,14 +1,14 @@
-.site-header .desktop-nav-compact.site-nav-hub{
+body:not(.navbar-unified) .site-header .desktop-nav-compact.site-nav-hub{
   gap:8px;
 }
 
-.site-header .desktop-nav-compact.site-nav-hub .nav-button{
+body:not(.navbar-unified) .site-header .desktop-nav-compact.site-nav-hub .nav-button{
   min-height:38px;
   padding:0 10px;
   font-size:.84rem;
 }
 
-.site-nav-hub .lang-switch{
+body:not(.navbar-unified) .site-nav-hub .lang-switch{
   margin-left:0;
 }
 
@@ -171,27 +171,6 @@
   margin:0;
   color:var(--muted);
   line-height:1.82;
-}
-
-@media (min-width:761px){
-  .site-header .site-nav-hub > .nav-button[href="/for-institutions/"],
-  .site-header .site-nav-hub > .nav-button[href="/press-recognition/"],
-  .site-header .site-nav-hub > .nav-button[href="#contact"],
-  .site-header .site-nav-hub > .nav-button[href="/#contact"]{
-    display:none !important;
-  }
-}
-
-@media (max-width:1320px){
-  .site-nav-hub .nav-optional{
-    display:none !important;
-  }
-}
-
-@media (max-width:1120px){
-  .site-nav-hub .nav-wide{
-    display:none !important;
-  }
 }
 
 @media (max-width:900px){

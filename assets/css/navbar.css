@@ -4,6 +4,39 @@
    This file intentionally contains final desktop overrides that beat runtime styles.
    ========================================================= */
 
+body.navbar-unified .site-header{
+  container:site-navbar / inline-size;
+}
+
+body.navbar-unified .nav-progress-hairline{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-1px;
+  height:1px;
+  z-index:3;
+  opacity:0;
+  pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(201,178,143,.16), transparent);
+  transition:opacity .28s var(--ease);
+}
+
+body.navbar-unified .nav-progress-hairline::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:scaleX(var(--experience-scroll-progress, 0));
+  transform-origin:left center;
+  background:linear-gradient(90deg, rgba(var(--experience-accent-rgb),0), rgba(var(--experience-accent-rgb),.86) 22%, rgba(242,236,227,.88) 50%, rgba(var(--experience-accent-rgb),.62) 78%, rgba(var(--experience-accent-rgb),0));
+  box-shadow:0 0 16px rgba(var(--experience-accent-rgb),.28);
+}
+
+body.navbar-unified.experience-cinematic .nav-progress-hairline,
+body.navbar-unified.cinematic-mode .nav-progress-hairline,
+html[data-experience="cinematic"] body.navbar-unified .nav-progress-hairline{
+  opacity:1;
+}
+
 @media (min-width:761px){
   body.navbar-unified .site-header .header-inner{
     min-height:var(--nav-h);
@@ -82,8 +115,8 @@
     border-radius:999px;
     opacity:0;
     transform:translateX(-50%);
-    background:linear-gradient(90deg, rgba(201,178,143,0), rgba(201,178,143,.74) 18%, rgba(242,236,227,.92) 50%, rgba(201,178,143,.74) 82%, rgba(201,178,143,0));
-    filter:drop-shadow(0 0 8px rgba(201,178,143,.18));
+    background:linear-gradient(90deg, rgba(var(--nav-accent-rgb),0), rgba(var(--nav-accent-rgb),.76) 18%, rgba(242,236,227,.92) 50%, rgba(var(--nav-accent-rgb),.70) 82%, rgba(var(--nav-accent-rgb),0));
+    filter:drop-shadow(0 0 10px rgba(var(--nav-accent-rgb),.20));
     transition:opacity .32s var(--ease), width .32s var(--ease);
   }
 
@@ -111,6 +144,7 @@
   body.navbar-unified .desktop-nav-compact .lang-switch a.active{
     color:var(--text);
     opacity:1;
+    text-shadow:0 0 18px rgba(var(--nav-accent-rgb),.18);
   }
 
   body.navbar-unified .desktop-nav-compact .desktop-menu-toggle{
@@ -161,32 +195,39 @@
   }
 }
 
-/* Critical fix after PR #22:
-   veritas.js has runtime breakpoint rules that may hide nav items from the 6th item onward.
-   These higher-specificity rules keep Institutions/Instytucje and Press/Media visible on desktop. */
-@media (min-width:761px){
-  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="institutions"],
-  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="press"]{
-    display:inline-flex !important;
+@container site-navbar (max-width:980px){
+  .site-header .desktop-nav-compact.site-nav-hub{
+    gap:2px;
+  }
+
+  .site-header .desktop-nav-compact.site-nav-hub .nav-button{
+    padding-inline:clamp(4px, .5cqi, 7px);
+    font-size:clamp(.52rem, .72cqi, .62rem);
+    letter-spacing:.052em;
+  }
+
+  .site-header .experience-menu-toggle{
+    padding-inline:11px;
   }
 }
 
-@media (min-width:1061px){
-  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="author"],
-  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="contact"]{
-    display:inline-flex !important;
+@container site-navbar (max-width:860px){
+  .site-header .brand{
+    max-width:min(260px, 28cqi) !important;
   }
-}
 
-@media (max-width:1120px) and (min-width:761px){
-  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="author"]{
-    display:none !important;
+  .site-header .brand-sub-desktop{
+    display:none;
   }
-}
 
-@media (max-width:980px) and (min-width:761px){
-  html body.veritas-universe.navbar-unified .site-header nav.desktop-nav.desktop-nav-compact.site-nav-hub a.nav-button[data-nav-key="between"]{
-    display:none !important;
+  .site-header .desktop-nav-compact.site-nav-hub .nav-button{
+    min-height:34px;
+    padding-inline:5px;
+  }
+
+  .site-header .experience-menu-toggle{
+    min-width:42px;
+    padding-inline:10px;
   }
 }
 
