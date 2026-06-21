@@ -1475,3 +1475,454 @@ body.rp-report-room .rp-curatorial-line strong{
     animation:none!important;
   }
 }
+
+
+/* Exclusive Source Register + Card Position Fix — scoped to Report Room only. */
+body.rp-report-room .rp-source-register-section{
+  background:
+    radial-gradient(circle at 15% 0%, rgba(247,217,148,.08), transparent 18rem),
+    linear-gradient(180deg, rgba(232,192,112,.018), rgba(2,2,1,.04));
+}
+body.rp-report-room .rp-source-register{
+  border:1px solid rgba(247,217,148,.20);
+  border-radius:32px;
+  background:
+    linear-gradient(180deg, rgba(255,244,214,.055), rgba(255,244,214,.018)),
+    rgba(6,5,3,.78);
+  box-shadow:0 28px 90px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,244,214,.06);
+  overflow:hidden;
+}
+body.rp-report-room .rp-source-register summary{
+  cursor:pointer;
+  list-style:none;
+  padding:1rem 1.1rem;
+  color:rgba(247,217,148,.95);
+  font:900 .68rem/1.2 var(--rp-sans);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  border-bottom:1px solid rgba(247,217,148,.14);
+}
+body.rp-report-room .rp-source-register summary::-webkit-details-marker{display:none}
+body.rp-report-room .rp-source-register-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.72rem;
+  margin:0;
+  padding:1rem;
+  list-style:none;
+}
+body.rp-report-room .rp-source-register-list li{min-width:0}
+body.rp-report-room .rp-source-register-list a{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.42rem .65rem;
+  min-height:100%;
+  padding:.86rem .9rem;
+  border:1px solid rgba(247,217,148,.14);
+  border-radius:20px;
+  background:linear-gradient(180deg, rgba(255,244,214,.038), rgba(255,244,214,.015));
+  color:rgba(239,226,197,.84);
+  text-decoration:none;
+  transition:border-color .22s ease, transform .22s ease, background .22s ease;
+}
+body.rp-report-room .rp-source-register-list a:hover,
+body.rp-report-room .rp-source-register-list a:focus-visible{
+  outline:0;
+  transform:translateY(-2px);
+  border-color:rgba(247,217,148,.42);
+  background:linear-gradient(180deg, rgba(247,217,148,.075), rgba(255,244,214,.020));
+}
+body.rp-report-room .rp-source-register-list strong{
+  grid-row:1 / span 2;
+  display:inline-grid;
+  place-items:center;
+  width:2.45rem;
+  height:2.45rem;
+  border:1px solid rgba(247,217,148,.32);
+  border-radius:999px;
+  background:rgba(247,217,148,.09);
+  color:rgba(247,217,148,.98);
+  font:950 .66rem/1 var(--rp-sans);
+  letter-spacing:.08em;
+}
+body.rp-report-room .rp-source-register-list span{
+  color:rgba(255,242,210,.88);
+  font:800 .66rem/1.25 var(--rp-sans);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+body.rp-report-room .rp-source-register-list em{
+  color:rgba(239,226,197,.68);
+  font-style:normal;
+  line-height:1.45;
+}
+body.rp-report-room .rp-source-token{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:2.2rem;
+  min-height:1.65rem;
+  margin:.08rem .1rem;
+  padding:.2rem .42rem;
+  border:1px solid rgba(247,217,148,.28);
+  border-radius:999px;
+  background:rgba(247,217,148,.075);
+  color:rgba(247,217,148,.98);
+  text-decoration:none;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+body.rp-report-room .rp-source-token:hover,
+body.rp-report-room .rp-source-token:focus-visible{
+  outline:0;
+  border-color:rgba(247,217,148,.72);
+  background:rgba(247,217,148,.14);
+  box-shadow:0 0 0 4px rgba(247,217,148,.08);
+}
+body.rp-report-room .rp-chapter-teaser.is-open{
+  top:calc(var(--rr-nav-safe) + clamp(.45rem,1.3vw,1rem))!important;
+  left:50%!important;
+  width:min(1500px, calc(100vw - (var(--rr-room-edge) * 1.25)))!important;
+  height:calc(100svh - var(--rr-nav-safe) - clamp(.9rem,2.3vw,1.75rem))!important;
+  max-height:none!important;
+  transform:translateX(-50%)!important;
+  transform-origin:50% 0!important;
+  border-radius:clamp(24px,2.6vw,44px)!important;
+}
+body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body,
+body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal{overflow:auto}
+body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal p{border-color:rgba(247,217,148,.17)}
+@media(max-width:980px){
+  body.rp-report-room .rp-source-register-list{grid-template-columns:1fr}
+  body.rp-report-room .rp-chapter-teaser.is-open{
+    top:calc(var(--rr-nav-safe) + .35rem)!important;
+    width:calc(100vw - .56rem)!important;
+    height:calc(100svh - var(--rr-nav-safe) - .7rem)!important;
+    border-radius:22px!important;
+  }
+}
+@media(max-width:700px){
+  body.rp-report-room .rp-source-register summary{padding:.9rem}
+  body.rp-report-room .rp-source-register-list{padding:.72rem}
+  body.rp-report-room .rp-source-register-list a{grid-template-columns:auto minmax(0,1fr);padding:.74rem;border-radius:18px}
+  body.rp-report-room .rp-source-register-list strong{width:2.15rem;height:2.15rem}
+  body.rp-report-room .rp-chapter-teaser.is-open{
+    top:calc(var(--rr-nav-safe) + .25rem)!important;
+    width:calc(100vw - .28rem)!important;
+    height:calc(100svh - var(--rr-nav-safe) - .5rem)!important;
+    border-radius:18px!important;
+  }
+}
+
+
+/* Exclusive Bibliography + direct source links + mobile chapter density polish. */
+body.rp-report-room .rp-book-register{
+  margin-top:1rem;
+}
+body.rp-report-room .rp-book-register-intro{
+  padding:1rem 1.1rem .25rem;
+  border-bottom:1px solid rgba(247,217,148,.10);
+}
+body.rp-report-room .rp-book-register-intro h3{
+  margin:0 0 .45rem;
+  color:rgba(255,242,210,.94);
+  font-family:var(--rp-serif);
+  font-weight:500;
+  font-size:clamp(1.35rem,2vw,2rem);
+}
+body.rp-report-room .rp-book-register-intro p{
+  margin:0;
+  color:rgba(239,226,197,.68);
+  line-height:1.65;
+}
+body.rp-report-room .rp-book-register-list li{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.42rem .65rem;
+  min-height:100%;
+  padding:.86rem .9rem;
+  border:1px solid rgba(247,217,148,.13);
+  border-radius:20px;
+  background:linear-gradient(180deg, rgba(255,244,214,.032), rgba(255,244,214,.012));
+}
+body.rp-report-room .rp-book-register-list strong{
+  grid-row:1 / span 2;
+  display:inline-grid;
+  place-items:center;
+  width:2.45rem;
+  height:2.45rem;
+  border:1px solid rgba(247,217,148,.30);
+  border-radius:999px;
+  background:rgba(247,217,148,.075);
+  color:rgba(247,217,148,.96);
+  font:950 .66rem/1 var(--rp-sans);
+}
+body.rp-report-room .rp-book-register-list span{
+  color:rgba(255,242,210,.88);
+  font:800 .66rem/1.25 var(--rp-sans);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+body.rp-report-room .rp-book-register-list em{
+  color:rgba(239,226,197,.68);
+  font-style:normal;
+  line-height:1.45;
+}
+body.rp-report-room .rp-source-token{
+  scroll-margin-top:calc(var(--rr-nav-safe, 82px) + 1rem);
+}
+body.rp-report-room .rp-card-meta a.rp-source-token,
+body.rp-report-room .rp-source-mini a.rp-source-token{
+  color:rgba(247,217,148,.98)!important;
+}
+@media(max-width:700px){
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body{
+    max-height:34%!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body p:not(.rp-track-subtitle):not(.rp-guide-title){
+    display:none!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-track-subtitle,
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-guide-title{
+    margin-bottom:.4rem!important;
+    padding-bottom:.45rem!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal{
+    top:calc(34% + .78rem)!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal p:first-child,
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal p:nth-child(2),
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal p.rp-source-mini{
+    padding:.58rem .68rem;
+    font-size:.78rem;
+    line-height:1.38;
+  }
+  body.rp-report-room .rp-book-register-list li{
+    grid-template-columns:auto minmax(0,1fr);
+    padding:.74rem;
+    border-radius:18px;
+  }
+  body.rp-report-room .rp-book-register-list strong{
+    width:2.15rem;
+    height:2.15rem;
+  }
+}
+@media(max-width:440px){
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body{
+    max-height:31%!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body h3{
+    font-size:clamp(1.65rem,9.2vw,2.35rem)!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal{
+    top:calc(31% + .68rem)!important;
+  }
+}
+
+
+/* Exclusive Final Premium Fix — centered viewport modal, premium source chambers, image-ready cards.
+   Scope: Report Room only. Global navbar styles remain untouched. */
+body.rp-report-room{
+  --rr-modal-margin:clamp(.75rem,2.2vw,1.6rem);
+  --rr-modal-top-safe:var(--rr-nav-safe, clamp(72px,7.6svh,92px));
+}
+body.rp-report-room.rp-card-modal-open{
+  overflow:hidden!important;
+}
+body.rp-report-room .rp-chapter-backdrop{
+  position:fixed!important;
+  inset:var(--rr-modal-top-safe) 0 0 0!important;
+  z-index:9400!important;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(247,217,148,.17), transparent 30rem),
+    radial-gradient(circle at 12% 74%, rgba(232,192,112,.12), transparent 28rem),
+    radial-gradient(circle at 86% 28%, rgba(255,242,210,.07), transparent 24rem),
+    linear-gradient(180deg, rgba(2,2,1,.62), rgba(2,2,1,.94));
+  -webkit-backdrop-filter:blur(22px) saturate(118%);
+  backdrop-filter:blur(22px) saturate(118%);
+}
+body.rp-report-room .rp-chapter-backdrop:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(247,217,148,.035) 1px, transparent 1px),
+    linear-gradient(rgba(247,217,148,.025) 1px, transparent 1px),
+    linear-gradient(115deg, transparent 0 43%, rgba(255,244,214,.06) 49%, transparent 56% 100%);
+  background-size:74px 74px,74px 74px,auto;
+  opacity:.74;
+}
+body.rp-report-room .rp-chapter-teaser.is-open{
+  position:fixed!important;
+  z-index:9450!important;
+  top:calc(var(--rr-modal-top-safe) + ((100svh - var(--rr-modal-top-safe)) / 2))!important;
+  left:50%!important;
+  width:min(1500px, calc(100vw - (var(--rr-modal-margin) * 2)))!important;
+  height:min(920px, calc(100svh - var(--rr-modal-top-safe) - (var(--rr-modal-margin) * 2)))!important;
+  min-height:0!important;
+  max-height:none!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:50% 50%!important;
+  border-radius:clamp(26px,2.8vw,46px)!important;
+  border-color:rgba(247,217,148,.95)!important;
+  overflow:hidden!important;
+  cursor:default!important;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(247,217,148,.12), transparent 20rem),
+    linear-gradient(145deg, rgba(18,12,7,.985), rgba(4,3,2,.998) 58%, rgba(12,8,4,.985));
+  box-shadow:
+    0 0 0 1px rgba(255,242,210,.13) inset,
+    0 0 0 1px rgba(247,217,148,.36),
+    0 52px 190px rgba(0,0,0,.88),
+    0 0 120px rgba(232,192,112,.20),
+    0 0 310px rgba(0,0,0,.70)!important;
+  animation:rpPremiumRoomOpen .42s cubic-bezier(.16,.82,.22,1) both!important;
+}
+@keyframes rpPremiumRoomOpen{
+  from{opacity:.72;transform:translate(-50%,-47%) scale(.965)!important;filter:blur(2px)}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1)!important;filter:none}
+}
+body.rp-report-room .rp-chapter-teaser.is-open:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(90deg, transparent, rgba(247,217,148,.86), rgba(255,242,210,.32), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(247,217,148,.46), transparent) bottom / 100% 1px no-repeat,
+    linear-gradient(180deg, rgba(247,217,148,.50), transparent 24%, transparent 76%, rgba(247,217,148,.24)) left / 1px 100% no-repeat,
+    linear-gradient(180deg, rgba(247,217,148,.34), transparent 25%, transparent 75%, rgba(247,217,148,.18)) right / 1px 100% no-repeat;
+}
+body.rp-report-room .rp-chapter-teaser.is-open:after{
+  z-index:3;
+  opacity:.88;
+  background:
+    radial-gradient(circle at 20% 14%, rgba(255,242,210,.26), transparent 19rem),
+    radial-gradient(circle at 82% 12%, rgba(247,217,148,.15), transparent 22rem),
+    linear-gradient(118deg, transparent 0 41%, rgba(255,255,255,.08) 49%, transparent 57% 100%);
+}
+body.rp-report-room .rp-card-close{
+  position:absolute;
+  top:clamp(.72rem,1.45vw,1.15rem);
+  right:clamp(.72rem,1.45vw,1.15rem);
+  z-index:8;
+  display:inline-grid;
+  place-items:center;
+  width:2.72rem;
+  height:2.72rem;
+  border:1px solid rgba(247,217,148,.42);
+  border-radius:999px;
+  background:rgba(5,4,3,.72);
+  color:rgba(255,242,210,.96);
+  font:900 1.1rem/1 var(--rp-sans);
+  cursor:pointer;
+  box-shadow:0 12px 36px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,244,214,.10);
+  -webkit-backdrop-filter:blur(16px) saturate(118%);
+  backdrop-filter:blur(16px) saturate(118%);
+}
+body.rp-report-room .rp-card-close:hover,
+body.rp-report-room .rp-card-close:focus-visible{
+  outline:0;
+  border-color:rgba(247,217,148,.86);
+  background:rgba(232,192,112,.18);
+  box-shadow:0 0 0 4px rgba(247,217,148,.10),0 18px 46px rgba(0,0,0,.46);
+}
+body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body{
+  top:clamp(.8rem,1.8vw,1.6rem)!important;
+  left:clamp(.8rem,1.8vw,1.6rem)!important;
+  bottom:clamp(.8rem,1.8vw,1.6rem)!important;
+  width:min(560px,40%)!important;
+  max-height:none!important;
+  overflow:auto!important;
+  padding:clamp(1.05rem,2vw,1.9rem)!important;
+  border-radius:calc(clamp(26px,2.8vw,46px) - 10px)!important;
+  background:
+    linear-gradient(180deg, rgba(255,244,214,.085), rgba(255,244,214,.028)),
+    radial-gradient(circle at 12% 0%, rgba(247,217,148,.18), transparent 17rem),
+    rgba(5,4,3,.82)!important;
+  border:1px solid rgba(247,217,148,.36)!important;
+}
+body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal{
+  top:clamp(.8rem,1.8vw,1.6rem)!important;
+  right:clamp(.8rem,1.8vw,1.6rem)!important;
+  bottom:clamp(.8rem,1.8vw,1.6rem)!important;
+  left:calc(clamp(.8rem,1.8vw,1.6rem) + min(560px,40%) + clamp(.8rem,1.8vw,1.35rem))!important;
+  overflow:auto!important;
+  padding:clamp(1.15rem,2.2vw,2.35rem)!important;
+  border-radius:calc(clamp(26px,2.8vw,46px) - 10px)!important;
+  background:
+    linear-gradient(180deg, rgba(255,244,214,.072), rgba(255,244,214,.024)),
+    radial-gradient(circle at 92% 10%, rgba(247,217,148,.14), transparent 18rem),
+    rgba(4,3,2,.87)!important;
+  border:1px solid rgba(247,217,148,.30)!important;
+}
+body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal p{
+  border-color:rgba(247,217,148,.17)!important;
+  background:linear-gradient(180deg, rgba(255,244,214,.052), rgba(255,244,214,.018))!important;
+}
+body.rp-report-room .rp-source-register-section{
+  background:
+    radial-gradient(circle at 18% 0%, rgba(247,217,148,.10), transparent 18rem),
+    linear-gradient(rgba(2,2,1,.80),rgba(2,2,1,.86)),
+    url('/public/assets/rap-ort/prawda-sumienia/report-room/rr-source-register-bg.webp') center/cover no-repeat;
+}
+body.rp-report-room .rp-source-register{
+  position:relative;
+  border-radius:34px!important;
+  background:
+    linear-gradient(180deg, rgba(255,244,214,.07), rgba(255,244,214,.024)),
+    radial-gradient(circle at 18% 0%, rgba(247,217,148,.12), transparent 16rem),
+    rgba(6,5,3,.82)!important;
+  box-shadow:0 30px 110px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,244,214,.08)!important;
+}
+body.rp-report-room .rp-source-register summary{
+  position:relative;
+  min-height:4.6rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:1.15rem 1.25rem!important;
+}
+body.rp-report-room .rp-source-register summary:after{
+  content:"+";
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:2.3rem;
+  height:2.3rem;
+  border:1px solid rgba(247,217,148,.30);
+  border-radius:999px;
+  background:rgba(247,217,148,.08);
+  font-size:1rem;
+}
+body.rp-report-room .rp-source-register[open] summary:after{content:"–"}
+body.rp-report-room .rp-source-register-list{
+  animation:rpSourceChamberOpen .32s ease both;
+}
+@keyframes rpSourceChamberOpen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+body.rp-report-room .rp-book-register{
+  margin-top:1rem;
+  background:
+    linear-gradient(180deg, rgba(255,244,214,.060), rgba(255,244,214,.020)),
+    linear-gradient(rgba(6,5,3,.82),rgba(6,5,3,.90)),
+    url('/public/assets/rap-ort/prawda-sumienia/report-room/rr-bibliography-chamber-bg.webp') center/cover no-repeat!important;
+}
+@media(max-width:900px){
+  body.rp-report-room .rp-chapter-teaser.is-open{
+    width:calc(100vw - .55rem)!important;
+    height:calc(100svh - var(--rr-modal-top-safe) - .65rem)!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body{
+    top:.55rem!important;left:.55rem!important;right:.55rem!important;bottom:auto!important;width:auto!important;max-height:34%!important;padding:.82rem!important;border-radius:18px!important;
+  }
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body h3{font-size:clamp(1.85rem,9vw,3.05rem)!important;max-width:13ch!important}
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-body p:not(.rp-track-subtitle):not(.rp-guide-title){display:none!important}
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-meta{display:none!important}
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal{top:calc(34% + .9rem)!important;left:.55rem!important;right:.55rem!important;bottom:.55rem!important;padding:.68rem!important;border-radius:18px!important}
+  body.rp-report-room .rp-chapter-teaser.is-open .rp-card-reveal p{font-size:.9rem!important;line-height:1.54!important;padding:.68rem .72rem!important;border-radius:16px!important}
+  body.rp-report-room .rp-card-close{top:.74rem;right:.74rem;width:2.4rem;height:2.4rem}
+}
