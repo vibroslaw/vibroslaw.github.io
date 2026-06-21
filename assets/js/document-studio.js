@@ -51,6 +51,12 @@
       eventGold: "/public/assets/reports/event-accents/event-accent-syd2026-gold.svg",
       eventDark: "/public/assets/reports/event-accents/event-accent-syd2026-dark.svg",
     },
+    certificateTitles: {
+      record: {
+        en: "/public/assets/reports/title-plates/title-record-of-participation-gold.svg",
+        pl: "/public/assets/reports/title-plates/title-zapis-uczestnictwa-gold.svg",
+      },
+    },
     reportTitles: {
       en: "/public/assets/reports/title-plates/title-witness-report-dark.svg",
       pl: "/public/assets/reports/title-plates/title-raport-swiadka-dark.svg",
@@ -113,6 +119,8 @@
     proofGrid: "print",
     certificateBackground: "cinema",
     certificateStamp: "dry",
+    certificateTitleMode: "text",
+    certificateTitleGraphic: "record",
     certificateSignature: "script",
     certificateAuthorSignature: "gold",
     certificateLayout: "classic",
@@ -136,6 +144,8 @@
     proofGrid: ["off", "safe", "thirds", "print"],
     certificateBackground: Object.keys(assets.certificateBackgrounds),
     certificateStamp: ["dry", "event", "none"],
+    certificateTitleMode: ["text", "graphic"],
+    certificateTitleGraphic: Object.keys(assets.certificateTitles),
     certificateSignature: ["script", "serif", "typewriter"],
     certificateAuthorSignature: ["gold", "dark", "none"],
     certificateLayout: ["classic", "gallery", "ceremonial"],
@@ -164,6 +174,8 @@
     balanced: {
       certificateBackground: "cinema",
       certificateStamp: "dry",
+      certificateTitleMode: "text",
+      certificateTitleGraphic: "record",
       certificateSignature: "script",
       certificateAuthorSignature: "gold",
       certificateLayout: "classic",
@@ -181,6 +193,8 @@
     ceremony: {
       certificateBackground: "ceremonial",
       certificateStamp: "event",
+      certificateTitleMode: "text",
+      certificateTitleGraphic: "record",
       certificateSignature: "script",
       certificateAuthorSignature: "gold",
       certificateLayout: "ceremonial",
@@ -198,6 +212,8 @@
     field: {
       certificateBackground: "museum",
       certificateStamp: "dry",
+      certificateTitleMode: "text",
+      certificateTitleGraphic: "record",
       certificateSignature: "serif",
       certificateAuthorSignature: "dark",
       certificateLayout: "gallery",
@@ -215,6 +231,8 @@
     minimal: {
       certificateBackground: "cinema",
       certificateStamp: "none",
+      certificateTitleMode: "text",
+      certificateTitleGraphic: "record",
       certificateSignature: "serif",
       certificateAuthorSignature: "none",
       certificateLayout: "classic",
@@ -721,6 +739,11 @@
   const issueNumber = () => `VH/${eventInitials()}/${documentToken.date}/${documentToken.time}/${documentToken.serial}`;
   const certificateBackground = () => assets.certificateBackgrounds[config.certificateBackground];
   const certificatePreview = () => assets.certificatePreviews[config.certificateBackground];
+  const certificateUsesGraphicTitle = () => config.certificateTitleMode === "graphic";
+  const certificateTitleAsset = () => {
+    const group = assets.certificateTitles[config.certificateTitleGraphic] || assets.certificateTitles.record;
+    return group[config.language] || group.en;
+  };
   const reportBackground = () => assets.reportBackgrounds[config.reportBackground];
   const reportPreview = () => assets.reportPreviews[config.reportBackground];
   const percent = (value) => `${value}%`;
@@ -1098,6 +1121,33 @@
     image.hidden = false;
   }
 
+  function setPreviewTitle(title, type) {
+    if (!title) return;
+    const cert = type === "certificate";
+    const text = cert ? C().certificateTitle : C().reportTitle;
+    title.classList.toggle("is-graphic-title", cert && certificateUsesGraphicTitle());
+    if (!cert || !certificateUsesGraphicTitle()) {
+      title.removeAttribute("aria-label");
+      title.textContent = text;
+      return;
+    }
+    title.setAttribute("aria-label", text);
+    let image = $(".document-title-graphic", title);
+    if (!image) {
+      title.textContent = "";
+      image = document.createElement("img");
+      image.className = "document-title-graphic";
+      image.alt = "";
+      image.decoding = "async";
+      title.appendChild(image);
+    } else {
+      [...title.childNodes].forEach((node) => {
+        if (node !== image) node.remove();
+      });
+    }
+    setImageSource(image, certificateTitleAsset(), { removeWhite: true });
+  }
+
   function updateSheetText(sheet, type) {
     if (!sheet) return;
     const cert = type === "certificate";
@@ -1108,7 +1158,7 @@
     const sheetCopy = $("[data-preview-copy]", sheet);
     const closing = $("[data-preview-closing]", sheet);
     if (code) code.textContent = issueNumber();
-    if (title) title.textContent = cert ? C().certificateTitle : C().reportTitle;
+    setPreviewTitle(title, type);
     if (date) date.textContent = dateLabel();
     if (place) place.textContent = config.eventPlace || config.eventTitle;
     if (sheetCopy) sheetCopy.textContent = cert ? C().certificateBody : C().reportInstruction;
@@ -2411,6 +2461,18 @@
     drawContained(ctx, titlePlate, plateRect.x, plateRect.y, plateRect.width, plateRect.height, .98);
   }
 
+  function drawCertificateTitleLayer(ctx, titlePlate, rect, scale = 1, fragment = {}, pageWidth = 0) {
+    if (certificateUsesGraphicTitle() && titlePlate) {
+      const plateRect = scaledRect(rect, scale);
+      drawContained(ctx, titlePlate, plateRect.x, plateRect.y, plateRect.width, plateRect.height, .98);
+      return;
+    }
+    drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), canvasTextX(rect, fragment), canvasGroupBaseline(rect, fragment, 1, rect.height, rect.height * .55), {
+      size: Math.round(Math.min((pageWidth || rect.width * 1.35) * .052, rect.height * .55) * scale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: rect.width,
+      align: fragment.align || "center",
+    });
+  }
+
   function drawSeal25D(ctx, image, x, y, width, height, alpha = .88, dark = false) {
     if (!image) return;
     const sourceWidth = assetWidth(image);
@@ -2492,7 +2554,7 @@
   }
 
   function drawCertificateExtraLayer(ctx, layer, data) {
-    const { width, height, stamp, author, name, documentNumber, titleScale, bodyScale, nameScale } = data;
+    const { width, height, stamp, author, titlePlate, name, documentNumber, titleScale, bodyScale, nameScale } = data;
     const rect = fragmentBoxRect(layer, width, height);
     ctx.save();
     if (layer.source === "code") {
@@ -2528,10 +2590,7 @@
     if (layer.source === "stamp") drawSeal25D(ctx, stamp, rect.x, rect.y, rect.width, rect.height, .92, true);
     if (layer.source === "author") drawContained(ctx, author, rect.x, rect.y, rect.width, rect.height, .96);
     if (layer.source === "title") {
-      drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), canvasTextX(rect, layer), canvasGroupBaseline(rect, layer, 1, rect.height, rect.height * .55), {
-        size: Math.round(Math.min(width * .052, rect.height * .55) * titleScale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: rect.width,
-        align: layer.align || "center",
-      });
+      drawCertificateTitleLayer(ctx, titlePlate, rect, titleScale, layer, width);
     }
     if (layer.source === "body") {
       ctx.fillStyle = "rgba(245,230,196,.82)";
@@ -2689,11 +2748,12 @@
     await ensureFonts();
     const height = paperHeight(A4.landscape, width);
     const { canvas, ctx } = createPrintCanvas(width, height);
-    const [background, texture, stamp, author] = await Promise.all([
+    const [background, texture, stamp, author, titlePlate] = await Promise.all([
       loadImage(certificateBackground()),
       loadImage(assets.texture).catch(() => null),
       loadPrintAsset(stampAsset("certificate"), { removeWhite: true }).catch(() => null),
       loadPrintAsset(authorAsset("certificate"), { removeWhite: true }).catch(() => null),
+      certificateUsesGraphicTitle() ? loadPrintAsset(certificateTitleAsset(), { removeWhite: true }).catch(() => null) : Promise.resolve(null),
     ]);
     const layout = certificateLayout().canvas;
     const numberRect = fragmentRect("certificate", "code", width, height);
@@ -2724,7 +2784,7 @@
     ctx.strokeRect(width * .047, height * .066, width * .906, height * .868);
 
     if (hasCustomLayerStack("certificate")) {
-      const layerData = { width, height, stamp, author, name, documentNumber, titleScale, bodyScale, nameScale };
+      const layerData = { width, height, stamp, author, titlePlate, name, documentNumber, titleScale, bodyScale, nameScale };
       visibleRenderLayers("certificate").forEach((layer) => drawCertificateExtraLayer(ctx, layer, layerData));
       return canvas;
     }
@@ -2763,10 +2823,7 @@
 
     if (fragmentVisible("certificate", "stamp")) drawSeal25D(ctx, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .92, true);
     if (fragmentVisible("certificate", "title")) {
-      drawFinishedTitle(ctx, C().certificateTitle.toUpperCase(), canvasTextX(titleRect, titleFragment), canvasGroupBaseline(titleRect, titleFragment, 1, titleRect.height, titleRect.height * .55), {
-        size: Math.round(Math.min(width * .052, titleRect.height * .55) * titleScale), light: "#fff4cf", mid: "#dfc17d", shadow: "#5b421d", maxWidth: titleRect.width,
-        align: titleFragment.align || "center",
-      });
+      drawCertificateTitleLayer(ctx, titlePlate, titleRect, titleScale, titleFragment, width);
     }
     if (fragmentVisible("certificate", "body")) {
       ctx.fillStyle = "rgba(245,230,196,.82)";
@@ -2798,7 +2855,7 @@
     }
     if (fragmentVisible("certificate", "author")) drawContained(ctx, author, authorRect.x, authorRect.y, authorRect.width, authorRect.height, .96);
     visibleExtras("certificate").forEach((layer) => drawCertificateExtraLayer(ctx, layer, {
-      width, height, stamp, author, name, documentNumber, titleScale, bodyScale, nameScale,
+      width, height, stamp, author, titlePlate, name, documentNumber, titleScale, bodyScale, nameScale,
     }));
     return canvas;
   }
@@ -3116,10 +3173,11 @@
     if (type === "certificate") {
       const [width, height] = A4.landscape.pdf;
       const page = pdf.addPage([width, height]);
-      const [background, texture, stamp, author] = await Promise.all([
+      const [background, texture, stamp, author, titlePlate] = await Promise.all([
         embedPdfImage(pdf, certificateBackground()), embedPdfImage(pdf, assets.texture),
         embedPdfImage(pdf, stampAsset("certificate"), { removeWhite: true, targetWidth: 1600 }),
         embedPdfImage(pdf, authorAsset("certificate"), { removeWhite: true, targetWidth: 1600 }),
+        certificateUsesGraphicTitle() ? embedPdfImage(pdf, certificateTitleAsset(), { removeWhite: true, targetWidth: 1800 }).catch(() => null) : Promise.resolve(null),
       ]);
       const layout = certificateLayout().pdf;
       const numberRect = pdfFragmentRect("certificate", "code", width, height);
@@ -3165,11 +3223,16 @@
        }
        if (fragmentVisible("certificate", "stamp")) pdfSeal25D(page, stamp, stampRect.x, stampRect.y, stampRect.width, stampRect.height, .92, rgb(.01, .008, .004));
        if (fragmentVisible("certificate", "title")) {
-       const certificateTitle = C().certificateTitle.toUpperCase();
-       const certificateTitleSize = Math.min(43, titleRect.height * .56) * titleScale;
-       pdfFinishedTitle(page, certificateTitle, cinzel, certificateTitleSize, pdfGroupBaseline(titleRect, titleFragment, 1, certificateTitleSize, certificateTitleSize), {
-         highlight: rgb(1, .96, .82), main: rgb(.9, .77, .5), shadow: rgb(.25, .16, .06),
-       }, titleRect, titleFragment);
+       if (certificateUsesGraphicTitle() && titlePlate) {
+         const plateRect = scaledRect(titleRect, titleScale);
+         pdfContained(page, titlePlate, plateRect.x, plateRect.y, plateRect.width, plateRect.height, .98);
+       } else {
+         const certificateTitle = C().certificateTitle.toUpperCase();
+         const certificateTitleSize = Math.min(43, titleRect.height * .56) * titleScale;
+         pdfFinishedTitle(page, certificateTitle, cinzel, certificateTitleSize, pdfGroupBaseline(titleRect, titleFragment, 1, certificateTitleSize, certificateTitleSize), {
+           highlight: rgb(1, .96, .82), main: rgb(.9, .77, .5), shadow: rgb(.25, .16, .06),
+         }, titleRect, titleFragment);
+       }
        }
        if (fragmentVisible("certificate", "body")) {
        const bodySize = 11.5 * bodyScale;
