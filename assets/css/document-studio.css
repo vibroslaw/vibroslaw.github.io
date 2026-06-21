@@ -1442,6 +1442,26 @@ body[data-document-mode="admin"] .document-sheet [data-layout-fragment][data-fra
     0 10px 28px rgba(0, 0, 0, .55);
 }
 
+.document-sheet-title.is-graphic-title {
+  color: transparent;
+  overflow: visible;
+  text-shadow: none;
+}
+
+.document-title-graphic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transform: scale(var(--cert-title-scale, 1));
+  transform-origin: center;
+  filter:
+    drop-shadow(0 .16rem .05rem rgba(60, 39, 12, .42))
+    drop-shadow(0 .72rem 1.25rem rgba(0, 0, 0, .38))
+    drop-shadow(0 -.03rem .04rem rgba(255, 244, 205, .28));
+}
+
 .certificate-top-meta {
   position: absolute;
   top: var(--cert-meta-top, 7%);
