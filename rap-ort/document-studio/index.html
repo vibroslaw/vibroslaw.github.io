@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Document Studio - Rap-Ort</title>
-  <meta name="description" content="Private publishing desk for Rap-Ort certificates and witness reports.">
+  <title>Document Studio — Rap-Ort Participant Records</title>
+  <meta name="description" content="Private publishing desk for Rap-Ort participant records and witness reports.">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/navbar.css">
@@ -20,7 +20,7 @@
         <div class="document-studio-hero-copy">
           <p class="document-studio-kicker">RAP-ORT / PRIVATE PUBLISHING DESK</p>
           <h1 class="document-studio-title">Document Studio</h1>
-          <p class="document-studio-lead">Prepare the visual master for a Certificate and Witness Report, then issue one public participant link. The public page receives the approved design, not these controls.</p>
+          <p class="document-studio-lead">Prepare the visual master for a Participant Record and Witness Report, then issue one public participant link. The public page receives the approved design, not these controls.</p>
           <div class="document-hero-badges" aria-label="Document quality">
             <span>Local proofing</span><span>A4 print master</span><span>300 DPI export</span>
           </div>
@@ -37,7 +37,7 @@
         <form class="document-control-panel" data-document-admin-form>
           <div class="document-panel-heading"><span>01 / Configure</span><h2>Issue settings</h2><p>Approve the event identity and the visual treatment received by participants.</p></div>
           <div class="document-tabs" role="tablist" aria-label="Document settings">
-            <button class="document-tab" type="button" role="tab" aria-selected="true" data-document-tab="certificate">Certificate</button>
+            <button class="document-tab" type="button" role="tab" aria-selected="true" data-document-tab="certificate">Participant Record</button>
             <button class="document-tab" type="button" role="tab" aria-selected="false" data-document-tab="report">Report</button>
           </div>
 
@@ -113,12 +113,10 @@
           </fieldset>
 
           <fieldset class="document-fieldset" data-document-settings="certificate">
-            <label class="document-field"><span>Certificate background</span><select name="certificateBackground"><option value="cinema">Archival Cinema</option><option value="museum">Museum Line</option><option value="ceremonial">Ceremonial Frame</option><option value="wall">Wall Edition</option></select></label>
-            <label class="document-field"><span>Certificate layout</span><select name="certificateLayout"><option value="classic">Classic landing</option><option value="gallery">Gallery centred</option><option value="ceremonial">Ceremonial signature</option></select></label>
+            <label class="document-field"><span>Participant record background</span><select name="certificateBackground"><option value="cinema">Archival Cinema</option><option value="museum">Museum Line</option><option value="ceremonial">Ceremonial Frame</option><option value="wall">Wall Edition</option></select></label>
+            <label class="document-field"><span>Participant record layout</span><select name="certificateLayout"><option value="classic">Classic landing</option><option value="gallery">Gallery centred</option><option value="ceremonial">Ceremonial signature</option></select></label>
             <label class="document-field"><span>Stamp</span><select name="certificateStamp"><option value="dry">Dry archival seal</option><option value="event">Event gold accent</option><option value="none">No stamp</option></select></label>
-            <label class="document-field"><span>Certificate title</span><select name="certificateTitleMode"><option value="text">Premium text title</option><option value="graphic">Graphic title plate</option></select></label>
-            <label class="document-field"><span>Title graphic</span><select name="certificateTitleGraphic"><option value="record">Record of Participation plate</option></select></label>
-            <label class="document-field"><span>Participant signature style</span><select name="certificateSignature"><option value="script">Classical script</option><option value="serif">Editorial serif</option><option value="typewriter">Typewriter</option></select></label>
+            <label class="document-field"><span>Participant name style</span><select name="certificateSignature"><option value="script">Classical script</option><option value="serif">Editorial serif</option><option value="typewriter">Typewriter</option></select></label>
             <label class="document-field"><span>Author signature</span><select name="certificateAuthorSignature"><option value="gold">Gold signature</option><option value="dark">Dark signature</option><option value="none">No author signature</option></select></label>
             <label class="document-field document-range-field"><span>Title scale <output data-range-output="certificateTitleScale">100%</output></span><input name="certificateTitleScale" type="range" min="88" max="116" step="1" value="100"></label>
             <label class="document-field document-range-field"><span>Body scale <output data-range-output="certificateBodyScale">100%</output></span><input name="certificateBodyScale" type="range" min="88" max="112" step="1" value="100"></label>
@@ -172,7 +170,7 @@
 
         <section class="document-proof-shell" aria-label="Approved document proof">
           <header class="document-proof-toolbar">
-            <div><span>02 / Live proof</span><strong data-proof-title>Certificate / A4 landscape</strong></div>
+            <div><span>02 / Live proof</span><strong data-proof-title>Participant Record / A4 landscape</strong></div>
             <div class="document-proof-quality" aria-label="Export quality"><span>300 DPI</span><span>Local</span><span>Print ready</span></div>
             <div class="document-proof-actions">
               <button type="button" data-proof-zoom="out" aria-label="Zoom out">−</button>
@@ -195,7 +193,7 @@
                   <span><small data-date-label>Date</small><strong data-preview-date></strong></span>
                   <span><small data-place-label>Place</small><strong data-preview-place></strong></span>
                 </div>
-                <h2 class="document-sheet-title" data-preview-title data-layout-fragment="title">Certificate</h2>
+                <h2 class="document-sheet-title" data-preview-title data-layout-fragment="title">Participant Record</h2>
                 <p class="document-sheet-copy" data-preview-copy data-layout-fragment="body"></p>
                 <div class="certificate-name-lockup" data-layout-fragment="name"><p class="document-sheet-name" data-preview-name>Participant name</p></div>
                 <p class="certificate-closing" data-preview-closing data-layout-fragment="closing"></p>
