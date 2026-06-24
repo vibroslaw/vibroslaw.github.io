@@ -7,7 +7,6 @@
   root.classList.add("music-premium-reconciled");
 
   const isPl = root.dataset.lang === "pl";
-  const musicPath = isPl ? "/music/pl/" : "/music/";
   const personalId = "22ClWy51TIpXxGzN7L0Aja";
   const personalUrl = "https://open.spotify.com/playlist/22ClWy51TIpXxGzN7L0Aja?si=CylRWaWYQZmG-99ZJThOLA";
   let activeEmotion = "personal";
@@ -15,26 +14,26 @@
 
   const text = isPl ? {
     atlasKicker: "Atlas emocji",
-    atlasTitle: "Wybierz emocje jako pierwsze wejscie",
-    atlasLead: "Muzyka dziala tu jak mapa: wybierz wspolrzedna emocji, a strona dopasuje pokoj odsluchu, dokumenty i sciezke.",
-    atlasRoom: "Pokoj odsluchu",
-    first: "Pierwsze wejscie",
+    atlasTitle: "Wybierz emocję jako pierwsze wejście",
+    atlasLead: "Muzyka działa tu jak mapa: wybierz współrzędną emocji, a strona dopasuje pokój odsłuchu, dokumenty i ścieżkę.",
+    atlasRoom: "Pokój odsłuchu",
+    first: "Pierwsze wejście",
     packsKicker: "Pakiety instytucjonalne",
-    packsTitle: "Muzyka dla pokazow i instytucji",
-    packsLead: "Gotowe konteksty uzycia: intro przed pokazem, petla foyer i domkniecie rozmowy.",
+    packsTitle: "Muzyka dla pokazów i instytucji",
+    packsLead: "Gotowe konteksty użycia: intro przed pokazem, pętla foyer i domknięcie rozmowy.",
     inquiry: "Zapytaj o pakiet",
-    tech: "Licencja zalezy od miejsca, czasu, medium, terytorium i zakresu uzycia.",
-    mini: "Teraz sluchasz",
-    ready: "Gotowe po kliknieciu",
-    load: "Zaladuj",
+    tech: "Licencja zależy od miejsca, czasu, medium, terytorium i zakresu użycia.",
+    mini: "Teraz słuchasz",
+    ready: "Gotowe po kliknięciu",
+    load: "Załaduj",
     pause: "Pauza",
     mute: "Wycisz",
-    unmute: "Dzwiek",
+    unmute: "Dźwięk",
     muted: "Wyciszone",
     prev: "Poprzednia",
-    next: "Nastepna",
-    signature: "Uslysz swiat",
-    signatureLead: "Kompaktowa warstwa sygnatury. Bez autoplay. Spotify laduje sie dopiero po kliknieciu.",
+    next: "Następna",
+    signature: "Usłysz świat",
+    signatureLead: "Kompaktowa warstwa sygnatury. Bez autoplay. Spotify ładuje się dopiero po kliknięciu.",
   } : {
     atlasKicker: "Emotional atlas",
     atlasTitle: "Choose emotion as the first instrument",
@@ -60,20 +59,14 @@
   };
 
   const emotions = {
-    memory: [isPl ? "Pamiec" : "Memory", "VH-EMO-01", "0xv8YgWzwwY7VtER506P1Z", "/public/assets/music/playlists/memory-window.webp", "12%", "20%", "216,182,107", isPl ? "Swiadectwo, historia i echo tego, co zostaje." : "Witness, history and the echo of what remains.", "Kurier Prawdy"],
-    conscience: [isPl ? "Sumienie" : "Conscience", "VH-EMO-02", "46B6jvmQkPM33LV28w4UvV", "/public/assets/music/playlists/conscience-window.webp", "48%", "10%", "190,157,115", isPl ? "Prawda, wybor, presja moralna." : "Truth, choice and moral pressure.", "Rap-Ort"],
-    resistance: [isPl ? "Opor" : "Resistance", "VH-EMO-03", "6R2zp276q7G9z9IJZMWxqU", "/public/assets/music/playlists/resistance-window.webp", "82%", "25%", "214,185,121", isPl ? "Odmowa, przetrwanie i energia." : "Refusal, survival and energy.", "Unbroken"],
-    identity: [isPl ? "Tozsamosc" : "Identity", "VH-EMO-04", "4Ml3373UqCDgQEdr0m6SoH", "/public/assets/music/playlists/identity-window.webp", "18%", "72%", "146,191,222", isPl ? "Jezyk, przynaleznosc i szukanie siebie." : "Language, belonging and the search for self.", "LUSTRO / THE MIRROR"],
-    resilience: [isPl ? "Odpornosc" : "Resilience", "VH-EMO-05", "6FNzNCjmvmGwpibLLDNufr", "/public/assets/music/playlists/resilience-window.webp", "58%", "78%", "201,178,143", isPl ? "Odbudowa, wewnetrzny ogien i powrot." : "Rebuilding, inner fire and return.", "Equilibrium"],
-    personal: [isPl ? "Osobiste / filmowe" : "Personal / Cinematic", "VH-EMO-06", personalId, "/public/assets/music/playlists/personal-cinematic-window.webp", "86%", "67%", "96,158,198", isPl ? "Filmowe wejscie w emocje i osobisty klimat." : "A cinematic entry into emotion and personal atmosphere.", "Campus Ignis"],
+    memory: [isPl ? "Pamięć" : "Memory", "VH-EMO-01", "0xv8YgWzwwY7VtER506P1Z", "/public/assets/music/playlists/memory-window.webp", "12%", "20%", "216,182,107", isPl ? "Świadectwo, historia i echo tego, co zostaje." : "Witness, history and the echo of what remains.", "Kurier Prawdy"],
+    conscience: [isPl ? "Sumienie" : "Conscience", "VH-EMO-02", "46B6jvmQkPM33LV28w4UvV", "/public/assets/music/playlists/conscience-window.webp", "48%", "10%", "190,157,115", isPl ? "Prawda, wybór, presja moralna." : "Truth, choice and moral pressure.", "Rap-Ort"],
+    resistance: [isPl ? "Opór" : "Resistance", "VH-EMO-03", "6R2zp276q7G9z9IJZMWxqU", "/public/assets/music/playlists/resistance-window.webp", "82%", "25%", "214,185,121", isPl ? "Odmowa, przetrwanie i energia." : "Refusal, survival and energy.", "Unbroken"],
+    identity: [isPl ? "Tożsamość" : "Identity", "VH-EMO-04", "4Ml3373UqCDgQEdr0m6SoH", "/public/assets/music/playlists/identity-window.webp", "18%", "72%", "146,191,222", isPl ? "Język, przynależność i szukanie siebie." : "Language, belonging and the search for self.", "LUSTRO / THE MIRROR"],
+    resilience: [isPl ? "Odporność" : "Resilience", "VH-EMO-05", "6FNzNCjmvmGwpibLLDNufr", "/public/assets/music/playlists/resilience-window.webp", "58%", "78%", "201,178,143", isPl ? "Odbudowa, wewnętrzny ogień i powrót." : "Rebuilding, inner fire and return.", "Equilibrium"],
+    personal: [isPl ? "Osobiste / filmowe" : "Personal / Cinematic", "VH-EMO-06", personalId, "/public/assets/music/playlists/personal-cinematic-window.webp", "86%", "67%", "96,158,198", isPl ? "Filmowe wejście w emocję i osobisty klimat." : "A cinematic entry into emotion and personal atmosphere.", "Campus Ignis"],
   };
   const order = Object.keys(emotions);
-
-  const packs = [
-    ["conscience", "MIP-01", isPl ? "Intro przed pokazem" : "Screening intro", "3-5 min", isPl ? "Krotkie wejscie przed seansem, prezentacja albo blokiem dokumentalnym." : "A short entry before a screening, presentation or documentary block."],
-    ["memory", "MIP-02", isPl ? "Petla foyer" : "Foyer loop", "12-20 min", isPl ? "Cichy puls do przestrzeni wejsciowej, wystawy albo recepcji." : "A quiet pulse for an entrance space, exhibition or reception."],
-    ["resilience", "MIP-03", isPl ? "Domkniecie rozmowy" : "Discussion closer", "4-8 min", isPl ? "Po Q&A, panelu lub lekcji, kiedy publicznosc potrzebuje chwili powrotu." : "After a Q&A, panel or lesson when the audience needs a moment of return."],
-  ];
 
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -90,7 +83,13 @@
     return $$(".vh-section").find((section) => /Music use \/ collaboration|Wykorzystanie muzyki/i.test(section.textContent || ""));
   }
 
-  function setActive(key, updateHash = false) {
+  function updateHash() {
+    const url = new URL(window.location.href);
+    url.hash = activeEmotion;
+    history.replaceState(null, "", url);
+  }
+
+  function setActive(key, shouldUpdateHash = false) {
     activeEmotion = emotions[key] ? key : "personal";
     const data = activeData();
     document.documentElement.style.setProperty("--music-premium-active", data[6]);
@@ -112,7 +111,7 @@
       $("[data-mini-status]", mini).textContent = muted ? text.muted : text.ready;
     }
     patchPersonalLinks();
-    if (updateHash) history.replaceState(null, "", `${musicPath}#${activeEmotion}`);
+    if (shouldUpdateHash) updateHash();
   }
 
   function createAtlas() {
@@ -135,6 +134,12 @@
     section.innerHTML = `<div class="vh-wrap"><div class="vh-section-head reveal visible"><p class="vh-eyebrow">${escape(text.packsKicker)}</p><h2 class="vh-section-title">${escape(text.packsTitle)}</h2><p class="vh-section-kicker">${escape(text.packsLead)}</p></div><div class="music-institutional-grid">${packs.map(([key, code, title, duration, desc]) => `<article class="institutional-pack-card"><small>${escape(code)}</small><h3>${escape(title)}</h3><p>${escape(desc)}</p><dl><div><dt>${isPl ? "Czas" : "Duration"}</dt><dd>${escape(duration)}</dd></div><div><dt>${isPl ? "Ton" : "Tone"}</dt><dd>${escape(emotion(key)[0])}</dd></div></dl><p>${escape(text.tech)}</p><div class="vh-actions"><a class="vh-button secondary" href="mailto:peter.lichwala@gmail.com?subject=${encodeURIComponent(title + " - Vibroslaw music pack")}">${escape(text.inquiry)}</a></div></article>`).join("")}</div></div>`;
     (collaborationSection() || document.querySelector("main")).before(section);
   }
+
+  const packs = [
+    ["conscience", "MIP-01", isPl ? "Intro przed pokazem" : "Screening intro", "3-5 min", isPl ? "Krótkie wejście przed seansem, prezentacją albo blokiem dokumentalnym." : "A short entry before a screening, presentation or documentary block."],
+    ["memory", "MIP-02", isPl ? "Pętla foyer" : "Foyer loop", "12-20 min", isPl ? "Cichy puls do przestrzeni wejściowej, wystawy albo recepcji." : "A quiet pulse for an entrance space, exhibition or reception."],
+    ["resilience", "MIP-03", isPl ? "Domknięcie rozmowy" : "Discussion closer", "4-8 min", isPl ? "Po Q&A, panelu lub lekcji, kiedy publiczność potrzebuje chwili powrotu." : "After a Q&A, panel or lesson when the audience needs a moment of return."],
+  ];
 
   function createMiniController() {
     if ($("[data-music-mini-controller]")) return;
@@ -205,7 +210,7 @@
     const signature = $("[data-music-signature-embed]");
     if (signature) signature.textContent = message;
     const load = $("[data-load-playlist]");
-    if (load) { load.disabled = false; load.textContent = isPl ? "Zaladuj playliste Spotify" : "Load Spotify playlist"; }
+    if (load) { load.disabled = false; load.textContent = isPl ? "Załaduj playlistę Spotify" : "Load Spotify playlist"; }
     const miniStatus = $("[data-mini-status]");
     if (miniStatus) miniStatus.textContent = message;
     root.classList.remove("sound-signature-playing");
@@ -229,8 +234,13 @@
 
   function patchIframes() {
     $$('iframe[src*="open.spotify.com/embed/playlist/"]').forEach((iframe) => {
-      iframe.allow = "clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-      if (activeEmotion === "personal") iframe.src = `https://open.spotify.com/embed/playlist/${personalId}?utm_source=generator`;
+      if (activeEmotion === "personal" && !iframe.src.includes(personalId)) {
+        iframe.src = `https://open.spotify.com/embed/playlist/${personalId}?utm_source=generator`;
+      }
+      const allow = iframe.getAttribute("allow") || "";
+      if (allow.includes("autoplay")) {
+        iframe.allow = "clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+      }
     });
   }
 
