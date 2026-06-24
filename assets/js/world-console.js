@@ -10,15 +10,15 @@
 
   const isPl = body.dataset.lang === "pl" || html.lang === "pl";
   const routes = [
-    ["veritas", isPl ? "/pl/" : "/", "Veritas", isPl ? "Prog / manifest" : "Threshold / manifesto", "/public/assets/heroes/veritas-humanum-hero.webp", "216,182,107"],
+    ["veritas", isPl ? "/pl/" : "/", "Veritas", isPl ? "Próg / manifest" : "Threshold / manifesto", "/public/assets/heroes/veritas-humanum-hero.webp", "216,182,107"],
     ["raport", isPl ? "/rap-ort/pl/" : "/rap-ort/", "Rap-Ort", isPl ? "Raport / presja" : "Report / pressure", "/public/assets/heroes/rap-ort-hero.webp", "190,157,115"],
-    ["sztab", isPl ? "/sztab/pl/" : "/sztab/", "SZTAB", isPl ? "Pamiec / animacja" : "Memory / animation", "/public/assets/heroes/sztab-hero.webp", "214,185,121"],
-    ["between", isPl ? "/miedzy-wierszami/" : "/between-the-lines/", isPl ? "Miedzy Wierszami" : "Between", isPl ? "Glos / cisza" : "Voice / silence", "/public/assets/heroes/between-the-lines-hero.webp", "174,159,139"],
+    ["sztab", isPl ? "/sztab/pl/" : "/sztab/", "SZTAB", isPl ? "Pamięć / animacja" : "Memory / animation", "/public/assets/heroes/sztab-hero.webp", "214,185,121"],
+    ["between", isPl ? "/miedzy-wierszami/" : "/between-the-lines/", isPl ? "Między Wierszami" : "Between", isPl ? "Głos / cisza" : "Voice / silence", "/public/assets/heroes/between-the-lines-hero.webp", "174,159,139"],
     ["music", isPl ? "/music/pl/" : "/music/", isPl ? "Muzyka" : "Music", isPl ? "Atlas emocji" : "Emotional atlas", "/public/assets/heroes/music-hero.webp", "96,158,198"],
   ];
 
   const t = isPl ? {
-    world: "Swiat", sound: "Dzwiek", cinema: "Kino", open: "Konsola", menu: "Menu", top: "Gora", listen: "Dzwiek", ready: "Gotowy", muted: "Wyciszony", active: "Aktywny", off: "Muzyka", on: "Kinowy", standard: "Standard", reduced: "Ruch ograniczony"
+    world: "Świat", sound: "Dźwięk", cinema: "Kino", open: "Konsola", menu: "Menu", top: "Góra", listen: "Dźwięk", ready: "Gotowy", muted: "Wyciszony", active: "Aktywny", off: "Muzyka", on: "Kinowy", standard: "Standard", reduced: "Ruch ograniczony"
   } : {
     world: "World", sound: "Sound", cinema: "Cinema", open: "Console", menu: "Menu", top: "Top", listen: "Sound", ready: "Ready", muted: "Muted", active: "Active", off: "Music", on: "Cinematic", standard: "Standard", reduced: "Motion reduced"
   };
@@ -32,7 +32,7 @@
 
   function routeCard([key, href, label, status, image, accent]) {
     const active = currentRoute()[0] === key;
-    return `<a class="vh-world-console__route" href="${escape(href)}" style="--world-image:url('${escape(image)}');--world-accent:${accent}"${active ? ' aria-current="page"' : ""}><small>${escape(status)}</small><strong>${escape(label)}</strong><em>${escape(isPl ? "Kontynuuj sciezke" : "Continue path")}</em></a>`;
+    return `<a class="vh-world-console__route" href="${escape(href)}" style="--world-image:url('${escape(image)}');--world-accent:${accent}"${active ? ' aria-current="page"' : ""}><small>${escape(status)}</small><strong>${escape(label)}</strong><em>${escape(isPl ? "Kontynuuj ścieżkę" : "Continue path")}</em></a>`;
   }
 
   function createConsole() {
