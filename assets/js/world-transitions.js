@@ -18,6 +18,7 @@
     ".cinematic-entry-card[href]",
     ".track-link[href]",
     ".nav-button[href]",
+    ".vh-button[href]",
     ".btn[href]"
   ].join(", ");
   const MEDIA_SELECTOR = ".project-media, .chapter-media, .hero-image";
@@ -30,6 +31,8 @@
     "/sztab/original/zo",
     "/sztab/battles",
     "/sztab/forgotten",
+    "/music",
+    "/music/pl",
     "/music-works",
     "/for-institutions",
     "/press-recognition",
@@ -44,6 +47,8 @@
     "/sztab/original/zo": "url('/assets/images/hero-sztab-main.jpg')",
     "/sztab/battles": "url('/assets/images/hero-sztab-main.jpg')",
     "/sztab/forgotten": "url('/assets/images/hero-sztab-main.jpg')",
+    "/music": "url('/public/assets/heroes/music-hero.webp')",
+    "/music/pl": "url('/public/assets/heroes/music-hero.webp')",
     "/music-works": "url('/assets/images/hero-sztab-main.jpg')",
     "/for-institutions": "url('/assets/images/hero-raport-main.jpg')",
     "/press-recognition": "url('/assets/images/hero-prawda-sumienia-main.jpg')",
@@ -52,6 +57,8 @@
   const WORLD_LABELS = {
     "/rap-ort": "Institutional audiovisual world",
     "/sztab": "Historical memory music world",
+    "/music": "Music / Sound Map",
+    "/music/pl": "Muzyka / Mapa dźwięku",
     "/music-works": "Music / Works",
     "/for-institutions": "Institutional context",
     "/press-recognition": "Press / Recognition",
@@ -168,6 +175,11 @@
     return url ? getWorldLookupPath(url.pathname) : "/";
   }
 
+  function getRawPath(link) {
+    const url = getUrl(link);
+    return url ? normalizePath(url.pathname) : "/";
+  }
+
   function getWorldImage(link, media) {
     if (media instanceof HTMLElement) {
       const mediaStyle = window.getComputedStyle(media);
@@ -180,11 +192,11 @@
     const customImage = cardStyle.getPropertyValue("--entry-image").trim();
     if (customImage) return customImage;
 
-    return WORLD_IMAGES[getPath(link)] || "url('/assets/images/hero-main.jpg')";
+    return WORLD_IMAGES[getRawPath(link)] || WORLD_IMAGES[getPath(link)] || "url('/assets/images/hero-main.jpg')";
   }
 
   function getWorldLabel(link) {
-    return link.dataset.cinematicLabel?.trim() || WORLD_LABELS[getPath(link)] || "World entry";
+    return link.dataset.cinematicLabel?.trim() || WORLD_LABELS[getRawPath(link)] || WORLD_LABELS[getPath(link)] || "World entry";
   }
 
   function saveArrivalPayload(link) {
