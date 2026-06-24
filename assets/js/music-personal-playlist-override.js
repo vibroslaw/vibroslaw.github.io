@@ -68,7 +68,7 @@
     iframe.src = `https://open.spotify.com/embed/playlist/${PERSONAL_PLAYLIST_ID}?utm_source=generator`;
     iframe.title = `Spotify playlist — ${text.title}`;
     iframe.loading = "lazy";
-    iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    iframe.allow = "clipboard-write; encrypted-media; fullscreen; picture-in-picture";
     iframe.width = "100%";
     iframe.height = "352";
     iframe.style.border = "0";
