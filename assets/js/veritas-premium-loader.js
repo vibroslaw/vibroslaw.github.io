@@ -9,7 +9,6 @@
 
   const css = [
     "/assets/css/world-signatures.css",
-    "/assets/css/world-transitions.css",
     "/assets/css/world-console.css",
     "/assets/css/sound-signature.css",
   ];
