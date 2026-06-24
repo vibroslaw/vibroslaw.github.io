@@ -2,6 +2,7 @@
 body.page-music{
   --music-atlas-gold:216,182,107;
   --music-atlas-blue:96,158,198;
+  overflow-x:clip;
 }
 
 body.page-music .music-premium-atlas,
