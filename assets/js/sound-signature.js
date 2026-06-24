@@ -9,16 +9,16 @@
 
   const isPl = body.dataset.lang === "pl";
   const copy = isPl ? {
-    open: "Uslysz swiat", title: "Sound Signature", lead: "Warstwa dzwieku jest opcjonalna. Spotify laduje sie dopiero po kliknieciu.", load: "Zaladuj", pause: "Pauza", mute: "Wycisz", unmute: "Dzwiek", muted: "Wyciszone", ready: "Wybierz karte"
+    open: "Usłysz świat", title: "Sound Signature", lead: "Warstwa dźwięku jest opcjonalna. Spotify ładuje się dopiero po kliknięciu.", load: "Załaduj", pause: "Pauza", mute: "Wycisz", unmute: "Dźwięk", muted: "Wyciszone", ready: "Wybierz kartę"
   } : {
     open: "Hear the world", title: "Sound Signature", lead: "The sound layer is optional. Spotify loads only after your click.", load: "Load", pause: "Pause", mute: "Mute", unmute: "Sound", muted: "Muted", ready: "Choose a card"
   };
 
   const cards = [
-    ["veritas", "Veritas", isPl ? "Prog / manifest" : "Threshold / manifesto", "0xv8YgWzwwY7VtER506P1Z", "/public/assets/heroes/veritas-humanum-hero.webp", "216,182,107"],
-    ["raport", "Rap-Ort", isPl ? "Raport / swiadectwo / presja" : "Report / testimony / pressure", "46B6jvmQkPM33LV28w4UvV", "/public/assets/heroes/rap-ort-hero.webp", "190,157,115"],
-    ["sztab", "SZTAB", isPl ? "Pamiec / animacja / puls historii" : "Memory / animation / historical pulse", "0xv8YgWzwwY7VtER506P1Z", "/public/assets/heroes/sztab-hero.webp", "214,185,121"],
-    ["between", isPl ? "Miedzy Wierszami" : "Between", isPl ? "Glos / cisza / intymnosc" : "Voice / silence / intimacy", "4Ml3373UqCDgQEdr0m6SoH", "/public/assets/heroes/between-the-lines-hero.webp", "174,159,139"],
+    ["veritas", "Veritas", isPl ? "Próg / manifest" : "Threshold / manifesto", "0xv8YgWzwwY7VtER506P1Z", "/public/assets/heroes/veritas-humanum-hero.webp", "216,182,107"],
+    ["raport", "Rap-Ort", isPl ? "Raport / świadectwo / presja" : "Report / testimony / pressure", "46B6jvmQkPM33LV28w4UvV", "/public/assets/heroes/rap-ort-hero.webp", "190,157,115"],
+    ["sztab", "SZTAB", isPl ? "Pamięć / animacja / puls historii" : "Memory / animation / historical pulse", "0xv8YgWzwwY7VtER506P1Z", "/public/assets/heroes/sztab-hero.webp", "214,185,121"],
+    ["between", isPl ? "Między Wierszami" : "Between", isPl ? "Głos / cisza / intymność" : "Voice / silence / intimacy", "4Ml3373UqCDgQEdr0m6SoH", "/public/assets/heroes/between-the-lines-hero.webp", "174,159,139"],
     ["music", isPl ? "Muzyka" : "Music", isPl ? "Atlas emocji" : "Emotional atlas", "22ClWy51TIpXxGzN7L0Aja", "/public/assets/heroes/music-hero.webp", "96,158,198"],
   ];
 
@@ -27,7 +27,7 @@
   const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
   function cardHtml([key, label, tone, id, image, accent]) {
-    return `<article class="vh-sound-card" style="--sound-image:url('${escape(image)}');--sound-accent:${accent}"><small>${escape(tone)}</small><h3>${escape(label)}</h3><p>${escape(isPl ? "Kuratorowana karta dzwieku swiata." : "Curated world sound card.")}</p><button type="button" data-sound-load="${escape(key)}" data-playlist-id="${escape(id)}">${escape(copy.load)}</button></article>`;
+    return `<article class="vh-sound-card" style="--sound-image:url('${escape(image)}');--sound-accent:${accent}"><small>${escape(tone)}</small><h3>${escape(label)}</h3><p>${escape(isPl ? "Kuratorowana karta dźwięku świata." : "Curated world sound card.")}</p><button type="button" data-sound-load="${escape(key)}" data-playlist-id="${escape(id)}">${escape(copy.load)}</button></article>`;
   }
 
   function create() {
