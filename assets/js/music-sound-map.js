@@ -82,8 +82,8 @@
     personal: {
       code: "VH-EMO-06",
       label: isPl ? "Osobiste / filmowe" : "Personal / Cinematic",
-      id: "6FNzNCjmvmGwpibLLDNufr",
-      url: "https://open.spotify.com/playlist/6FNzNCjmvmGwpibLLDNufr?si=5lcht8ixTKetPM94XKzeZw",
+      id: "22ClWy51TIpXxGzN7L0Aja",
+      url: "https://open.spotify.com/playlist/22ClWy51TIpXxGzN7L0Aja?si=CylRWaWYQZmG-99ZJThOLA",
       image: "/public/assets/music/playlists/personal-cinematic-window.webp",
       description: isPl ? "Lżejsze, filmowe wejście w emocję, klimat i osobistą stronę twórczości." : "A lighter cinematic entry into emotion, atmosphere and the personal side of the work.",
       first: "Campus Ignis",
@@ -288,7 +288,7 @@
     let isSettled = false;
     const markLoaded = () => { if (isSettled) return; isSettled = true; target.classList.remove("is-loading"); target.classList.add("is-loaded"); target.dataset.loaded = "true"; button.textContent = text.loaded; };
     button.disabled = true; button.textContent = text.loading; target.classList.add("is-loading"); target.replaceChildren(Object.assign(document.createElement("span"), { textContent: text.loading }));
-    const iframe = document.createElement("iframe"); iframe.src = `https://open.spotify.com/embed/playlist/${data.id}?utm_source=generator`; iframe.title = `Spotify playlist — ${data.label}`; iframe.loading = "lazy"; iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"; iframe.width = "100%"; iframe.height = "352"; iframe.style.border = "0";
+    const iframe = document.createElement("iframe"); iframe.src = `https://open.spotify.com/embed/playlist/${data.id}?utm_source=generator`; iframe.title = `Spotify playlist — ${data.label}`; iframe.loading = "lazy"; iframe.allow = "clipboard-write; encrypted-media; fullscreen; picture-in-picture"; iframe.width = "100%"; iframe.height = "352"; iframe.style.border = "0";
     iframe.addEventListener("load", markLoaded, { once: true }); setTimeout(markLoaded, 2200); target.replaceChildren(iframe);
   }
 
