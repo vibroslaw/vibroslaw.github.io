@@ -9,10 +9,10 @@
 
   const lang = body.dataset.lang === "pl" ? "pl" : "en";
   const labels = {
-    veritas: lang === "pl" ? "threshold light / manifest" : "threshold light / manifesto",
+    veritas: lang === "pl" ? "światło progu / manifest" : "threshold light / manifesto",
     raport: lang === "pl" ? "raport / presja" : "report / pressure",
-    sztab: lang === "pl" ? "archiwum / puls pamieci" : "archive / memory pulse",
-    between: lang === "pl" ? "glos / cisza" : "voice / silence",
+    sztab: lang === "pl" ? "archiwum / puls pamięci" : "archive / memory pulse",
+    between: lang === "pl" ? "głos / cisza" : "voice / silence",
     music: lang === "pl" ? "atlas emocji" : "emotional atlas",
   };
 
@@ -20,7 +20,7 @@
     const text = String(value || "").toLowerCase();
     if (text.includes("rap-ort") || text.includes("prawda-sumienia")) return "raport";
     if (text.includes("sztab")) return "sztab";
-    if (text.includes("between") || text.includes("miedzy") || text.includes("wiersz")) return "between";
+    if (text.includes("between") || text.includes("miedzy") || text.includes("między") || text.includes("wiersz")) return "between";
     if (text.includes("music") || text.includes("muzyk")) return "music";
     return "veritas";
   }
@@ -44,7 +44,7 @@
 
   function enhanceHero() {
     const heroCopy = document.querySelector(".vh-hero-copy");
-    const text = lang === "pl" ? "authorial world signature" : "authorial world signature";
+    const text = lang === "pl" ? "autorska sygnatura świata" : "authorial world signature";
     addBadge(heroCopy, text, "vh-premium-world-badge");
   }
 
