@@ -7,7 +7,7 @@ window.RAPORT_EVENTS = {
   events: {
     oswiecim20260525: {
       id: 'oswiecim20260525',
-      status: 'upcoming',
+      status: 'post-event',
       access: 'qr-only-after-workshop',
       pl: {
         title: 'Rap-Ort: Prawda Sumienia — Oświęcim 2026',
@@ -45,7 +45,7 @@ window.RAPORT_EVENTS = {
     },
     syd2026: {
       id: 'syd2026',
-      status: 'upcoming',
+      status: 'post-event',
       access: 'qr-or-code',
       pl: {
         title: 'Rap-Ort: Prawda Sumienia — Sydney 2026',
