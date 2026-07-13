@@ -172,8 +172,10 @@
   installExperienceStyles();
   if (!isDocumentStudio) installPremiumExperienceAssets();
 
+  const isRapOrtPressKitPath = (path) => path === "/press-kit/rap-ort/" || path === "/press-kit/rap-ort/pl/";
+
   const worldForCurrentPath = () => {
-    if (currentPath.startsWith("/rap-ort/")) return "raport";
+    if (currentPath.startsWith("/rap-ort/") || isRapOrtPressKitPath(currentPath)) return "raport";
     if (currentPath.startsWith("/sztab/")) return "sztab";
     if (currentPath.startsWith("/music") || currentPath === "/pl/music/") return "music";
     if (currentPath === "/between-the-lines/" || currentPath === "/miedzy-wierszami/") return "between";
@@ -233,7 +235,7 @@
   const heroForPath = (path) => {
     if (path === "/" || path === "/pl/") return heroAssets.veritas;
     if (path === "/rap-ort/" || path === "/rap-ort/pl/") return heroAssets.raport;
-    if (path === "/rap-ort/prawda-sumienia/" || path === "/rap-ort/prawda-sumienia/pl/") return heroAssets.prawda;
+    if (path === "/rap-ort/prawda-sumienia/" || path === "/rap-ort/prawda-sumienia/pl/" || isRapOrtPressKitPath(path)) return heroAssets.prawda;
     if (path === "/rap-ort/conscience-report/") return heroAssets.conscience;
     if (path === "/rap-ort/witness-report/" || path === "/rap-ort/raport-swiadka/") return heroAssets.witness;
     if (path.startsWith("/sztab/origins/")) return heroAssets.sztabOrigins;
@@ -318,6 +320,8 @@
     ["/rap-ort/pl/", "/rap-ort/"],
     ["/rap-ort/prawda-sumienia/", "/rap-ort/prawda-sumienia/pl/"],
     ["/rap-ort/prawda-sumienia/pl/", "/rap-ort/prawda-sumienia/"],
+    ["/press-kit/rap-ort/", "/press-kit/rap-ort/pl/"],
+    ["/press-kit/rap-ort/pl/", "/press-kit/rap-ort/"],
     ["/rap-ort/conscience-report/", "/rap-ort/pl/"],
     ["/rap-ort/witness-report/", "/rap-ort/raport-swiadka/"],
     ["/rap-ort/raport-swiadka/", "/rap-ort/witness-report/"],
@@ -369,7 +373,7 @@
     if (key === "music") return currentPath === "/music/" || currentPath === "/music/pl/" || currentPath.startsWith("/music-works/") || currentPath === "/pl/music/";
     if (key === "institutions") return currentPath === "/for-institutions/" || currentPath === "/for-institutions/pl/" || currentPath === "/institutions/" || currentPath === "/pl/institutions/";
     if (key === "author") return currentPath === "/authorial-profile/" || currentPath === "/authorial-profile/pl/" || currentPath === "/author/";
-    if (key === "press") return currentPath === "/press-recognition/" || currentPath === "/press-recognition/pl/" || currentPath === "/press/" || currentPath === "/pl/press/";
+    if (key === "press") return currentPath === "/press-recognition/" || currentPath === "/press-recognition/pl/" || currentPath === "/press/" || currentPath === "/pl/press/" || isRapOrtPressKitPath(currentPath);
     if (key === "contact") return currentPath === "/contact/" || currentPath === "/contact/pl/";
     return false;
   };
@@ -384,6 +388,12 @@
         href: isPolish ? "/pl/" : "/",
         className: "identity-veritas",
       };
+    }
+    if (currentPath === "/press-kit/rap-ort/pl/") {
+      return { label: "RAP-ORT — DLA MEDIÓW", sub: "Press Kit", href: "/press-kit/rap-ort/pl/", className: "identity-raport" };
+    }
+    if (currentPath === "/press-kit/rap-ort/") {
+      return { label: "RAP-ORT PRESS KIT", sub: "Veritas Humanum", href: "/press-kit/rap-ort/", className: "identity-raport" };
     }
     if (currentPath.includes("/prawda-sumienia/pl/")) {
       return { label: "PRAWDA SUMIENIA", sub: "Rap-Ort", href: "/rap-ort/prawda-sumienia/pl/", className: "identity-raport" };
